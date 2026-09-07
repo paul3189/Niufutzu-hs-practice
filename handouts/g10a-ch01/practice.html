@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一章 實數 ── 分級練習本｜高一上</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+/* 程度導覽 */
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+/* 各級區塊 */
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+/* 產生器卡片 */
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+/* 固定題組 */
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+/* 固定難題卡 */
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第一章 實數 ── 分級練習本</h1>
+  <div class="sub">高一上・配合主講義 1-1 數與數線、1-2 根式與算幾、1-3 絕對值、1-4 指數與對數。五個程度、一本練到底。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・模考・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>競賽・科學班・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（5,700 題抽樣）；固定題全數人工＋電腦重算。</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>國中根式、分數還不穩，看到根號或絕對值會慌的同學。</div>
+  <div><b>目標</b>21 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+</div>
+
+<h3 class="sec">1-1 數與數線</h3>
+<div class="must">先要會：<b>判斷有理／無理</b>、<b>循環小數 ⇄ 分數</b>（純循環分母 9…、混循環分母 9…0…）、<b>分母只含 2、5 才是有限小數</b>、<b>數線上的分點座標</b>（$P=\dfrac{nA+mB}{m+n}$，靠近哪點該點權重大）。</div>
+<div class="gen-grid" data-tier="L1" data-keys="rational,repPure,repMixed,fracKind,divPoint"></div>
+<div class="fixset" data-tier="L1" data-keys="rational,repPure,repMixed,fracKind,divPoint" data-seed="1101"></div>
+
+<h3 class="sec">1-2 根式運算與算幾不等式</h3>
+<div class="must">先要會：<b>化簡 $\sqrt{a^2b}=a\sqrt b$</b>、<b>同類根式合併</b>、<b>有理化</b>（單根號乘自己；$a+\sqrt b$ 乘共軛 $a-\sqrt b$）、<b>雙重根號 $\sqrt{(a+b)\pm2\sqrt{ab}}=\sqrt a\pm\sqrt b$</b>、<b>整數部分＝夾在哪兩個平方數之間</b>、<b>算幾：$x+\dfrac{k}{x}\ge2\sqrt k$，等號在 $x=\sqrt k$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="simpRoot,addRoots,ratSingle,ratConj,doubleRoot,intFrac,amgm"></div>
+<div class="fixset" data-tier="L1" data-keys="simpRoot,addRoots,ratSingle,ratConj,doubleRoot,intFrac,amgm" data-seed="1201"></div>
+
+<h3 class="sec">1-3 絕對值</h3>
+<div class="must">先要會：<b>$|a|$ 的化簡看正負</b>、<b>$|ax+b|=c$ 拆成兩個方程式</b>、<b>$|ax+b|\lt c\iff -c\lt ax+b\lt c$、$\gt c$ 則向外</b>、<b>$|x-a|+|x-b|$ 的最小值是 $|a-b|$（$x$ 在兩點之間）</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="absSimp,absEq,absIneq,absSum2"></div>
+<div class="fixset" data-tier="L1" data-keys="absSimp,absEq,absIneq,absSum2" data-seed="1301"></div>
+
+<h3 class="sec">1-4 指數與對數</h3>
+<div class="must">先要會：<b>指數律三條</b>（同底相乘指數加、次方相乘、分數指數＝根號）、<b>同底比大小看底數是否大於 1</b>、<b>科學記號 $a\times10^n$（$1\le a\lt10$）</b>、<b>$\log$ 三種基本值：$\log10^k=k$、$\log_a a^k=k$、$\log 1=0$</b>、<b>位數＝$[\log N]+1$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="expLaw,expCompare,sciNot,logBasic,digits"></div>
+<div class="fixset" data-tier="L1" data-keys="expLaw,expCompare,sciNot,logBasic,digits" data-seed="1401"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
+  <div><b>目標</b>17 個段考最常見題型（依 30 份段考卷出現率排序），每型都能自己完整寫出過程。</div>
+  <div><b>通過標準</b>本級固定 12 題兩輪全對、且每張卡片連續新題 3 次全對。</div>
+</div>
+
+<h3 class="sec">1-1 循環小數的運算與指定位數</h3>
+<div class="must">段考 30 卷中 <b>循環小數出現 63 卷次</b>、指定位數 25 卷次。招式：<b>先全部化成分數再運算</b>；指定位數則「先數幾位不循環，再用餘數對週期」。</div>
+<div class="gen-grid" data-tier="L2" data-keys="repArith,nthDigit"></div>
+
+<h3 class="sec">1-2 根式：係數比較、整數／小數部分、對稱式、算幾條件極值</h3>
+<div class="must">招式：<b>$a+b\sqrt p=c+d\sqrt p$（有理）⟹ $a=c,\ b=d$</b>；<b>小數部分＝原數 − 整數部分</b>，再拿去做四則；<b>對稱式：先算 $x+\dfrac1x$ 再平方、立方</b>；<b>條件極值：把目標拆成「乘積為定值」的兩項再用算幾</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="coefCompare,intFracOp,doubleRoot2,symm,amgmCond"></div>
+
+<h3 class="sec">1-3 絕對值：複合不等式、參數、整數解</h3>
+<div class="must">段考 30 卷中<b>絕對值不等式出現 76 卷次（本章最高）</b>、分段討論 30 卷次、整數解 20 卷次。招式：<b>夾層 $c\le|ax+b|\le d$ 拆成兩段區間</b>；<b>$|x-a|+|x-b|$ 圖形是「碗」，$\ge k$ 向外、$\le k$ 向內</b>；<b>奇數個絕對值和的最小值在中位點</b>；<b>整數解個數 ⟹ 先解出區間，再數格點，注意端點含不含</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="absIneq2,absSumIneq,absMedian,absParam,absIntCount"></div>
+
+<h3 class="sec">1-4 指對數：指數方程、位數與首位、小數首位、複利</h3>
+<div class="must">招式：<b>換元 $t=a^x$ 變二次方程</b>；<b>$x+\dfrac1x$ 型指數對稱式先平方</b>；<b>位數＝首數 $+1$、最高位數字看尾數落在 $\log1\sim\log9$ 哪一格</b>；<b>小數點後第 $k$ 位開始不為 0 ⟺ $\log N=-k+(\text{尾數})$</b>；<b>複利：$(1+r)^n\ge k$ 取 $\log$，$n\ge\dfrac{\log k}{\log(1+r)}$，向上取整</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="expEq,expSymm,digitsLead,decimalFirst,compound"></div>
+
+<h3 class="sec">L2 固定 12 題（列印用）</h3>
+<div class="fixset" data-tier="L2" data-keys="repArith,nthDigit,coefCompare,intFracOp,symm,amgmCond,absIneq2,absSumIneq,absParam,absIntCount,expEq,digitsLead" data-seed="2001" data-n="12"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過（部分官方答案有誤已修正）。</div>
+
+<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">指定位數 → 分開處理有限與循環</span><span class="src">台中女中 111 上</span></div>
+<div class="fxq">將 $\dfrac{17}{40}+\dfrac{2}{271}$ 化為小數，求小數點後第 $2024$ 位的數字。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3$</div>
+<div class="fxs"><div class="move">招式：有限小數只影響前幾位，遠處的位數全看循環那一項。</div>
+$\dfrac{17}{40}=0.425$ 只有 3 位；$\dfrac{1}{271}=0.\overline{00369}$，故 $\dfrac{2}{271}=0.\overline{00738}$（週期 5）。相加後第 4 位以後不受 $0.425$ 影響（沒有進位往右傳的問題），所以第 $2024$ 位就是 $\dfrac{2}{271}$ 的第 $2024$ 位：$2024=5\times404+4$，取週期第 4 個數字 $3$。</div></div>
+
+<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">帶分數開根號 → 先驗完全平方，再找週期</span><span class="src">段考常見題</span></div>
+<div class="fxq">求 $\sqrt{443\dfrac{1}{441}}$ 化為小數後，小數點後第 $111$ 位的數字。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$7$</div>
+<div class="fxs"><div class="move">招式：$443\frac1{441}=\frac{443\cdot441+1}{441}=\frac{195364}{441}$，分子分母都是完全平方數（$442^2$、$21^2$）。</div>
+$\sqrt{\dfrac{195364}{441}}=\dfrac{442}{21}=21.0\overline{476190}$。小數點後第 1 位是 $0$，從第 2 位起以「476190」循環。第 $111$ 位：$111-1=110=6\times18+2$，取循環節第 2 個數字 $7$。</div></div>
+
+<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">有理數 x, y、含 √ → 展開後係數比較</span><span class="src">台中一中 段考</span></div>
+<div class="fxq">設 $x,y$ 為有理數，且 $(6+\sqrt7)x+(y-2)(3-2\sqrt7)=6-14\sqrt7$，求 $(x,y)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(x,y)=(-2,\,8)$</div>
+<div class="fxs"><div class="move">招式：整理成「有理部分」＋「無理部分」$\sqrt7$，兩邊分別相等。</div>
+左式 $=(6x+3y-6)+(x-2y+4)\sqrt7$。比較係數：$6x+3y-6=6$，$x-2y+4=-14$，即 $2x+y=4$、$x-2y=-18$。解得 $x=-2$、$y=8$。</div></div>
+
+<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">雙重根號 ＋ 有理係數 → 先化簡再比較</span><span class="src">段考常見題</span></div>
+<div class="fxq">設 $x,y$ 為有理數，$x\sqrt{14+6\sqrt5}-y\sqrt{9-4\sqrt5}=8+\sqrt5$，求 $(x,y)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(x,y)=(2,\,1)$</div>
+<div class="fxs"><div class="move">招式：$\sqrt{14+6\sqrt5}=\sqrt{(9+5)+2\sqrt{45}}=3+\sqrt5$；$\sqrt{9-4\sqrt5}=\sqrt{(5+4)-2\sqrt{20}}=\sqrt5-2$（大減小）。</div>
+代入：$x(3+\sqrt5)-y(\sqrt5-2)=(3x+2y)+(x-y)\sqrt5=8+\sqrt5$，故 $3x+2y=8$、$x-y=1$，得 $x=2$、$y=1$。</div></div>
+
+<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">根式相減比大小 → 有理化成「分子固定、比分母」</span><span class="src">段考常見題</span></div>
+<div class="fxq">設 $a=\sqrt{17}-\sqrt{11}$，$b=\sqrt{19}-\sqrt{13}$，$c=\sqrt{18}-\sqrt{10}$，$d=\sqrt{9-\sqrt{23}}$，比較 $a,b,c,d$ 的大小。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$d\gt c\gt a\gt b$</div>
+<div class="fxs"><div class="move">招式：$\sqrt m-\sqrt n=\dfrac{m-n}{\sqrt m+\sqrt n}$，分子相同時分母大的值小。</div>
+$a=\dfrac{6}{\sqrt{17}+\sqrt{11}}$，$b=\dfrac{6}{\sqrt{19}+\sqrt{13}}$，分母 $b$ 的較大，故 $a\gt b$。<br>
+$c=\dfrac{8}{\sqrt{18}+\sqrt{10}}$：估 $\sqrt{18}+\sqrt{10}\lt4.25+3.17=7.42$，故 $c\gt\dfrac{8}{7.42}\gt1$；而 $a\lt\dfrac{6}{4.1+3.3}\lt1$，故 $c\gt a$。<br>
+$d$：$\sqrt{23}\lt5$，故 $9-\sqrt{23}\gt4$，$d\gt2$；而 $c\lt\sqrt{18}-3\lt4.25-3=1.25$。故 $d\gt c\gt a\gt b$。</div></div>
+
+<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">x²−4x−1=0 → 兩邊除以 x 得 x−1/x，對稱式</span><span class="src">建國中學 段考</span></div>
+<div class="fxq">設 $x\gt0$ 且 $x^2-4x-1=0$，求 $x^3+x^2+\dfrac1{x^2}-\dfrac1{x^3}$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$94$</div>
+<div class="fxs"><div class="move">招式：$x\ne0$，兩邊除以 $x$：$x-\dfrac1x=4$。要的式子 $=\left(x^3-\dfrac1{x^3}\right)+\left(x^2+\dfrac1{x^2}\right)$。</div>
+$x^2+\dfrac1{x^2}=\left(x-\dfrac1x\right)^2+2=18$；$x^3-\dfrac1{x^3}=\left(x-\dfrac1x\right)^3+3\left(x-\dfrac1x\right)=64+12=76$。合計 $76+18=94$。</div></div>
+
+<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">乘積為定值 ＋ 求線性式最小 → 把目標拆成該兩因式</span><span class="src">北一女中 段考</span></div>
+<div class="fxq">設 $x\gt2$，$y\gt-1$，且 $(x-2)(y+1)=\dfrac{27}{2}$，求 $3x+2y$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$22$</div>
+<div class="fxs"><div class="move">招式：$3x+2y=3(x-2)+2(y+1)+4$，前兩項乘積 $=6\cdot\dfrac{27}{2}=81$ 是定值。</div>
+算幾：$3(x-2)+2(y+1)\ge2\sqrt{81}=18$，故 $3x+2y\ge22$。等號在 $3(x-2)=2(y+1)=9$，即 $x=5$、$y=\dfrac72$，符合條件。最小值 $22$。</div></div>
+
+<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">平均成本最低 → 總成本/n 出現 n＋k/n，算幾</span><span class="src">台南女中 段考（改寫）</span></div>
+<div class="fxq">某公司買一台機器花 $100$ 萬元，第 $n$ 年的維修費為 $(2n-1)$ 萬元（第 1 年 1 萬、第 2 年 3 萬、……）。若使用 $n$ 年後報廢，問使用幾年時「每年平均總花費」最低？最低是多少？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$10$ 年，每年平均 $20$ 萬元</div>
+<div class="fxs"><div class="move">招式：前 $n$ 年維修費總和 $1+3+\cdots+(2n-1)=n^2$；平均 $=\dfrac{100+n^2}{n}=\dfrac{100}{n}+n$，典型的 $x+\dfrac kx$。</div>
+$\dfrac{100}{n}+n\ge2\sqrt{100}=20$，等號在 $n=\dfrac{100}{n}$，即 $n=10$（恰為整數）。故使用 $10$ 年，平均每年 $20$ 萬元。</div></div>
+
+<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">|x−a|=3|x−b| → 內分點與外分點各一個</span><span class="src">中山女中 段考</span></div>
+<div class="fxq">數線上 $A(a)$、$B(b)$、$P(x)$，$a\lt b$，且 $|x-a|=3|x-b|$。選出正確的選項：<br>
+(1) $\overline{PA}:\overline{PB}=3:1$　(2) $P$ 必在 $\overline{AB}$ 上　(3) $|a-b|\gt|x-a|$　(4) $x\gt\dfrac{a+b}{2}$　(5) $x\gt\dfrac{a+4b}{5}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(4)</div>
+<div class="fxs"><div class="move">招式：$\overline{PA}=3\overline{PB}$ 的點有兩個——$\overline{AB}$ 的 $3:1$ 內分點 $x_1=\dfrac{a+3b}{4}$，與外分點 $x_2=\dfrac{3b-a}{2}$（在 $B$ 右側）。</div>
+(1) 就是題意，正確。(2) 外分點不在線段上，錯。(3) 外分點時 $|x_2-a|=\dfrac32(b-a)\gt|a-b|$，錯。(4) $x_1-\dfrac{a+b}{2}=\dfrac{b-a}{4}\gt0$，$x_2-\dfrac{a+b}2=\dfrac{2b-2a}{2}\gt0$，兩點都在中點右邊，正確。(5) $x_1-\dfrac{a+4b}{5}=\dfrac{5a+15b-4a-16b}{20}=\dfrac{a-b}{20}\lt0$，錯。</div></div>
+
+<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">恰有 k 個整數解 → 先畫解集合，再卡參數範圍</span><span class="src">段考常見題</span></div>
+<div class="fxq">若不等式 $2\le|x-10|\le t$ 恰有 $4$ 個整數解，求 $t$ 的範圍。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3\le t\lt4$</div>
+<div class="fxs"><div class="move">招式：解集合關於 $x=10$ 對稱：$10-t\le x\le8$ 或 $12\le x\le10+t$，整數解左右各半。</div>
+恰 4 個整數解 ⟹ 每側恰 2 個：右側要含 $12,13$ 但不含 $14$，即 $13\le10+t\lt14$，得 $3\le t\lt4$。（檢查：$t=3$ 時解為 $\{7,8,12,13\}$，$t=4$ 時多了 $6,14$ 變 6 個。）</div></div>
+
+<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">|x−a|+|x−b|=k 解的個數 → 畫「碗形」圖，比 k 與底部 |a−b|</span><span class="src">段考常見題（改寫）</span></div>
+<div class="fxq">關於方程式 $|x+4|+|x-8|=k$，選出正確的選項：<br>
+(1) $k=3\pi$ 時無解　(2) $k=4\pi$ 時恰有兩解　(3) $k=12$ 時有無限多解　(4) 使方程式有解的最小 $k$ 為 $13$　(5) 在 $12\le k\le100$ 的整數中，共有 $89$ 個 $k$ 使方程式有解</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(3)(5)</div>
+<div class="fxs"><div class="move">招式：$|x+4|+|x-8|$ 的最小值是 $8-(-4)=12$，在 $-4\le x\le8$ 整段都取到；$k\gt12$ 時恰兩解，$k\lt12$ 無解。</div>
+(1) $3\pi\approx9.42\lt12$，無解，正確。(2) $4\pi\approx12.57\gt12$，兩解，正確。(3) $k=12$：整段 $[-4,8]$ 都是解，正確。(4) 最小 $k=12$，錯。(5) $12\sim100$ 共 $89$ 個整數，全部有解，正確。</div></div>
+
+<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">連等式 9^a=15^b=25^c → 設 =k 取 log，比較 1/a、1/b、1/c</span><span class="src">段考常見題</span></div>
+<div class="fxq">設 $a,b,c$ 為正數且 $9^a=15^b=25^c$，選出正確的選項：<br>
+(1) $ab+bc=2ac$　(2) $ab+bc=ac$　(3) $\dfrac2c=\dfrac2a+\dfrac1b$　(4) $\dfrac1c=\dfrac2b-\dfrac1a$　(5) $b^2=ac$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(4)</div>
+<div class="fxs"><div class="move">招式：令共同值為 $k$，則 $\dfrac1a=\dfrac{\log9}{\log k}=\dfrac{2\log3}{\log k}$，$\dfrac1b=\dfrac{\log3+\log5}{\log k}$，$\dfrac1c=\dfrac{2\log5}{\log k}$。</div>
+於是 $\dfrac1a+\dfrac1c=\dfrac{2(\log3+\log5)}{\log k}=\dfrac2b$。同乘 $abc$：$bc+ab=2ac$，(1) 正確、(2) 錯。移項得 $\dfrac1c=\dfrac2b-\dfrac1a$，(4) 正確。(3) 相當於 $4\log5=5\log3+\log5$，錯。(5) $b^2=ac\iff(\log3+\log5)^2=4\log3\log5$，需 $\log3=\log5$，錯。</div></div>
+
+<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">100^x＋100^{−x} 與 10^x＋10^{−x} 同時出現 → 設 t=10^x+10^{−x}</span><span class="src">台南一中 段考</span></div>
+<div class="fxq">解方程式 $4\left(100^x+100^{-x}\right)-10\left(10^x+10^{-x}\right)+8=0$。（$\log2\approx0.3010$）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=\log2$ 或 $x=-\log2$（約 $\pm0.3010$）</div>
+<div class="fxs"><div class="move">招式：令 $t=10^x+10^{-x}$（$t\ge2$），則 $100^x+100^{-x}=t^2-2$。</div>
+$4(t^2-2)-10t+8=0\Rightarrow4t^2-10t=0\Rightarrow t=\dfrac52$（$t=0$ 不合）。$10^x+10^{-x}=\dfrac52$，令 $u=10^x\gt0$：$2u^2-5u+2=0$，$u=2$ 或 $\dfrac12$，故 $x=\log2$ 或 $-\log2$。</div></div>
+
+<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">半衰期／剩不到 p% → 設 n 個半衰期，(1/2)^n 與 p% 比較</span><span class="src">段考常見題型（自編）</span></div>
+<div class="fxq">某放射性物質每 $30$ 年衰變為原來的一半。至少經過幾年，剩餘量會少於原來的 $1\%$？（$\log2\approx0.3010$）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$7$ 個半衰期，即 $210$ 年</div>
+<div class="fxs"><div class="move">招式：經 $n$ 個半衰期剩 $\left(\dfrac12\right)^n$，要 $\lt\dfrac1{100}$，取 $\log$。</div>
+$-n\log2\lt-2\Rightarrow n\gt\dfrac{2}{0.3010}\approx6.64$，故 $n=7$，$7\times30=210$ 年。（檢驗：$\dfrac1{2^6}=\dfrac1{64}\approx1.56\%$ 還不夠，$\dfrac1{2^7}=\dfrac1{128}\approx0.78\%$ 才行。）</div></div>
+
+<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">log 的值落在 (0,1) → 原數在 1 到 10 之間；按兩次就套兩層</span><span class="src">台中一中 段考</span></div>
+<div class="fxq">有台計算機，先按出 $x$ 再按一次 $\log$ 鍵會得到 $\log x$。選出正確的選項：<br>
+(1) 按出 $1000$ 再按一次 $\log$ 得 $3$　(2) 按出 $400$ 再按兩次 $\log$，所得數值的整數部分為 $0$　(3) 按出正整數 $M$ 再按一次 $\log$，所得數值介於 $0$ 到 $1$ 之間（不含），這樣的 $M$ 有 $9$ 個　(4) 按出正整數 $N$ 再按兩次 $\log$，所得數值介於 $0$ 到 $1$ 之間（不含），這樣的 $N$ 有 $10^{10}-11$ 個　(5) 按出正整數 $K$ 再按兩次 $\log$，所得數值介於 $-1$ 到 $0$ 之間（不含），這樣的 $K$ 有 $8$ 個</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(4)(5)</div>
+<div class="fxs"><div class="move">招式：$0\lt\log y\lt1\iff1\lt y\lt10$；按兩次就把 $y$ 換成 $\log x$ 再套一次。</div>
+(1) 正確。(2) $\log400\approx2.6$，$\log2.6\approx0.41$，整數部分 $0$，正確。(3) $1\lt M\lt10$，$M=2,\dots,9$ 共 $8$ 個，錯。(4) $1\lt\log N\lt10\iff10\lt N\lt10^{10}$，$N=11,\dots,10^{10}-1$，共 $10^{10}-11$ 個，正確。(5) $-1\lt\log(\log K)\lt0\iff0.1\lt\log K\lt1\iff10^{0.1}\lt K\lt10$，$10^{0.1}\approx1.26$，$K=2,\dots,9$ 共 $8$ 個，正確。</div></div>
+</section>
+
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考、模考、大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">根號內湊完全平方</span><span class="src">建國中學 段考</span></div>
+<div class="fxq">設 $n$ 為正整數，若 $\sqrt{n+2+\dfrac1n}-\sqrt{n-2+\dfrac1n}\lt\dfrac1{10}$，求 $n$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$401$</div>
+<div class="fxs">$n+2+\dfrac1n=\dfrac{n^2+2n+1}{n}=\dfrac{(n+1)^2}{n}$，$n-2+\dfrac1n=\dfrac{(n-1)^2}{n}$。故左式 $=\dfrac{(n+1)-(n-1)}{\sqrt n}=\dfrac{2}{\sqrt n}$（$n\ge1$ 時 $n-1\ge0$）。$\dfrac2{\sqrt n}\lt\dfrac1{10}\iff\sqrt n\gt20\iff n\gt400$，最小 $n=401$。</div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">指數塔比大小</span><span class="src">段考進階題</span></div>
+<div class="fxq">將 $1,2,3,5$ 四個數各用一次填入 $A^{B^{C^D}}$ 的 $A,B,C,D$，使其值最大。求此時的四位數 $\overline{ABCD}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2351$，即 $2^{3^{5^{1}}}=2^{243}$</div>
+<div class="fxs">$1$ 放在 $A$ 或 $B$ 整個值變成 $1$ 或 $B$，浪費；放在 $D$ 時 $C^1=C$ 不吃虧，放在 $C$ 時 $1^D=1$ 讓指數塌成 $B$。所以 $D=1$，剩下比較 $A^{B^C}$：$2^{3^5}=2^{243}$、$2^{5^3}=2^{125}$、$3^{2^5}=3^{32}$、$3^{5^2}=3^{25}$、$5^{2^3}=5^8$、$5^{3^2}=5^9$。取 $\log_2$：$243$、$125$、$32\log_23\approx50.7$、$25\log_23\approx39.6$、$8\log_25\approx18.6$、$20.9$。最大為 $2^{243}$，$\overline{ABCD}=2351$。</div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">配方成距離 ＋ 對稱點</span><span class="src">台中一中 段考</span></div>
+<div class="fxq">求 $\sqrt{x^2-8x+25}+\sqrt{x^2+y^2}+\sqrt{y^2-18y+85}$ 的最小值（$x,y$ 為實數）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$6\sqrt5$</div>
+<div class="fxs">配方：$\sqrt{(x-4)^2+3^2}+\sqrt{x^2+y^2}+\sqrt{(y-9)^2+2^2}$。把它看成坐標平面上折線 $P(4,3)\to X(x,0)\to Y(0,y)\to Q(2,9)$ 的總長（三段分別是 $PX$、$XY$、$YQ$）。$X$ 在 $x$ 軸、$Y$ 在 $y$ 軸上任取，最短路徑用對稱：$P$ 對 $x$ 軸的對稱點 $P'(4,-3)$，$Q$ 對 $y$ 軸的對稱點 $Q'(-2,9)$，最小值 $=\overline{P'Q'}=\sqrt{6^2+12^2}=\sqrt{180}=6\sqrt5$。</div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">三種根式化簡 ＋ 整數／小數部分</span><span class="src">北一女中 段考</span></div>
+<div class="fxq">設 $k=(\sqrt3-1)^3+\sqrt{38-\sqrt{288}}+\sqrt{(6\sqrt3-11)^2}$，$k$ 的整數部分為 $a$、小數部分為 $b$，求 $a+\dfrac2b$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$7+\sqrt2$</div>
+<div class="fxs">$(\sqrt3-1)^3=3\sqrt3-9+3\sqrt3-1=6\sqrt3-10$。$\sqrt{38-\sqrt{288}}=\sqrt{38-2\sqrt{72}}=\sqrt{36}-\sqrt2=6-\sqrt2$。$6\sqrt3\approx10.39\lt11$，故 $\sqrt{(6\sqrt3-11)^2}=11-6\sqrt3$。三項相加：$k=7-\sqrt2\approx5.586$，$a=5$、$b=2-\sqrt2$。$a+\dfrac2b=5+\dfrac{2}{2-\sqrt2}=5+\dfrac{2(2+\sqrt2)}{2}=7+\sqrt2$。</div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">雙重根號多選：每個選項都要真的算</span><span class="src">台中一中 段考</span></div>
+<div class="fxq">已知 $\sqrt{14+\sqrt{180}}=a+b\sqrt5$，$a,b$ 為有理數。選出正確的選項：<br>(1) $a=4$　(2) $b=1$　(3) $\sqrt{14+\sqrt{180}}+\sqrt{14-\sqrt{180}}=6$　(4) $\sqrt{14+\sqrt{180}}$ 的整數部分為 $5$　(5) $\sqrt{14+\sqrt{180}}$ 的小數部分等於 $\sqrt{14-\sqrt{180}}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)</div>
+<div class="fxs">$\sqrt{180}=6\sqrt5$，$14+6\sqrt5=(9+5)+2\sqrt{45}=(3+\sqrt5)^2$，故 $a=3$、$b=1$：(1) 錯、(2) 對。$\sqrt{14-\sqrt{180}}=3-\sqrt5$，兩者相加 $=6$，(3) 對。$3+\sqrt5\approx5.24$，整數部分 $5$，(4) 對。小數部分 $=\sqrt5-2\approx0.24$，而 $3-\sqrt5\approx0.76$，(5) 錯。</div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">指數模型取 log 解常數</span><span class="src">建國中學 113 上 計算題</span></div>
+<div class="fxq">設 $p_0$ 為地表大氣壓力，$p_h$ 為高度 $h$（公尺）處的大氣壓力，且 $p_h=p_0\cdot2.72^{-\frac{9.81h}{a}}$（$a$ 為常數）。已知 $p_0=1013$、$p_{1000}=977$（百帕）。若 $a=-\dfrac{r}{\log s}$，其中 $r$ 以科學記號表示、$s$ 為最簡分數，求 $r$ 與 $s$。（$10^{0.435}=2.72$）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$r=4.26735\times10^3$，$s=\dfrac{977}{1013}$</div>
+<div class="fxs">$h=1000$：$\dfrac{977}{1013}=2.72^{-\frac{9810}{a}}$。兩邊取 $\log$，$\log2.72=0.435$：$\log\dfrac{977}{1013}=-\dfrac{9810}{a}\times0.435=-\dfrac{4267.35}{a}$，故 $a=-\dfrac{4267.35}{\log\frac{977}{1013}}$。$r=4267.35=4.26735\times10^3$，$s=\dfrac{977}{1013}$（$977$ 為質數，已最簡）。</div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">整數部分 n、小數部分 b 的二次方程 → 用 0≤b&lt;1 卡 n</span><span class="src">台中一中 段考</span></div>
+<div class="fxq">正實數 $a$ 的整數部分為 $n$、小數部分為 $b$（$b\ne0$），且 $6a=b^2+31$。求 $b+2\sqrt b$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1$（此時 $n=5$，$b=3-2\sqrt2$）</div>
+<div class="fxs">$a=n+b$ 代入：$b^2-6b+(31-6n)=0$，$b=3\pm\sqrt{6n-22}$。要 $0\lt b\lt1$，取 $b=3-\sqrt{6n-22}$ 且 $2\lt\sqrt{6n-22}\lt3$，即 $4\lt6n-22\lt9$，$\dfrac{26}{6}\lt n\lt\dfrac{31}{6}$，$n=5$。$b=3-\sqrt8=3-2\sqrt2$，$\sqrt b=\sqrt{3-2\sqrt2}=\sqrt2-1$。$b+2\sqrt b=3-2\sqrt2+2\sqrt2-2=1$。</div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">畢氏定理 ＋ 雙重根號</span><span class="src">中山女中 段考</span></div>
+<div class="fxq">直角三角形 $ABC$ 中 $\angle A=90^\circ$，$\overline{AC}^2=11+5\sqrt{11}$，$\overline{AB}^2=9+\sqrt{11}$，求 $\overline{BC}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3+\sqrt{11}$</div>
+<div class="fxs">$\overline{BC}^2=\overline{AB}^2+\overline{AC}^2=20+6\sqrt{11}=(9+11)+2\sqrt{99}=(3+\sqrt{11})^2$，故 $\overline{BC}=3+\sqrt{11}$。</div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">大小關係多選：對的要證、錯的要舉反例</span><span class="src">段考進階題</span></div>
+<div class="fxq">若 $a\gt1\gt b\gt0\gt c$，選出正確的選項：<br>(1) $ab\lt a+b-1$　(2) $a+\dfrac1a\gt b+\dfrac1b$　(3) $a+\dfrac1b\gt b+\dfrac1a$　(4) $\dfrac ca\gt\dfrac bc$　(5) $(a-b)^2\gt(b-c)^2$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)</div>
+<div class="fxs">(1) $a+b-1-ab=-(a-1)(b-1)$，$a-1\gt0$、$b-1\lt0$，故為正，正確。(2) 反例 $a=1.1$，$b=0.1$：$1.1+0.91\lt0.1+10$，錯。(3) 差 $=(a-b)+\left(\dfrac1b-\dfrac1a\right)$，兩括號都正（$a\gt b\gt0$），正確。(4) $\dfrac ca-\dfrac bc=\dfrac{c^2-ab}{ac}$，分母負、分子正負不定（$c=-1,a=2,b=0.5$ 為正；$c=-0.1$ 為負），錯。(5) 反例 $a=1.1$，$b=0.5$，$c=-5$：$0.36\lt30.25$，錯。</div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">小數部分的代數運算</span><span class="src">段考進階題</span></div>
+<div class="fxq">設 $a,b$ 分別為 $\sqrt3$ 與 $\sqrt{12}$ 的小數部分，選出正確的選項：<br>(1) $2a=b$　(2) $a^2+b^2$ 為有理數　(3) $a^3-3b$ 為有理數　(4) $\dfrac ab\lt2$　(5) $\sqrt{7+b}=\sqrt3+1$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)(4)(5)</div>
+<div class="fxs">$a=\sqrt3-1$，$\sqrt{12}=2\sqrt3\approx3.46$，$b=2\sqrt3-3$。(1) $2a=2\sqrt3-2\ne b$，錯。(2) $a^2+b^2=(4-2\sqrt3)+(21-12\sqrt3)=25-14\sqrt3$，無理，錯。(3) $a^3=(\sqrt3-1)^3=6\sqrt3-10$，$3b=6\sqrt3-9$，$a^3-3b=-1$，正確。(4) $\dfrac ab=\dfrac{\sqrt3-1}{2\sqrt3-3}=\dfrac{(\sqrt3-1)(2\sqrt3+3)}{3}=\dfrac{3+\sqrt3}{3}\approx1.58\lt2$，正確。(5) $7+b=4+2\sqrt3=(\sqrt3+1)^2$，正確。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">立方根對稱式：用 (p−q)³ 展開，中間項會塌掉</span><span class="src">建國中學 段考</span></div>
+<div class="fxq">設 $x=\sqrt[3]2-\dfrac1{\sqrt[3]2}$，求 $4x^3+12x+5$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$11$</div>
+<div class="fxs">令 $p=\sqrt[3]2$，$q=\dfrac1{\sqrt[3]2}$，$pq=1$。$x^3=(p-q)^3=p^3-q^3-3pq(p-q)=2-\dfrac12-3x=\dfrac32-3x$。故 $4x^3=6-12x$，$4x^3+12x+5=11$。</div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">已知一根含 √ ＋ 有理係數 → 代入後比較係數</span><span class="src">段考進階題</span></div>
+<div class="fxq">設 $a$ 為有理數，方程式 $2x^2+\sqrt{11+3\sqrt8}\,x+(a-8\sqrt2)=0$ 有一根為 $1+\sqrt2$，求 $a$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=-11$</div>
+<div class="fxs">$\sqrt{11+3\sqrt8}=\sqrt{11+6\sqrt2}=\sqrt{(9+2)+2\sqrt{18}}=3+\sqrt2$。代入 $x=1+\sqrt2$：$2(3+2\sqrt2)+(3+\sqrt2)(1+\sqrt2)+a-8\sqrt2=(6+4\sqrt2)+(5+4\sqrt2)+a-8\sqrt2=(11+a)+0\cdot\sqrt2=0$，故 $a=-11$。</div></div>
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充專區：競賽味與證明題</h2>
+<div class="goal">
+  <div><b>對象</b>學有餘力、想參加數學競賽或未來想走數理科系的同學。</div>
+  <div><b>目標</b>6 題經典 ＋ 15 題科學班／教甄：看懂「為什麼」，學會把猜想寫成證明、把假命題用反例推翻，也看看出題老師怎麼想。</div>
+  <div><b>說明</b>本區不列入段考通過標準。前 6 題是經典題；後面的「科學班・教甄專區」15 題來自北一女、嘉中科學班與各校教甄，原卷為掃描影像，以 OCR 讀出後逐題重打、重解、驗算。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">拉馬努金巢狀立方根</span><span class="src">競賽經典</span></div>
+<div class="fxq">已知 $\sqrt[3]{\sqrt[3]2-1}=\sqrt[3]a-\sqrt[3]b+\sqrt[3]c$，其中 $a\gt b\gt c$ 為正有理數，求 $a+b-c$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac59$（$a=\dfrac49$，$b=\dfrac29$，$c=\dfrac19$）</div>
+<div class="fxs">令 $t=\sqrt[3]2$，$t^3=2$。猜右式為 $\dfrac{t^2-t+1}{\sqrt[3]9}$，驗證：$(t^2-t+1)^3$ 用 $t^2-t+1=\dfrac{t^3+1}{t+1}=\dfrac{3}{t+1}$ 改寫，得 $(t^2-t+1)^3=\dfrac{27}{(t+1)^3}$；而 $(t+1)^3=t^3+3t^2+3t+1=3(t^2+t+1)$，且 $(t-1)(t^2+t+1)=t^3-1=1$，故 $(t+1)^3=\dfrac{3}{t-1}$，$(t^2-t+1)^3=9(t-1)$。所以 $\sqrt[3]{t-1}=\dfrac{t^2-t+1}{\sqrt[3]9}=\sqrt[3]{\dfrac49}-\sqrt[3]{\dfrac29}+\sqrt[3]{\dfrac19}$，$a+b-c=\dfrac{4+2-1}{9}=\dfrac59$。</div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">共軛數列必為整數 ＋ 求整數部分</span><span class="src">競賽入門</span></div>
+<div class="fxq">設 $a_n=(2+\sqrt3)^n+(2-\sqrt3)^n$。(1) 證明對所有正整數 $n$，$a_n$ 為整數。(2) 求 $(2+\sqrt3)^5$ 的整數部分。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2) $723$</div>
+<div class="fxs">(1) 令 $\alpha=2+\sqrt3$，$\beta=2-\sqrt3$，則 $\alpha+\beta=4$，$\alpha\beta=1$。由 $\alpha^{n+2}=4\alpha^{n+1}-\alpha^{n}$（因 $\alpha^2=4\alpha-1$），$\beta$ 同理，相加得 $a_{n+2}=4a_{n+1}-a_n$。$a_1=4$、$a_2=14$ 為整數，依遞迴（數學歸納）所有 $a_n$ 為整數。<br>(2) $a_3=52$、$a_4=194$、$a_5=724$。因 $0\lt\beta\lt1$，$0\lt\beta^5\lt1$，故 $\alpha^5=724-\beta^5$ 介於 $723$ 與 $724$ 之間，整數部分 $723$。</div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">由等式推「全相等」：每個選項都是一種論證</span><span class="src">106 中區模考</span></div>
+<div class="fxq">下列各式中的 $a,b,c$ 皆為實數，且每一項運算結果皆為實數。哪些選項的式子可以推得 $a,b,c$ 全部相等？<br>(1) $a+b=2\sqrt{ab}$　(2) $a^2+b^2+c^2-ab-bc-ca=0$　(3) $a^2+b^2+c^2+ab+bc+ca=0$　(4) $\sqrt{a-1}+\sqrt{b^2-1}+\sqrt{c^3-1}\le0$　(5) $a^3-3a^2+a-3=0$，$b^3-3b^2+b-3=0$，$c^3-3c^2+c-3=0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(5)</div>
+<div class="fxs">(1) 只得 $(\sqrt a-\sqrt b)^2=0$，$a=b$，$c$ 無限制，錯。(2) 乘 2：$(a-b)^2+(b-c)^2+(c-a)^2=0$，三者全等，正確。(3) 乘 2：$(a+b)^2+(b+c)^2+(c+a)^2=0$，得 $a=-b=c=-a$，故 $a=b=c=0$，正確。(4) 三個根號皆 $\ge0$，故都為 $0$：$a=1$、$b=\pm1$、$c=1$，$b$ 可能是 $-1$，錯。(5) $t^3-3t^2+t-3=(t-3)(t^2+1)$，實數解只有 $t=3$，故 $a=b=c=3$，正確。</div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">證明或否定：先找反例再說</span><span class="src">段考證明題</span></div>
+<div class="fxq">命題：「若 $a,b$ 都是奇數，則 $a^3+b^3$ 不能被 $4$ 整除。」試證明此命題，或舉反例否定它。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">命題為假；反例 $a=1$，$b=3$：$1+27=28=4\times7$。</div>
+<div class="fxs">分析：$a^3+b^3=(a+b)(a^2-ab+b^2)$。$a,b$ 奇數時 $a^2-ab+b^2$ 為奇（奇−奇＋奇），而 $a+b$ 為偶。若 $a+b$ 是 $4$ 的倍數（例如 $1+3$、$3+5$），乘積就被 $4$ 整除；若 $a+b\equiv2\pmod4$（例如 $1+1$、$1+5$），乘積除以 $4$ 餘 $2$。所以命題不恆成立，任一組 $a+b\equiv0\pmod4$ 的奇數對都是反例。正確的敘述應是：「$a^3+b^3$ 被 $4$ 整除 $\iff a+b$ 被 $4$ 整除」。</div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">無理數證明：反證法 ＋ 平方去根號</span><span class="src">證明題經典</span></div>
+<div class="fxq">已知 $\sqrt6$ 為無理數，證明 $\sqrt2+\sqrt3$ 為無理數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">（證明題）</div>
+<div class="fxs">假設 $\sqrt2+\sqrt3=r$ 為有理數。兩邊平方：$5+2\sqrt6=r^2$，故 $\sqrt6=\dfrac{r^2-5}{2}$。右邊是有理數的四則運算，仍為有理數，與 $\sqrt6$ 為無理數矛盾。故 $\sqrt2+\sqrt3$ 為無理數。<br>（補充：$\sqrt6$ 無理的證明——設 $\sqrt6=\dfrac pq$ 最簡，則 $p^2=6q^2$，$p$ 為偶，設 $p=2m$，$2m^2=3q^2$，$q$ 亦為偶，與最簡矛盾。）</div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">條件極值：湊出「和為定值」再用算幾</span><span class="src">建國中學 段考</span></div>
+<div class="fxq">設 $x,y\gt0$ 且 $x^2+\dfrac{y^2}{2}=1$，求 $x\sqrt{1+y^2}$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{3\sqrt2}{4}$（$x=\dfrac{\sqrt3}{2}$，$y=\dfrac{\sqrt2}{2}$ 時）</div>
+<div class="fxs">$y^2=2-2x^2$，目標 $=x\sqrt{3-2x^2}=\dfrac1{\sqrt2}\sqrt{2x^2\,(3-2x^2)}$。兩因式 $2x^2$ 與 $3-2x^2$ 之和為定值 $3$，算幾：$2x^2(3-2x^2)\le\left(\dfrac32\right)^2=\dfrac94$，故目標 $\le\dfrac1{\sqrt2}\cdot\dfrac32=\dfrac{3\sqrt2}{4}$。等號在 $2x^2=\dfrac32$，$x=\dfrac{\sqrt3}2$，此時 $y^2=\dfrac12$，$y=\dfrac{\sqrt2}{2}\gt0$ 合。</div></div>
+
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（15 題）</h3>
+<div class="note">來源：北一女中 113 科學班、嘉義高中 114／115 科學班、112 全國教甄聯招、台中一中 111 教甄、桃園／新竹／台北各校教甄。原卷多為掃描影像，
+以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>，與原卷答案一致。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">含 √ 的高次式求值 → 先造出 x 的二次關係，再降次</span><span class="src">北一女中 113 科學班 單選 1</span></div>
+<div class="fxq">已知 $x=45+\sqrt{2024}$，則 $x^3-8099x+89=$？<br>(A) $-2$　(B) $-1$　(C) $0$　(D) $1$　(E) $2$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(B) $-1$</div>
+<div class="fxs"><div class="move">招式：$(x-45)^2=2024$ 展開得 $x^2=90x-1$，之後所有高次都用它降一次。</div>
+$x^3=x\cdot x^2=x(90x-1)=90x^2-x=90(90x-1)-x=8099x-90$。<br>
+故 $x^3-8099x+89=(8099x-90)-8099x+89=-1$。<br>
+<span class="note-sm">為什麼是 $8099$：出題者就是從 $90\cdot90-1$ 反推來的；看到「怪係數」先懷疑它是 $x^2$ 關係式的產物。</span></div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">S2</span><span class="kw">距離 → 絕對值不等式；根號要夾在兩個平方數之間估</span><span class="src">嘉義高中 115 科學班 填 3</span></div>
+<div class="fxq">試問數線上有多少個整數點與點 $\sqrt{115}$ 的距離小於 $5$，但與點 $\sqrt{2026}$ 的距離大於 $35$？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$5$ 個（$6,7,8,9,10$）</div>
+<div class="fxs"><div class="move">招式：$10^2\lt115\lt11^2$ 且 $10.7^2=114.49\lt115\lt116.64=10.8^2$ ⟹ $\sqrt{115}\approx10.7$；$45^2=2025$ ⟹ $\sqrt{2026}$ 比 $45$ 大一點點。</div>
+第一個條件：$\sqrt{115}-5\lt x\lt\sqrt{115}+5$，即 $5.7\lt x\lt15.7$，整數 $x=6,7,\dots,15$。<br>
+第二個條件：$|x-\sqrt{2026}|\gt35$ ⟹ $x\lt\sqrt{2026}-35$ 或 $x\gt\sqrt{2026}+35$。因 $\sqrt{2026}\gt45$，$\sqrt{2026}-35\gt10$，所以 $x\le10$ 都合（$x=10$：$\sqrt{2026}-10\gt35$ ✔）；$x=11$：$\sqrt{2026}-11\lt46-11=35$ ✘。<br>
+交集：$x=6,7,8,9,10$，共 $5$ 個。<br><span class="note-sm">關鍵是 $x=10$ 那一格——要用「$\sqrt{2026}\gt45$」而不是「$\approx45$」來判斷。</span></div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">S3</span><span class="kw">根號裡外長得一樣 → 令 t＝根號，化成 t 的二次方程</span><span class="src">嘉義高中 115 科學班 填 5</span></div>
+<div class="fxq">解方程式 $\dfrac23x^2+x-\dfrac53\sqrt{2x^2+3x+9}=-1$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=3$ 或 $x=-\dfrac92$</div>
+<div class="fxs"><div class="move">招式：全式乘 $3$：$2x^2+3x+3-5\sqrt{2x^2+3x+9}=0$，根號裡是 $2x^2+3x+9$，外面是它減 $6$。</div>
+令 $t=\sqrt{2x^2+3x+9}\ge0$，則 $2x^2+3x+3=t^2-6$，方程式變成 $t^2-5t-6=0$，$(t-6)(t+1)=0$，取 $t=6$。<br>
+$2x^2+3x+9=36$ ⟹ $2x^2+3x-27=0$ ⟹ $(2x+9)(x-3)=0$ ⟹ $x=3$ 或 $-\dfrac92$。<br>
+兩根代回：根號內都是 $36$，$t=6\ge0$ 合。</div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">同底化指數律 → 指數的線性方程整數解計數</span><span class="src">嘉義高中 115 科學班 填 6</span></div>
+<div class="fxq">試問共有多少組非負整數對 $(a,b,c)$ 滿足 $2^a4^b8^c=1024$？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$14$ 組</div>
+<div class="fxs"><div class="move">招式：$4^b=2^{2b}$、$8^c=2^{3c}$、$1024=2^{10}$ ⟹ $a+2b+3c=10$。</div>
+按 $c$ 分類：$c=0$：$a+2b=10$，$b=0\sim5$，$6$ 組；$c=1$：$a+2b=7$，$b=0\sim3$，$4$ 組；$c=2$：$a+2b=4$，$3$ 組；$c=3$：$a+2b=1$，$1$ 組。共 $6+4+3+1=14$ 組。</div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">S5</span><span class="kw">看到 √A+√B 的值、求 √A−√B → 用平方差，不要硬解 a、b</span><span class="src">嘉義高中 114 科學班 填 13</span></div>
+<div class="fxq">已知 $a,b$ 為實數且 $a-b=4$，若 $\sqrt{16+a}+\sqrt b=5$，試求 $\sqrt{16+a}-\sqrt b$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$</div>
+<div class="fxs"><div class="move">招式：$(\sqrt{16+a}+\sqrt b)(\sqrt{16+a}-\sqrt b)=(16+a)-b=16+4=20$。</div>
+故 $\sqrt{16+a}-\sqrt b=\dfrac{20}{5}=4$。<br>
+<span class="note-sm">順便確認題目有解：兩式相加 $2\sqrt{16+a}=9$，$a=\dfrac{17}{4}$，$b=\dfrac14$，$a-b=4$ ✔。</span></div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">S6</span><span class="kw">絕對值不等式 → 平方去絕對值 → 因式分解 → 三式相乘出矛盾</span><span class="src">嘉義高中 114 科學班 證明 2</span></div>
+<div class="fxq">試證明任意三個實數 $x,y,z$ 不可能同時滿足下列三個不等式：$$|x|\lt|y-z|,\qquad|y|\lt|z-x|,\qquad|z|\lt|x-y|.$$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">（證明題）</div>
+<div class="fxs"><div class="move">招式：$|p|\lt|q|\iff p^2\lt q^2\iff(p-q)(p+q)\lt0$。</div>
+假設三式同時成立。平方並移項：<br>
+$x^2-(y-z)^2\lt0$ ⟹ $(x-y+z)(x+y-z)\lt0$；<br>
+$y^2-(z-x)^2\lt0$ ⟹ $(y-z+x)(y+z-x)\lt0$；<br>
+$z^2-(x-y)^2\lt0$ ⟹ $(z-x+y)(z+x-y)\lt0$。<br>
+令 $p=x-y+z$、$q=x+y-z$、$r=-x+y+z$，三式就是 $pq\lt0$、$qr\lt0$、$rp\lt0$。三式相乘：$(pqr)^2\lt0$，但平方不可能為負，矛盾。故三個不等式不可能同時成立。</div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">24、27、16、18 都是 2 與 3 的積 → 設 s=2^x、t=3^x，化成二元齊次式分解</span><span class="src">112 全國教甄聯招 填 4</span></div>
+<div class="fxq">若實數 $x$ 滿足 $6\times24^x-2\times27^x+3\times16^x-18^x=0$，求 $\dfrac{2x-1}{3x}$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{2x-1}{3x}=\dfrac{\log2}{\log3}$</div>
+<div class="fxs"><div class="move">招式：$24^x=8^x\cdot3^x=s^3t$、$27^x=t^3$、$16^x=s^4$、$18^x=2^x\cdot9^x=st^2$。</div>
+方程式變成 $6s^3t-2t^3+3s^4-st^2=0$。分組：$3s^3(2t+s)-t^2(2t+s)=(3s^3-t^2)(2t+s)=0$。<br>
+$s,t\gt0$ ⟹ $2t+s\ne0$，故 $t^2=3s^3$，即 $3^{2x}=3\cdot2^{3x}$。兩邊取 $\log$：$2x\log3=\log3+3x\log2$ ⟹ $(2x-1)\log3=3x\log2$ ⟹ $\dfrac{2x-1}{3x}=\dfrac{\log2}{\log3}$。<br>
+<span class="note-sm">（用高二的記法就是 $\log_32$。）</span></div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">S8</span><span class="kw">a 無理、多項式值有理 → 用低次式消高次，逼出「有理係數×無理數＝有理數 ⟹ 係數為 0」</span><span class="src">112 全國教甄聯招 填 8</span></div>
+<div class="fxq">已知 $a\gt0$ 是無理數，若 $P=a^3+3a^2-16a+6$、$Q=a^2-2a$，且 $P$、$Q$ 皆為有理數，求 $a$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=1+\sqrt7$</div>
+<div class="fxs"><div class="move">招式：由 $Q$ 得 $a^2=Q+2a$，把 $P$ 裡的 $a^3$、$a^2$ 全換掉，剩下「$a$ 的一次式」。</div>
+$a^3=a\cdot a^2=a(Q+2a)=aQ+2a^2=aQ+2Q+4a$。<br>
+$P=(aQ+2Q+4a)+3(Q+2a)-16a+6=a(Q-6)+5Q+6$。<br>
+$P$、$Q$ 有理而 $a$ 無理：若 $Q-6\ne0$，則 $a=\dfrac{P-5Q-6}{Q-6}$ 為有理數，矛盾。故 $Q=6$，即 $a^2-2a-6=0$，$a=1\pm\sqrt7$，取正：$a=1+\sqrt7$。<br>
+<div class="move">類似題（竹山高中 101 教甄 填 1）：$a$ 為正無理數，$p=a^3-a^2-13a+6$、$q=a^2-4a$ 均為有理數，求 $(p,q,a)$。<b>答：$(9,\,1,\,2+\sqrt5)$</b>（同法：$p=a(q-1)+3q+6$，故 $q=1$、$p=9$。）</div></div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">S9</span><span class="kw">整數部分×小數部分 → 設 x=n+r，逐個 n 討論 r 的下界</span><span class="src">台中一中 111 教甄 填 1</span></div>
+<div class="fxq">當 $x\gt0$ 時，令 $[x]$ 表示 $x$ 的整數部分，$\{x\}$ 表示 $x$ 的小數部分（例：$[20.22]=20$，$\{20.22\}=0.22$）。求最小的正數 $x$ 使得 $[x]\cdot\{x\}\ge3$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=\dfrac{19}{4}$</div>
+<div class="fxs"><div class="move">招式：$x=n+r$（$n$ 正整數，$0\le r\lt1$），條件是 $nr\ge3$，即 $r\ge\dfrac3n$，但 $r\lt1$ ⟹ $n\ge4$。</div>
+$n=4$：$r\ge\dfrac34$，最小 $x=4+\dfrac34=\dfrac{19}{4}$。$n\ge5$：$x\ge5\gt\dfrac{19}4$。故最小 $x=\dfrac{19}{4}$。<br>
+<span class="note-sm">$n=1,2,3$ 時 $r\ge3,\dfrac32,1$ 都不可能，所以「從 $n=4$ 起算」是這題的門檻。</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">x²＋{x}²＝整數 → 先用 0≤{x}&lt;1 把 x 夾出整數部分</span><span class="src">新竹建功高中 107 教甄 填 5</span></div>
+<div class="fxq">已知 $x$ 為正實數，$y$ 為 $x$ 的小數部分，且 $x^2+y^2=2018$，求 $x$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=22+5\sqrt{21}$</div>
+<div class="fxs"><div class="move">招式：$0\le y\lt1$ ⟹ $2017\lt x^2\le2018$；$44^2=1936$、$45^2=2025$ ⟹ $44\lt x\lt45$，整數部分 $44$。</div>
+$y=x-44$，代入：$x^2+(x-44)^2=2018$ ⟹ $2x^2-88x+1936-2018=0$ ⟹ $x^2-44x-41=0$ ⟹ $x=\dfrac{44\pm\sqrt{1936+164}}{2}=22\pm\dfrac{\sqrt{2100}}{2}=22\pm5\sqrt{21}$。<br>
+取正根 $x=22+5\sqrt{21}\approx44.9$，在 $(44,45)$ 內 ✔。</div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">S11</span><span class="kw">單位分數和夾在區間 → 從最大的分數開始貪心，逐層縮範圍</span><span class="src">新竹建功高中 107 教甄 填 2</span></div>
+<div class="fxq">已知 $a,b,c$ 為正整數，且 $\dfrac{19}{20}\lt\dfrac1a+\dfrac1b+\dfrac1c\lt1$，則 $a+b+c$ 所有可能值中的最小值為何？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$12$（$a,b,c=2,3,7$）</div>
+<div class="fxs"><div class="move">招式：不妨設 $a\le b\le c$。和要接近 $1$ 又小於 $1$，$a$ 只能從 $2$ 起（$a=1$ 就超過 $1$）。</div>
+$a=2$：需 $\dfrac9{20}\lt\dfrac1b+\dfrac1c\lt\dfrac12$。$b=3$：$\dfrac{7}{60}\lt\dfrac1c\lt\dfrac16$ ⟹ $6\lt c\lt\dfrac{60}{7}\approx8.6$，$c=7$ 或 $8$；$b=4$：$\dfrac15\lt\dfrac1c\lt\dfrac14$，沒有整數；$b\ge5$ 時 $\dfrac1b+\dfrac1c\le\dfrac25\lt\dfrac9{20}$，不合。<br>
+$a=3$：需 $\dfrac{37}{60}\lt\dfrac1b+\dfrac1c\lt\dfrac23$。$b\ge3$ 時 $\dfrac1b+\dfrac1c\le\dfrac23$，等號只在 $b=c=3$（此時和恰為 $1$，不合）；其餘最大是 $b=3,c=4$：$\dfrac7{12}\approx0.583\lt\dfrac{37}{60}\approx0.617$，不合，再大更小。故 $a\ge3$ 無解。<br>
+所以只有 $(2,3,7)$：$\dfrac12+\dfrac13+\dfrac17=\dfrac{41}{42}$ ✔ 與 $(2,3,8)$：$\dfrac{23}{24}$ ✔，最小和 $2+3+7=12$。</div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">S12</span><span class="kw">分子分母長得很像 → 分子＝分母＋（小東西），先拆成 1＋餘項再估</span><span class="src">台北木柵高工 106 教甄 填 1</span></div>
+<div class="fxq">已知有理數 $k=\dfrac{11\times26+12\times27+13\times28+14\times29+15\times30}{11\times25+12\times26+13\times27+14\times28+15\times29}$，求 $100k$ 的整數部分。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$103$</div>
+<div class="fxs"><div class="move">招式：分子每一項都是「分母對應項 $+$ 該項的第一個因數」：$11\times26=11\times25+11$，……</div>
+分子 $=$ 分母 $+(11+12+13+14+15)=$ 分母 $+65$，故 $k=1+\dfrac{65}{D}$，$D=275+312+351+392+435=1765$。<br>
+$\dfrac{65}{1765}=\dfrac{13}{353}\approx0.0368$，$100k\approx103.68$，整數部分 $103$。<br>
+<span class="note-sm">只需確認 $\dfrac{13}{353}$ 在 $0.03$ 與 $0.04$ 之間：$353\times0.03=10.59\lt13\lt14.12=353\times0.04$ ✔。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">S13</span><span class="kw">兩根號相加 → 配一個「相減」用平方差，解出單一根號</span><span class="src">台北木柵高工 106 教甄 填 11</span></div>
+<div class="fxq">試求所有實數 $x$，使得 $x=\sqrt{x-\dfrac1x}+\sqrt{1-\dfrac1x}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=\dfrac{1+\sqrt5}{2}$</div>
+<div class="fxs"><div class="move">招式：令 $A=\sqrt{x-\frac1x}$、$B=\sqrt{1-\frac1x}$，則 $A+B=x$ 且 $A^2-B^2=x-1$。</div>
+先看範圍：$1-\dfrac1x\ge0$ 且 $x\gt0$ ⟹ $x\ge1$。<br>
+$A-B=\dfrac{A^2-B^2}{A+B}=\dfrac{x-1}{x}=1-\dfrac1x$。與 $A+B=x$ 相加：$2A=x+1-\dfrac1x=A^2+1$（因 $A^2=x-\dfrac1x$）。<br>
+故 $A^2-2A+1=0$，$A=1$，即 $x-\dfrac1x=1$，$x^2-x-1=0$，$x=\dfrac{1\pm\sqrt5}{2}$，由 $x\ge1$ 取 $x=\dfrac{1+\sqrt5}{2}$。<br>
+驗算：$B=x-A=\dfrac{\sqrt5-1}{2}\ge0$，且 $B^2=\dfrac{3-\sqrt5}{2}=1-\dfrac1x$ ✔。</div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">偵錯題：無理數＋無理數不一定是無理數；正確證法用反證＋奇偶</span><span class="src">台北大安高工 101 教甄 偵錯題 2</span></div>
+<div class="fxq">題目：證明 $\log2+\log3+\log5$ 是無理數。<br>
+某學生的解答：「因為 $\log2$、$\log3$、$\log5$ 皆是無理數，所以 $\log2+\log3+\log5$ 是無理數。」<br>
+請指出這個解答錯誤的關鍵，並寫出正確的證明。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">錯在「無理數的和必為無理數」；正確證明見詳解（$\log30$ 為無理數）。</div>
+<div class="fxs"><div class="move">錯誤關鍵：無理數對加法<b>不封閉</b>。反例就在題目旁邊：$\log2+\log5=\log10=1$ 是有理數。結論碰巧對，推理卻不成立。</div>
+<b>正確證明</b>：$\log2+\log3+\log5=\log30$。假設 $\log30=\dfrac pq$（$p,q$ 為正整數），則 $30^q=10^p$。<br>
+左邊 $=3^q\cdot10^q$，故 $3^q=10^{\,p-q}$。若 $p\gt q$，右邊是 $10$ 的正整數次方（偶數），左邊是奇數，矛盾；若 $p=q$，得 $3^q=1$，矛盾；若 $p\lt q$，右邊小於 $1$ 而左邊 $\ge3$，矛盾。故 $\log30$ 為無理數。<br>
+<span class="note-sm">教學上的提醒：要證「和是無理數」，通常先把和算成單一個對數，再對那個數做反證。</span></div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">S15</span><span class="kw">立方根分母有理化 → 設未知係數，用 t³＝2 比較係數解線性方程組</span><span class="src">北科附工 109 教甄 計算 2</span></div>
+<div class="fxq">若 $a$ 是有理數，且 $\dfrac{1}{\sqrt[3]4+\sqrt[3]2+a}=\alpha\sqrt[3]4+\beta\sqrt[3]2+\gamma$，其中 $\alpha,\beta,\gamma$ 為有理數。試求 $\alpha,\beta,\gamma$（用 $a$ 表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\alpha=\dfrac{1-a}{a^3-6a+6}$，$\beta=\dfrac{2-a}{a^3-6a+6}$，$\gamma=\dfrac{a^2-2}{a^3-6a+6}$</div>
+<div class="fxs"><div class="move">招式：令 $t=\sqrt[3]2$（$t^3=2$，$t^4=2t$），要求 $(t^2+t+a)(\alpha t^2+\beta t+\gamma)=1$，把乘積整理成 $t^2$、$t$、常數三項再比較。</div>
+展開：$(t^2+t+a)(\alpha t^2+\beta t+\gamma)=\alpha t^4+(\alpha+\beta)t^3+(\gamma+\beta+a\alpha)t^2+(\gamma+a\beta)t+a\gamma$。<br>
+代 $t^4=2t$、$t^3=2$：$=(a\alpha+\beta+\gamma)\,t^2+(2\alpha+a\beta+\gamma)\,t+(2\alpha+2\beta+a\gamma)$。<br>
+因 $1,\ t,\ t^2$ 在有理數上「互相獨立」（$t$ 不滿足任何有理係數的一次或二次方程），係數必須逐項相等：
+$$a\alpha+\beta+\gamma=0,\qquad2\alpha+a\beta+\gamma=0,\qquad2\alpha+2\beta+a\gamma=1.$$
+前兩式相減：$(a-2)\alpha+(1-a)\beta=0$，前式減第三式消 $\gamma$ 後與它聯立，解得（分母同為 $a^3-6a+6$）
+$$\alpha=\frac{1-a}{a^3-6a+6},\quad\beta=\frac{2-a}{a^3-6a+6},\quad\gamma=\frac{a^2-2}{a^3-6a+6}.$$
+驗算 $a=0$：$\dfrac1{t^2+t}=\dfrac{1}{t(t+1)}$，公式給 $\dfrac{t^2}{6}+\dfrac{2t}{6}-\dfrac26=\dfrac{t^2+2t-2}{6}$；乘 $t(t+1)=t^2+t$：$\dfrac{t^4+3t^3-2t}{6}=\dfrac{2t+6-2t}{6}=1$ ✔。<br>
+<span class="note-sm">$a^3-6a+6=0$ 沒有有理根（候選 $\pm1,\pm2,\pm3,\pm6$ 都不是根），所以分母對任何有理數 $a$ 都不為 $0$。</span></div></div>
+</section>
+
+<div class="ch-nav">
+  <span></span>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <a href="../g10a-ch02/practice.html">第二章 直線與圓 練習本 →</a>
+</div>
+</div>
+
+<script>
+(function () {
+  var G = window.PGEN;
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var labelOf = {};
+  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+
+  /* ── 產生器卡片 ── */
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard';
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
+      '<div class="gh"></div><div class="ga"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+    function load() {
+      var it = G[tier][key](G.makeRng(seed));
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '提示：' + it.h;
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.seed').textContent = '#' + seed;
+      card.querySelector('.gh').classList.remove('on'); card.querySelector('.ga').classList.remove('on');
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+
+  /* ── 固定題組（種子固定，每次開啟都一樣，可列印） ── */
+  document.querySelectorAll('.fixset').forEach(function (box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
+    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
+    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
+    for (var i = 0; i < n; i++) {
+      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
+      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+    }
+    box.innerHTML = html + '</ol>';
+    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    box.querySelector('.print').onclick = function () { window.print(); };
+    render(box);
+  });
+
+  /* ── 固定難題卡：答案／詳解切換 ── */
+  document.querySelectorAll('.fx button').forEach(function (b) {
+    b.onclick = function () {
+      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
+      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
+    };
+  });
+
+  /* ── 靜態內容的 KaTeX ── */
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+</body>
+</html>

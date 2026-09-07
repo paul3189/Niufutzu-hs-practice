@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二章 直線與圓 ── 分級練習本｜高一上</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+/* 程度導覽 */
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+/* 各級區塊 */
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+/* 產生器卡片 */
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+/* 固定題組 */
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+/* 固定難題卡 */
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第二章 直線與圓 ── 分級練習本</h1>
+  <div class="sub">高一上・配合主講義 第 1 節 斜率與直線方程式、第 2 節 距離、面積與對稱、第 3 節 不等式區域與線性規劃、第 4 節 圓方程式、第 5 節 圓與直線。五個程度、一本練到底。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・模考・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・科學班・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（10,250 題抽樣）；固定題全數人工＋電腦重算，並修正了一題官方答案的錯誤（L4-6）。</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>看到「求直線方程式」還要想很久、配方法還會漏一半的同學。</div>
+  <div><b>目標</b>24 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+</div>
+
+<h3 class="sec">2-1 斜率與直線方程式</h3>
+<div class="must">先要會：<b>斜率 $=\dfrac{y_2-y_1}{x_2-x_1}$</b>、<b>距離公式</b>、<b>分點公式 $P=\dfrac{nA+mB}{m+n}$</b>、<b>點斜式 → 一般式</b>、<b>截距式 $\dfrac xa+\dfrac yb=1$</b>、<b>平行：係數不動改常數；垂直：$ax+by\to bx-ay$</b>、<b>聯立求交點</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="slope2pt,dist2pt,midDiv,lineEq,line2pt,interceptForm,parPerp,intersect"></div>
+<div class="fixset" data-tier="L1" data-keys="slope2pt,dist2pt,midDiv,lineEq,line2pt,interceptForm,parPerp,intersect" data-seed="2101"></div>
+
+<h3 class="sec">2-2 距離、面積與對稱</h3>
+<div class="must">先要會：<b>點到直線距離 $\dfrac{|ax_0+by_0+c|}{\sqrt{a^2+b^2}}$</b>（本章最常用公式，段考 96 卷中出現 23 卷次）、<b>兩平行線距離：先把係數化成一樣再用 $\dfrac{|c_1-c_2|}{\sqrt{a^2+b^2}}$</b>、<b>三角形面積 $\dfrac12|ad-bc|$</b>、<b>對 $x$ 軸／$y$ 軸／原點／$y=x$ 的對稱點</b>、<b>平移：$x\to x-h$、$y\to y-k$</b>、<b>中垂線：過中點、法向量取 $\overrightarrow{AB}$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="ptLineDist,parDist,triArea,symAxis,translate,perpBisector"></div>
+<div class="fixset" data-tier="L1" data-keys="ptLineDist,parDist,triArea,symAxis,translate,perpBisector" data-seed="2201"></div>
+
+<h3 class="sec">2-3 不等式區域與線性規劃</h3>
+<div class="must">先要會：<b>把點代入 $ax+by+c$ 看正負決定在哪一側</b>（含等號＝含邊界）、<b>線性目標函數的最值一定在頂點</b>：頂點全部代入比大小就好。</div>
+<div class="gen-grid" data-tier="L1" data-keys="halfPlane,lpVertex"></div>
+<div class="fixset" data-tier="L1" data-keys="halfPlane,lpVertex" data-seed="2301"></div>
+
+<h3 class="sec">2-4 圓方程式</h3>
+<div class="must">先要會：<b>標準式 $(x-h)^2+(y-k)^2=r^2$ ⇄ 一般式</b>（展開／配方）、<b>$d^2+e^2-4f$ 的正負決定是圓、一點或無圖形</b>、<b>點與圓：比 $\overline{PC}^2$ 與 $r^2$，不開根號</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="circStd,circGen,circKind,ptCircle"></div>
+<div class="fixset" data-tier="L1" data-keys="circStd,circGen,circKind,ptCircle" data-seed="2401"></div>
+
+<h3 class="sec">2-5 圓與直線</h3>
+<div class="must">先要會：<b>位置關係比 $d$ 與 $r$，不要聯立</b>、<b>弦長 $=2\sqrt{r^2-d^2}$</b>、<b>圓上一點的切線：法向量取 $\overrightarrow{CP}$</b>、<b>切線長 $=\sqrt{\overline{PC}^2-r^2}$</b>。這四件事都是同一個直角三角形。</div>
+<div class="gen-grid" data-tier="L1" data-keys="lineCircPos,chordLen,tangentAtPt,tangentLen"></div>
+<div class="fixset" data-tier="L1" data-keys="lineCircPos,chordLen,tangentAtPt,tangentLen" data-seed="2501"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
+  <div><b>目標</b>17 個段考最常見題型（依 96 份段考卷出現率選出），每型都能自己完整寫出過程。</div>
+  <div><b>通過標準</b>本級固定 12 題兩輪全對、且每張卡片連續新題 3 次全對。</div>
+</div>
+
+<h3 class="sec">2-1 直線族、三線關係、截距與面積</h3>
+<div class="must">段考 96 卷中<b>截距出現 32 卷次、斜率 47 卷次</b>。招式：<b>含參數直線：把 $k$ 集中，兩個括號同時為 0</b>；<b>三線圍不成三角形＝兩兩平行或三線共點</b>；<b>過定點與兩軸圍面積 ⟹ 截距式代點，再算幾</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="lineFamily,threeLines,minArea"></div>
+
+<h3 class="sec">2-2 對稱、反射與等距</h3>
+<div class="must">段考 96 卷中<b>對稱 25 卷次、反射 22 卷次、中垂線 28 卷次</b>。招式：<b>對稱點兩條件：中點在線上、$\overrightarrow{PP'}\parallel$ 法向量</b>；<b>「折線最短」先把一點鏡射過去拉直線</b>；<b>$\overline{PA}=\overline{PB}$ 的點在中垂線上</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="reflectPt,shortestPath,eqDistOnLine"></div>
+
+<h3 class="sec">2-3 線性規劃、區域面積與格子點</h3>
+<div class="must">招式：<b>先求頂點（兩兩聯立，並確認在區域內），再代目標函數</b>；<b>面積用三頂點坐標公式</b>；<b>格子點逐 $x$ 掃描，數 $y$ 能取幾個整數</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="lpOpt,regionArea,latticeCount"></div>
+
+<h3 class="sec">2-4 求圓方程式：看給了什麼，選對工具</h3>
+<div class="must">招式：<b>含參數：配方後右邊 $\gt0$</b>；<b>過三點：設一般式代三點，或兩條中垂線交點</b>；<b>圓心在直線上：中垂線 $\cap$ 直線</b>；<b>與直線相切：$r=$ 圓心到直線距離</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="circParam,circ3pt,circCenterOnLine,circTangentLine"></div>
+
+<h3 class="sec">2-5 切線、弦長反求、圓上動點最值、相交條件</h3>
+<div class="must">段考 96 卷中<b>切線出現 40 卷次（本章最高）、弦長 25 卷次</b>。招式：<b>過圓外一點的切線：設斜率令 $d=r$，別忘了鉛直線</b>；<b>弦長反求：先算弦心距，再解「距離＝$d$」的絕對值方程式（兩解）</b>；<b>圓上動點到點／線：$\overline{QC}\pm r$、$d\pm r$</b>；<b>相交／相切／相離：$d\lt r$、$=r$、$\gt r$ 解不等式</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="tangentExt,chordParam,circMinMax,circLinePosParam"></div>
+
+<h3 class="sec">L2 固定 12 題（列印用）</h3>
+<div class="fixset" data-tier="L2" data-keys="lineFamily,threeLines,minArea,reflectPt,shortestPath,lpOpt,latticeCount,circParam,circ3pt,tangentExt,chordParam,circMinMax" data-seed="2001" data-n="12"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考、模考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過。</div>
+
+<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">平移後與自己重合 → 平移向量就是方向向量</span><span class="src">113 全國模考 E1 填 15</span></div>
+<div class="fxq">將直線 $ax+by=0$ 向右平移 $1$ 單位、再向上平移 $2$ 單位後，恰與原直線重合。求兩平行線 $ax+by+a=0$ 與 $ax+by-b=0$ 之間的距離。（化為最簡分數或根式）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{\sqrt5}{5}$</div>
+<div class="fxs"><div class="move">招式：平移 $(1,2)$ 後重合，表示 $(1,2)$ 是直線的方向向量，斜率 $=2$。</div>
+斜率 $2$ ⟹ $ax+by=0$ 就是 $2x-y=0$，取 $a=2,\ b=-1$（$a:b$ 固定，比例不影響距離）。兩線為 $2x-y+2=0$ 與 $2x-y+1=0$：
+$$d=\frac{|2-1|}{\sqrt{2^2+1^2}}=\frac1{\sqrt5}=\frac{\sqrt5}5$$
+<span class="note-sm">驗算：若取 $a=4,b=-2$，兩線 $4x-2y+4=0$、$4x-2y+2=0$，距離 $\dfrac{2}{\sqrt{20}}=\dfrac{\sqrt5}5$，一樣。</span></div></div>
+
+<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">兩平行線各過一點、距離已知 → 設斜率，點到線距離＝1</span><span class="src">114 全國模考 E1 單 6</span></div>
+<div class="fxq">坐標平面上有兩條距離為 $1$ 的平行直線，分別通過 $(6,4)$ 與 $(11,9)$。試問直線的斜率可能為下列何者？<br>(1) $-1$　(2) $-\dfrac34$　(3) $0$　(4) $\dfrac12$　(5) $\dfrac43$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5)</div>
+<div class="fxs"><div class="move">招式：兩平行線的距離＝其中一點到另一條線的距離。設過 $(6,4)$ 的直線 $y-4=m(x-6)$，令 $(11,9)$ 到它的距離為 $1$。</div>
+$mx-y+4-6m=0$，$(11,9)$ 到它的距離：$\dfrac{|11m-9+4-6m|}{\sqrt{m^2+1}}=\dfrac{|5m-5|}{\sqrt{m^2+1}}=1$。<br>
+平方：$25(m-1)^2=m^2+1\Rightarrow 24m^2-50m+24=0\Rightarrow 12m^2-25m+12=0\Rightarrow(3m-4)(4m-3)=0$，$m=\dfrac43$ 或 $\dfrac34$。選項中只有 (5)。<br>
+<span class="note-sm">幾何看法：兩點連線長 $5\sqrt2$，方向 $(1,1)$；平行線距離 $1$ ⟹ 直線與 $(1,1)$ 方向的夾角很小（$\sin\theta=\frac{1}{5\sqrt2}$），斜率會落在 $1$ 附近的 $\frac34$、$\frac43$。</span></div></div>
+
+<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">兩線與 x 軸圍三角形面積 → 高固定，底＝兩 x 截距之差（絕對值 ⟹ 兩解）</span><span class="src">114 全國模考 多 7</span></div>
+<div class="fxq">設 $L_1$ 與 $L_2$ 相交於 $(0,4)$，且 $L_1$ 的斜率為 $2$。若 $L_1$、$L_2$ 與 $x$ 軸所圍的三角形面積為 $10$，試選出 $L_2$ 可能的斜率。<br>(1) $-\dfrac34$　(2) $-\dfrac43$　(3) $-\dfrac12$　(4) $\dfrac12$　(5) $\dfrac47$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(5)</div>
+<div class="fxs"><div class="move">招式：三角形的頂點 $(0,4)$ 到 $x$ 軸的高是 $4$，底就是兩條線的 $x$ 截距差。</div>
+$L_1:y=2x+4$，$x$ 截距 $-2$。$L_2:y=mx+4$，$x$ 截距 $-\dfrac4m$。<br>
+面積 $=\dfrac12\cdot4\cdot\left|-\dfrac4m+2\right|=10\Rightarrow\left|\dfrac4m-2\right|=5\Rightarrow\dfrac4m=7$ 或 $-3\Rightarrow m=\dfrac47$ 或 $-\dfrac43$。</div></div>
+
+<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">連續兩次鏡射的三點共圓 → 圓心就是兩條鏡射軸的交點</span><span class="src">師大附中 112上 填 11</span></div>
+<div class="fxq">已知 $P(1,3)$ 對直線 $L:x-2y=1$ 的對稱點為 $Q$，$Q$ 對直線 $M:3x+2y=11$ 的對稱點為 $R$。求過 $P,Q,R$ 三點的圓方程式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(x-3)^2+(y-1)^2=8$</div>
+<div class="fxs"><div class="move">招式：鏡射不改變「到鏡射軸上任一點的距離」。兩軸的交點 $O'$ 同時在 $L$ 與 $M$ 上，所以 $\overline{O'P}=\overline{O'Q}=\overline{O'R}$ ⟹ $O'$ 就是圓心，不必真的算 $Q,R$。</div>
+$L\cap M$：$x-2y=1$、$3x+2y=11$ 相加得 $4x=12$，$x=3$，$y=1$。圓心 $(3,1)$，半徑平方 $=\overline{O'P}^2=(1-3)^2+(3-1)^2=8$。<br>
+<span class="note-sm">若硬算：$Q$ 為 $P$ 對 $L$ 的鏡射，$t=\dfrac{1\cdot1-2\cdot3-1}{1+4}=-\dfrac65$，$Q=(1,3)-2t(1,-2)=\left(\dfrac{17}5,\dfrac{-9}5\right)$；再對 $M$ 鏡射得 $R$。三點到 $(3,1)$ 的距離平方都是 $8$，可自行驗證。</span></div></div>
+
+<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">投影距離最大 → 垂足與原點重合，直線 ⊥ OA</span><span class="src">113 全國模考 填 13</span></div>
+<div class="fxq">平面上有定點 $A(2,1)$ 與直線 $L:y=mx$。令 $A$ 在 $L$ 上的投影點為 $A'$，求線段 $\overline{AA'}$ 最長時的 $m$ 值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$m=-2$</div>
+<div class="fxs"><div class="move">招式：$\overline{AA'}$ 是 $A$ 到 $L$ 的距離，而 $L$ 恆過原點 $O$，所以 $\overline{AA'}\le\overline{AO}$，等號在 $A'=O$，即 $L\perp\overline{OA}$。</div>
+$\overline{OA}$ 的斜率 $\dfrac12$，垂直 ⟹ $m=-2$。<br>
+代數驗算：$\overline{AA'}^2=\dfrac{(2m-1)^2}{m^2+1}$，令其 $=k$：$(4-k)m^2-4m+(1-k)=0$ 有實根 ⟹ $16-4(4-k)(1-k)\ge0\Rightarrow k^2-5k\le0\Rightarrow k\le5$，最大值 $5=\overline{OA}^2$，此時 $m=\dfrac{4}{2(4-5)}=-2$。</div></div>
+
+<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">到三頂點等距的直線 → 三條「中位線」，各平行一邊</span><span class="src">112 全國模考 多 10</span></div>
+<div class="fxq">已知相異三點 $A(-1,-5)$、$B(5,-5)$、$C(-1,3)$。若直線 $L$ 到 $A,B,C$ 三點的距離都相等，則 $L$ 的方程式可以是下列哪些？<br>(1) $x+2=0$　(2) $x-2=0$　(3) $y+1=0$　(4) $4x-3y+7=0$　(5) $4x+3y+7=0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(5)</div>
+<div class="fxs"><div class="move">招式：三點不共線時，到三點等距的直線恰有三條——每條平行三角形的一邊、且通過另外兩邊的中點（中位線）。</div>
+三邊中點：$\overline{AB}$ 中點 $(2,-5)$、$\overline{BC}$ 中點 $(2,-1)$、$\overline{CA}$ 中點 $(-1,-1)$。<br>
+・平行 $\overline{AC}$（鉛直）過 $(2,-5),(2,-1)$：$x=2$ ⟹ (2)。<br>
+・平行 $\overline{AB}$（水平）過 $(2,-1),(-1,-1)$：$y=-1$ ⟹ (3)。<br>
+・平行 $\overline{BC}$（斜率 $\dfrac{3+5}{-1-5}=-\dfrac43$）過 $(2,-5)$：$y+5=-\dfrac43(x-2)\Rightarrow4x+3y+7=0$ ⟹ (5)。<br>
+(1)、(4) 直接代距離即知不等。</div></div>
+
+<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">含參數的可行域面積 → 先畫固定的三條，參數線繞定點轉</span><span class="src">111 全國模考 填 17</span></div>
+<div class="fxq">若實數 $m$ 使聯立不等式 $\begin{cases}2x+3y\le12\\ mx-y\le m\\ x\ge0\\ y\ge0\end{cases}$ 的解區域面積為 $\dfrac{23}4$，求 $m$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$m=2$</div>
+<div class="fxs"><div class="move">招式：$mx-y\le m\iff y\ge m(x-1)$，這條線恆過 $(1,0)$。沒有它時區域是三角形（面積 $12$），它從 $(1,0)$ 切掉一塊。</div>
+$m\gt0$ 時，切掉的是 $(1,0)$、$(6,0)$ 與交點 $Q$ 圍成的三角形。$y=m(x-1)$ 與 $2x+3y=12$ 聯立：$2x+3m(x-1)=12\Rightarrow x=\dfrac{12+3m}{2+3m}$，$y=\dfrac{10m}{2+3m}$。<br>
+切掉面積 $=\dfrac12\cdot5\cdot\dfrac{10m}{2+3m}=\dfrac{25m}{2+3m}$，令 $12-\dfrac{25m}{2+3m}=\dfrac{23}4\Rightarrow\dfrac{25m}{2+3m}=\dfrac{25}4\Rightarrow4m=2+3m\Rightarrow m=2$。<br>
+<span class="note-sm">$m\lt0$ 時切掉的是左邊小三角形，面積最多 $2$，湊不出 $\frac{25}{4}$，故 $m=2$ 唯一。驗算：$m=2$ 時頂點 $(0,0),(1,0),\left(\frac94,\frac52\right),(0,4)$，面積 $\frac{23}4$ ✔。</span></div></div>
+
+<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">四條不等式圍區域 → 逐條找頂點並剔除「不在區域內」的假交點</span><span class="src">110 新北基模考 填 13</span></div>
+<div class="fxq">求聯立不等式 $\begin{cases}3x+2y\ge14\\ 18x+11y\le120\\ 2x-y\ge0\\ y\ge0\end{cases}$ 所圍成區域的面積。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{32}3$</div>
+<div class="fxs"><div class="move">招式：四條線有 $6$ 個交點，但區域頂點只有 $4$ 個——每個交點都要代回其他不等式檢查。</div>
+・$y=0\cap3x+2y=14$：$\left(\dfrac{14}3,0\right)$ ✔　・$y=0\cap18x+11y=120$：$\left(\dfrac{20}3,0\right)$ ✔<br>
+・$2x-y=0\cap3x+2y=14$：$(2,4)$ ✔　・$2x-y=0\cap18x+11y=120$：$(3,6)$ ✔<br>
+（$3x+2y=14\cap18x+11y=120$ 得 $\left(\dfrac{86}{3},\ -36\right)$，違反 $y\ge0$，捨去；$y=0\cap2x-y=0$ 得原點，違反 $3x+2y\ge14$，捨去。）<br>
+依序 $\left(\dfrac{14}3,0\right),\left(\dfrac{20}3,0\right),(3,6),(2,4)$，測量師公式：
+$$\frac12\left|\frac{14}3\cdot0-\frac{20}3\cdot0+\frac{20}3\cdot6-3\cdot0+3\cdot4-2\cdot6+2\cdot0-\frac{14}3\cdot4\right|=\frac12\left|40+0-\frac{56}3\right|=\frac12\cdot\frac{64}3=\frac{32}3$$</div></div>
+
+<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">過兩點＋弦心距 → 圓心在中垂線上、離中點 d；r²＝d²＋(半弦)²</span><span class="src">建國中學 113上 填 10</span></div>
+<div class="fxq">圓 $C$ 通過 $A(-7,3)$、$B(1,-1)$，半徑為 $r$，圓心 $O(h,k)$ 在第三象限，且圓心到弦 $\overline{AB}$ 的距離為 $\sqrt5$。求 $h+k+r$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$0$</div>
+<div class="fxs"><div class="move">招式：圓心 $=$ 中點 $\pm$（單位法向量）$\times$ 弦心距。</div>
+$\overline{AB}$ 中點 $M(-3,1)$，$\overrightarrow{AB}=(8,-4)$，垂直方向 $(1,2)$，單位化 $\dfrac{(1,2)}{\sqrt5}$。<br>
+圓心 $=(-3,1)\pm\sqrt5\cdot\dfrac{(1,2)}{\sqrt5}=(-2,3)$ 或 $(-4,-1)$，第三象限取 $(-4,-1)$。<br>
+$\overline{AB}=\sqrt{64+16}=\sqrt{80}$，半弦 $\sqrt{20}$，$r^2=5+20=25$，$r=5$。故 $h+k+r=-4-1+5=0$。</div></div>
+
+<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">三直線圍三角形的外接圓 → 先求三頂點，再設一般式代入</span><span class="src">高師大附中 113上 填 3</span></div>
+<div class="fxq">三直線 $y=0$、$x+y-4=0$、$3x-2y+3=0$ 圍成一個三角形，求其外接圓方程式（以標準式表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\left(x-\dfrac32\right)^2+\left(y-\dfrac12\right)^2=\dfrac{13}2$</div>
+<div class="fxs"><div class="move">招式：外接圓＝過三頂點的圓。頂點有整數坐標時用一般式 $x^2+y^2+dx+ey+f=0$ 最快。</div>
+頂點：$(4,0)$、$(-1,0)$、$x+y=4\cap3x-2y=-3\Rightarrow(1,3)$。<br>
+代入：$16+4d+f=0$、$1-d+f=0$、$10+d+3e+f=0$。前兩式相減 $15+5d=0\Rightarrow d=-3$，$f=-4$；第三式 $10-3+3e-4=0\Rightarrow e=-1$。<br>
+$x^2+y^2-3x-y-4=0\Rightarrow\left(x-\dfrac32\right)^2+\left(y-\dfrac12\right)^2=4+\dfrac94+\dfrac14=\dfrac{13}2$。<br>
+<span class="note-sm">快檢：兩頂點在 $x$ 軸上，圓心的 $x$ 坐標一定是它們的中點 $\dfrac{4+(-1)}2=\dfrac32$ ✔。</span></div></div>
+
+<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">圓過原點與兩軸交點 → 直徑對直角，圓心＝斜邊中點</span><span class="src">北一女中 112上 填 10</span></div>
+<div class="fxq">若圓 $C$ 通過原點，且與兩坐標軸分別交於 $A(8,0)$、$B(0,12)$，求圓 $C$ 在原點處的切線方程式（一般式）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2x+3y=0$</div>
+<div class="fxs"><div class="move">招式：$\angle AOB=90^\circ$ ⟹ $\overline{AB}$ 是直徑，圓心是 $\overline{AB}$ 中點 $(4,6)$；切線 $\perp$ 半徑 $\overline{OC}$。</div>
+$\overrightarrow{OC}=(4,6)$ 是切線的法向量，切線過原點：$4x+6y=0\Rightarrow2x+3y=0$。<br>
+<span class="note-sm">另一個看法：切線平行於 $\overline{AB}$？不對——切線 $\perp\overline{OC}$，而 $\overline{OC}$ 不垂直 $\overline{AB}$（除非等腰）。這裡切線斜率 $-\frac23$，$\overline{AB}$ 斜率 $-\frac32$，不同。</span></div></div>
+
+<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">切於指定點 → 切點在圓上 ＋ 圓心到切點 ⊥ 切線（兩條件、三未知）</span><span class="src">台中女中 112上 填 8</span></div>
+<div class="fxq">若直線 $L:2x-ty=s$ 與圓 $C:x^2+y^2-4x-6y+k=0$ 相切於點 $(3,t)$，求數對 $(k,s,t)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(k,s,t)=(11,2,2)$</div>
+<div class="fxs"><div class="move">招式：切點的兩個身分——它在直線上（給 $s$）、它在圓上（給 $k$）；再加「半徑 $\perp$ 切線」（給 $t$）。</div>
+圓心 $(2,3)$。半徑向量 $(3-2,\ t-3)=(1,t-3)$ 必須平行 $L$ 的法向量 $(2,-t)$：$1\cdot(-t)-(t-3)\cdot2=0\Rightarrow-3t+6=0\Rightarrow t=2$。<br>
+切點 $(3,2)$ 在 $L$ 上：$6-2\cdot2=s\Rightarrow s=2$。在圓上：$9+4-12-12+k=0\Rightarrow k=11$。<br>
+<span class="note-sm">驗：$r^2=4+9-11=2$，圓心到 $2x-2y-2=0$ 的距離 $\dfrac{|4-6-2|}{\sqrt8}=\sqrt2$ ✔。</span></div></div>
+
+<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">圓上恰兩點到直線距離為 1 → 畫兩條平行線，半徑卡在 d−1 與 d+1 之間</span><span class="src">武陵高中 113上 填 11</span></div>
+<div class="fxq">若圓 $C:x^2+y^2=r^2$（$r\gt0$）上恰有兩個點到直線 $L:3x-4y=19$ 的距離為 $1$，求 $r$ 的範圍。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{14}5\lt r\lt\dfrac{24}5$</div>
+<div class="fxs"><div class="move">招式：到 $L$ 距離為 $1$ 的點構成兩條平行線 $L_1,L_2$（各在 $L$ 兩側）；圓與這兩條線的交點總數就是答案。</div>
+圓心到 $L$ 的距離 $d=\dfrac{19}5$。$L_1$ 離圓心 $\dfrac{14}5$、$L_2$ 離圓心 $\dfrac{24}5$。<br>
+・$r\lt\dfrac{14}5$：$0$ 點；$r=\dfrac{14}5$：$1$ 點（切 $L_1$）；<b>$\dfrac{14}5\lt r\lt\dfrac{24}5$：$2$ 點</b>；$r=\dfrac{24}5$：$3$ 點；$r\gt\dfrac{24}5$：$4$ 點。</div></div>
+
+<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">與「半圓」恰交一點 → 切點在上半圓＋直線從兩端點掃過去，端點含不含要單獨驗</span><span class="src">師大附中 113上期末 填 15</span></div>
+<div class="fxq">直線 $4x-3y=k$ 與半圓 $y=\sqrt{9-x^2}$ 恰交於一點。若 $k$ 為整數，求所有可能的 $k$ 值總和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-3$</div>
+<div class="fxs"><div class="move">招式：把 $k$ 想成直線平移。三種情形：相切於上半圓、穿過端點、或「一上一下」各一交點。</div>
+相切：$\dfrac{|k|}5=3\Rightarrow k=\pm15$，切點 $\left(\mp\dfrac{12}5,\pm\dfrac95\right)$，只有 $k=-15$ 的切點在上半圓。<br>
+直線交 $x$ 軸於 $x=\dfrac k4$；當 $-3\lt\dfrac k4\lt3$（即 $-12\lt k\lt12$）時直線穿過直徑內部，與整圓的兩交點一上一下，恰一點在上半圓 ✔。<br>
+端點：$k=12$（過 $(3,0)$）另一交點 $x=0.84$、$y\lt0$，恰一點 ✔；$k=-12$（過 $(-3,0)$）另一交點 $(-0.84,2.88)$ 在上半圓，變兩點 ✘。<br>
+整數 $k$：$-15$ 與 $-11,\dots,11$ 與 $12$，總和 $-15+0+12=-3$。</div></div>
+
+<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">切點弦長 → 直角三角形 PAC 斜邊上的高 ×2：AB＝2·r·t／PC</span><span class="src">台南女中 113上 單 6</span></div>
+<div class="fxq">過 $P(1,2)$ 作圓 $C:x^2+y^2=1$ 的兩條切線，切點為 $A,B$，求 $\overline{AB}$。<br>(1) $\dfrac{4\sqrt5}5$　(2) $\dfrac{3\sqrt3}7$　(3) $\dfrac{5\sqrt6}9$　(4) $\dfrac{2\sqrt7}{11}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\dfrac{4\sqrt5}5$</div>
+<div class="fxs"><div class="move">招式：$\overline{PA}\perp\overline{CA}$，$\overline{AB}\perp\overline{PC}$；$\overline{AB}$ 的一半就是直角 $\triangle PAC$ 斜邊上的高。</div>
+$\overline{PC}=\sqrt5$，$r=1$，切線長 $t=\sqrt{5-1}=2$。斜邊上的高 $=\dfrac{r\,t}{\overline{PC}}=\dfrac{2}{\sqrt5}$，故 $\overline{AB}=\dfrac4{\sqrt5}=\dfrac{4\sqrt5}5$。<br>
+<span class="note-sm">通式：$\overline{AB}=\dfrac{2rt}{\overline{PC}}=\dfrac{2r\sqrt{\overline{PC}^2-r^2}}{\overline{PC}}$，記住「乘 2、除斜邊」。</span></div></div>
+</section>
+
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考、模考、大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">V 形折線與圓「恰切兩點」→ 對稱軸過圓心，再用一枝相切</span><span class="src">北一女中 113上 填 14</span></div>
+<div class="fxq">已知 $a\gt0$。若 $y=|ax+b|$ 的圖形與圓 $(x-3)^2+(y-10)^2=10$ 恰相切於兩點，求 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(3,-9)$</div>
+<div class="fxs"><div class="move">招式：$y=|ax+b|$ 左右對稱於鉛直線 $x=-\frac ba$；兩枝同時相切，圓心必在對稱軸上。</div>
+對稱軸過圓心 $(3,10)$：$-\dfrac ba=3\Rightarrow b=-3a$。右枝 $y=a(x-3)$ 即 $ax-y-3a=0$，圓心到它的距離 $=\sqrt{10}$：
+$$\frac{|3a-10-3a|}{\sqrt{a^2+1}}=\frac{10}{\sqrt{a^2+1}}=\sqrt{10}\Rightarrow a^2+1=10\Rightarrow a=3,\ b=-9$$
+<span class="note-sm">檢查切點真的在右枝（$x\ge3$）：切點是圓心在直線 $3x-y-9=0$ 上的垂足 $(6,9)$，$6\ge3$ ✔；左枝由對稱得 $(0,9)$。</span></div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">切線段長固定、求最陡 → 用圓的參數點列「落地」條件，化成 sin 的二次方程</span><span class="src">台中一中 113上 填 14</span></div>
+<div class="fxq">「公雞溜滑梯」：公雞的頭是與地面相切的圓 $O$，半徑 $2$。$P$ 在圓上、$Q$ 在地面上，$\overline{PQ}$ 是圓的切線（切點 $P$），且 $\overline{PQ}=4$。要使 $\overline{PQ}$ 與地面的夾角 $\theta$ 最大，求此時 $P$ 離地面的高度。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{16}5$</div>
+<div class="fxs"><div class="move">招式：$\sin\theta=\dfrac{P\text{ 的高度}}{4}$，所以「$\theta$ 最大」＝「$P$ 最高」；把 $P$ 設成 $(2\cos\varphi,\ 2+2\sin\varphi)$，切線方向 $\perp\overrightarrow{OP}$。</div>
+地面 $y=0$，$O(0,2)$，$P=(2\cos\varphi,2+2\sin\varphi)$，切線的單位方向 $\pm(-\sin\varphi,\cos\varphi)$。$Q=P\pm4(-\sin\varphi,\cos\varphi)$ 要落在 $y=0$：
+$$2+2\sin\varphi\pm4\cos\varphi=0\ \Longrightarrow\ (1+\sin\varphi)^2=4\cos^2\varphi=4(1-\sin^2\varphi)$$
+$$5\sin^2\varphi+2\sin\varphi-3=0\Rightarrow\sin\varphi=\frac35\ \text{或}\ -1$$
+$P$ 的高度 $=2+2\sin\varphi$，最大為 $2+\dfrac65=\dfrac{16}5$（$\sin\varphi=-1$ 是 $P$ 落在地面的退化情形）。<br>
+<span class="note-sm">直覺：$\overline{PQ}$ 固定為 $4$，繞著圓「滾」，$P$ 最高時直角 $\triangle OPQ$ 的斜邊 $\overline{OQ}=\sqrt{20}$ 剛好讓 $Q$ 落地。</span></div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">反射後打中圓盤 → 把圓盤鏡射到桌外，變成「射線到圓心距離 ≤ 半徑」</span><span class="src">台中女中 113上 填 14</span></div>
+<div class="fxq">撞球桌為矩形 $ABCD$，$\overline{AB}=30$、$\overline{AD}=10$，圓盤半徑 $3$，放在桌子正中央。由桌角 $A$ 朝 $\overline{CD}$ 邊打球，經 $\overline{CD}$ 反射後若打中圓盤即過關。若瞄準 $\overline{CD}$ 邊上距離 $D$ 點 $k$ 單位長的位置，求 $k$ 的範圍。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{15}2\le k\le\dfrac{40}3$</div>
+<div class="fxs"><div class="move">招式：反射問題一律「鏡射目標」——把圓盤對 $\overline{CD}$ 鏡射，反射後的路徑就是 $A$ 到鏡射圓盤的直線。</div>
+設 $A(0,0)$、$B(30,0)$、$C(30,10)$、$D(0,10)$，圓盤圓心 $(15,5)$，對 $y=10$ 鏡射得 $(15,15)$。瞄準點 $(k,10)$，射線方向 $(k,10)$。<br>
+打中 ⟺ 直線 $10x-ky=0$ 到 $(15,15)$ 的距離 $\le3$：
+$$\frac{|150-15k|}{\sqrt{k^2+100}}\le3\Rightarrow25(10-k)^2\le k^2+100\Rightarrow24k^2-500k+2400\le0\Rightarrow6k^2-125k+600\le0$$
+$$(2k-15)(3k-40)\le0\Rightarrow\frac{15}2\le k\le\frac{40}3$$
+<span class="note-sm">還要確認球在到達 $\overline{CD}$ 前沒先撞到圓盤：這段 $k$ 的射線到 $(15,5)$ 的距離都 $\ge5\gt3$ ✔。</span></div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">鏡面反射後打到圓的最短路徑 → 鏡射光源，連圓心</span><span class="src">台中一中 112上 填 12</span></div>
+<div class="fxq">以 $x$ 軸為鏡面，由 $A(-2,3)$ 射出的光線打到 $x$ 軸上的 $P$ 後反射，再打到圓 $C:(x-7)^2+(y-8)^2=9$ 上的 $Q$。若 $A\to P\to Q$ 是這類路徑中最短的，求 $P$ 的 $x$ 坐標。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac5{11}$</div>
+<div class="fxs"><div class="move">招式：$\overline{AP}+\overline{PQ}=\overline{A'P}+\overline{PQ}\ge\overline{A'Q}\ge\overline{A'C}-r$，兩個等號同時成立時 $P$ 在 $\overline{A'C}$ 上。</div>
+$A'=(-2,-3)$，圓心 $C(7,8)$。直線 $A'C$ 的斜率 $\dfrac{11}9$，與 $x$ 軸交點：由 $A'$ 往上升 $3$ 需往右 $3\cdot\dfrac9{11}=\dfrac{27}{11}$，故 $x_P=-2+\dfrac{27}{11}=\dfrac5{11}$。<br>
+最短路徑長 $=\overline{A'C}-3=\sqrt{81+121}-3=\sqrt{202}-3$。</div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">圓內一點是弦的三等分點 → 兩個直角三角形共用 OM，解出弦心距</span><span class="src">台中一中 112上 填 14</span></div>
+<div class="fxq">圓 $x^2+y^2=37$ 內有一點 $A(2,1)$。若 $A$ 是某弦的一個三等分點，且該弦不是水平的，求此弦所在的直線方程式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4x-3y=5$</div>
+<div class="fxs"><div class="move">招式：設弦的中點 $M$、半弦長 $L$；$A$ 到 $M$ 的距離是 $\frac L3$。$\overline{OM}^2+L^2=r^2$、$\overline{OM}^2+\left(\frac L3\right)^2=\overline{OA}^2$ 兩式相減。</div>
+$r^2=37$、$\overline{OA}^2=5$：$L^2-\dfrac{L^2}9=32\Rightarrow L^2=36$，$\overline{OM}^2=37-36=1$。<br>
+所以弦所在直線到原點的距離是 $1$，且過 $A(2,1)$：設 $a(x-2)+b(y-1)=0$，$\dfrac{|2a+b|}{\sqrt{a^2+b^2}}=1\Rightarrow3a^2+4ab=0$。$a=0$ 是水平線 $y=1$（題目排除），故 $3a=-4b$，取 $(a,b)=(4,-3)$：$4x-3y=5$。<br>
+<span class="note-sm">驗算：$4x-3y=5$ 到原點距離 $1$ ✔；與圓交點 $(-1,-3)$、$(\frac{23}5,\frac{19}5)$，$A$ 到兩點距離比 $1:2$ ✔。</span></div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">外心在斜邊上 → 直角三角形（泰勒斯），化成兩直線垂直</span><span class="src">台中一中 112上 填 9</span></div>
+<div class="fxq">若聯立不等式 $\begin{cases}x\le my+n\ (n\gt0)\\ x-\sqrt3y\ge0\\ y\ge0\end{cases}$ 的解區域是一個三角形（含內部），且此三角形的外接圓圓心在 $x$ 軸上，求實數 $m$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$m=-\dfrac{\sqrt3}3$<br><span class="note-sm">（原卷參考答案印 $\dfrac{\sqrt3}3$，經驗算為符號誤植：$m=\dfrac{\sqrt3}3$ 時外心 $y$ 坐標 $=\dfrac{\sqrt3}2n\ne0$。）</span></div>
+<div class="fxs"><div class="warn">⚠️ 原卷參考答案 $\dfrac{\sqrt3}3$ 有誤，正確為 $-\dfrac{\sqrt3}3$。以下完整推導並附兩個值的驗算。</div>
+<div class="move">招式：三角形的一邊 $\overline{OB}$ 在 $x$ 軸上，外心又在 $x$ 軸上 ⟹ 外心是 $\overline{OB}$ 的中點 ⟹ $\overline{OB}$ 是直徑 ⟹ 對頂角 $P$ 是直角。</div>
+三頂點：$O(0,0)$、$B(n,0)$（$y=0$ 與 $x=my+n$）、$P$（$x=my+n$ 與 $x=\sqrt3y$）。<br>
+$\angle OPB=90^\circ$ ⟺ 直線 $x=\sqrt3y$（方向 $(\sqrt3,1)$）$\perp$ 直線 $x=my+n$（方向 $(m,1)$）：$\sqrt3m+1=0\Rightarrow m=-\dfrac{\sqrt3}3$。<br>
+<b>驗算</b>（取 $n=3$）：$m=-\frac{\sqrt3}3$ 時 $P=\left(\frac94,\frac{3\sqrt3}4\right)$，$\overline{OP}^2+\overline{PB}^2=\frac{27}{4}+\frac{9}{4}=9=\overline{OB}^2$ ✔，外心 $\left(\frac32,0\right)$。若 $m=+\frac{\sqrt3}3$，$P=\left(\frac92,\frac{3\sqrt3}2\right)$，外心算得 $\left(\frac32,\frac{3\sqrt3}2\right)$，不在 $x$ 軸上 ✘。</div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">到兩點距離各為定值的直線 → 兩圓的公切線；比較 |AB| 與 r₁±r₂ 決定幾條</span><span class="src">112 全國模考 填 16</span></div>
+<div class="fxq">直線 $L$ 到 $A(1,1)$ 的距離為 $2$、到 $B(8,0)$ 的距離為 $7$。在所有這樣的直線中，求斜率最小者的方程式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4x+3y+3=0$</div>
+<div class="fxs"><div class="move">招式：「到 $A$ 距離 $2$」＝與圓 $(A,2)$ 相切；「到 $B$ 距離 $7$」＝與圓 $(B,7)$ 相切。$L$ 是兩圓的公切線。</div>
+$\overline{AB}=\sqrt{50}\approx7.07$；$7-2=5\lt\sqrt{50}\lt9=7+2$ ⟹ 兩圓相交，只有 <b>兩條外公切線</b>（$A,B$ 在 $L$ 同側）。<br>
+設 $L:ax+by+c=0$，$a^2+b^2=1$，同側：$a+b+c=2$、$8a+c=7$（同號）。相減：$7a-b=5\Rightarrow b=7a-5$，代入 $a^2+(7a-5)^2=1\Rightarrow50a^2-70a+24=0\Rightarrow25a^2-35a+12=0\Rightarrow a=\dfrac45$ 或 $\dfrac35$。<br>
+$a=\dfrac45$：$b=\dfrac35$，$c=7-\dfrac{32}5=\dfrac35$ ⟹ $4x+3y+3=0$，斜率 $-\dfrac43$。<br>
+$a=\dfrac35$：$b=-\dfrac45$，$c=\dfrac{11}5$ ⟹ $3x-4y+11=0$，斜率 $\dfrac34$。<br>
+斜率最小者 $4x+3y+3=0$（驗：$A$ 距 $\frac{|4+3+3|}5=2$、$B$ 距 $\frac{|32+3|}5=7$ ✔）。</div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">「離誰最近就歸誰」→ 中垂線切割（Voronoi），再用多邊形面積</span><span class="src">113 全國模考 填 17</span></div>
+<div class="fxq">城市在 $0\le x\le10$、$0\le y\le6$ 的長方形內設三個派出所 $A(2,4)$、$B(9,5)$、$C(6,2)$。長方形內（含邊界）任一點的案件由最近的派出所管轄。求 $C$ 派出所管轄區域的面積。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{283}{12}$</div>
+<div class="fxs"><div class="move">招式：「比 $A$ 近 $C$」是 $\overline{AC}$ 中垂線靠 $C$ 的那一側；兩條中垂線與長方形圍出 $C$ 的區域。</div>
+$\overline{AC}$ 中垂線：中點 $(4,3)$、法向量 $\overrightarrow{AC}=(4,-2)$：$2x-y=5$，$C$ 側為 $2x-y\ge5$（即 $y\le2x-5$）。<br>
+$\overline{BC}$ 中垂線：中點 $\left(\frac{15}2,\frac72\right)$、法向量 $(3,3)$：$x+y=11$，$C$ 側為 $x+y\le11$。<br>
+區域頂點（依序）：$y=2x-5$ 交 $y=0$ 於 $\left(\frac52,0\right)$；$(10,0)$；$x+y=11$ 交 $x=10$ 於 $(10,1)$；$y=2x-5$ 交 $x+y=11$ 於 $\left(\frac{16}3,\frac{17}3\right)$（$\frac{17}3\lt6$，在城內 ✔）。<br>
+測量師公式：$\dfrac12\left|0+10+\left(\dfrac{170}3-\dfrac{16}3\right)+\left(0-\dfrac{85}6\right)\right|=\dfrac12\cdot\dfrac{283}6=\dfrac{283}{12}$。</div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">垂直條件化成線性關係 → 面積變一元二次，配方求極值</span><span class="src">114 全國模考 填 17</span></div>
+<div class="fxq">給定 $A(0,0)$ 與 $D(3,1)$。點 $B$ 在 $x$ 軸正向上、點 $C$ 在 $y$ 軸正向上，且 $\overline{BD}\perp\overline{CD}$，求 $\triangle ABC$ 面積的最大值。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{25}6$</div>
+<div class="fxs"><div class="move">招式：設 $B(b,0)$、$C(0,c)$，垂直 ⟹ 內積為 $0$，得到 $b,c$ 的一次關係，面積就是 $b$ 的二次函數。</div>
+$\overrightarrow{DB}=(b-3,-1)$、$\overrightarrow{DC}=(-3,c-1)$：$-3(b-3)-(c-1)=0\Rightarrow c=10-3b$。<br>
+面積 $=\dfrac{bc}2=\dfrac{b(10-3b)}2=-\dfrac32\left(b-\dfrac53\right)^2+\dfrac{25}6$，$b=\dfrac53$ 時最大 $\dfrac{25}6$（此時 $c=5\gt0$ ✔）。<br>
+<span class="note-sm">幾何：$\angle BDC=90^\circ$ ⟹ $D$ 在以 $\overline{BC}$ 為直徑的圓上，這是「動點看定線段成直角」的常見包裝。</span></div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">平行四邊形面積固定求周長最小 → 邊長用截距差表示，再算幾</span><span class="src">107 全國模考 單 6</span></div>
+<div class="fxq">設 $a,b\gt0$，直線 $L_1:x+y=0$、$L_2:x+y=a$、$L_3:2x-y=0$、$L_4:2x-y=b$。若四條直線圍成的平行四邊形面積為 $\sqrt{10}$，求此平行四邊形周長的最小值。<br>(1) $\dfrac{\sqrt{10}}3$　(2) $\dfrac{2\sqrt{10}}3$　(3) $\dfrac{4\sqrt{10}}3$　(4) $\dfrac{2\sqrt{30}}3$　(5) $\dfrac{4\sqrt{30}}3$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5) $\dfrac{4\sqrt{30}}3$</div>
+<div class="fxs"><div class="move">招式：沿 $L_1$ 的邊＝$L_1$ 被 $L_3,L_4$ 截出的線段；沿 $L_3$ 的邊同理。兩邊長 $\dfrac{b\sqrt2}3$、$\dfrac{a\sqrt5}3$。</div>
+沿 $x+y=0$（方向 $(1,-1)$）從 $2x-y=0$ 走到 $2x-y=b$：$(t,-t)$ 代入得 $3t=b$，邊長 $\dfrac{\sqrt2\,b}3$。沿 $2x-y=0$（方向 $(1,2)$）從 $x+y=0$ 到 $x+y=a$：$3s=a$，邊長 $\dfrac{\sqrt5\,a}3$。<br>
+面積 $=\dfrac{|a\cdot b|}{|1\cdot(-1)-1\cdot2|}=\dfrac{ab}3=\sqrt{10}\Rightarrow ab=3\sqrt{10}$。<br>
+周長 $=\dfrac23(\sqrt5a+\sqrt2b)\ge\dfrac23\cdot2\sqrt{\sqrt{10}\,ab}=\dfrac43\sqrt{\sqrt{10}\cdot3\sqrt{10}}=\dfrac43\sqrt{30}$，等號在 $\sqrt5a=\sqrt2b$。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">OP ⊥ OQ → x₁x₂＋y₁y₂＝0，用根與係數，不要解交點</span><span class="src">台中一中 113上 填 17</span></div>
+<div class="fxq">$O$ 為原點，直線 $L:y=\dfrac12x+\dfrac32$ 與圓 $C:x^2+y^2+x-6y+m=0$ 交於 $P,Q$ 兩點，且 $\overrightarrow{OP}\perp\overrightarrow{OQ}$，求 $m$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$m=\dfrac{21}5$</div>
+<div class="fxs"><div class="move">招式：把 $y$ 用 $x$ 代掉得 $x$ 的二次方程，$x_1x_2$、$x_1+x_2$ 用根與係數，$y_1y_2$ 也化成它們。</div>
+代入：$x^2+\dfrac{(x+3)^2}4+x-3(x+3)+m=0\Rightarrow5x^2-2x+(4m-27)=0$，$x_1+x_2=\dfrac25$、$x_1x_2=\dfrac{4m-27}5$。<br>
+$y_1y_2=\dfrac{(x_1+3)(x_2+3)}4=\dfrac{x_1x_2+3(x_1+x_2)+9}4=\dfrac{m+6}5$。<br>
+$x_1x_2+y_1y_2=\dfrac{4m-27+m+6}5=0\Rightarrow m=\dfrac{21}5$。<br>
+<span class="note-sm">檢查真的有兩交點：判別式 $4-20(4m-27)\gt0\iff m\lt6.8$ ✔；圓存在：$\frac14+9-m\gt0$ ✔。</span></div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">三線共點於圓心所在直線 → 兩切線對 L 對稱，斜率做「鏡射」</span><span class="src">113 北北基模考 填 16</span></div>
+<div class="fxq">圓 $C$ 的圓心在直線 $L:y=\dfrac13x$ 上，直線 $L_1,L_2$ 均與圓 $C$ 相切。若 $L,L_1,L_2$ 三相異直線交於一點 $P$，且 $L_1$ 的斜率為 $3$，求 $L_2$ 的斜率。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-\dfrac9{13}$</div>
+<div class="fxs"><div class="move">招式：從 $P$ 向圓作的兩條切線關於 $\overline{PC}$ 對稱，而 $\overline{PC}$ 就在 $L$ 上 ⟹ $L_2$ 是 $L_1$ 對 $L$ 的鏡射。</div>
+用斜角：$\tan\alpha=\dfrac13$（$L$）、$\tan\beta=3$（$L_1$），$L_2$ 的斜角為 $2\alpha-\beta$。
+$$\tan2\alpha=\frac{2/3}{1-1/9}=\frac34,\qquad\tan(2\alpha-\beta)=\frac{\frac34-3}{1+\frac34\cdot3}=\frac{-9/4}{13/4}=-\frac9{13}$$
+<span class="note-sm">不用三角也行：取 $P$ 為原點、$L_1$ 上一點 $(1,3)$ 對 $L:x-3y=0$ 鏡射得 $\left(\frac{13}5,-\frac95\right)$，斜率 $-\frac9{13}$。</span></div></div>
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充專區：經典題、科學班與教甄</h2>
+<div class="goal">
+  <div><b>對象</b>學有餘力、想參加數學競賽或未來想走數理科系的同學。</div>
+  <div><b>目標</b>6 題經典 ＋ 15 題科學班／教甄：學會把「證明」寫完整、把幾何性質翻譯成方程式，也看看出題老師怎麼想。</div>
+  <div><b>說明</b>本區不列入段考通過標準。前 6 題是本章經典（含兩題 108 課綱明列「不必涉及」的內容，已標記）；「科學班・教甄專區」15 題來自嘉中科學班與各校教甄，原卷多為掃描影像，以 OCR 讀出後逐題重打、重解、驗算。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">切線公式的證明：法向量就是半徑向量</span><span class="src">雄中 108下 計算 12</span></div>
+<div class="fxq">(1) 已知圓 $C:(x-h)^2+(y-k)^2=r^2$，$P(x_0,y_0)$ 為圓上一點。證明過 $P$ 的切線方程式為 $(x_0-h)(x-h)+(y_0-k)(y-k)=r^2$。<br>(2) 圓 $C:x^2+y^2+2x+6y-10=0$，若過切點 $P(x_0,y_0)$ 的切線與直線 $x-2y+1=0$ 垂直，求 $P$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) 見證明　(2) $P=(3,-1)$ 或 $(-5,-5)$</div>
+<div class="fxs">(1) 圓心 $C(h,k)$，切線 $\perp\overline{CP}$，故切線的法向量可取 $\overrightarrow{CP}=(x_0-h,y_0-k)$，切線過 $P$：
+$$(x_0-h)(x-x_0)+(y_0-k)(y-y_0)=0$$
+把 $x-x_0$ 寫成 $(x-h)-(x_0-h)$、$y-y_0$ 寫成 $(y-k)-(y_0-k)$，展開：
+$$(x_0-h)(x-h)+(y_0-k)(y-k)=(x_0-h)^2+(y_0-k)^2=r^2\quad(\text{因 }P\text{ 在圓上})$$
+(2) 圓心 $(-1,-3)$，$r^2=1+9+10=20$。切線 $\perp x-2y+1=0$ ⟹ 半徑 $\overline{CP}\parallel$ 該直線，方向 $(2,1)$：$P=(-1,-3)\pm t(2,1)$，$5t^2=20\Rightarrow t=\pm2$，得 $(3,-1)$、$(-5,-5)$。</div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">速度比 → 距離比為定值 → 阿波羅尼斯圓</span><span class="src">台南女中 112上 填 17</span></div>
+<div class="fxq">獵人的大、小兩隻獵犬守在相距 $30$ 公尺的兩處。獵物被射下時兩犬同時直線衝去；大犬速度是小犬的 $\dfrac32$ 倍。求「小犬會先追到」的獵物落點區域面積為多少 $\pi$（平方公尺）？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1296$（面積 $1296\pi$）</div>
+<div class="fxs"><div class="move">招式：小犬先到 ⟺ $\dfrac{PS}{v}\lt\dfrac{PB}{1.5v}$ ⟺ $\overline{PB}\gt\dfrac32\overline{PS}$；邊界 $\overline{PB}:\overline{PS}=3:2$ 是阿波羅尼斯圓。</div>
+設小犬 $S(0,0)$、大犬 $B(30,0)$：$(x-30)^2+y^2=\dfrac94(x^2+y^2)\Rightarrow5x^2+5y^2+240x-3600=0\Rightarrow(x+24)^2+y^2=1296$。<br>
+小犬先到的區域是這個圓的內部（含 $S$ 那一側），面積 $1296\pi$。<br>
+<span class="note-sm">半徑公式：兩定點距 $d$、比值 $k\ne1$，阿氏圓半徑 $=\dfrac{kd}{|k^2-1|}$；這裡 $k=\frac32$，$d=30$，$r=\frac{45}{5/4}=36$ ✔。</span></div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">過外點與兩切點的圓 → 以 PC 為直徑（兩個直角）</span><span class="src">建國中學 112上 填 20</span></div>
+<div class="fxq">圓 $C:x^2+y^2-2x=0$ 及圓外一點 $P(-2,6)$。過 $P$ 作圓 $C$ 的切線，切點為 $A,B$，求過 $P,A,B$ 三點的圓方程式（一般式）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x^2+y^2+x-6y-2=0$</div>
+<div class="fxs"><div class="move">招式：$\angle PAC=\angle PBC=90^\circ$ ⟹ $A,B$ 都在以 $\overline{PC}$ 為直徑的圓上，這個圓自然也過 $P$。</div>
+圓心 $C(1,0)$。以 $P(-2,6)$、$C(1,0)$ 為直徑兩端：$(x+2)(x-1)+(y-6)(y-0)=0\Rightarrow x^2+y^2+x-6y-2=0$。<br>
+<span class="note-sm">順便得到切點弦 $\overline{AB}$：兩圓相減 $(x^2+y^2+x-6y-2)-(x^2+y^2-2x)=0\Rightarrow3x-6y-2=0$，這就是「極線」。</span></div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">兩圓正交 → 圓心距² ＝ r₁²＋r₂²　<span class="note-sm">（108 課綱 G-10-4 註明「不含兩圓關係」，補充用）</span></span><span class="src">北一女中 110上 填 14</span></div>
+<div class="fxq">若兩圓都通過一點 $A$，且兩圓在 $A$ 的切線互相垂直，稱兩圓「正交」。已知圓 $\Gamma$ 通過 $(-3,2)$ 與 $(4,9)$，且與圓 $C:x^2+y^2=1$ 正交，求 $\Gamma$ 的方程式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(x-1)^2+(y-5)^2=25$</div>
+<div class="fxs"><div class="move">招式：切線互垂 ⟺ 兩半徑互垂 ⟺ 兩圓心與交點成直角三角形：$\overline{O_1O_2}^2=r_1^2+r_2^2$。</div>
+設 $\Gamma$ 圓心 $(h,k)$、半徑 $r$。過兩點：$(h+3)^2+(k-2)^2=(h-4)^2+(k-9)^2\Rightarrow h+k=6$。<br>
+正交：$h^2+k^2=r^2+1=(h+3)^2+(k-2)^2+1\Rightarrow6h-4k=-14\Rightarrow3h-2k=-7$。<br>
+聯立：$h=1,\ k=5$，$r^2=1+25-1=25$。</div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">過定點的弦的中點軌跡 → CM ⊥ AM，以 CA 為直徑的圓</span><span class="src">建國中學 108上 填 11</span></div>
+<div class="fxq">圓 $C:x^2+y^2+4x+2y-20=0$，$A(1,1)$ 在圓內。過 $A$ 的直線交圓於相異兩點 $P,Q$，$M$ 為 $\overline{PQ}$ 中點，求所有 $M$ 形成的軌跡方程式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\left(x+\dfrac12\right)^2+y^2=\dfrac{13}4$</div>
+<div class="fxs"><div class="move">招式：弦的中點 $M$ 滿足 $\overline{CM}\perp\overline{PQ}$，而 $A$ 在 $\overline{PQ}$ 上 ⟹ $\angle CMA=90^\circ$ ⟹ $M$ 在以 $\overline{CA}$ 為直徑的圓上。</div>
+圓心 $C(-2,-1)$。以 $C,A$ 為直徑：$(x+2)(x-1)+(y+1)(y-1)=0\Rightarrow x^2+y^2+x-3=0\Rightarrow\left(x+\dfrac12\right)^2+y^2=\dfrac{13}4$。<br>
+<span class="note-sm">$A$ 在圓內，過 $A$ 的每條直線都是弦，所以整個小圓都取得到（含 $M=A$ 與 $M=C$）。</span></div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">正方形兩頂點在圓上、兩頂點在直線上 → 邊長同時是弦長與平行線距離</span><span class="src">建國中學 111上 計算題</span></div>
+<div class="fxq">莫爾圓是工程學常用的工具：以坐標平面上兩點 $P,Q$ 為直徑兩端點、圓心在 $x$ 軸上的圓。<br>(1) 求以 $P(1,\sqrt3)$、$Q(3,-\sqrt3)$ 為直徑兩端點的莫爾圓方程式。<br>(2) 若正方形 $ABCD$ 的 $A,B$ 在此圓上，$C,D$ 在直線 $x-2y=10$ 上，求直線 $AB$ 的方程式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $(x-2)^2+y^2=4$　(2) $x-2y=6$ 或 $x-2y=\dfrac65$</div>
+<div class="fxs">(1) 圓心是 $\overline{PQ}$ 中點 $(2,0)$（果然在 $x$ 軸上），$r^2=1+3=4$。<br>
+(2) <div class="move">招式：$\overline{AB}\parallel\overline{CD}$，設 $AB:x-2y=c$；邊長 $s$ 同時等於「弦長」與「兩平行線距離」。</div>
+圓心到 $AB$ 的距離 $d=\dfrac{|2-c|}{\sqrt5}$，弦長 $s=2\sqrt{4-d^2}$；兩線距離 $s=\dfrac{|c-10|}{\sqrt5}$。<br>
+$4\left(4-\dfrac{(2-c)^2}5\right)=\dfrac{(c-10)^2}5\Rightarrow80-4(c-2)^2=(c-10)^2\Rightarrow5c^2-36c+36=0\Rightarrow c=6$ 或 $\dfrac65$。<br>
+驗：$c=6$ 時 $d=\frac4{\sqrt5}$、$s=\frac4{\sqrt5}$ ✔；$c=\frac65$ 時 $d=\frac{0.8}{\sqrt5}$、$s=\frac{8.8}{\sqrt5}$，弦長 $2\sqrt{4-\frac{0.64}5}=\frac{8.8}{\sqrt5}$ ✔。兩解對應正方形在圓的「近側」與「跨過圓心」兩種位置。</div></div>
+
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（15 題）</h3>
+<div class="note">來源：嘉義高中 113／114／115 科學班、高雄市 112 教甄聯招、中科實中 111、台南女中 111／112、華江高中 106、瑞芳高工 101、金門高中 112、成功高中 101 各校教甄。原卷多為掃描影像，以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>，其中 S13 補上原卷未列的第二解。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">四邊形面積 → 拆成兩個三角形，動點用直線參數式</span><span class="src">嘉義高中 113 科學班 填 6</span></div>
+<div class="fxq">直線 $x+2y+6=0$ 交兩軸於 $A,B$，$P$ 在線段 $\overline{AB}$ 上。若 $Q(-4,0)$ 且四邊形 $OBPQ$ 的面積為 $7$，求 $P$ 的坐標。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$P(-2,-2)$</div>
+<div class="fxs">$A(-6,0)$、$B(0,-3)$，$Q$ 在 $\overline{OA}$ 上。設 $P(t,\ -\frac{t+6}2)$（$-6\le t\le0$）。<br>
+四邊形 $OBPQ=\triangle OBQ+\triangle BPQ$… 更快：用測量師公式，$O(0,0)\to B(0,-3)\to P\to Q(-4,0)$：
+$$\frac12\left|0\cdot(-3)-0\cdot0+0\cdot y_P-t\cdot(-3)+t\cdot0-(-4)y_P+(-4)\cdot0-0\right|=\frac12|3t+4y_P|=7$$
+$3t+4y_P=3t-2(t+6)=t-12$，$|t-12|=14\Rightarrow t=-2$（$t=26$ 不在線段上）。$P(-2,-2)$。<br>
+<span class="note-sm">驗：$\triangle OAB=9$，$\triangle APQ=\frac12\cdot2\cdot2=2$，$9-2=7$ ✔。</span></div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">S2</span><span class="kw">角平分線上的點到兩邊等距 → 內心 (r,r) 在兩條線上，列出 1/r 的關係</span><span class="src">嘉義高中 113 科學班 填 16</span></div>
+<div class="fxq">直角 $\triangle ABC$，$\angle C=90^\circ$。$\angle BAC$ 的平分線 $\overline{AD}$ 交 $\overline{BC}$ 於 $D$，$\angle ABC$ 的平分線 $\overline{BE}$ 交 $\overline{AC}$ 於 $E$。已知 $D$ 到 $\overline{AB}$ 的距離為 $6$、$E$ 到 $\overline{AB}$ 的距離為 $4$，求 $\triangle ABC$ 的內切圓半徑。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2\sqrt3$</div>
+<div class="fxs"><div class="move">招式：$D$ 在 $\angle A$ 平分線上 ⟹ $D$ 到 $\overline{AB}$ 與 $\overline{AC}$ 等距 ⟹ $\overline{CD}=6$；同理 $\overline{CE}=4$。放坐標：$C(0,0)$、$A(0,a)$、$B(b,0)$、$D(6,0)$、$E(0,4)$，內心 $I(r,r)$。</div>
+$I$ 在直線 $AD$（截距式 $\frac x6+\frac ya=1$）上：$\dfrac r6+\dfrac ra=1\Rightarrow\dfrac1a=\dfrac1r-\dfrac16$。$I$ 在 $BE$ 上：$\dfrac1b=\dfrac1r-\dfrac14$。<br>
+直角三角形：$a+b-c=2r$，$c^2=a^2+b^2$ ⟹ $(a+b-2r)^2=a^2+b^2\Rightarrow ab-2r(a+b)+2r^2=0$，除以 $ab$：
+$$1-2r\left(\frac1a+\frac1b\right)+2r^2\cdot\frac1a\cdot\frac1b=0$$
+代入 $\frac1a=\frac1r-\frac16$、$\frac1b=\frac1r-\frac14$：$1-2r\left(\dfrac2r-\dfrac5{12}\right)+2r^2\left(\dfrac1{r^2}-\dfrac5{12r}+\dfrac1{24}\right)=-1+\dfrac{r^2}{12}=0$，故 $r^2=12$，$r=2\sqrt3$。<br>
+<span class="note-sm">回推：$a=3+3\sqrt3$、$b=12+8\sqrt3$、$c=15+7\sqrt3$，電腦驗 $D,E$ 到 $\overline{AB}$ 距離確為 $6,4$。</span></div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">S3</span><span class="kw">摺疊使兩點重合 → 摺痕是中垂線</span><span class="src">嘉義高中 114 科學班 填 10</span></div>
+<div class="fxq">長方形 $ABCD$ 中 $\overline{AB}=16$、$\overline{BC}=15$，$E$ 在 $\overline{AD}$ 上、$F$ 在 $\overline{BC}$ 上。將長方形沿 $\overline{EF}$ 對摺，恰使頂點 $C$ 與 $\overline{AB}$ 的中點 $M$ 重合，求摺痕 $\overline{EF}$ 的長。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{272}{15}$</div>
+<div class="fxs">設 $A(0,0)$、$B(16,0)$、$C(16,15)$、$D(0,15)$，$M(8,0)$。摺痕 $=\overline{CM}$ 的中垂線：中點 $\left(12,\frac{15}2\right)$，法向量 $\overrightarrow{MC}=(8,15)$：$8x+15y=96+\dfrac{225}2\Rightarrow16x+30y=417$。<br>
+$E$（$x=0$）：$y=\dfrac{417}{30}$；$F$（$x=16$）：$y=\dfrac{161}{30}$。$\overline{EF}=\sqrt{16^2+\left(\dfrac{256}{30}\right)^2}=16\sqrt{1+\dfrac{64}{225}}=16\cdot\dfrac{17}{15}=\dfrac{272}{15}$。<br>
+<span class="note-sm">$\overline{EF}$ 與 $\overline{MC}$ 垂直，所以 $\overline{EF}:\overline{AB}=\overline{MC}:15=17:15$，一行就出來。</span></div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">半圓與邊相切 → 圓心到邊的距離＝半徑，列一個方程式</span><span class="src">嘉義高中 114 科學班 填 11</span></div>
+<div class="fxq">正方形 $ABCD$ 邊長 $10$，$E$ 在 $\overline{CD}$ 上。以 $\overline{BE}$ 為直徑畫半圓 $O$，半圓弧恰與 $\overline{AD}$ 切於 $F$，求圓 $O$ 的半徑。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{25}4$</div>
+<div class="fxs">設 $A(0,0)$、$B(10,0)$、$C(10,10)$、$D(0,10)$，$E(e,10)$。圓心 $\left(\dfrac{10+e}2,5\right)$，半徑 $\dfrac{\sqrt{(10-e)^2+100}}2$。與 $\overline{AD}$（$x=0$）相切：
+$$\frac{10+e}2=\frac{\sqrt{(10-e)^2+100}}2\Rightarrow(10+e)^2=(10-e)^2+100\Rightarrow40e=100\Rightarrow e=\frac52$$
+半徑 $=\dfrac{10+5/2}2=\dfrac{25}4$，切點 $F(0,5)$。</div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">S5</span><span class="kw">兩人同時移動的最近距離 → 距離平方是 t 的二次函數</span><span class="src">嘉義高中 115 科學班 填 9</span></div>
+<div class="fxq">小智在小霞正北方 $10$ 公尺處。小智每秒往正南走 $2$ 公尺，小霞每秒往正東走 $1$ 公尺，兩人同時出發，求兩人的最近距離。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2\sqrt5$ 公尺</div>
+<div class="fxs">小霞起點 $(0,0)$，小智 $(0,10)$。$t$ 秒後：小霞 $(t,0)$、小智 $(0,10-2t)$。
+$$d^2=t^2+(10-2t)^2=5t^2-40t+100=5(t-4)^2+20$$
+$t=4$ 時最小，$d=\sqrt{20}=2\sqrt5$。<br>
+<span class="note-sm">幾何看法：相對運動——小智相對小霞的速度是 $(-1,-2)$，問題變成「點 $(0,10)$ 到直線（方向 $(1,2)$，過原點）的距離」$=\frac{|10|}{\sqrt5}=2\sqrt5$。</span></div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">S6</span><span class="kw">已知內切圓求頂點 → 兩邊是過 A 的切線；再求垂心</span><span class="src">高雄市 112 教甄聯招 填 10</span></div>
+<div class="fxq">$\triangle ABC$ 中 $\overline{BC}$ 與 $x$ 軸平行，$A(1,8)$，內切圓圓心為 $(0,0)$、半徑 $4$。求 $\triangle ABC$ 的垂心 $H$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$H\left(1,-\dfrac14\right)$</div>
+<div class="fxs">$\overline{BC}$ 是水平切線且在 $A$ 的另一側：$y=-4$。過 $A$ 的切線 $y-8=m(x-1)$，原點到它的距離 $4$：$\dfrac{|8-m|}{\sqrt{m^2+1}}=4\Rightarrow15m^2+16m-48=0\Rightarrow m=\dfrac43$ 或 $-\dfrac{12}5$。<br>
+與 $y=-4$ 交點：$m=\frac43$ 給 $B(-8,-4)$；$m=-\frac{12}5$ 給 $C(6,-4)$。<br>
+垂心：過 $A$ 的高是 $x=1$；過 $B$ 的高 $\perp\overline{AC}$（斜率 $-\frac{12}5$），斜率 $\frac5{12}$：$y+4=\frac5{12}(x+8)$，代 $x=1$ 得 $y=-4+\frac{45}{12}=-\frac14$。</div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">外心對三邊的對稱點 → 對稱點連線＝2×中點連線＝對邊長</span><span class="src">中科實中 111 教甄 填 8</span></div>
+<div class="fxq">$\triangle ABC$ 中，直線 $AB:2x-y+2=0$、直線 $AC:2x+y-6=0$，外心 $O(0,-3)$。設 $O$ 對 $\overline{AB}$、$\overline{BC}$、$\overline{AC}$ 的對稱點分別為 $D,E,F$，求 $\overline{EF}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$6\sqrt5$</div>
+<div class="fxs"><div class="move">招式：外心對邊的對稱點 $=2\times$（該邊中點）$-O$，所以 $\overline{EF}=2\cdot\overline{M_{BC}M_{AC}}=\overline{AB}$（中位線）。根本不必求 $C$。</div>
+$A=AB\cap AC$：$2x-y=-2$、$2x+y=6$ ⟹ $A(1,4)$。$B$ 在 $AB$ 上且 $\overline{OB}=\overline{OA}$：$B(t,2t+2)$，$t^2+(2t+5)^2=50\Rightarrow t^2+4t-5=0\Rightarrow t=-5$（$t=1$ 是 $A$），$B(-5,-8)$。<br>
+$\overline{EF}=\overline{AB}=\sqrt{36+144}=6\sqrt5$。<br>
+<span class="note-sm">為什麼是中點：外心到邊的垂足就是邊的中點（中垂線！），對稱點 $E=2M_{BC}-O$、$F=2M_{AC}-O$，相減得 $\overrightarrow{FE}=2\overrightarrow{M_{AC}M_{BC}}=\overrightarrow{AB}$ 的平行且等長向量。</span></div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">S8</span><span class="kw">過定點平分三角形面積 → 先算要切多大，反推交點</span><span class="src">台南女中 111 教甄 填 5</span></div>
+<div class="fxq">$O(0,0)$、$A(2,0)$、$B(0,4)$、$C(0,1)$。過 $C$ 作直線 $L$ 平分 $\triangle OAB$ 的面積，若 $L:x+by+c=0$，求 $(b,c)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(b,c)=(-4,4)$</div>
+<div class="fxs">$\triangle OAB=4$，要切出 $2$。$L$ 過 $C(0,1)$ 交 $\overline{AB}$ 於 $Q$，上方 $\triangle CBQ$ 的底 $\overline{CB}=3$、高 $=x_Q$：$\dfrac12\cdot3\cdot x_Q=2\Rightarrow x_Q=\dfrac43$，$Q$ 在 $2x+y=4$ 上 ⟹ $Q\left(\dfrac43,\dfrac43\right)$。<br>
+$L$ 的斜率 $\dfrac{4/3-1}{4/3}=\dfrac14$：$y=\dfrac x4+1\Rightarrow x-4y+4=0$，$(b,c)=(-4,4)$。<br>
+<span class="note-sm">若 $L$ 改交 $\overline{OA}$ 於 $R$：下方 $\triangle OCR$ 面積 $\le\frac12\cdot1\cdot2=1\lt2$，不可能，故只有一解。</span></div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">S9</span><span class="kw">截距和最小 → 截距式代點，「1 的代換」後算幾</span><span class="src">華江高中 106 教甄 填 2</span></div>
+<div class="fxq">直線 $L$ 過定點 $A(3,5)$，且與 $x$ 軸正向、$y$ 軸正向分別交於 $P,Q$，$O$ 為原點。求 $\overline{OP}+\overline{OQ}$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$8+2\sqrt{15}$</div>
+<div class="fxs">設 $L:\dfrac xa+\dfrac yb=1$（$a,b\gt0$），過 $A$：$\dfrac3a+\dfrac5b=1$。
+$$a+b=(a+b)\left(\frac3a+\frac5b\right)=8+\frac{3b}a+\frac{5a}b\ge8+2\sqrt{15}$$
+等號在 $\dfrac{3b}a=\dfrac{5a}b$，即 $b=\sqrt{\dfrac53}\,a$，代回可解出 $a=3+\sqrt{15}$、$b=5+\sqrt{15}$。<br>
+<span class="note-sm">教學眼光：學生常直接對 $a+b$ 用算幾得 $a+b\ge2\sqrt{ab}$，但 $ab$ 不是定值，等號條件也對不上——「乘 1」才是關鍵。</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">由最值反推目標函數係數 → 再換一條限制式重解</span><span class="src">華江高中 106 教甄 填 3</span></div>
+<div class="fxq">一個線性規劃問題有三個限制條件 $a_1x+b_1y\ge c_1$、$a_2x+b_2y\le c_2$、$x+2y\le40$，可行域是 $A(4,0)$、$B(10,15)$、$C(16,12)$ 圍成的三角形（含內部）。目標函數 $f=px+qy$ 在 $C$ 取得最大值 $96$、在 $A$ 取得最小值 $12$。事後發現 $x+2y\le40$ 是錯的，應更正為 $2x+y\le44$。求更正後 $f$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$116$</div>
+<div class="fxs">$16p+12q=96$、$4p=12$ ⟹ $p=3,\ q=4$。<br>
+哪條邊是 $x+2y=40$？$B$：$10+30=40$、$C$：$16+24=40$ ⟹ 邊 $\overline{BC}$。另兩邊：$\overline{AB}$：$5x-2y=20$（區域側 $\ge$）、$\overline{AC}$：$x-y=4$（區域側 $\le$）。<br>
+新區域：$5x-2y\ge20$、$x-y\le4$、$2x+y\le44$，頂點 $A(4,0)$、$5x-2y=20\cap2x+y=44\Rightarrow(12,20)$、$x-y=4\cap2x+y=44\Rightarrow(16,12)$。<br>
+$f$：$12,\ 36+80=116,\ 96$ ⟹ 最大值 $116$。</div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">S11</span><span class="kw">點光源照圓的影子 → 兩條切線的 x 截距之差</span><span class="src">瑞芳高工 101 教甄 填 7</span></div>
+<div class="fxq">在 $A(4,6)$ 處有一點光源，求圓 $C:x^2+y^2+6x-4y+12=0$ 投射到 $x$ 軸上的影子長度。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{32}5$</div>
+<div class="fxs">圓心 $(-3,2)$、$r^2=9+4-12=1$。過 $A$ 的切線 $y-6=m(x-4)$：$\dfrac{|-7m+4|}{\sqrt{m^2+1}}=1\Rightarrow48m^2-56m+15=0\Rightarrow m=\dfrac34$ 或 $\dfrac5{12}$。<br>
+$x$ 截距 $x=4-\dfrac6m$：$-4$ 與 $-\dfrac{52}5$。影長 $=\dfrac{52}5-4=\dfrac{32}5$。<br>
+<span class="note-sm">兩切線斜率都為正且光源在圓的右上方，影子整段落在圓的左下方，兩截距相減即可，不必擔心「跨過」的情形。</span></div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">S12</span><span class="kw">根號裡是二次式 → 認出半圓：√(r²−(x−h)²)</span><span class="src">台南女中 112 教甄 填 5</span></div>
+<div class="fxq">設 $f(x)=\sqrt{10x-x^2}-\sqrt{16x-x^2-60}$，求 $f(x)$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2\sqrt6$</div>
+<div class="fxs">$\sqrt{10x-x^2}=\sqrt{25-(x-5)^2}$ 是圓心 $(5,0)$、半徑 $5$ 的上半圓；$\sqrt{16x-x^2-60}=\sqrt{4-(x-8)^2}$ 是圓心 $(8,0)$、半徑 $2$ 的上半圓。定義域 $6\le x\le10$。<br>
+在 $[6,10]$ 上第一項遞減（$x\ge5$ 在大圓右半邊）、第二項 $\ge0$ 且在 $x=6$ 時為 $0$，所以 $f$ 在 $x=6$ 最大：$f(6)=\sqrt{24}-0=2\sqrt6$。<br>
+<span class="note-sm">教學眼光：「配方看出圓」比微分快，也不需要處理根號的導數。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">S13</span><span class="kw">到兩點距離已知的直線 → 兩圓公切線；答案不只一個</span><span class="src">台南女中 112 教甄 填 18</span></div>
+<div class="fxq">直線 $L$ 到 $A(7,3)$ 的距離為 $6$、到 $B(6,6)$ 的距離為 $3$。求 $C(-2,0)$ 到 $L$ 的距離。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3$ 或 $9$<br><span class="note-sm">（原卷參考答案只列 $3$；$L:y=9$ 也滿足題意，對應答案 $9$。）</span></div>
+<div class="fxs"><div class="move">招式：$L$ 是圓 $(A,6)$ 與圓 $(B,3)$ 的公切線。$\overline{AB}=\sqrt{10}$，$6-3\lt\sqrt{10}\lt6+3$ ⟹ 兩圓相交，恰有兩條外公切線。</div>
+設 $L:ax+by+c=0$，$a^2+b^2=1$，同側：$7a+3b+c=6$、$6a+6b+c=3$。相減 $a-3b=3\Rightarrow a=3+3b$，代入 $(3+3b)^2+b^2=1\Rightarrow10b^2+18b+8=0\Rightarrow b=-1$ 或 $-\dfrac45$。<br>
+$b=-1$：$a=0$，$c=9$ ⟹ $L:y=9$，$C$ 的距離 $9$。<br>
+$b=-\dfrac45$：$a=\dfrac35$，$c=6-\dfrac{21}5+\dfrac{12}5=\dfrac{21}5$ ⟹ $L:3x-4y+21=0$，$C$ 的距離 $\dfrac{|-6+21|}5=3$。<br>
+<span class="note-sm">教學眼光：兩條線都檢查 $A,B$ 的距離無誤。出題者大概只畫了斜的那一條；當學生答 $9$ 時，老師要能判斷它是對的。</span></div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">正方形內一點到三頂點距離 → 設邊長 s 放坐標，兩兩相減消平方項</span><span class="src">金門高中 112 教甄 填 1</span></div>
+<div class="fxq">$P$ 為正方形 $ABCD$ 內部一點，$\overline{AP}=3\sqrt2$、$\overline{BP}=3$、$\overline{CP}=6$，求正方形 $ABCD$ 的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$45$</div>
+<div class="fxs">設 $A(0,0)$、$B(s,0)$、$C(s,s)$、$P(x,y)$：$x^2+y^2=18$、$(x-s)^2+y^2=9$、$(x-s)^2+(y-s)^2=36$。<br>
+一減二：$2sx-s^2=9\Rightarrow x=\dfrac{s^2+9}{2s}$；二減三：$2sy-s^2=-27\Rightarrow y=\dfrac{s^2-27}{2s}$。代回第一式：
+$$(s^2+9)^2+(s^2-27)^2=72s^2\Rightarrow s^4-54s^2+405=0\Rightarrow s^2=45\ \text{或}\ 9$$
+$s^2=9$ 時 $y=-3\lt0$，$P$ 在正方形外，捨去。面積 $45$。<br>
+<span class="note-sm">純幾何解：把 $\triangle BPC$ 繞 $B$ 旋轉 $90^\circ$ 到 $\triangle BP'A$，得 $\overline{PP'}=3\sqrt2$、$\overline{AP'}=6$，$\triangle APP'$ 是 $3\sqrt2,3\sqrt2,6$ 的等腰直角三角形，推得 $\angle APB=135^\circ$，餘弦定理得 $s^2=45$——教甄面試可兩法並陳。</span></div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">S15</span><span class="kw">尤拉線證明 → 外心放原點，用向量 H＝A＋B＋C</span><span class="src">成功高中 101 教甄 證明 1</span></div>
+<div class="fxq">設 $O,G,H$ 分別為 $\triangle ABC$ 的外心、重心、垂心。證明：(1) $O,G,H$ 三點共線；(2) $\overline{GH}=2\,\overline{OG}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">（證明題）關鍵：$\overrightarrow{OH}=\overrightarrow{OA}+\overrightarrow{OB}+\overrightarrow{OC}=3\,\overrightarrow{OG}$</div>
+<div class="fxs">取外心 $O$ 為原點，記 $\vec a=\overrightarrow{OA}$ 等，則 $|\vec a|=|\vec b|=|\vec c|=R$。<br>
+<b>令 $\vec h=\vec a+\vec b+\vec c$，先證它是垂心</b>：$\vec h-\vec a=\vec b+\vec c$，而 $(\vec b+\vec c)\cdot(\vec b-\vec c)=|\vec b|^2-|\vec c|^2=0$，故 $\overrightarrow{AH}\perp\overrightarrow{CB}$；同理 $\overrightarrow{BH}\perp\overrightarrow{CA}$。兩條高的交點就是垂心，所以 $H$ 的位置向量是 $\vec a+\vec b+\vec c$。<br>
+<b>重心</b> $\vec g=\dfrac{\vec a+\vec b+\vec c}3=\dfrac{\vec h}3$。<br>
+(1) $\overrightarrow{OH}=3\overrightarrow{OG}$ ⟹ $O,G,H$ 共線。(2) $\overrightarrow{GH}=\vec h-\vec g=\dfrac23\vec h=2\overrightarrow{OG}$，故 $\overline{GH}=2\overline{OG}$。<br>
+<span class="note-sm">坐標版（高一可懂）：設外接圓 $x^2+y^2=R^2$，$A(x_1,y_1)$ 等，直接驗證 $H=(x_1+x_2+x_3,\ y_1+y_2+y_3)$ 滿足「$\overrightarrow{AH}\cdot\overrightarrow{BC}=0$」：$(x_2+x_3)(x_3-x_2)+(y_2+y_3)(y_3-y_2)=(x_3^2+y_3^2)-(x_2^2+y_2^2)=0$。主講義進階題 A7 是這個定理的選擇題版。</span></div></div>
+</section>
+
+<div class="ch-nav">
+  <a href="../g10a-ch01/practice.html">← 第一章 數與式 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <a href="../g11a-ch01/practice.html">第一章 三角函數 練習本 →</a>
+</div>
+</div>
+
+<script>
+(function () {
+  var G = window.PGEN;
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var labelOf = {};
+  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+
+  /* ── 產生器卡片 ── */
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard';
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
+      '<div class="gh"></div><div class="ga"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+    function load() {
+      var it = G[tier][key](G.makeRng(seed));
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '提示：' + it.h;
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.seed').textContent = '#' + seed;
+      card.querySelector('.gh').classList.remove('on'); card.querySelector('.ga').classList.remove('on');
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+
+  /* ── 固定題組（種子固定，每次開啟都一樣，可列印） ── */
+  document.querySelectorAll('.fixset').forEach(function (box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
+    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
+    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
+    for (var i = 0; i < n; i++) {
+      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
+      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+    }
+    box.innerHTML = html + '</ol>';
+    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    box.querySelector('.print').onclick = function () { window.print(); };
+    render(box);
+  });
+
+  /* ── 固定難題卡：答案／詳解切換 ── */
+  document.querySelectorAll('.fx button').forEach(function (b) {
+    b.onclick = function () {
+      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
+      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
+    };
+  });
+
+  /* ── 靜態內容的 KaTeX ── */
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+</body>
+</html>

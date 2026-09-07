@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一章 三角函數 ── 分級練習本｜高二上</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第一章 三角函數 ── 分級練習本</h1>
+  <div class="sub">高二上・配合主講義第 1 節 弧度量與扇形、第 2 節 和差角與倍半角、第 3 節 三角函數的圖形與疊合。五個程度、一本練到底。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・模考・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>競賽・科學班・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（5,550 題抽樣）；固定題全數人工＋電腦重算。角度一律用能精確求值的角（$15^\circ$ 的倍數、$\dfrac{\pi}{12}$ 的倍數）。</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>特殊角的值背不熟、看到弧度就想換回度、公式記得但不敢用的同學。</div>
+  <div><b>目標</b>21 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+</div>
+
+<h3 class="sec">1-1 弧度量、扇形與三角函數的定義</h3>
+<div class="must">先要會：<b>度 ⇄ 弧度只有一條橋 $\pi=180^\circ$</b>、<b>弧長 $s=r\theta$、扇形面積 $\dfrac12r^2\theta$（$\theta$ 用弧度）</b>、<b>$1,2,3,4,5,6$ 弧度各在第幾象限</b>（$\frac{\pi}{2}\approx1.57$、$\pi\approx3.14$、$\frac{3\pi}{2}\approx4.71$）、<b>特殊角的值：先找參考角再定正負</b>、<b>終邊過 $P(x,y)$：$r=\sqrt{x^2+y^2}$</b>、<b>誘導公式「奇變偶不變，符號看象限」</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="degToRad,radToDeg,arcArea,sectorFromArc,signQuad,specialValue,pointDef,fromSinQuad,coterminal,reduceFormula"></div>
+<div class="fixset" data-tier="L1" data-keys="degToRad,radToDeg,arcArea,sectorFromArc,signQuad,specialValue,pointDef,fromSinQuad,coterminal,reduceFormula" data-seed="1101"></div>
+
+<h3 class="sec">1-2 和差角、倍角與半角</h3>
+<div class="must">先要會：<b>$\sin(\alpha\pm\beta)=\sin\alpha\cos\beta\pm\cos\alpha\sin\beta$、$\cos(\alpha\pm\beta)=\cos\alpha\cos\beta\mp\sin\alpha\sin\beta$</b>（cos 的符號相反）、<b>$\tan(\alpha\pm\beta)=\dfrac{\tan\alpha\pm\tan\beta}{1\mp\tan\alpha\tan\beta}$</b>、<b>倍角是和角令 $\beta=\alpha$</b>、<b>半角公式的正負看 $\dfrac{\theta}{2}$ 的象限</b>、<b>$15^\circ$ 的倍數都能用 $45^\circ\pm30^\circ$ 拆</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="sumExact,cosDiffQuad,tanSum,doubleFromSin,halfFromCos"></div>
+<div class="fixset" data-tier="L1" data-keys="sumExact,cosDiffQuad,tanSum,doubleFromSin,halfFromCos" data-seed="1201"></div>
+
+<h3 class="sec">1-3 圖形、平移伸縮與正餘弦疊合</h3>
+<div class="must">先要會：<b>$y=a\sin(bx+c)+d$ 四個字母各管什麼</b>（振幅 $|a|$、週期 $\dfrac{2\pi}{|b|}$、中線 $y=d$）、<b>右移是 $x\to x-k$</b>、<b>$a\sin x+b\cos x=\sqrt{a^2+b^2}\sin(x+\theta)$</b>、<b>基本方程 $\sin x=\dfrac12$ 在 $[0,2\pi)$ 有兩解，用對稱找第二個</b>、<b>週期：$\tan$、絕對值、平方都讓週期減半</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="ampPeriod,shiftFunc,combineStd,maxMin,basicEq,periodOf"></div>
+<div class="fixset" data-tier="L1" data-keys="ampPeriod,shiftFunc,combineStd,maxMin,basicEq,periodOf" data-seed="1301"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
+  <div><b>目標</b>16 個段考最常見題型（依題庫 53 份高二第一次段考卷的出現率排序），每型都能自己完整寫出過程。</div>
+  <div><b>通過標準</b>本級固定 12 題兩輪全對、且每張卡片連續新題 3 次全對。</div>
+</div>
+
+<h3 class="sec">1-1 扇形：反求、最佳化與圓錐展開</h3>
+<div class="must">題庫 53 卷中 <b>扇形出現 22 卷次</b>、扇形面積 9 卷次、弧長 6 卷次。招式：<b>周長與面積給定 ⟹ 消去弧長得 $r$ 的二次方程，兩根通常都合法</b>；<b>周長固定 ⟹ 面積是 $r$ 的二次函數，$\theta=2$ 時最大</b>；<b>圓錐側面展開成扇形，圓心角 $=\dfrac{2\pi r}{l}$，最短路徑是展開圖上的直線</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="sectorSys,sectorMax,coneShortest"></div>
+
+<h3 class="sec">1-2 恆等式與和差倍半角的連鎖求值</h3>
+<div class="must">53 卷中<b>和差角 23 卷次、二倍角 19、半角 15、廣義角 14、象限 12</b>。招式：<b>$\sin\theta+\cos\theta=k$ ⟹ 平方得 $\sin\theta\cos\theta$，差用 $1-2\sin\theta\cos\theta$ 開根號、正負看範圍</b>；<b>方程式的根 ⟹ 先篩掉 $|$值$|\gt1$ 的根</b>；<b>兩根為 $\tan\alpha,\tan\beta$ ⟹ 根與係數直接代 $\tan(\alpha+\beta)$</b>；<b>兩式含 $\cos A,\cos B,\sin A,\sin B$ ⟹ 平方相加</b>；<b>$\cos2x$ 已知 ⟹ 先求 $\sin x$，半角組合再平方</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="sumProd,quadRootCos2,tanQuad,systemSquare,halfFromCos2x"></div>
+
+<h3 class="sec">1-3 圖形參數、變換順序、週期與方程</h3>
+<div class="must">53 卷中<b>週期 21 卷次、疊合 17、平移 14、三角方程 13、振幅 11、區間最值 10、圖形交點 8、解的個數 7</b>。招式：<b>由最高最低點反推：$a,d$ 看高低，$b$ 看水平距離（半週期），$c$ 最後代點定</b>；<b>先伸縮再平移 vs 先平移再伸縮，平移量差 $k$ 倍</b>；<b>解的個數 ⟹ 把方程式拆成「三角函數 vs 直線」數交點，直線只在 $|y|\le1$ 有效</b>；<b>不等式 ⟹ 化成單一函數的二次式再翻回單位圓，根為 $\pm1$ 時有孤立解</b>；<b>區間最值 ⟹ 疊合後看 $x+\theta$ 跑過哪一段</b>；<b>$\sin x\pm\cos x$ 出現就換元 $t$，$|t|\le\sqrt2$</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="paramFit,transformOrder,periodJudge,rootCount,trigIneq,combineInterval,squareSub,eqSumCount"></div>
+
+<h3 class="sec">L2 固定 12 題（列印用）</h3>
+<div class="fixset" data-tier="L2" data-keys="sectorSys,coneShortest,sumProd,quadRootCos2,tanQuad,systemSquare,halfFromCos2x,paramFit,transformOrder,rootCount,trigIneq,combineInterval" data-seed="2001" data-n="12"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考與模考的中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度（都不與主講義三本重複）；答案與詳解皆重新驗算過。</div>
+
+<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">弧度值估大小 → 換成度數，落在哪一象限、離哪個特殊角近</span><span class="src">建國中學 110 上 多選 1</span></div>
+<div class="fxq">選出正確的選項：<br>(1) $\dfrac{\sqrt3}{2}\lt\cos3\lt1$　(2) $\dfrac12\lt\sin2\lt\dfrac{\sqrt3}{2}$　(3) $\dfrac{1}{\sqrt3}\lt\tan1\lt\sqrt3$　(4) $\dfrac{\sqrt3}{2}\lt\cos(\pi^\circ)\lt1$　(5) $0\lt\sin(\pi^2)\lt1$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)(4)</div>
+<div class="fxs"><div class="move">招式：$1$ 弧度 $\approx57.3^\circ$，把每個弧度值換成度數再定位。</div>
+(1) $3$ 弧度 $\approx172^\circ$，$\cos3\approx-0.99$，錯。(2) $2$ 弧度 $\approx114.6^\circ$，$\sin2=\sin65.4^\circ\approx0.91\gt\dfrac{\sqrt3}{2}$，錯。(3) $1$ 弧度 $\approx57.3^\circ$ 在 $30^\circ$ 與 $60^\circ$ 之間，$\tan$ 遞增，正確。(4) $\pi^\circ\approx3.14^\circ$ 是很小的角，$\cos\approx0.998$，正確。(5) $\pi^2\approx9.87$，減 $2\pi$ 得 $3.59$ 弧度，在 $(\pi,\tfrac{3\pi}{2})$，$\sin\lt0$，錯。</div></div>
+
+<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">最高點到最低點的水平距離 → 半週期的奇數倍</span><span class="src">台南一中 110 上 多選 2</span></div>
+<div class="fxq">已知 $A(-\pi,1)$、$B\left(\dfrac{\pi}{4},-1\right)$ 為 $y=\sin(ax+b)$ 圖形上兩點。下列何者可能是此函數的週期？<br>(1) $\dfrac{5\pi}{4}$　(2) $\dfrac{\pi}{2}$　(3) $\dfrac{\pi}{4}$　(4) $\dfrac{\pi}{6}$　(5) $\dfrac{\pi}{8}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(4)</div>
+<div class="fxs"><div class="move">招式：$A$ 是最高點（$y=1$）、$B$ 是最低點（$y=-1$），兩者水平距離 $\dfrac{5\pi}{4}$ 必須是「半週期的奇數倍」。</div>
+設週期 $T$：$\dfrac{5\pi}{4}=(2k+1)\cdot\dfrac T2$ ⟹ $T=\dfrac{5\pi}{2(2k+1)}$。$k=0,1,2,\dots$ 給出 $\dfrac{5\pi}{2},\dfrac{5\pi}{6},\dfrac{\pi}{2},\dots,\dfrac{\pi}{6}$（$2k+1=15$）。選項中 $\dfrac{\pi}{2}$（$2k+1=5$）與 $\dfrac{\pi}{6}$（$2k+1=15$）可行；$\dfrac{5\pi}{4}$、$\dfrac{\pi}{4}$、$\dfrac{\pi}{8}$ 對應 $2k+1=2,10,20$ 是偶數，不合。</div></div>
+
+<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">平移後重合 → 相位差是週期的整數倍（tan 的週期是 π）</span><span class="src">台中一中 112 上 填 10</span></div>
+<div class="fxq">$k\gt0$，將 $y=\tan\left(kx+\dfrac{\pi}{4}\right)$ 的圖形向右平移 $\dfrac{\pi}{3}$ 後與 $y=\tan\left(kx+\dfrac{\pi}{6}\right)$ 的圖形重合，求 $k$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=\dfrac14$</div>
+<div class="fxs"><div class="move">招式：右移 $\dfrac{\pi}{3}$ 就是把 $x$ 換成 $x-\dfrac{\pi}{3}$；兩個 $\tan$ 重合 ⟺ 括號內只差 $n\pi$。</div>
+$\tan\left(k\left(x-\dfrac{\pi}{3}\right)+\dfrac{\pi}{4}\right)=\tan\left(kx+\dfrac{\pi}{4}-\dfrac{k\pi}{3}\right)$。要與 $\tan\left(kx+\dfrac{\pi}{6}\right)$ 重合：$\dfrac{\pi}{4}-\dfrac{k\pi}{3}=\dfrac{\pi}{6}+n\pi$ ⟹ $k=\dfrac14-3n$。$k\gt0$ 的最小值在 $n=0$：$k=\dfrac14$。</div></div>
+
+<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">所有實根的和 → 換元後每個週期兩解對稱配對</span><span class="src">高雄中學 110 上 填 9</span></div>
+<div class="fxq">設 $0\lt x\lt2\pi$，$0\lt k\lt1$，求滿足 $\sin6x=k$ 的所有實根之和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$11\pi$</div>
+<div class="fxs"><div class="move">招式：令 $u=6x\in(0,12\pi)$，$\sin u=k$ 在每個 $2\pi$ 裡有兩解，且兩解對稱於 $\dfrac{\pi}{2}+2j\pi$。</div>
+第 $j$ 個週期（$j=0,\dots,5$）的兩解相加 $=\pi+4j\pi$。總和 $=\sum_{j=0}^{5}(\pi+4j\pi)=6\pi+4\pi\cdot15=66\pi$。換回 $x=\dfrac u6$：$\dfrac{66\pi}{6}=11\pi$。（共 $12$ 個根。）</div></div>
+
+<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">絕對值的週期 → 代 x+π/2 試「換位」</span><span class="src">台中一中 112 上 單選 2</span></div>
+<div class="fxq">設 $f(x)=|\sin x|+|\cos x|$、$g(x)=|\sin x|-|\cos x|$ 的最小正週期分別為 $p$、$q$，求 $p+q$。<br>(1) $\dfrac{\pi}{2}$　(2) $\pi$　(3) $\dfrac{3\pi}{2}$　(4) $2\pi$　(5) $\dfrac{5\pi}{2}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3) $\dfrac{3\pi}{2}$</div>
+<div class="fxs"><div class="move">招式：$x\to x+\dfrac{\pi}{2}$ 會把 $|\sin|$ 與 $|\cos|$ 互換。</div>
+$f\left(x+\dfrac{\pi}{2}\right)=|\cos x|+|\sin x|=f(x)$，且 $f(0)=1\ne f\left(\dfrac{\pi}{4}\right)=\sqrt2$ 表示 $\dfrac{\pi}{4}$ 不是週期，故 $p=\dfrac{\pi}{2}$。<br>
+$g\left(x+\dfrac{\pi}{2}\right)=|\cos x|-|\sin x|=-g(x)$，不是週期；$g(x+\pi)=g(x)$，故 $q=\pi$。$p+q=\dfrac{3\pi}{2}$。</div></div>
+
+<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">廣義角只給 tan 與一個座標的正負 → 定象限，但 θ/2 的象限定不了</span><span class="src">台中女中 112 上 多選 1</span></div>
+<div class="fxq">廣義角 $\theta$ 的頂點為原點、始邊為 $x$ 軸正向，$\tan\theta=2$，且終邊上一點 $P$ 的 $y$ 坐標為 $-1$。選出正確的選項：<br>(1) $\sin\theta\gt\cos\theta$　(2) 標準位置角 $\theta$ 與 $2\theta$ 的終邊在同一象限　(3) $\cos2\theta\lt0$　(4) $\sin\dfrac{\theta}{2}\gt0$　(5) $\dfrac12\sin\theta\lt\tan\dfrac{\theta}{2}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)</div>
+<div class="fxs"><div class="move">招式：$\tan\theta\gt0$ 且 $y\lt0$ ⟹ 第三象限，$P\left(-\dfrac12,-1\right)$，$\sin\theta=-\dfrac{2}{\sqrt5}$、$\cos\theta=-\dfrac{1}{\sqrt5}$。</div>
+(1) $-0.894\gt-0.447$？錯。(2) $\tan2\theta=\dfrac{2\cdot2}{1-4}=-\dfrac43\lt0$，且 $\sin2\theta=2\sin\theta\cos\theta\gt0$ ⟹ $2\theta$ 在第二象限，錯。(3) $\cos2\theta=\dfrac{1-\tan^2\theta}{1+\tan^2\theta}=-\dfrac35\lt0$，正確。(4) $\theta$ 是廣義角，可以加減 $2\pi$ 的倍數，$\dfrac{\theta}{2}$ 的象限因此不確定，錯。(5) $\tan\dfrac{\theta}{2}=\dfrac{\sin\theta}{1+\cos\theta}=\dfrac{-2/\sqrt5}{1-1/\sqrt5}=-\dfrac{\sqrt5+1}{2}\approx-1.62$，而 $\dfrac12\sin\theta\approx-0.45$，錯。</div></div>
+
+<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">cos²、sin cos、sin² 三種都有 → 全部降冪成 2x，再疊合</span><span class="src">高雄中學 110 上 填 5</span></div>
+<div class="fxq">設 $0\lt x\lt\pi$，解方程式 $4\cos^2x+2\sqrt3\sin x\cos x-2\sin^2x=4$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=\dfrac{\pi}{6}$</div>
+<div class="fxs"><div class="move">招式：$\cos^2x=\dfrac{1+\cos2x}{2}$、$\sin^2x=\dfrac{1-\cos2x}{2}$、$2\sin x\cos x=\sin2x$。</div>
+左式 $=2(1+\cos2x)+\sqrt3\sin2x-(1-\cos2x)=1+3\cos2x+\sqrt3\sin2x$。方程式化為 $\sqrt3\sin2x+3\cos2x=3$，疊合：$2\sqrt3\sin\left(2x+\dfrac{\pi}{3}\right)=3$ ⟹ $\sin\left(2x+\dfrac{\pi}{3}\right)=\dfrac{\sqrt3}{2}$。<br>
+$2x+\dfrac{\pi}{3}\in\left(\dfrac{\pi}{3},\dfrac{7\pi}{3}\right)$，其中 $\sin=\dfrac{\sqrt3}{2}$ 的只有 $\dfrac{2\pi}{3}$（$\dfrac{\pi}{3}$ 與 $\dfrac{7\pi}{3}$ 是開端點）⟹ $x=\dfrac{\pi}{6}$。</div></div>
+
+<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">分式相減 → 通分，分子疊合、分母倍角</span><span class="src">台中女中 112 上 填 6</span></div>
+<div class="fxq">求 $\dfrac{3}{\sin\frac{4\pi}{9}}-\dfrac{\sqrt3}{\cos\frac{4\pi}{9}}$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-4\sqrt3$</div>
+<div class="fxs"><div class="move">招式：$\dfrac{4\pi}{9}=80^\circ$，通分後分子 $3\cos80^\circ-\sqrt3\sin80^\circ$ 可以疊合。</div>
+分子 $=2\sqrt3\left(\dfrac{\sqrt3}{2}\cos80^\circ-\dfrac12\sin80^\circ\right)=2\sqrt3\cos(80^\circ+30^\circ)=2\sqrt3\cos110^\circ=-2\sqrt3\sin20^\circ$。<br>
+分母 $\sin80^\circ\cos80^\circ=\dfrac12\sin160^\circ=\dfrac12\sin20^\circ$。相除得 $-4\sqrt3$。</div></div>
+
+<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">cos(θ/2)−sin(θ/2) 已知 → 平方得 sinθ；頂角＝180°−2θ</span><span class="src">台中女中 112 上 填 7</span></div>
+<div class="fxq">等腰三角形的底角為 $\theta$、頂角為 $\varphi$，且 $\cos\dfrac{\theta}{2}-\sin\dfrac{\theta}{2}=\dfrac{1}{\sqrt3}$，求 $\tan\varphi$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-4\sqrt5$</div>
+<div class="fxs"><div class="move">招式：平方：$1-\sin\theta=\dfrac13$ ⟹ $\sin\theta=\dfrac23$；$\varphi=180^\circ-2\theta$ ⟹ $\tan\varphi=-\tan2\theta$。</div>
+$\theta$ 是底角（銳角），$\cos\theta=\dfrac{\sqrt5}{3}$，$\tan\theta=\dfrac{2}{\sqrt5}$。$\tan2\theta=\dfrac{2\tan\theta}{1-\tan^2\theta}=\dfrac{4/\sqrt5}{1-4/5}=\dfrac{20}{\sqrt5}=4\sqrt5$，故 $\tan\varphi=-4\sqrt5$。<br><span class="note-sm">檢查：$\cos\frac{\theta}{2}\gt\sin\frac{\theta}{2}$ 表示 $\frac{\theta}{2}\lt45^\circ$，與 $\theta$ 為銳角一致。</span></div></div>
+
+<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">sin x cos x 與 sin²x 混合 → 降冪成 2x 再疊合，注意區間</span><span class="src">台南一中 112 上 填 8</span></div>
+<div class="fxq">設 $-\dfrac{\pi}{4}\le x\le\dfrac{\pi}{8}$，求 $\sin x(\cos x-\sin x)$ 的最大值與最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">最大值 $\dfrac{\sqrt2-1}{2}$，最小值 $-1$</div>
+<div class="fxs"><div class="move">招式：$\sin x\cos x-\sin^2x=\dfrac12\sin2x-\dfrac{1-\cos2x}{2}=\dfrac{\sqrt2}{2}\sin\left(2x+\dfrac{\pi}{4}\right)-\dfrac12$。</div>
+$2x+\dfrac{\pi}{4}\in\left[-\dfrac{\pi}{4},\dfrac{\pi}{2}\right]$，$\sin$ 的範圍是 $\left[-\dfrac{\sqrt2}{2},1\right]$。最大值 $\dfrac{\sqrt2}{2}-\dfrac12=\dfrac{\sqrt2-1}{2}$（$x=\dfrac{\pi}{8}$），最小值 $-\dfrac12-\dfrac12=-1$（$x=-\dfrac{\pi}{4}$）。</div></div>
+
+<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">先展開再疊合，區間最值看 x+θ 的範圍</span><span class="src">112 臺北區模考 數A 單選 2</span></div>
+<div class="fxq">設 $f(x)=2\sin\left(x+\dfrac{\pi}{6}\right)-2\cos x$，$\dfrac{\pi}{2}\le x\le\dfrac{4\pi}{3}$。若 $f(x)$ 的最大值為 $m$、最小值為 $n$，則 $(m,n)$ 為？<br>(1) $(2,-1)$　(2) $(2,-\sqrt3)$　(3) $(2,\sqrt3)$　(4) $(\sqrt3,-1)$　(5) $(\sqrt3,-\sqrt3)$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $(2,-1)$</div>
+<div class="fxs"><div class="move">招式：$2\sin\left(x+\dfrac{\pi}{6}\right)=\sqrt3\sin x+\cos x$，減去 $2\cos x$ 得 $\sqrt3\sin x-\cos x=2\sin\left(x-\dfrac{\pi}{6}\right)$。</div>
+$x-\dfrac{\pi}{6}\in\left[\dfrac{\pi}{3},\dfrac{7\pi}{6}\right]$：$\sin$ 在 $\dfrac{\pi}{2}$ 取到最大 $1$，在右端 $\dfrac{7\pi}{6}$ 取到最小 $-\dfrac12$。故 $m=2$、$n=-1$。</div></div>
+
+<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">tanA、tanB 是兩根 ＋ 第三角已知 → tan(A+B)=−tanC</span><span class="src">105 中區模考 數A 單選 5</span></div>
+<div class="fxq">在 $\triangle ABC$ 中，$\tan A$、$\tan B$ 為 $x^2+(-2a-1)x+3a=0$ 的兩根，且 $\angle C=45^\circ$，求 $a$。<br>(1) $-2$　(2) $-\dfrac15$　(3) $0$　(4) $\dfrac15$　(5) $2$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5) $a=2$</div>
+<div class="fxs"><div class="move">招式：$A+B=180^\circ-C$ ⟹ $\tan(A+B)=-\tan C=-1$。</div>
+根與係數：$\tan A+\tan B=2a+1$、$\tan A\tan B=3a$。$\tan(A+B)=\dfrac{2a+1}{1-3a}=-1$ ⟹ $2a+1=3a-1$ ⟹ $a=2$。（此時方程式 $x^2-5x+6=0$ 的根 $2,3$ 都為正，兩角皆銳角，合理。）</div></div>
+
+<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">兩式各含 sin、cos 交錯 → 平方相加，交叉項是 sin(α+β)</span><span class="src">106 全國模考 數A 單選 6</span></div>
+<div class="fxq">若 $\begin{cases}\cos\alpha+\sin\beta=1\\ \sin\alpha+\cos\beta=\sqrt2\end{cases}$，求 $\cos(2\alpha+2\beta)$。<br>(1) $-1$　(2) $0$　(3) $1$　(4) $\dfrac12$　(5) $-\dfrac12$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4) $\dfrac12$</div>
+<div class="fxs"><div class="move">招式：平方相加：$2+2(\cos\alpha\sin\beta+\sin\alpha\cos\beta)=1+2=3$ ⟹ $\sin(\alpha+\beta)=\dfrac12$。</div>
+$\cos(2\alpha+2\beta)=1-2\sin^2(\alpha+\beta)=1-2\cdot\dfrac14=\dfrac12$。</div></div>
+
+<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">誘導公式遇到 23π/2 → 先減 2π 的倍數，再看剩下的 π/2 奇偶</span><span class="src">112 模考（W6）數A 單選 1</span></div>
+<div class="fxq">設 $\dfrac{\pi}{2}\lt\theta\lt\dfrac{3\pi}{2}$，$\tan\theta=\dfrac13$，求 $\sin\left(\dfrac{23\pi}{2}-\theta\right)$。<br>(1) $\dfrac{3}{\sqrt{10}}$　(2) $\dfrac{2}{\sqrt{10}}$　(3) $\dfrac{1}{\sqrt{10}}$　(4) $-\dfrac{1}{\sqrt{10}}$　(5) $-\dfrac{3}{\sqrt{10}}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\dfrac{3}{\sqrt{10}}$</div>
+<div class="fxs"><div class="move">招式：$\dfrac{23\pi}{2}=10\pi+\dfrac{3\pi}{2}$，所以 $\sin\left(\dfrac{23\pi}{2}-\theta\right)=\sin\left(\dfrac{3\pi}{2}-\theta\right)=-\cos\theta$。</div>
+$\tan\theta=\dfrac13\gt0$ 且 $\theta\in\left(\dfrac{\pi}{2},\dfrac{3\pi}{2}\right)$ ⟹ 第三象限，$\cos\theta=-\dfrac{3}{\sqrt{10}}$。故所求 $=\dfrac{3}{\sqrt{10}}$。</div></div>
+
+<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">週期模型 → 代入兩個已知時刻解 a、b，再代目標時刻</span><span class="src">112 模考（W6）數A 單選 3</span></div>
+<div class="fxq">某海灣的水深 $d(x)=a\cos\left(\dfrac{x}{24}\pi+\dfrac{\pi}{6}\right)+b$（$x$ 為時刻，單位：時）。若當日 $08{:}00$ 水深 $14$ 公尺、$12{:}00$ 水深 $11$ 公尺，則當日 $20{:}00$ 的水深為多少公尺？<br>(1) $12.5$　(2) $11$　(3) $9.5$　(4) $8$　(5) $7.5$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4) $8$ 公尺</div>
+<div class="fxs"><div class="move">招式：把 $x=8,12,20$ 代進去，括號裡分別是 $\dfrac{\pi}{2}$、$\dfrac{2\pi}{3}$、$\pi$——都是特殊角。</div>
+$x=8$：$a\cos\dfrac{\pi}{2}+b=b=14$。$x=12$：$a\cos\dfrac{2\pi}{3}+14=-\dfrac a2+14=11$ ⟹ $a=6$。$x=20$：$6\cos\pi+14=8$。</div></div>
+</section>
+
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考、模考、大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">度與弧度混用的同界角</span><span class="src">北一女中 113 上 單選 4</span></div>
+<div class="fxq">設 $180\le x\le360$，且 $(60x)^\circ$ 與 $x$（弧度）所代表的角為同界角，則 $x$ 的值最接近下列何者？<br>(1) $190$　(2) $210$　(3) $240$　(4) $270$　(5) $300$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4) $270$</div>
+<div class="fxs">$x$ 弧度 $=\left(\dfrac{180x}{\pi}\right)^\circ$。同界角 ⟺ $60x-\dfrac{180x}{\pi}=360k$（$k$ 整數）⟺ $x\left(60-\dfrac{180}{\pi}\right)=360k$。$\dfrac{180}{\pi}\approx57.30$，故 $x\approx\dfrac{360k}{2.70}\approx133.1k$。在 $[180,360]$ 內只有 $k=2$：$x\approx266$，最接近 $270$。</div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">三直線分平面成 6 區 → 平行或共點；再用 tan 定 θ</span><span class="src">北一女中 113 上 選填 F</span></div>
+<div class="fxq">設 $4\pi\le2\theta\le5\pi$，坐標平面上有三條相異直線 $L_1:2x+y-5=0$、$L_2:x-y+2=0$、$L_3:\tan\theta\cdot x-y+3-\sqrt3=0$。若此三線將平面分割成 $6$ 個區域，則滿足條件的所有 $\theta$ 之和為＿＿$\pi$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{55}{12}$</div>
+<div class="fxs">三條相異直線一般分平面成 $7$ 區；只分成 $6$ 區 ⟺ 「有兩條平行」或「三線共點」。<br>
+・共點：$L_1,L_2$ 交於 $(1,3)$，代入 $L_3$：$\tan\theta+3-\sqrt3=3$ ⟹ $\tan\theta=\sqrt3$ ⟹ $\theta=\dfrac{\pi}{3}+n\pi$。<br>
+・$L_3\parallel L_2$：$\tan\theta=1$ ⟹ $\theta=\dfrac{\pi}{4}+n\pi$。・$L_3\parallel L_1$：$\tan\theta=-2$，$\theta=\pi-\tan^{-1}2+n\pi$。<br>
+範圍 $2\pi\le\theta\le\dfrac{5\pi}{2}$：$\dfrac{\pi}{3}+2\pi=\dfrac{7\pi}{3}$ ✔、$\dfrac{\pi}{4}+2\pi=\dfrac{9\pi}{4}$ ✔；$\tan\theta=-2$ 的解 $\theta\approx2\pi+2.03$ 超過 $\dfrac{5\pi}{2}\approx2\pi+1.57$，不合。總和 $=\dfrac{7\pi}{3}+\dfrac{9\pi}{4}=\dfrac{55\pi}{12}$。</div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">四個象限的「同 |tan|」角 → 用 α 統一表示再逐項檢驗</span><span class="src">台中女中 110 上 多選 3</span></div>
+<div class="fxq">$\theta_1,\theta_2,\theta_3,\theta_4$ 分別是第一、二、三、四象限角，皆在 $(0,2\pi)$ 內，且 $|\tan\theta_i|=\dfrac12$。選出正確的選項：<br>(1) $\theta_2\lt\dfrac{5\pi}{6}$　(2) $\theta_1+\theta_2=\pi$　(3) $\sin\theta_3=-\dfrac{\sqrt5}{5}$　(4) $\cos(\theta_3+\theta_4)=1$　(5) $\tan\theta_3+\tan(\pi-\theta_4)=0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)</div>
+<div class="fxs">令 $\alpha=\tan^{-1}\dfrac12\approx26.6^\circ$，則 $\theta_1=\alpha$、$\theta_2=\pi-\alpha$、$\theta_3=\pi+\alpha$、$\theta_4=2\pi-\alpha$。<br>
+(1) $\theta_2\approx153.4^\circ\gt150^\circ$，錯。(2) 正確。(3) $\sin\theta_3=-\sin\alpha=-\dfrac{1}{\sqrt5}$，正確。(4) $\theta_3+\theta_4=3\pi$，$\cos3\pi=-1$，錯。(5) $\tan\theta_3=\dfrac12$，$\tan(\pi-\theta_4)=\tan(\alpha-\pi)=\dfrac12$，和為 $1$，錯。</div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">先疊合前兩項、再把第三項用餘角改寫，最後再疊合一次</span><span class="src">台中一中 112 上 填 7</span></div>
+<div class="fxq">設 $180^\circ\lt\theta^\circ\lt270^\circ$，$r$ 為正整數，且 $\sin112^\circ+\sqrt3\cos112^\circ-2\sqrt3\sin82^\circ=r\sin\theta^\circ$，求 $(r,\theta)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(r,\theta)=(4,232)$</div>
+<div class="fxs">$\sin112^\circ+\sqrt3\cos112^\circ=2\sin(112^\circ+60^\circ)=2\sin172^\circ=2\sin8^\circ$；$\sin82^\circ=\cos8^\circ$。<br>
+原式 $=2\sin8^\circ-2\sqrt3\cos8^\circ=4\sin(8^\circ-60^\circ)=4\sin(-52^\circ)=4\sin232^\circ$。故 $r=4$、$\theta=232$。</div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">等比中項 → 兩端相乘用「和差角乘積」化成 cos 4θ</span><span class="src">台中一中 112 上 填 12</span></div>
+<div class="fxq">求 $0\lt\theta\lt\pi$ 中，使 $\cos\left(2\theta-\dfrac{\pi}{4}\right)$、$\sin2\theta$、$\cos\left(2\theta+\dfrac{\pi}{4}\right)$ 依序成等比數列的 $\theta$ 有幾個？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$ 個</div>
+<div class="fxs">等比 ⟺ $\sin^22\theta=\cos\left(2\theta-\dfrac{\pi}{4}\right)\cos\left(2\theta+\dfrac{\pi}{4}\right)$。右式用和差角展開：$\left(\cos2\theta\cos\dfrac{\pi}{4}\right)^2-\left(\sin2\theta\sin\dfrac{\pi}{4}\right)^2=\dfrac{\cos^22\theta-\sin^22\theta}{2}=\dfrac{\cos4\theta}{2}=\dfrac{1-2\sin^22\theta}{2}$。<br>
+故 $\sin^22\theta=\dfrac12-\sin^22\theta$ ⟹ $\sin^22\theta=\dfrac14$ ⟹ $\sin2\theta=\pm\dfrac12$。$2\theta\in(0,2\pi)$ 有 $\dfrac{\pi}{6},\dfrac{5\pi}{6},\dfrac{7\pi}{6},\dfrac{11\pi}{6}$ 四解，且中項 $\sin2\theta\ne0$，皆合。共 $4$ 個。</div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">分式三角函數的性質 → 週期看 2x，奇偶性代 −x，最值用 cos 2x 為變數</span><span class="src">台中一中 112 上 多選 4</span></div>
+<div class="fxq">設 $f(x)=\dfrac{\sin2x}{2+\cos2x}$，選出正確的選項：<br>(1) 週期為 $2\pi$　(2) 最小值為 $-1$　(3) $f\left(\dfrac{\pi}{3}\right)$ 是最大值　(4) $x=\dfrac{\pi}{3}$ 為對稱軸　(5) 圖形對稱於原點</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)(5)</div>
+<div class="fxs">(1) $\sin2x$、$\cos2x$ 的週期都是 $\pi$，$f$ 的週期為 $\pi$，錯。(5) $f(-x)=\dfrac{-\sin2x}{2+\cos2x}=-f(x)$，奇函數，正確。<br>
+最值：令 $t=2x$，$y=\dfrac{\sin t}{2+\cos t}$ ⟹ $y(2+\cos t)=\sin t$ ⟹ $\sin t-y\cos t=2y$ ⟹ $\sqrt{1+y^2}\ge|2y|$ ⟹ $y^2\le\dfrac13$，故最大 $\dfrac{\sqrt3}{3}$、最小 $-\dfrac{\sqrt3}{3}$，(2) 錯。$f\left(\dfrac{\pi}{3}\right)=\dfrac{\sqrt3/2}{2-1/2}=\dfrac{\sqrt3}{3}$ 恰為最大，(3) 正確。<br>
+(4) 若 $x=\dfrac{\pi}{3}$ 是對稱軸，應有 $f\left(\dfrac{2\pi}{3}\right)=f(0)$，但 $f\left(\dfrac{2\pi}{3}\right)=-\dfrac{\sqrt3}{3}\ne0$，錯。</div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">疊合 ＋ 大角度先減 360° ＋ 用範圍挑唯一解</span><span class="src">93 學測 填 G</span></div>
+<div class="fxq">設 $270^\circ\lt A\lt360^\circ$ 且 $\sqrt3\sin A+\cos A=2\sin2004^\circ$。若 $A=m^\circ$，求 $m$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$m=306$</div>
+<div class="fxs">左式 $=2\sin(A+30^\circ)$；$2004^\circ=5\cdot360^\circ+204^\circ$，右式 $=2\sin204^\circ$。<br>
+$A+30^\circ\in(300^\circ,390^\circ)$，要 $\sin(A+30^\circ)=\sin204^\circ=\sin(-24^\circ)=\sin336^\circ$。在此範圍內 $\sin$ 為 $\sin336^\circ$ 的只有 $336^\circ$（另一解 $204^\circ+360^\circ=564^\circ$ 超出）。故 $A=306^\circ$。</div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">廣義角多選：加 2π 的倍數不影響三角函數值，但影響 θ/2</span><span class="src">101 學測 多選 12</span></div>
+<div class="fxq">廣義角 $\theta$ 的頂點為原點、始邊為 $x$ 軸正向，且 $\tan\theta=\dfrac23$。若終邊上有一點 $P$ 的 $y$ 坐標為 $-4$，選出一定正確的選項：<br>(1) $P$ 的 $x$ 坐標是 $-6$　(2) $\overline{OP}=2\sqrt{13}$　(3) $\cos\theta=\dfrac{3}{\sqrt{13}}$　(4) $\sin2\theta\gt0$　(5) $\cos\dfrac{\theta}{2}\lt0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(4)</div>
+<div class="fxs">$\tan\theta=\dfrac{y}{x}=\dfrac23$ 且 $y=-4$ ⟹ $x=-6$（(1) 正確），$\overline{OP}=\sqrt{36+16}=2\sqrt{13}$（(2) 正確）。第三象限：$\cos\theta=-\dfrac{3}{\sqrt{13}}$，(3) 錯。$\sin2\theta=2\sin\theta\cos\theta$，兩者皆負，乘積為正，(4) 正確。(5) $\theta$ 可寫成 $\theta_0+2k\pi$，$\dfrac{\theta}{2}=\dfrac{\theta_0}{2}+k\pi$，$k$ 的奇偶會翻轉 $\cos\dfrac{\theta}{2}$ 的正負，不一定，錯。</div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">兩個倍角不等式 → 各自因式分解，取交集</span><span class="src">學測 單選（sin 2θ 與 cos 2θ）</span></div>
+<div class="fxq">設 $0\le\theta\le2\pi$。已知所有滿足 $\sin2\theta\gt\sin\theta$ 且 $\cos2\theta\gt\cos\theta$ 的 $\theta$ 可表示為 $a\pi\lt\theta\lt b\pi$，求 $b-a$。<br>(1) $\dfrac13$　(2) $\dfrac12$　(3) $\dfrac23$　(4) $\dfrac34$　(5) $1$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\dfrac13$</div>
+<div class="fxs">$\cos2\theta\gt\cos\theta$ ⟺ $2\cos^2\theta-\cos\theta-1\gt0$ ⟺ $(2\cos\theta+1)(\cos\theta-1)\gt0$ ⟺ $\cos\theta\lt-\dfrac12$（$\cos\theta\gt1$ 不可能）⟺ $\theta\in\left(\dfrac{2\pi}{3},\dfrac{4\pi}{3}\right)$。<br>
+$\sin2\theta\gt\sin\theta$ ⟺ $\sin\theta(2\cos\theta-1)\gt0$；在上面的範圍內 $2\cos\theta-1\lt0$，故需 $\sin\theta\lt0$ ⟹ $\theta\in(\pi,2\pi)$。<br>
+交集 $\left(\pi,\dfrac{4\pi}{3}\right)$，$a=1$、$b=\dfrac43$，$b-a=\dfrac13$。</div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">兩個相位不同的 sin、cos → 展開合併，係數會共用一個因子</span><span class="src">113 全國模考 數A 多選 9</span></div>
+<div class="fxq">設 $f(x)=\sin\left(x+\dfrac{\pi}{6}\right)-\cos\left(x-\dfrac{\pi}{6}\right)$，選出正確的選項：<br>(1) 若 $0\le x\lt2\pi$，$f(x)$ 的最大值為 $\dfrac{\sqrt6-\sqrt2}{2}$　(2) 若 $0\le x\lt2\pi$ 且 $f$ 在 $x=\alpha$ 取最小值，則 $\alpha=\dfrac{7\pi}{4}$　(3) $f$ 的週期為 $\pi$　(4) 若 $0\le\alpha\lt\beta\lt2\pi$ 且 $f(\alpha)=f(\beta)=\dfrac12$，則 $\alpha+\beta=\pi$　(5) 若 $0\le x\lt8\pi$，所有滿足 $f(x)=0$ 的相異實數解之和為 $30\pi$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(5)</div>
+<div class="fxs">展開：$f=\left(\dfrac{\sqrt3}{2}\sin x+\dfrac12\cos x\right)-\left(\dfrac{\sqrt3}{2}\cos x+\dfrac12\sin x\right)=\dfrac{\sqrt3-1}{2}(\sin x-\cos x)=\dfrac{\sqrt3-1}{2}\cdot\sqrt2\sin\left(x-\dfrac{\pi}{4}\right)$。<br>
+(1) 振幅 $\dfrac{\sqrt6-\sqrt2}{2}$，正確。(2) 最小在 $x-\dfrac{\pi}{4}=\dfrac{3\pi}{2}$ ⟹ $x=\dfrac{7\pi}{4}$，正確。(3) 週期 $2\pi$，錯。(4) 兩解對稱於對稱軸 $x-\dfrac{\pi}{4}=\dfrac{\pi}{2}$，即 $x=\dfrac{3\pi}{4}$，故 $\alpha+\beta=\dfrac{3\pi}{2}$，錯。(5) 零點 $x=\dfrac{\pi}{4}+n\pi$，$n=0,\dots,7$，和 $=8\cdot\dfrac{\pi}{4}+\pi(0+1+\cdots+7)=2\pi+28\pi=30\pi$，正確。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">先合成單一餘弦，再逐項用對稱、週期、平移判斷</span><span class="src">112 全國模考 數A 多選 10</span></div>
+<div class="fxq">已知 $f(x)=\cos2x-\cos\left(2x-\dfrac{\pi}{3}\right)$，選出正確的選項：<br>(1) $f$ 的週期為 $\pi$　(2) 對任意實數 $a$，$f(a)=f\left(\dfrac{\pi}{3}-a\right)$　(3) 在 $[0,2\pi)$ 中滿足 $f(x)=\dfrac12$ 的所有實數 $x$ 之和為 $\dfrac{10\pi}{3}$　(4) $f(x)=\dfrac x3$ 有 $5$ 個實根　(5) $y=f(x)$ 的圖形可由 $y=2\sin^2x$ 的圖形經適當平移得到</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)(4)(5)</div>
+<div class="fxs">展開：$f=\cos2x-\left(\dfrac12\cos2x+\dfrac{\sqrt3}{2}\sin2x\right)=\dfrac12\cos2x-\dfrac{\sqrt3}{2}\sin2x=\cos\left(2x+\dfrac{\pi}{3}\right)$。<br>
+(1) 週期 $\pi$，正確。(2) $f\left(\dfrac{\pi}{3}-a\right)=\cos(\pi-2a)=-\cos2a$，與 $f(a)=\cos\left(2a+\dfrac{\pi}{3}\right)$ 不恆等（代 $a=0$：$-1\ne\dfrac12$），錯。(3) $\cos\left(2x+\dfrac{\pi}{3}\right)=\dfrac12$ ⟹ $2x+\dfrac{\pi}{3}=\pm\dfrac{\pi}{3}+2n\pi$ ⟹ $x=n\pi$ 或 $x=-\dfrac{\pi}{3}+n\pi$；在 $[0,2\pi)$ 內為 $0,\pi,\dfrac{2\pi}{3},\dfrac{5\pi}{3}$，和 $=\dfrac{10\pi}{3}$，正確。(4) 直線 $y=\dfrac x3$ 只在 $-3\le x\le3$ 內與振幅 $1$ 的波相交；$f$ 週期 $\pi$，在 $[-3,3]$ 上畫圖可數得交點約在 $x\approx-2.4,-1.7,0.3,2.3,2.7$，共 $5$ 個，正確。(5) $2\sin^2x=1-\cos2x=\cos(2x+\pi)+1$，是 $\cos$ 的平移，正確。</div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">疊合後在區間取最大 → 再做雙重根號有理化</span><span class="src">112 模考（W6）數A 填 16</span></div>
+<div class="fxq">設 $f(x)=6\sqrt3\cos x-6\sin x-7$，$0^\circ\le x\le60^\circ$。已知 $f(x)$ 的最大值為 $M$，且 $\dfrac{1}{\sqrt{M+19}}=\dfrac{b-\sqrt3}{a}$（$a,b$ 為正整數），求 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(6,3)$</div>
+<div class="fxs">$6\sqrt3\cos x-6\sin x=12\cos(x+30^\circ)$。$x+30^\circ\in[30^\circ,90^\circ]$，$\cos$ 在 $30^\circ$ 最大：$M=12\cdot\dfrac{\sqrt3}{2}-7=6\sqrt3-7$。<br>
+$M+19=12+6\sqrt3=(9+3)+2\sqrt{27}=(3+\sqrt3)^2$，故 $\dfrac{1}{\sqrt{M+19}}=\dfrac{1}{3+\sqrt3}=\dfrac{3-\sqrt3}{6}$，$(a,b)=(6,3)$。</div></div>
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充專區：競賽味、證明題與科學班・教甄</h2>
+<div class="goal">
+  <div><b>對象</b>學有餘力、想參加數學競賽或未來想走數理科系的同學。</div>
+  <div><b>目標</b>6 題經典 ＋ 7 題科學班／教甄：看懂「為什麼」，學會把公式證出來、把巧妙的角度關係看出來。</div>
+  <div><b>說明</b>本區不列入段考通過標準。教甄題原卷為掃描影像，以 OCR 讀出後逐題重打、重解、驗算。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">差角公式的證明：單位圓上兩點的距離算兩次</span><span class="src">經典證明</span></div>
+<div class="fxq">利用單位圓與距離公式，證明 $\cos(\alpha-\beta)=\cos\alpha\cos\beta+\sin\alpha\sin\beta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">（證明題）</div>
+<div class="fxs">單位圓上取 $A(\cos\alpha,\sin\alpha)$、$B(\cos\beta,\sin\beta)$，$\angle AOB=\alpha-\beta$（或其同界角，餘弦值相同）。<br>
+用距離公式：$\overline{AB}^2=(\cos\alpha-\cos\beta)^2+(\sin\alpha-\sin\beta)^2=2-2(\cos\alpha\cos\beta+\sin\alpha\sin\beta)$。<br>
+用餘弦定理（$\overline{OA}=\overline{OB}=1$）：$\overline{AB}^2=1+1-2\cos(\alpha-\beta)$。<br>
+兩式相等即得 $\cos(\alpha-\beta)=\cos\alpha\cos\beta+\sin\alpha\sin\beta$。其餘五條和差角公式都可由它推出（$\beta\to-\beta$、$\alpha\to\dfrac{\pi}{2}-\alpha$）。</div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">三角形裡的 tan 恆等式：A+B=π−C 代進 tan 和角</span><span class="src">經典證明</span></div>
+<div class="fxq">(1) 證明：在 $\triangle ABC$ 中（三個角都不是直角），$\tan A+\tan B+\tan C=\tan A\tan B\tan C$。<br>(2) 若 $\tan A=1$、$\tan B=2$，求 $\tan C$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2) $\tan C=3$</div>
+<div class="fxs">(1) $\tan C=\tan(\pi-A-B)=-\tan(A+B)=-\dfrac{\tan A+\tan B}{1-\tan A\tan B}$。去分母：$\tan C-\tan A\tan B\tan C=-\tan A-\tan B$，移項即得。<br>
+(2) $\tan C=-\dfrac{1+2}{1-2}=3$。（$1,2,3$ 這組數同時滿足「和＝積」：$1+2+3=1\cdot2\cdot3$。）</div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">18° 的精確值：2θ 與 3θ 互為餘角</span><span class="src">經典推導</span></div>
+<div class="fxq">利用 $\sin36^\circ=\cos54^\circ$，求 $\sin18^\circ$ 的精確值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sin18^\circ=\dfrac{\sqrt5-1}{4}$</div>
+<div class="fxs">令 $\theta=18^\circ$，則 $2\theta+3\theta=90^\circ$ ⟹ $\sin2\theta=\cos3\theta$。<br>
+左：$2\sin\theta\cos\theta$。右：$\cos3\theta=\cos(2\theta+\theta)=\cos2\theta\cos\theta-\sin2\theta\sin\theta=(1-2\sin^2\theta)\cos\theta-2\sin^2\theta\cos\theta=\cos\theta(1-4\sin^2\theta)$。<br>
+兩邊除以 $\cos\theta\ne0$：$2\sin\theta=1-4\sin^2\theta$ ⟹ $4\sin^2\theta+2\sin\theta-1=0$ ⟹ $\sin\theta=\dfrac{-1\pm\sqrt5}{4}$，取正：$\dfrac{\sqrt5-1}{4}\approx0.309$。</div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">七分之一圓的餘弦和：乘以 2 sin(π/7) 讓它望遠鏡式相消</span><span class="src">競賽經典</span></div>
+<div class="fxq">證明 $\cos\dfrac{\pi}{7}-\cos\dfrac{2\pi}{7}+\cos\dfrac{3\pi}{7}=\dfrac12$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">（證明題）</div>
+<div class="fxs">$-\cos\dfrac{2\pi}{7}=\cos\dfrac{5\pi}{7}$，令 $S=\cos\dfrac{\pi}{7}+\cos\dfrac{3\pi}{7}+\cos\dfrac{5\pi}{7}$。<br>
+由和角公式相減：$2\sin a\cos b=\sin(a+b)-\sin(b-a)$。取 $a=\dfrac{\pi}{7}$：
+$$2\sin\frac{\pi}{7}\cdot S=\left(\sin\frac{2\pi}{7}-0\right)+\left(\sin\frac{4\pi}{7}-\sin\frac{2\pi}{7}\right)+\left(\sin\frac{6\pi}{7}-\sin\frac{4\pi}{7}\right)=\sin\frac{6\pi}{7}=\sin\frac{\pi}{7}.$$
+故 $S=\dfrac12$。（同法可證 $\cos\dfrac{2\pi}{7}+\cos\dfrac{4\pi}{7}+\cos\dfrac{6\pi}{7}=-\dfrac12$。）</div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">圓上動點到正三角形三頂點距離和 → 圓周角 60° ＋ 旋轉（托勒密的特例）</span><span class="src">高雄中學 112 上 計算 15</span></div>
+<div class="fxq">$\triangle ABC$ 為單位圓的內接正三角形，$P$ 為圓上一點，求 $\overline{PA}+\overline{PB}+\overline{PC}$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$</div>
+<div class="fxs">不妨設 $P$ 在劣弧 $BC$ 上。圓周角：$\angle BPA=\angle CPA=60^\circ$（都對著 $60^\circ$ 的弧）。<br>
+在 $\overline{PA}$ 上取 $D$ 使 $\overline{PD}=\overline{PB}$，則 $\triangle PBD$ 為正三角形，$\overline{BD}=\overline{PB}$。又 $\angle ABD=\angle ABC-\angle DBC=60^\circ-\angle DBC=\angle PBC$，且 $\overline{AB}=\overline{CB}$、$\overline{BD}=\overline{BP}$，故 $\triangle ABD\cong\triangle CBP$，$\overline{AD}=\overline{CP}$。<br>
+所以 $\overline{PA}=\overline{PD}+\overline{DA}=\overline{PB}+\overline{PC}$，$\overline{PA}+\overline{PB}+\overline{PC}=2\overline{PA}\le2\cdot(\text{直徑})=4$，等號在 $\overline{PA}$ 為直徑（$P$ 是弧 $BC$ 中點）時成立。<br>
+<span class="note-sm">用三角函數也行：設 $P$ 對應角 $\theta$，三段距離都是 $2\sin(\cdot)$，化簡後同樣得 $2\overline{PA}$。</span></div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">弧度的本色：面積夾擠證 sin x &lt; x &lt; tan x</span><span class="src">經典證明</span></div>
+<div class="fxq">證明：當 $0\lt x\lt\dfrac{\pi}{2}$ 時，$\sin x\lt x\lt\tan x$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">（證明題）</div>
+<div class="fxs">單位圓上取 $A(1,0)$、$P(\cos x,\sin x)$，過 $A$ 的切線交射線 $OP$ 於 $T$，則 $\overline{AT}=\tan x$。<br>
+面積比較：$\triangle OAP\lt$ 扇形 $OAP\lt\triangle OAT$，即 $\dfrac12\cdot1\cdot\sin x\lt\dfrac12\cdot1^2\cdot x\lt\dfrac12\cdot1\cdot\tan x$。<br>
+同乘 $2$ 即得 $\sin x\lt x\lt\tan x$。<span class="note-sm">這正是「扇形面積 $=\frac12r^2\theta$ 必須用弧度」的理由——用度數，中間那一項就不會是 $x$。</span></div></div>
+
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（7 題）</h3>
+<div class="note">來源：師大附中 111 教甄、台中文華高中 106 教甄、112 全國教甄聯招、嘉義高中 115 科學班，另加兩題教甄常見的經典恆等式。原卷多為掃描影像，OCR 後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">兩角和為 60° → 降冪後 cos(A+B)=1/2 把交叉項吃掉</span><span class="src">師大附中 111 教甄 填 1</span></div>
+<div class="fxq">計算 $\sin^241^\circ+\sin^219^\circ+\sin41^\circ\sin19^\circ$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac34$</div>
+<div class="fxs"><div class="move">招式：$41^\circ+19^\circ=60^\circ$。一般地，$A+B=60^\circ$ 時 $\sin^2A+\sin^2B+\sin A\sin B=\dfrac34$。</div>
+降冪：$\sin^2A+\sin^2B=1-\dfrac{\cos2A+\cos2B}{2}=1-\cos(A+B)\cos(A-B)=1-\dfrac12\cos(A-B)$。<br>
+乘積：$\sin A\sin B=\dfrac{\cos(A-B)-\cos(A+B)}{2}=\dfrac12\cos(A-B)-\dfrac14$。<br>
+相加：$1-\dfrac12\cos(A-B)+\dfrac12\cos(A-B)-\dfrac14=\dfrac34$。<br>
+<span class="note-sm">幾何看法：三角形的三內角 $41^\circ,19^\circ,120^\circ$，由正弦定理三邊比為 $\sin41^\circ:\sin19^\circ:\sin120^\circ$，餘弦定理 $c^2=a^2+b^2-2ab\cos120^\circ=a^2+b^2+ab$，所以原式 $=\sin^2120^\circ=\dfrac34$。</span></div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">S2</span><span class="kw">sin²、sin cos、cos² 三項 → 降冪成 2x，疊合，再看區間</span><span class="src">台中文華高中 106 教甄 填 10</span></div>
+<div class="fxq">設 $0\le x\le\pi$，若 $y=3\sin^2x+4\sqrt3\sin x\cos x-\cos^2x$，則當 $x=a\pi$ 時 $y$ 有最小值 $m$，求數對 $(a,m)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,m)=\left(\dfrac56,-3\right)$</div>
+<div class="fxs">$y=\dfrac{3(1-\cos2x)}{2}+2\sqrt3\sin2x-\dfrac{1+\cos2x}{2}=1-2\cos2x+2\sqrt3\sin2x=1+4\sin\left(2x-\dfrac{\pi}{6}\right)$。<br>
+$2x-\dfrac{\pi}{6}\in\left[-\dfrac{\pi}{6},\dfrac{11\pi}{6}\right]$，$\sin=-1$ 在 $\dfrac{3\pi}{2}$ ⟹ $x=\dfrac{5\pi}{6}$，$m=1-4=-3$。</div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">S3</span><span class="kw">周長最小 → 兩次鏡射拉直；等腰三角形頂角 2θ 的底邊 = 2·OP·sinθ</span><span class="src">台中文華高中 106 教甄 填 11</span></div>
+<div class="fxq">$\angle XOY=\theta$，$0^\circ\lt\theta\lt90^\circ$ 且 $\sin\theta=\dfrac45$。$P$ 為 $\angle XOY$ 內部一點，$\overline{OP}=10$。在 $\overrightarrow{OX}$、$\overrightarrow{OY}$ 上分別取點 $Q$、$R$ 使 $\triangle PQR$ 的周長最小，求此最小周長。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$16$</div>
+<div class="fxs">把 $P$ 對 $\overrightarrow{OX}$ 鏡射得 $P_1$、對 $\overrightarrow{OY}$ 鏡射得 $P_2$。周長 $=\overline{P_1Q}+\overline{QR}+\overline{RP_2}\ge\overline{P_1P_2}$，等號在 $Q,R$ 落在線段 $P_1P_2$ 上時成立。<br>
+$\overline{OP_1}=\overline{OP_2}=10$，且 $\angle P_1OP_2=2\theta$（兩次鏡射把角度加倍），故 $\overline{P_1P_2}=2\cdot10\cdot\sin\theta=16$。</div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">直徑所對的圓周角 → PA、PB 用 12cos θ、12sin θ 表示</span><span class="src">嘉義高中 115 科學班 填 4</span></div>
+<div class="fxq">$\overline{AB}$ 為圓的直徑，$P$、$C$ 為圓周上兩點，已知 $\overline{AB}=12$、$\overline{PA}-\overline{PB}=3$，$\angle BCP=\theta$，求 $\sin\theta\cos\theta$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{15}{32}$</div>
+<div class="fxs">$\angle BCP=\angle BAP=\theta$（同弧 $BP$ 的圓周角），且 $\angle APB=90^\circ$。故 $\overline{PA}=12\cos\theta$、$\overline{PB}=12\sin\theta$。<br>
+$12(\cos\theta-\sin\theta)=3$ ⟹ $\cos\theta-\sin\theta=\dfrac14$，平方：$1-2\sin\theta\cos\theta=\dfrac1{16}$ ⟹ $\sin\theta\cos\theta=\dfrac{15}{32}$。</div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">S5</span><span class="kw">對過原點的直線鏡射 → 用 (cos 2φ, sin 2φ) 的公式；兩次鏡射＝旋轉</span><span class="src">112 全國教甄聯招 填 1</span></div>
+<div class="fxq">設 $L_1:x+y=0$、$L_2:x-\sqrt3y=0$。點 $P(1,1)$ 對 $L_1$ 鏡射後得點 $Q$，再對 $L_2$ 鏡射得點 $R$，求 $R$ 的坐標。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$R\left(\dfrac{-1-\sqrt3}{2},\ \dfrac{1-\sqrt3}{2}\right)$</div>
+<div class="fxs">對過原點、傾角 $\varphi$ 的直線鏡射：$(x,y)\mapsto(x\cos2\varphi+y\sin2\varphi,\ x\sin2\varphi-y\cos2\varphi)$。<br>
+$L_1$ 的傾角 $135^\circ$：$P(1,1)\mapsto Q(-1,-1)$（也可直接看：$x+y=0$ 的鏡射就是 $(x,y)\to(-y,-x)$）。<br>
+$L_2$ 的傾角 $30^\circ$，$2\varphi=60^\circ$：$R=\left(-\dfrac12-\dfrac{\sqrt3}{2},\ -\dfrac{\sqrt3}{2}+\dfrac12\right)=\left(\dfrac{-1-\sqrt3}{2},\dfrac{1-\sqrt3}{2}\right)$。<br>
+<span class="note-sm">另解：連做兩次鏡射等於繞原點旋轉 $2(30^\circ-135^\circ)=-210^\circ$（即 $150^\circ$）：$R=(\cos150^\circ-\sin150^\circ,\ \sin150^\circ+\cos150^\circ)$，結果相同。</span></div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">S6</span><span class="kw">tan θ + cot θ = 2/sin 2θ：把互餘的兩項配對</span><span class="src">教甄・競賽經典</span></div>
+<div class="fxq">求 $\tan9^\circ-\tan27^\circ-\tan63^\circ+\tan81^\circ$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$</div>
+<div class="fxs">$\tan81^\circ=\dfrac{1}{\tan9^\circ}$、$\tan63^\circ=\dfrac{1}{\tan27^\circ}$。對任意 $\theta$：$\tan\theta+\dfrac{1}{\tan\theta}=\dfrac{\sin^2\theta+\cos^2\theta}{\sin\theta\cos\theta}=\dfrac{2}{\sin2\theta}$。<br>
+原式 $=\dfrac{2}{\sin18^\circ}-\dfrac{2}{\sin54^\circ}=\dfrac{2(\sin54^\circ-\sin18^\circ)}{\sin18^\circ\sin54^\circ}$。<br>
+分子：$\sin54^\circ-\sin18^\circ=2\cos36^\circ\sin18^\circ$（由和差角相減）；分母：$\sin54^\circ=\cos36^\circ$。故原式 $=\dfrac{4\cos36^\circ\sin18^\circ}{\sin18^\circ\cos36^\circ}=4$。</div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">餘角配對：sin²k° + sin²(90°−k°) = 1</span><span class="src">教甄・競賽經典</span></div>
+<div class="fxq">求 $\sin^21^\circ+\sin^22^\circ+\sin^23^\circ+\cdots+\sin^289^\circ$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{89}{2}$</div>
+<div class="fxs">$\sin^2k^\circ+\sin^2(90^\circ-k^\circ)=\sin^2k^\circ+\cos^2k^\circ=1$。$k=1,\dots,44$ 與 $89,\dots,46$ 配成 $44$ 對，各得 $1$；剩下 $\sin^245^\circ=\dfrac12$。總和 $44+\dfrac12=\dfrac{89}{2}$。</div></div>
+</section>
+
+<div class="ch-nav">
+  <a href="../g10a-ch02/practice.html">← 第二章 直線與圓 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <span></span>
+</div>
+</div>
+
+<script>
+(function () {
+  var G = window.PGEN;
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var labelOf = {};
+  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard';
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
+      '<div class="gh"></div><div class="ga"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+    function load() {
+      var it = G[tier][key](G.makeRng(seed));
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '提示：' + it.h;
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.seed').textContent = '#' + seed;
+      card.querySelector('.gh').classList.remove('on'); card.querySelector('.ga').classList.remove('on');
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+  document.querySelectorAll('.fixset').forEach(function (box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
+    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
+    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
+    for (var i = 0; i < n; i++) {
+      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
+      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+    }
+    box.innerHTML = html + '</ol>';
+    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    box.querySelector('.print').onclick = function () { window.print(); };
+    render(box);
+  });
+  document.querySelectorAll('.fx button').forEach(function (b) {
+    b.onclick = function () {
+      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
+      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
+    };
+  });
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+</body>
+</html>
