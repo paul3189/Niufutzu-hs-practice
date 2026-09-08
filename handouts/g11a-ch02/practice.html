@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二章 指數與對數函數 ── 分級練習本｜高二上</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第二章 指數與對數函數 ── 分級練習本</h1>
+  <div class="sub">高二上・配合主講義 第 1 節 指數的推廣與指數函數、第 2 節 對數的定義與運算、第 3 節 對數函數、方程式與對數刻度。五個程度、一本練到底。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・模考・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（9,500 題抽樣）；固定題全數人工＋電腦重算。常用對數近似值統一用 $\log2\approx0.3010$、$\log3\approx0.4771$、$\log7\approx0.8451$。</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>指數律還會漏、看到 $\log$ 就先卡住的同學。</div>
+  <div><b>目標</b>22 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+</div>
+
+<h3 class="sec">2-1 指數的推廣與指數函數</h3>
+<div class="must">先要會：<b>指數律三條</b>（同底相乘指數加、次方相乘、分數指數＝根號）、<b>$k^{m/n}$ 先把底寫成 $k^n$</b>、<b>同底比大小：底 $\gt1$ 看指數、底在 $0$ 與 $1$ 之間反向</b>、<b>同底方程式指數相等</b>、<b>平移：$x\to x-h$、整體加 $k$，漸近線跟著動</b>、<b>換元 $t=a^x\gt0$ 化二次</b>、<b>每期成長 $k$ 倍 ⟹ 先數幾個週期</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="expLaw,radicalVal,expOrder,expEqSame,expIneqSame,expShift,expQuadEq,growthTimes"></div>
+<div class="fixset" data-tier="L1" data-keys="expLaw,radicalVal,expOrder,expEqSame,expIneqSame,expShift,expQuadEq,growthTimes" data-seed="3101"></div>
+
+<h3 class="sec">2-2 對數的定義與運算</h3>
+<div class="must">先要會：<b>定義 $\log_aM=c\iff a^c=M$</b>、<b>運算律：加變乘、減變除、係數變次方</b>、<b>$\log5=1-\log2$</b>、<b>換底 $\log_ab=\dfrac{\log b}{\log a}$</b>、<b>位數＝首數 $+1$</b>、<b>負的 $\log$ 要寫成「負整數＋正小數」</b>、<b>最高位數字看尾數落在 $\log k$ 與 $\log(k+1)$ 之間</b>、<b>對數方程式解完代回檢查真數 $\gt0$</b>、<b>對數不等式先寫定義域</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="logDef,logLaw,logExpress,changeBase,digits,charMant,leadDigit,logEqSimple,logIneqSimple"></div>
+<div class="fixset" data-tier="L1" data-keys="logDef,logLaw,logExpress,changeBase,digits,charMant,leadDigit,logEqSimple,logIneqSimple" data-seed="3201"></div>
+
+<h3 class="sec">2-3 對數函數與對數刻度</h3>
+<div class="must">先要會：<b>平移與三種對稱（$x$ 軸變號、$y$ 軸 $x\to-x$、$y=x$ 是反函數）</b>、<b>比大小先看正負再和整數比</b>、<b>定義域三條件：底 $\gt0$、底 $\ne1$、真數 $\gt0$</b>、<b>換元 $t=\log_ax$ 配方求最值</b>、<b>對數刻度：規模差 $\Delta M$ ⟹ 能量 $10^{1.5\Delta M}$ 倍；強度 $n$ 倍 ⟹ 分貝加 $10\log n$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="logShift,logOrder,logDomain,logQuadMin,logScale"></div>
+<div class="fixset" data-tier="L1" data-keys="logShift,logOrder,logDomain,logQuadMin,logScale" data-seed="3301"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
+  <div><b>目標</b>16 個段考最常見題型（依 34 份高二段考卷的出現率選出），每型都能自己完整寫出過程。</div>
+  <div><b>通過標準</b>本級固定 12 題兩輪全對、且每張卡片連續新題 3 次全對。</div>
+</div>
+
+<h3 class="sec">2-1 指數：換元最值、不等式、算幾、應用</h3>
+<div class="must">段考 34 卷中<b>換元出現 10 卷、指數不等式 10 卷、算幾 7 卷、半衰期 5 卷、複利 6 卷</b>。招式：<b>$t=a^x+a^{-x}\ge2$，$a^{2x}+a^{-2x}=t^2-2$；頂點在 $t\lt2$ 就取端點</b>；<b>乘積定值 ⟹ 算幾，等號要能成立</b>；<b>指數是二次式：先求指數的範圍，底數小於 $1$ 時大小對調</b>；<b>剩 $\frac1{2^k}$ 就是 $k$ 個半衰期</b>；<b>$(1+r)^n\gt k$ 兩邊取 $\log$ 再取下一個整數</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="expSymmMin,expIneqQuad,expAMGM,expIntervalMax,halfLife,compoundYears"></div>
+
+<h3 class="sec">2-2 對數：換元、方程式、不等式、查表題</h3>
+<div class="must">段考 34 卷中<b>對數方程 14 卷、對數不等式 12 卷、常用對數 15 卷</b>。招式：<b>$t=\log_ax$ 的範圍由 $x$ 的區間換算</b>；<b>真數相乘的方程式解完必刪負真數的根</b>；<b>底數小於 $1$ 的不等式方向反過來，且定義域要交集</b>；<b>$\log\frac{k+1}{k}$ 連加會對消</b>；<b>首數定位數、尾數定最高位；負對數先借位</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="logQuadRange,logEqQuad,logEqProduct,logIneqBase,logSumTele,digitsLead,decimalFirst"></div>
+
+<h3 class="sec">2-3 對數函數上的點、兩種半衰期、分貝</h3>
+<div class="must">招式：<b>「$(a,b)$ 在圖形上」只給一件事 $b=\log_ba$，每個選項都代進去用運算律核對</b>；<b>兩物質相除：$2^{t/T_B-t/T_A}$，指數是整數</b>；<b>分貝相加不能直接加，先換回強度</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="logPointSym,decayRatio,dbMulti"></div>
+
+<h3 class="sec">L2 固定 12 題（列印用）</h3>
+<div class="fixset" data-tier="L2" data-keys="expSymmMin,expIneqQuad,expAMGM,halfLife,compoundYears,logQuadRange,logEqQuad,logEqProduct,logIneqBase,digitsLead,decimalFirst,dbMulti" data-seed="3001" data-n="12"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過（L3-7 補上原卷漏掉的一個解）。</div>
+
+<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">兩個指數的聯立 → 令 u=2^x、v=2^y，先解 u、v</span><span class="src">台中女中 112上 填 9</span></div>
+<div class="fxq">解聯立方程式 $\begin{cases}2^x-2^y=96\\ 2^{x-y}=4\end{cases}$，求 $(x,y)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(x,y)=(7,5)$</div>
+<div class="fxs"><div class="move">招式：$2^{x-y}=\dfrac{2^x}{2^y}$，所以第二式說 $u=4v$；代入第一式 $4v-v=96$。</div>
+$v=32=2^5$，$u=128=2^7$ ⟹ $y=5$、$x=7$。<br>
+<span class="note-sm">檢查：$2^7-2^5=128-32=96$ ✔、$2^{7-5}=4$ ✔。</span></div></div>
+
+<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">4^{x+1/2} → 2·(2^x)²，換元二次不等式</span><span class="src">台中女中 110上 填 10</span></div>
+<div class="fxq">解不等式 $4^{x+\frac12}-11\cdot2^x-6\le0$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x\le\log_26$</div>
+<div class="fxs"><div class="move">招式：$4^{x+\frac12}=4^x\cdot4^{\frac12}=2\left(2^x\right)^2$。令 $t=2^x\gt0$。</div>
+$2t^2-11t-6\le0\Rightarrow(2t+1)(t-6)\le0\Rightarrow-\dfrac12\le t\le6$；配合 $t\gt0$：$0\lt2^x\le6$ ⟹ $x\le\log_26$。<br>
+<span class="note-sm">$2^x\gt0$ 永遠成立，所以左邊 $-\frac12$ 不產生限制；答案只有上界。</span></div></div>
+
+<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">區間最值 → 換元後 t 的範圍要一起換（t∈[1,8]），再看頂點</span><span class="src">台南女中 110上 填 11</span></div>
+<div class="fxq">若 $0\le x\le3$，函數 $f(x)=4^x-2^{x+2}+5$ 的最大值為 $M$、最小值為 $m$，求 $M+m$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$38$</div>
+<div class="fxs"><div class="move">招式：$t=2^x$，$0\le x\le3$ ⟹ $1\le t\le8$；$f=t^2-4t+5=(t-2)^2+1$。</div>
+頂點 $t=2$ 在區間內 ⟹ $m=1$（$x=1$）；最大值在離頂點較遠的端點 $t=8$：$M=36+1=37$（$x=3$）。$M+m=38$。</div></div>
+
+<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">指數塔 2^{10^x} → 取兩次對數</span><span class="src">台中一中 110上 單 2</span></div>
+<div class="fxq">方程式 $2^{10^x}=10^7$ 的實數解 $x$ 落在哪個範圍？（$\log2\approx0.3010$）<br>(1) $0\lt x\lt0.5$　(2) $0.5\lt x\lt1$　(3) $1\lt x\lt1.5$　(4) $1.5\lt x\lt2$　(5) $2\lt x\lt2.5$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)</div>
+<div class="fxs"><div class="move">招式：第一次取 $\log$ 把指數塔拆一層：$10^x\log2=7$ ⟹ $10^x=\dfrac{7}{0.3010}\approx23.26$；第二次取 $\log$：$x=\log23.26$。</div>
+$10\lt23.26\lt100$ ⟹ $1\lt x\lt2$；再細一點：$23.26\lt\sqrt{1000}\approx31.6$ ⟹ $x\lt1.5$。故 $1\lt x\lt1.5$。<br>
+<span class="note-sm">$x=\log\frac{7}{\log2}=\log7-\log(\log2)=0.8451-\log0.3010=0.8451+0.5214\approx1.367$。</span></div></div>
+
+<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">鉛直線截兩曲線的長度 → 函數值相減，出現 t=2^h 的二次式</span><span class="src">台中一中 110上 單 1</span></div>
+<div class="fxq">直線 $x=h$ 分別與 $y=2^{x+\frac12}$、$y=4^x$ 交於 $A$、$B$，且 $\overline{AB}=4$，求 $h$。<br>(1) $\dfrac12$　(2) $\dfrac{\sqrt2}2$　(3) $\dfrac{\sqrt3}2$　(4) $\dfrac32$　(5) $\dfrac{\sqrt5}2$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4) $h=\dfrac32$</div>
+<div class="fxs"><div class="move">招式：令 $t=2^h$，兩點的 $y$ 坐標是 $\sqrt2\,t$ 與 $t^2$；$\overline{AB}=\left|t^2-\sqrt2t\right|=4$。</div>
+$t^2-\sqrt2t-4=0$ ⟹ $t=\dfrac{\sqrt2\pm\sqrt{2+16}}{2}=\dfrac{\sqrt2\pm3\sqrt2}{2}$，取正：$t=2\sqrt2=2^{3/2}$ ⟹ $h=\dfrac32$。<br>
+<span class="note-sm">另一種情形 $\sqrt2t-t^2=4$ 判別式為負，無解；所以不必討論誰在上面。</span></div></div>
+
+<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">x 藏在對數等式裡 → 先解出 x，再把 2^x 用換底整理</span><span class="src">台中一中 110上 填 9</span></div>
+<div class="fxq">設 $\log_36=\dfrac{x-2}{x-1}$，求 $2^x$。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2^x=\dfrac23$</div>
+<div class="fxs"><div class="move">招式：令 $L=\log_36=1+\log_32$，解出 $x=\dfrac{L-2}{L-1}=\dfrac{\log_32-1}{\log_32}=1-\log_23$。</div>
+$2^x=2^{1-\log_23}=\dfrac{2}{2^{\log_23}}=\dfrac23$。<br>
+<span class="note-sm">$\dfrac{1}{\log_32}=\log_23$ 與 $2^{\log_23}=3$ 是本題的兩把鑰匙。</span></div></div>
+
+<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">三種底的對數相乘等於兩兩相乘之和 → 全部換成 t=log_2 x，除以 t² 前先看 t=0</span><span class="src">台中女中 110上 填 14</span></div>
+<div class="fxq">若 $\log_2x\cdot\log_4x\cdot\log_6x=\log_2x\cdot\log_4x+\log_4x\cdot\log_6x+\log_6x\cdot\log_2x$，求 $x$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=48$ 或 $x=1$<br><span class="note-sm">（原卷參考答案只列 $48$；$x=1$ 使三個對數皆為 $0$，兩邊都是 $0$，也是解。）</span></div>
+<div class="fxs"><div class="move">招式：令 $t=\log_2x$、$L=\log_26$，則 $\log_4x=\dfrac t2$、$\log_6x=\dfrac tL$。</div>
+左式 $=\dfrac{t^3}{2L}$，右式 $=t^2\left(\dfrac12+\dfrac1{2L}+\dfrac1L\right)=t^2\cdot\dfrac{L+3}{2L}$。<br>
+$t=0$（即 $x=1$）兩邊皆 $0$，是解；$t\ne0$ 時除以 $\dfrac{t^2}{2L}$ 得 $t=L+3$ ⟹ $x=2^{L+3}=2^L\cdot8=6\cdot8=48$。</div></div>
+
+<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">位數與小數位 → 翻譯成 log 的不等式，再相加相減</span><span class="src">北一女中 110上 多 9</span></div>
+<div class="fxq">兩正整數 $a,b$ 的乘積為 $9$ 位數，$\dfrac ab$ 化為小數後從小數點後第 $4$ 位開始出現不為 $0$ 的數字。下列哪些正確？<br>(1) $\log ab\ge9$　(2) $\log\dfrac ab\ge-4$　(3) $a$ 必為 $3$ 位數　(4) $b$ 可能為 $6$ 位數　(5) $a+b$ 可能為 $8$ 位數</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)</div>
+<div class="fxs"><div class="move">招式：「$9$ 位數」$\iff8\le\log ab\lt9$；「第 $4$ 位開始非零」$\iff-4\le\log\frac ab\lt-3$。兩式相加除以 $2$ 得 $\log a$，相減得 $\log b$。</div>
+(1) 只有 $\ge8$，錯。(2) 對。(3) $4\le2\log a\lt6$ ⟹ $2\le\log a\lt3$ ⟹ $3$ 位數，對。<br>
+(4) $11\lt2\log b\lt13$ ⟹ $5.5\lt\log b\lt6.5$ ⟹ $b$ 是 $6$ 位或 $7$ 位數，可能，對。<br>
+(5) $b\lt10^{6.5}\approx3.16\times10^6$、$a\lt1000$ ⟹ $a+b\lt3.2\times10^6$，最多 $7$ 位，錯。</div></div>
+
+<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">用兩個奇怪的 log 表示 log 2 → 先把 a、b 展開成 log2、log7 的線性組合再消元</span><span class="src">竹科實中 112上 填 7</span></div>
+<div class="fxq">設 $a=\log\left(1+\dfrac17\right)$、$b=\log\left(1+\dfrac1{49}\right)$，試以 $a,b$ 表示 $\log2$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\log2=\dfrac{2a-b+2}{7}$</div>
+<div class="fxs"><div class="move">招式：$a=\log\frac87=3\log2-\log7$；$b=\log\frac{50}{49}=\log50-2\log7=2-\log2-2\log7$。目標是消掉 $\log7$。</div>
+$2a-b=(6\log2-2\log7)-(2-\log2-2\log7)=7\log2-2$ ⟹ $\log2=\dfrac{2a-b+2}{7}$。<br>
+<span class="note-sm">$\log50=\log100-\log2=2-\log2$ 是常被漏掉的一步。</span></div></div>
+
+<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">(log 3x)(log 4x)=1 求兩根之積 → 令 s=log x，用根與係數求 s₁+s₂</span><span class="src">成功高中 110上 填 12</span></div>
+<div class="fxq">若方程式 $(\log3x)(\log4x)=1$ 的兩根為 $\alpha,\beta$，求 $\alpha\beta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\alpha\beta=\dfrac1{12}$</div>
+<div class="fxs"><div class="move">招式：$\log3x=\log3+s$、$\log4x=\log4+s$（$s=\log x$）；展開成 $s$ 的二次方程，$\log\alpha+\log\beta=s_1+s_2$。</div>
+$s^2+(\log3+\log4)s+\log3\log4-1=0$ ⟹ $s_1+s_2=-(\log3+\log4)=-\log12$ ⟹ $\log(\alpha\beta)=-\log12$ ⟹ $\alpha\beta=\dfrac1{12}$。<br>
+<span class="note-sm">判別式 $(\log12)^2-4(\log3\log4-1)\gt0$，兩根都是實數。</span></div></div>
+
+<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">大數的個位、大小、最高位、小數位 → 個位看週期，其餘全靠 log 的首數與尾數</span><span class="src">台南女中 110上 多 4</span></div>
+<div class="fxq">設 $a=9^{10}$、$b=8^{12}$，選出正確的選項。（$\log2\approx0.3010$、$\log3\approx0.4771$）<br>(1) $a+b$ 的個位數字為 $7$　(2) $a\gt b$　(3) $ab$ 的最高位數字為 $3$　(4) $\dfrac a{b^2}$ 在小數點後第 $12$ 位開始出現不為 $0$ 的數字　(5) $\dfrac a{b^2}$ 在小數點後第一個不為 $0$ 的數字為 $7$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(5)</div>
+<div class="fxs"><div class="move">招式：$\log a=10\log9=9.542$、$\log b=12\log8=10.836$，之後每個選項都是這兩個數的加減。</div>
+(1) $9^{10}$ 個位 $1$；$8^n$ 個位循環 $8,4,2,6$，$8^{12}$ 個位 $6$；和為 $7$，對。(2) $\log a\lt\log b$，錯。<br>
+(3) $\log ab=20.378$，尾數 $0.378$ 在 $\log2=0.301$ 與 $\log3=0.477$ 之間 ⟹ 最高位 $2$，錯。<br>
+(4)(5) $\log\dfrac a{b^2}=9.542-21.672=-12.130=-13+0.870$ ⟹ 第 $13$ 位開始非零（(4) 錯）；$10^{0.870}\approx7.4$ ⟹ 首個非零數字 $7$（(5) 對）。</div></div>
+
+<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">平移後與已知圖形重合 → 把平移後的式子用運算律整理成 log_2(px+q)</span><span class="src">台中女中 112上 填 8</span></div>
+<div class="fxq">將 $y=\log_2(ax+b)$ 的圖形向右平移 $2$ 單位、再向下平移 $3$ 單位後，得到 $y=\log_2(x-3)$ 的圖形，求 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(8,-8)$</div>
+<div class="fxs"><div class="move">招式：右移 $2$、下移 $3$：$y=\log_2\left(a(x-2)+b\right)-3=\log_2\dfrac{a(x-2)+b}{8}$。</div>
+與 $\log_2(x-3)$ 重合 ⟹ $\dfrac{a(x-2)+b}{8}=x-3$ 對所有 $x$ 成立 ⟹ $a=8$、$-2a+b=-24$ ⟹ $b=-8$。<br>
+<span class="note-sm">「下移 $3$」不是把真數減 $3$，而是真數除以 $2^3$——這是本題的關卡。</span></div></div>
+
+<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">log₂(二次式) 的區間最值 → 外層遞增，只要管裡面二次式的最值</span><span class="src">台南女中 110上 填 12</span></div>
+<div class="fxq">若 $0\le x\le3$，函數 $g(x)=\log_2\left(x^2-4x+7\right)$ 在 $x=\alpha$ 時有最大值 $\log_2\beta$，求 $(\alpha,\beta)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(\alpha,\beta)=(0,7)$</div>
+<div class="fxs"><div class="move">招式：$\log_2$ 遞增 ⟹ 真數最大時 $g$ 最大。真數 $(x-2)^2+3$ 在 $[0,3]$ 上離頂點最遠的端點 $x=0$ 取最大值 $7$。</div>
+$g(0)=\log_27$、$g(3)=\log_24=2$、$g(2)=\log_23$ ⟹ 最大 $\log_27$，$(\alpha,\beta)=(0,7)$。</div></div>
+
+<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">對稱與平移後求交點 → 先把兩個新函數寫對，再用「真數相等」解</span><span class="src">北一女中 109上 填 5</span></div>
+<div class="fxq">將 $f(x)=\log_2x$ 對 $y$ 軸對稱得 $y=g(x)$；將 $f(x)$ 向左平移 $1$ 單位、向上平移 $1$ 單位得 $y=h(x)$。求 $y=g(x)$ 與 $y=h(x)$ 交點的 $x$ 坐標。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=-\dfrac23$</div>
+<div class="fxs"><div class="move">招式：$g(x)=\log_2(-x)$；$h(x)=\log_2(x+1)+1=\log_2\bigl(2(x+1)\bigr)$。</div>
+$-x=2(x+1)$ ⟹ $x=-\dfrac23$；檢查定義域：$-x=\frac23\gt0$ ✔、$x+1=\frac13\gt0$ ✔。</div></div>
+
+<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">反函數圖形過 (4,25) → 原函數過 (25,4)，坐標對調就好</span><span class="src">建國中學 110上 填 10</span></div>
+<div class="fxq">設 $y=b+\log_ax$ 的圖形通過 $(1,2)$，且它對直線 $y=x$ 對稱的圖形通過 $(4,25)$，求 $a+b$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a+b=7$</div>
+<div class="fxs"><div class="move">招式：對 $y=x$ 對稱＝反函數，反函數過 $(4,25)$ ⟺ 原函數過 $(25,4)$。</div>
+過 $(1,2)$：$2=b+\log_a1=b$ ⟹ $b=2$。過 $(25,4)$：$4=2+\log_a25$ ⟹ $a^2=25$ ⟹ $a=5$。$a+b=7$。</div></div>
+</section>
+
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考、模考、大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">a^x=b^y=c^z → 令共同值為 k，1/x=log_k a，把條件全翻成 log_k</span><span class="src">台中一中 113上 多 4</span></div>
+<div class="fxq">設 $xyz\ne0$，$a,b,c$ 為不等於 $1$ 的正實數，且 $a^x=b^y=c^z$。選出正確的選項。<br>(1) 若 $a=8,b=4,c=2$，則 $x:y:z=2:3:6$　(2) 若 $ab=1$，則 $\dfrac xy=-1$　(3) 若 $a\lt b\lt c$，則 $x\gt y\gt z$　(4) 若 $ab=c$，則 $\dfrac1x+\dfrac1y=\dfrac1z$　(5) 若 $abc=1$，則 $\dfrac1x+\dfrac1y+\dfrac1z=0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(4)(5)</div>
+<div class="fxs"><div class="move">招式：設 $a^x=b^y=c^z=k$（$k\gt0$，$k\ne1$），則 $\dfrac1x=\log_ka$、$\dfrac1y=\log_kb$、$\dfrac1z=\log_kc$——所有關於 $a,b,c$ 的乘法條件都變成 $\frac1x,\frac1y,\frac1z$ 的加法。</div>
+(1) $8^x=4^y=2^z$ ⟹ $3x=2y=z$ ⟹ $x:y:z=2:3:6$ ✔。(2) $ab=1$ ⟹ $\log_ka+\log_kb=0$ ⟹ $\frac1x+\frac1y=0$ ⟹ $\frac xy=-1$ ✔。<br>
+(3) $a\lt b\lt c$ ⟹ $\log_ka\lt\log_kb\lt\log_kc$ 只在 $k\gt1$ 時成立；$k\lt1$ 時方向相反，且倒數再翻一次——不恆成立 ✘。<br>
+(4) $ab=c$ ⟹ $\log_ka+\log_kb=\log_kc$ ✔。(5) $abc=1$ ⟹ 三個 $\log_k$ 之和為 $0$ ✔。</div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">「最小整數是 36」是資訊 → 反推 log 1.9 的範圍，再用它估下一題</span><span class="src">台中一中 113上 填 8</span></div>
+<div class="fxq">已知使 $\left(\dfrac{10}{19}\right)^x\lt10^{-10}$ 的最小整數 $x$ 是 $36$，求使 $\left(\dfrac{19}{10}\right)^y\gt10^6$ 的最小正整數 $y$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$22$</div>
+<div class="fxs"><div class="move">招式：令 $L=\log1.9$。第一句話的意思是 $35L\le10\lt36L$（$x=35$ 不行、$x=36$ 可以），這給了 $L$ 的範圍。</div>
+$\dfrac{10}{36}\lt L\le\dfrac{10}{35}$，即 $0.2778\lt L\le0.2857$。<br>
+$y\gt\dfrac6L$，而 $\dfrac6L\in\left[21,\ 21.6\right)$ ⟹ 最小正整數 $y=22$。<br>
+<span class="note-sm">真值 $\log1.9\approx0.2788$，$\frac{6}{0.2788}=21.5$，確為 $22$。</span></div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">兩偶函數的交點 → 對稱於 y 軸，AB=2 給 x=±1，代回求 t=3^x+3^{-x}</span><span class="src">建國中學 113上 填 8</span></div>
+<div class="fxq">兩函數 $y=\dfrac{3^x+3^{-x}}4$ 與 $y=\dfrac{k}{3^x+3^{-x}}$ 的圖形交於 $A,B$ 兩點，且 $\overline{AB}=2$，求 $k$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=\dfrac{25}9$</div>
+<div class="fxs"><div class="move">招式：兩式都只含 $t=3^x+3^{-x}$，是偶函數；交點滿足 $\frac t4=\frac kt$ ⟹ $t^2=4k$，兩交點 $x=\pm x_0$ 且 $y$ 相同 ⟹ $\overline{AB}=2x_0$。</div>
+$2x_0=2$ ⟹ $x_0=1$ ⟹ $t=3+\dfrac13=\dfrac{10}3$ ⟹ $k=\dfrac{t^2}4=\dfrac{100}{36}=\dfrac{25}9$。</div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">斜率 1/9、長 √82 → Δx=9、Δy=1；y=log x 上 Δy=1 就是 x 變 10 倍</span><span class="src">北一女中 109上 填 6</span></div>
+<div class="fxq">$A(a,r)$、$B(b,s)$ 為 $y=\log x$ 上兩點（$a\lt b$），$\overline{AB}$ 斜率 $\dfrac19$、長 $\sqrt{82}$。$C(r,a)$、$D(s,b)$ 為 $y=10^x$ 上兩點，求直線 $CD$ 的方程式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$y=9x+1$</div>
+<div class="fxs"><div class="move">招式：斜率 $\frac19$ 且長 $\sqrt{82}=\sqrt{9^2+1^2}$ ⟹ $b-a=9$、$s-r=1$；而 $s-r=\log\frac ba=1$ ⟹ $b=10a$。</div>
+$10a-a=9$ ⟹ $a=1$、$b=10$、$r=0$、$s=1$。$C(0,1)$、$D(1,10)$（果然在 $y=10^x$ 上），直線 $CD$：斜率 $9$，$y=9x+1$。<br>
+<span class="note-sm">$C,D$ 就是 $A,B$ 對 $y=x$ 的鏡射，所以直線 $CD$ 的斜率是 $\overline{AB}$ 斜率的倒數。</span></div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">「第 40 位始不為 0」→ −40 ≤ n·log(4/9) < −39，解 n 的整數區間</span><span class="src">台中一中 112上 填 10</span></div>
+<div class="fxq">欲使 $\left(\dfrac49\right)^n$ 化為純小數後，小數點後第 $40$ 位始不為 $0$，求所有可能整數 $n$ 的總和。（$\log2\approx0.3010$、$\log3\approx0.4771$）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$336$</div>
+<div class="fxs"><div class="move">招式：首數 $-40$ ⟺ $-40\le n\log\frac49\lt-39$，$\log\frac49=2\log2-2\log3=-0.3522$。</div>
+$\dfrac{39}{0.3522}\lt n\le\dfrac{40}{0.3522}$ ⟹ $110.7\lt n\le113.6$ ⟹ $n=111,112,113$，總和 $336$。</div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">9^{x+1}=5^{x²−1} → 對底 5 取對數，左右共有因式 (x+1)</span><span class="src">台中一中 112上 填 14</span></div>
+<div class="fxq">設 $x=\log_5k$ 滿足 $9^{x+1}=5^{x^2-1}$。求所有滿足此式的 $k$ 中，最大者減最小者。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{224}5$</div>
+<div class="fxs"><div class="move">招式：兩邊取 $\log_5$：$(x+1)\log_59=x^2-1=(x+1)(x-1)$ ⟹ $(x+1)(x-1-\log_59)=0$。</div>
+$x=-1$ 或 $x=1+\log_59=\log_545$ ⟹ $k=5^x=\dfrac15$ 或 $45$ ⟹ $45-\dfrac15=\dfrac{224}5$。<br>
+<span class="note-sm">不要把 $(x+1)$ 約掉——約掉就丟了 $k=\frac15$。</span></div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">互為反函數的兩個方程式 → 把一個根代換成另一個的形式，α+β 是定值</span><span class="src">建國中學 112上 填 13</span></div>
+<div class="fxq">$\alpha$ 滿足 $2x+2^x=5$，$\beta$ 滿足 $2x+2\log_2(x-1)=5$，求 $\alpha+\beta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac72$</div>
+<div class="fxs"><div class="move">招式：由第一式 $2^\alpha=5-2\alpha$。猜 $\beta-1=2^{\alpha-1}$ 代入第二式驗證。</div>
+$\beta=2^{\alpha-1}+1$ 時：$2\beta+2\log_2(\beta-1)=2^\alpha+2+2(\alpha-1)=2^\alpha+2\alpha=5$ ✔，且兩式左邊都嚴格遞增，根唯一。<br>
+$\beta=\dfrac{5-2\alpha}2+1=\dfrac72-\alpha$ ⟹ $\alpha+\beta=\dfrac72$。<br>
+<span class="note-sm">幾何看法：$y=2^{x-1}$ 與 $y=\log_2(x-1)+1$ 對稱於 $y=x$，直線 $2x+2y=5$ 垂直對稱軸，兩交點對稱，橫坐標和 $=\frac52$……再加上平移量得 $\frac72$。</span></div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">取 log 換坐標 → 曲線變直線，範圍變線段，答案是線段長</span><span class="src">建國中學 112上 填 11</span></div>
+<div class="fxq">實數 $x,y$ 滿足 $x\ge\dfrac1{10}$、$y\ge\dfrac1{10}$、$x^2y=10$。令 $X=\log x$、$Y=\log y$，則在 $XY$ 坐標下滿足條件的圖形為一線段，求其長。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2\sqrt5$</div>
+<div class="fxs"><div class="move">招式：$x^2y=10$ 取 $\log$：$2X+Y=1$；$x\ge\frac1{10}$ ⟺ $X\ge-1$，$Y\ge-1$ 同理。</div>
+直線 $2X+Y=1$ 上 $X\ge-1$ 且 $Y\ge-1$：端點 $X=-1$ 時 $Y=3$；$Y=-1$ 時 $X=1$。線段 $(-1,3)$ 到 $(1,-1)$，長 $\sqrt{4+16}=2\sqrt5$。</div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">log a·log b 與 ab 都已知 → log a、log b 是某二次方程的兩根，log_a b 是根的比</span><span class="src">建國中學 113上 填 10</span></div>
+<div class="fxq">設 $a\gt b\gt0$，$(\log_3a)(\log_3b)=-2$ 且 $ab=81$，求 $\log_ab$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-5+2\sqrt6$</div>
+<div class="fxs"><div class="move">招式：$u=\log_3a$、$v=\log_3b$：$u+v=\log_381=4$、$uv=-2$ ⟹ $u,v$ 是 $t^2-4t-2=0$ 的根。</div>
+$t=2\pm\sqrt6$；$a\gt b$ ⟹ $u=2+\sqrt6$、$v=2-\sqrt6$。$\log_ab=\dfrac vu=\dfrac{2-\sqrt6}{2+\sqrt6}=\dfrac{(2-\sqrt6)^2}{4-6}=\dfrac{10-4\sqrt6}{-2}=-5+2\sqrt6$。<br>
+<span class="note-sm">$\log_ab\lt0$ 合理：$b=3^{2-\sqrt6}\lt1\lt a$。</span></div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">底數 1/9、1/3 混用 → 全部換成 log_{1/3}，係數 2 與底數平方互相抵銷</span><span class="src">建國中學 113上 填 11</span></div>
+<div class="fxq">解不等式 $2\log_{1/9}\left(\dfrac{17}2-2x\right)\gt\log_{1/3}(x-3)-1$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac72\lt x\lt\dfrac{17}4$</div>
+<div class="fxs"><div class="move">招式：$2\log_{1/9}M=\log_{1/3}M$；$-1=\log_{1/3}3$。整理成 $\log_{1/3}\left(\frac{17}2-2x\right)\gt\log_{1/3}\bigl(3(x-3)\bigr)$，底數小於 $1$ ⟹ 真數方向反過來。</div>
+定義域：$\dfrac{17}2-2x\gt0$ 且 $x-3\gt0$ ⟹ $3\lt x\lt\dfrac{17}4$。<br>
+不等式：$\dfrac{17}2-2x\lt3x-9$ ⟹ $5x\gt\dfrac{35}2$ ⟹ $x\gt\dfrac72$。交集：$\dfrac72\lt x\lt\dfrac{17}4$。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">根號乘 log 等於 −1 → 先判定 log_3 x 為負，平方後解，再回頭驗根號內非負</span><span class="src">台南一中 110上 填 17</span></div>
+<div class="fxq">若 $\sqrt{1+\log_x\sqrt{27}}\cdot\log_3x+1=0$，求 $x$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=\dfrac19$</div>
+<div class="fxs"><div class="move">招式：$t=\log_3x$，則 $\log_x\sqrt{27}=\dfrac{3/2}{t}$；根號 $\ge0$ 而乘積為 $-1$ ⟹ $t\lt0$。</div>
+$\sqrt{1+\dfrac3{2t}}\cdot t=-1$ ⟹ 平方：$\left(1+\dfrac3{2t}\right)t^2=1$ ⟹ $2t^2+3t-2=0$ ⟹ $t=\dfrac12$（違反 $t\lt0$）或 $t=-2$。<br>
+$t=-2$：根號內 $1-\dfrac34=\dfrac14\ge0$ ✔，$x=3^{-2}=\dfrac19$。</div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">位數與小數位的多選 → 把每個條件寫成 log 的範圍，再組合出 log(ab)</span><span class="src">建國中學 112上 多 8</span></div>
+<div class="fxq">$a,b$ 為正整數，$a^{10}$ 是 $42$ 位數，$\left(\dfrac1b\right)^{20}$ 是純小數且小數點後第 $86$ 位始出現不為 $0$ 的數字。下列哪些正確？<br>(1) $a$ 是 $5$ 位數　(2) $a$ 的最高位數字是 $1$　(3) $\dfrac1b$ 小數點後第 $5$ 位始出現不為 $0$ 的數字　(4) $\dfrac1b$ 小數點後第一個不為 $0$ 的數字是 $5$　(5) $ab$ 是 $9$ 位數</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(3)(4)(5)（全部正確）</div>
+<div class="fxs"><div class="move">招式：$41\le10\log a\lt42$ ⟹ $4.1\le\log a\lt4.2$；$-86\le-20\log b\lt-85$ ⟹ $4.25\lt\log b\le4.3$。</div>
+(1) 首數 $4$ ⟹ $5$ 位 ✔。(2) 尾數 $0.1\sim0.2\lt\log2$ ⟹ 最高位 $1$ ✔。<br>
+(3)(4) $\log\dfrac1b\in[-4.3,-4.25)$，寫成 $-5+(0.7\sim0.75)$ ⟹ 第 $5$ 位 ✔；$10^{0.7}\approx5.01$、$10^{0.75}\approx5.62$ ⟹ 數字 $5$ ✔。<br>
+(5) $\log ab\in(8.35,8.5)$ ⟹ $9$ 位 ✔。</div></div>
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充專區：經典題與教甄</h2>
+<div class="goal">
+  <div><b>對象</b>學有餘力、想參加數學競賽或未來想走數理科系的同學。</div>
+  <div><b>目標</b>6 題經典 ＋ 15 題教甄／模考難題：學會把「證明」寫完整，也看看出題老師怎麼想。</div>
+  <div><b>說明</b>本區不列入段考通過標準。科學班甄選（國三）不考指對數，專區以各校教甄與分科模考為主，原卷多為掃描影像，以 OCR 讀出後逐題重打、重解、驗算。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">證明 log₂3 是無理數 → 反證法＋算術基本定理</span><span class="src">證明題經典</span></div>
+<div class="fxq">證明 $\log_23$ 為無理數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">（證明題）</div>
+<div class="fxs">假設 $\log_23=\dfrac pq$（$p,q$ 為正整數，因 $\log_23\gt0$）。則 $2^{p/q}=3$ ⟹ $2^p=3^q$。左邊是偶數、右邊是奇數，矛盾；故 $\log_23$ 為無理數。<br>
+<span class="note-sm">同樣的方法可證 $\log_ab$（$a,b$ 為不同質數的次方）都是無理數；本章 sim3-10「$2^x=5^y$ 的 $x,y$ 不可同為正整數」是同一個想法。</span></div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">比較 log₂3、log₃5 與 3/2 → 各自和 3/2 比：3² 對 2³、5² 對 3³</span><span class="src">台中一中 113上 單 2</span></div>
+<div class="fxq">已知 $a=\log_23$、$b=\log_35$、$c=\dfrac32$，選出正確的大小關係。<br>(1) $a\lt b\lt c$　(2) $b\lt a\lt c$　(3) $c\lt a\lt b$　(4) $a\lt c\lt b$　(5) $b\lt c\lt a$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5) $b\lt c\lt a$</div>
+<div class="fxs"><div class="move">招式：$\log_23\gt\dfrac32\iff3\gt2^{3/2}\iff9\gt8$ ✔；$\log_35\lt\dfrac32\iff5\lt3^{3/2}\iff25\lt27$ ✔。</div>
+故 $b\lt c\lt a$。<br>
+<span class="note-sm">通用結論：$\log_n(n+1)$ 隨 $n$ 遞減（$n\ge2$），所以 $\log_23\gt\log_34\gt\log_45\gt\cdots$；而 $\log_35\lt\log_34\cdot$… 直接用 $\frac32$ 當中間值最快。</span></div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">甲抄錯 a、乙抄錯 b → 各自「沒抄錯」的係數還是對的：甲給 b、乙給 a</span><span class="src">106 分科模考 全國數乙 第 7 次 選填 C</span></div>
+<div class="fxq">甲、乙兩人同解 $a+\log_2x+b\log_x2=0$。甲誤寫 $a$，得兩根 $\dfrac14$、$\dfrac18$；乙誤寫 $b$，得兩根 $\dfrac12$、$64$。求正確方程式的兩根之和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$12$</div>
+<div class="fxs"><div class="move">招式：令 $u=\log_2x$，方程式是 $u^2+au+b=0$。甲的 $b$ 正確：$u=-2,-3$ ⟹ $b=(-2)(-3)=6$；乙的 $a$ 正確：$u=-1,6$ ⟹ $a=-(-1+6)=-5$。</div>
+正確方程式 $u^2-5u+6=0$ ⟹ $u=2,3$ ⟹ $x=4,8$，和 $12$。</div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">三個對數相等 → 令共同值 k，把 x、y、x+y 都寫成 3 的次方</span><span class="src">107 分科模考 全國數甲 第 5 次 選填 C</span></div>
+<div class="fxq">$x,y$ 皆為大於 $0$ 且不等於 $1$ 的實數，滿足 $\log_x3=\log_y9=\log_{x+y}27$，求 $x-y$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-1$</div>
+<div class="fxs"><div class="move">招式：令共同值為 $k$：$x^k=3$、$y^k=9$、$(x+y)^k=27$ ⟹ $y=x^2$、$x+y=x^3$。</div>
+$x+x^2=x^3$ ⟹ $x^2-x-1=0$（$x\ne0$）⟹ $x=\dfrac{1+\sqrt5}2$（取正）。$x-y=x-x^2=-1$。<br>
+<span class="note-sm">$x=\frac{1+\sqrt5}{2}\ne1$、$y=x^2\ne1$，且 $k=\log_x3\gt0$，條件都合。</span></div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">A²+B²+4=4A → (A−2)²+B²=0，兩個對數同時被釘死</span><span class="src">105 學測模考 全國數A 第 3 次 選填 E</span></div>
+<div class="fxq">若 $\left(\log_3(x^2+y)\right)^2+\left(\log_3\dfrac{xy}3\right)^2+4=\log_3(x^2+y)^4$，其三組解為 $(x_i,y_i)$（$i=1,2,3$），求 $y_1+y_2+y_3$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$9$</div>
+<div class="fxs"><div class="move">招式：$A=\log_3(x^2+y)$、$B=\log_3\frac{xy}3$，右式 $=4A$ ⟹ $(A-2)^2+B^2=0$ ⟹ $A=2$、$B=0$。</div>
+$x^2+y=9$、$xy=3$ ⟹ $x^3-9x+3=0$，三個實根 $x_i$（判別式為正）；$y_i=\dfrac3{x_i}$。<br>
+$\sum y_i=3\sum\dfrac1{x_i}=3\cdot\dfrac{x_1x_2+x_2x_3+x_3x_1}{x_1x_2x_3}=3\cdot\dfrac{-9}{-3}=9$。</div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">4^x+4^y=2^{x+1}+2^{y+1} → 換元成圓 (u−1)²+(v−1)²=2，只取第一象限</span><span class="src">109 學測模考 全國數A 第 2 次 單 6</span></div>
+<div class="fxq">設實數 $x,y$ 滿足 $4^x+4^y=2^{x+1}+2^{y+1}$，關於 $2^x+2^y$ 的極值，下列何者正確？<br>(1) 最大值 $4$、最小值 $0$　(2) 最大值 $4$，沒有最小值　(3) 最大值 $2$、最小值 $1$　(4) 最大值 $2$，沒有最小值　(5) 沒有最大值，最小值 $0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)</div>
+<div class="fxs"><div class="move">招式：$u=2^x\gt0$、$v=2^y\gt0$：$u^2+v^2=2u+2v$ ⟹ $(u-1)^2+(v-1)^2=2$，是圓心 $(1,1)$、半徑 $\sqrt2$ 的圓在第一象限（不含軸上的點）的部分。</div>
+$u+v=s$ 是斜率 $-1$ 的直線族；最大在切點 $(2,2)$：$s=4$，取得到。<br>
+落在開第一象限的弧是從 $(0,2)$ 經 $(2,2)$ 到 $(2,0)$ 這一段（兩端點各有一個坐標為 $0$，取不到）；$s$ 可以任意接近 $2$ 卻取不到 $2$ ⟹ 沒有最小值 ⟹ (2)。<br>
+<span class="note-sm">常見誤判：以為圓過原點所以 $s$ 可趨近 $0$——但原點附近的弧在 $u\gt0$ 時 $v\lt0$，不在允許範圍內。</span></div></div>
+
+<h3 class="sec" id="L5-sci">🏅 教甄・模考難題專區（15 題）</h3>
+<div class="note">來源：基隆女中 112、竹科實中 109、111 全國教甄、關西高農、台南女中 112、嘉義高中 112、桃園高中 111、麗山高中 106、台中二中 108 各校教甄，以及 105–113 學測／分科模考的壓軸題。掃描卷以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">[log√n]=[√(log n)] → 令 t=√(log n)，兩個高斯符號相等的整數 a 只能是 0 或 2</span><span class="src">基隆女中 112 教甄 填 1</span></div>
+<div class="fxq">滿足 $\left[\log\sqrt n\right]=\left[\sqrt{\log n}\right]$ 的最大正整數 $n$ 為何？（$[x]$ 表不大於 $x$ 的最大整數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$999999$</div>
+<div class="fxs"><div class="move">招式：令 $t=\sqrt{\log n}\ge0$，則 $\log\sqrt n=\dfrac{t^2}2$。設共同的整數值為 $a$：$a\le\dfrac{t^2}2\lt a+1$ 且 $a\le t\lt a+1$。</div>
+兩個區間要有交集：$2a\le t^2\lt2a+2$ 與 $a^2\le t^2\lt(a+1)^2$。$a\ge3$ 時 $a^2\gt2a+2$，無交集；$a=2$：$4\le t^2\lt6$，即 $4\le\log n\lt6$；$a=1$：$2\le t^2\lt4$ 與 $1\le t^2\lt4$ ⟹ $2\le\log n\lt4$；$a=0$：$0\le\log n\lt1$。<br>
+最大的 $n$ 來自 $\log n\lt6$ ⟹ $n\le999999$。驗：$\log999999\approx5.99999$，$\left[\frac{5.99999}{2}\right]=2$、$\left[\sqrt{5.99999}\right]=2$ ✔；$n=10^6$ 時左 $3$、右 $2$ ✘。</div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">S2</span><span class="kw">巢狀對數的三項和 → 令 t=log₂x，兩式都化成 (11/6)log₂t 加常數</span><span class="src">基隆女中 112 教甄 填 4</span></div>
+<div class="fxq">若實數 $x\gt1$ 滿足 $\log_2(\log_8x)+\log_8(\log_4x)+\log_4(\log_2x)=\dfrac23$，求 $\log_2(\log_4x)+\log_4(\log_8x)+\log_8(\log_2x)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\log_43$</div>
+<div class="fxs"><div class="move">招式：$t=\log_2x\gt0$，則 $\log_4x=\frac t2$、$\log_8x=\frac t3$，外層用換底 $\log_4M=\frac12\log_2M$、$\log_8M=\frac13\log_2M$。</div>
+已知式 $=\left(\log_2t-\log_23\right)+\dfrac13\left(\log_2t-1\right)+\dfrac12\log_2t=\dfrac{11}6\log_2t-\log_23-\dfrac13=\dfrac23$ ⟹ $\dfrac{11}6\log_2t=1+\log_23$。<br>
+所求 $=\left(\log_2t-1\right)+\dfrac12\left(\log_2t-\log_23\right)+\dfrac13\log_2t=\dfrac{11}6\log_2t-1-\dfrac12\log_23=\left(1+\log_23\right)-1-\dfrac12\log_23=\dfrac12\log_23=\log_43$。<br>
+<span class="note-sm">建中 113 上填 13 是同一題換數字（已知 $=-\log_43$，答 $-\frac23$），出題者顯然互相參考。</span></div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">S3</span><span class="kw">兩圖形都含 +x，且一個是偶函數 → 交點關於 y 軸對稱，AB 的長度只由 x=±t 決定</span><span class="src">竹科實中 109 教甄 填 7</span></div>
+<div class="fxq">已知 $y=\log_2\left(kx^2\right)+x$ 與 $y=2^{|x|}+x$ 的圖形交於 $A,B$ 兩點，且 $\overline{AB}=8\sqrt2$，求 $k$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=4096$</div>
+<div class="fxs"><div class="move">招式：交點滿足 $\log_2(kx^2)=2^{|x|}$，左右都是偶函數 ⟹ 交點 $x=\pm t$；$A(t,2^t+t)$、$B(-t,2^t-t)$，$\overline{AB}^2=(2t)^2+(2t)^2=8t^2$。</div>
+$8t^2=128$ ⟹ $t=4$。代回：$\log_2(16k)=2^4=16$ ⟹ $16k=2^{16}$ ⟹ $k=2^{12}=4096$。</div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">x+10^x=10 與 x+log x=10 → 互為反函數的兩曲線與 x+y=10 的交點對稱</span><span class="src">111 全國教甄 單 6</span></div>
+<div class="fxq">$x-10+10^x=0$ 的解為 $\alpha$，$x-10+\log x=0$ 的解為 $\beta$，求 $10^\alpha+\log\beta$。<br>(A) $1$　(B) $5$　(C) $10$　(D) $100$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(C) $10$</div>
+<div class="fxs"><div class="move">招式：$\alpha$ 是 $y=10^x$ 與 $y=10-x$ 的交點橫坐標，$\beta$ 是 $y=\log x$ 與 $y=10-x$ 的交點橫坐標；兩曲線對稱於 $y=x$，直線 $x+y=10$ 也對稱於 $y=x$ ⟹ 兩交點互為鏡射：$(\alpha,10^\alpha)$ 與 $(\beta,\log\beta)=(10^\alpha,\alpha)$。</div>
+所以 $\beta=10^\alpha$、$\log\beta=\alpha$ ⟹ $10^\alpha+\log\beta=\beta+\alpha=10$（因 $\alpha+10^\alpha=10$）。<br>
+<span class="note-sm">數值：$\alpha\approx0.9995$、$\beta\approx9.0005$，和確為 $10$。</span></div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">S5</span><span class="kw">偵錯題：底數 1/2 的不等式 → 「log₃x<1」漏了「log₃x>0」這個定義域</span><span class="src">關西高農 教甄 填 3</span></div>
+<div class="fxq">某生解 $\log_{\frac12}(\log_3x)\gt0$：「$\log_3x\lt1$，即 $x\lt3$。」請問這個解法對不對？若不對，寫出正確的解。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">不對；正確解為 $1\lt x\lt3$。</div>
+<div class="fxs"><div class="move">招式：底數 $\frac12\lt1$：$\log_{1/2}M\gt0\iff0\lt M\lt1$。學生只寫了 $M\lt1$，漏掉外層對數的定義域 $M\gt0$。</div>
+$0\lt\log_3x\lt1$ ⟹ $1\lt x\lt3$。<br>
+<span class="note-sm">教學眼光：每脫一層對數就多一個「真數 $\gt0$」，這正是本章 sim2-8「巢狀對數由外往內脫」的重點。</span></div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">S6</span><span class="kw">六位數＋log 的整數性 → 把「x³y² 六位數」翻成 5<3log x+2log y<6 再逐情況討論</span><span class="src">台南女中 112 教甄 計算 2（題幹依原卷解答頁重建）</span></div>
+<div class="fxq">設 $x,y$ 為正整數，$x^3y^2$ 是六位數，$\log x$、$\log y$ 皆不是整數，但 $\log x+\log y$ 是整數。求所有可能的 $(x,y)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(x,y)=(50,2),(25,4),(20,5)$</div>
+<div class="fxs"><div class="move">招式：$5\lt\log x+2(\log x+\log y)\lt6$（不取等號，因 $\log x^3y^2$ 不是整數）。$\log x,\log y\ge0$ ⟹ $0\le\log x+\log y\lt3$ ⟹ 整數值只能是 $0,1,2$。</div>
+・$=0$：$\log x=\log y=0$，與「不是整數」矛盾。<br>
+・$=1$：$5\lt\log x+2\lt6$ ⟹ $3\lt\log x\lt4$，則 $\log y=1-\log x\lt0$，矛盾。<br>
+・$=2$：$5\lt\log x+4\lt6$ ⟹ $1\lt\log x\lt2$ ⟹ $10\lt x\lt100$，且 $xy=100$ ⟹ $1\lt y\lt10$。逐一代 $y=2,\dots,9$：$xy=100$ 的整數解為 $(50,2),(25,4),(20,5)$（$y=8$ 給 $x=12.5$ 不合）。三組都滿足 $\log x,\log y$ 非整數 ✔。</div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">借低利存高利 → 兩個複利式相除，成長率之比的 n 次方要超過本金比</span><span class="src">嘉義高中 112 教甄 填 14</span></div>
+<div class="fxq">甲地銀行貸款年利率 $1.5\%$、乙地銀行存款年利率 $3.53\%$，皆每年複利一次。小明從甲地貸款 $100$ 萬，留 $20$ 萬自用、$80$ 萬存入乙地。至少幾年後，乙地的本利和能一次還清甲地的貸款？（取整數；$\log1.02\approx0.0086$）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$12$ 年</div>
+<div class="fxs"><div class="move">招式：$80(1.0353)^n\ge100(1.015)^n$ ⟹ $\left(\dfrac{1.0353}{1.015}\right)^n\ge\dfrac54$，而 $\dfrac{1.0353}{1.015}=1.02$。</div>
+$n\log1.02\ge\log1.25=1-3\log2=0.0970$ ⟹ $n\ge\dfrac{0.0970}{0.0086}\approx11.3$ ⟹ $n=12$。<br>
+<span class="note-sm">出題者把 $3.53\%$ 設計成 $1.015\times1.02=1.0353$，就是要你看出商是 $1.02$。</span></div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">S8</span><span class="kw">巨大數的各位數字和 → 用 log 估位數把 A、B 壓小，再用「mod 9 不變」定答案</span><span class="src">桃園高中 111 教甄 填 12</span></div>
+<div class="fxq">將 $8888^{8888}$ 展開後的各位數字和記為 $A$，$A$ 的各位數字和記為 $B$，求 $B$ 的各位數字和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$7$</div>
+<div class="fxs"><div class="move">招式：位數 $\le8888\log8888\lt8888\times4=35552$ ⟹ $A\le9\times35553\lt320000$ ⟹ $B\le3+9\times5=48$ ⟹ $B$ 的數字和 $\le3+9=12$。而「各位數字和」與原數<b>模 $9$ 同餘</b>。</div>
+$8888\equiv8+8+8+8=32\equiv5\pmod9$，$5^6\equiv1\pmod9$，$8888=6\times1481+2$ ⟹ $8888^{8888}\equiv5^2=25\equiv7\pmod9$。<br>
+所求 $\le12$ 且 $\equiv7\pmod9$ ⟹ $7$。<br>
+<span class="note-sm">高一課綱沒有同餘，但「數字和與原數除以 $9$ 同餘」國中就會（$10\equiv1$）；教甄要能把這兩件事接起來。</span></div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">S9</span><span class="kw">二進位的位數 → 位數 = [log₂N]+1，而 log₂10=1/log2</span><span class="src">麗山高中 106 教甄 填 2</span></div>
+<div class="fxq">$10=(1010)_2$ 是二進位的 $4$ 位數，$100=(1100100)_2$ 是 $7$ 位數。問 $10^{100}$ 是二進位中的幾位數？（$\log2\approx0.3010$）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$333$ 位</div>
+<div class="fxs"><div class="move">招式：二進位 $n$ 位數 ⟺ $2^{n-1}\le N\lt2^n$ ⟺ $n-1\le\log_2N\lt n$；$\log_210^{100}=\dfrac{100}{\log2}\approx332.2$。</div>
+$n-1=332$ ⟹ $n=333$。<br>
+<span class="note-sm">檢查題目給的例子：$\log_210=3.32$ ⟹ $4$ 位 ✔、$\log_2100=6.64$ ⟹ $7$ 位 ✔。十進位的「位數＝首數＋1」換個底一樣成立。</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">1/(log_n 2n − 1) → 換底後就是 log₂n；Σ[log₂n] 按 2 的次方分段數</span><span class="src">台中二中 108 教甄 填 1</span></div>
+<div class="fxq">$[x]$ 表不大於 $x$ 的最大整數，求 $\displaystyle\sum_{n=2}^{2056}\left[\frac{1}{(\log_n2n)-1}\right]$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$18533$</div>
+<div class="fxs"><div class="move">招式：$\log_n2n-1=\log_n2$，所以每一項是 $\left[\dfrac1{\log_n2}\right]=\left[\log_2n\right]$。$2^k\le n\lt2^{k+1}$ 時值為 $k$，共 $2^k$ 個。</div>
+$k=1,\dots,10$ 各貢獻 $k\cdot2^k$，$k=11$ 只到 $2056$：$2056-2048+1=9$ 個。<br>
+$\sum_{k=1}^{10}k2^k=(10-1)2^{11}+2=18434$，加 $11\times9=99$ 得 $18533$。<br>
+<span class="note-sm">$\sum_{k=1}^{m}k2^k=(m-1)2^{m+1}+2$ 是錯位相減的標準結果。</span></div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">S11</span><span class="kw">正三角形 OAB 跨在 y=x 兩側 → A 在 75° 方向，把邊長拆成 (√6+√2)/4 的形式</span><span class="src">113 學測模考 全國數A 第 3 次 填 17</span></div>
+<div class="fxq">已知 $a\gt1$，第一象限有 $A$、$B$ 分別在 $y=a^x$ 與 $y=\log_ax$ 上，使正三角形 $OAB$（$O$ 為原點）的邊長為 $2\sqrt6+2\sqrt2$，求 $a$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=\sqrt3+1$</div>
+<div class="fxs"><div class="move">招式：兩曲線對稱於 $y=x$，正三角形也對稱於 $y=x$ ⟹ $\overline{OA}$ 與 $y=x$ 夾 $30^\circ$，$A$ 在極角 $75^\circ$ 方向。</div>
+$\cos75^\circ=\dfrac{\sqrt6-\sqrt2}4$、$\sin75^\circ=\dfrac{\sqrt6+\sqrt2}4$，邊長 $s=2(\sqrt6+\sqrt2)$：<br>
+$A=\left(s\cos75^\circ,\ s\sin75^\circ\right)=\left(\dfrac{(\sqrt6+\sqrt2)(\sqrt6-\sqrt2)}2,\ \dfrac{(\sqrt6+\sqrt2)^2}2\right)=\left(2,\ 4+2\sqrt3\right)$。<br>
+$A$ 在 $y=a^x$ 上：$a^2=4+2\sqrt3=(\sqrt3+1)^2$ ⟹ $a=\sqrt3+1$。</div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">S12</span><span class="kw">OA=OB 且 A、B 對稱於 y=x → 半角公式把 ∠AOB 拆成兩個等角，先求 A 再交換坐標得 B</span><span class="src">113 學測模考 全國數A 第 4 次 填 17</span></div>
+<div class="fxq">$A(x_1,y_1)$ 在 $y=2^x$ 上、$B(x_2,y_2)$ 在 $y=\log_2x$ 上，皆在第一象限。已知 $\overline{OA}=\overline{OB}=4\sqrt{17}$ 且 $\cos\angle AOB=\dfrac8{17}$，求 $\dfrac{x_1+2x_2}{y_1+2y_2}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac32$</div>
+<div class="fxs"><div class="move">招式：$\overline{OA}=\overline{OB}$ 且兩曲線互為反函數 ⟹ $B$ 是 $A$ 對 $y=x$ 的鏡射，$(x_2,y_2)=(y_1,x_1)$；$\angle AOB$ 被 $y=x$ 平分。</div>
+設 $\angle AOB=2\theta$，$\cos2\theta=\dfrac8{17}$ ⟹ $\cos\theta=\dfrac5{\sqrt{34}}$、$\sin\theta=\dfrac3{\sqrt{34}}$。$A$ 的極角為 $45^\circ+\theta$：<br>
+$x_1=4\sqrt{17}\cos(45^\circ+\theta)=4\sqrt{17}\cdot\dfrac{5-3}{\sqrt2\sqrt{34}}=4$，$y_1=4\sqrt{17}\cdot\dfrac{5+3}{\sqrt2\sqrt{34}}=16$（$2^4=16$ ✔）。<br>
+$B=(16,4)$，所求 $=\dfrac{4+32}{16+8}=\dfrac{36}{24}=\dfrac32$。</div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">S13</span><span class="kw">先數根：log₂x=x−2 恰兩根（x=2、4）→ 再把 k=2 代進換底乘積</span><span class="src">107 分科模考 全國數乙 第 5 次 選填 B</span></div>
+<div class="fxq">若方程式 $\log_2x=x-2$ 恰有 $k$ 個實根，求 $(\log_83)(\log_9k)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac16$</div>
+<div class="fxs"><div class="move">招式：先數 $y=\log_2x$ 與 $y=x-2$ 的交點。$x=4$ 時左 $2$、右 $2$ ✔ 是一根；另一根在 $(0,1)$：$x\to0^+$ 時左 $\to-\infty\lt-2$，$x=1$ 時左 $0\gt-1$，中間必穿過一次。$\log_2x$ 凹口向下、直線斜率固定，最多兩交點 ⟹ $k=2$。</div>
+$(\log_83)(\log_92)=\dfrac{\log3}{3\log2}\cdot\dfrac{\log2}{2\log3}=\dfrac16$。<br>
+<span class="note-sm">數值掃描：兩根 $x\approx0.31$ 與 $x=4$。凹函數與直線至多兩交點，是「根的個數」題的通用上界。</span></div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">log_a b＋log_b a=5/2 → r+1/r，a>b>1 決定 r<1；再用 a^b=b^a</span><span class="src">107 分科模考 中區數甲 第 3 次 選填 B</span></div>
+<div class="fxq">已知 $a\gt b\gt1$，$\log_ab+\log_ba=\dfrac52$ 且 $a^b=b^a$，求 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(4,2)$</div>
+<div class="fxs"><div class="move">招式：$r=\log_ab$，$r+\frac1r=\frac52$ ⟹ $r=2$ 或 $\frac12$；$a\gt b\gt1$ ⟹ $0\lt r\lt1$ ⟹ $r=\frac12$ ⟹ $b=\sqrt a$。</div>
+$a^b=b^a$ ⟹ $a^{\sqrt a}=(\sqrt a)^a=a^{a/2}$ ⟹ $\sqrt a=\dfrac a2$ ⟹ $a=4$、$b=2$。驗：$4^2=2^4=16$ ✔。<br>
+<span class="note-sm">同型題（111 分科模考）把 $\frac52$ 換成 $\frac{10}3$：$r=\frac13$，$b=a^{1/3}$，$a^{2/3}=3$，$a=3\sqrt3$、$b=\sqrt3$，$a^2+b^2=30$。</span></div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">S15</span><span class="kw">兩個 log₂√ 相減等於 1 → 真數比為 4，得 y=7x，目標變一元二次</span><span class="src">106 分科模考 南區數乙 第 2 次 單 2</span></div>
+<div class="fxq">$x,y$ 為正數，且 $\log_2\sqrt{x+5y}-\log_2\sqrt{2x+y}=1$，求 $2x^2-4y$ 的最小值。<br>(1) $-98$　(2) $-49$　(3) $7$　(4) $49$　(5) $98$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $-98$</div>
+<div class="fxs"><div class="move">招式：$\log_2\sqrt{\dfrac{x+5y}{2x+y}}=1$ ⟹ $\dfrac{x+5y}{2x+y}=4$ ⟹ $x+5y=8x+4y$ ⟹ $y=7x$。</div>
+$2x^2-4y=2x^2-28x=2(x-7)^2-98$，$x=7$（$y=49\gt0$ ✔）時最小值 $-98$。</div></div>
+</section>
+
+<div class="ch-nav">
+  <a href="../g11a-ch01/practice.html">← 第一章 三角函數 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <span></span>
+</div>
+</div>
+
+<script>
+(function () {
+  var G = window.PGEN;
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var labelOf = {};
+  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard';
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
+      '<div class="gh"></div><div class="ga"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+    function load() {
+      var it = G[tier][key](G.makeRng(seed));
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '提示：' + it.h;
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.seed').textContent = '#' + seed;
+      card.querySelector('.gh').classList.remove('on'); card.querySelector('.ga').classList.remove('on');
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+  document.querySelectorAll('.fixset').forEach(function (box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
+    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
+    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
+    for (var i = 0; i < n; i++) {
+      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
+      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+    }
+    box.innerHTML = html + '</ol>';
+    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    box.querySelector('.print').onclick = function () { window.print(); };
+    render(box);
+  });
+  document.querySelectorAll('.fx button').forEach(function (b) {
+    b.onclick = function () {
+      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
+      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
+    };
+  });
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+</body>
+</html>
