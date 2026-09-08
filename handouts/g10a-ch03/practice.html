@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三章 多項式 ── 分級練習本｜高一上</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第三章 多項式 ── 分級練習本</h1>
+  <div class="sub">高一上・配合主講義 第 1 節 多項式與其運算、第 2 節 餘式定理與因式定理、第 3 節 一次與二次函數的圖形、第 4 節 二次函數的極值與應用、第 5 節 三次函數的圖形特徵、第 6 節 多項式不等式。五個程度、一本練習本：L1、L2 的題目可以無限生成，L3–L5 是各校段考、大考與教甄的固定題。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・模考・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・科學班・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（9,250 題抽樣）；固定題全數人工＋電腦重算。本章不用高三選修的工具：三次方程式只用勘根與因式分解，一次近似只用「除以 $(x-h)$ 兩次」。</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>綜合除法會漏補 $0$、看到「餘式」就想長除法、配方常算錯的同學。</div>
+  <div><b>目標</b>21 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+</div>
+
+<h3 class="sec">3-1 多項式的運算、除法與餘式定理</h3>
+<div class="must">先要會：<b>次數：乘積相加、合成相乘、商式相減</b>、<b>恆等式代特殊值（代根最快）</b>、<b>指定項只挑「次數相加＝目標」的配對</b>、<b>綜合除法（缺項補 $0$、除以 $x-k$ 是「乘 $k$ 再加」）</b>、<b>數字題把底數當 $x$（秦九韶）</b>、<b>餘式定理 $f(k)$、因式定理 $f(k)=0$</b>、<b>除以二次式的餘式是「過兩點的直線」</b>、<b>三根之積 $=-\dfrac{\text{常數項}}{\text{首項}}$</b>、<b>勘根：相鄰兩值異號就有根</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="degOps,identCoef,prodCoef,synthDiv,hornerVal,remThm,rem2pts,factorThm,factorize,rootLoc"></div>
+<div class="fixset" data-tier="L1" data-keys="degOps,identCoef,prodCoef,synthDiv,hornerVal,remThm,rem2pts,factorThm,factorize,rootLoc" data-seed="4101"></div>
+
+<h3 class="sec">3-2 二次函數：配方、平移、判別式、區間最值</h3>
+<div class="must">先要會：<b>頂點 $x=-\dfrac b{2a}$，$y$ 直接代回</b>、<b>$f(p+t)=f(q-t)$ ⟹ 對稱軸在 $p,q$ 正中間</b>、<b>平移只動頂點，$a$ 不變</b>、<b>兩交點距離 $=\dfrac{\sqrt D}{|a|}$</b>、<b>區間最值：軸在區間內看頂點＋離軸最遠的端點；軸在外只看兩端點</b>、<b>恆正 ⟺ $a\gt0$ 且 $D\lt0$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="vertex,axisCond,shiftQuad,discrimDist,intervalMax,alwaysPos"></div>
+<div class="fixset" data-tier="L1" data-keys="vertex,axisCond,shiftQuad,discrimDist,intervalMax,alwaysPos" data-seed="4201"></div>
+
+<h3 class="sec">3-3 三次函數與多項式不等式</h3>
+<div class="must">先要會：<b>對稱中心 $x=-\dfrac b{3a}$，$y$ 代回</b>、<b>一次近似：除以 $(x-c)$ 兩次，餘式依序是 $c_0,c_1$，直線 $y=c_0+c_1(x-c)$</b>、<b>二次不等式：先分解、開口向下先除掉負號並反向</b>、<b>三次不等式：最右邊區間符號＝首項係數，每過一個單根變號</b>、<b>分式不等式：改成相乘，但分母的根一定挖掉</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="cubicCenter,linApprox,quadIneq,cubicIneq,fracIneq"></div>
+<div class="fixset" data-tier="L1" data-keys="cubicCenter,linApprox,quadIneq,cubicIneq,fracIneq" data-seed="4301"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
+  <div><b>目標</b>16 個段考最常見題型（依約 120 份高一段考卷的出現率選出），每型都能自己完整寫出過程。</div>
+  <div><b>通過標準</b>本級固定 12 題兩輪全對、且每張卡片連續新題 3 次全對。</div>
+</div>
+
+<h3 class="sec">3-1 除法原理進階：拼餘式、重根式、同餘、根與係數</h3>
+<div class="must">段考約 120 卷中<b>餘式定理 71 卷、綜合除法 33 卷、重根式 29 卷、根與係數 19 卷</b>。招式：<b>兩個二次條件各取出一個函數值，再求過兩點的直線</b>；<b>$x^n$ 除以 $(x\pm1)^2$：換元 $x=t\pm1$ 只留常數項與一次項</b>；<b>$(x-k)f(x)$ 型：設 $f\equiv ax+b$，用 $x^2\equiv$（低次式）降次後比較係數</b>；<b>三根和、兩兩積和、三根積是三個「開關」</b>；<b>三根成等差就設 $d-e,d,d+e$，中間項是根</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="remQuadTwo,remSqr,congRem,vieta3,cubicAP"></div>
+
+<h3 class="sec">3-2 二次函數：反推係數、含參數最值、恆成立、應用</h3>
+<div class="must">段考約 120 卷中<b>判別式 73 卷、二次函數 65 卷、平移 50 卷、頂點 37 卷、區間最值 31 卷、恆成立 24 卷</b>。招式：<b>對稱軸＋交點距離 ⟹ 兩根就是「軸 $\pm$ 半距」，設 $a(x-p)(x-q)$ 再用截距定 $a$</b>；<b>三點求式：設 $p(x-x_1)(x-x_2)+q(x-x_1)+r$ 由左到右代</b>；<b>軸在端點 ⟹ 區間內單調，分 $a\gt0$、$a\lt0$ 兩解</b>；<b>首項係數含參數要先檢查它等於 $0$ 的情形</b>；<b>「恆在直線上方」＝相減後恆正</b>；<b>定價題設調價次數 $t$，頂點在兩根正中間</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="quadFromCond,quadThreePts,intervalParam,alwaysPosCount,lineBelowParab,profit"></div>
+
+<h3 class="sec">3-3 三次函數與高次不等式</h3>
+<div class="must">段考約 120 卷中<b>三次函數 38 卷、對稱中心 36 卷、一次近似 24 卷、三次不等式 21 卷、高次不等式 18 卷</b>。招式：<b>知道中心就設 $a(x-h)^3+p(x-h)+k$，兩點解 $a,p$</b>；<b>平移只改 $h,k$，$a,p$ 不變</b>；<b>近似值＝$f(c)+f'(c)\cdot\varepsilon$，兩個數都靠綜合除法連除</b>；<b>偶次重根不變號：嚴格不等式要挖洞、含等號是孤立解</b>；<b>由解區間反推：端點就是根，常數項定 $a$，最右邊的正負核對 $a$ 的符號</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="cubicCenterPts,cubicShift,linApproxVal,highIneq,ineqFromSol"></div>
+
+<h3 class="sec">L2 固定 12 題（列印用）</h3>
+<div class="fixset" data-tier="L2" data-keys="remQuadTwo,congRem,vieta3,cubicAP,quadFromCond,intervalParam,alwaysPosCount,lineBelowParab,profit,cubicCenterPts,highIneq,ineqFromSol" data-seed="4001" data-n="12"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過（L3-5 原卷等號兩側用了同一組字母 $a,b$，會自相矛盾，本書右式改用 $p,q,r$）。</div>
+
+<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">一串 11 的次方加起來 → 把 11 當 x，用綜合除法算 f(11)</span><span class="src">台中女中 113上 填 8</span></div>
+<div class="fxq">若 $1\times11^{5}-10\times11^{4}-12\times11^{3}+13\times11^{2}-21\times11+k=13$，求 $k$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=2$</div>
+<div class="fxs"><div class="move">招式：左邊就是 $f(11)$，$f(x)=x^5-10x^4-12x^3+13x^2-21x+k$；用綜合除法除以 $x-11$，最後一格是 $f(11)$。</div>
+係數 $1,-10,-12,13,-21,k$ 依序「乘 $11$ 再加」：$1\to1\to-1\to2\to1\to k+11$。<br>
+所以 $f(11)=k+11=13$ ⟹ $k=2$。</div></div>
+
+<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">2f+3g 除以 x−1 → 只要 f(1)、g(1)；g 除以 (x−1)(x−2) 的餘式代 x=1 就是 g(1)</span><span class="src">成功高中 113上 填 4</span></div>
+<div class="fxq">設 $f(x)$ 與 $g(x)$ 為實係數多項式，以 $x^2-3x+2$ 除 $g(x)$ 得餘式 $3x-5$，以 $x-1$ 除 $f(x)$ 得餘式 $5$。求 $2f(x)+3g(x)$ 除以 $x-1$ 的餘式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$</div>
+<div class="fxs"><div class="move">招式：$x^2-3x+2=(x-1)(x-2)$，所以 $g(1)=$ 餘式在 $x=1$ 的值。</div>
+$g(1)=3-5=-2$、$f(1)=5$。所求 $=2f(1)+3g(1)=10-6=4$。</div></div>
+
+<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">除式含 x−3 的因式 → 那一大塊代 x=3 直接歸零</span><span class="src">成功高中 103上 填 4</span></div>
+<div class="fxq">設 $f(x)=(x^2-2x-3)(2014x^{35}+12x^{28}+4)+7x+2$，求 $f(x)$ 除以 $x-3$ 的餘式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$23$</div>
+<div class="fxs"><div class="move">招式：$x^2-2x-3=(x-3)(x+1)$，前面整塊在 $x=3$ 時是 $0$，不必管 $x^{35}$。</div>
+$f(3)=0+21+2=23$。</div></div>
+
+<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">除以 (x−1)² 與 (x−2)² 的餘式 → 先取出 f(1)、f(2)，再用「餘式次數 &lt; 除式次數」逐項判斷</span><span class="src">延平高中 113上 多選</span></div>
+<div class="fxq">若多項式 $f(x)$ 除以 $(x-1)^2$ 的餘式為 $3x+1$，除以 $(x-2)^2$ 的餘式為 $x+3$，下列哪些正確？<br>(1) $f(1)=4$　(2) $f(x)$ 除以 $x-2$ 的餘式為 $1$　(3) $f(x)$ 除以 $(x-1)(x-2)$ 的餘式為 $x+3$<br>(4) $f(x)$ 除以 $(x-1)^2(x-2)$ 的餘式為 $3x+1$　(5) $f(x)$ 除以 $(x-1)(x-2)^2$ 的餘式為 $x+3$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)(5)</div>
+<div class="fxs"><div class="move">招式：除以 $(x-a)^2$ 的餘式代 $x=a$ 仍等於 $f(a)$；除以三次式的餘式設成「$A(x-a)^2+$ 已知餘式」再補一個條件。</div>
+(1) $f(1)=3+1=4$ ✔　(2) $f(2)=2+3=5$，不是 $1$ ✘<br>
+(3) 過 $(1,4)$、$(2,5)$ 的直線：$y=x+3$ ✔<br>
+(4) 設餘式 $r(x)=A(x-1)^2+3x+1$（它除以 $(x-1)^2$ 餘 $3x+1$），再用 $r(2)=f(2)=5$：$A+7=5$ ⟹ $A=-2$，$r(x)=-2x^2+7x-1\ne3x+1$ ✘<br>
+(5) 設 $r(x)=B(x-2)^2+x+3$，用 $r(1)=f(1)=4$：$B+4=4$ ⟹ $B=0$，$r(x)=x+3$ ✔（次數 $1\lt3$，合法）</div></div>
+
+<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">同一個 f 用兩種基底寫 → 令 t=x−2 全部展開，「沒有 t² 項」與「一次近似的斜率」各給一條方程式</span><span class="src">台中一中 113上 填 8（改寫）</span></div>
+<div class="fxq">設 $f(x)=a(x-1)(x-2)(x-4)+b(x-1)(x-2)+c(x-1)+5=p(x-2)^3+q(x-2)+r$，已知 $y=f(x)$ 在 $x=2$ 附近的一次近似為 $y=-x+8$，求 $(a,b,c)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b,c)=(2,2,1)$</div>
+<div class="fxs"><div class="move">招式：右式是「$(x-2)$ 的展開」且缺 $(x-2)^2$ 項；一次近似 $y=-x+8$ 給 $f(2)=6$ 與斜率 $q=-1$。</div>
+令 $t=x-2$，則 $x-1=t+1$、$x-4=t-2$：<br>
+左式 $=a(t+1)t(t-2)+b(t+1)t+c(t+1)+5=at^3+(b-a)t^2+(b-2a+c)t+(c+5)$。<br>
+$f(2)=c+5=6$ ⟹ $c=1$；沒有 $t^2$ 項 ⟹ $b=a$；一次項係數 $=$ 斜率：$b-2a+c=-1$ ⟹ $-a+1=-1$ ⟹ $a=2$，$b=2$。<br>
+<span class="note-sm">原卷右式也寫成 $a(x-2)^3+b(x-2)+q$，那會逼出 $b=-1$、$a=-1$、$c=-2$ 與 $f(2)=3\ne6$ 的矛盾；題庫答案 $(2,2,1)$ 對應的是右式字母獨立的版本，本書已改寫。</span></div></div>
+
+<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">f(六次式) 除以 f(x+2) → 除式先分解成 (x−2)(x+3)，只需代兩個值</span><span class="src">台中一中 113上 填 12</span></div>
+<div class="fxq">設多項式 $f(x)=x^2-3x-4$，求 $f(x^3-4x+1)$ 除以 $f(x+2)$ 的餘式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-48x+90$</div>
+<div class="fxs"><div class="move">招式：除式 $f(x+2)=(x+2)^2-3(x+2)-4=x^2+x-6=(x-2)(x+3)$，餘式是過 $(2,\ast)$、$(-3,\ast)$ 的直線，被除式只要代 $x=2$ 與 $x=-3$。</div>
+$x=2$：$x^3-4x+1=1$，$f(1)=1-3-4=-6$。<br>
+$x=-3$：$x^3-4x+1=-27+12+1=-14$，$f(-14)=196+42-4=234$。<br>
+過 $(2,-6)$、$(-3,234)$：斜率 $\dfrac{234-(-6)}{-3-2}=-48$，$y=-48(x-2)-6=-48x+90$。</div></div>
+
+<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">f(x+1)=f(x)+3 → 差值是常數 ⟹ f 只能是一次式（次數論證）</span><span class="src">台南一中 113上 填 10</span></div>
+<div class="fxq">將 $y=f(x)$ 的圖形向左平移 $1$ 單位，和 $y=f(x)$ 的圖形向上平移 $3$ 單位，兩圖形恰好重合，即 $f(x+1)=f(x)+3$；且 $f(1)=5$。求多項式 $f(x)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$f(x)=3x+2$</div>
+<div class="fxs"><div class="move">招式：若 $\deg f=n\ge2$，$f(x+1)-f(x)$ 是 $n-1\ge1$ 次，不可能恆等於常數 $3$；所以 $\deg f=1$。</div>
+設 $f(x)=mx+b$：$f(x+1)-f(x)=m=3$；$f(1)=3+b=5$ ⟹ $b=2$。</div></div>
+
+<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">兩個括號都含 x²−6x → 換元 t=x²−6x，但 t 的範圍要一起換（t ≥ −9）</span><span class="src">台中一中 113上 填 11</span></div>
+<div class="fxq">設 $x$ 為實數，求 $f(x)=(x^2-6x+2)(x^2-6x+10)+8x^2-48x$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-79$</div>
+<div class="fxs"><div class="move">招式：$t=x^2-6x=(x-3)^2-9\ge-9$；$f=(t+2)(t+10)+8t=t^2+20t+20=(t+10)^2-80$。</div>
+頂點 $t=-10$ 不在 $t\ge-9$ 內，函數在 $t\ge-9$ 遞增，最小值在 $t=-9$（即 $x=3$）：$(-9+10)^2-80=-79$。<br>
+<span class="warn">直接答 $-80$ 是最常見的錯：換元後範圍沒跟著換。</span></div></div>
+
+<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">水平線截拋物線的弦長 → 弦長 =2√((y−k)/a)，平移不改 a，只改 k</span><span class="src">台中一中 113上 填 14</span></div>
+<div class="fxq">將二次函數 $y=ax^2+k$ 的圖形 $\Gamma_1$ 向右平移 $113$ 單位、再向上平移 $10$ 單位得 $\Gamma_2$。若水平線 $y=12$ 與 $\Gamma_1$ 交於 $A,B$、與 $\Gamma_2$ 交於 $C,D$，且 $\overline{AB}:\overline{CD}=3:2$，求 $k$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=-6$</div>
+<div class="fxs"><div class="move">招式：$y=a(x-h)^2+k$ 被 $y=c$ 截出的弦長 $=2\sqrt{\dfrac{c-k}{a}}$，與 $h$ 無關；向右平移 $113$ 只是障眼法。</div>
+$\overline{AB}=2\sqrt{\dfrac{12-k}{a}}$、$\overline{CD}=2\sqrt{\dfrac{12-(k+10)}{a}}=2\sqrt{\dfrac{2-k}{a}}$。<br>
+平方比：$\dfrac{12-k}{2-k}=\dfrac94$ ⟹ $48-4k=18-9k$ ⟹ $k=-6$（此時 $12-k=18\gt0$、$2-k=8\gt0$，$a\gt0$ 合理）。</div></div>
+
+<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">三個函數值相同 → f(x)−3 有三個已知根，只剩首項係數要定</span><span class="src">成功高中 113上 填 7</span></div>
+<div class="fxq">已知 $f(x)$ 為三次多項式，滿足 $f(-2)=f(-1)=f(2)=3$，且 $f(0)=15$，求 $f(x)$（降冪排列）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$f(x)=-3x^3-3x^2+12x+15$</div>
+<div class="fxs"><div class="move">招式：$f(x)-3=a(x+2)(x+1)(x-2)$，用第四個條件 $f(0)=15$ 定 $a$。</div>
+$f(0)-3=12=a\cdot2\cdot1\cdot(-2)=-4a$ ⟹ $a=-3$。<br>
+$f(x)=-3(x+2)(x+1)(x-2)+3=-3(x^3+x^2-4x-4)+3=-3x^3-3x^2+12x+15$。</div></div>
+
+<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">對稱中心 (2,0) → 設 a(x−2)³+p(x−2)（k=0），兩個截點各給一式</span><span class="src">成功高中 113上 填 17</span></div>
+<div class="fxq">已知三次函數 $y=f(x)$ 的圖形對稱中心為 $(2,0)$，與 $x$ 軸有交點 $(1,0)$，與 $y$ 軸交於 $(0,6)$，求 $f(x)$（降冪排列）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$f(x)=-x^3+6x^2-11x+6$</div>
+<div class="fxs"><div class="move">招式：中心在 $(2,0)$ ⟹ $f(x)=a(x-2)^3+p(x-2)$，代 $(1,0)$、$(0,6)$。</div>
+$f(1)=-a-p=0$、$f(0)=-8a-2p=6$ ⟹ $p=-a$，$-8a+2a=6$ ⟹ $a=-1$，$p=1$。<br>
+$f(x)=-(x-2)^3+(x-2)=-x^3+6x^2-12x+8+x-2=-x^3+6x^2-11x+6$。<br>
+<span class="note-sm">檢查：$f(x)=-(x-1)(x-2)(x-3)$，三根 $1,2,3$ 對稱於 $2$ ✔</span></div></div>
+
+<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">三個二次因式相乘 → 恆正的丟掉、負首項的翻號，剩下的標根</span><span class="src">台中女中 113上 填 18</span></div>
+<div class="fxq">不等式 $(-x^2-3x+4)(2x^2-x-2)(x^2+x+1)\gt0$ 共有多少個整數解？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3$ 個（$x=-3,-2,-1$）</div>
+<div class="fxs"><div class="move">招式：$x^2+x+1=\left(x+\frac12\right)^2+\frac34\gt0$ 直接刪；$-x^2-3x+4=-(x+4)(x-1)$ 把負號移到右邊反向。</div>
+不等式 ⟺ $(x+4)(x-1)(2x^2-x-2)\lt0$。$2x^2-x-2=0$ 的根 $\dfrac{1\pm\sqrt{17}}4\approx1.28,\,-0.78$。<br>
+四個根由小到大：$-4,\ -0.78,\ 1,\ 1.28$；最右為正，$\lt0$ 的區間是 $(-4,-0.78)$ 與 $(1,1.28)$。<br>
+整數只有 $-3,-2,-1$，共 $3$ 個。</div></div>
+
+<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">由二次不等式的解知道 a&lt;0 與兩根 → 用 a 表示 b、c，代進三次式再提出 ax</span><span class="src">雄中 113上 填 13</span></div>
+<div class="fxq">不等式 $ax^2+bx+c\gt0$ 的解為 $-2\lt x\lt5$，求不等式 $ax^3+3bx^2-2cx\lt0$ 的解。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$0\lt x\lt4$ 或 $x\gt5$</div>
+<div class="fxs"><div class="move">招式：解在兩根之間且是 $\gt0$ ⟹ $a\lt0$，且 $ax^2+bx+c=a(x+2)(x-5)$ ⟹ $b=-3a$、$c=-10a$。</div>
+$ax^3+3bx^2-2cx=ax^3-9ax^2+20ax=ax(x^2-9x+20)=ax(x-4)(x-5)$。<br>
+$a\lt0$，所以 $ax(x-4)(x-5)\lt0$ ⟺ $x(x-4)(x-5)\gt0$ ⟺ $0\lt x\lt4$ 或 $x\gt5$。</div></div>
+
+<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">連鎖不等式 −x&lt;x²−6&lt;x → 拆成兩個二次不等式取交集</span><span class="src">台南一中 113上 填 5</span></div>
+<div class="fxq">求不等式 $-x\lt x^2-6\lt x$ 的解。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2\lt x\lt3$</div>
+<div class="fxs"><div class="move">招式：連鎖不等式＝兩個不等式「同時」成立，分開解再取交集。</div>
+$x^2-6\lt x$ ⟹ $x^2-x-6\lt0$ ⟹ $(x-3)(x+2)\lt0$ ⟹ $-2\lt x\lt3$。<br>
+$-x\lt x^2-6$ ⟹ $x^2+x-6\gt0$ ⟹ $(x+3)(x-2)\gt0$ ⟹ $x\lt-3$ 或 $x\gt2$。<br>
+交集：$2\lt x\lt3$。</div></div>
+
+<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">「&gt;0 無實數解」＝「≤0 恆成立」→ 開口向下且 D≤0，別忘了 m−2=0 要另外查</span><span class="src">雄中 113上期末 單 2</span></div>
+<div class="fxq">設 $m$ 為實數，已知二次不等式 $(m-2)x^2+2(2m-3)x+5m-6\gt0$ 無實數解，求 $m$ 的範圍。<br>(A) $m\lt1$　(B) $m\le1$　(C) $m\gt3$ 或 $m\lt2$　(D) $m\ge3$ 或 $m\le1$　(E) $m\ge3$ 或 $m\le2$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(B) $m\le1$</div>
+<div class="fxs"><div class="move">招式：「$\gt0$ 無解」⟺「$\le0$ 對所有 $x$ 成立」⟺ $m-2\lt0$ 且 $D\le0$。</div>
+$m=2$ 時原式為 $2x+4\gt0$，有解，不合。<br>
+$D/4=(2m-3)^2-(m-2)(5m-6)=4m^2-12m+9-(5m^2-16m+12)=-m^2+4m-3\le0$ ⟹ $(m-1)(m-3)\ge0$ ⟹ $m\le1$ 或 $m\ge3$。<br>
+與 $m\lt2$ 取交集：$m\le1$。</div></div>
+</section>
+
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考、模考、大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">f(1)=f(−1)=1 → f(x)−1 含 (x−1)(x+1)，剩下一次式用另外兩點定</span><span class="src">北一女中 112上期末 填 10</span></div>
+<div class="fxq">設 $f(x)$ 為三次多項式，且 $f(1)=f(-1)=1$，$f(2)=4$，$f(0)=6$。求 $f(5)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$f(5)=241$</div>
+<div class="fxs"><div class="move">招式：兩個函數值相同 ⟹ 減掉它得到兩個根：$f(x)-1=(x-1)(x+1)(ax+b)$。</div>
+$f(2)=4$：$3(2a+b)=3$ ⟹ $2a+b=1$；$f(0)=6$：$(-1)(b)=5$ ⟹ $b=-5$，$a=3$。<br>
+$f(x)=(x^2-1)(3x-5)+1$，$f(5)=24\cdot10+1=241$。</div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">「f 除以 x+1 的餘式＝2f 除以 3(x+1) 的餘式」→ 兩者分別是 f(−1) 與 2f(−1)，相等只能是 0</span><span class="src">建國中學 112上期末 填 11</span></div>
+<div class="fxq">若多項式 $f(x)$ 除以 $x+1$ 的餘式與 $2f(x)$ 除以 $3(x+1)$ 的餘式恰好相等，且 $f(x)$ 除以 $3x-1$ 的餘式為 $4$，求 $f(x)$ 除以 $(x+1)(3x-1)$ 的餘式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3x+3$</div>
+<div class="fxs"><div class="move">招式：除以 $3(x+1)$ 的餘式仍是「代 $x=-1$」：$2f(-1)$（常數乘上除式不改變餘式）。</div>
+$f(-1)=2f(-1)$ ⟹ $f(-1)=0$；$f\!\left(\tfrac13\right)=4$。<br>
+餘式是過 $(-1,0)$、$\left(\tfrac13,4\right)$ 的直線：斜率 $\dfrac{4}{4/3}=3$，$y=3(x+1)=3x+3$。</div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">只給商式 q 的兩個值 → 用 f=(x−1)q+3 把 q(3)、q(−2) 翻成 f(3)、f(−2)</span><span class="src">台南一中 112上期末 填 12</span></div>
+<div class="fxq">設多項式 $f(x)$ 的次數不低於三，$f(x)$ 除以 $x-1$ 的商式為 $q(x)$、餘式為 $3$，且 $q(3)=-2$、$q(-2)=3$。求 $f(x)$ 除以 $(x-1)(x-3)(x+2)$ 的餘式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-x^2+2x+2$</div>
+<div class="fxs"><div class="move">招式：$f(x)=(x-1)q(x)+3$ ⟹ $f(1)=3$、$f(3)=2q(3)+3=-1$、$f(-2)=(-3)q(-2)+3=-6$；除以三次式的餘式是過三點的二次式。</div>
+設 $r(x)=A(x-1)(x-3)+B(x-1)+3$：$r(3)=2B+3=-1$ ⟹ $B=-2$；$r(-2)=15A-3B+3=15A+9=-6$ ⟹ $A=-1$。<br>
+$r(x)=-(x^2-4x+3)-2x+2+3=-x^2+2x+2$。</div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">三個連續整數的函數值都是 9 → f(x)−9=a(x−1982)(x−1983)(x−1984)，大數只是唬人</span><span class="src">台南女中 112上期末 填 14</span></div>
+<div class="fxq">實係數三次多項式 $f(x)$ 滿足 $f(1981)=1$、$f(1982)=f(1983)=f(1984)=9$，求 $f(1985)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$17$</div>
+<div class="fxs"><div class="move">招式：令 $t=x-1983$，$f(t)-9=a(t+1)t(t-1)$；$f(1981)$ 是 $t=-2$，$f(1985)$ 是 $t=2$。</div>
+$t=-2$：$1-9=a(-1)(-2)(-3)=-6a$ ⟹ $a=\dfrac43$。<br>
+$t=2$：$f=9+\dfrac43\cdot3\cdot2\cdot1=9+8=17$。<br>
+<span class="note-sm">也可以看出 $f(t)-9$ 是奇函數：$f(2)-9=-\big(f(-2)-9\big)=8$。</span></div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">求 (x−3) 展開式的係數和 → 代 x=4 讓每個 (x−3)=1，右邊就變成 3x−1=11 的多項式</span><span class="src">高雄女中 112上期末 填 15</span></div>
+<div class="fxq">實係數多項式 $f(x)=a(x-3)^5+b(x-3)^4+c(x-3)^3+d(x-3)^2+e(x-3)+f=(3x-1)^5-12(3x-1)^4+13(3x-1)^3-25(3x-1)^2+37(3x-1)+56$，求 $a+b+c+d+e+f$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$100$</div>
+<div class="fxs"><div class="move">招式：係數和 $=$ 「每個 $(x-3)$ 都等於 $1$」時的值 $=f(4)$；右邊代 $x=4$ 就是 $t=3x-1=11$ 的多項式求值，用綜合除法。</div>
+$g(t)=t^5-12t^4+13t^3-25t^2+37t+56$ 除以 $t-11$：$1\to-1\to2\to-3\to4\to100$。<br>
+所以 $a+b+c+d+e+f=g(11)=100$。</div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">對稱於 (2,5) → f(2−t)+f(2+t)=10；除以 (x−1)(x−4) 的餘式給 f(1)，要 f(3) 就用對稱</span><span class="src">雄中 113上期末 填 7</span></div>
+<div class="fxq">已知三次多項式函數 $y=f(x)$ 圖形對稱於點 $(2,5)$，且 $f(x)$ 除以 $x^2-5x+4$ 的餘式為 $10x-11$，求 $f(x)$ 除以 $x-3$ 的餘式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$11$</div>
+<div class="fxs"><div class="move">招式：點對稱 ⟹ $f(1)+f(3)=2\cdot5$；不必求出 $f$。</div>
+$x^2-5x+4=(x-1)(x-4)$ ⟹ $f(1)=10-11=-1$。<br>
+$f(3)=10-f(1)=11$。<br>
+<span class="note-sm">若硬要求 $f$：設 $a(x-2)^3+p(x-2)+5$，$f(1)=-a-p+5=-1$、$f(4)=8a+2p+5=29$ 解得 $a=2$、$p=4$，$f(3)=2+4+5=11$ ✔——但對稱一行就完成。</span></div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">廣域 3x³＋x=1 的切線 y=7x−2 → 設 3(x−1)³+b(x−1)²+7(x−1)+5，過 (0,−5) 定 b</span><span class="src">北一女中 111上 填 12</span></div>
+<div class="fxq">多項式函數 $y=f(x)$ 的廣域特徵近似於 $y=3x^3$，在 $x=1$ 附近有一次近似直線 $y=7x-2$，且圖形過 $(0,-5)$。求 $f(x)$（展開）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$f(x)=3x^3-9x^2+16x-5$</div>
+<div class="fxs"><div class="move">招式：「在 $x=1$ 附近近似 $y=7x-2$」＝ $(x-1)$ 展開的常數項 $f(1)=5$、一次項係數 $7$；廣域給最高次係數 $3$。</div>
+設 $f(x)=3(x-1)^3+b(x-1)^2+7(x-1)+5$，$f(0)=-3+b-7+5=-5$ ⟹ $b=0$。<br>
+$f(x)=3(x-1)^3+7(x-1)+5=3x^3-9x^2+9x-3+7x-7+5=3x^3-9x^2+16x-5$。<br>
+<span class="note-sm">$b=0$ 表示 $(1,5)$ 恰好是對稱中心。</span></div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">解為「x≤−3 或 x=3」→ 3 是偶次重根、−3 是單根、首項為負</span><span class="src">建國中學 113上 填 10</span></div>
+<div class="fxq">三次多項式 $f(x)=ax^3+bx^2+cx-54$（$a,b,c$ 為實數），已知不等式 $f(x)\ge0$ 的解為「$x\le-3$ 或 $x=3$」，求 $a,b,c$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=-2,\ b=6,\ c=18$</div>
+<div class="fxs"><div class="move">招式：孤立解 $x=3$ ⟹ $(x-3)^2$；$x\le-3$ 整段成立 ⟹ $x+3$ 單根且 $x\to-\infty$ 時 $f\gt0$ ⟹ $a\lt0$。</div>
+$f(x)=a(x+3)(x-3)^2$，常數項 $a\cdot3\cdot9=27a=-54$ ⟹ $a=-2$。<br>
+$f(x)=-2(x+3)(x^2-6x+9)=-2(x^3-3x^2-9x+27)=-2x^3+6x^2+18x-54$。</div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">2019 次、2018 次的巨大指數 → 只看奇偶；先用 x+3 是因式解出 k，再把三次式分解</span><span class="src">武陵高中 113上 填 12</span></div>
+<div class="fxq">設 $f(x)=(x-1)^{2019}(x+4)^{2018}(2x^3-x^2+kx+15)$，已知 $x+3$ 為 $f(x)$ 的因式。求滿足 $f(x)\le0$ 的所有整數解之總和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-7$</div>
+<div class="fxs"><div class="move">招式：$x=-3$ 代入三次式為 $0$ ⟹ $k=-16$；$2x^3-x^2-16x+15=(x+3)(x-1)(2x-5)$；$(x-1)^{2019}\cdot(x-1)=(x-1)^{2020}$ 變偶次。</div>
+$-54-9-3k+15=0$ ⟹ $k=-16$。<br>
+$f(x)=(x-1)^{2020}(x+4)^{2018}(x+3)(2x-5)$；偶次因式不變號、只貢獻零點。<br>
+$f\le0$ ⟺ $(x+3)(2x-5)\le0$ 或 $x=1$ 或 $x=-4$ ⟺ $-3\le x\le\dfrac52$ 或 $x=-4$（$x=1$ 已在內）。<br>
+整數解 $-4,-3,-2,-1,0,1,2$，總和 $-7$。</div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">頂點式在區間內 → 頂點是一端，遠端點是另一端；兩種開口都算，再用 f(3)&lt;29 篩</span><span class="src">台南女中 112上 填 15</span></div>
+<div class="fxq">已知二次函數 $f(x)=a(x-2)^2+b$ 在區間 $[0,3]$ 的最大值為 $35$、最小值為 $23$。若 $f(3)\lt29$，求 $f(3)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$f(3)=26$</div>
+<div class="fxs"><div class="move">招式：軸 $x=2$ 在 $[0,3]$ 內，離軸最遠的端點是 $x=0$；候選值只有 $f(2)=b$、$f(0)=4a+b$。</div>
+$a\gt0$：$b=23$、$4a+b=35$ ⟹ $a=3$，$f(3)=a+b=26\lt29$ ✔<br>
+$a\lt0$：$b=35$、$4a+b=23$ ⟹ $a=-3$，$f(3)=32$ ✘<br>
+故 $f(3)=26$。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">「f&lt;0 沒有實數解」→ f≥0 恆成立，k=0 也算；解出 k 的範圍後再求 (k−4)²+3 的最小值</span><span class="src">師大附中 112上 填 12</span></div>
+<div class="fxq">設 $k$ 為實數，$f(x)=kx^2+2k(1-k)x+4k$。若不等式 $f(x)\lt0$ 沒有實數解，求 $k^2-8k+19$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$</div>
+<div class="fxs"><div class="move">招式：$k=0$ 時 $f\equiv0$，$f\lt0$ 無解 ✔；$k\gt0$ 時需 $D\le0$。</div>
+$D/4=k^2(1-k)^2-4k^2=k^2\big[(1-k)^2-4\big]\le0$ ⟹ $(k-1)^2\le4$ ⟹ $-1\le k\le3$，配合 $k\gt0$ 得 $0\lt k\le3$；合併 $0\le k\le3$。<br>
+$k^2-8k+19=(k-4)^2+3$ 在 $0\le k\le3$ 遞減，$k=3$ 時最小 $=1+3=4$。</div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">3·AO=BO 且開口向下 → 兩根異號、b=−3a，配合根與係數兩條式子</span><span class="src">師大附中 113上 填 12</span></div>
+<div class="fxq">設 $O$ 為原點，開口向下的二次函數 $f(x)=kx^2-kx+5$ 與 $x$ 軸交於 $A(a,0)$、$B(b,0)$，$b\gt a$，且 $3\overline{AO}=\overline{BO}$。求非零實數 $k$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=-\dfrac{20}3$</div>
+<div class="fxs"><div class="move">招式：$k\lt0$ ⟹ 兩根之積 $\dfrac5k\lt0$，兩根異號 ⟹ $a\lt0\lt b$，$3|a|=|b|$ 就是 $b=-3a$。</div>
+兩根和 $a+b=1$ ⟹ $-2a=1$ ⟹ $a=-\dfrac12$、$b=\dfrac32$。<br>
+兩根積 $ab=-\dfrac34=\dfrac5k$ ⟹ $k=-\dfrac{20}3$。</div></div>
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充專區：經典題、科學班與教甄</h2>
+<div class="goal">
+  <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
+  <div><b>目標</b>6 題經典壓軸＋15 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>通過標準</b>沒有標準——會一題算一題。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">f(2^k)=k → 構造 h(x)=f(2x)−f(x)−1，它有 7 個根 2⁰…2⁶，常數項定 c，再讀 x 項係數</span><span class="src">台南一中 112上期末 填 17</span></div>
+<div class="fxq">設 $f(x)$ 為 $7$ 次多項式，滿足 $f(2^0)=0,\ f(2^1)=1,\ f(2^2)=2,\dots,f(2^7)=7$。求 $f(x)$ 的 $x$ 項係數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{127}{64}$</div>
+<div class="fxs"><div class="move">招式：條件是「$x$ 變兩倍、函數值加 $1$」⟹ 看 $h(x)=f(2x)-f(x)-1$；$h(2^k)=(k+1)-k-1=0$（$k=0,\dots,6$），$h$ 是 $7$ 次且有 $7$ 個根。</div>
+$h(x)=c(x-1)(x-2)(x-4)\cdots(x-64)$。<br>
+常數項：$h(0)=f(0)-f(0)-1=-1=c\cdot(-1)^7\cdot2^{0+1+\cdots+6}=-c\cdot2^{21}$ ⟹ $c=2^{-21}$。<br>
+$x$ 項：左邊 $f(2x)-f(x)$ 的 $x$ 項係數 $=2a_1-a_1=a_1$；右邊 $=c\cdot(-1)^6\sum_k\prod_{j\ne k}2^j=c\cdot2^{21}\left(1+\tfrac12+\cdots+\tfrac1{64}\right)=\dfrac{127}{64}$。<br>
+故 $a_1=\dfrac{127}{64}$。<br>
+<span class="note-sm">同一招可處理 H4 型（$f(k)=\frac1k$）：先把條件改寫成「某個多項式有很多根」。</span></div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">f≡2x−1、f²≡−2x−3 (mod g) → (2x−1)²−(−2x−3) 被 g 整除，先逼出 g，再算 f³≡f·f²</span><span class="src">建國中學 113上 混 12–13</span></div>
+<div class="fxq">設多項式 $f(x),g(x)$ 首項係數均為 $1$，$f(x)$ 為三次多項式。已知 $f(x)$ 除以 $g(x)$ 的餘式為 $2x-1$，$\big(f(x)\big)^2$ 除以 $g(x)$ 的餘式為 $-2x-3$。<br>(1) 請選出正確的選項：(a) $g$ 可能是三次式　(b) $(2x-1)^2$ 除以 $g$ 的餘式為 $-2x-3$　(c) $g(0)=-1$　(d) $g(2)=4$　(e) 滿足題意的 $f$ 唯一<br>(2) 若 $\big(f(x)\big)^3$ 除以 $g(x)$ 的餘式為 $ax+b$，求 $a,b$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) (b)(d)　(2) $a=-6$、$b=7$</div>
+<div class="fxs"><div class="move">招式：同餘可以相乘：$f^2\equiv(2x-1)^2$；所以 $g\mid(2x-1)^2-(-2x-3)=4x^2-2x+4$，$g$ 是首一的，只能是 $x^2-\frac12x+1$。</div>
+(a) 二次式的倍數不可能是三次 ✘；(b) ✔；(c) $g(0)=1$ ✘；(d) $g(2)=4-1+1=4$ ✔；(e) $f=g\cdot(x+t)+2x-1$，$t$ 任意 ✘。<br>
+(2) $f^3\equiv(2x-1)(-2x-3)=-4x^2-4x+3$；在 $\bmod g$ 下 $x^2\equiv\frac12x-1$：$-4\left(\frac12x-1\right)-4x+3=-6x+7$。</div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">秘密分享：兩個零點 (13,0)、(25,0) → f=(x−13)(x−25)(ax+b)，另外兩點解 a,b，密碼是 f(0)</span><span class="src">師大附中 112上期末 填 15</span></div>
+<div class="fxq">王媽媽把金庫密碼 $d$ 藏在 $f(x)=ax^3+bx^2+cx+d$ 的常數項，分給五個孩子各一個圖形上的點：$(13,0)$、$(25,0)$、$(15,200)$、$(26,-273)$、$(2024,-8116357791)$（最後一個弄丟了）。用剩下四點求 $d$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$d=1625$</div>
+<div class="fxs"><div class="move">招式：三次式由四點唯一決定；兩個根先用掉，剩下一次因式 $px+q$ 用兩點解。</div>
+$f(x)=(x-13)(x-25)(px+q)$。$f(15)=2\cdot(-10)(15p+q)=200$ ⟹ $15p+q=-10$；$f(26)=13\cdot1\cdot(26p+q)=-273$ ⟹ $26p+q=-21$。<br>
+相減 $11p=-11$ ⟹ $p=-1$，$q=5$。$d=f(0)=(-13)(-25)(5)=1625$。<br>
+<span class="note-sm">驗：$f(2024)=2011\cdot1999\cdot(-2019)=-8116357791$ ✔，弄丟的那一點確實在圖上——這就是「秘密分享」（Shamir）的原理：$n+1$ 點決定 $n$ 次多項式。</span></div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">一根是另兩根之積 → 設根 α,β,αβ，三個根與係數關係只剩 s=α+β、p=αβ 兩個未知數</span><span class="src">建國中學 112上期末 填 12</span></div>
+<div class="fxq">若實係數方程式 $x^3-14x^2+26x+t=0$ 的三個根中，有一根恰為另外兩根的乘積，求 $t$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$t=-4$</div>
+<div class="fxs"><div class="move">招式：令 $s=\alpha+\beta$、$p=\alpha\beta$：三根和 $s+p=14$，兩兩積和 $p+ps=p(1+s)=26$，三根積 $p^2=-t$。</div>
+$p(15-p)=26$ ⟹ $p^2-15p+26=0$ ⟹ $p=2$ 或 $13$。<br>
+$p=2$：$s=12$，$\alpha,\beta$ 是 $x^2-12x+2=0$ 的根（判別式 $\gt0$，實根 ✔），$t=-4$。<br>
+$p=13$：$s=1$，$x^2-x+13=0$ 判別式 $\lt0$，沒有實根 ✘（$\alpha,\beta$ 必須是實數，才能和第三根 $\alpha\beta=13$ 一起構成三個實根；非實數的情形是高三選修的事）。<br>
+故 $t=-4$。<span class="note-sm">若只看代數不看實根，會多出 $t=-169$；題目問「最大值」正是因為原出題者留了這個陷阱。</span></div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">分式恆成立 → 分母 x²−x+1 恆正可直接乘過去，變成 2x²+(m−3)x+2&gt;0 恆成立</span><span class="src">武陵高中 113上 填 13</span></div>
+<div class="fxq">設 $m$ 為整數，且不等式 $\dfrac{x^2-mx+1}{x^2-x+1}\lt3$ 對任意實數 $x$ 恆成立，求所有滿足條件的 $m$ 之總和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$21$</div>
+<div class="fxs"><div class="move">招式：$x^2-x+1=\left(x-\frac12\right)^2+\frac34\gt0$，兩邊乘分母不變號。</div>
+$x^2-mx+1\lt3x^2-3x+3$ ⟺ $2x^2+(m-3)x+2\gt0$ 恆成立 ⟺ $(m-3)^2-16\lt0$ ⟺ $-1\lt m\lt7$。<br>
+整數 $m=0,1,\dots,6$，總和 $21$。</div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">f 的最小值點 a 同時滿足 f(a)−g(a)=−5 → 代進 f−g 的式子先逼出整數 a=2，再用「最大值 5」定 g</span><span class="src">高雄女中 112上期末 填 16</span></div>
+<div class="fxq">已知 $f(x)$、$g(x)$ 均為二次函數，$f(x)$ 在 $x=a$ 有最小值 $-3$（$a$ 為整數），$g(x)$ 有最大值 $5$ 且 $g(a)=2$，$f(x)-g(x)=4x^2-10x-1$。求 $g(x)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$g(x)=-3x^2+6x+2$</div>
+<div class="fxs"><div class="move">招式：$x=a$ 代入 $f-g$：$-3-2=4a^2-10a-1$ ⟹ $2a^2-5a+2=0$ ⟹ $a=2$（$\frac12$ 非整數）。</div>
+設 $g(x)=-Bx^2+cx+d$（$B\gt0$）。$f=g+4x^2-10x-1$ 在 $x=2$ 取最小值 ⟹ 它的對稱軸在 $2$：$f(x)=(4-B)x^2+(c-10)x+(d-1)$，$\dfrac{-(c-10)}{2(4-B)}=2$ ⟹ $c=4B-6$。<br>
+$g(2)=-4B+2c+d=2$ ⟹ $d=14-4B$；最大值 $d+\dfrac{c^2}{4B}=5$ ⟹ $14-4B+\dfrac{(4B-6)^2}{4B}=5$ ⟹ $8B+36=20B$ ⟹ $B=3$。<br>
+$g(x)=-3x^2+6x+2$（驗：$f=x^2-4x+1=(x-2)^2-3$ ✔）。</div></div>
+
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（15 題）</h3>
+<div class="note">來源：嘉義高中 114、115 科學班甄選，以及 112 全國聯合、台南女中 112／111、臺北市聯合 111、竹北高中 111／101、竹科實中 109、大園國際 109、政大附中 107、台中一中 106、新化高中 101 各校教甄。掃描卷以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">x³f(x) 除以 3x−2 餘 6 → 只知道 f(2/3)；x²f(x) 的餘式就是 (2/3)²f(2/3)</span><span class="src">112 全國聯合教甄 填 7</span></div>
+<div class="fxq">設 $f(x)$ 為多項式函數，若 $x^3f(x)$ 除以 $3x-2$ 的餘式為 $6$，求 $x^2f(x)$ 除以 $3x-2$ 的餘式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$9$</div>
+<div class="fxs"><div class="move">招式：除以 $3x-2$ 的餘式 $=$ 代 $x=\frac23$。</div>
+$\left(\tfrac23\right)^3f\!\left(\tfrac23\right)=6$ ⟹ $f\!\left(\tfrac23\right)=6\cdot\tfrac{27}8=\tfrac{81}4$。所求 $=\left(\tfrac23\right)^2\cdot\tfrac{81}4=9$。<br>
+<span class="note-sm">更快：$x^2f(x)=\dfrac{x^3f(x)}{x}$，餘式 $=6\div\frac23=9$（在 $x=\frac23$ 這一點上除以 $x$ 是合法的）。</span></div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">S2</span><span class="kw">P、Q 都是有理數而 a 是無理數 → 把 P 用 Q 除法降次：P=(Q−6)a+5Q+6，無理數的係數必為 0</span><span class="src">112 全國聯合教甄 填 8</span></div>
+<div class="fxq">已知 $a\gt0$ 是無理數，若 $P=a^3+3a^2-16a+6$、$Q=a^2-2a$，且 $P,Q$ 皆為有理數，求 $a$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=1+\sqrt7$</div>
+<div class="fxs"><div class="move">招式：用 $a^2=Q+2a$ 把 $P$ 一路降到一次：$a^3=aQ+2a^2=aQ+2Q+4a$。</div>
+$P=(aQ+2Q+4a)+3(Q+2a)-16a+6=(Q-6)a+5Q+6$。<br>
+$P,Q$ 有理、$a$ 無理 ⟹ $Q-6=0$ ⟹ $a^2-2a-6=0$ ⟹ $a=1\pm\sqrt7$，取正：$a=1+\sqrt7$（此時 $P=36$）。</div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">S3</span><span class="kw">證明題：整係數二次式有有理根 → 設最簡分數 p/q 代入乘 q²，用「奇偶」看 aq²+bpq+cp² 不可能為 0</span><span class="src">台南女中 112 教甄 計算證明 1</span></div>
+<div class="fxq">設整係數方程式 $ax^2+bx+c=0$ 存在有理根，試證：$a,b,c$ 中至少有一個是偶數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">（證明題）</div>
+<div class="fxs"><div class="move">招式：反證法——假設 $a,b,c$ 全是奇數，設有理根 $\dfrac pq$（$p,q$ 互質），則 $ap^2+bpq+cq^2=0$，只看奇偶。</div>
+$p,q$ 互質 ⟹ 不會同為偶數，分兩種情形：<br>
+(i) $p,q$ 皆奇：三項 $ap^2,bpq,cq^2$ 都是奇數，奇＋奇＋奇＝奇 $\ne0$。<br>
+(ii) $p,q$ 一奇一偶：含偶數的兩項是偶數、剩下一項是奇數，總和為奇數 $\ne0$。<br>
+兩種情形都矛盾，故 $a,b,c$ 不可能全為奇數。□<br>
+<span class="note-sm">教學上的價值：這是「有理根檢驗」背後的整除論證，用不到選修的有理根定理。</span></div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">除以 (x−1)² 餘 ax+b、除以 (x+1)² 餘 bx+a → 餘式 R(x) 在 x=±1 的「值」與「斜率」共四個條件</span><span class="src">臺北市公立高中 111 聯合教甄 計算證明 1</span></div>
+<div class="fxq">已知多項式 $f(x)$ 除以 $(x-1)^2$ 的餘式為 $ax+b$，除以 $(x+1)^2$ 的餘式為 $bx+a$，其中 $a\ne0$。若 $f(x)$ 除以 $(x-1)^2(x+1)^2$ 的餘式 $R(x)$ 為三次多項式且常數項為 $0$，求 $R(x)$ 除了 $0$ 以外的根。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=\dfrac{-1\pm\sqrt{17}}2$</div>
+<div class="fxs"><div class="move">招式：$R\equiv ax+b\pmod{(x-1)^2}$ ⟹ $R(x)=(x-1)^2(Ax+B)+ax+b$；再用 $\bmod(x+1)^2$ 的條件。</div>
+設 $R(x)=(x-1)^2(Ax+B)+ax+b$。令 $x=t-1$（即 $\bmod(x+1)^2$ 只看 $t^0,t^1$）：$(x-1)^2=(t-2)^2\equiv4-4t$，$Ax+B\equiv(B-A)+At$，<br>
+乘開留到一次：$(4-4t)\big[(B-A)+At\big]\equiv4(B-A)+\big[4A-4(B-A)\big]t=4(B-A)+(8A-4B)t$；<br>
+$ax+b\equiv(b-a)+at$。相加要等於 $bx+a\equiv(a-b)+bt$：<br>
+常數：$4(B-A)+b-a=a-b$；一次：$8A-4B+a=b$。又常數項 $R(0)=B+b=0$ ⟹ $B=-b$。<br>
+解得 $b=-3a$、$A=a$、$B=3a$，於是 $R(x)=a(x-1)^2(x+3)+ax-3a=a\,x\,(x^2+x-4)$。<br>
+除了 $0$ 的根：$x^2+x-4=0$ ⟹ $x=\dfrac{-1\pm\sqrt{17}}2$。</div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">S5</span><span class="kw">(x+1)f(x) 除以 x³−3 餘 3x−1 → 設 f=(x−2)(Ax²+Bx+C)−5，乘開後與 (x³−3)(px+q)+3x−1 比係數</span><span class="src">台南女中 111 第 2 次教甄 填 8</span></div>
+<div class="fxq">設 $f(x)$ 為實係數三次多項式，若 $f(x)$ 除以 $x-2$ 的餘式為 $-5$，且 $(x+1)f(x)$ 除以 $x^3-3$ 的餘式為 $3x-1$，求 $f(x)$ 的各項係數總和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$</div>
+<div class="fxs"><div class="move">招式：$(x+1)f(x)$ 是四次，商式是一次式 $Ax+B$：$(x+1)f(x)=(x^3-3)(Ax+B)+3x-1$；要 $f(1)$ 就代 $x=1$，但先得定 $A,B$。</div>
+代 $x=-1$：$0=(-4)(-A+B)-4$ ⟹ $-A+B=-1$。代 $x=2$：$3f(2)=-15=5(2A+B)+5$ ⟹ $2A+B=-4$。<br>
+解得 $A=-1$、$B=-2$。代 $x=1$：$2f(1)=(-2)(-3)+2=8$ ⟹ $f(1)=4$。</div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">S6</span><span class="kw">x=0 的一次近似 y=x+5 → f 的常數項 5、一次項 1；對稱中心 (1,8) 給 −b/3a=1 與 f(1)=8</span><span class="src">台南女中 111 第 2 次教甄 填 10</span></div>
+<div class="fxq">已知三次函數 $f(x)$ 在 $x=0$ 附近的一次近似為 $y=x+5$，且對稱中心為 $(1,8)$，求 $f(x)$ 的最高次項係數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-1$</div>
+<div class="fxs"><div class="move">招式：在 $x=0$ 的一次近似就是「常數項＋一次項」。</div>
+設 $f(x)=ax^3+bx^2+x+5$。中心 $x=-\dfrac b{3a}=1$ ⟹ $b=-3a$；$f(1)=a+b+6=8$ ⟹ $a+b=2$ ⟹ $-2a=2$ ⟹ $a=-1$。</div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">四個選項四個招：合成餘式代 x=3、代無理數先降次、切線截距三角形、三次不等式先分解</span><span class="src">竹北高中 111 教甄 複選 10</span></div>
+<div class="fxq">已知 $f(x)=x^3-9x^2+26x-28$，選出所有正確的選項：<br>(A) $f(x^2-4x+3)$ 除以 $x-3$ 的餘式為 $-28$　(B) $f(2+\sqrt2)=4\sqrt2+10$<br>(C) 若 $y=f(x)$ 在 $(2,-4)$ 的一次近似直線為 $L$，則 $L$ 與坐標軸圍成的三角形面積為 $16$　(D) $f(x)\lt2$ 的正整數解有 $5$ 個</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(A)(C)</div>
+<div class="fxs"><div class="move">招式：(A) 代 $x=3$ 內層得 $0$，餘式 $=f(0)$；(B) $x=2+\sqrt2$ 滿足 $x^2-4x+2=0$，用它除 $f$；(C) 一次近似的斜率＝除兩次的第二個餘式；(D) $f(x)-2=(x-5)(x^2-4x+6)$。</div>
+(A) $f(0)=-28$ ✔<br>
+(B) $f(x)=(x^2-4x+2)(x-5)+4x-18$，故 $f(2+\sqrt2)=4(2+\sqrt2)-18=4\sqrt2-10$ ✘<br>
+(C) 綜合除法連除 $x-2$：$f(2)=-4$、斜率 $2$；$L:y=2x-8$，截距 $(4,0)$、$(0,-8)$，面積 $\frac12\cdot4\cdot8=16$ ✔<br>
+(D) $x^3-9x^2+26x-30=(x-5)(x^2-4x+6)$，二次因式恆正 ⟹ $x\lt5$，正整數 $1,2,3,4$ 共 $4$ 個 ✘</div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">S8</span><span class="kw">兩個首一二次式互相除 → 設 f=g+(Ax+B)，f² 與 g² 的餘式相減把 A²x²+2ABx+B² 消掉</span><span class="src">竹科實中 109 教甄 填 9</span></div>
+<div class="fxq">設 $f(x)$ 與 $g(x)$ 都是首項係數為 $1$ 的實係數二次多項式，已知 $\big(f(x)\big)^2$ 除以 $g(x)$ 的餘式為 $4x+1$，$\big(g(x)\big)^2$ 除以 $f(x)$ 的餘式為 $5x+3$，求 $g(x)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$g(x)=x^2+3$</div>
+<div class="fxs"><div class="move">招式：$f-g$ 是一次式 $Ax+B$。$f^2=(g+Ax+B)^2=g(\cdots)+(Ax+B)^2$ ⟹ $f^2\equiv(Ax+B)^2\pmod g$；同理 $g^2\equiv(Ax+B)^2\pmod f$。</div>
+於是 $(Ax+B)^2=g(x)\cdot k_1+4x+1=f(x)\cdot k_2+5x+3$，兩式中 $(Ax+B)^2$ 是二次、$f,g$ 首一 ⟹ $k_1=k_2=A^2$。<br>
+$A^2 g+4x+1=A^2f+5x+3$ ⟹ $A^2(f-g)=-x-2$ ⟹ $A^2(Ax+B)=-x-2$ ⟹ $A^3=-1$，$A=-1$、$B=-2$。<br>
+代回 $(Ax+B)^2=(x+2)^2=g(x)+4x+1$ ⟹ $g(x)=x^2+3$（$f=g-x-2=x^2-x+1$）。</div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">S9</span><span class="kw">x²⁰⁰⁰−1 除以四次式 → 四次式分解為 (x²+1)(x²+x+1)，餘式對兩個因式各自繼承</span><span class="src">大園國際高中 109 教甄 計算 8</span></div>
+<div class="fxq">求 $x^{2000}-1$ 除以 $x^4+x^3+2x^2+x+1$ 的餘式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-2x^3-x^2-2x-1$</div>
+<div class="fxs"><div class="move">招式：$x^4+x^3+2x^2+x+1=(x^2+1)(x^2+x+1)$；設餘式 $R=ax^3+bx^2+cx+d$，分別在 $\bmod(x^2+1)$（$x^2\equiv-1$）與 $\bmod(x^2+x+1)$（$x^3\equiv1$）下比對。</div>
+$\bmod(x^2+1)$：$x^{2000}=(x^2)^{1000}\equiv1$，左邊 $\equiv0$；$R\equiv(c-a)x+(d-b)$ ⟹ $a=c$、$b=d$。<br>
+$\bmod(x^2+x+1)$：$x^{2000}=x^{3\cdot666+2}\equiv x^2\equiv-x-1$，左邊 $\equiv-x-2$；$R=ax^3+bx^2+ax+b\equiv a+b(-x-1)+ax+b=(a-b)x+a$ ⟹ $a=-2$、$a-b=-1$ ⟹ $b=-1$。<br>
+$R(x)=-2x^3-x^2-2x-1$。<br>
+<span class="note-sm">課綱內寫法：不用 $\omega$，只用「$x^2\equiv-1$」「$x^3\equiv1$」兩條同餘規則，全程整係數。</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">(23x³+75x²+61x+8)⁴ 除以 (x+1)(x+2) → 只要底數在 x=−1、−2 的值；(2) 是同一題代 x=100</span><span class="src">政大附中 107 代理教甄 五</span></div>
+<div class="fxq">設 $f(x)=(23x^3+75x^2+61x+8)^4$。<br>(1) 求 $f(x)$ 除以 $x^2+3x+2$ 的餘式；　(2) 求 $23756108^4$ 除以 $102\times101$ 的餘數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $-15x-14$　(2) $8788$</div>
+<div class="fxs"><div class="move">招式：$g(x)=23x^3+75x^2+61x+8$，$g(-1)=-1$、$g(-2)=-2$，所以 $f(-1)=1$、$f(-2)=16$；餘式是過 $(-1,1)$、$(-2,16)$ 的直線。(2) 觀察 $23756108=g(100)$，$102\times101=(x+2)(x+1)$ 在 $x=100$。</div>
+(1) 斜率 $\dfrac{16-1}{-2+1}=-15$，$y=-15(x+1)+1=-15x-14$。<br>
+(2) $f(x)=(x+1)(x+2)Q(x)-15x-14$，代 $x=100$：$23756108^4=102\cdot101\cdot Q(100)-1514$。$Q(100)$ 是整數，故餘數 $=-1514+10302=8788$。</div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">S11</span><span class="kw">x¹⁷ 除以 x⁴−x³+x−1 → 除式 =(x³+1)(x−1) 整除 x⁶−1，於是 x⁶≡1，x¹⁷≡x⁵</span><span class="src">台中一中 106 教甄 填 7</span></div>
+<div class="fxq">若 $f(x)=x^{17}+4x^3-3x+1$，求 $f(x)$ 除以 $x^4-x^3+x-1$ 的餘式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$5x^3-x^2-3x+2$</div>
+<div class="fxs"><div class="move">招式：$x^4-x^3+x-1=x^3(x-1)+(x-1)=(x-1)(x^3+1)$，而 $(x-1)(x^3+1)\mid(x^3-1)(x^3+1)=x^6-1$ ⟹ 在此除式下 $x^6\equiv1$。</div>
+$x^{17}=(x^6)^2\cdot x^5\equiv x^5$，再降一次：$x^5=x\cdot x^4\equiv x(x^3-x+1)=x^4-x^2+x\equiv(x^3-x+1)-x^2+x=x^3-x^2+1$（用 $x^4\equiv x^3-x+1$）。<br>
+$f\equiv(x^3-x^2+1)+4x^3-3x+1=5x^3-x^2-3x+2$（三次 $\lt$ 四次，就是餘式）。</div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">S12</span><span class="kw">8f(x³)−x⁶f(2x)−2f(x²)+12=0 恆成立 → 先比次數 3n=n+6 得 n=3，再比首項與各項係數</span><span class="src">竹北高中 101 第 2 次教甄 計算 1</span></div>
+<div class="fxq">設 $f(x)$ 為 $x$ 的多項式，若對所有實數 $x$，$8f(x^3)-x^6f(2x)-2f(x^2)+12=0$ 恆成立，求 $f(x)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$f(x)=x^3-2$</div>
+<div class="fxs"><div class="move">招式：設 $\deg f=n$：$8f(x^3)$ 是 $3n$ 次、$x^6f(2x)$ 是 $n+6$ 次、$2f(x^2)$ 是 $2n$ 次；要相消，最高的兩項次數必須相等：$3n=n+6$ ⟹ $n=3$。</div>
+設 $f(x)=ax^3+bx^2+cx+d$。代 $x=0$：$8d-2d+12=0$ ⟹ $d=-2$。<br>
+展開：$8(ax^9+bx^6+cx^3+d)-x^6(8ax^3+4bx^2+2cx+d)-2(ax^6+bx^4+cx^2+d)+12$。<br>
+$x^9$：$8a-8a=0$ 自動成立；$x^8$：$-4b=0$ ⟹ $b=0$；$x^7$：$-2c=0$ ⟹ $c=0$；$x^6$：$8b-d-2a=0$ ⟹ $2-2a=0$ ⟹ $a=1$。<br>
+$f(x)=x^3-2$（驗：$8(x^9-2)-x^6(8x^3-2)-2(x^6-2)+12=0$ ✔）。</div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">S13</span><span class="kw">(x−2012)(x−2010)(x−a)−48 有整係數一次因式 → 整數根 n 使 (n−2012)(n−2010)(n−a)=48，相差 2 的兩因數要整除 48</span><span class="src">新化高中 101 教甄 填 2</span></div>
+<div class="fxq">設 $a$ 為整數，若多項式 $f(x)=(x-2012)(x-2010)(x-a)-48$ 有整係數一次因式，求所有可能的 $a$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=1993,1997,2002,2003,2004,2008,2014,2017,2059$（共 $9$ 個）</div>
+<div class="fxs"><div class="move">招式：首項係數 $1$ ⟹ 整係數一次因式必為 $x-n$（$n$ 整數）。令 $u=n-2012$，則 $u(u+2)\mid48$。</div>
+$u(u+2)$ 的可能值：$u=1,2,4,6$ 給 $3,8,24,48$；$u=-3,-4,-6,-8$ 給 $3,8,24,48$；$u=-1$ 給 $-1$（$u=0,-2$ 使乘積為 $0$ 不合）。<br>
+$n-a=\dfrac{48}{u(u+2)}$，$a=n-\dfrac{48}{u(u+2)}$，逐一算：<br>
+$u=1$：$2013-16=1997$；$u=2$：$2014-6=2008$；$u=4$：$2016-2=2014$；$u=6$：$2018-1=2017$；<br>
+$u=-1$：$2011+48=2059$；$u=-3$：$2009-16=1993$；$u=-4$：$2008-6=2002$；$u=-6$：$2006-2=2004$；$u=-8$：$2004-1=2003$。</div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">A²+B²=(A+B)² → 2AB=0，兩個二次式各自解</span><span class="src">嘉義高中 114 科學班甄選 填 2</span></div>
+<div class="fxq">解方程式 $(x^2+3x-4)^2+(2x^2-7x+6)^2=(3x^2-4x+2)^2$。（全對才給分）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=-4,\ 1,\ \dfrac32,\ 2$</div>
+<div class="fxs"><div class="move">招式：觀察 $(x^2+3x-4)+(2x^2-7x+6)=3x^2-4x+2$，所以是 $A^2+B^2=(A+B)^2$ ⟹ $AB=0$。</div>
+$x^2+3x-4=(x+4)(x-1)=0$ ⟹ $x=-4,1$；$2x^2-7x+6=(2x-3)(x-2)=0$ ⟹ $x=\dfrac32,2$。</div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">S15</span><span class="kw">根號裡是 2x²+3x+9、外面是 2x²+3x → 令 t=√(2x²+3x+9)≥0，變成 t 的二次方程式</span><span class="src">嘉義高中 115 科學班甄選 填 5</span></div>
+<div class="fxq">解方程式 $\dfrac23x^2+x-\dfrac53\sqrt{2x^2+3x+9}=-1$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=3$ 或 $x=-\dfrac92$</div>
+<div class="fxs"><div class="move">招式：乘 $3$：$2x^2+3x-5\sqrt{2x^2+3x+9}+3=0$；令 $t=\sqrt{2x^2+3x+9}$，則 $2x^2+3x=t^2-9$。</div>
+$t^2-9-5t+3=0$ ⟹ $t^2-5t-6=0$ ⟹ $(t-6)(t+1)=0$ ⟹ $t=6$（$t\ge0$）。<br>
+$2x^2+3x+9=36$ ⟹ $2x^2+3x-27=0$ ⟹ $(2x+9)(x-3)=0$ ⟹ $x=3$ 或 $-\dfrac92$（代回皆成立）。<br>
+<span class="note-sm">這是「換元」在方程式裡的版本；判別式 $\gt0$ 保證兩解都是實數，而 $t=6\gt0$ 保證沒有增根。</span></div></div>
+</section>
+
+<div class="ch-nav">
+  <a href="../g10a-ch02/practice.html">← 第二章 直線與圓 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <a href="../g11a-ch01/practice.html">第一章 三角函數 練習本 →</a>
+</div>
+</div>
+
+<script>
+(function () {
+  var G = window.PGEN;
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var labelOf = {};
+  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard';
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
+      '<div class="gh"></div><div class="ga"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+    function load() {
+      var it = G[tier][key](G.makeRng(seed));
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '提示：' + it.h;
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.seed').textContent = '#' + seed;
+      card.querySelector('.gh').classList.remove('on'); card.querySelector('.ga').classList.remove('on');
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+  document.querySelectorAll('.fixset').forEach(function (box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
+    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
+    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
+    for (var i = 0; i < n; i++) {
+      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
+      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+    }
+    box.innerHTML = html + '</ol>';
+    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    box.querySelector('.print').onclick = function () { window.print(); };
+    render(box);
+  });
+  document.querySelectorAll('.fx button').forEach(function (b) {
+    b.onclick = function () {
+      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
+      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
+    };
+  });
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+</body>
+</html>
