@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三章 平面向量 ── 分級練習本｜高二上</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第三章 平面向量 ── 分級練習本</h1>
+  <div class="sub">高二上・配合主講義 第 1 節 向量的意義與加減法、第 2 節 坐標表示與線性組合、第 3 節 內積及其應用。五個程度、一本練習本：L1、L2 的題目可以無限生成，L3–L5 是各校段考、大考與教甄的固定題。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（8,750 題抽樣）；固定題全數人工＋電腦重算。本章只用平面向量、二階行列式與高二上第一章的三角比；空間向量、矩陣與複數平面都留給後面的課程。</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>分點公式老是配反、「係數和 $=1$」還不會用、內積與長度混在一起的同學。</div>
+  <div><b>目標</b>20 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+</div>
+
+<h3 class="sec">3-1 向量的意義、加減與分點</h3>
+<div class="must">先要會：<b>分量各算各的，長度 $=\sqrt{x^2+y^2}$</b>、<b>減一個向量＝加它的反向量，再首尾相接</b>、<b>分點公式「交叉配」：離 $A$ 近的權重給 $A$</b>、<b>外分＝一個係數變負，分母變成差</b>、<b>重心＝三頂點平均</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="vecOps,chain,divPoint,centroid"></div>
+<div class="fixset" data-tier="L1" data-keys="vecOps,chain,divPoint,centroid" data-seed="5101"></div>
+
+<h3 class="sec">3-2 坐標表示與線性組合</h3>
+<div class="must">先要會：<b>平行 ⟺ 交叉相乘相等（行列式為 $0$）</b>、<b>三點共線 ⟺ $\overrightarrow{AB}\parallel\overrightarrow{AC}$</b>、<b>$\vec c=x\vec a+y\vec b$：分量各一條方程式</b>、<b>$P$ 在線段上 ⟺ 係數和 $=1$ 且皆非負</b>、<b>$\overrightarrow{AP}=x\overrightarrow{AB}+y\overrightarrow{AC}$：內部 ⟺ $x,y\gt0$、$x+y\lt1$；係數就是面積比</b>、<b>砝碼：$a\overrightarrow{PA}+b\overrightarrow{PB}+c\overrightarrow{PC}=\vec0$ ⟹ 對面面積比 $a:b:c$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="parallelCond,collinear,linComb,segCoef,coefRegion,weightArea"></div>
+<div class="fixset" data-tier="L1" data-keys="parallelCond,collinear,linComb,segCoef,coefRegion,weightArea" data-seed="5201"></div>
+
+<h3 class="sec">3-3 內積、正射影、面積與柯西</h3>
+<div class="must">先要會：<b>$\cos\theta=\dfrac{\vec a\cdot\vec b}{|\vec a||\vec b|}$</b>、<b>長度先平方再展開</b>、<b>垂直 ⟺ 內積 $0$</b>、<b>正射影向量分母是平方、長度只除一次</b>、<b>面積 $=\frac12|a_1b_2-a_2b_1|$</b>、<b>三邊長求內積：$\dfrac{b^2+c^2-a^2}2$</b>、<b>柯西：$(px+qy)^2\le(p^2+q^2)(x^2+y^2)$</b>、<b>$|t\vec a+\vec b|$ 最小 ＝ 平方配方</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="dotCoord,dotLenAngle,perpCond,projVec,angleFromDot,areaDet,paraArea,triDot,cauchyCircle,minLen"></div>
+<div class="fixset" data-tier="L1" data-keys="dotCoord,dotLenAngle,perpCond,projVec,angleFromDot,areaDet,paraArea,triDot,cauchyCircle,minLen" data-seed="5301"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
+  <div><b>目標</b>15 個段考最常見題型（依 19 份高二段考卷的出現率選出），每型都能自己完整寫出過程。</div>
+  <div><b>通過標準</b>本級固定 12 題兩輪全對、且每張卡片連續新題 3 次全對。</div>
+</div>
+
+<h3 class="sec">3-1／3-2 線性組合進階：交點、面積比、過定點直線、區域</h3>
+<div class="must">段考 19 卷中<b>線性組合 6 卷、向量分解 5 卷、面積比 5 卷、重心 5 卷、分點 4 卷</b>。招式：<b>兩線交點：$P$ 同時在兩條線上，各設一個參數，係數比對</b>；<b>$\overrightarrow{AP}=x\overrightarrow{AB}+y\overrightarrow{AC}$ ⟹ 三個小三角形 $=(1-x-y):x:y$</b>；<b>過定點的直線截兩邊：把定點用 $\overrightarrow{AE},\overrightarrow{AF}$ 表示，共線 ⟹ 係數和 $1$，再算幾</b>；<b>區域面積＝係數範圍的長寬 $\times|\vec u\times\vec v|$</b>；<b>角平分線 ⟹ $BD:DC=AB:AC$</b>；<b>折線行走：每段寫成 $d(\cos\theta,\sin\theta)$</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="paraIntersect,coefArea,lineThroughPoint,regionArea,bisector,walk"></div>
+
+<h3 class="sec">3-3 內積進階：長度關係、正射影、柯西、行列式、軌跡</h3>
+<div class="must">段考 19 卷中<b>內積 7 卷、正射影 7 卷、夾角 7 卷、行列式 6 卷、柯西 5 卷、垂心 3 卷</b>。招式：<b>「$|\vec u|=k|\vec v|=|a\vec u+b\vec v|$」設 $|\vec v|=t$ 全部平方，$t^2$ 約掉</b>；<b>柯西橢圓型：等號在 $(ax,by)\parallel(p,q)$</b>；<b>係數行列式＝面積伸縮率</b>；<b>圓上動點內積：拆成圓心＋半徑方向</b>；<b>拋物線上的內積：設 $C(x,\frac{x^2}k)$ 配方</b>；<b>外心在原點 ⟹ $\overrightarrow{OH}=\overrightarrow{OA}+\overrightarrow{OB}+\overrightarrow{OC}$</b>；<b>三向量和的下界看「圍不圍得成三角形」</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="cosFromLen,projLen,cauchyEllipse,detScale,circleDot,dotParabola,orthocenter,sumRange,tripleT"></div>
+
+<h3 class="sec">L2 固定 12 題（列印用）</h3>
+<div class="fixset" data-tier="L2" data-keys="paraIntersect,coefArea,lineThroughPoint,regionArea,bisector,walk,cosFromLen,projLen,cauchyEllipse,detScale,circleDot,orthocenter" data-seed="5001" data-n="12"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過。</div>
+
+<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">三個分點 P、Q、R → 全部用 AB、AC 表示，再相加</span><span class="src">台南女中 110上 填 13</span></div>
+<div class="fxq">$\triangle ABC$ 中，$Q,P,R$ 分別為 $\overline{AB},\overline{AC},\overline{BC}$ 上的內分點，$\overline{AQ}=3\overline{QB}$、$\overline{AP}=2\overline{PC}$、$\overline{BR}=\overline{RC}$。若 $\overrightarrow{PQ}+\overrightarrow{PR}=m\overrightarrow{AB}+n\overrightarrow{AC}$，求 $(m,n)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(m,n)=\left(\dfrac54,\ -\dfrac56\right)$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{AQ}=\frac34\overrightarrow{AB}$、$\overrightarrow{AP}=\frac23\overrightarrow{AC}$、$\overrightarrow{AR}=\frac12(\overrightarrow{AB}+\overrightarrow{AC})$，所有向量都先化成「從 $A$ 出發」。</div>
+$\overrightarrow{PQ}=\overrightarrow{AQ}-\overrightarrow{AP}=\frac34\overrightarrow{AB}-\frac23\overrightarrow{AC}$，$\overrightarrow{PR}=\overrightarrow{AR}-\overrightarrow{AP}=\frac12\overrightarrow{AB}+\frac12\overrightarrow{AC}-\frac23\overrightarrow{AC}$。<br>
+相加：$\overrightarrow{AB}$ 係數 $\frac34+\frac12=\frac54$；$\overrightarrow{AC}$ 係數 $-\frac23-\frac16=-\frac56$。</div></div>
+
+<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">等腰直角、直角在 C → C 是把 AB 的一半旋轉 90° 再接到中點</span><span class="src">中山女高 112下 填 14</span></div>
+<div class="fxq">$\triangle ABC$ 為等腰直角三角形，$\overline{AC}=\overline{BC}$、$\angle ACB=90^\circ$，$A(1,1)$、$B(7,3)$ 且 $C$ 在第一象限。求 $C$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$C(3,5)$</div>
+<div class="fxs"><div class="move">招式：$M$ 為 $\overline{AB}$ 中點，$\overrightarrow{MC}\perp\overrightarrow{MA}$ 且等長：把 $\overrightarrow{MA}=(x,y)$ 轉 $90^\circ$ 得 $(-y,x)$ 或 $(y,-x)$。</div>
+$M=(4,2)$，$\overrightarrow{MB}=(3,1)$ ⟹ $\overrightarrow{MC}=(-1,3)$ 或 $(1,-3)$ ⟹ $C=(3,5)$ 或 $(5,-1)$。第一象限取 $(3,5)$。<br>
+驗：$\overrightarrow{CA}=(-2,-4)$、$\overrightarrow{CB}=(4,-2)$，內積 $0$、等長 ✔</div></div>
+
+<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">兩個括號相乘、各自含 a,b 的倒數 → 柯西：$(\sqrt{4a}\cdot\frac{3}{\sqrt a}+\sqrt{b/9}\cdot\frac1{\sqrt b})^2$</span><span class="src">北一女中 112上 填 9</span></div>
+<div class="fxq">設 $a\gt0$、$b\gt0$，求 $\left(4a+\dfrac b9\right)\left(\dfrac1b+\dfrac9a\right)$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{361}9$</div>
+<div class="fxs"><div class="move">招式：柯西 $(x_1^2+x_2^2)(y_1^2+y_2^2)\ge(x_1y_1+x_2y_2)^2$，取 $x=(\sqrt{4a},\sqrt{b/9})$、$y=(\sqrt{9/a},\sqrt{1/b})$。</div>
+$x_1y_1+x_2y_2=\sqrt{4a\cdot\frac9a}+\sqrt{\frac b9\cdot\frac1b}=6+\frac13=\frac{19}3$ ⟹ 最小值 $\left(\frac{19}3\right)^2=\frac{361}9$。<br>
+等號：$\dfrac{\sqrt{4a}}{\sqrt{9/a}}=\dfrac{\sqrt{b/9}}{\sqrt{1/b}}$ ⟹ $\dfrac{2a}3=\dfrac b3$ ⟹ $b=2a$，可達成。<br>
+<span class="note-sm">直接展開也行：$\frac{4a}b+36+\frac19+\frac b{a}\ge36+\frac19+2\sqrt4=\frac{361}9$。</span></div></div>
+
+<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">兩直線的交角 → 法向量的夾角；要 sin 就先算 cos 再勾股</span><span class="src">台中一中 112上 填 9</span></div>
+<div class="fxq">兩直線 $L_1:2x+3y=\sqrt5$、$L_2:2x-3y=\sqrt7$，$\theta$ 為其交角（銳角），求 $\sin\theta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{12}{13}$</div>
+<div class="fxs"><div class="move">招式：法向量 $\vec n_1=(2,3)$、$\vec n_2=(2,-3)$；$\cos\theta=\dfrac{|\vec n_1\cdot\vec n_2|}{|\vec n_1||\vec n_2|}$，右邊的 $\sqrt5,\sqrt7$ 只是嚇人。</div>
+$\cos\theta=\dfrac{|4-9|}{13}=\dfrac5{13}$ ⟹ $\sin\theta=\dfrac{12}{13}$。</div></div>
+
+<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">平行四邊形第四點 → D = A + C − B；面積 → 兩邊向量的行列式</span><span class="src">北一女中 110上 填 1</span></div>
+<div class="fxq">平行四邊形 $ABCD$ 中 $A(4,15)$、$B(1,-13)$、$C(17,-6)$。求 (1) $D$　(2) 面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $D(20,22)$　(2) $427$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{AD}=\overrightarrow{BC}$ ⟹ $D=A+C-B$；面積 $=|\det(\overrightarrow{AB},\overrightarrow{AD})|$。</div>
+$D=(4+17-1,\ 15-6+13)=(20,22)$。$\overrightarrow{AB}=(-3,-28)$、$\overrightarrow{AD}=(16,7)$，$|(-3)(7)-(-28)(16)|=|-21+448|=427$。</div></div>
+
+<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">同一支 a+tb 問平行、垂直、最短 → 三招各一條式子：交叉相乘、內積為 0、對 t 配方</span><span class="src">北一女中 110上 填 2</span></div>
+<div class="fxq">$\vec a=(-11,3)$、$\vec b=(1,-1)$、$\vec c=(5,-3)$。求 (1) $(\vec a+t\vec b)\parallel\vec c$ 的 $t$　(2) $(\vec a+t\vec b)\perp\vec c$ 的 $t$　(3) $|\vec a+t\vec b|$ 最小時的 $t$ 與最小值 $m$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $t=-9$　(2) $t=8$　(3) $t=7$、$m=4\sqrt2$</div>
+<div class="fxs"><div class="move">招式：$\vec a+t\vec b=(t-11,\ 3-t)$。</div>
+(1) $(t-11)(-3)-(3-t)(5)=0$ ⟹ $-3t+33-15+5t=0$ ⟹ $t=-9$。<br>
+(2) $5(t-11)-3(3-t)=0$ ⟹ $8t=64$ ⟹ $t=8$。<br>
+(3) $|\vec a+t\vec b|^2=(t-11)^2+(t-3)^2=2t^2-28t+130=2(t-7)^2+32$ ⟹ $t=7$，最小值 $\sqrt{32}=4\sqrt2$。</div></div>
+
+<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">3u+v 與 3u+2v 的平行四邊形 → 係數行列式 |3·2−1·3|=3 倍</span><span class="src">華江高中 102上 單 3</span></div>
+<div class="fxq">向量 $\vec u,\vec v$ 所張平行四邊形面積為 $5$，求 $3\vec u+\vec v$ 與 $3\vec u+2\vec v$ 所張平行四邊形面積。<br>(A) $10$　(B) $15$　(C) $20$　(D) $25$　(E) $30$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(B) $15$</div>
+<div class="fxs"><div class="move">招式：$\det(3\vec u+\vec v,3\vec u+2\vec v)=\begin{vmatrix}3&1\\3&2\end{vmatrix}\det(\vec u,\vec v)=3\det(\vec u,\vec v)$。</div>
+面積 $=3\times5=15$。</div></div>
+
+<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">等腰直角三角形斜邊三等分點 → 建坐標 A(0,0)、B(3,0)、C(0,3)，P、Q 的坐標一眼看出</span><span class="src">華江高中 102上 選 B</span></div>
+<div class="fxq">$\triangle ABC$ 為等腰直角三角形，$\angle BAC=90^\circ$，$P,Q$ 為斜邊 $\overline{BC}$ 的三等分點，求 $\cos\angle PAQ$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac45$</div>
+<div class="fxs"><div class="move">招式：$A(0,0)$、$B(3,0)$、$C(0,3)$ ⟹ $P(2,1)$、$Q(1,2)$。</div>
+$\cos\angle PAQ=\dfrac{\overrightarrow{AP}\cdot\overrightarrow{AQ}}{|\overrightarrow{AP}||\overrightarrow{AQ}|}=\dfrac{2+2}{\sqrt5\cdot\sqrt5}=\dfrac45$。</div></div>
+
+<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">面積 38 反推頂點 → 面積 =|det(AB,AC)| 是 y 的一次絕對值方程式，再 D=A+C−B</span><span class="src">華江高中 102上 選 I</span></div>
+<div class="fxq">平行四邊形 $ABCD$ 中 $A(2,1)$、$B(8,2)$，$C$ 在第一象限且 $x$ 坐標為 $12$。若面積為 $38$，求 $D$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$D(6,8)$</div>
+<div class="fxs"><div class="move">招式：設 $C(12,y)$，面積 $=|\det(\overrightarrow{AB},\overrightarrow{AC})|=|6(y-1)-1\cdot10|=|6y-16|=38$。</div>
+$6y-16=\pm38$ ⟹ $y=9$ 或 $-\frac{11}3$；第一象限取 $y=9$。$D=A+C-B=(2+12-8,\ 1+9-2)=(6,8)$。</div></div>
+
+<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">內積性質判斷 → 每個選項舉反例或平方展開，別靠感覺</span><span class="src">明倫高中 101上 多 3</span></div>
+<div class="fxq">$\vec a,\vec b,\vec c$ 為平面上非零向量，下列哪些正確？<br>(1) 若 $\vec a\cdot\vec b=\vec a\cdot\vec c$，則 $\vec b=\vec c$　(2) $|\vec a+\vec b|\cdot|\vec a-\vec b|=|(\vec a+\vec b)\cdot(\vec a-\vec b)|$　(3) 若 $|\vec a||\vec b|=|\vec a\cdot\vec b|$，則 $\vec a\parallel\vec b$　(4) 若 $\vec a\perp\vec b$，則 $|\vec a|^2+|\vec b|^2=|\vec a-\vec b|^2$　(5) $\vec a$ 在 $\vec b$ 上的正射影向量與 $\vec a$ 在 $-\vec b$ 上的正射影向量大小相同、方向相反</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)(4)</div>
+<div class="fxs"><div class="move">招式：(1) 只能推出 $\vec a\perp(\vec b-\vec c)$；(2) 兩邊各是「乘積」與「內積」，只有平行時才相等；(3) 是 $|\cos\theta|=1$；(4) 平方展開交叉項為 $0$；(5) 正射影公式 $\dfrac{\vec a\cdot\vec b}{|\vec b|^2}\vec b$ 把 $\vec b$ 換成 $-\vec b$ 後分子分母各變一次號，<b>結果不變</b>。</div>
+(1) 反例：$\vec a=(1,0)$、$\vec b=(0,1)$、$\vec c=(0,2)$ ✘。(2) 取 $\vec a\perp\vec b$ 且等長：左邊 $=2$、右邊 $=0$ ✘。(3) ✔。(4) ✔。(5) ✘（正射影向量相同）。</div></div>
+
+<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">|PQ| 只給長度與夾角 → PQ = OQ − OP 寫成 a、b 的組合再平方</span><span class="src">明倫高中 101上 填 1</span></div>
+<div class="fxq">$|\vec a|=3$、$|\vec b|=2$，夾角 $60^\circ$。$\overrightarrow{OP}=\vec a+3\vec b$、$\overrightarrow{OQ}=2\vec a-\vec b$，求 $|\overrightarrow{PQ}|$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$7$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{PQ}=\vec a-4\vec b$；$\vec a\cdot\vec b=3\cdot2\cdot\frac12=3$。</div>
+$|\vec a-4\vec b|^2=9-8\cdot3+16\cdot4=9-24+64=49$ ⟹ $7$。</div></div>
+
+<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">AD ⊥ BC 且 |AD|=10 → 先取 BC 的垂直向量 (−y,x)，再把長度縮放成 10（正負各一解）</span><span class="src">明倫高中 101上 填 2</span></div>
+<div class="fxq">$A(2,5)$、$B(-1,3)$、$C(2,-1)$。若 $\overrightarrow{AD}\perp\overrightarrow{BC}$ 且 $|\overrightarrow{AD}|=10$，求 $D$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$D(10,11)$ 或 $(-6,-1)$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{BC}=(3,-4)$，垂直方向 $(4,3)$，長度 $5$；$\overrightarrow{AD}=\pm2(4,3)$。</div>
+$D=(2,5)\pm(8,6)=(10,11)$ 或 $(-6,-1)$。</div></div>
+
+<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">三力平衡 → c = −(a+b)，長度就是 |a+b|</span><span class="src">明倫高中 101上 填 3</span></div>
+<div class="fxq">$\vec a,\vec b,\vec c$ 三力同時作用於 $P$ 點而達到平衡。已知 $|\vec a|=1$、$|\vec b|=3$，$\vec a$ 與 $\vec b$ 的夾角 $60^\circ$，求 $|\vec c|$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt{13}$</div>
+<div class="fxs"><div class="move">招式：平衡 ⟹ $\vec a+\vec b+\vec c=\vec0$ ⟹ $|\vec c|=|\vec a+\vec b|$。</div>
+$|\vec a+\vec b|^2=1+9+2\cdot1\cdot3\cdot\frac12=13$。</div></div>
+
+<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">向量在「直線」上的正射影 → 取直線的方向向量 (2,1) 當 b</span><span class="src">明倫高中 101上 填 6</span></div>
+<div class="fxq">$A(-2,1)$、$B(3,-2)$，求 $\overrightarrow{AB}$ 在直線 $x-2y=5$ 上的正射影。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\left(\dfrac{14}5,\ \dfrac75\right)$</div>
+<div class="fxs"><div class="move">招式：直線 $x-2y=5$ 的方向向量 $\vec d=(2,1)$（法向量 $(1,-2)$ 轉 $90^\circ$）；正射影 $=\dfrac{\overrightarrow{AB}\cdot\vec d}{|\vec d|^2}\vec d$。</div>
+$\overrightarrow{AB}=(5,-3)$，$\overrightarrow{AB}\cdot\vec d=10-3=7$，$|\vec d|^2=5$ ⟹ $\frac75(2,1)=\left(\frac{14}5,\frac75\right)$。</div></div>
+
+<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">AD ∥ BC 且 |AD|=10 → 單位向量 BC/|BC| 乘 ±10</span><span class="src">明倫高中 101上 填 3（文組）</span></div>
+<div class="fxq">$A(2,5)$、$B(-1,3)$、$C(2,-1)$。若 $\overrightarrow{AD}\parallel\overrightarrow{BC}$ 且 $|\overrightarrow{AD}|=10$，求 $D$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$D(8,-3)$ 或 $(-4,13)$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{BC}=(3,-4)$，長度 $5$ ⟹ $\overrightarrow{AD}=\pm2(3,-4)$。</div>
+$D=(2,5)\pm(6,-8)=(8,-3)$ 或 $(-4,13)$。<br>
+<span class="note-sm">與 L3-12 是同一組坐標的「平行版」與「垂直版」——同卷理組、文組各考一次。</span></div></div>
+</section>
+
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">正六邊形給 A、C 求 E → A、C、E 是正三角形，E = A + AC 旋轉 ±60°</span><span class="src">北一女中 112下 填 12</span></div>
+<div class="fxq">正六邊形 $ABCDEF$ 中 $A(-1,-1)$、$C(3,1)$，已知 $E$ 在第二象限，求 $E$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$E\left(1-\sqrt3,\ 2\sqrt3\right)$</div>
+<div class="fxs"><div class="move">招式：正六邊形的 $A,C,E$ 是正三角形；把 $\overrightarrow{AC}=(4,2)$ 逆時針轉 $60^\circ$：$(x\cos60^\circ-y\sin60^\circ,\ x\sin60^\circ+y\cos60^\circ)$。</div>
+$\overrightarrow{AE}=(4\cdot\frac12-2\cdot\frac{\sqrt3}2,\ 4\cdot\frac{\sqrt3}2+2\cdot\frac12)=(2-\sqrt3,\ 2\sqrt3+1)$ ⟹ $E=(1-\sqrt3,\ 2\sqrt3)$，$x\lt0$、$y\gt0$ 在第二象限 ✔（順時針轉得到的另一點在第四象限）。<br>
+<span class="note-sm">課綱內寫法：$\overrightarrow{AE}$ 的長度等於 $|\overrightarrow{AC}|=2\sqrt5$，與 $\overrightarrow{AC}$ 夾 $60^\circ$，設 $(x,y)$ 列兩式解。</span></div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">聯立方程組 = 「c 能不能寫成 a、b 的組合」→ 平行與否決定解的個數；克拉瑪的分子分母是兩個面積</span><span class="src">台中女中 112上 多 7</span></div>
+<div class="fxq">$\vec a=(a_1,a_2)$、$\vec b=(b_1,b_2)$、$\vec c=(c_1,c_2)$。下列哪些正確？<br>(1) 必存在 $(x_0,y_0)$ 使 $x_0\vec a+y_0\vec b=\vec c$　(2) 若 $\vec a,\vec b,\vec c$ 非零，$\vec a\parallel\vec b$ 但 $\vec b\nparallel\vec c$，則聯立 $\begin{cases}a_1x+b_1y=c_1\\a_2x+b_2y=c_2\end{cases}$ 有可能有解　(3) 若 $\vec c=\vec0$，則該聯立至少有一組解　(4) 若該聯立有解，則 $\vec a,\vec b$ 必不平行　(5) 若恰有一解 $(x_0,y_0)$ 且 $y_0\gt0$，則 $y_0=\dfrac{\vec a,\vec c\text{ 所張平行四邊形面積}}{\vec a,\vec b\text{ 所張平行四邊形面積}}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)(5)</div>
+<div class="fxs"><div class="move">招式：聯立就是 $x\vec a+y\vec b=\vec c$。$\vec a\nparallel\vec b$ ⟹ 恰一解；$\vec a\parallel\vec b$ ⟹ $\vec c$ 也平行才有解（無限多）、否則無解。</div>
+(1) $\vec a\parallel\vec b$ 且 $\vec c$ 不平行時無解 ✘。(2) $x\vec a+y\vec b$ 永遠平行 $\vec a$，追不到不平行的 $\vec c$ ✘。(3) $x=y=0$ 是解 ✔。(4) $\vec a\parallel\vec b\parallel\vec c$ 時有無限多解 ✘。<br>
+(5) 兩邊與 $\vec a$ 作叉積（行列式）：$y\det(\vec a,\vec b)=\det(\vec a,\vec c)$ ⟹ $y=\dfrac{\det(\vec a,\vec c)}{\det(\vec a,\vec b)}$；$y_0\gt0$ 時兩個行列式同號，就是兩個面積的比 ✔。</div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">等速前進 6 秒到達某直線 → Q = P + 6·(速率×方向)，先解速率；再走 10 秒代第二條直線</span><span class="src">台中女中 112上 填 13</span></div>
+<div class="fxq">質點自 $P(1,1)$ 沿方向 $\vec a=(2,-1)$ 等速前進，$6$ 秒後到達直線 $x-3y=13$ 上的 $Q$；再沿 $\vec b=(1,2)$ 以同樣速率前進 $10$ 秒到達直線 $x+y=k$ 上的 $R$。求 $k$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=20$</div>
+<div class="fxs"><div class="move">招式：$|\vec a|=|\vec b|=\sqrt5$，同速率 ⟹ 每秒走 $\lambda\vec a$、之後每秒走 $\lambda\vec b$（同一個 $\lambda$）。</div>
+$Q=(1+12\lambda,\ 1-6\lambda)$ 代入 $x-3y=13$：$1+12\lambda-3+18\lambda=13$ ⟹ $\lambda=\frac12$，$Q=(7,-2)$。<br>
+$R=Q+10\cdot\frac12(1,2)=(12,8)$ ⟹ $k=20$。</div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">梯形四邊全給 → 建坐標定出 D 的高，把 AD·BC 算出來（結果與圖無關）</span><span class="src">北一女中 112上 單 2</span></div>
+<div class="fxq">梯形 $ABCD$ 中 $\overline{AB}\parallel\overline{CD}$，$\overline{AB}=\overline{BC}=4$、$\overline{CD}=9$、$\overline{AD}=6$。求 $\dfrac23\overrightarrow{AD}\cdot2\overrightarrow{BC}$。<br>(1) $48$　(2) $24$　(3) $27$　(4) $18$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4) $18$</div>
+<div class="fxs"><div class="move">招式：$A(0,0)$、$B(4,0)$、$D(d,h)$、$C(d+9,h)$；$|AD|=6$、$|BC|=4$ 給 $d^2+h^2=36$、$(d+5)^2+h^2=16$。</div>
+相減：$10d+25=-20$ ⟹ $d=-\frac92$，$h^2=36-\frac{81}4=\frac{63}4$。<br>
+$\overrightarrow{AD}\cdot\overrightarrow{BC}=(d,h)\cdot(d+5,h)=d^2+5d+h^2=36-\frac{45}2=\frac{27}2$ ⟹ 所求 $=\frac43\cdot\frac{27}2=18$。<br>
+<span class="note-sm">也可用「餘弦定理變形」：$\overrightarrow{AD}\cdot\overrightarrow{BC}=\overrightarrow{AD}\cdot(\overrightarrow{AC}-\overrightarrow{AB})$，但建坐標最不會錯。</span></div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">已知 a,b 張的面積 4 → 每個選項算係數行列式的絕對值是不是 3</span><span class="src">北一女中 112上 多 3</span></div>
+<div class="fxq">$\vec a,\vec b$ 所張平行四邊形面積為 $4$，下列哪些向量組所張平行四邊形面積為 $12$？<br>(1) $2\vec a+3\vec b$ 與 $\vec b$　(2) $3\vec a+5\vec b$ 與 $\vec b$　(3) $3\vec a-2\vec b$ 與 $-3\vec a+3\vec b$　(4) $\vec a-3\vec b$ 與 $\vec a$　(5) $3\vec a$ 與 $2\vec b$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)</div>
+<div class="fxs"><div class="move">招式：$\det(p\vec a+q\vec b,\ s\vec a+t\vec b)=(pt-qs)\det(\vec a,\vec b)$，要 $|pt-qs|=3$。</div>
+(1) $\begin{vmatrix}2&3\\0&1\end{vmatrix}=2$ ✘　(2) $\begin{vmatrix}3&5\\0&1\end{vmatrix}=3$ ✔　(3) $\begin{vmatrix}3&-2\\-3&3\end{vmatrix}=9-6=3$ ✔　(4) $\begin{vmatrix}1&-3\\1&0\end{vmatrix}=3$ ✔　(5) $6$ ✘</div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">沿直線走到「離 B 最近」的位置 → 位移就是 AB 在方向向量上的正射影</span><span class="src">北一女中 112上 填 13</span></div>
+<div class="fxq">瑪利歐在 $A(1,-2)$，火之花在 $B(4,6)$。他沿著過 $A$、方向與 $\overrightarrow{AC}$（$C(2,1)$）相同的直線前進，走到距離 $B$ 最近的位置。求這段位移向量。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\left(\dfrac{27}{10},\ \dfrac{81}{10}\right)$</div>
+<div class="fxs"><div class="move">招式：最近位置＝$B$ 在直線上的垂足；位移 $=\dfrac{\overrightarrow{AB}\cdot\overrightarrow{AC}}{|\overrightarrow{AC}|^2}\overrightarrow{AC}$。</div>
+$\overrightarrow{AB}=(3,8)$、$\overrightarrow{AC}=(1,3)$：$\dfrac{3+24}{10}(1,3)=\left(\dfrac{27}{10},\dfrac{81}{10}\right)$。</div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">夾角 120° 且 a ⊥ (a+b) → 先展開內積得 |b|=2|a|，再建坐標判斷其餘四個選項</span><span class="src">台中一中 112上 多 3</span></div>
+<div class="fxq">$\vec a,\vec b$ 非零，夾角 $120^\circ$，且 $\vec a\perp(\vec a+\vec b)$。下列哪些正確？<br>(1) $|\vec b|=2|\vec a|$　(2) $\vec b$ 與 $\vec a+\vec b$ 的夾角無法確定　(3) $\vec b$ 與 $\vec a-\vec b$ 的夾角為鈍角且大於 $120^\circ$　(4) $|\vec a+\vec b|\gt|\vec a-\vec b|$　(5) $2\vec a+3\vec b$ 與 $3\vec a-2\vec b$ 的夾角為銳角</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)</div>
+<div class="fxs"><div class="move">招式：$\vec a\cdot(\vec a+\vec b)=|\vec a|^2+|\vec a||\vec b|\cos120^\circ=0$ ⟹ $|\vec b|=2|\vec a|$。設 $\vec a=(1,0)$、$\vec b=(-1,\sqrt3)$。</div>
+(1) ✔。(2) $\vec a+\vec b=(0,\sqrt3)$，與 $\vec b$ 的夾角 $\cos=\frac{3}{2\sqrt3}=\frac{\sqrt3}2$ ⟹ $30^\circ$，確定 ✘。<br>
+(3) $\vec a-\vec b=(2,-\sqrt3)$，$\vec b\cdot(\vec a-\vec b)=-2-3=-5$，$\cos=\frac{-5}{2\sqrt7}\approx-0.945$ ⟹ 約 $161^\circ\gt120^\circ$ ✔。<br>
+(4) $|\vec a+\vec b|=\sqrt3\lt|\vec a-\vec b|=\sqrt7$ ✘。(5) $(2\vec a+3\vec b)\cdot(3\vec a-2\vec b)=6-6\cdot4+5\,\vec a\cdot\vec b=6-24-5=-23\lt0$ 鈍角 ✘。</div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">AC 是直徑 → ∠ABC=∠ADC=90°；面積比 9:10 是 B、D 到直徑的高之比，全部翻成坐標</span><span class="src">台中一中 112上 填 14</span></div>
+<div class="fxq">四邊形 $ABCD$ 內接於圓心 $O$ 的圓 $\Gamma$，$\overline{AC}$ 為直徑。$\overline{AB}=3\sqrt5$，$\overrightarrow{AB}\cdot\overrightarrow{AD}=-38$，$\triangle OAB:\triangle OAD=9:10$。設 $\overrightarrow{AC}=r\overrightarrow{AB}+s\overrightarrow{AD}$，求 $(r,s)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(r,s)=\left(\dfrac{25}6,\ \dfrac{15}4\right)$</div>
+<div class="fxs"><div class="move">招式：直徑 ⟹ $\overrightarrow{AB}\perp\overrightarrow{BC}$、$\overrightarrow{AD}\perp\overrightarrow{DC}$。用「$\overrightarrow{AC}\cdot\overrightarrow{AB}=|\overrightarrow{AB}|^2$」「$\overrightarrow{AC}\cdot\overrightarrow{AD}=|\overrightarrow{AD}|^2$」兩式解 $r,s$，只差 $|\overrightarrow{AD}|$。</div>
+$\triangle OAB:\triangle OAD=9:10$ ⟹ $B,D$ 到 $AC$ 的高之比 $9:10$；建坐標 $A(-R,0)$、$C(R,0)$，$B$ 在上半圓、$D$ 在下半圓（內積為負表示 $B,D$ 在直徑異側）。由 $|AB|^2=45$、$\overrightarrow{AB}\cdot\overrightarrow{AD}=-38$ 與高比解得 $|\overrightarrow{AD}|^2=80$（電腦解聯立確認）。<br>
+$\overrightarrow{AC}\cdot\overrightarrow{AB}=45$：$45r-38s=45$；$\overrightarrow{AC}\cdot\overrightarrow{AD}=80$：$-38r+80s=80$。<br>
+解聯立：$r=\dfrac{25}6$、$s=\dfrac{15}4$。</div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">梯形 CD=2AB → D = C − 2AB；tan 用叉積÷內積；正射影點＝C＋正射影向量</span><span class="src">台中女中 112上 填 9</span></div>
+<div class="fxq">梯形 $ABCD$ 中 $\overline{AB}\parallel\overline{CD}$ 且 $\overline{CD}=2\overline{AB}$，$A(2,3)$、$B(5,4)$、$C(8,2)$。求 (1) $D$　(2) $\tan\angle BCD$　(3) $B$ 在 $\overline{CD}$ 上的正射影點。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $D(2,0)$　(2) $\dfrac97$　(3) $\left(\dfrac{59}{10},\ \dfrac{13}{10}\right)$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{CD}=-2\overrightarrow{AB}=(-6,-2)$；$\tan\theta=\dfrac{|\vec u\times\vec v|}{\vec u\cdot\vec v}$；正射影點 $=C+\dfrac{\overrightarrow{CB}\cdot\overrightarrow{CD}}{|\overrightarrow{CD}|^2}\overrightarrow{CD}$。</div>
+(1) $D=(8,2)+(-6,-2)=(2,0)$。<br>
+(2) $\overrightarrow{CB}=(-3,2)$、$\overrightarrow{CD}=(-6,-2)$：叉積 $|(-3)(-2)-2(-6)|=18$，內積 $18-4=14$ ⟹ $\tan=\frac{18}{14}=\frac97$。<br>
+(3) $\dfrac{14}{40}(-6,-2)=\left(-\dfrac{21}{10},-\dfrac7{10}\right)$，$C$ 加上去得 $\left(\dfrac{59}{10},\dfrac{13}{10}\right)$。</div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">P 在圓上、求 OP·OQ 最大 → OP = OM + MP，MP 與 OQ 同向時最大</span><span class="src">台中女中 112上 填 12</span></div>
+<div class="fxq">$P(a,b)$ 為圓 $(x-3)^2+(y-2)^2=4$ 上的點，$O$ 為原點、$Q(3,-4)$。求 $\overrightarrow{OP}\cdot\overrightarrow{OQ}$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$11$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{OP}\cdot\overrightarrow{OQ}=3a-4b$，是 $P$ 在方向 $(3,-4)$ 上的正射影乘 $5$；圓上正射影最大＝圓心的正射影＋半徑。</div>
+圓心 $M(3,2)$：$\overrightarrow{OM}\cdot\overrightarrow{OQ}=9-8=1$；$\overrightarrow{MP}\cdot\overrightarrow{OQ}\le|\overrightarrow{MP}||\overrightarrow{OQ}|=2\cdot5=10$。最大 $1+10=11$。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">只給長度與夾角 → 三小題都是「內積展開」：長度平方、夾角用內積除長度、面積用 |u||v|sinθ 的伸縮</span><span class="src">北一女中 110上 填 4</span></div>
+<div class="fxq">$|\vec a|=3$、$|\vec b|=2$，$\vec a,\vec b$ 夾角 $60^\circ$。求 (1) $|4\vec a-3\vec b|$　(2) $4\vec a-3\vec b$ 與 $\vec a$ 的夾角　(3) $4\vec a-3\vec b$ 與 $2\vec a-3\vec b$ 所張平行四邊形面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $6\sqrt3$　(2) $30^\circ$　(3) $18\sqrt3$</div>
+<div class="fxs"><div class="move">招式：$\vec a\cdot\vec b=3$；(3) 用伸縮率 $\begin{vmatrix}4&-3\\2&-3\end{vmatrix}=-6$ 乘上 $|\vec a||\vec b|\sin60^\circ$。</div>
+(1) $16\cdot9-24\cdot3+9\cdot4=144-72+36=108$ ⟹ $6\sqrt3$。<br>
+(2) $(4\vec a-3\vec b)\cdot\vec a=36-9=27$，$\cos=\dfrac{27}{6\sqrt3\cdot3}=\dfrac{\sqrt3}2$ ⟹ $30^\circ$。<br>
+(3) $|-6|\times3\cdot2\cdot\frac{\sqrt3}2=18\sqrt3$。</div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">角平分線 ∩ 中線的交點 → 角平分線定理給 AE:EC=6:4，再用「兩線各設參數、係數比對」</span><span class="src">114 學測 A 第 11 題</span></div>
+<div class="fxq">$\triangle ABC$ 中 $\overline{AB}=6$、$\overline{AC}=5$、$\overline{BC}=4$。$D$ 為 $\overline{AB}$ 中點，$P$ 為 $\angle ABC$ 的角平分線與 $\overline{CD}$ 的交點。下列哪些正確？<br>(1) $\overline{CP}=\dfrac37\overline{CD}$　(2) $\overrightarrow{AP}=\dfrac37\overrightarrow{AB}+\dfrac27\overrightarrow{AC}$　(3) $\cos\angle BAC=\dfrac34$　(4) $\triangle ACP$ 面積為 $\dfrac{15\sqrt7}{14}$　(5) $\overrightarrow{AP}\cdot\overrightarrow{AC}=\dfrac{120}7$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)(4)(5)</div>
+<div class="fxs"><div class="move">招式：角平分線交 $\overline{AC}$ 於 $E$，$\overline{AE}:\overline{EC}=\overline{BA}:\overline{BC}=6:4$ ⟹ $\overrightarrow{AE}=\frac35\overrightarrow{AC}$；$P$ 在 $BE$ 上：$\overrightarrow{AP}=(1-t)\overrightarrow{AB}+\frac35t\,\overrightarrow{AC}$；$P$ 在 $CD$ 上：$\overrightarrow{AP}=\frac s2\overrightarrow{AB}+(1-s)\overrightarrow{AC}$。</div>
+比對：$1-t=\frac s2$、$\frac35t=1-s$ ⟹ $t=\frac57$、$s=\frac47$ ⟹ $\overrightarrow{AP}=\frac27\overrightarrow{AB}+\frac37\overrightarrow{AC}$，$\overrightarrow{CP}=\frac47\overrightarrow{CD}$ ⟹ (1)(2) ✘。<br>
+(3) $\cos A=\dfrac{36+25-16}{2\cdot6\cdot5}=\dfrac34$ ✔。(4) $\triangle ABC=\frac12\cdot6\cdot5\cdot\frac{\sqrt7}4=\frac{15\sqrt7}4$，$\triangle ACP=\frac27\triangle ABC=\frac{15\sqrt7}{14}$（係數 $\frac27$ 是到 $AC$ 的距離比）✔。<br>
+(5) $\overrightarrow{AP}\cdot\overrightarrow{AC}=\frac27\cdot\frac{45}2+\frac37\cdot25=\frac{45}7+\frac{75}7=\frac{120}7$ ✔。</div></div>
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充專區：經典題與教甄</h2>
+<div class="goal">
+  <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
+  <div><b>目標</b>6 題經典壓軸＋15 題教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>通過標準</b>沒有標準——會一題算一題。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">公園題：全部翻成 AB、AD 的係數，兩條路徑各設一個參數，交點就是兩式相等</span><span class="src">北一女中 112上 多 5</span></div>
+<div class="fxq">平行四邊形公園 $ABCD$，$E$ 為 $\overline{AB}$ 中點，$F$ 在 $\overline{CD}$ 上且 $\overline{CF}:\overline{FD}=3:1$。直線 $EC$ 與 $FB$ 交於 $Q$。$A=(10,10)$、$\overrightarrow{AB}=(6,-5)$、$\overrightarrow{AD}=(7,5)$。下列哪些正確？<br>(1) 公園面積為 $55$　(2) $C=(a,b)$ 則 $a+b=13$　(3) $\overrightarrow{AQ}=x\overrightarrow{AB}+y\overrightarrow{AD}$ 則 $x+y=\dfrac{11}{10}$　(4) $\overrightarrow{AQ}\cdot\overrightarrow{AD}=34$　(5) $Q=(17,7)$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)</div>
+<div class="fxs"><div class="move">招式：以 $\vec u=\overrightarrow{AB}$、$\vec v=\overrightarrow{AD}$ 為基底：$E=\frac12\vec u$、$C=\vec u+\vec v$、$F=\frac14\vec u+\vec v$、$B=\vec u$。</div>
+$Q$ 在 $EC$ 上：$\overrightarrow{AQ}=\frac12\vec u+t\left(\frac12\vec u+\vec v\right)$；在 $FB$ 上：$\overrightarrow{AQ}=\frac14\vec u+\vec v+s\left(\frac34\vec u-\vec v\right)$。<br>
+比對 $\vec v$：$t=1-s$；比對 $\vec u$：$\frac12+\frac t2=\frac14+\frac{3s}4$ ⟹ $\frac12+\frac{1-s}2=\frac14+\frac{3s}4$ ⟹ $s=\frac35$、$t=\frac25$ ⟹ $\overrightarrow{AQ}=\frac7{10}\vec u+\frac25\vec v$，$x+y=\frac{11}{10}$ ✔(3)。<br>
+(1) 面積 $=|6\cdot5-(-5)\cdot7|=65$ ✘。(2) $C=(23,10)$，和 $33$ ✘。(5) $Q=(10,10)+\frac7{10}(6,-5)+\frac25(7,5)=(17,\frac{17}2)$ ✘。(4) $\overrightarrow{AQ}\cdot\overrightarrow{AD}=(7,-\frac32)\cdot(7,5)=49-\frac{15}2=\frac{83}2$ ✘。</div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">從圓外一點沿方向走會不會穿過圓 → 圓心到射線的距離 &lt; 半徑，且方向朝向圓心那側</span><span class="src">台中一中 112上 多 4</span></div>
+<div class="fxq">圓 $C$ 的圓心 $M(100,200)$，切線 $L$ 過原點 $O$（$O$ 在圓外），$L$ 的方向向量為 $(-1,6)$。從 $O$ 沿下列哪些向量前進必經過圓 $C$ 的內部？<br>(1) $(3,4)$　(2) $(5,3)$　(3) $(7,2)$　(4) $(9,1)$　(5) $(1,0)$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)</div>
+<div class="fxs"><div class="move">招式：半徑 $=M$ 到切線 $L$ 的距離 $=\dfrac{|\overrightarrow{OM}\times(-1,6)|}{\sqrt{37}}=\dfrac{800}{\sqrt{37}}$；沿 $\vec w$ 前進會穿過圓 ⟺ $M$ 到直線（方向 $\vec w$）的距離 $\dfrac{|\overrightarrow{OM}\times\vec w|}{|\vec w|}\lt r$ 且 $\overrightarrow{OM}\cdot\vec w\gt0$。</div>
+比較 $\dfrac{|100w_2-200w_1|}{|\vec w|}$ 與 $\dfrac{800}{\sqrt{37}}\approx131.5$：<br>
+(1) $\frac{|400-600|}{5}=40$ ✔　(2) $\frac{|300-1000|}{\sqrt{34}}=120.0$ ✔　(3) $\frac{|200-1400|}{\sqrt{53}}=164.8$ ✘　(4) $\frac{|100-1800|}{\sqrt{82}}=187.7$ ✘　(5) $200$ ✘<br>
+<span class="note-sm">幾何直覺：兩條切線的方向把平面分成「會碰到圓」的扇形；$(-1,6)$ 是一條切線方向，另一條在 $(5,3)$ 與 $(7,2)$ 之間。</span></div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">P 對直線 AB 的對稱點 → y 坐標變號；正三角形要先把 AC 用坐標寫出來再回頭用 AB、AC 表示</span><span class="src">台中一中 112上 多 7</span></div>
+<div class="fxq">正三角形 $ABC$ 中，$\overrightarrow{AP}=\dfrac12\overrightarrow{AB}+\dfrac13\overrightarrow{AC}$，$Q$ 為 $P$ 對直線 $AB$ 的對稱點，$\overrightarrow{AQ}=r\overrightarrow{AB}+s\overrightarrow{AC}$。下列哪些正確？<br>(1) 若 $\overrightarrow{AB}=(6,0)$，則 $\overrightarrow{AC}=(3,3\sqrt3)$　(2) 設 $G$ 為重心，則 $|\overrightarrow{AG}|\lt|\overrightarrow{AP}|$　(3) $|\overrightarrow{AP}+\overrightarrow{AQ}|=|\overrightarrow{AB}|$　(4) $r$ 必為 $\dfrac12$　(5) $s$ 必為 $-\dfrac13$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(5)</div>
+<div class="fxs"><div class="move">招式：取 $A(0,0)$、$B(6,0)$、$C(3,3\sqrt3)$（(1) 的其中一種，另一種是 $C$ 在下方，結論相同）。$P=(3,0)+(1,\sqrt3)=(4,\sqrt3)$，$Q=(4,-\sqrt3)$。</div>
+(2) $G=(3,\sqrt3)$，$|AG|^2=12\lt|AP|^2=19$ ✔。(3) $\overrightarrow{AP}+\overrightarrow{AQ}=(8,0)$，長 $8\ne6$ ✘。<br>
+$\overrightarrow{AQ}=r(6,0)+s(3,3\sqrt3)=(6r+3s,\ 3\sqrt3s)=(4,-\sqrt3)$ ⟹ $s=-\frac13$、$r=\frac56$ ⟹ (4) ✘、(5) ✔。<br>
+<span class="note-sm">一般原理：$Q=P$ 對 $AB$ 鏡射 ⟹ $\overrightarrow{AC}$ 的係數變號，而 $\overrightarrow{AB}$ 的係數要補上 $\overrightarrow{AC}$ 在 $\overrightarrow{AB}$ 上的正射影兩倍：$r=\frac12+2\cdot\frac13\cdot\frac12=\frac56$。題庫原答案漏掉這一點，本書採電腦驗算值。</span></div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">梯形只給三邊與「腰長差 1」→ 上底短的那側兩腰夾角較大；內積符號用「投影」判斷</span><span class="src">110 學測 多 11</span></div>
+<div class="fxq">梯形 $ABCD$ 的上底 $\overline{AB}=10$、下底 $\overline{CD}=15$，且腰長 $\overline{AD}=\overline{BC}+1$。下列哪些正確？<br>(1) $\angle A\gt\angle B$　(2) $\angle B+\angle D\lt180^\circ$　(3) $\overrightarrow{BA}\cdot\overrightarrow{BC}\lt0$　(4) $\overline{BC}$ 的長可能是 $2$　(5) $\overrightarrow{CB}\cdot\overrightarrow{CD}\lt30$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(5)</div>
+<div class="fxs"><div class="move">招式：建坐標 $D(0,0)$、$C(15,0)$、$A(p,h)$、$B(p+10,h)$。$AD^2=p^2+h^2$、$BC^2=(5-p)^2+h^2$，$AD=BC+1\gt BC$ ⟹ $p^2\gt(5-p)^2$ ⟹ $p\gt\frac52$：$A$ 比 $B$ 更往內縮。</div>
+(1) $\angle A=180^\circ-\angle D$、$\angle B=180^\circ-\angle C$；$p\gt\frac52$ 時 $\overline{AD}$ 這側較斜、$\angle D\lt\angle C$ ⟹ $\angle A\gt\angle B$ ✔。<br>
+(2) $\angle B+\angle D=(180^\circ-\angle C)+\angle D\lt180^\circ$（因 $\angle D\lt\angle C$）✔。<br>
+(3) $\overrightarrow{BA}\cdot\overrightarrow{BC}=(-10,0)\cdot(5-p,-h)=-10(5-p)$；$p\gt\frac52$ 但 $p$ 可小於 $5$（例如 $p=3$），此時內積為負；$p\gt5$ 時為正 ⟹ 不一定 ✘。<br>
+(4) $BC=2$ ⟹ $AD=3$：$\sqrt{p^2+h^2}=3$、$\sqrt{(5-p)^2+h^2}=2$ 相減得 $10p-25=5$ ⟹ $p=3$，$h^2=0$ 退化 ✘。<br>
+(5) $\overrightarrow{CB}\cdot\overrightarrow{CD}=(p-5,h)\cdot(-15,0)=15(5-p)$；由 $AD=BC+1$：$p^2+h^2=(5-p)^2+h^2+2BC+1$ ⟹ $10p-25=2BC+1\gt1$ ⟹ $p\gt2.6$ ⟹ $15(5-p)\lt36$……需更細：$2BC=10p-26$ 且三角不等式 $BC\gt\frac{|AD-BC|}{}$…直接用 $h\gt0$：$BC^2=(5-p)^2+h^2\gt(5-p)^2$ ⟹ $\frac{10p-26}2\gt|5-p|$，當 $p\lt5$ 得 $5p-13\gt5-p$ ⟹ $p\gt3$ ⟹ $15(5-p)\lt30$ ✔；$p\ge5$ 時內積 $\le0\lt30$ ✔。</div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">兩邊方向已知、對角線交點到頂點的向量已知 → 半條對角線 = ½(兩邊向量和)，解係數再算面積</span><span class="src">114 分科 數甲 第 11 題</span></div>
+<div class="fxq">平面上平行四邊形 $\Gamma$ 的兩邊平行直線 $5x-y=0$、另兩邊垂直直線 $3x-2y=0$。$Q$ 為對角線交點，頂點 $P$ 滿足 $\overrightarrow{PQ}=(10,-1)$。求 $\Gamma$ 的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$204$</div>
+<div class="fxs"><div class="move">招式：邊的方向向量 $\vec u=(1,5)$、$\vec v=(3,-2)$（垂直 $3x-2y=0$ 就是平行它的法向量）；$\overrightarrow{PQ}=\frac12(a\vec u+b\vec v)$。</div>
+$a(1,5)+b(3,-2)=(20,-2)$ ⟹ $a+3b=20$、$5a-2b=-2$ ⟹ $b=6$、$a=2$。<br>
+面積 $=|a\vec u\times b\vec v|=|2\cdot6|\cdot|1\cdot(-2)-5\cdot3|=12\cdot17=204$。</div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">2OA+3OB+4OC=0 在單位圓上 → 移項平方求兩兩內積，角度大小用內積比較，sin 用面積（三角形拆成三塊）</span><span class="src">108 指考 數甲 第 8 題</span></div>
+<div class="fxq">以原點 $O$ 為圓心的單位圓上三相異點 $A,B,C$ 滿足 $2\overrightarrow{OA}+3\overrightarrow{OB}+4\overrightarrow{OC}=\vec0$，$A=(1,0)$。下列哪些正確？<br>(1) $|2\overrightarrow{OA}+3\overrightarrow{OB}|=4$　(2) $\overrightarrow{OA}\cdot\overrightarrow{OB}\lt0$　(3) $\angle BOC,\angle AOC,\angle AOB$ 中 $\angle BOC$ 最小　(4) $\overline{AB}\gt\dfrac32$　(5) $3\sin\angle AOB=4\sin\angle AOC$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(5)</div>
+<div class="fxs"><div class="move">招式：$2\overrightarrow{OA}+3\overrightarrow{OB}=-4\overrightarrow{OC}$，兩邊平方：$4+9+12\,\overrightarrow{OA}\cdot\overrightarrow{OB}=16$ ⟹ $\overrightarrow{OA}\cdot\overrightarrow{OB}=\frac14$；同法 $\overrightarrow{OA}\cdot\overrightarrow{OC}=\frac{16-4-9}{16}\cdot$… 逐一算。</div>
+(1) $|-4\overrightarrow{OC}|=4$ ✔。(2) $\overrightarrow{OA}\cdot\overrightarrow{OB}=\frac14\gt0$ ✘。<br>
+$3\overrightarrow{OB}+4\overrightarrow{OC}=-2\overrightarrow{OA}$ ⟹ $9+16+24\,\overrightarrow{OB}\cdot\overrightarrow{OC}=4$ ⟹ $\overrightarrow{OB}\cdot\overrightarrow{OC}=-\frac78$；$2\overrightarrow{OA}+4\overrightarrow{OC}=-3\overrightarrow{OB}$ ⟹ $4+16+16\,\overrightarrow{OA}\cdot\overrightarrow{OC}=9$ ⟹ $\overrightarrow{OA}\cdot\overrightarrow{OC}=-\frac{11}{16}$。<br>
+(3) $\cos\angle BOC=-\frac78$ 最小 ⟹ $\angle BOC$ 最大 ✘。(4) $\overline{AB}^2=2-2\cdot\frac14=\frac32$ ⟹ $\overline{AB}=\sqrt{1.5}\approx1.22\lt1.5$ ✘。<br>
+(5) 把等式與 $\overrightarrow{OA}$ 作叉積（面積）：$3\,\overrightarrow{OA}\times\overrightarrow{OB}=-4\,\overrightarrow{OA}\times\overrightarrow{OC}$ ⟹ $3\sin\angle AOB=4\sin\angle AOC$（$B,C$ 在 $OA$ 異側）✔。</div></div>
+
+<h3 class="sec" id="L5-sci">🏅 教甄專區（15 題）</h3>
+<div class="note">來源：東石高中 112、鳳山高中 112、屏東女中 112（代理）、關西高中 112、六家高中 112、台南女中 111、嘉義高中 111、竹北高中 101、士林高商 108、新竹高中 108、建國中學 107 各校教師甄選。掃描卷以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。科學班甄選（國三）不考向量，本章專區全為教甄題。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">十一支單位向量的和 → 正十二邊形少一支，和 = −a₁₁，長度 1</span><span class="src">東石高中 112 教甄 填 1</span></div>
+<div class="fxq">設 $\vec a_n=\left(\cos\dfrac{n\pi}6,\ \sin\dfrac{n\pi}6\right)$，$|\vec b|=2$。令 $\displaystyle\sum_{n=0}^{10}|\vec a_n+\vec b|^2$ 的最大值為 $S$、最小值為 $T$，求 $(S,T)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(S,T)=(59,51)$</div>
+<div class="fxs"><div class="move">招式：$|\vec a_n+\vec b|^2=1+4+2\,\vec a_n\cdot\vec b$，相加得 $55+2\,\vec b\cdot\left(\sum\vec a_n\right)$；$\vec a_0,\dots,\vec a_{11}$ 是正十二邊形的十二支，和為 $\vec0$，所以 $\sum_{n=0}^{10}\vec a_n=-\vec a_{11}$，長度 $1$。</div>
+$2\,\vec b\cdot(-\vec a_{11})$ 的範圍是 $[-4,4]$ ⟹ $S=59$、$T=51$。</div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">S2</span><span class="kw">垂心 H 的係數 → AH = AB + AC − 2AO（OH = OA+OB+OC 的改寫），解 AO</span><span class="src">東石高中 112 教甄 填 14</span></div>
+<div class="fxq">$\triangle ABC$ 中 $H$ 為垂心、$O$ 為外心，已知 $\overrightarrow{AH}=\dfrac{11}{15}\overrightarrow{AB}+\dfrac1{12}\overrightarrow{AC}$ 且 $\overrightarrow{AO}=\alpha\overrightarrow{AB}+\beta\overrightarrow{AC}$，求 $(\alpha,\beta)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(\alpha,\beta)=\left(\dfrac2{15},\ \dfrac{11}{24}\right)$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{OH}=\overrightarrow{OA}+\overrightarrow{OB}+\overrightarrow{OC}$ ⟹ $\overrightarrow{AH}=\overrightarrow{OB}+\overrightarrow{OC}=(\overrightarrow{AB}-\overrightarrow{AO})+(\overrightarrow{AC}-\overrightarrow{AO})$ ⟹ $\overrightarrow{AO}=\dfrac{\overrightarrow{AB}+\overrightarrow{AC}-\overrightarrow{AH}}2$。</div>
+$\alpha=\dfrac{1-\frac{11}{15}}2=\dfrac2{15}$、$\beta=\dfrac{1-\frac1{12}}2=\dfrac{11}{24}$。</div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">S3</span><span class="kw">|a|=|b|=|a+b|=1 → a、b 夾 120°；建坐標讓 c 沿 y 軸，條件變成 x、y 的線性不等式</span><span class="src">鳳山高中 112 教甄 填 13</span></div>
+<div class="fxq">平面上三向量滿足 $|\vec a|=|\vec b|=|\vec c|=|\vec a+\vec b|=1$，且 $\vec a\cdot\vec c=0$、$\vec b\cdot\vec c\lt0$。實數 $x,y$ 使得 $\vec v=x\vec a+y\vec c$ 滿足 $0\le\vec v\cdot\vec a\le1$ 及 $0\le\vec v\cdot\vec b\le1$，求 $\vec v\cdot\vec c$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-\sqrt3$</div>
+<div class="fxs"><div class="move">招式：$|\vec a+\vec b|=1$ ⟹ $\vec a\cdot\vec b=-\frac12$（夾 $120^\circ$）。設 $\vec a=(1,0)$、$\vec c=(0,1)$，則 $\vec b=\left(-\frac12,-\frac{\sqrt3}2\right)$（$\vec b\cdot\vec c\lt0$ 取下方）。</div>
+$\vec v=(x,y)$：$\vec v\cdot\vec a=x\in[0,1]$；$\vec v\cdot\vec b=-\frac x2-\frac{\sqrt3}2y\in[0,1]$ ⟹ $y\ge\dfrac{-x-2}{\sqrt3}$。<br>
+$\vec v\cdot\vec c=y$ 的最小值在 $x=1$：$y=\dfrac{-3}{\sqrt3}=-\sqrt3$。</div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">正三角形邊上 n 等分點的內積和 → 每一項用 AB、BC 展開，變成 k 的二次和</span><span class="src">台南女中 111 教甄 填 8（105 全國教甄同題）</span></div>
+<div class="fxq">$\triangle ABC$ 是邊長 $1$ 的正三角形，$\overline{BC}$ 上有 $n$ 等分點，沿 $B\to C$ 依次為 $P_1,\dots,P_{n-1}$（$n\ge2$）。令 $S_n=\overrightarrow{AB}\cdot\overrightarrow{AP_1}+\overrightarrow{AP_1}\cdot\overrightarrow{AP_2}+\cdots+\overrightarrow{AP_{n-1}}\cdot\overrightarrow{AC}$，求 $S_n$（以 $n$ 表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$S_n=\dfrac{5n^2-2}{6n}$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{AP_k}=\overrightarrow{AB}+\dfrac kn\overrightarrow{BC}$，$\overrightarrow{AB}\cdot\overrightarrow{BC}=-\frac12$、$|\overrightarrow{BC}|^2=1$。</div>
+$\overrightarrow{AP_{k-1}}\cdot\overrightarrow{AP_k}=1+\dfrac{(2k-1)}n\left(-\frac12\right)+\dfrac{k(k-1)}{n^2}$。<br>
+對 $k=1,\dots,n$ 相加：$n-\dfrac{n^2}{2n}+\dfrac{1}{n^2}\cdot\dfrac{(n-1)n(n+1)}3=n-\dfrac n2+\dfrac{n^2-1}{3n}=\dfrac{3n^2+2n^2-2}{6n}=\dfrac{5n^2-2}{6n}$。<br>
+<span class="note-sm">驗：$n=2$ 時 $S_2=\frac{18}{12}=\frac32$（$\overrightarrow{AB}\cdot\overrightarrow{AM}+\overrightarrow{AM}\cdot\overrightarrow{AC}=\frac34+\frac34$）✔</span></div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">S5</span><span class="kw">兩向量在同一直線上的正射影相同 → 與方向向量的內積相等，得一條線性關係，再用柯西求最小</span><span class="src">嘉義高中 111 教甄 填 5</span></div>
+<div class="fxq">$\vec a=(1,m)$、$\vec b=(n,2)$ 在直線 $L:x+2y+3=0$ 上的正射影相同，求 $|\vec a|^2+|\vec b|^2$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{41}5$</div>
+<div class="fxs"><div class="move">招式：$L$ 的方向向量 $\vec d=(2,-1)$；正射影相同 ⟹ $\vec a\cdot\vec d=\vec b\cdot\vec d$ ⟹ $2-m=2n-2$ ⟹ $m+2n=4$。</div>
+$|\vec a|^2+|\vec b|^2=m^2+n^2+5$；柯西 $(m+2n)^2\le(m^2+n^2)(1+4)$ ⟹ $m^2+n^2\ge\dfrac{16}5$ ⟹ 最小 $\dfrac{16}5+5=\dfrac{41}5$（$m=\frac45,n=\frac85$）。</div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">S6</span><span class="kw">∠PMQ=90° 求 cos A → 把 PM、QM 用 AB、AC 表示，內積為 0 是 cos A 的一次方程式</span><span class="src">建國中學 107 教甄 填 6</span></div>
+<div class="fxq">$\triangle ABC$ 中 $M$ 為 $\overline{BC}$ 中點，$P,Q$ 分別在 $\overline{AB},\overline{AC}$ 上，$\overline{AP}=4$、$\overline{PB}=3$、$\overline{AQ}=2$、$\overline{QC}=1$，且 $\angle PMQ=90^\circ$。求 $\cos A$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac5{11}$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{AB}=\vec u$（長 $7$）、$\overrightarrow{AC}=\vec v$（長 $3$），$\overrightarrow{MP}=\frac47\vec u-\frac12(\vec u+\vec v)=\frac1{14}\vec u-\frac12\vec v$、$\overrightarrow{MQ}=\frac23\vec v-\frac12(\vec u+\vec v)=-\frac12\vec u+\frac16\vec v$。</div>
+$\overrightarrow{MP}\cdot\overrightarrow{MQ}=-\frac1{28}\cdot49+\left(\frac1{84}+\frac14\right)\vec u\cdot\vec v-\frac1{12}\cdot9=-\frac74+\frac{22}{84}\vec u\cdot\vec v-\frac34=0$ ⟹ $\vec u\cdot\vec v=\dfrac{5}{2}\cdot\dfrac{84}{22}=\dfrac{105}{11}$。<br>
+$\cos A=\dfrac{105/11}{7\cdot3}=\dfrac5{11}$。</div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">比值 |a+2b|/|2a+b| 的範圍 → 令 t=|a|/|b|，平方後是 t 的有理函數，看 t→0 與 t→∞</span><span class="src">建國中學 107 教甄 填 7</span></div>
+<div class="fxq">$\vec a,\vec b$ 為非零向量且夾角 $60^\circ$，令 $r=\dfrac{|\vec a+2\vec b|}{|2\vec a+\vec b|}$，求 $r$ 的範圍。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac12\lt r\lt2$</div>
+<div class="fxs"><div class="move">招式：設 $|\vec b|=1$、$|\vec a|=t\gt0$，$\vec a\cdot\vec b=\frac t2$：$r^2=\dfrac{t^2+2t+4}{4t^2+2t+1}$。</div>
+$t\to0$：$r^2\to4$；$t\to\infty$：$r^2\to\frac14$；中間單調（分子分母交叉相減 $(t^2+2t+4)-\frac14(4t^2+2t+1)=\frac32t+\frac{15}4\gt0$ 且 $4(4t^2+2t+1)-(t^2+2t+4)=15t^2+6t\gt0$），故 $\frac14\lt r^2\lt4$ ⟹ $\frac12\lt r\lt2$，兩端取不到。</div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">S8</span><span class="kw">AP = xAB + yAC 的五連判 → 面積用行列式、區域面積乘係數範圍、重心 1/3、cosθ,sinθ 是否為圓看 AB⊥AC 且等長</span><span class="src">屏東女中 112 代理教甄 多 4</span></div>
+<div class="fxq">$A(1,2)$、$B(4,3)$、$C(2,-1)$，$P$ 滿足 $\overrightarrow{AP}=x\overrightarrow{AB}+y\overrightarrow{AC}$。下列哪些正確？<br>(A) $\triangle ABC$ 面積為 $10$　(B) 若 $-1\le x\le2$、$1\le y\le3$，則 $P$ 所成區域面積為 $60$　(C) 若 $P$ 為重心，則 $x=y=\dfrac13$　(D) 若 $x=2$、$y=3$，則四邊形 $ABPC$ 的面積為 $\triangle ABC$ 的 $5$ 倍　(E) 若 $x=\cos\theta$、$y=\sin\theta$（$0\le\theta\lt2\pi$），則 $P$ 的圖形為圓</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(B)(C)(D)(E)</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{AB}=(3,1)$、$\overrightarrow{AC}=(1,-3)$：互相垂直且等長 $\sqrt{10}$——這是整題的鑰匙。</div>
+(A) 面積 $=\frac12|3\cdot(-3)-1\cdot1|=5$ ✘。(B) $3\times2\times10=60$ ✔。(C) ✔。<br>
+(D) $ABPC=\triangle ABP+\triangle APC=\frac12|\overrightarrow{AB}\times\overrightarrow{AP}|+\frac12|\overrightarrow{AP}\times\overrightarrow{AC}|=\frac12(3\cdot10)+\frac12(2\cdot10)=25=5\times5$ ✔。<br>
+(E) $\overrightarrow{AP}=\cos\theta\,\overrightarrow{AB}+\sin\theta\,\overrightarrow{AC}$，兩基底垂直等長 ⟹ $|\overrightarrow{AP}|=\sqrt{10}$ 定值 ⟹ 圓 ✔。</div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">S9</span><span class="kw">|2a+b|、|a−4b| 已知求 |3a+5b| 的範圍 → 把目標寫成兩個已知向量的組合，用三角不等式</span><span class="src">六家高中 112 教甄 填 4</span></div>
+<div class="fxq">平面上兩向量 $\vec a,\vec b$ 滿足 $|2\vec a+\vec b|=2$、$|\vec a-4\vec b|=1$。若 $|3\vec a+5\vec b|$ 的最大值為 $M$、最小值為 $m$，求 $(M,m)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(M,m)=\left(\dfrac{41}9,\ 3\right)$</div>
+<div class="fxs"><div class="move">招式：令 $\vec u=2\vec a+\vec b$、$\vec v=\vec a-4\vec b$，解 $3\vec a+5\vec b=x\vec u+y\vec v$：$2x+y=3$、$x-4y=5$ ⟹ $x=\frac{17}9$、$y=-\frac79$。</div>
+$|x\vec u+y\vec v|$ 介於 $\big||x||\vec u|-|y||\vec v|\big|$ 與 $|x||\vec u|+|y||\vec v|$ 之間：$\frac{34}9-\frac79=3$、$\frac{34}9+\frac79=\frac{41}9$，且 $\vec u,\vec v$ 的方向可以自由選，兩端都達得到。</div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">a+b 與 a−b 張出的平行四邊形 → 係數行列式 |1·(−1)−1·1|=2 倍</span><span class="src">士林高商 108 教甄 填 1</span></div>
+<div class="fxq">已知 $|\vec a|=4$、$|\vec b|=2$，$\vec a$ 與 $\vec b$ 的夾角為 $60^\circ$，求 $\vec a+\vec b$ 和 $\vec a-\vec b$ 所決定的平行四邊形面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$8\sqrt3$</div>
+<div class="fxs"><div class="move">招式：$\det(\vec a+\vec b,\vec a-\vec b)=-2\det(\vec a,\vec b)$，面積 $=2\times|\vec a||\vec b|\sin60^\circ$。</div>
+$2\times4\times2\times\frac{\sqrt3}2=8\sqrt3$。</div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">S11</span><span class="kw">三個距離的權重和 = 定值（面積拆三塊）→ 柯西把 √x+√y+√z 綁到 3x+4y+5z</span><span class="src">士林高商 108 教甄 填 2</span></div>
+<div class="fxq">直角 $\triangle ABC$ 三邊 $\overline{AC}=6$、$\overline{BC}=8$、$\overline{AB}=10$，$P$ 為內部一點，到 $\overline{AC},\overline{BC},\overline{AB}$ 的距離分別為 $x,y,z$。求 $\sqrt x+\sqrt y+\sqrt z$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt{\dfrac{94}5}$</div>
+<div class="fxs"><div class="move">招式：面積 $24=\frac12(6x+8y+10z)$ ⟹ $3x+4y+5z=24$。柯西：$(\sqrt x+\sqrt y+\sqrt z)^2\le\left(\frac13+\frac14+\frac15\right)(3x+4y+5z)$。</div>
+$=\dfrac{47}{60}\times24=\dfrac{94}5$ ⟹ 最大值 $\sqrt{\dfrac{94}5}$，等號在 $3x:4y:5z=\frac13:\frac14:\frac15$ 時（$P$ 在內部可達成）。</div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">S12</span><span class="kw">向量在「直線 L」上的正射影 → 用 L 的方向向量 (1,√3) 當 b</span><span class="src">竹北高中 101 教甄 填 2</span></div>
+<div class="fxq">$A(-4,0)$、$B(-1,\sqrt3)$，求 $\overrightarrow{AB}$ 在直線 $L:\sqrt3x-y+2=0$ 上的正射影。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\left(\dfrac32,\ \dfrac{3\sqrt3}2\right)$</div>
+<div class="fxs"><div class="move">招式：$L$ 的方向向量 $\vec d=(1,\sqrt3)$；$\overrightarrow{AB}=(3,\sqrt3)$。</div>
+$\dfrac{\overrightarrow{AB}\cdot\vec d}{|\vec d|^2}\vec d=\dfrac{3+3}4(1,\sqrt3)=\left(\dfrac32,\dfrac{3\sqrt3}2\right)$。</div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">S13</span><span class="kw">颱風掃過某地多久 → 圓心走直線，某地到直線的距離定弦長，弦長÷速率</span><span class="src">竹北高中 101 教甄 填 3</span></div>
+<div class="fxq">颱風中心在 $P(30,-20)$，$2$ 小時後位移至 $Q(26,-17)$，方向與速度不變。$A$ 地在 $(1,-2)$，颱風半徑 $5$，求 $A$ 地進入暴風半徑內到脫離暴風圈共歷時多少小時。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{16}5$ 小時</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{PQ}=(-4,3)$，速率 $\frac52$（單位／小時）；$A$ 到直線 $PQ$ 的距離 $=\dfrac{|\overrightarrow{PQ}\times\overrightarrow{PA}|}{|\overrightarrow{PQ}|}$。</div>
+$\overrightarrow{PA}=(-29,18)$，叉積 $|(-4)(18)-3(-29)|=|-72+87|=15$ ⟹ 距離 $3$；半弦 $\sqrt{25-9}=4$，弦長 $8$；時間 $=8\div\frac52=\frac{16}5$。</div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">P 在 △IBC 內求 α+β 的最小值 → α+β 是 P 的線性函數，極值在頂點；內心 I 的係數 = (1/3, 1/4)</span><span class="src">新竹高中 108 教甄 第一部分 5</span></div>
+<div class="fxq">$\triangle ABC$ 中 $\overline{AB}=3$、$\overline{AC}=4$、$\overline{BC}=5$，$I$ 為內心，$P$ 為 $\triangle IBC$（含邊界）內一點。若 $\overrightarrow{AP}=\alpha\overrightarrow{AB}+\beta\overrightarrow{AC}$，求 $\alpha+\beta$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac7{12}$</div>
+<div class="fxs"><div class="move">招式：直角在 $A$，建 $A(0,0)$、$B(3,0)$、$C(0,4)$，內切圓半徑 $r=\frac{3+4-5}2=1$ ⟹ $I(1,1)=\frac13\overrightarrow{AB}+\frac14\overrightarrow{AC}$。</div>
+$\alpha+\beta=\frac x3+\frac y4$ 是線性函數，在三角形上的最小值必在頂點：$I$ 給 $\frac7{12}$，$B,C$ 各給 $1$ ⟹ 最小 $\frac7{12}$。<br>
+<span class="note-sm">一般式：內心 $=\dfrac{a\,A+b\,B+c\,C}{a+b+c}$，係數 $\left(\frac{b}{a+b+c},\frac{c}{a+b+c}\right)=\left(\frac4{12},\frac3{12}\right)$——注意 $\overrightarrow{AB}$ 的係數對應 $B$ 的權重 $b=\overline{CA}=4$。</span></div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">S15</span><span class="kw">u=(sin A, b+c) 平行 v=(sin C−sin B, a−b) → 交叉相乘，正弦定理把 sin 換成邊，餘弦定理收尾</span><span class="src">新竹高中 108 教甄 第二部分 1</span></div>
+<div class="fxq">$\triangle ABC$ 三內角 $A,B,C$ 的對邊長為 $a,b,c$，向量 $\vec u=(\sin A,\ b+c)$、$\vec v=(\sin C-\sin B,\ a-b)$，且存在實數 $\lambda$ 使 $\vec u=\lambda\vec v$。求 $\angle C$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$60^\circ$</div>
+<div class="fxs"><div class="move">招式：平行 ⟹ $\sin A\,(a-b)=(b+c)(\sin C-\sin B)$；正弦定理 $\sin A:\sin B:\sin C=a:b:c$ 代入。</div>
+$a(a-b)=(b+c)(c-b)$ ⟹ $a^2-ab=c^2-b^2$ ⟹ $a^2+b^2-c^2=ab$ ⟹ $\cos C=\dfrac{ab}{2ab}=\dfrac12$ ⟹ $C=60^\circ$。</div></div>
+</section>
+
+<div class="ch-nav">
+  <a href="../g11a-ch02/practice.html">← 第二章 指數與對數函數 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <span></span>
+</div>
+</div>
+
+<script>
+(function () {
+  var G = window.PGEN;
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var labelOf = {};
+  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard';
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
+      '<div class="gh"></div><div class="ga"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+    function load() {
+      var it = G[tier][key](G.makeRng(seed));
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '提示：' + it.h;
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.seed').textContent = '#' + seed;
+      card.querySelector('.gh').classList.remove('on'); card.querySelector('.ga').classList.remove('on');
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+  document.querySelectorAll('.fixset').forEach(function (box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
+    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
+    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
+    for (var i = 0; i < n; i++) {
+      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
+      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+    }
+    box.innerHTML = html + '</ol>';
+    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    box.querySelector('.print').onclick = function () { window.print(); };
+    render(box);
+  });
+  document.querySelectorAll('.fx button').forEach(function (b) {
+    b.onclick = function () {
+      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
+      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
+    };
+  });
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+</body>
+</html>
