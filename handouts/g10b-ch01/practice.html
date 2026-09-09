@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一章 數列與級數 ── 分級練習本｜高一下</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第一章 數列與級數 ── 分級練習本</h1>
+  <div class="sub">高一下・配合主講義 第 1 節 數列：等差、等比與遞迴、第 2 節 級數：Σ 與五種求和技術、第 3 節 數學歸納法。五個程度、一本練習本：L1、L2 的題目可以無限生成，L3–L5 是各校段考、大考與教甄的固定題。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（10,000 題抽樣）；固定題全數人工＋電腦重算。本章只用有限項的等差、等比、遞迴、Σ 公式與數學歸納法；無窮多項的相加（無窮等比級數）是高三選修的內容，本書一律不碰。</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>$a_n$ 與 $S_n$ 分不清、遞迴式看到就想「代到底」、Σ 公式背了不會拆的同學。</div>
+  <div><b>目標</b>24 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+</div>
+
+<h3 class="sec">1-1 等差與等比：兩項定數列、對稱設法、平均成長率</h3>
+<div class="must">先要會：<b>等差兩項相減 $=(q-p)d$、等比兩項相除 $=r^{q-p}$</b>、<b>$a_n=a_1+(n-1)d$ 寫成 $dn+(a_1-d)$</b>、<b>變號位置：解 $a_n\gt0$ 再取整數</b>、<b>三數等差設 $m-d,m,m+d$；三數等比設 $\frac ar,a,ar$</b>、<b>立方根唯一、平方根要 $\pm$</b>、<b>平均成長率是幾何平均：$(1+r)^n=$ 各年倍率相乘</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth"></div>
+<div class="fixset" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth" data-seed="6101"></div>
+
+<h3 class="sec">1-2 遞迴：四種基本型＋週期</h3>
+<div class="must">先要會：<b>$a_{n+1}=pa_n+q$：先解不動點 $x^\ast=px^\ast+q$，$\langle a_n-x^\ast\rangle$ 是公比 $p$ 的等比</b>、<b>$a_{n+1}=a_n+f(n)$：疊縮相加 $a_n=a_1+\sum_{k=1}^{n-1}f(k)$</b>、<b>$a_{n+1}=g(n)\,a_n$：疊縮相乘，分子分母交錯消</b>、<b>$a_{n+1}=\dfrac{a_n}{ka_n+1}$：取倒數變等差</b>、<b>分式遞迴先算前幾項，看到回到 $a_1$ 就是週期</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="recurLinear,recurSum,recurProd,recurRecip,periodic"></div>
+<div class="fixset" data-tier="L1" data-keys="recurLinear,recurSum,recurProd,recurRecip,periodic" data-seed="6151"></div>
+
+<h3 class="sec">2 級數：Σ 公式與五種求和技術</h3>
+<div class="must">先要會：<b>$\sum k=\frac{n(n+1)}2$、$\sum k^2=\frac{n(n+1)(2n+1)}6$、$\sum k^3=\left[\frac{n(n+1)}2\right]^2$</b>、<b>Σ 可以拆、常數可以提</b>、<b>等差和 $=\frac{n(a_1+a_n)}2$；中段和＝大減小</b>、<b>$S_n$ 最大 ⟺ 加到最後一個正項</b>、<b>等比和 $=\frac{a_1(1-r^n)}{1-r}$，三段和也成等比</b>、<b>裂項：$\frac1{(ak+b)(ak+a+b)}=\frac1a\left(\frac1{ak+b}-\frac1{ak+a+b}\right)$</b>、<b>等差 $\times$ 等比：錯位相減</b>、<b>$a_n=S_n-S_{n-1}$ 只對 $n\ge2$；$S_n$ 有常數項第一項就脫隊</b>、<b>絕對值和：找變號位置，負段整段變號</b>、<b>複利 $P(1+i)^n$、單利 $P(1+ni)$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound"></div>
+<div class="fixset" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound" data-seed="6201" data-n="11"></div>
+
+<h3 class="sec">3 數學歸納法：遞推步驟怎麼寫</h3>
+<div class="must">先要會：<b>兩步缺一不可：起始值驗證 ＋「$n=k$ 成立 ⟹ $n=k+1$ 成立」</b>、<b>恆等式型：$n=k$ 的右式 ＋ 第 $k+1$ 項，要化成 $n=k+1$ 的右式</b>、<b>整除型：設 $f(k)=mt$，把 $f(k+1)$ 寫成 $b\,f(k)+$（$m$ 的倍數）</b>、<b>起始點不一定是 $1$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="inductionStep,divisible"></div>
+<div class="fixset" data-tier="L1" data-keys="inductionStep,divisible" data-seed="6301" data-n="6"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
+  <div><b>目標</b>16 個段考最常見題型（依 28 份高一段考卷的出現率選出），每型都能自己完整寫出過程。</div>
+  <div><b>通過標準</b>本級固定 12 題兩輪全對、且每張卡片連續新題 3 次全對。</div>
+</div>
+
+<h3 class="sec">數列進階：對稱性、奇偶項、由 S_n 反推、混合遞迴</h3>
+<div class="must">段考 28 卷中<b>等差數列 18 卷、等比數列 20 卷、遞迴數列 13 卷、一般項 10 卷</b>。招式：<b>$S_m=S_n$ ⟹ $a_{m+1}+\cdots+a_n=0$，正中間那項是 $0$，對稱軸 $\frac{m+n+1}2$</b>；<b>$\dfrac{a_k}{b_k}=\dfrac{S_{2k-1}}{T_{2k-1}}$（奇數項的和＝項數 $\times$ 中間項）</b>；<b>偶數項和 $=r\times$ 奇數項和</b>；<b>$\langle a_n^2\rangle$ 公比 $r^2$，不必決定 $r$ 正負</b>；<b>$S_n=A\cdot b^n+C$：$C\ne-A$ 就脫隊</b>；<b>$\sum ka_k=T_n$ ⟹ $na_n=T_n-T_{n-1}$</b>；<b>$a_{n+1}=pa_n+q^n$：除以 $q^{n+1}$ 回到一階線性</b>；<b>$S_n=c-a_n$ 類：$n=1$ 先解 $a_1$，再相減得公比</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="arSymm,sumRatio,oddEvenGP,gpSquares,sumFromSn,weightedRecur,recurMixed,snRecur"></div>
+
+<h3 class="sec">級數技術：等差 × 等差、絕對值、高斯符號、分群、等差 ÷ 等比、年金、對數</h3>
+<div class="must">段考 28 卷中<b>級數求和 16 卷、等比級數 14 卷、複利／年金 8 卷、裂項 4 卷、錯位相減 4 卷</b>。招式：<b>等差 $\times$ 等差＝二次式，套三個公式</b>；<b>$|a_n|$ 和：先因式分解找負段</b>；<b>$\lfloor k/m\rfloor$：每 $m$ 個一群，最後一群數個數</b>；<b>分群數列先問「前面幾群共幾項」</b>；<b>$\sum\frac{k}{2^k}=2-\frac{n+2}{2^n}$（錯位相減推一次）</b>；<b>裂項反求 $n$：化成 $\frac{n}{2n+1}$ 直接比對</b>；<b>年金：每一筆各自滾幾年，是等比級數</b>；<b>等比取 $\log$ 變等差</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="prodAP,absQuad,floorSum,groupSeq,kOver2k,telescopeN,annuity,logGP"></div>
+
+<h3 class="sec">L2 固定 12 題（列印用）</h3>
+<div class="fixset" data-tier="L2" data-keys="arSymm,sumRatio,oddEvenGP,gpSquares,sumFromSn,weightedRecur,prodAP,absQuad,floorSum,groupSeq,kOver2k,recurMixed" data-seed="6001" data-n="12"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過（L3-3 的官方答案有誤，見該題）。</div>
+
+<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">3a_{n+1}−2a_n=−2 → 先除成 a_{n+1}=pa_n+q，再解不動點</span><span class="src">雄中 113上 填 4</span></div>
+<div class="fxq">設 $a_1=7$，且 $3a_{n+1}-2a_n=-2$（$n\ge1$）。求 $a_8$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_8=-\dfrac{358}{243}$</div>
+<div class="fxs"><div class="move">招式：整理成 $a_{n+1}=\dfrac23a_n-\dfrac23$；不動點 $x=\dfrac23x-\dfrac23\Rightarrow x=-2$。</div>
+$a_{n+1}+2=\dfrac23(a_n+2)$ ⟹ $a_n+2=(a_1+2)\left(\dfrac23\right)^{n-1}=9\left(\dfrac23\right)^{n-1}$。<br>
+$a_8=9\cdot\dfrac{2^7}{3^7}-2=\dfrac{128}{243}-2=\dfrac{128-486}{243}=-\dfrac{358}{243}$。</div></div>
+
+<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">給首項、末項、總和 → 用 S=(a₁−aₙr)/(1−r) 解 r，再定項數</span><span class="src">中山女高 110下 填 10</span></div>
+<div class="fxq">等比數列 $\langle a_n\rangle$ 中 $a_1=2$、$a_n=512$，且 $a_1+a_2+\cdots+a_n=682$。求 $a_2+a_{n-1}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$136$</div>
+<div class="fxs"><div class="move">招式：$S_n=\dfrac{a_1-a_nr}{1-r}$ 不需要知道 $n$ 就能解 $r$。</div>
+$682=\dfrac{2-512r}{1-r}$ ⟹ $682-682r=2-512r$ ⟹ $170r=680$ ⟹ $r=4$。<br>
+$2\cdot4^{\,n-1}=512$ ⟹ $4^{\,n-1}=256=4^4$ ⟹ $n=5$。$a_2=8$、$a_4=128$，和為 $136$。</div></div>
+
+<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">五數等差、給和與積 → 設 m−2d,m−d,m,m+d,m+2d，積是 d² 的二次式</span><span class="src">武陵 111下 填 4</span></div>
+<div class="fxq">五個數成等差數列，其和為 $20$、乘積為 $208$。求公差 $d$ 所有可能的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$d=\pm\sqrt3$ 或 $\pm\sqrt{17}$　<span class="note-sm">（題庫與原卷答案寫 $\pm3$：$d=3$ 時五數為 $-2,1,4,7,10$，乘積 $-560\ne208$，官方答案有誤。）</span></div>
+<div class="fxs"><div class="move">招式：和 $=5m=20$ ⟹ $m=4$。乘積 $=4(4-2d)(4+2d)(4-d)(4+d)=4(16-4d^2)(16-d^2)$。</div>
+$16(4-d^2)(16-d^2)=208$ ⟹ $(4-d^2)(16-d^2)=13$ ⟹ $d^4-20d^2+64=13$ ⟹ $d^4-20d^2+51=0$ ⟹ $(d^2-3)(d^2-17)=0$。<br>
+驗算 $d=\sqrt3$：$(4-2\sqrt3)(4+2\sqrt3)\cdot(4-\sqrt3)(4+\sqrt3)\cdot4=(16-12)(16-3)\cdot4=4\cdot13\cdot4=208$ ✔</div></div>
+
+<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">首項、末項、和都給、項數不給 → 同樣用 S=(a₁−aₙr)/(1−r)</span><span class="src">高雄女中 111下 填 15</span></div>
+<div class="fxq">等比數列 $\langle a_n\rangle$ 首項為 $3$、末項為 $-1536$、和為 $-1023$。求第 $3$ 項。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_3=12$</div>
+<div class="fxs"><div class="move">招式：$-1023=\dfrac{3-(-1536)r}{1-r}$。</div>
+$-1023+1023r=3+1536r$ ⟹ $-1026=513r$ ⟹ $r=-2$。$a_3=3\cdot(-2)^2=12$。<br>
+<span class="note-sm">順便定項數：$3\cdot(-2)^{n-1}=-1536$ ⟹ $(-2)^{n-1}=-512=(-2)^9$ ⟹ $n=10$。</span></div></div>
+
+<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">刪去一項後平均 → 刪掉的那項 = S₂₅ − 24×平均，再用 aₙ=Sₙ−Sₙ₋₁ 找是第幾項</span><span class="src">竹科實中 113下 單 2</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 共 $25$ 項，前 $n$ 項和 $S_n=3n^2-2n$。若刪去某一項後，剩餘 $24$ 項的算術平均數為 $74$，則刪去的是第幾項？<br>(1) $5$　(2) $9$　(3) $14$　(4) $18$　(5) $24$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2) 第 $9$ 項</div>
+<div class="fxs"><div class="move">招式：$S_{25}=3\cdot625-50=1825$，剩餘和 $=24\times74=1776$，刪掉的項 $=49$。</div>
+$n\ge2$ 時 $a_n=S_n-S_{n-1}=6n-5$（$a_1=S_1=1$ 也合），$6n-5=49$ ⟹ $n=9$。</div></div>
+
+<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">aₙ=aₙ₋₁+(指數項)+(一次項) → 疊縮相加，指數部分等比、一次部分等差分開加</span><span class="src">武陵 111下 填 9</span></div>
+<div class="fxq">設 $a_1=7$，且 $a_n=a_{n-1}+2^{\,n+1}-2n+1$（$n\ge2$）。求 $a_{10}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_{10}=3996$</div>
+<div class="fxs"><div class="move">招式：$a_{10}=a_1+\displaystyle\sum_{n=2}^{10}\left(2^{\,n+1}-2n+1\right)$，三段分開算。</div>
+$\sum_{n=2}^{10}2^{\,n+1}=2^3+\cdots+2^{11}=2^{12}-2^3=4088$；$\sum_{n=2}^{10}(-2n)=-2(2+\cdots+10)=-108$；$\sum_{n=2}^{10}1=9$。<br>
+$a_{10}=7+4088-108+9=3996$。</div></div>
+
+<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">給 a₃ 與 aₙ₊₁=(n+2)/n·aₙ+4 → 往前推 a₂、a₁，列前五項猜 4n²，再歸納驗證</span><span class="src">武陵 111下 題組 15–16</span></div>
+<div class="fxq">設數列 $\langle a_n\rangle$ 滿足 $a_3=36$，且對任意正整數 $n$，$a_{n+1}=\dfrac{n+2}{n}a_n+4$。(1) 列出 $a_1,\dots,a_5$。(2) 猜測一般項並用數學歸納法證明。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $4,16,36,64,100$　(2) $a_n=4n^2$</div>
+<div class="fxs"><div class="move">招式：由 $a_3=\dfrac42a_2+4=36$ 得 $a_2=16$；由 $a_2=3a_1+4$ 得 $a_1=4$；往後 $a_4=\dfrac53\cdot36+4=64$、$a_5=\dfrac64\cdot64+4=100$。</div>
+猜 $a_n=4n^2$。$n=1$：$4$ ✔。設 $a_k=4k^2$，則 $a_{k+1}=\dfrac{k+2}{k}\cdot4k^2+4=4k(k+2)+4=4(k^2+2k+1)=4(k+1)^2$ ✔。</div></div>
+
+<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">分式遞迴、分子分母都是一次 → 老實算四項、看分子分母各自的規律、歸納法收尾</span><span class="src">北一女中 104下 計算</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 滿足 $a_1=\dfrac25$，$a_n=\dfrac{3a_{n-1}-2}{8a_{n-1}-5}$（$n\ge2$）。(1) 求 $a_2,a_3,a_4,a_5$。(2) 猜測一般項。(3) 用數學歸納法證明。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\dfrac49,\dfrac6{13},\dfrac8{17},\dfrac{10}{21}$　(2) $a_n=\dfrac{2n}{4n+1}$</div>
+<div class="fxs"><div class="move">招式：分子 $2,4,6,8,10$ 是 $2n$；分母 $5,9,13,17,21$ 是 $4n+1$。</div>
+設 $a_k=\dfrac{2k}{4k+1}$，代入：分子 $3a_k-2=\dfrac{6k-8k-2}{4k+1}=\dfrac{-2(k+1)}{4k+1}$，分母 $8a_k-5=\dfrac{16k-20k-5}{4k+1}=\dfrac{-(4k+5)}{4k+1}$。<br>
+相除得 $a_{k+1}=\dfrac{2(k+1)}{4k+5}=\dfrac{2(k+1)}{4(k+1)+1}$ ✔。</div></div>
+
+<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">方格斜線編號 → 第 k 條斜線有 k 個數；先問 100 在第幾條、第幾個</span><span class="src">武陵 112下 填 11</span></div>
+<div class="fxq">在無限大的方格中編號：$1$ 填在第一列第一行；$2,3$ 從第二列第一行往右上填到第一列第二行；$4,5,6$ 從第三列第一行往右上填到第一列第三行……依此類推。若 $100$ 在第 $m$ 列第 $n$ 行，求 $(m,n)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(6,9)$</div>
+<div class="fxs"><div class="move">招式：第 $k$ 條斜線有 $k$ 個數，前 $k$ 條共 $\dfrac{k(k+1)}2$ 個。$\dfrac{13\cdot14}2=91\lt100\le105$ ⟹ $100$ 在第 $14$ 條斜線的第 $9$ 個。</div>
+第 $14$ 條斜線從第 $14$ 列第 $1$ 行出發，每走一個「列減 $1$、行加 $1$」：第 $9$ 個在第 $14-8=6$ 列、第 $1+8=9$ 行。</div></div>
+
+<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">兩個數列交錯相加 → 拆成等差級數＋等比級數，各自數項數</span><span class="src">台南一中 109下 填 1</span></div>
+<div class="fxq">求 $2+3+5+6+8+12+\cdots+(3k-1)+3\cdot2^{\,k-1}+\cdots+29+1536$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3224$</div>
+<div class="fxs"><div class="move">招式：等差部分 $2,5,8,\dots,29$（$3k-1=29$ ⟹ $k=10$）；等比部分 $3,6,12,\dots,1536$（$3\cdot2^{\,k-1}=1536$ ⟹ $k=10$）。</div>
+等差和 $=\dfrac{10(2+29)}2=155$；等比和 $=3(2^{10}-1)=3069$。合計 $3224$。</div></div>
+
+<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">兩個等比級數相除 → 分子公比 4、分母公比 2，用 4¹⁰−1=(2¹⁰−1)(2¹⁰+1) 約分</span><span class="src">台中一中 111下 單 1</span></div>
+<div class="fxq">求 $\dfrac{2^2+2^4+2^6+\cdots+2^{20}}{2+2^2+2^3+\cdots+2^{10}}$。<br>(1) $2$　(2) $4$　(3) $\dfrac{1025}3$　(4) $\dfrac{2050}3$　(5) $\dfrac{4097}3$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4) $\dfrac{2050}{3}$</div>
+<div class="fxs"><div class="move">招式：分子 $=\dfrac{4(4^{10}-1)}{3}$、分母 $=2(2^{10}-1)$。</div>
+$\dfrac{4(2^{10}-1)(2^{10}+1)}{3\cdot2(2^{10}-1)}=\dfrac{2(2^{10}+1)}{3}=\dfrac{2\cdot1025}{3}=\dfrac{2050}3$。</div></div>
+
+<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">Σk(k+2)(k+4) 要因式分解的答案 → 乘開套三個公式，再提 n(n+1)/4 湊出兩個一次因式</span><span class="src">北一女中 104下 填 6</span></div>
+<div class="fxq">已知 $\displaystyle\sum_{k=1}^{n}k(k+2)(k+4)=\dfrac{n(n+b)(n+c)(n+d)}{a}$，其中 $a,b,c,d$ 為整數且 $b\lt c\lt d$。求 $(a,b,c,d)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(4,1,4,5)$</div>
+<div class="fxs"><div class="move">招式：$k(k+2)(k+4)=k^3+6k^2+8k$。</div>
+$\sum=\left[\dfrac{n(n+1)}2\right]^2+n(n+1)(2n+1)+4n(n+1)=\dfrac{n(n+1)}4\big[n(n+1)+4(2n+1)+16\big]=\dfrac{n(n+1)(n^2+9n+20)}4=\dfrac{n(n+1)(n+4)(n+5)}4$。<br>
+代 $n=1$ 驗算：左 $=15$，右 $=\dfrac{1\cdot2\cdot5\cdot6}4=15$ ✔</div></div>
+
+<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">3Sₙ=(n+2)aₙ → 寫 n−1 的式子相減，得 aₙ/aₙ₋₁，疊縮相乘</span><span class="src">武陵 112下 填 8</span></div>
+<div class="fxq">設數列 $\langle a_n\rangle$ 滿足 $a_1=1$，且 $3(a_1+a_2+\cdots+a_n)=(n+2)a_n$。求 $a_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_n=\dfrac{n(n+1)}{2}$</div>
+<div class="fxs"><div class="move">招式：$3S_n=(n+2)a_n$、$3S_{n-1}=(n+1)a_{n-1}$ 相減 ⟹ $3a_n=(n+2)a_n-(n+1)a_{n-1}$ ⟹ $(n-1)a_n=(n+1)a_{n-1}$。</div>
+$\dfrac{a_n}{a_{n-1}}=\dfrac{n+1}{n-1}$ ⟹ $a_n=1\cdot\dfrac31\cdot\dfrac42\cdots\dfrac{n+1}{n-1}=\dfrac{n(n+1)}{2}$（前幾項 $1,3,6,10$ 驗 ✔）。</div></div>
+
+<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">係數等差、公比為負的交錯級數 → 仍是錯位相減，乘上 −2 再相減</span><span class="src">北一女中 104下 填 4</span></div>
+<div class="fxq">求 $S=1-2\times2+3\times2^2-4\times2^3+5\times2^4-6\times2^5+7\times2^6-8\times2^7$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$S=-711$</div>
+<div class="fxs"><div class="move">招式：$S=\displaystyle\sum_{k=1}^{8}k(-2)^{k-1}$，公比 $-2$；$-2S=\displaystyle\sum_{k=1}^{8}k(-2)^{k}$。</div>
+$S-(-2S)=3S=\big[1+(-2)+(-2)^2+\cdots+(-2)^7\big]-8(-2)^8=\dfrac{1-(-2)^8}{1-(-2)}-2048=\dfrac{-255}3-2048=-2133$ ⟹ $S=-711$。</div></div>
+
+<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">兩條含 a₃,a₅,a₈,a₁₀ 的方程 → 相除得 r⁵，配 S₉ 定 a₁；剩下是「和與積」的二次方程</span><span class="src">台南一中 109下 填 14</span></div>
+<div class="fxq">設 $\langle a_n\rangle$ 為等比數列，且 $a_1+\cdots+a_9=1533$。$x,y$ 皆為小於 $1$ 的實數，滿足 $12xy=1$ 與 $\begin{cases}a_3x+a_5y=16\\ a_8x+a_{10}y=512\end{cases}$。求 $3x-20y$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-4$</div>
+<div class="fxs"><div class="move">招式：第二式是第一式的每一項各乘 $r^5$ ⟹ $r^5=\dfrac{512}{16}=32$ ⟹ $r=2$；$S_9=a_1(2^9-1)=1533$ ⟹ $a_1=3$。</div>
+$a_3=12$、$a_5=48$：$12x+48y=16$ ⟹ $3x+12y=4$；又 $(3x)(12y)=36xy=3$。<br>
+$3x$ 與 $12y$ 是 $t^2-4t+3=0$ 的兩根 $1,3$：若 $3x=3$ 則 $x=1$ 不合（須小於 $1$）；故 $3x=1,\ 12y=3$，$x=\dfrac13,\ y=\dfrac14$，$3x-20y=1-5=-4$。</div></div>
+</section>
+
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">a₁&gt;0 且 S_m&lt;0 → 等差看公差、等比看「1−rᵐ 與 1−r 異號」；每個選項找反例</span><span class="src">北一女中 113下 多 6</span></div>
+<div class="fxq">設 $m$ 為正整數，數列 $\langle a_n\rangle$ 的首項 $a_1\gt0$，前 $m$ 項和 $S_m\lt0$。選出正確的選項。<br>(1) 若 $\langle a_n\rangle$ 為等差數列，則公差 $d\lt0$　(2) 若 $\langle a_n\rangle$ 為等差數列且 $m$ 為偶數，則 $a_{m/2}\lt0$　(3) 若 $\langle a_n\rangle$ 為等比數列，則公比 $r\lt-\dfrac12$　(4) 若 $\langle a_n\rangle$ 為等比數列，則 $m$ 為偶數　(5) 若 $\langle a_n\rangle$ 為等比數列，則 $a_{n+1}+a_n\lt0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)(4)</div>
+<div class="fxs"><div class="move">招式：等比的 $S_m=a_1\cdot\dfrac{1-r^m}{1-r}$，$a_1\gt0$ 要 $S_m\lt0$ ⟹ $1-r^m$ 與 $1-r$ 異號。$r\gt0$ 時每項都正、不可能；$r\lt0$ 且 $m$ 奇時 $r^m\lt0$、兩者同正也不可能 ⟹ $m$ 偶且 $r^m\gt1$ ⟹ $r\lt-1$。</div>
+(1) $d\ge0$ 則每項 $\ge a_1\gt0$ ✔。(2) 反例 $3,-5$：$S_2=-2\lt0$ 但 $a_1=3\gt0$ ✘。(3) $r\lt-1$ 當然 $\lt-\dfrac12$ ✔。(4) ✔。(5) $a_{n+1}+a_n=a_n(1+r)$，$a_n$ 正負交錯，不恆負；反例 $2,-6,18$：$a_2+a_3=12$ ✘。</div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">分數依「分子＋分母」分群、同群分子遞減 → 20/25 在第 44 群的第 25 個</span><span class="src">北一女中 113下 填 11</span></div>
+<div class="fxq">數列 $\dfrac11,\ \dfrac21,\dfrac12,\ \dfrac31,\dfrac22,\dfrac13,\ \dfrac41,\dfrac32,\dfrac23,\dfrac14,\ \dots$（不約分）。$\dfrac{20}{25}$ 是第幾項？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">第 $971$ 項</div>
+<div class="fxs"><div class="move">招式：第 $k$ 群的分子＋分母 $=k+1$、共 $k$ 項、分子從 $k$ 遞減到 $1$。$20+25=45$ ⟹ 第 $44$ 群，分子 $44,43,\dots,20$ ⟹ 第 $25$ 個。</div>
+前 $43$ 群共 $\dfrac{43\cdot44}2=946$ 項，$946+25=971$。</div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">分母 1,2,4,8… 每群 2ᵏ⁻¹ 項 → 前 k 群共 2ᵏ−1 項；300 落在第 9 群（分母 256）</span><span class="src">中山女高 113下 填 14</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 為 $1,\ \dfrac22,\dfrac12,\ \dfrac44,\dfrac34,\dfrac24,\dfrac14,\ \dfrac88,\dfrac78,\dots,\dfrac18,\ \dots$，依此規則求 $a_{300}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_{300}=\dfrac{212}{256}$</div>
+<div class="fxs"><div class="move">招式：第 $k$ 群分母 $2^{k-1}$、有 $2^{k-1}$ 項，分子由 $2^{k-1}$ 遞減到 $1$；前 $k$ 群共 $1+2+\cdots+2^{k-1}=2^k-1$ 項。</div>
+$2^8-1=255\lt300\le511$ ⟹ 第 $9$ 群、分母 $256$，是該群第 $300-255=45$ 個，分子 $256-44=212$。</div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">兩層遞迴 → 先把 aₙ 疊縮相乘解出來，再把 bₙ 疊縮相乘；2 的指數是等差級數</span><span class="src">台南一中 109下 填 12</span></div>
+<div class="fxq">已知 $a_1=\dfrac12$、$b_1=1$，且 $a_n=\dfrac{n^2}{n^2-1}a_{n-1}$、$b_n=2^{\,n-1}a_n\cdot b_{n-1}$（$n\ge2$）。求 $b_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$b_n=2^{\frac{n(n-1)}{2}}\cdot\dfrac{2}{n+1}$</div>
+<div class="fxs"><div class="move">招式：$\dfrac{n^2}{n^2-1}=\dfrac{n}{n-1}\cdot\dfrac{n}{n+1}$，兩串分開疊縮。</div>
+$a_n=\dfrac12\cdot\left(\dfrac21\cdot\dfrac32\cdots\dfrac n{n-1}\right)\left(\dfrac23\cdot\dfrac34\cdots\dfrac n{n+1}\right)=\dfrac12\cdot n\cdot\dfrac2{n+1}=\dfrac{n}{n+1}$。<br>
+$b_n=b_1\prod_{k=2}^{n}2^{\,k-1}a_k=2^{1+2+\cdots+(n-1)}\cdot\dfrac23\cdot\dfrac34\cdots\dfrac n{n+1}=2^{\frac{n(n-1)}2}\cdot\dfrac2{n+1}$。驗 $n=2$：$b_2=2\cdot\dfrac23\cdot1=\dfrac43$，公式 $2^1\cdot\dfrac23=\dfrac43$ ✔</div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">a_{n+2}=2aₙ−a_{n+1} 前六項皆正 → 把 a₃…a₆ 全寫成 a₂ 的一次式，取不等式的交集</span><span class="src">武陵 111下 多 3</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 滿足 $a_1=2$，且 $a_{n+2}=2a_n-a_{n+1}$。當 $a_2$ 為下列哪些值時，前六項均為正數？<br>(1) $\dfrac{20}{11}$　(2) $2$　(3) $\dfrac{23}{11}$　(4) $\dfrac{11}5$　(5) $\dfrac{13}5$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)</div>
+<div class="fxs"><div class="move">招式：設 $a_2=t$：$a_3=4-t$、$a_4=2t-(4-t)=3t-4$、$a_5=2(4-t)-(3t-4)=12-5t$、$a_6=2(3t-4)-(12-5t)=11t-20$。</div>
+六項皆正：$t\gt0$、$t\lt4$、$t\gt\dfrac43$、$t\lt\dfrac{12}5$、$t\gt\dfrac{20}{11}$ ⟹ $\dfrac{20}{11}\lt t\lt\dfrac{12}5$。<br>
+(1) 等於下界，$a_6=0$ ✘；(2)(3)(4) 在區間內 ✔；(5) $\dfrac{13}5\gt\dfrac{12}5$ ✘。</div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">「哪些也是等差」→ 一律算 c_{n+1}−cₙ 是不是常數；常數數列也算等差</span><span class="src">竹科實中 113下 多 6</span></div>
+<div class="fxq">$\langle a_n\rangle$ 為公差不為 $0$ 的等差數列，$\langle b_n\rangle$ 為公比不為 $1$ 的等比數列，且 $a_n\gt0$、$b_n\gt0$。下列哪些也是等差數列？<br>(1) $\langle3a_n+2\rangle$　(2) $\langle5^{a_n}\rangle$　(3) $\langle b_nb_{n+1}\rangle$　(4) $\langle a_n+a_{n+1}\rangle$　(5) $\left\langle\dfrac{b_n}{b_{n-2}}\right\rangle$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(4)(5)</div>
+<div class="fxs"><div class="move">招式：(1) 差 $3d$ ✔；(4) 差 $2d$ ✔；(5) $\dfrac{b_n}{b_{n-2}}=r^2$ 是常數數列，公差 $0$ ✔。</div>
+(2) $\dfrac{5^{a_{n+1}}}{5^{a_n}}=5^d$ 是等比（$5^d\ne1$），相鄰差 $5^{a_n}(5^d-1)$ 不是常數 ✘。(3) $b_nb_{n+1}=b_1^2r^{2n-1}$ 是公比 $r^2\ne1$ 的等比，不是等差 ✘。</div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">分期付款 → 借款滾 35 期 ＝ 35 筆還款各自滾到最後一期的總和</span><span class="src">北一女中 104下 單 1</span></div>
+<div class="fxq">小綠某月初向銀行借 $100$ 萬元，月利率 $2\%$ 複利計算。從次月初起每月固定還一筆相同金額，預計 $35$ 次付清，則每月須付多少？（萬元，取近似值；$(1.02)^{35}\approx1.9999$）<br>(1) $2$　(2) $3$　(3) $4$　(4) $5$　(5) $6$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3) 約 $4$ 萬元</div>
+<div class="fxs"><div class="move">招式：把時間軸拉到最後一次還款那一刻。借款變成 $100(1.02)^{35}$；$35$ 筆還款 $x$ 分別滾了 $34,33,\dots,0$ 期，總和 $x\cdot\dfrac{(1.02)^{35}-1}{0.02}$。</div>
+$100\times1.9999=x\cdot\dfrac{0.9999}{0.02}$ ⟹ $x=\dfrac{2\times1.9999}{0.9999}\approx4.0$。<br>
+<span class="note-sm">$(1.02)^{35}\approx2$ 就是「本金翻倍」：$100\cdot2=50x$ ⟹ $x=4$，一行心算。</span></div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">(3k+1)²(2k−1) → 通項是 k 的三次式，乘開套四個公式（含 Σk³）</span><span class="src">台南一中 109下 填 6</span></div>
+<div class="fxq">求 $4^2\cdot1+7^2\cdot3+10^2\cdot5+\cdots+37^2\cdot23$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$111138$</div>
+<div class="fxs"><div class="move">招式：第 $k$ 項 $=(3k+1)^2(2k-1)$，$k=1,\dots,12$（$3\cdot12+1=37$、$2\cdot12-1=23$ ✔）。</div>
+$(9k^2+6k+1)(2k-1)=18k^3+3k^2-4k-1$。$\sum_{1}^{12}k^3=78^2=6084$、$\sum k^2=650$、$\sum k=78$。<br>
+$18\cdot6084+3\cdot650-4\cdot78-12=109512+1950-312-12=111138$。</div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">每次把空白的 3/4 再塗掉 1/4 → 算「還沒塗到的面積」(3/4)ⁿ，塗色 = 1 − 它</span><span class="src">建國中學 111下 填 6</span></div>
+<div class="fxq">邊長 $1$ 的正方形四等分，把右上角的小正方形塗色得圖一；再把圖一中空白的三個小正方形各自四等分、右上角塗色得圖二；依此規律，設 $a_n$ 為圖 $n$ 中塗色區域的面積，求 $a_5$（最簡分數）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_5=\dfrac{781}{1024}$</div>
+<div class="fxs"><div class="move">招式：每一步空白面積變成原來的 $\dfrac34$，所以空白 $=\left(\dfrac34\right)^n$。</div>
+$a_n=1-\left(\dfrac34\right)^n$，$a_5=1-\dfrac{243}{1024}=\dfrac{781}{1024}$。<br>
+<span class="note-sm">直接加也行：$\dfrac14+\dfrac14\cdot\dfrac34+\cdots+\dfrac14\left(\dfrac34\right)^4$ 是首項 $\frac14$、公比 $\frac34$ 的等比級數。</span></div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">房貸 → 年利率 3% 按月複利就是月利率 0.25%；240 筆還款滾到最後與本金滾 240 期相等</span><span class="src">建國中學 111下 填 7</span></div>
+<div class="fxq">小建 $2023$ 年 $1$ 月初向銀行借 $600$ 萬買房，年利率 $3\%$ 按月複利，次月月初起每月償還相同金額，$20$ 年（$240$ 個月）還清。清償完畢時，還款總金額與借貸本金的比值為多少？（四捨五入到小數點後第 $1$ 位；$1.0025^{240}\approx1.82$）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1.3$</div>
+<div class="fxs"><div class="move">招式：月利率 $\dfrac{3\%}{12}=0.25\%$。每月還 $x$：$600\cdot1.0025^{240}=x\cdot\dfrac{1.0025^{240}-1}{0.0025}$。</div>
+$x=\dfrac{600\cdot0.0025\cdot1.82}{0.82}=\dfrac{2.73}{0.82}\approx3.33$（萬）；總還款 $240x\approx799$；比值 $\dfrac{799}{600}\approx1.33\to1.3$。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">每次取「剩下的 1/3」作正方形 → 邊長是公比 2/3 的等比，周長也是</span><span class="src">高雄女中 111下 填 18</span></div>
+<div class="fxq">已知 $\overline{AB}=9$，以 $\overline{AB}$ 長度的 $\dfrac13$ 為邊長作正方形 $S_1$，再以剩下線段長度的 $\dfrac13$ 為邊長作 $S_2$，如此繼續。設 $a_n$ 為正方形 $S_n$ 的周長，求 $a_1+a_2+a_3+a_4+a_5$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{844}{27}$</div>
+<div class="fxs"><div class="move">招式：邊長 $3,\ 2,\ \dfrac43,\dots$ 公比 $\dfrac23$（每次剩下 $\dfrac23$，再取 $\dfrac13$）；周長 $a_1=12$、公比 $\dfrac23$。</div>
+$\displaystyle\sum_{k=1}^{5}12\left(\dfrac23\right)^{k-1}=12\cdot\dfrac{1-\left(\frac23\right)^5}{1-\frac23}=36\left(1-\dfrac{32}{243}\right)=36\cdot\dfrac{211}{243}=\dfrac{844}{27}$。</div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">Sₙ、Tₙ 的性質判斷 → 錯的選項各造一個反例；對的選項用 T₃=b₁(1+r+r²) 且 1+r+r²&gt;0</span><span class="src">建國中學 111下 多 12</span></div>
+<div class="fxq">$\langle a_n\rangle$ 為等差（前 $n$ 項和 $S_n$）、$\langle b_n\rangle$ 為等比（前 $n$ 項和 $T_n$），各項皆實數。選出正確的選項。<br>(1) 若公差 $\lt0$，則 $S_n\gt S_{n+1}$ 對任意 $n$ 恆成立　(2) 若 $\langle S_n\rangle$ 有某一項 $\lt0$，則公差 $\lt0$　(3) 若 $T_{100}\gt T_{99}$，則公比 $\gt0$　(4) 若 $\langle T_n\rangle$ 每一項都 $\gt0$，則公比 $\gt0$　(5) 若 $T_2\cdot T_3\lt0$，則公比 $\lt-1$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5)</div>
+<div class="fxs"><div class="move">招式：$T_2=b_1(1+r)$、$T_3=b_1(1+r+r^2)$，而 $1+r+r^2=\left(r+\frac12\right)^2+\frac34\gt0$ 恆成立 ⟹ $T_2T_3=b_1^2(1+r)(1+r+r^2)$ 的正負只由 $1+r$ 決定。</div>
+(1) $5,3,1$：$S_1\lt S_2$ ✘。(2) $-5,1,7$：$S_1\lt0$ 但 $d\gt0$ ✘。(3) $T_{100}\gt T_{99}$ 只說 $b_{100}=b_1r^{99}\gt0$；$b_1=-2,r=-3$ 也成立 ✘。(4) $b_1=2,r=-\frac12$：$T_n=\frac43\left[1-\left(-\frac12\right)^n\right]\gt0$ 但 $r\lt0$ ✘。(5) $T_2T_3\lt0$ ⟹ $1+r\lt0$ ⟹ $r\lt-1$ ✔。</div></div>
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充專區：經典題與教甄</h2>
+<div class="goal">
+  <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
+  <div><b>目標</b>6 題經典壓軸＋15 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>通過標準</b>沒有標準——會一題算一題。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">Sₙ=((aₙ+1)/2)² 且 aₙ 為正整數 → 用 n=1,2,3 逐項解二次方程猜 2n−1，歸納證；(−1)ⁿn² 的交錯和兩兩配對</span><span class="src">雄中 113上 計 13</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 的前 $n$ 項和 $S_n=\left(\dfrac{a_n+1}2\right)^2$，且每一項都是正整數。(1) 求 $a_3,a_4$，並推測 $a_n$。(2) 用數學歸納法證明 (1)。(3) 若 $b_n=(-1)^nS_n$，求 $\langle b_n\rangle$ 的前 $n$ 項和 $T_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $a_3=5,\ a_4=7$，$a_n=2n-1$　(3) $T_n=(-1)^n\dfrac{n(n+1)}2$</div>
+<div class="fxs"><div class="move">招式：$n=1$：$a_1=\left(\frac{a_1+1}2\right)^2$ ⟹ $(a_1-1)^2=0$ ⟹ $a_1=1$。$n=2$：$1+a_2=\left(\frac{a_2+1}2\right)^2$ ⟹ $a_2^2-2a_2-3=0$ ⟹ $a_2=3$。同法 $a_3=5$、$a_4=7$。</div>
+(2) 設 $a_1,\dots,a_k$ 皆合 $2i-1$，則 $S_k=k^2$，$k^2+a_{k+1}=\left(\frac{a_{k+1}+1}2\right)^2$ ⟹ $a_{k+1}^2-2a_{k+1}+1-4k^2=0$ ⟹ $(a_{k+1}-1)^2=(2k)^2$ ⟹ $a_{k+1}=2k+1$（正）✔（這裡用到的是「前面所有項都成立」的假設）。<br>
+(3) $b_n=(-1)^nn^2$。$n$ 偶：$T_n=(2^2-1^2)+(4^2-3^2)+\cdots=3+7+\cdots+(2n-1)=\dfrac{n(n+1)}2$；$n$ 奇：$T_n=T_{n-1}-n^2=\dfrac{(n-1)n}2-n^2=-\dfrac{n(n+1)}2$。合寫 $(-1)^n\dfrac{n(n+1)}2$。</div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">第 n 層 n² 箱、每箱 n+1 本 → 箱數 Σn²、書數 Σ(n³+n²)；最大正立方體看 12³ 與 13³</span><span class="src">北一女中 113下 多 4</span></div>
+<div class="fxq">古本屋堆放十八層玻璃箱：第 $n$ 層 $n^2$ 個箱子，每箱放 $n+1$ 本書。選出正確的選項。<br>(1) 第十層共 $100$ 個箱子　(2) 共準備 $2109$ 個箱子　(3) 第七層共收納 $392$ 本書　(4) 全店共 $29241$ 本書　(5) 用這些箱子重新堆成一個最大的正立方體，會剩 $84$ 個箱子</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(3)</div>
+<div class="fxs"><div class="move">招式：(2) $\sum_{1}^{18}n^2=\dfrac{18\cdot19\cdot37}6=2109$；(4) 書數 $=\sum n^2(n+1)=\sum n^3+\sum n^2=171^2+2109=29241+2109=31350$。</div>
+(3) $49\times8=392$ ✔。(4) $29241$ 只是 $\sum n^3$，漏了 $\sum n^2$ ✘。(5) $12^3=1728\le2109\lt13^3=2197$，剩 $2109-1728=381$ ✘。</div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">n 個單位正方形在直線 y=x/(2n) 下方 → 前 n−1 個各是梯形（高 1、兩底 x/(2n)），最後一個整個在線下</span><span class="src">雄中 113上 填 12</span></div>
+<div class="fxq">正方形 $D_k$ 的四個頂點為 $(2k,0),(2k+1,0),(2k+1,1),(2k,1)$，$k=1,\dots,n$。直線 $L$ 連接原點與 $(2n,1)$。求這 $n$ 個正方形在 $L$ 下方部分的面積總和（以 $n$ 表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{2n^2+3n-1}{4n}$</div>
+<div class="fxs"><div class="move">招式：$L:y=\dfrac{x}{2n}$。$k\le n-1$ 時 $x\le2n-1$，線在正方形內部穿過：線下是梯形，面積 $=\dfrac12\left(\dfrac{2k}{2n}+\dfrac{2k+1}{2n}\right)\cdot1=\dfrac{4k+1}{4n}$。$k=n$ 時 $x\ge2n$ ⟹ $y\ge1$，整個正方形都在線下，面積 $1$。</div>
+$\displaystyle\sum_{k=1}^{n-1}\dfrac{4k+1}{4n}+1=\dfrac{2(n-1)n+(n-1)}{4n}+1=\dfrac{2n^2-n-1+4n}{4n}=\dfrac{2n^2+3n-1}{4n}$。驗 $n=1$：只有 $D_1$，整個在線下，面積 $1$；公式 $\dfrac{2+3-1}4=1$ ✔</div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">每月月初存、月底計息、中途提出 → 先數有幾筆、最後一筆滾 0 個月；本利和是等比級數</span><span class="src">北一女中 113下 填 12（改寫）</span></div>
+<div class="fxq">小八自 $2024$ 年 $1$ 月 $1$ 日起，每月 $1$ 日存入 $1000$ 元，銀行月利率 $2\%$、每月月底計息一次。$2025$ 年 $3$ 月 $25$ 日把戶頭裡的錢全部提出。問可提出多少元？（四捨五入至整數；$1.02^{15}\approx1.3459$）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">約 $17293$ 元</div>
+<div class="fxs"><div class="move">招式：$2024/1$ 到 $2025/3$ 共 $15$ 筆。$3$ 月那筆還沒到月底、不計息（滾 $0$ 個月）；$1$ 月 $2024$ 那筆經過 $14$ 個月底。</div>
+$1000\left(1+1.02+1.02^2+\cdots+1.02^{14}\right)=1000\cdot\dfrac{1.02^{15}-1}{0.02}=1000\cdot\dfrac{0.3459}{0.02}\approx17293$。<br>
+<span class="note-sm">常見錯誤：以為 $15$ 筆各滾 $15,14,\dots,1$ 個月（多算一個月的利息）。「月底計息、月中提出」是題目埋的釘子。</span></div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">衍生數列是否等差／等比 → 算差或比；「公差比原來大」要看 d 的正負；「r=−1 全為 0」是等比的隱形反例</span><span class="src">建國中學 111下 多 11</span></div>
+<div class="fxq">$\langle a_n\rangle$ 為等差、$\langle b_n\rangle$ 為等比（各項皆實數）。選出正確的選項。<br>(1) $c_n=a_n+a_{n+1}$，則 $\langle c_n\rangle$ 是等差　(2) $d_n=a_{5n}-a_{4n+3}$，則 $\langle d_n\rangle$ 是等差且公差與 $\langle a_n\rangle$ 相同　(3) $e_n=a_{5n}+a_{4n+3}$，則 $\langle e_n\rangle$ 是等差且公差比 $\langle a_n\rangle$ 的大　(4) $f_n=b_{5n}\cdot b_{4n+3}$，則 $\langle f_n\rangle$ 是等比　(5) $g_n=b_n+b_{n+1}$，則 $\langle g_n\rangle$ 是等比</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(4)</div>
+<div class="fxs"><div class="move">招式：設公差 $d$。$a_{5n}-a_{4n+3}=(5n-4n-3)d=(n-3)d$，相鄰差 $d$ ✔(2)；$a_{5n}+a_{4n+3}=2a_1+(9n-3)d$，公差 $9d$——$d\lt0$ 時 $9d\lt d$ ✘(3)。</div>
+(1) 差 $2d$ ✔。(4) $f_n=b_1^2r^{9n+1}$，公比 $r^9$ ✔。(5) $g_n=b_n(1+r)$：$r=-1$ 時每一項都是 $0$，$0,0,0,\dots$ 不是等比數列（公比無意義）✘。</div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">4,10,20 的階差 → 一階差 6,10 是三角形數、二階差 4,5 等差 → 每層點數是三角形數，總數是「四面體數」</span><span class="src">台中一中 111下 填 14</span></div>
+<div class="fxq">用單位長鋼條焊接四面體鐵架：圖 $1$ 有 $2$ 層共 $4$ 個焊接點，圖 $2$ 有 $3$ 層共 $10$ 個，圖 $3$ 有 $4$ 層共 $20$ 個。依此規律，圖 $9$（$10$ 層）共有多少個焊接點？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$220$</div>
+<div class="fxs"><div class="move">招式：第 $j$ 層是邊長 $j$ 的三角形點陣，有 $\dfrac{j(j+1)}2$ 個點；$m$ 層總數 $=\displaystyle\sum_{j=1}^{m}\dfrac{j(j+1)}2=\dfrac{m(m+1)(m+2)}6$（例題 20 的公式）。</div>
+$m=2,3,4$：$4,10,20$ ✔；$m=10$：$\dfrac{10\cdot11\cdot12}6=220$。</div></div>
+
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（15 題）</h3>
+<div class="note">來源：嘉義高中 114、115 科學班甄選（國三程度，題目只用到等差、等比與計數）；東石高中 112、高雄市 112、桃園市 112、台中一中 112、士林高商 108、政大附中 107、竹北高中 101、新化高中 101 各校教師甄選。掃描卷以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>（新化 101 第 1 題原答案卡印 $4$、正確為 $2$，本書改成不需要極限的有限版本；極限是高三選修才學）。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">嘉中科學班：S₁₀、S₂₀ 求 S₃₀ → 三段和成等比，1024、512、256</span><span class="src">嘉義高中 115 科學班 填 2</span></div>
+<div class="fxq">某等比數列前 $10$ 項的和 $S_{10}=1024$、前 $20$ 項的和 $S_{20}=1536$。求前 $30$ 項的和 $S_{30}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$S_{30}=1792$</div>
+<div class="fxs"><div class="move">招式：$S_{10},\ S_{20}-S_{10},\ S_{30}-S_{20}$ 成等比：$1024,\ 512$ ⟹ 公比 $\dfrac12$ ⟹ 第三段 $256$。</div>
+$S_{30}=1024+512+256=1792$。<span class="note-sm">（$r^{10}=\frac12$，$r$ 本身是無理數，但完全不需要算出來——這正是「三段和」觀點的價值。）</span></div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">S2</span><span class="kw">嘉中科學班：1 到 100 取兩相異數和大於 100 → 固定大的數 b，小的數有 2b−101 種；再加一個等差級數</span><span class="src">嘉義高中 114 科學班 填 5</span></div>
+<div class="fxq">從 $1$ 到 $100$ 的正整數中一次取兩個相異的數，使它們的和大於 $100$，共有幾種取法？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2500$ 種</div>
+<div class="fxs"><div class="move">招式：設較大的數為 $b$（$51\le b\le100$），較小的 $a$ 須滿足 $101-b\le a\le b-1$，共 $2b-101$ 種。</div>
+$\displaystyle\sum_{b=51}^{100}(2b-101)=1+3+5+\cdots+99=50^2=2500$。<span class="note-sm">（另解：所有取法 $\binom{100}2=4950$，和恰為 $100$ 的有 $49$ 對，其餘依「$(a,b)\leftrightarrow(101-a,101-b)$」一一對應分成和 $\gt100$ 與 $\lt101$ 兩半，故 $\frac{4950-49}2+49=2500$。）</span></div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">S3</span><span class="kw">嘉中科學班：L 形矩尺罩住 7 欄數表的三格 → 四種擺法的和是 3x+8、3x+9、3x+15、3x+16，只有一種被 346 整除得出整數</span><span class="src">嘉義高中 114 科學班 填 3</span></div>
+<div class="fxq">數表第一列為 $1$ 至 $7$，第二列為 $8$ 至 $14$，依此類推。用一個 L 形（$2\times2$ 缺一格）的透明矩尺罩住三個數，矩尺可平移及旋轉。若罩住的三數之和為 $346$，求三數中最小的數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$111$</div>
+<div class="fxs"><div class="move">招式：任一 $2\times2$ 方塊的四個數是 $x,\ x+1,\ x+7,\ x+8$（$x$ 不在第 $7$ 欄）。缺一格的三數和分別為 $3x+16,\ 3x+15,\ 3x+9,\ 3x+8$。</div>
+$346-16=330=3\cdot110$ ✔；$346-15=331$、$346-9=337$、$346-8=338$ 都不是 $3$ 的倍數。故 $x=110$（第 $16$ 列第 $5$ 欄，不在邊界），罩住 $111,117,118$，最小為 $111$。</div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">分式遞迴 a_{n+1}=(aₙ+3)/(2aₙ−4) → 解兩個不動點 3、−1/2，(aₙ−3)/(aₙ+1/2) 是等比</span><span class="src">東石高中 112 教甄 計 2</span></div>
+<div class="fxq">已知遞迴數列滿足 $a_1=\dfrac12$、$a_{n+1}=\dfrac{a_n+3}{2a_n-4}$。求一般項 $a_n$（以 $n$ 表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_n=\dfrac{3\cdot2^{\,n+1}+(-5)^n}{2^{\,n+1}-2\cdot(-5)^n}$</div>
+<div class="fxs"><div class="move">招式：不動點 $x=\dfrac{x+3}{2x-4}$ ⟹ $2x^2-5x-3=0$ ⟹ $x=3$ 或 $-\dfrac12$。兩個不動點就做「差的比」：$b_n=\dfrac{a_n-3}{a_n+\frac12}$。</div>
+$a_{n+1}-3=\dfrac{-5(a_n-3)}{2a_n-4}$、$a_{n+1}+\dfrac12=\dfrac{2a_n+1}{2a_n-4}=\dfrac{2\left(a_n+\frac12\right)}{2a_n-4}$ ⟹ $b_{n+1}=-\dfrac52b_n$，$b_1=\dfrac{\frac12-3}{1}=-\dfrac52$ ⟹ $b_n=\left(-\dfrac52\right)^n$。<br>
+反解：$a_n-3=b_n\left(a_n+\frac12\right)$ ⟹ $a_n=\dfrac{3+\frac{b_n}2}{1-b_n}=\dfrac{6+b_n}{2(1-b_n)}$，通分 $2^n$ 得上式。驗 $n=1$：$\dfrac{12-5}{4+10}=\dfrac12$ ✔<br>
+<span class="note-sm">課綱內的一個不動點法對付 $a_{n+1}=pa_n+q$；兩個不動點的「差的比」是同一個想法的分式版，高三選修數甲的分式遞迴會再遇到。</span></div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">S5</span><span class="kw">三項等比、+4 變等差、再 +32 變等比 → 設 a,ar,ar²，兩條件消去 r 得 a 的二次方程</span><span class="src">政大附中 107 教甄 一</span></div>
+<div class="fxq">一個等比數列有三項。若把第二項加上 $4$，所得三項成等差數列；再把這等差數列的第三項加上 $32$，所得三項又成等比數列。求原來的等比數列。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2,6,18$ 或 $\dfrac29,-\dfrac{10}9,\dfrac{50}9$</div>
+<div class="fxs"><div class="move">招式：設 $a,ar,ar^2$。等差：$2(ar+4)=a+ar^2$ ⟹ $a(r-1)^2=8$；等比：$(ar+4)^2=a(ar^2+32)$ ⟹ $8ar+16=32a$ ⟹ $r=4-\dfrac2a$。</div>
+代入：$a\left(3-\dfrac2a\right)^2=8$ ⟹ $(3a-2)^2=8a$ ⟹ $9a^2-20a+4=0$ ⟹ $a=2$ 或 $\dfrac29$。<br>
+$a=2$：$r=3$，得 $2,6,18$（驗：$2,10,18$ 等差；$2,10,50$ 等比 ✔）。$a=\dfrac29$：$r=-5$，得 $\dfrac29,-\dfrac{10}9,\dfrac{50}9$（驗：$\dfrac29,\dfrac{26}9,\dfrac{50}9$ 等差；$\dfrac29,\dfrac{26}9,\dfrac{338}9$ 等比，公比 $13$ ✔）。</div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">S6</span><span class="kw">二階遞迴 a_{n+2}=⅓a_{n+1}+⅔aₙ → 移項成「相鄰差」的等比：a_{n+2}−a_{n+1}=−⅔(a_{n+1}−aₙ)</span><span class="src">竹北高中 101 教甄 填 10</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 滿足 $a_1=1$、$a_2=2$，$a_{n+2}=\dfrac13a_{n+1}+\dfrac23a_n$（$n\ge1$）。求一般項 $a_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_n=\dfrac85-\dfrac35\left(-\dfrac23\right)^{n-1}$</div>
+<div class="fxs"><div class="move">招式：$a_{n+2}-a_{n+1}=-\dfrac23(a_{n+1}-a_n)$，所以差 $d_n=a_{n+1}-a_n$ 是首項 $1$、公比 $-\dfrac23$ 的等比。</div>
+$a_n=a_1+\displaystyle\sum_{k=1}^{n-1}\left(-\dfrac23\right)^{k-1}=1+\dfrac{1-\left(-\frac23\right)^{n-1}}{1+\frac23}=1+\dfrac35\left[1-\left(-\dfrac23\right)^{n-1}\right]=\dfrac85-\dfrac35\left(-\dfrac23\right)^{n-1}$。驗 $n=3$：$a_3=\dfrac23+\dfrac23=\dfrac43$，公式 $\dfrac85-\dfrac35\cdot\dfrac49=\dfrac{24-4}{15}=\dfrac43$ ✔<br>
+<span class="note-sm">「係數和為 $1$」的二階遞迴一定能這樣拆——教學手冊「陸」有更一般的說法。</span></div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">(1+2)(1+2²)(1+2⁴)…(1+2^{2^{n−1}}) → 前面補一個 (2−1)，平方差一路滾成 2^{2ⁿ}−1</span><span class="src">新化高中 101 教甄 填 1（改寫）</span></div>
+<div class="fxq">設 $a_n=2^{\,n-1}$。求 $\dfrac{(1+2^{a_1})(1+2^{a_2})\cdots(1+2^{a_n})}{2^{\,a_1+a_2+\cdots+a_n}}$（以 $n$ 表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2-2^{\,1-2^{n}}$，即 $\dfrac{2^{2^n}-1}{2^{2^n-1}}$</div>
+<div class="fxs"><div class="move">招式：分子乘上 $(2-1)=1$ 不改變值：$(2-1)(2+1)(2^2+1)(2^4+1)\cdots(2^{2^{n-1}}+1)=2^{2^n}-1$（每一步都是平方差）。分母 $2^{1+2+\cdots+2^{n-1}}=2^{2^n-1}$。</div>
+比值 $=\dfrac{2^{2^n}-1}{2^{2^n-1}}=2-\dfrac{1}{2^{2^n-1}}$。驗 $n=1$：$\dfrac{3}{2}$，公式 $2-\dfrac12$ ✔；$n=2$：$\dfrac{3\cdot5}{8}=\dfrac{15}8$，公式 $2-\dfrac18$ ✔<br>
+<span class="note-sm">原題問的是 $n$ 無限大時的值（那是高三選修才學的極限），答案 $2$；原卷答案卡印 $4$ 是錯的。</span></div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">S8</span><span class="kw">1 與 19 間插入 2n 個數、前後各 n+1 項和之比 1:3 → 兩段和都是「項數 × 中項」，(2n+1)d=18 配 (2n−1)d=14</span><span class="src">新化高中 101 教甄 填 3</span></div>
+<div class="fxq">在 $1$ 與 $19$ 間插入 $2n$ 個數，使其成為 $2n+2$ 項的等差數列，公差為 $d$。若此數列前 $n+1$ 項之和與後 $n+1$ 項之和的比為 $1:3$，求 $(n,d)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(n,d)=(4,2)$</div>
+<div class="fxs"><div class="move">招式：$19=1+(2n+1)d$。前 $n+1$ 項和 $=\dfrac{(n+1)(1+a_{n+1})}2=\dfrac{(n+1)(2+nd)}2$；後 $n+1$ 項和 $=\dfrac{(n+1)(a_{n+2}+19)}2=\dfrac{(n+1)(20+(n+1)d)}2$。</div>
+$\dfrac{2+nd}{20+(n+1)d}=\dfrac13$ ⟹ $6+3nd=20+nd+d$ ⟹ $(2n-1)d=14$。與 $(2n+1)d=18$ 相減：$2d=4$ ⟹ $d=2$，$2n+1=9$ ⟹ $n=4$。<br>
+驗：$1,3,5,\dots,19$ 共 $10$ 項，前 $5$ 項和 $25$、後 $5$ 項和 $75$，比 $1:3$ ✔</div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">S9</span><span class="kw">含 log₂、log₄、log₈ 的三項成等比 → 令 s=log₂2023、u=a−√2，三項是 s 與 u 的一次式，等比條件變 s、u 的齊次二次式</span><span class="src">高雄市 112 教甄 5</span></div>
+<div class="fxq">設 $a$ 為實數，且 $-a+\sqrt2+\log_22023$、$2a-2\sqrt2+\log_42023$、$-4a+4\sqrt2+\log_82023$ 三數成等比數列。求此數列的公比。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{8}{15}$</div>
+<div class="fxs"><div class="move">招式：令 $s=\log_22023$、$u=a-\sqrt2$，則三項為 $s-u,\ \dfrac s2+2u,\ \dfrac s3-4u$（$\log_4=\frac12\log_2$、$\log_8=\frac13\log_2$）。乘 $6$：$6s-6u,\ 3s+12u,\ 2s-24u$。</div>
+等比：$(3s+12u)^2=(6s-6u)(2s-24u)$ ⟹ $9s^2+72su+144u^2=12s^2-156su+144u^2$ ⟹ $3s^2=228su$ ⟹ $s=76u$（$s\ne0$）。<br>
+公比 $=\dfrac{3s+12u}{6s-6u}=\dfrac{228u+12u}{456u-6u}=\dfrac{240}{450}=\dfrac8{15}$。<span class="note-sm">（$2023$ 這個數字完全不重要——出題者只是要你認出 $\log_4,\log_8$ 與 $\log_2$ 的倍數關係。）</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">Sₙ/Tₙ 給定，求 a₁₀/(b₃+b₁₈)+a₁₁/(b₆+b₁₅) → 分母都等於 b₁+b₂₀，合併成 (a₁₀+a₁₁)/(b₁+b₂₀)=S₂₀/T₂₀</span><span class="src">桃園市 112 教甄 2</span></div>
+<div class="fxq">已知 $S_n,T_n$ 分別為等差數列 $\langle a_n\rangle,\langle b_n\rangle$ 的前 $n$ 項和，且 $\dfrac{S_n}{T_n}=\dfrac{2n+1}{4n-2}$。求 $\dfrac{a_{10}}{b_3+b_{18}}+\dfrac{a_{11}}{b_6+b_{15}}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{41}{78}$</div>
+<div class="fxs"><div class="move">招式：等差中 $p+q=r+s$ ⟹ $b_p+b_q=b_r+b_s$：$b_3+b_{18}=b_6+b_{15}=b_1+b_{20}$。</div>
+原式 $=\dfrac{a_{10}+a_{11}}{b_1+b_{20}}=\dfrac{a_1+a_{20}}{b_1+b_{20}}=\dfrac{S_{20}}{T_{20}}=\dfrac{41}{78}$。</div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">S11</span><span class="kw">正項等比、a₃+a₄−a₂−a₁=8 求 a₅+…+a₈ 最小 → 令 k=a₁+a₂、s=r²：目標 8s²(s+1)/(s−1)，換元 u=s−1 後配算幾</span><span class="src">桃園市 112 教甄 5</span></div>
+<div class="fxq">在各項均為正數的等比數列 $\langle a_n\rangle$ 中，若 $a_3+a_4-a_2-a_1=8$，求 $a_5+a_6+a_7+a_8$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$44+20\sqrt5$（在 $r^2=\dfrac{1+\sqrt5}2$ 時取到）</div>
+<div class="fxs"><div class="move">招式：令 $k=a_1+a_2$、$s=r^2\gt1$（各項正且和要增加）。$a_3+a_4=ks$ ⟹ $k(s-1)=8$；$a_5+\cdots+a_8=ks^2+ks^3=ks^2(1+s)=\dfrac{8s^2(s+1)}{s-1}$。</div>
+令 $u=s-1\gt0$：$\dfrac{8(u+1)^2(u+2)}{u}=8\left(u^2+4u+5+\dfrac2u\right)$。對 $u^2+4u+\dfrac2u$ 用「取到 $u^3+2u^2-1=0$」的配法：$(u+1)(u^2+u-1)=0$ ⟹ $u=\dfrac{-1+\sqrt5}2$，此時 $s=\dfrac{1+\sqrt5}2=\varphi$。<br>
+代回：$\varphi^2=\varphi+1$、$\varphi-1=\dfrac1\varphi$ ⟹ 目標 $=8\varphi^2(\varphi+1)\varphi=8\varphi^5=8(5\varphi+3)=40\varphi+24=44+20\sqrt5\approx88.7$。<br>
+<span class="note-sm">「$u^3+2u^2-1=0$」是把目標對 $u$ 微分得到的（高三選修才學）；課綱內的寫法：把目標寫成 $8\left[(u^2+4u+4)+\left(1+\dfrac2u\right)\right]$ 之類的形式逐段估，或直接列表試 $s=1.5,1.6,1.62,1.7$ 看出最小值在 $1.618$ 附近，再驗證 $\varphi$ 給的值。教甄題就是要老師用微分找到答案、再用課綱內的方法解釋。</span></div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">S12</span><span class="kw">11 次方程式的根成等差 → 根的和給中項、兩兩乘積和給 Σ根²，配 1²+2²+…+5² 解 d²</span><span class="src">台中一中 112 教甄 填 4</span></div>
+<div class="fxq">實係數方程式 $x^{11}+6x^{10}+5x^9+a_8x^8+\cdots+a_1x+a_0=0$ 的 $11$ 個根形成等差數列。求此數列的公差。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$d=\pm\dfrac{5}{11}$</div>
+<div class="fxs"><div class="move">招式：設根為 $m-5d,\dots,m,\dots,m+5d$。根的和 $=11m=-6$ ⟹ $m=-\dfrac6{11}$；兩兩乘積和 $=5$ ⟹ $\sum(\text{根})^2=(-6)^2-2\cdot5=26$。</div>
+$\sum(\text{根})^2=11m^2+2d^2(1^2+2^2+3^2+4^2+5^2)=\dfrac{36}{11}+110d^2=26$ ⟹ $110d^2=\dfrac{250}{11}$ ⟹ $d^2=\dfrac{25}{121}$ ⟹ $d=\pm\dfrac5{11}$。<br>
+<span class="note-sm">「根的和 $=-\frac{a_{10}}{1}$、兩兩積之和 $=a_9$」是高一上三次方程式根與係數的推廣，$n$ 次的版本要到高三選修才正式寫，教甄可以直接用。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">S13</span><span class="kw">f(n)=(4/5)ⁿ(n²+4n) 何時最大 → 看比值 f(n+1)/f(n)≥1 的範圍，最大項在比值由 ≥1 轉 &lt;1 的地方</span><span class="src">台中一中 112 教甄 填 5</span></div>
+<div class="fxq">設 $n$ 為正整數，$f(n)=\left(\dfrac45\right)^n(n^2+4n)$。求使 $f(n)$ 最大的 $n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$n=7$</div>
+<div class="fxs"><div class="move">招式：$\dfrac{f(n+1)}{f(n)}=\dfrac45\cdot\dfrac{(n+1)^2+4(n+1)}{n^2+4n}=\dfrac45\cdot\dfrac{n^2+6n+5}{n^2+4n}$。</div>
+$\ge1$ ⟺ $4n^2+24n+20\ge5n^2+20n$ ⟺ $n^2-4n-20\le0$ ⟺ $n\le2+\sqrt{24}\approx6.9$。<br>
+所以 $f(1)\lt f(2)\lt\cdots\lt f(6)\lt f(7)$，而 $f(8)\lt f(7)$，最大在 $n=7$。<span class="note-sm">（$f(7)=\frac{4^7\cdot77}{5^7}\approx16.15$，$f(6)\approx15.73$，$f(8)\approx16.10$——確實只差一點點，比值法比硬算穩。）</span></div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">2023 個點、P_k 到 P_{k+1} 距離 1/k，求所有兩點距離總和 → 換個方向數：每一段 1/k 被多少對點「跨過」</span><span class="src">台中一中 112 教甄 填 7</span></div>
+<div class="fxq">將 $2023$ 個點 $P_1,P_2,\dots,P_{2023}$ 依序排在一直線上，使 $P_k$ 與 $P_{k+1}$ 的距離為 $\dfrac1k$（$k=1,\dots,2022$）。求從這 $2023$ 個點中任取兩點的所有距離總和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2045253$</div>
+<div class="fxs"><div class="move">招式：任兩點的距離是「中間各小段的和」。改成對每一小段 $P_kP_{k+1}$（長 $\dfrac1k$）數：它被 $P_i,P_j$（$i\le k\lt j$）跨過的對數是 $k\times(2023-k)$。</div>
+總和 $=\displaystyle\sum_{k=1}^{2022}\dfrac1k\cdot k(2023-k)=\sum_{k=1}^{2022}(2023-k)=2022+2021+\cdots+1=\dfrac{2022\cdot2023}2=2045253$。<br>
+<span class="note-sm">$\frac1k$ 被 $k$ 消掉是設計好的；換成 $n$ 個點答案就是 $\frac{n(n-1)}2$。「交換求和的順序」和講義難題 H10 是同一招。</span></div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">S15</span><span class="kw">n 個相異正奇數＋m 個相異正偶數和為 1000，求 6n+8m 最大 → 最小可能和 n²+m(m+1)≤1000，再看奇偶</span><span class="src">士林高商 108 教甄 計 3</span></div>
+<div class="fxq">已知 $n$ 個相異的正奇數與 $m$ 個相異的正偶數的和為 $1000$。求 $6n+8m$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$312$（$n=20,\ m=24$）</div>
+<div class="fxs"><div class="move">招式：$n$ 個相異正奇數最小的和是 $1+3+\cdots+(2n-1)=n^2$；$m$ 個相異正偶數最小的和是 $2+4+\cdots+2m=m(m+1)$。可行的 $(n,m)$ 必須 $n^2+m(m+1)\le1000$，而且 $n$ 個奇數的和與 $n$ 同奇偶、總和 $1000$ 為偶 ⟹ $n$ 是偶數。只要滿足這兩件事，把最大的那個數加大就能湊到 $1000$。</div>
+在 $n^2+m(m+1)\le1000$、$n$ 偶之下極大化 $6n+8m$：邊界大約是橢圓 $n^2+\left(m+\frac12\right)^2\approx1000$，目標的梯度 $(6,8)$ 指向 $n:\left(m+\frac12\right)=3:4$ 的方向 ⟹ $n\approx19$、$m\approx24.5$。試 $n=20,m=24$：$400+600=1000$ ✔（恰好），$6n+8m=312$；$n=18,m=25$：$324+650=974$ ✔，$308$；$n=22,m=22$：$484+506=990$ ✔，$308$；$n=20,m=25$：$400+650\gt1000$ ✘。最大 $312$。<br>
+<span class="note-sm">構造：$1,3,\dots,39$（和 $400$）與 $2,4,\dots,48$（和 $600$）。「梯度方向」是大學的說法，考卷上寫「列表比較邊界附近的整數點」即可。</span></div></div>
+</section>
+
+<div class="ch-nav">
+  <a href="../g10a-ch03/practice.html">← 第三章 多項式 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <a href="../g11a-ch01/practice.html">第一章 三角函數 練習本 →</a>
+</div>
+</div>
+
+<script>
+(function () {
+  var G = window.PGEN;
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var labelOf = {};
+  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard';
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
+      '<div class="gh"></div><div class="ga"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+    function load() {
+      var it = G[tier][key](G.makeRng(seed));
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '提示：' + it.h;
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.seed').textContent = '#' + seed;
+      card.querySelector('.gh').classList.remove('on'); card.querySelector('.ga').classList.remove('on');
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+  document.querySelectorAll('.fixset').forEach(function (box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
+    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
+    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
+    for (var i = 0; i < n; i++) {
+      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
+      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+    }
+    box.innerHTML = html + '</ol>';
+    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    box.querySelector('.print').onclick = function () { window.print(); };
+    render(box);
+  });
+  document.querySelectorAll('.fx button').forEach(function (b) {
+    b.onclick = function () {
+      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
+      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
+    };
+  });
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+</body>
+</html>
