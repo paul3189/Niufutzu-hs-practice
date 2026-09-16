@@ -1111,7 +1111,7 @@
   L0.rightTriRatio = function (r) {
     var t = r.pick(TRIPLES), fn = r.pick(['sin', 'cos', 'tan']);
     var a = t[0], b = t[1], c = t[2], val = fn === 'sin' ? F(a, c) : fn === 'cos' ? F(b, c) : F(a, b);
-    return { q: '直角 ' + T('\\triangle ABC') + ' 中 ' + T('\\angle C=90^\\circ') + '，' + T('\\overline{BC}=' + a) + '、' + T('\\overline{AC}=' + b) + '、' + T('\\overline{AB}=' + c) + '，求 ' + T('\\' + fn + 'A') + '。', a: T('\\' + fn + 'A=' + Fr.tex(val)), h: '$\\angle A$ 的對邊是 $\\overline{BC}$、鄰邊是 $\\overline{AC}$、斜邊 $\\overline{AB}$：$\\sin=\\dfrac{\\text{對}}{\\text{斜}}$、$\\cos=\\dfrac{\\text{鄰}}{\\text{斜}}$、$\\tan=\\dfrac{\\text{對}}{\\text{鄰}}$。', p: { a: a, b: b, c: c, fn: fn, val: [val.n, val.d] } };
+    return { q: '直角 ' + T('\\triangle ABC') + ' 中 ' + T('\\angle C=90^\\circ') + '，' + T('\\overline{BC}=' + a) + '、' + T('\\overline{AC}=' + b) + '、' + T('\\overline{AB}=' + c) + '，求 ' + T('\\' + fn + ' A') + '。', a: T('\\' + fn + ' A=' + Fr.tex(val)), h: '$\\angle A$ 的對邊是 $\\overline{BC}$、鄰邊是 $\\overline{AC}$、斜邊 $\\overline{AB}$：$\\sin=\\dfrac{\\text{對}}{\\text{斜}}$、$\\cos=\\dfrac{\\text{鄰}}{\\text{斜}}$、$\\tan=\\dfrac{\\text{對}}{\\text{鄰}}$。', p: { a: a, b: b, c: c, fn: fn, val: [val.n, val.d] } };
   };
   L0.quadMax = function (r) {
     var s = r.sign(), h = r.int(-4, 4), k = r.int(-6, 6), B = -2 * s * h, C = s * h * h + k;
