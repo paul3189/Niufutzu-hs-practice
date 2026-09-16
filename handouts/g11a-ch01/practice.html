@@ -121,6 +121,43 @@ button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radi
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px;position:relative}
 .fx-scroll{overflow-x:auto;position:relative}
 @media print{body.print-one .wrap{display:none}body.print-one #printArea{display:block}#printArea h1{font-size:1.15rem;margin:0 0 4px}#printArea .pmeta{margin:0 0 10px;color:#444}#printArea ol li{margin:12px 0;break-inside:avoid}#printArea h2{font-size:1rem;break-before:page}.fixset .mark,.fix-foot,.fix-result,.simbox,.myrec{display:none!important}}
+
+/* ── 第二版：信心評分、錯因、錯題本、混合檢測、模擬卷（2026-09-18）── */
+.fixset ol li.qi{position:relative}
+.fixset .conf,.rvi .conf{display:block;margin:4px 0 2px;font-size:.82rem;color:var(--muted)}
+.conf .cl,.cause .cl{margin-right:4px}
+.conf button,.cause button{padding:0 9px;font-size:.8rem;border-radius:999px;margin-right:4px}
+.conf button.sel{background:#1f5fa8;color:#fff;border-color:#1f5fa8}
+.cause{display:none;margin-left:8px;font-size:.82rem;color:var(--muted)}
+.fixset ol li.ng .cause,.rvi li.ng .cause{display:inline-block}
+.cause button.sel{background:#b3261e;color:#fff;border-color:#b3261e}
+.fixset:not(.show) .mark,.rvi li:not(.show) .mark{display:none}
+.fix-note{display:none;margin:6px 0;padding:8px 12px;border-radius:8px;background:#fdecec;border:1px solid #f0b8b8;font-size:.9rem}
+.fix-note.on{display:block}
+.hcw{color:#b3261e;font-weight:700}
+button.go.read{border-color:#8a4450;color:#8a4450}
+.fix-btns .tstart{border-color:var(--l4);color:var(--l4);font-weight:700}
+.fix-btns .tclock{font-weight:700;color:var(--l4);min-width:3.5em}
+.review{background:#fff;border:1px solid #f0c9a0;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.review .rv-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.review .rv-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.review .rv-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid var(--l3);color:var(--l3);background:#fff;cursor:pointer;font-weight:700}
+.rvi{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:10px 0;background:#fffdf9}
+.rvi .rvh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+.rvi .rvh .tag{font-size:.75rem;padding:1px 8px;border-radius:999px;background:#eee;color:#555}
+.rvi .rvh .tag.hc{background:#fdecec;color:#b3261e;font-weight:700}
+.rvi .rvh .rvm{margin-left:auto;color:#aaa;font-size:.78rem}
+.rvi ol{margin:6px 0 0;padding-left:22px}
+.rvi li{margin:6px 0}
+.rvi li .rl{font-size:.75rem;color:var(--l3);font-weight:700;margin-right:6px}
+.rvi li .fa{display:none;color:var(--l2);font-size:.92rem;margin-left:6px}
+.rvi li.show .fa{display:inline}
+.rvi li.ok{background:#eef7f0;border-radius:6px}.rvi li.ng{background:#fdecec;border-radius:6px}
+.rvi li .rvans{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer;margin-left:6px}
+.rv-later{font-size:.88rem;color:var(--muted);margin-top:8px}
+.rv-later ul{margin:4px 0 0 18px;padding:0}
+.must.flash{box-shadow:0 0 0 3px #f0c040}
+@media print{.conf,.cause,.fix-note,.review,.tstart,.tclock{display:none!important}}
 </style>
 <link rel="stylesheet" href="../../assets/theme-cow.css">
 </head>
@@ -145,12 +182,18 @@ button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radi
   <ol>
     <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
     <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點。</li>
-    <li>每小節最後是<b>檢測 10 題</b>：做完按「顯示答案」對答案，每題標 ○／✗ 再按「記錄」，系統會指出<b>你錯的是哪一型、該回頭練哪張卡片</b>；按「換一組類似題」就換數字重測（避免背答案），「列印本組」只印這一組。</li>
-    <li>上方「📊 我的練習紀錄」會累積每次檢測，列出錯誤率最高的題型與「優先補強」清單。</li>
+    <li>每小節最後是<b>檢測 10 題</b>：先在紙上作答，每題按「有把握／不確定／猜的」，全部評完才看答案；對完每題標 ○／✗，錯的選錯因（不會下手、公式用錯、計算錯、看錯題），再按「記錄」。系統會分成<b>該回頭讀</b>與<b>該多算幾題</b>兩種建議。「換一組類似題」換數字重測，「列印本組」只印這一組。</li>
+    <li>每級最後有<b>混合檢測</b>（全章題型打亂，練「判斷這是哪一型」），L3 之後有<b>段考模擬卷</b>（L2＋L3 混合、計時 50 分鐘、交卷才看答案）。</li>
+    <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因。</li>
     <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
     <li>本書所有生成題的答案都經電腦獨立驗算（5,550 題抽樣）；固定題全數人工＋電腦重算。角度一律用能精確求值的角（$15^\circ$ 的倍數、$\dfrac{\pi}{12}$ 的倍數）。</li>
   </ol>
+</div>
+
+<div class="review" id="review">
+  <div class="rv-h"><b>📅 今日複習（錯題本）</b><span class="rv-sum"></span><button class="rv-toggle">開始複習</button></div>
+  <div class="rv-body"></div>
 </div>
 
 <div class="myrec" id="myrec">
@@ -183,6 +226,9 @@ button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radi
 <div class="must">先要會：<b>$y=a\sin(bx+c)+d$ 四個字母各管什麼</b>（振幅 $|a|$、週期 $\dfrac{2\pi}{|b|}$、中線 $y=d$）、<b>右移是 $x\to x-k$</b>、<b>$a\sin x+b\cos x=\sqrt{a^2+b^2}\sin(x+\theta)$</b>、<b>基本方程 $\sin x=\dfrac12$ 在 $[0,2\pi)$ 有兩解，用對稱找第二個</b>、<b>週期：$\tan$、絕對值、平方都讓週期減半</b>。</div>
 <div class="gen-grid" data-tier="L1" data-keys="ampPeriod,shiftFunc,combineStd,maxMin,basicEq,periodOf"></div>
 <div class="fixset" data-tier="L1" data-keys="ampPeriod,shiftFunc,combineStd,maxMin,basicEq,periodOf" data-seed="1301"></div>
+
+<h3 class="sec">L1 混合檢測 12 題（全章 21 型打亂，練「判斷這是哪一型」）</h3>
+<div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
 <!-- ═══════════════════════ L2 ═══════════════════════ -->
@@ -206,8 +252,8 @@ button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radi
 <div class="must">53 卷中<b>週期 21 卷次、疊合 17、平移 14、三角方程 13、振幅 11、區間最值 10、圖形交點 8、解的個數 7</b>。招式：<b>由最高最低點反推：$a,d$ 看高低，$b$ 看水平距離（半週期），$c$ 最後代點定</b>；<b>先伸縮再平移 vs 先平移再伸縮，平移量差 $k$ 倍</b>；<b>解的個數 ⟹ 把方程式拆成「三角函數 vs 直線」數交點，直線只在 $|y|\le1$ 有效</b>；<b>不等式 ⟹ 化成單一函數的二次式再翻回單位圓，根為 $\pm1$ 時有孤立解</b>；<b>區間最值 ⟹ 疊合後看 $x+\theta$ 跑過哪一段</b>；<b>$\sin x\pm\cos x$ 出現就換元 $t$，$|t|\le\sqrt2$</b>。</div>
 <div class="gen-grid" data-tier="L2" data-keys="paramFit,transformOrder,periodJudge,rootCount,trigIneq,combineInterval,squareSub,eqSumCount"></div>
 
-<h3 class="sec">L2 檢測 12 題（可列印・可換組）</h3>
-<div class="fixset" data-tier="L2" data-keys="sectorSys,coneShortest,sumProd,quadRootCos2,tanQuad,systemSquare,halfFromCos2x,paramFit,transformOrder,rootCount,trigIneq,combineInterval" data-seed="2001" data-n="12"></div>
+<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<div class="fixset" data-tier="L2" data-keys="*" data-seed="2001" data-n="12" data-mixed="1"></div>
 </section>
 
 <!-- ═══════════════════════ L3 ═══════════════════════ -->
@@ -328,8 +374,12 @@ $\tan\theta=\dfrac13\gt0$ 且 $\theta\in\left(\dfrac{\pi}{2},\dfrac{3\pi}{2}\rig
 <div class="fxs"><div class="move">招式：把 $x=8,12,20$ 代進去，括號裡分別是 $\dfrac{\pi}{2}$、$\dfrac{2\pi}{3}$、$\pi$——都是特殊角。</div>
 $x=8$：$a\cos\dfrac{\pi}{2}+b=b=14$。$x=12$：$a\cos\dfrac{2\pi}{3}+14=-\dfrac a2+14=11$ ⟹ $a=6$。$x=20$：$6\cos\pi+14=8$。</div></div>
 
-<h3 class="sec">L3 檢測 10 題（從 15 型抽，可換組）</h3>
-<div class="fixset" data-tier="L3" data-keys="radEstimate,periodFromHighLow,tanShiftCoincide,rootSumSin,absPeriodSum,quadTanPoint,homogEq,fracSubCombine,halfDiffIsos,sinCosMixRange,expandCombineRange,tanRootsTriangle,crossSquareSum,reduceBigAngle,tideModel" data-seed="3001" data-n="10"></div>
+<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fixset" data-tier="L3" data-keys="*" data-seed="3001" data-n="10" data-mixed="1"></div>
+
+<h3 class="sec">📝 段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
+<div class="note">按「開始計時」後作答，答案寫在紙上；時間到或按「交卷」才對答案。用時會記進紀錄，多做幾組可以看自己的速度有沒有進步。</div>
+<div class="fixset" data-tier="L2" data-keys="L2:*,L3:*" data-seed="5001" data-n="14" data-mixed="1" data-timer="50"></div>
 </section>
 
 <!-- ═══════════════════════ L4 ═══════════════════════ -->
@@ -622,35 +672,50 @@ $\dfrac{|\cos\alpha|}{\sqrt{(\cos\alpha-1)^2+\sin^2\alpha}}\le1$ ⟹ $\cos^2\alp
   var G = window.PGEN, CH = 'g11a-ch01';
   var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
   function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
-  var labelOf = {};
-  ['L1', 'L2', 'L3'].forEach(function (L) { if (G.META[L]) G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  var TIERS = ['L1', 'L2', 'L3'], labelOf = {};
+  TIERS.forEach(function (L) { if (G.META[L]) G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  var DAY = 86400000, INTERVAL = [1, 3, 7, 14];            /* 錯題本間隔（天）：第 n 次全對後隔 INTERVAL[n] 天再測；連續 2 次全對畢業 */
+  var CONF = { h: '有把握', m: '不確定', l: '猜的' }, CAUSE = { start: '不會下手', formula: '公式用錯', calc: '計算錯', read: '看錯題' };
+  var READ_CAUSE = { start: 1, formula: 1 };               /* 這兩種錯因建議回頭讀「先要會」；另兩種建議多算幾題 */
 
-  /* ══════════ 練習紀錄（只存在這台裝置的瀏覽器裡）══════════ */
+  /* ══════════ 練習紀錄（只存在這台裝置）══════════ */
   var STORE = 'pgen_rec_' + CH;
-  function loadRec() { try { var r = JSON.parse(localStorage.getItem(STORE) || 'null'); if (r && r.v === 1 && r.attempts) return r; } catch (e) { } return { v: 1, attempts: [] }; }
+  function loadRec() {
+    var r = null; try { r = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { }
+    if (!r || !r.attempts) return { v: 2, attempts: [], wb: {} };
+    if (r.v === 1) { r.attempts.forEach(function (at) { at.items.forEach(function (x) { if (!x.t) x.t = at.tier; }); }); r.v = 2; }
+    if (!r.wb) r.wb = {};
+    return r;
+  }
   function saveRec() { try { localStorage.setItem(STORE, JSON.stringify(REC)); } catch (e) { } }
   var REC = loadRec();
   function stats() {
     var byKey = {}, bySet = {};
     REC.attempts.forEach(function (at) {
       at.items.forEach(function (x) {
-        var k = at.tier + '.' + x.k, o = byKey[k] || (byKey[k] = { tier: at.tier, key: x.k, n: 0, w: 0, last: [] });
+        var t = x.t || at.tier, k = t + '.' + x.k, o = byKey[k] || (byKey[k] = { tier: t, key: x.k, n: 0, w: 0, hc: 0, gs: 0, last: [], causes: {} });
         o.n++; if (x.wrong) o.w++; o.last.push(x.wrong ? 1 : 0);
+        if (x.wrong && x.conf === 'h') o.hc++;
+        if (!x.wrong && x.conf === 'l') o.gs++;
+        if (x.wrong && x.cause) o.causes[x.cause] = (o.causes[x.cause] || 0) + 1;
       });
-      var s = bySet[at.set] || (bySet[at.set] = { tier: at.tier, rounds: 0, hist: [] });
-      s.rounds++; s.hist.push({ t: at.t, n: at.items.length, w: at.items.filter(function (x) { return x.wrong; }).length });
+      if (at.kind === 'review') return;
+      var s = bySet[at.set] || (bySet[at.set] = { rounds: 0, hist: [] });
+      s.rounds++; s.hist.push({ t: at.t, n: at.items.length, w: at.items.filter(function (x) { return x.wrong; }).length, secs: at.secs });
     });
     return { byKey: byKey, bySet: bySet };
   }
   function weakList(byKey) {
     return Object.keys(byKey).map(function (k) { return byKey[k]; }).filter(function (o) {
       var lastWrong = o.last[o.last.length - 1] === 1;
-      return lastWrong || (o.n >= 2 && o.w / o.n >= 0.4);
-    }).sort(function (a, b) { var la = a.last[a.last.length - 1], lb = b.last[b.last.length - 1]; if (la !== lb) return lb - la; return b.w / b.n - a.w / a.n; });
+      return lastWrong || o.hc > 0 || (o.n >= 2 && (o.w + o.gs) / o.n >= 0.4);
+    }).sort(function (a, b) { if (b.hc !== a.hc) return b.hc - a.hc; var la = a.last[a.last.length - 1], lb = b.last[b.last.length - 1]; if (la !== lb) return lb - la; return (b.w + b.gs) / b.n - (a.w + a.gs) / a.n; });
   }
+  function mainCause(o) { var best = null; Object.keys(o.causes).forEach(function (c) { if (!best || o.causes[c] > o.causes[best]) best = c; }); return best; }
 
-  /* 跳到某題型：L1/L2 是卡片、L3 是固定題＋類似題 */
+  /* ══════════ 跳轉：練（卡片／類似題）與讀（該小節的「先要會」）══════════ */
+  function flash(el) { if (!el) return; el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 2500); }
   function goKey(tier, key) {
     var el;
     if (tier === 'L3') {
@@ -660,11 +725,22 @@ $\dfrac{|\cos\alpha|}{\sqrt{(\cos\alpha-1)^2+\sin^2\alpha}}\le1$ ⟹ $\cos^2\alp
       el = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
       if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.querySelector('.new').click(); }
     }
-    if (el) { el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 2500); }
+    flash(el);
   }
-  function goBtn(tier, key) {
-    var b = document.createElement('button'); b.className = 'go'; b.type = 'button'; b.textContent = (tier === 'L3' ? '📎 ' : '🎲 ') + (labelOf[tier + '.' + key] || key);
-    b.onclick = function () { goKey(tier, key); }; return b;
+  function goRead(tier, key) {
+    var el;
+    if (tier === 'L3') el = document.querySelector('.fx[data-gen="' + key + '"]');
+    else {
+      var card = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      el = card ? card.parentElement.previousElementSibling : null;
+      while (el && !el.classList.contains('must')) el = el.previousElementSibling;
+    }
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }
+  }
+  function goBtn(tier, key, mode) {
+    var b = document.createElement('button'); b.className = 'go' + (mode === 'read' ? ' read' : ''); b.type = 'button';
+    b.textContent = (mode === 'read' ? '📖 讀：' : (tier === 'L3' ? '📎 ' : '🎲 ')) + (labelOf[tier + '.' + key] || key);
+    b.onclick = function () { (mode === 'read' ? goRead : goKey)(tier, key); }; return b;
   }
 
   /* ══════════ 產生器卡片（L1、L2）══════════ */
@@ -726,11 +802,33 @@ $\dfrac{|\cos\alpha|}{\sqrt{(\cos\alpha-1)^2+\sin^2\alpha}}\le1$ ⟹ $\cos^2\alp
     anchor.parentNode.insertBefore(b, anchor.nextSibling.nextSibling);
   });
 
-  /* ══════════ 檢測題組（固定種子可列印；可換組、標記錯題、記錄、分析）══════════ */
+  /* ══════════ 題目小工具 ══════════ */
+  function item(t, k, seed) { return G[t][k](G.makeRng(seed)); }
+  function confHtml() { return '<span class="conf"><span class="cl">作答後、看答案前：</span><button data-c="h">有把握</button><button data-c="m">不確定</button><button data-c="l">猜的</button></span>'; }
+  function markHtml() { return '<span class="mark"><button data-m="1">○ 對</button><button data-m="0">✗ 錯</button></span><span class="cause"><span class="cl">錯因：</span><button data-e="start">不會下手</button><button data-e="formula">公式用錯</button><button data-e="calc">計算錯</button><button data-e="read">看錯題</button></span>'; }
+  function wireConfMark(li) {
+    li.querySelectorAll('.conf button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-conf', b.getAttribute('data-c')); li.querySelectorAll('.conf button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+    li.querySelectorAll('.mark button').forEach(function (b) {
+      b.onclick = function () { var ok = b.getAttribute('data-m') === '1'; var was = li.classList.contains(ok ? 'ok' : 'ng'); li.classList.remove('ok', 'ng'); if (!was) li.classList.add(ok ? 'ok' : 'ng'); if (!li.classList.contains('ng')) { li.removeAttribute('data-cause'); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.remove('sel'); }); } };
+    });
+    li.querySelectorAll('.cause button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-cause', b.getAttribute('data-e')); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+  }
+  function unrated(root) { return Array.prototype.filter.call(root.querySelectorAll('li.qi'), function (li) { return !li.getAttribute('data-conf'); }).length; }
+
+  /* ══════════ 檢測題組（固定種子可列印；混合／計時／換組／信心／錯因／記錄）══════════ */
   function secName(box) {
     var el = box.previousElementSibling;
     while (el && !(el.tagName === 'H3' && el.classList.contains('sec'))) el = el.previousElementSibling;
     return el ? el.textContent.replace(/（.*?）/g, '').trim() : box.getAttribute('data-tier');
+  }
+  function expandKeys(box) {
+    var tier = box.getAttribute('data-tier'), out = [];
+    box.getAttribute('data-keys').split(',').forEach(function (s) {
+      s = s.trim(); var t = tier, k = s;
+      if (s.indexOf(':') > 0) { t = s.split(':')[0]; k = s.split(':')[1]; } else if (s.indexOf('.') > 0) { t = s.split('.')[0]; k = s.split('.')[1]; }
+      if (k === '*') G.META[t].forEach(function (p) { out.push({ t: t, k: p[0] }); }); else out.push({ t: t, k: k });
+    });
+    return out;
   }
   var TITLE = document.querySelector('header.hd h1').textContent;
   function printSet(box) {
@@ -746,77 +844,201 @@ $\dfrac{|\cos\alpha|}{\sqrt{(\cos\alpha-1)^2+\sin^2\alpha}}\le1$ ⟹ $\cos^2\alp
     window.addEventListener('afterprint', done); setTimeout(done, 3000);
     window.print();
   }
+  function fmtClock(s) { var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
   function buildSet(box, base, round) {
-    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(','), n = parseInt(box.getAttribute('data-n') || '10', 10);
-    box._base = base; box._round = round; box._items = [];
-    var html = '<div class="fix-btns"><b>檢測 ' + n + ' 題</b><span class="fix-meta">第 ' + round + ' 組・#' + base + '</span><button class="show">顯示答案</button><button class="print">🖨 列印本組</button><button class="regen">🔁 換一組類似題</button>' + (round > 1 ? '<button class="orig">回到原始題組</button>' : '') + '</div><ol>';
+    var keys = expandKeys(box), n = parseInt(box.getAttribute('data-n') || '10', 10), mixed = box.hasAttribute('data-mixed'), timer = parseInt(box.getAttribute('data-timer') || '0', 10);
+    if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    box._base = base; box._round = round; box._items = []; box._secs = 0;
+    if (mixed) keys = G.makeRng(base + 1).shuffle(keys);
+    var label = timer ? '段考模擬卷 ' + n + ' 題' : '檢測 ' + n + ' 題';
+    var html = '<div class="fix-btns"><b>' + label + '</b><span class="fix-meta">第 ' + round + ' 組・#' + base + (mixed ? '・混合打亂' : '') + '</span>' +
+      (timer ? '<button class="tstart">⏱ 開始計時 ' + timer + ' 分</button><span class="tclock"></span>' : '') +
+      '<button class="show">' + (timer ? '交卷・看答案' : '顯示答案') + '</button><button class="print">🖨 列印本組</button><button class="regen">🔁 換一組類似題</button>' + (round > 1 ? '<button class="orig">回到原始題組</button>' : '') + '</div>' +
+      '<div class="fix-note"></div><ol>';
     var seen = {};
     for (var i = 0; i < n; i++) {
-      var key = keys[i % keys.length], seed = base + i * 37, it = G[tier][key](G.makeRng(seed)), tries = 0;
-      while (seen[it.q] && tries++ < 12) { seed += 1000003 * (tries); it = G[tier][key](G.makeRng(seed)); }
+      var kk = keys[i % keys.length], seed = base + i * 37, it = item(kk.t, kk.k, seed), tries = 0;
+      while (seen[it.q] && tries++ < 12) { seed += 1000003 * tries; it = item(kk.t, kk.k, seed); }
       seen[it.q] = 1;
-      box._items.push({ k: key, seed: seed });
-      html += '<li><span class="q">' + it.q + '</span><span class="fa">（答：' + it.a + '）</span><span class="mark"><button data-m="1" title="我答對了">○ 對</button><button data-m="0" title="我答錯了">✗ 錯</button></span></li>';
+      box._items.push({ t: kk.t, k: kk.k, seed: seed });
+      html += '<li class="qi"><span class="q">' + it.q + '</span>' + confHtml() + '<span class="fa">（答：' + it.a + '）</span>' + markHtml() + '</li>';
     }
-    html += '</ol><div class="fix-foot"><button class="submit">📝 記錄本次結果</button><span>做完先按「顯示答案」對答案，把每題標 ○ 或 ✗，再按「記錄」；系統會告訴你哪一型該回頭練。</span></div><div class="fix-result"></div>';
+    html += '</ol><div class="fix-foot"><button class="submit">📝 記錄本次結果</button><span>做完每題先按「有把握／不確定／猜的」，全部評完才能看答案；對完把每題標 ○／✗，錯的選錯因，再按「記錄」。</span></div><div class="fix-result"></div>';
     box.classList.remove('show'); box.innerHTML = html; box._set = secName(box);
-    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    var note = box.querySelector('.fix-note');
+    box.querySelector('.show').onclick = function () {
+      if (box.classList.contains('show')) { box.classList.remove('show'); this.textContent = timer ? '交卷・看答案' : '顯示答案'; return; }
+      var u = unrated(box);
+      if (u) { note.textContent = '還有 ' + u + ' 題沒評信心。先寫下答案、按「有把握／不確定／猜的」，再看答案——這一步是為了讓你知道自己「以為會」和「真的會」差多少。'; note.classList.add('on'); return; }
+      note.classList.remove('on'); box.classList.add('show'); this.textContent = '隱藏答案';
+      if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    };
     box.querySelector('.print').onclick = function () { printSet(box); };
     box.querySelector('.regen').onclick = function () { buildSet(box, 10000 + Math.floor(Math.random() * 89999), round + 1); box.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
     var ob = box.querySelector('.orig'); if (ob) ob.onclick = function () { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); };
-    box.querySelectorAll('.mark button').forEach(function (b) {
-      b.onclick = function () { var li = b.closest('li'), ok = b.getAttribute('data-m') === '1'; var was = li.classList.contains(ok ? 'ok' : 'ng'); li.classList.remove('ok', 'ng'); if (!was) li.classList.add(ok ? 'ok' : 'ng'); };
-    });
-    box.querySelector('.submit').onclick = function () { submitSet(box, tier); };
+    var ts = box.querySelector('.tstart');
+    if (ts) ts.onclick = function () {
+      if (box._tick) return;
+      var left = timer * 60, clock = box.querySelector('.tclock'); ts.disabled = true; clock.textContent = fmtClock(left);
+      box._tick = setInterval(function () { left--; box._secs++; clock.textContent = fmtClock(Math.max(left, 0)); if (left <= 0) { clearInterval(box._tick); box._tick = null; clock.textContent = '時間到'; } }, 1000);
+    };
+    box.querySelectorAll('li.qi').forEach(wireConfMark);
+    box.querySelector('.submit').onclick = function () { submitSet(box); };
     render(box);
   }
-  function submitSet(box, tier) {
-    var lis = box.querySelectorAll('ol > li'), items = [], unmarked = 0;
-    lis.forEach(function (li, i) { var wrong = li.classList.contains('ng'); if (!li.classList.contains('ok') && !wrong) unmarked++; items.push({ k: box._items[i].k, seed: box._items[i].seed, wrong: wrong, no: i + 1 }); });
-    REC.attempts.push({ t: Date.now(), tier: tier, set: box._set, base: box._base, round: box._round, items: items.map(function (x) { return { k: x.k, seed: x.seed, wrong: x.wrong }; }) });
+  function submitSet(box) {
+    if (!box.classList.contains('show')) { var nt = box.querySelector('.fix-note'); nt.textContent = '先看答案、對完再記錄。'; nt.classList.add('on'); return; }
+    var lis = box.querySelectorAll('ol > li.qi'), items = [], unmarked = 0;
+    lis.forEach(function (li, i) {
+      var wrong = li.classList.contains('ng'); if (!li.classList.contains('ok') && !wrong) unmarked++;
+      var b = box._items[i]; items.push({ t: b.t, k: b.k, seed: b.seed, wrong: wrong, conf: li.getAttribute('data-conf') || null, cause: wrong ? (li.getAttribute('data-cause') || null) : null, no: i + 1 });
+    });
+    var at = { t: Date.now(), tier: box.getAttribute('data-tier'), set: box._set, base: box._base, round: box._round, items: items.map(function (x) { return { t: x.t, k: x.k, seed: x.seed, wrong: x.wrong, conf: x.conf, cause: x.cause }; }) };
+    if (box._secs) at.secs = box._secs;
+    REC.attempts.push(at);
+    var wrong = items.filter(function (x) { return x.wrong; }), hc = wrong.filter(function (x) { return x.conf === 'h'; }), gs = items.filter(function (x) { return !x.wrong && x.conf === 'l'; });
+    wrong.forEach(function (x) { addWB(x, x.conf === 'h' ? 'hc' : 'wrong'); }); gs.forEach(function (x) { addWB(x, 'guess'); });
     saveRec();
-    var wrong = items.filter(function (x) { return x.wrong; }), res = box.querySelector('.fix-result');
-    var html = '<b>本次 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (unmarked ? '（' + unmarked + ' 題未標記，視為答對）' : '') + '。';
-    if (!wrong.length) html += '全對！按「🔁 換一組類似題」再測一輪，連續兩輪全對就可以往上一級。';
+    var res = box.querySelector('.fix-result');
+    var html = '<b>本次 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (unmarked ? '（' + unmarked + ' 題未標記，視為答對）' : '') + (box._secs ? '，用時 ' + fmtClock(box._secs) : '') + '。';
+    if (hc.length) html += '<br><span class="hcw">⚠ 有把握卻答錯 ' + hc.length + ' 題（第 ' + hc.map(function (x) { return x.no; }).join('、') + ' 題）——這種「以為會」最危險，已排到錯題本最前面。</span>';
+    if (gs.length) html += '<br>猜對 ' + gs.length + ' 題（第 ' + gs.map(function (x) { return x.no; }).join('、') + ' 題）不算通過，也放進錯題本。';
+    if (!wrong.length && !gs.length) {
+      var unsure = items.filter(function (x) { return x.conf === 'm'; }).length;
+      html += '<br>全對！' + (unsure ? '有 ' + unsure + ' 題你標「不確定」——答對但沒把握的型，再多練幾題會更穩。' : '而且每題都有把握。') + (box._secs ? '' : '明天再用「🔁 換一組類似題」測一輪，連續兩輪全對就可以往上一級。');
+    }
     else {
-      var byKey = {}; wrong.forEach(function (x) { (byKey[x.k] = byKey[x.k] || []).push(x.no); });
-      html += '錯的題型：' + Object.keys(byKey).map(function (k) { return (labelOf[tier + '.' + k] || k) + '（第 ' + byKey[k].join('、') + ' 題）'; }).join('、') + '。<br>建議回頭練習（按一下跳過去、直接出新題）：<span class="golist"></span><br>練完再按「🔁 換一組類似題」重測，題目會換數字，避免背答案。';
+      var readK = {}, drillK = {};
+      wrong.forEach(function (x) { var id = x.t + '.' + x.k; if (x.cause && READ_CAUSE[x.cause]) readK[id] = x; else drillK[id] = x; });
+      gs.forEach(function (x) { var id = x.t + '.' + x.k; if (!readK[id]) drillK[id] = x; });
+      html += '<br>錯的題型：' + wrong.concat(gs).map(function (x) { return (labelOf[x.t + '.' + x.k] || x.k) + '（第 ' + x.no + ' 題' + (x.cause ? '，' + CAUSE[x.cause] : '') + '）'; }).join('、') + '。';
+      if (Object.keys(readK).length) html += '<br><b>回頭讀</b>（不會下手／公式用錯：先看該小節的「先要會」，再練）：<span class="golist read"></span>';
+      if (Object.keys(drillK).length) html += '<br><b>多算幾題</b>（計算錯／看錯題／猜對：直接跳到卡片出新題）：<span class="golist drill"></span>';
+      html += '<br>這些題會出現在頁首的「📅 今日複習」：明天重做原題＋一題類似題，連續兩次全對才從錯題本畢業。';
+      res.innerHTML = html; res.classList.add('on');
+      var gl = res.querySelector('.golist.read'); if (gl) Object.keys(readK).forEach(function (id) { var x = readK[id]; gl.appendChild(goBtn(x.t, x.k, 'read')); gl.appendChild(goBtn(x.t, x.k)); });
+      var gd = res.querySelector('.golist.drill'); if (gd) Object.keys(drillK).forEach(function (id) { var x = drillK[id]; gd.appendChild(goBtn(x.t, x.k)); });
+      renderRec(); renderReview(); return;
     }
     res.innerHTML = html; res.classList.add('on');
-    if (wrong.length) { var gl = res.querySelector('.golist'); Object.keys(byKey).forEach(function (k) { gl.appendChild(goBtn(tier, k)); }); }
-    renderRec();
+    renderRec(); renderReview();
   }
   document.querySelectorAll('.fixset').forEach(function (box) { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); });
 
+  /* ══════════ 錯題本與間隔複習 ══════════ */
+  function addWB(x, reason) {
+    var id = x.t + '.' + x.k + '#' + x.seed, e = REC.wb[id];
+    if (e && e.done) e.done = false;
+    if (!e) e = REC.wb[id] = { t: x.t, k: x.k, seed: x.seed, added: Date.now(), hist: [] };
+    e.reason = reason; e.stage = 0; e.due = Date.now() + INTERVAL[0] * DAY; e.hist.push({ t: Date.now(), r: reason });
+  }
+  function wbLists() {
+    var now = Date.now(), due = [], later = [], done = 0;
+    Object.keys(REC.wb).forEach(function (id) { var e = REC.wb[id]; e.id = id; if (e.done) { done++; return; } (e.due <= now ? due : later).push(e); });
+    var pri = { hc: 0, wrong: 1, guess: 2 };
+    due.sort(function (a, b) { return (pri[a.reason] - pri[b.reason]) || (a.due - b.due); });
+    later.sort(function (a, b) { return a.due - b.due; });
+    return { due: due, later: later, done: done };
+  }
+  var rv = document.getElementById('review');
+  function fmtDate(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+  function fmtDay(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function renderReview() {
+    if (!rv) return;
+    var L = wbLists(), sum = rv.querySelector('.rv-sum'), body = rv.querySelector('.rv-body');
+    var total = L.due.length + L.later.length;
+    if (!total && !L.done) { sum.textContent = '錯題本還是空的。檢測記錄後，錯的題與猜對的題會自動進來，隔天開始排複習。'; body.innerHTML = ''; return; }
+    sum.textContent = '錯題本 ' + total + ' 題：今天到期 ' + L.due.length + ' 題' + (L.later.length ? '，之後 ' + L.later.length + ' 題（最近 ' + fmtDay(L.later[0].due) + '）' : '') + (L.done ? '；已畢業 ' + L.done + ' 題' : '') + '。';
+    if (!body.hasAttribute('data-open')) { body.innerHTML = ''; return; }
+    var html = '';
+    if (!L.due.length) html += '<p class="note-sm">今天沒有到期的題。' + (L.later.length ? '下一批在 ' + fmtDay(L.later[0].due) + '。' : '') + '</p>';
+    else html += '<p class="note-sm">每題先重做<b>原題</b>（先評信心再看答案），對了再做一題<b>同型類似題</b>；兩題都對算過一關，連續兩關全對就畢業，錯一次就回到隔天重測。有把握卻錯的排最前面。</p>';
+    L.due.forEach(function (e) {
+      var it = item(e.t, e.k, e.seed);
+      html += '<div class="rvi" data-id="' + esc(e.id) + '"><div class="rvh"><b>' + esc(labelOf[e.t + '.' + e.k] || e.k) + '</b><span class="tag' + (e.reason === 'hc' ? ' hc' : '') + '">' + (e.reason === 'hc' ? '有把握卻錯' : e.reason === 'guess' ? '猜對' : '答錯') + '</span><span class="rvm">第 ' + (e.stage + 1) + ' 關・' + e.t + '・#' + e.seed + '</span></div>' +
+        '<ol><li class="qi orig"><span class="rl">原題</span><span class="q">' + it.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + it.a + '）</span>' + markHtml() + '</li></ol></div>';
+    });
+    if (L.later.length) html += '<details class="rv-later"><summary>之後到期的 ' + L.later.length + ' 題</summary><ul>' + L.later.map(function (e) { return '<li>' + fmtDay(e.due) + '　' + esc(labelOf[e.t + '.' + e.k] || e.k) + '（第 ' + (e.stage + 1) + ' 關）</li>'; }).join('') + '</ul></details>';
+    if (L.due.length) html += '<div class="fix-foot"><button class="rvsubmit">📝 記錄複習結果</button><span>沒標記的題不會被記錄，下次再做。</span></div><div class="fix-result rvres"></div>';
+    body.innerHTML = html;
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var li = blk.querySelector('li.orig'); wireConfMark(li);
+      li.querySelector('.rvans').onclick = function () {
+        if (!li.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; }
+        li.classList.add('show'); this.textContent = '答案';
+      };
+      li.querySelectorAll('.mark button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (li.classList.contains('ok') && !blk.querySelector('li.vari')) {
+            var e = REC.wb[blk.getAttribute('data-id')], vs = (e.seed * 7 + 13 + Math.floor(Math.random() * 9000)) % 900000 + 1, vit = item(e.t, e.k, vs), tries = 0;
+            while (vit.q === item(e.t, e.k, e.seed).q && tries++ < 8) { vs = Math.floor(Math.random() * 900000) + 1; vit = item(e.t, e.k, vs); }
+            var v = document.createElement('li'); v.className = 'qi vari'; v.setAttribute('data-seed', vs);
+            v.innerHTML = '<span class="rl">類似題</span><span class="q">' + vit.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + vit.a + '）</span>' + markHtml();
+            blk.querySelector('ol').appendChild(v); wireConfMark(v);
+            v.querySelector('.rvans').onclick = function () { if (!v.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; } v.classList.add('show'); this.textContent = '答案'; };
+            render(v);
+          }
+        });
+      });
+    });
+    var sb = body.querySelector('.rvsubmit'); if (sb) sb.onclick = submitReview;
+    render(body);
+  }
+  function submitReview() {
+    var body = rv.querySelector('.rv-body'), items = [], passed = 0, failed = 0, skipped = 0, now = Date.now();
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var e = REC.wb[blk.getAttribute('data-id')], o = blk.querySelector('li.orig'), v = blk.querySelector('li.vari');
+      var oOk = o.classList.contains('ok'), oNg = o.classList.contains('ng');
+      if (!oOk && !oNg) { skipped++; return; }
+      var rec = { t: e.t, k: e.k, seed: e.seed, wrong: oNg, conf: o.getAttribute('data-conf') || null, cause: oNg ? (o.getAttribute('data-cause') || null) : null, rv: 1 };
+      items.push(rec);
+      var pass = false;
+      if (oOk && v) {
+        var vOk = v.classList.contains('ok'), vNg = v.classList.contains('ng');
+        if (!vOk && !vNg) { skipped++; items.pop(); return; }
+        items.push({ t: e.t, k: e.k, seed: parseInt(v.getAttribute('data-seed'), 10), wrong: vNg, conf: v.getAttribute('data-conf') || null, cause: vNg ? (v.getAttribute('data-cause') || null) : null, rv: 1 });
+        pass = vOk;
+      } else if (oOk && !v) { skipped++; items.pop(); return; }
+      e.hist.push({ t: now, pass: pass });
+      if (pass) { e.stage = (e.stage || 0) + 1; if (e.stage >= 2) { e.done = true; e.due = null; } else e.due = now + INTERVAL[Math.min(e.stage, INTERVAL.length - 1)] * DAY; passed++; }
+      else { e.stage = 0; e.due = now + INTERVAL[0] * DAY; failed++; }
+    });
+    if (items.length) REC.attempts.push({ t: now, kind: 'review', tier: 'rv', set: '今日複習', items: items });
+    saveRec();
+    var res = body.querySelector('.rvres'); if (res) { res.innerHTML = '過關 ' + passed + ' 題、要重來 ' + failed + ' 題' + (skipped ? '、未完成 ' + skipped + ' 題（下次再做）' : '') + '。畢業的題不會再出現；重來的題明天再測。'; res.classList.add('on'); }
+    renderRec(); setTimeout(renderReview, 1200);
+  }
+  if (rv) {
+    rv.querySelector('.rv-toggle').onclick = function () { var b = rv.querySelector('.rv-body'); if (b.hasAttribute('data-open')) { b.removeAttribute('data-open'); this.textContent = '開始複習'; } else { b.setAttribute('data-open', '1'); this.textContent = '收起'; } renderReview(); };
+    renderReview();
+  }
+
   /* ══════════ 我的練習紀錄（分析面板）══════════ */
   var mr = document.getElementById('myrec');
-  function fmtDate(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
   function renderRec() {
     if (!mr) return;
     var st = stats(), keys = Object.keys(st.byKey), body = mr.querySelector('.mr-body'), sum = mr.querySelector('.mr-sum');
     if (!REC.attempts.length) { sum.textContent = '還沒有紀錄。做完任何一組檢測、標記對錯並按「記錄」，這裡就會出現你的弱點分析。'; body.innerHTML = ''; return; }
-    var totN = 0, totW = 0; keys.forEach(function (k) { totN += st.byKey[k].n; totW += st.byKey[k].w; });
-    sum.textContent = '共記錄 ' + REC.attempts.length + ' 組檢測、' + totN + ' 題，答對率 ' + Math.round(100 * (totN - totW) / totN) + '%。';
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; keys.forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    sum.textContent = '共 ' + totN + ' 題，答對率 ' + Math.round(100 * (totN - totW) / totN) + '%；有把握卻錯 ' + totHc + ' 題、猜對 ' + totGs + ' 題。';
     var weak = weakList(st.byKey), html = '';
-    html += '<div class="mr-advice"><b>優先補強：</b>';
-    if (!weak.length) html += '目前沒有明顯弱點，繼續換組檢測維持手感。';
-    html += '<span class="golist"></span></div>';
-    html += '<table class="mr-t"><tr><th>題型</th><th>級</th><th>做過</th><th>錯</th><th>錯誤率</th><th>最近 5 次</th><th></th></tr>';
-    keys.map(function (k) { return st.byKey[k]; }).sort(function (a, b) { return b.w / b.n - a.w / a.n || b.n - a.n; }).forEach(function (o) {
-      var rate = Math.round(100 * o.w / o.n), isWeak = weak.indexOf(o) >= 0;
-      html += '<tr class="' + (isWeak ? 'weak' : '') + '"><td>' + esc(labelOf[o.tier + '.' + o.key] || o.key) + '</td><td>' + o.tier + '</td><td>' + o.n + '</td><td>' + o.w + '</td><td><span class="bar" style="width:' + Math.round(rate * 0.6) + 'px"></span> ' + rate + '%</td><td>' + o.last.slice(-5).map(function (w) { return w ? '✗' : '○'; }).join(' ') + '</td><td class="gocell" data-tier="' + o.tier + '" data-key="' + o.key + '"></td></tr>';
+    html += '<div class="mr-advice"><b>優先補強：</b>' + (weak.length ? '' : '目前沒有明顯弱點，繼續換組檢測維持手感。') + '<span class="golist"></span></div>';
+    html += '<table class="mr-t"><tr><th>題型</th><th>級</th><th>做過</th><th>錯</th><th>有把握卻錯</th><th>猜對</th><th>主要錯因</th><th>最近 5 次</th><th></th></tr>';
+    keys.map(function (k) { return st.byKey[k]; }).sort(function (a, b) { return (b.hc - a.hc) || ((b.w + b.gs) / b.n - (a.w + a.gs) / a.n) || (b.n - a.n); }).forEach(function (o) {
+      var isWeak = weak.indexOf(o) >= 0, mc = mainCause(o);
+      html += '<tr class="' + (isWeak ? 'weak' : '') + '"><td>' + esc(labelOf[o.tier + '.' + o.key] || o.key) + '</td><td>' + o.tier + '</td><td>' + o.n + '</td><td>' + o.w + '</td><td>' + (o.hc ? '<b class="hcw">' + o.hc + '</b>' : '0') + '</td><td>' + o.gs + '</td><td>' + (mc ? CAUSE[mc] : '–') + '</td><td>' + o.last.slice(-5).map(function (w) { return w ? '✗' : '○'; }).join(' ') + '</td><td class="gocell" data-tier="' + o.tier + '" data-key="' + o.key + '" data-mode="' + (mc && READ_CAUSE[mc] ? 'read' : 'drill') + '"></td></tr>';
     });
     html += '</table>';
     html += '<table class="mr-t"><tr><th>檢測組</th><th>次數</th><th>最近成績</th></tr>';
-    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s]; html += '<tr><td>' + esc(s) + '</td><td>' + o.rounds + '</td><td>' + o.hist.slice(-4).map(function (h) { return fmtDate(h.t) + '：' + (h.n - h.w) + '／' + h.n; }).join('，') + '</td></tr>'; });
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s]; html += '<tr><td>' + esc(s) + '</td><td>' + o.rounds + '</td><td>' + o.hist.slice(-4).map(function (h) { return fmtDate(h.t) + '：' + (h.n - h.w) + '／' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + '</td></tr>'; });
     html += '</table>';
     body.innerHTML = html;
-    var gl = body.querySelector('.golist'); weak.slice(0, 6).forEach(function (o) { gl.appendChild(goBtn(o.tier, o.key)); });
-    body.querySelectorAll('.gocell').forEach(function (td) { var b = goBtn(td.getAttribute('data-tier'), td.getAttribute('data-key')); b.textContent = '回頭練'; td.appendChild(b); });
+    var gl = body.querySelector('.golist'); weak.slice(0, 6).forEach(function (o) { var mc = mainCause(o); gl.appendChild(goBtn(o.tier, o.key, mc && READ_CAUSE[mc] ? 'read' : 'drill')); });
+    body.querySelectorAll('.gocell').forEach(function (td) { var b = goBtn(td.getAttribute('data-tier'), td.getAttribute('data-key'), td.getAttribute('data-mode')); b.textContent = td.getAttribute('data-mode') === 'read' ? '回頭讀' : '回頭練'; td.appendChild(b); });
   }
   if (mr) {
     mr.querySelector('.mr-toggle').onclick = function () { var b = mr.querySelector('.mr-body'); b.hidden = !b.hidden; this.textContent = b.hidden ? '展開' : '收起'; };
-    mr.querySelector('.mr-clear').onclick = function () { if (confirm('確定清除這台裝置上的所有練習紀錄？')) { REC = { v: 1, attempts: [] }; saveRec(); renderRec(); } };
+    mr.querySelector('.mr-clear').onclick = function () { if (confirm('確定清除這台裝置上的所有練習紀錄與錯題本？')) { REC = { v: 2, attempts: [], wb: {} }; saveRec(); renderRec(); renderReview(); } };
     renderRec();
   }
 
