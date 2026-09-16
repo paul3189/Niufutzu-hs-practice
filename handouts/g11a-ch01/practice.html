@@ -1017,7 +1017,7 @@ $\dfrac{|\cos\alpha|}{\sqrt{(\cos\alpha-1)^2+\sin^2\alpha}}\le1$ ⟹ $\cos^2\alp
       if (!Object.keys(need).length) h0 += '先備知識都在，直接從 L1 開始。';
       else {
         h0 += '<br>這章會一直用到下面這些，建議先花 20 分鐘複習再開始：<ul class="pre-list">';
-        Object.keys(need).forEach(function (k) { var pq = G.PREREQ[k] || { txt: labelOf['L0.' + k] || k, link: null }; h0 += '<li>' + esc(pq.txt) + (pq.link ? '　<a href="' + pq.link + '">→ 去那一章的 L1 練</a>' : '　（國中內容：翻課本或問老師，這裡的卡片可先多練幾題）') + '　' + '<span class="golist" data-k="' + k + '"></span></li>'; });
+        Object.keys(need).forEach(function (k) { var pq = G.PREREQ[k] || { txt: labelOf['L0.' + k] || k, link: null }; h0 += '<li>' + esc(pq.txt) + (pq.link ? '　<a href=' + JSON.stringify(pq.link) + '>→ 去那一章的 L1 練</a>' : '　（國中內容：翻課本或問老師，這裡的卡片可先多練幾題）') + '　' + '<span class="golist" data-k="' + k + '"></span></li>'; });
         h0 += '</ul>';
       }
       res.innerHTML = h0; res.classList.add('on');
