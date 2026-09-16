@@ -430,9 +430,9 @@ $M+19=12+6\sqrt3=(9+3)+2\sqrt{27}=(3+\sqrt3)^2$，故 $\dfrac{1}{\sqrt{M+19}}=\d
 <section class="tier" id="L5">
 <h2><span class="tag">L5</span>補充專區：競賽味、證明題與科學班・教甄</h2>
 <div class="goal">
-  <div><b>對象</b>學有餘力、想參加數學競賽或未來想走數理科系的同學。</div>
-  <div><b>目標</b>6 題經典 ＋ 7 題科學班／教甄：看懂「為什麼」，學會把公式證出來、把巧妙的角度關係看出來。</div>
-  <div><b>說明</b>本區不列入段考通過標準。教甄題原卷為掃描影像，以 OCR 讀出後逐題重打、重解、驗算。</div>
+  <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
+  <div><b>目標</b>6 題經典壓軸＋15 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>通過標準</b>沒有標準——會一題算一題。教甄題原卷為掃描影像，OCR 後逐題重打、重解、驗算。</div>
 </div>
 
 <div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">差角公式的證明：單位圓上兩點的距離算兩次</span><span class="src">經典證明</span></div>
@@ -485,8 +485,8 @@ $$2\sin\frac{\pi}{7}\cdot S=\left(\sin\frac{2\pi}{7}-0\right)+\left(\sin\frac{4\
 面積比較：$\triangle OAP\lt$ 扇形 $OAP\lt\triangle OAT$，即 $\dfrac12\cdot1\cdot\sin x\lt\dfrac12\cdot1^2\cdot x\lt\dfrac12\cdot1\cdot\tan x$。<br>
 同乘 $2$ 即得 $\sin x\lt x\lt\tan x$。<span class="note-sm">這正是「扇形面積 $=\frac12r^2\theta$ 必須用弧度」的理由——用度數，中間那一項就不會是 $x$。</span></div></div>
 
-<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（7 題）</h3>
-<div class="note">來源：師大附中 111 教甄、台中文華高中 106 教甄、112 全國教甄聯招、嘉義高中 115 科學班，另加兩題教甄常見的經典恆等式。原卷多為掃描影像，OCR 後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。</div>
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（15 題）</h3>
+<div class="note">來源：師大附中 111、台中文華 106、112 全國聯招、台南二中 101、中和 101、鳳山 106、香山 111、台中一中 109、屏東女中 112 教甄，嘉義高中 115 科學班，另加兩題教甄常見的經典恆等式。原卷多為掃描影像，OCR 後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。</div>
 
 <div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">兩角和為 60° → 降冪後 cos(A+B)=1/2 把交叉項吃掉</span><span class="src">師大附中 111 教甄 填 1</span></div>
 <div class="fxq">計算 $\sin^241^\circ+\sin^219^\circ+\sin41^\circ\sin19^\circ$ 的值。</div>
@@ -541,6 +541,71 @@ $L_2$ 的傾角 $30^\circ$，$2\varphi=60^\circ$：$R=\left(-\dfrac12-\dfrac{\sq
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac{89}{2}$</div>
 <div class="fxs">$\sin^2k^\circ+\sin^2(90^\circ-k^\circ)=\sin^2k^\circ+\cos^2k^\circ=1$。$k=1,\dots,44$ 與 $89,\dots,46$ 配成 $44$ 對，各得 $1$；剩下 $\sin^245^\circ=\dfrac12$。總和 $44+\dfrac12=\dfrac{89}{2}$。</div></div>
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">S8</span><span class="kw">三個角兩兩相差 60° 或 120° → 用 tan 差角公式把每個乘積寫成「差÷tan(差) − 1」，相加後差全部抵銷</span><span class="src">台南二中 101 教甄 填 1</span></div>
+<div class="fxq">求 $\tan149^\circ\tan29^\circ+\tan89^\circ\tan149^\circ+\tan89^\circ\tan29^\circ$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-3$</div>
+<div class="fxs"><div class="move">招式：由 $\tan(A-B)=\dfrac{\tan A-\tan B}{1+\tan A\tan B}$ 反解 $\tan A\tan B=\dfrac{\tan A-\tan B}{\tan(A-B)}-1$；三個差 $149^\circ-29^\circ=120^\circ$、$149^\circ-89^\circ=60^\circ$、$89^\circ-29^\circ=60^\circ$ 的 $\tan$ 都是 $\pm\sqrt3$。</div>
+$\tan149^\circ\tan29^\circ=\dfrac{\tan149^\circ-\tan29^\circ}{-\sqrt3}-1$、$\tan149^\circ\tan89^\circ=\dfrac{\tan149^\circ-\tan89^\circ}{\sqrt3}-1$、$\tan89^\circ\tan29^\circ=\dfrac{\tan89^\circ-\tan29^\circ}{\sqrt3}-1$。<br>
+相加：$\dfrac{1}{\sqrt3}\big[-(\tan149^\circ-\tan29^\circ)+(\tan149^\circ-\tan89^\circ)+(\tan89^\circ-\tan29^\circ)\big]-3=0-3=-3$。<span class="note-sm">一般式：三角兩兩之差的 $\tan$ 若都是 $\pm\sqrt3$，「差」的部分一定望遠鏡式相消，答案永遠是 $-3$。</span></div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">S9</span><span class="kw">分子分母同乘 cos20° → 分母的 cos² 降冪成 cos40°，再把 cos40° 寫成 cos(60°−20°) 展開</span><span class="src">台南二中 101 教甄 填 9</span></div>
+<div class="fxq">化簡 $\dfrac{\tan20^\circ}{2\sec20^\circ+1-4\cos20^\circ}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-\dfrac{\sqrt3}{3}$（即 $-\dfrac{1}{\sqrt3}$）</div>
+<div class="fxs"><div class="move">招式：同乘 $\cos20^\circ$ 去掉 $\tan$ 與 $\sec$：$\dfrac{\sin20^\circ}{2+\cos20^\circ-4\cos^220^\circ}$。</div>
+$4\cos^220^\circ=2(1+\cos40^\circ)$ ⟹ 分母 $=\cos20^\circ-2\cos40^\circ$。<br>
+$\cos40^\circ=\cos(60^\circ-20^\circ)=\dfrac12\cos20^\circ+\dfrac{\sqrt3}{2}\sin20^\circ$ ⟹ 分母 $=\cos20^\circ-\cos20^\circ-\sqrt3\sin20^\circ=-\sqrt3\sin20^\circ$。<br>
+故原式 $=\dfrac{\sin20^\circ}{-\sqrt3\sin20^\circ}=-\dfrac{1}{\sqrt3}$。<span class="note-sm">不必用和差化積，一次差角公式就夠；原卷解答用 $\sin20^\circ-\sin50^\circ$ 的和差化積，殊途同歸。</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">α = π−(β+γ) → sinα = sin(β+γ) 展開，兩邊除以 cosβ cosγ 就變成 tan</span><span class="src">中和高中 101 第 2 次教甄 填 10</span></div>
+<div class="fxq">設 $\alpha+\beta+\gamma=\pi$，且 $4\sin\alpha=5\cos\beta\cos\gamma$，求 $\tan\beta+\tan\gamma$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac54$</div>
+<div class="fxs"><div class="move">招式：$\sin\alpha=\sin(\pi-\beta-\gamma)=\sin(\beta+\gamma)=\sin\beta\cos\gamma+\cos\beta\sin\gamma$。</div>
+代入：$4(\sin\beta\cos\gamma+\cos\beta\sin\gamma)=5\cos\beta\cos\gamma$。兩邊同除以 $\cos\beta\cos\gamma$（題目既然能寫出 $\tan\beta+\tan\gamma$，這兩個餘弦都不為 $0$）：$4(\tan\beta+\tan\gamma)=5$ ⟹ $\tan\beta+\tan\gamma=\dfrac54$。<span class="note-sm">同一招也能推出三角形恆等式 $\tan A+\tan B+\tan C=\tan A\tan B\tan C$（L5-2）。</span></div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">S11</span><span class="kw">106π 是 sin x 與 tan(x/2) 週期的整數倍 → 只剩 f(−7)；sin、tan 都是奇函數</span><span class="src">鳳山高中 106 代理教甄 填 8</span></div>
+<div class="fxq">已知 $f(x)=a\sin x-b\tan\dfrac{x}{2}+3$（$a,b\in\mathbb R$ 且 $ab\ne0$）。若 $f(7)=10$，求 $f(106\pi-7)$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-4$</div>
+<div class="fxs"><div class="move">招式：$g(x)=f(x)-3=a\sin x-b\tan\dfrac x2$ 是<b>奇函數</b>且以 $2\pi$ 為週期（$\tan\dfrac x2$ 的週期是 $2\pi$）。</div>
+$\sin(106\pi-7)=\sin(-7)=-\sin7$；$\tan\dfrac{106\pi-7}{2}=\tan\left(53\pi-\dfrac72\right)=\tan\left(-\dfrac72\right)=-\tan\dfrac72$。<br>
+故 $f(106\pi-7)=-a\sin7+b\tan\dfrac72+3=-\left(a\sin7-b\tan\dfrac72\right)+3=-(f(7)-3)+3=-7+3=-4$。<span class="note-sm">$7$ 弧度本身是多少完全不重要——這題考的是週期與奇偶性，不是求值。</span></div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">S12</span><span class="kw">正弦定理把兩邊換成「對角的 sin」（2R=2）→ A+C=120° 消掉一個角 → 疊合看振幅</span><span class="src">鳳山高中 106 代理教甄 填 5</span></div>
+<div class="fxq">在 $\triangle ABC$ 中，$\angle B=60^\circ$、$\overline{AC}=\sqrt3$，求 $\overline{AB}+2\overline{BC}$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2\sqrt7$</div>
+<div class="fxs"><div class="move">招式：正弦定理 $2R=\dfrac{\overline{AC}}{\sin B}=\dfrac{\sqrt3}{\sqrt3/2}=2$ ⟹ $\overline{AB}=2\sin C$、$\overline{BC}=2\sin A$，且 $A=120^\circ-C$。</div>
+$\overline{AB}+2\overline{BC}=2\sin C+4\sin(120^\circ-C)=2\sin C+4\left(\dfrac{\sqrt3}{2}\cos C+\dfrac12\sin C\right)=4\sin C+2\sqrt3\cos C$。<br>
+疊合：振幅 $\sqrt{16+12}=2\sqrt7$，故最大值 $2\sqrt7$；等號在 $\tan C=\dfrac{4}{2\sqrt3}=\dfrac{2}{\sqrt3}$（$C\approx49^\circ$，落在 $0^\circ\lt C\lt120^\circ$ 內）時成立。<span class="note-sm">正弦定理是高一下的先備知識；本題真正的三角函數功夫在「用一個角表示兩邊、再疊合」。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">S13</span><span class="kw">兩式相加得 x²+y²=2、相減得 cos2y−cos2x=y²−x² → 令 u=x+y、v=x−y，用「|t|&lt;π 時 sin t 與 t 同號」逼出 uv=0</span><span class="src">香山高中 111 教甄 單選 3</span></div>
+<div class="fxq">方程組 $\begin{cases}\sin^2x+\cos^2y=y^2\\ \sin^2y+\cos^2x=x^2\end{cases}$ 的所有實數解 $(x,y)$ 共有幾組？<br>(A) $3$　(B) $4$　(C) $6$　(D) $8$　(E) $9$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(B) $4$ 組：$(\pm1,\pm1)$</div>
+<div class="fxs"><div class="move">招式：相加 ⟹ $x^2+y^2=2$（所以 $|x|,|y|\le\sqrt2$）；相減 ⟹ $\cos2y-\cos2x=y^2-x^2$。</div>
+令 $u=x+y$、$v=x-y$，則 $2y=u-v$、$2x=u+v$，差角展開：$\cos(u-v)-\cos(u+v)=2\sin u\sin v$，而 $y^2-x^2=-(x-y)(x+y)=-uv$。所以 $2\sin u\sin v+uv=0$。<br>
+因 $|u|,|v|\le2\sqrt2\lt\pi$，在 $(-\pi,\pi)$ 內 $\sin t$ 與 $t$ 同號，故 $\sin u\sin v$ 與 $uv$ 同號，兩個同號的數相加為 $0$ 只能都是 $0$ ⟹ $u=0$ 或 $v=0$ ⟹ $y=\pm x$。代回 $x^2+y^2=2$ 得 $x^2=1$，四組解 $(1,1),(1,-1),(-1,1),(-1,-1)$；驗算 $x=y=1$：$\sin^21+\cos^21=1=y^2$ ✓。</div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">展開後把 β 的部分看成點 P(cosβ, sinβ) 落在一條直線上 → 單位圓與直線有交點 ⟺ 圓心到直線距離 ≤ 1</span><span class="src">台中一中 109 第 1 次教甄 填 18</span></div>
+<div class="fxq">設 $\alpha,\beta\in[0,2\pi]$ 且 $\cos(\alpha+\beta)=\cos\alpha+\cos\beta$，求 $\cos\alpha$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt3-1$</div>
+<div class="fxs"><div class="move">招式：展開 $\cos\alpha\cos\beta-\sin\alpha\sin\beta=\cos\alpha+\cos\beta$ ⟹ $(\cos\alpha-1)\cos\beta-\sin\alpha\sin\beta-\cos\alpha=0$，把 $(\cos\beta,\sin\beta)$ 當成一個點。</div>
+$P(\cos\beta,\sin\beta)$ 在單位圓 $X^2+Y^2=1$ 上，也在直線 $L:(\cos\alpha-1)X-(\sin\alpha)Y-\cos\alpha=0$ 上，故 $d(O,L)\le1$：<br>
+$\dfrac{|\cos\alpha|}{\sqrt{(\cos\alpha-1)^2+\sin^2\alpha}}\le1$ ⟹ $\cos^2\alpha\le2-2\cos\alpha$ ⟹ $(\cos\alpha+1)^2\le3$ ⟹ $-1-\sqrt3\le\cos\alpha\le\sqrt3-1$。<br>
+最大值 $\sqrt3-1$；此時 $d=1$，$L$ 與單位圓相切，切點方向就是對應的 $\beta$，所以等號取得到。<span class="note-sm">「三角式 ⟹ 單位圓上的點與直線」是高一直線與圓的眼光（點到直線距離），教甄很愛這種跨章接法。</span></div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">S15</span><span class="kw">三條曲線都過原點；x&gt;1 時 sin x≤1&lt;x²、x³ → 只要比 0 到 1 之間；用 sin x&lt;x（L5-6）與奇偶性數交點</span><span class="src">屏東女中 112 代理教甄 多選 6</span></div>
+<div class="fxq">阿蓉在高二學完週期函數圖形 $y=\sin x$ 後，把它和高一學過的 $y=x$、$y=x^2$、$y=x^3$ 一起畫在方格紙上。下列哪些敘述正確？<br>(A) $y=\sin x$ 與 $y=x^2$ 的圖形相交於 $2$ 點　(B) $y=\sin x$ 與 $y=x^3$ 的圖形相交於 $3$ 點　(C) $y=\sin x$ 與 $y=x$ 的圖形相交於 $3$ 點　(D) $x\gt1$ 時 $\sin x\lt x^2$　(E) $0\lt x\lt1$ 時 $\sin x\gt x^2$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(A)(B)(D)</div>
+<div class="fxs"><div class="move">招式：原點是共同交點；$x\gt1$ 時 $x^2\gt1\ge\sin x$、$x^3\gt1\ge\sin x$，所以交點只可能在 $-1\le x\le1$ 附近；$\sin x\lt x$（$x\gt0$，見 L5-6 的面積夾擠）。</div>
+(A) $x\lt0$：$x^2\gt0$，而 $-\pi\lt x\lt0$ 時 $\sin x\lt0$、$x\le-\pi$ 時 $x^2\gt9\gt1$，無交點；$0\lt x\lt1$：$\sin0.5\approx0.479\gt0.25$、$\sin1\approx0.841\lt1$，$\sin x-x^2$ 先正後負且圖形凹口向下，恰交一次（$x\approx0.877$）⟹ 共 $2$ 點，正確。<br>
+(B) $\sin x$ 與 $x^3$ 都是奇函數，$x\gt0$ 時 $\sin x-x^3$ 由正（$x$ 小時 $\sin x\approx x\gt x^3$）變負（$x=1$ 時 $0.841\lt1$），恰交一次（$x\approx0.929$），對稱過去 $x\lt0$ 再一次 ⟹ 共 $3$ 點，正確。<br>
+(C) $x\gt0$ 時 $\sin x\lt x$、$x\lt0$ 時 $\sin x\gt x$，只交於原點 $1$ 點，錯。(D) $x\gt1$ ⟹ $x^2\gt1\ge\sin x$，正確。(E) 取 $x=0.9$：$\sin0.9\approx0.783\lt0.81=x^2$，錯。</div></div>
 </section>
 
 <div class="ch-nav">
