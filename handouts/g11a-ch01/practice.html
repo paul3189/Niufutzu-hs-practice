@@ -82,6 +82,43 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 .ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
 .ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
 @media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+
+/* ── 檢測／紀錄／類似題（2026-09-17 個人化）── */
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.fix-btns .fix-meta{font-size:.8rem;color:#aaa;margin-right:auto}
+.fixset ol li .mark{margin-left:8px;white-space:nowrap}
+.fixset ol li .mark button{padding:0 8px;font-size:.8rem;border-radius:6px}
+.fixset ol li.ok{background:#eef7f0;border-radius:6px}.fixset ol li.ng{background:#fdecec;border-radius:6px}
+.fixset ol li.ok .mark button[data-m="1"],.fixset ol li.ng .mark button[data-m="0"]{background:#333;color:#fff;border-color:#333}
+.fix-foot{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.88rem;color:var(--muted)}
+.fix-foot .submit{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .fix-foot .submit{border-color:var(--l2);color:var(--l2)}#L3 .fix-foot .submit{border-color:var(--l3);color:var(--l3)}
+.fix-result{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff8e6;border:1px solid #f3dea0;font-size:.93rem}
+.fix-result.on{display:block}
+button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radius:999px;border:1px solid var(--l1);color:var(--l1);background:#fff;cursor:pointer;font:inherit;font-size:.85rem}
+.gcard.flash,.fx.flash{box-shadow:0 0 0 3px #f0c040}
+.myrec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.myrec .mr-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.myrec .mr-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.myrec .mr-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.myrec .mr-advice{margin:10px 0 4px;font-size:.93rem}
+.myrec table.mr-t{border-collapse:collapse;width:100%;font-size:.88rem;margin-top:10px}
+.myrec .mr-t th,.myrec .mr-t td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:middle}
+.myrec .bar{display:inline-block;height:8px;background:#d9534f;border-radius:4px;vertical-align:middle}
+.myrec tr.weak td:first-child{color:#b3261e;font-weight:700}
+.myrec td button.go{padding:1px 8px;font-size:.8rem}
+.simbox{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px dashed var(--l3);background:#fffaf5}
+.simbox .st{font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between}
+.simbox .sq{margin:6px 0}
+.simbox .gh,.simbox .ga{display:none;margin-top:6px;padding:6px 10px;border-radius:6px;font-size:.93rem}
+.simbox .gh{background:#fff8e6;border:1px solid #f3dea0}.simbox .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.simbox .gh.on,.simbox .ga.on{display:block}
+.simbox .sbtn{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+.simbox button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.fx button.simbtn{border-color:var(--l3);color:var(--l3);font-weight:700}
+#printArea{display:none}
+@media print{body.print-one .wrap{display:none}body.print-one #printArea{display:block}#printArea h1{font-size:1.15rem;margin:0 0 4px}#printArea .pmeta{margin:0 0 10px;color:#444}#printArea ol li{margin:12px 0;break-inside:avoid}#printArea h2{font-size:1rem;break-before:page}.fixset .mark,.fix-foot,.fix-result,.simbox,.myrec{display:none!important}}
 </style>
 <link rel="stylesheet" href="../../assets/theme-cow.css">
 </head>
@@ -105,12 +142,21 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
   <b>怎麼用這本？</b>
   <ol>
     <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
-    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
-    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點。</li>
+    <li>每小節最後是<b>檢測 10 題</b>：做完按「顯示答案」對答案，每題標 ○／✗ 再按「記錄」，系統會指出<b>你錯的是哪一型、該回頭練哪張卡片</b>；按「換一組類似題」就換數字重測（避免背答案），「列印本組」只印這一組。</li>
+    <li>上方「📊 我的練習紀錄」會累積每次檢測，列出錯誤率最高的題型與「優先補強」清單。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
     <li>本書所有生成題的答案都經電腦獨立驗算（5,550 題抽樣）；固定題全數人工＋電腦重算。角度一律用能精確求值的角（$15^\circ$ 的倍數、$\dfrac{\pi}{12}$ 的倍數）。</li>
   </ol>
 </div>
+
+<div class="myrec" id="myrec">
+  <div class="mr-h"><b>📊 我的練習紀錄</b><span class="mr-sum"></span><button class="mr-toggle">展開</button><button class="mr-clear">清除紀錄</button></div>
+  <div class="mr-body" hidden></div>
+  <div class="note-sm" style="margin-top:6px">紀錄只存在這台裝置的瀏覽器裡（不會上傳）；換裝置或清除瀏覽資料就會消失。</div>
+</div>
+
 
 <!-- ═══════════════════════ L1 ═══════════════════════ -->
 <section class="tier" id="L1">
@@ -118,7 +164,7 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 <div class="goal">
   <div><b>對象</b>特殊角的值背不熟、看到弧度就想換回度、公式記得但不敢用的同學。</div>
   <div><b>目標</b>21 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
-  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+  <div><b>通過標準</b>每小節的檢測 10 題連續兩輪全對（第二輪用「換一組類似題」），再進 L2。</div>
 </div>
 
 <h3 class="sec">1-1 弧度量、扇形與三角函數的定義</h3>
@@ -143,7 +189,7 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
   <div><b>目標</b>16 個段考最常見題型（依題庫 53 份高二第一次段考卷的出現率排序），每型都能自己完整寫出過程。</div>
-  <div><b>通過標準</b>本級固定 12 題兩輪全對、且每張卡片連續新題 3 次全對。</div>
+  <div><b>通過標準</b>本級檢測 12 題連續兩輪全對（換組重測）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
 <h3 class="sec">1-1 扇形：反求、最佳化與圓錐展開</h3>
@@ -158,7 +204,7 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 <div class="must">53 卷中<b>週期 21 卷次、疊合 17、平移 14、三角方程 13、振幅 11、區間最值 10、圖形交點 8、解的個數 7</b>。招式：<b>由最高最低點反推：$a,d$ 看高低，$b$ 看水平距離（半週期），$c$ 最後代點定</b>；<b>先伸縮再平移 vs 先平移再伸縮，平移量差 $k$ 倍</b>；<b>解的個數 ⟹ 把方程式拆成「三角函數 vs 直線」數交點，直線只在 $|y|\le1$ 有效</b>；<b>不等式 ⟹ 化成單一函數的二次式再翻回單位圓，根為 $\pm1$ 時有孤立解</b>；<b>區間最值 ⟹ 疊合後看 $x+\theta$ 跑過哪一段</b>；<b>$\sin x\pm\cos x$ 出現就換元 $t$，$|t|\le\sqrt2$</b>。</div>
 <div class="gen-grid" data-tier="L2" data-keys="paramFit,transformOrder,periodJudge,rootCount,trigIneq,combineInterval,squareSub,eqSumCount"></div>
 
-<h3 class="sec">L2 固定 12 題（列印用）</h3>
+<h3 class="sec">L2 檢測 12 題（可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="sectorSys,coneShortest,sumProd,quadRootCos2,tanQuad,systemSquare,halfFromCos2x,paramFit,transformOrder,rootCount,trigIneq,combineInterval" data-seed="2001" data-n="12"></div>
 </section>
 
@@ -167,40 +213,40 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考與模考的中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+  <div><b>目標</b>15 題各校段考與模考的中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱；本級檢測 10 題連續兩輪全對。</div>
 </div>
 <div class="note">題目來源標示為出題學校與年度（都不與主講義三本重複）；答案與詳解皆重新驗算過。</div>
 
-<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">弧度值估大小 → 換成度數，落在哪一象限、離哪個特殊角近</span><span class="src">建國中學 110 上 多選 1</span></div>
+<div class="fx" id="L3-1" data-gen="radEstimate"><div class="fxh"><span class="no">L3-1</span><span class="kw">弧度值估大小 → 換成度數，落在哪一象限、離哪個特殊角近</span><span class="src">建國中學 110 上 多選 1</span></div>
 <div class="fxq">選出正確的選項：<br>(1) $\dfrac{\sqrt3}{2}\lt\cos3\lt1$　(2) $\dfrac12\lt\sin2\lt\dfrac{\sqrt3}{2}$　(3) $\dfrac{1}{\sqrt3}\lt\tan1\lt\sqrt3$　(4) $\dfrac{\sqrt3}{2}\lt\cos(\pi^\circ)\lt1$　(5) $0\lt\sin(\pi^2)\lt1$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(3)(4)</div>
 <div class="fxs"><div class="move">招式：$1$ 弧度 $\approx57.3^\circ$，把每個弧度值換成度數再定位。</div>
 (1) $3$ 弧度 $\approx172^\circ$，$\cos3\approx-0.99$，錯。(2) $2$ 弧度 $\approx114.6^\circ$，$\sin2=\sin65.4^\circ\approx0.91\gt\dfrac{\sqrt3}{2}$，錯。(3) $1$ 弧度 $\approx57.3^\circ$ 在 $30^\circ$ 與 $60^\circ$ 之間，$\tan$ 遞增，正確。(4) $\pi^\circ\approx3.14^\circ$ 是很小的角，$\cos\approx0.998$，正確。(5) $\pi^2\approx9.87$，減 $2\pi$ 得 $3.59$ 弧度，在 $(\pi,\tfrac{3\pi}{2})$，$\sin\lt0$，錯。</div></div>
 
-<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">最高點到最低點的水平距離 → 半週期的奇數倍</span><span class="src">台南一中 110 上 多選 2</span></div>
+<div class="fx" id="L3-2" data-gen="periodFromHighLow"><div class="fxh"><span class="no">L3-2</span><span class="kw">最高點到最低點的水平距離 → 半週期的奇數倍</span><span class="src">台南一中 110 上 多選 2</span></div>
 <div class="fxq">已知 $A(-\pi,1)$、$B\left(\dfrac{\pi}{4},-1\right)$ 為 $y=\sin(ax+b)$ 圖形上兩點。下列何者可能是此函數的週期？<br>(1) $\dfrac{5\pi}{4}$　(2) $\dfrac{\pi}{2}$　(3) $\dfrac{\pi}{4}$　(4) $\dfrac{\pi}{6}$　(5) $\dfrac{\pi}{8}$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(2)(4)</div>
 <div class="fxs"><div class="move">招式：$A$ 是最高點（$y=1$）、$B$ 是最低點（$y=-1$），兩者水平距離 $\dfrac{5\pi}{4}$ 必須是「半週期的奇數倍」。</div>
 設週期 $T$：$\dfrac{5\pi}{4}=(2k+1)\cdot\dfrac T2$ ⟹ $T=\dfrac{5\pi}{2(2k+1)}$。$k=0,1,2,\dots$ 給出 $\dfrac{5\pi}{2},\dfrac{5\pi}{6},\dfrac{\pi}{2},\dots,\dfrac{\pi}{6}$（$2k+1=15$）。選項中 $\dfrac{\pi}{2}$（$2k+1=5$）與 $\dfrac{\pi}{6}$（$2k+1=15$）可行；$\dfrac{5\pi}{4}$、$\dfrac{\pi}{4}$、$\dfrac{\pi}{8}$ 對應 $2k+1=2,10,20$ 是偶數，不合。</div></div>
 
-<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">平移後重合 → 相位差是週期的整數倍（tan 的週期是 π）</span><span class="src">台中一中 112 上 填 10</span></div>
+<div class="fx" id="L3-3" data-gen="tanShiftCoincide"><div class="fxh"><span class="no">L3-3</span><span class="kw">平移後重合 → 相位差是週期的整數倍（tan 的週期是 π）</span><span class="src">台中一中 112 上 填 10</span></div>
 <div class="fxq">$k\gt0$，將 $y=\tan\left(kx+\dfrac{\pi}{4}\right)$ 的圖形向右平移 $\dfrac{\pi}{3}$ 後與 $y=\tan\left(kx+\dfrac{\pi}{6}\right)$ 的圖形重合，求 $k$ 的最小值。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$k=\dfrac14$</div>
 <div class="fxs"><div class="move">招式：右移 $\dfrac{\pi}{3}$ 就是把 $x$ 換成 $x-\dfrac{\pi}{3}$；兩個 $\tan$ 重合 ⟺ 括號內只差 $n\pi$。</div>
 $\tan\left(k\left(x-\dfrac{\pi}{3}\right)+\dfrac{\pi}{4}\right)=\tan\left(kx+\dfrac{\pi}{4}-\dfrac{k\pi}{3}\right)$。要與 $\tan\left(kx+\dfrac{\pi}{6}\right)$ 重合：$\dfrac{\pi}{4}-\dfrac{k\pi}{3}=\dfrac{\pi}{6}+n\pi$ ⟹ $k=\dfrac14-3n$。$k\gt0$ 的最小值在 $n=0$：$k=\dfrac14$。</div></div>
 
-<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">所有實根的和 → 換元後每個週期兩解對稱配對</span><span class="src">高雄中學 110 上 填 9</span></div>
+<div class="fx" id="L3-4" data-gen="rootSumSin"><div class="fxh"><span class="no">L3-4</span><span class="kw">所有實根的和 → 換元後每個週期兩解對稱配對</span><span class="src">高雄中學 110 上 填 9</span></div>
 <div class="fxq">設 $0\lt x\lt2\pi$，$0\lt k\lt1$，求滿足 $\sin6x=k$ 的所有實根之和。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$11\pi$</div>
 <div class="fxs"><div class="move">招式：令 $u=6x\in(0,12\pi)$，$\sin u=k$ 在每個 $2\pi$ 裡有兩解，且兩解對稱於 $\dfrac{\pi}{2}+2j\pi$。</div>
 第 $j$ 個週期（$j=0,\dots,5$）的兩解相加 $=\pi+4j\pi$。總和 $=\sum_{j=0}^{5}(\pi+4j\pi)=6\pi+4\pi\cdot15=66\pi$。換回 $x=\dfrac u6$：$\dfrac{66\pi}{6}=11\pi$。（共 $12$ 個根。）</div></div>
 
-<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">絕對值的週期 → 代 x+π/2 試「換位」</span><span class="src">台中一中 112 上 單選 2</span></div>
+<div class="fx" id="L3-5" data-gen="absPeriodSum"><div class="fxh"><span class="no">L3-5</span><span class="kw">絕對值的週期 → 代 x+π/2 試「換位」</span><span class="src">台中一中 112 上 單選 2</span></div>
 <div class="fxq">設 $f(x)=|\sin x|+|\cos x|$、$g(x)=|\sin x|-|\cos x|$ 的最小正週期分別為 $p$、$q$，求 $p+q$。<br>(1) $\dfrac{\pi}{2}$　(2) $\pi$　(3) $\dfrac{3\pi}{2}$　(4) $2\pi$　(5) $\dfrac{5\pi}{2}$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(3) $\dfrac{3\pi}{2}$</div>
@@ -208,14 +254,14 @@ $\tan\left(k\left(x-\dfrac{\pi}{3}\right)+\dfrac{\pi}{4}\right)=\tan\left(kx+\df
 $f\left(x+\dfrac{\pi}{2}\right)=|\cos x|+|\sin x|=f(x)$，且 $f(0)=1\ne f\left(\dfrac{\pi}{4}\right)=\sqrt2$ 表示 $\dfrac{\pi}{4}$ 不是週期，故 $p=\dfrac{\pi}{2}$。<br>
 $g\left(x+\dfrac{\pi}{2}\right)=|\cos x|-|\sin x|=-g(x)$，不是週期；$g(x+\pi)=g(x)$，故 $q=\pi$。$p+q=\dfrac{3\pi}{2}$。</div></div>
 
-<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">廣義角只給 tan 與一個座標的正負 → 定象限，但 θ/2 的象限定不了</span><span class="src">台中女中 112 上 多選 1</span></div>
+<div class="fx" id="L3-6" data-gen="quadTanPoint"><div class="fxh"><span class="no">L3-6</span><span class="kw">廣義角只給 tan 與一個座標的正負 → 定象限，但 θ/2 的象限定不了</span><span class="src">台中女中 112 上 多選 1</span></div>
 <div class="fxq">廣義角 $\theta$ 的頂點為原點、始邊為 $x$ 軸正向，$\tan\theta=2$，且終邊上一點 $P$ 的 $y$ 坐標為 $-1$。選出正確的選項：<br>(1) $\sin\theta\gt\cos\theta$　(2) 標準位置角 $\theta$ 與 $2\theta$ 的終邊在同一象限　(3) $\cos2\theta\lt0$　(4) $\sin\dfrac{\theta}{2}\gt0$　(5) $\dfrac12\sin\theta\lt\tan\dfrac{\theta}{2}$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(3)</div>
 <div class="fxs"><div class="move">招式：$\tan\theta\gt0$ 且 $y\lt0$ ⟹ 第三象限，$P\left(-\dfrac12,-1\right)$，$\sin\theta=-\dfrac{2}{\sqrt5}$、$\cos\theta=-\dfrac{1}{\sqrt5}$。</div>
 (1) $-0.894\gt-0.447$？錯。(2) $\tan2\theta=\dfrac{2\cdot2}{1-4}=-\dfrac43\lt0$，且 $\sin2\theta=2\sin\theta\cos\theta\gt0$ ⟹ $2\theta$ 在第二象限，錯。(3) $\cos2\theta=\dfrac{1-\tan^2\theta}{1+\tan^2\theta}=-\dfrac35\lt0$，正確。(4) $\theta$ 是廣義角，可以加減 $2\pi$ 的倍數，$\dfrac{\theta}{2}$ 的象限因此不確定，錯。(5) $\tan\dfrac{\theta}{2}=\dfrac{\sin\theta}{1+\cos\theta}=\dfrac{-2/\sqrt5}{1-1/\sqrt5}=-\dfrac{\sqrt5+1}{2}\approx-1.62$，而 $\dfrac12\sin\theta\approx-0.45$，錯。</div></div>
 
-<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">cos²、sin cos、sin² 三種都有 → 全部降冪成 2x，再疊合</span><span class="src">高雄中學 110 上 填 5</span></div>
+<div class="fx" id="L3-7" data-gen="homogEq"><div class="fxh"><span class="no">L3-7</span><span class="kw">cos²、sin cos、sin² 三種都有 → 全部降冪成 2x，再疊合</span><span class="src">高雄中學 110 上 填 5</span></div>
 <div class="fxq">設 $0\lt x\lt\pi$，解方程式 $4\cos^2x+2\sqrt3\sin x\cos x-2\sin^2x=4$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$x=\dfrac{\pi}{6}$</div>
@@ -223,7 +269,7 @@ $g\left(x+\dfrac{\pi}{2}\right)=|\cos x|-|\sin x|=-g(x)$，不是週期；$g(x+\
 左式 $=2(1+\cos2x)+\sqrt3\sin2x-(1-\cos2x)=1+3\cos2x+\sqrt3\sin2x$。方程式化為 $\sqrt3\sin2x+3\cos2x=3$，疊合：$2\sqrt3\sin\left(2x+\dfrac{\pi}{3}\right)=3$ ⟹ $\sin\left(2x+\dfrac{\pi}{3}\right)=\dfrac{\sqrt3}{2}$。<br>
 $2x+\dfrac{\pi}{3}\in\left(\dfrac{\pi}{3},\dfrac{7\pi}{3}\right)$，其中 $\sin=\dfrac{\sqrt3}{2}$ 的只有 $\dfrac{2\pi}{3}$（$\dfrac{\pi}{3}$ 與 $\dfrac{7\pi}{3}$ 是開端點）⟹ $x=\dfrac{\pi}{6}$。</div></div>
 
-<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">分式相減 → 通分，分子疊合、分母倍角</span><span class="src">台中女中 112 上 填 6</span></div>
+<div class="fx" id="L3-8" data-gen="fracSubCombine"><div class="fxh"><span class="no">L3-8</span><span class="kw">分式相減 → 通分，分子疊合、分母倍角</span><span class="src">台中女中 112 上 填 6</span></div>
 <div class="fxq">求 $\dfrac{3}{\sin\frac{4\pi}{9}}-\dfrac{\sqrt3}{\cos\frac{4\pi}{9}}$ 之值。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$-4\sqrt3$</div>
@@ -231,54 +277,57 @@ $2x+\dfrac{\pi}{3}\in\left(\dfrac{\pi}{3},\dfrac{7\pi}{3}\right)$，其中 $\sin
 分子 $=2\sqrt3\left(\dfrac{\sqrt3}{2}\cos80^\circ-\dfrac12\sin80^\circ\right)=2\sqrt3\cos(80^\circ+30^\circ)=2\sqrt3\cos110^\circ=-2\sqrt3\sin20^\circ$。<br>
 分母 $\sin80^\circ\cos80^\circ=\dfrac12\sin160^\circ=\dfrac12\sin20^\circ$。相除得 $-4\sqrt3$。</div></div>
 
-<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">cos(θ/2)−sin(θ/2) 已知 → 平方得 sinθ；頂角＝180°−2θ</span><span class="src">台中女中 112 上 填 7</span></div>
+<div class="fx" id="L3-9" data-gen="halfDiffIsos"><div class="fxh"><span class="no">L3-9</span><span class="kw">cos(θ/2)−sin(θ/2) 已知 → 平方得 sinθ；頂角＝180°−2θ</span><span class="src">台中女中 112 上 填 7</span></div>
 <div class="fxq">等腰三角形的底角為 $\theta$、頂角為 $\varphi$，且 $\cos\dfrac{\theta}{2}-\sin\dfrac{\theta}{2}=\dfrac{1}{\sqrt3}$，求 $\tan\varphi$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$-4\sqrt5$</div>
 <div class="fxs"><div class="move">招式：平方：$1-\sin\theta=\dfrac13$ ⟹ $\sin\theta=\dfrac23$；$\varphi=180^\circ-2\theta$ ⟹ $\tan\varphi=-\tan2\theta$。</div>
 $\theta$ 是底角（銳角），$\cos\theta=\dfrac{\sqrt5}{3}$，$\tan\theta=\dfrac{2}{\sqrt5}$。$\tan2\theta=\dfrac{2\tan\theta}{1-\tan^2\theta}=\dfrac{4/\sqrt5}{1-4/5}=\dfrac{20}{\sqrt5}=4\sqrt5$，故 $\tan\varphi=-4\sqrt5$。<br><span class="note-sm">檢查：$\cos\frac{\theta}{2}\gt\sin\frac{\theta}{2}$ 表示 $\frac{\theta}{2}\lt45^\circ$，與 $\theta$ 為銳角一致。</span></div></div>
 
-<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">sin x cos x 與 sin²x 混合 → 降冪成 2x 再疊合，注意區間</span><span class="src">台南一中 112 上 填 8</span></div>
+<div class="fx" id="L3-10" data-gen="sinCosMixRange"><div class="fxh"><span class="no">L3-10</span><span class="kw">sin x cos x 與 sin²x 混合 → 降冪成 2x 再疊合，注意區間</span><span class="src">台南一中 112 上 填 8</span></div>
 <div class="fxq">設 $-\dfrac{\pi}{4}\le x\le\dfrac{\pi}{8}$，求 $\sin x(\cos x-\sin x)$ 的最大值與最小值。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">最大值 $\dfrac{\sqrt2-1}{2}$，最小值 $-1$</div>
 <div class="fxs"><div class="move">招式：$\sin x\cos x-\sin^2x=\dfrac12\sin2x-\dfrac{1-\cos2x}{2}=\dfrac{\sqrt2}{2}\sin\left(2x+\dfrac{\pi}{4}\right)-\dfrac12$。</div>
 $2x+\dfrac{\pi}{4}\in\left[-\dfrac{\pi}{4},\dfrac{\pi}{2}\right]$，$\sin$ 的範圍是 $\left[-\dfrac{\sqrt2}{2},1\right]$。最大值 $\dfrac{\sqrt2}{2}-\dfrac12=\dfrac{\sqrt2-1}{2}$（$x=\dfrac{\pi}{8}$），最小值 $-\dfrac12-\dfrac12=-1$（$x=-\dfrac{\pi}{4}$）。</div></div>
 
-<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">先展開再疊合，區間最值看 x+θ 的範圍</span><span class="src">112 臺北區模考 數A 單選 2</span></div>
+<div class="fx" id="L3-11" data-gen="expandCombineRange"><div class="fxh"><span class="no">L3-11</span><span class="kw">先展開再疊合，區間最值看 x+θ 的範圍</span><span class="src">112 臺北區模考 數A 單選 2</span></div>
 <div class="fxq">設 $f(x)=2\sin\left(x+\dfrac{\pi}{6}\right)-2\cos x$，$\dfrac{\pi}{2}\le x\le\dfrac{4\pi}{3}$。若 $f(x)$ 的最大值為 $m$、最小值為 $n$，則 $(m,n)$ 為？<br>(1) $(2,-1)$　(2) $(2,-\sqrt3)$　(3) $(2,\sqrt3)$　(4) $(\sqrt3,-1)$　(5) $(\sqrt3,-\sqrt3)$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(1) $(2,-1)$</div>
 <div class="fxs"><div class="move">招式：$2\sin\left(x+\dfrac{\pi}{6}\right)=\sqrt3\sin x+\cos x$，減去 $2\cos x$ 得 $\sqrt3\sin x-\cos x=2\sin\left(x-\dfrac{\pi}{6}\right)$。</div>
 $x-\dfrac{\pi}{6}\in\left[\dfrac{\pi}{3},\dfrac{7\pi}{6}\right]$：$\sin$ 在 $\dfrac{\pi}{2}$ 取到最大 $1$，在右端 $\dfrac{7\pi}{6}$ 取到最小 $-\dfrac12$。故 $m=2$、$n=-1$。</div></div>
 
-<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">tanA、tanB 是兩根 ＋ 第三角已知 → tan(A+B)=−tanC</span><span class="src">105 中區模考 數A 單選 5</span></div>
+<div class="fx" id="L3-12" data-gen="tanRootsTriangle"><div class="fxh"><span class="no">L3-12</span><span class="kw">tanA、tanB 是兩根 ＋ 第三角已知 → tan(A+B)=−tanC</span><span class="src">105 中區模考 數A 單選 5</span></div>
 <div class="fxq">在 $\triangle ABC$ 中，$\tan A$、$\tan B$ 為 $x^2+(-2a-1)x+3a=0$ 的兩根，且 $\angle C=45^\circ$，求 $a$。<br>(1) $-2$　(2) $-\dfrac15$　(3) $0$　(4) $\dfrac15$　(5) $2$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(5) $a=2$</div>
 <div class="fxs"><div class="move">招式：$A+B=180^\circ-C$ ⟹ $\tan(A+B)=-\tan C=-1$。</div>
 根與係數：$\tan A+\tan B=2a+1$、$\tan A\tan B=3a$。$\tan(A+B)=\dfrac{2a+1}{1-3a}=-1$ ⟹ $2a+1=3a-1$ ⟹ $a=2$。（此時方程式 $x^2-5x+6=0$ 的根 $2,3$ 都為正，兩角皆銳角，合理。）</div></div>
 
-<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">兩式各含 sin、cos 交錯 → 平方相加，交叉項是 sin(α+β)</span><span class="src">106 全國模考 數A 單選 6</span></div>
+<div class="fx" id="L3-13" data-gen="crossSquareSum"><div class="fxh"><span class="no">L3-13</span><span class="kw">兩式各含 sin、cos 交錯 → 平方相加，交叉項是 sin(α+β)</span><span class="src">106 全國模考 數A 單選 6</span></div>
 <div class="fxq">若 $\begin{cases}\cos\alpha+\sin\beta=1\\ \sin\alpha+\cos\beta=\sqrt2\end{cases}$，求 $\cos(2\alpha+2\beta)$。<br>(1) $-1$　(2) $0$　(3) $1$　(4) $\dfrac12$　(5) $-\dfrac12$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(4) $\dfrac12$</div>
 <div class="fxs"><div class="move">招式：平方相加：$2+2(\cos\alpha\sin\beta+\sin\alpha\cos\beta)=1+2=3$ ⟹ $\sin(\alpha+\beta)=\dfrac12$。</div>
 $\cos(2\alpha+2\beta)=1-2\sin^2(\alpha+\beta)=1-2\cdot\dfrac14=\dfrac12$。</div></div>
 
-<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">誘導公式遇到 23π/2 → 先減 2π 的倍數，再看剩下的 π/2 奇偶</span><span class="src">112 模考（W6）數A 單選 1</span></div>
+<div class="fx" id="L3-14" data-gen="reduceBigAngle"><div class="fxh"><span class="no">L3-14</span><span class="kw">誘導公式遇到 23π/2 → 先減 2π 的倍數，再看剩下的 π/2 奇偶</span><span class="src">112 模考（W6）數A 單選 1</span></div>
 <div class="fxq">設 $\dfrac{\pi}{2}\lt\theta\lt\dfrac{3\pi}{2}$，$\tan\theta=\dfrac13$，求 $\sin\left(\dfrac{23\pi}{2}-\theta\right)$。<br>(1) $\dfrac{3}{\sqrt{10}}$　(2) $\dfrac{2}{\sqrt{10}}$　(3) $\dfrac{1}{\sqrt{10}}$　(4) $-\dfrac{1}{\sqrt{10}}$　(5) $-\dfrac{3}{\sqrt{10}}$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(1) $\dfrac{3}{\sqrt{10}}$</div>
 <div class="fxs"><div class="move">招式：$\dfrac{23\pi}{2}=10\pi+\dfrac{3\pi}{2}$，所以 $\sin\left(\dfrac{23\pi}{2}-\theta\right)=\sin\left(\dfrac{3\pi}{2}-\theta\right)=-\cos\theta$。</div>
 $\tan\theta=\dfrac13\gt0$ 且 $\theta\in\left(\dfrac{\pi}{2},\dfrac{3\pi}{2}\right)$ ⟹ 第三象限，$\cos\theta=-\dfrac{3}{\sqrt{10}}$。故所求 $=\dfrac{3}{\sqrt{10}}$。</div></div>
 
-<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">週期模型 → 代入兩個已知時刻解 a、b，再代目標時刻</span><span class="src">112 模考（W6）數A 單選 3</span></div>
+<div class="fx" id="L3-15" data-gen="tideModel"><div class="fxh"><span class="no">L3-15</span><span class="kw">週期模型 → 代入兩個已知時刻解 a、b，再代目標時刻</span><span class="src">112 模考（W6）數A 單選 3</span></div>
 <div class="fxq">某海灣的水深 $d(x)=a\cos\left(\dfrac{x}{24}\pi+\dfrac{\pi}{6}\right)+b$（$x$ 為時刻，單位：時）。若當日 $08{:}00$ 水深 $14$ 公尺、$12{:}00$ 水深 $11$ 公尺，則當日 $20{:}00$ 的水深為多少公尺？<br>(1) $12.5$　(2) $11$　(3) $9.5$　(4) $8$　(5) $7.5$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(4) $8$ 公尺</div>
 <div class="fxs"><div class="move">招式：把 $x=8,12,20$ 代進去，括號裡分別是 $\dfrac{\pi}{2}$、$\dfrac{2\pi}{3}$、$\pi$——都是特殊角。</div>
 $x=8$：$a\cos\dfrac{\pi}{2}+b=b=14$。$x=12$：$a\cos\dfrac{2\pi}{3}+14=-\dfrac a2+14=11$ ⟹ $a=6$。$x=20$：$6\cos\pi+14=8$。</div></div>
+
+<h3 class="sec">L3 檢測 10 題（從 15 型抽，可換組）</h3>
+<div class="fixset" data-tier="L3" data-keys="radEstimate,periodFromHighLow,tanShiftCoincide,rootSumSin,absPeriodSum,quadTanPoint,homogEq,fracSubCombine,halfDiffIsos,sinCosMixRange,expandCombineRange,tanRootsTriangle,crossSquareSum,reduceBigAngle,tideModel" data-seed="3001" data-n="10"></div>
 </section>
 
 <!-- ═══════════════════════ L4 ═══════════════════════ -->
@@ -503,19 +552,65 @@ $L_2$ 的傾角 $30^\circ$，$2\varphi=60^\circ$：$R=\left(-\dfrac12-\dfrac{\sq
 
 <script>
 (function () {
-  var G = window.PGEN;
+  var G = window.PGEN, CH = 'g11a-ch01';
   var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
   function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
   var labelOf = {};
-  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  ['L1', 'L2', 'L3'].forEach(function (L) { if (G.META[L]) G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+  /* ══════════ 練習紀錄（只存在這台裝置的瀏覽器裡）══════════ */
+  var STORE = 'pgen_rec_' + CH;
+  function loadRec() { try { var r = JSON.parse(localStorage.getItem(STORE) || 'null'); if (r && r.v === 1 && r.attempts) return r; } catch (e) { } return { v: 1, attempts: [] }; }
+  function saveRec() { try { localStorage.setItem(STORE, JSON.stringify(REC)); } catch (e) { } }
+  var REC = loadRec();
+  function stats() {
+    var byKey = {}, bySet = {};
+    REC.attempts.forEach(function (at) {
+      at.items.forEach(function (x) {
+        var k = at.tier + '.' + x.k, o = byKey[k] || (byKey[k] = { tier: at.tier, key: x.k, n: 0, w: 0, last: [] });
+        o.n++; if (x.wrong) o.w++; o.last.push(x.wrong ? 1 : 0);
+      });
+      var s = bySet[at.set] || (bySet[at.set] = { tier: at.tier, rounds: 0, hist: [] });
+      s.rounds++; s.hist.push({ t: at.t, n: at.items.length, w: at.items.filter(function (x) { return x.wrong; }).length });
+    });
+    return { byKey: byKey, bySet: bySet };
+  }
+  function weakList(byKey) {
+    return Object.keys(byKey).map(function (k) { return byKey[k]; }).filter(function (o) {
+      var lastWrong = o.last[o.last.length - 1] === 1;
+      return lastWrong || (o.n >= 2 && o.w / o.n >= 0.4);
+    }).sort(function (a, b) { var la = a.last[a.last.length - 1], lb = b.last[b.last.length - 1]; if (la !== lb) return lb - la; return b.w / b.n - a.w / a.n; });
+  }
+
+  /* 跳到某題型：L1/L2 是卡片、L3 是固定題＋類似題 */
+  function goKey(tier, key) {
+    var el;
+    if (tier === 'L3') {
+      el = document.querySelector('.fx[data-gen="' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); var sb = el.querySelector('.simbox'); if (!sb) buildSim(el, key); else sb.querySelector('.again').click(); }
+    } else {
+      el = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.querySelector('.new').click(); }
+    }
+    if (el) { el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 2500); }
+  }
+  function goBtn(tier, key) {
+    var b = document.createElement('button'); b.className = 'go'; b.type = 'button'; b.textContent = (tier === 'L3' ? '📎 ' : '🎲 ') + (labelOf[tier + '.' + key] || key);
+    b.onclick = function () { goKey(tier, key); }; return b;
+  }
+
+  /* ══════════ 產生器卡片（L1、L2）══════════ */
   function buildCard(tier, key, grid) {
-    var card = document.createElement('div'); card.className = 'gcard';
+    var card = document.createElement('div'); card.className = 'gcard'; card.setAttribute('data-key', tier + '.' + key);
     card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
       '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
       '<div class="gh"></div><div class="ga"></div>';
-    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000), lastQ = '';
     function load() {
-      var it = G[tier][key](G.makeRng(seed));
+      var it = G[tier][key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G[tier][key](G.makeRng(seed)); }
+      lastQ = it.q;
       card.querySelector('.gq').innerHTML = it.q;
       card.querySelector('.gh').innerHTML = '提示：' + it.h;
       card.querySelector('.ga').innerHTML = '答案：' + it.a;
@@ -532,28 +627,140 @@ $L_2$ 的傾角 $30^\circ$，$2\varphi=60^\circ$：$R=\left(-\dfrac12-\dfrac{\sq
     var tier = grid.getAttribute('data-tier');
     grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
   });
-  document.querySelectorAll('.fixset').forEach(function (box) {
-    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
-    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
-    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
-    for (var i = 0; i < n; i++) {
-      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
-      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+
+  /* ══════════ L3 固定題的「類似題」══════════ */
+  function buildSim(fx, key) {
+    var box = document.createElement('div'); box.className = 'simbox';
+    box.innerHTML = '<div class="st"><span>🎲 類似題（同型換數字）</span><span class="seed"></span></div><div class="sq"></div>' +
+      '<div class="sbtn"><button class="again">🎲 再一題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="close">收起</button></div><div class="gh"></div><div class="ga"></div>';
+    var seed = 30000 + Math.floor(Math.random() * 90000), lastQ = '';
+    function load() {
+      var it = G.L3[key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G.L3[key](G.makeRng(seed)); }
+      lastQ = it.q;
+      box.querySelector('.sq').innerHTML = it.q; box.querySelector('.gh').innerHTML = '提示：' + it.h; box.querySelector('.ga').innerHTML = '答案：' + it.a;
+      box.querySelector('.seed').textContent = '#' + seed;
+      box.querySelector('.gh').classList.remove('on'); box.querySelector('.ga').classList.remove('on');
+      render(box);
     }
-    box.innerHTML = html + '</ol>';
-    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
-    box.querySelector('.print').onclick = function () { window.print(); };
-    render(box);
+    box.querySelector('.again').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    box.querySelector('.hint').onclick = function () { box.querySelector('.gh').classList.toggle('on'); };
+    box.querySelector('.ans').onclick = function () { box.querySelector('.ga').classList.toggle('on'); };
+    box.querySelector('.close').onclick = function () { box.remove(); };
+    fx.appendChild(box); load();
+    return box;
+  }
+  document.querySelectorAll('.fx[data-gen]').forEach(function (fx) {
+    var key = fx.getAttribute('data-gen'); if (!G.L3 || !G.L3[key]) return;
+    var b = document.createElement('button'); b.textContent = '🎲 類似題'; b.className = 'simbtn';
+    b.onclick = function () { var sb = fx.querySelector('.simbox'); if (sb) sb.querySelector('.again').click(); else buildSim(fx, key); };
+    var anchor = fx.querySelector('button[data-t="s"]');
+    anchor.parentNode.insertBefore(document.createTextNode(' '), anchor.nextSibling);
+    anchor.parentNode.insertBefore(b, anchor.nextSibling.nextSibling);
   });
-  document.querySelectorAll('.fx button').forEach(function (b) {
-    b.onclick = function () {
-      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
-      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
-    };
+
+  /* ══════════ 檢測題組（固定種子可列印；可換組、標記錯題、記錄、分析）══════════ */
+  function secName(box) {
+    var el = box.previousElementSibling;
+    while (el && !(el.tagName === 'H3' && el.classList.contains('sec'))) el = el.previousElementSibling;
+    return el ? el.textContent.replace(/（.*?）/g, '').trim() : box.getAttribute('data-tier');
+  }
+  var TITLE = document.querySelector('header.hd h1').textContent;
+  function printSet(box) {
+    var area = document.getElementById('printArea');
+    var lis = box.querySelectorAll('ol > li'), showAns = box.classList.contains('show');
+    var html = '<h1>' + esc(TITLE) + '｜' + esc(box._set) + '　第 ' + box._round + ' 組（#' + box._base + '）</h1><p class="pmeta">姓名：＿＿＿＿＿　日期：＿＿＿＿　得分：＿＿／' + lis.length + '</p><ol>';
+    lis.forEach(function (li) { html += '<li>' + li.querySelector('.q').innerHTML + '</li>'; });
+    html += '</ol>';
+    if (showAns) { html += '<h2>答案</h2><ol>'; lis.forEach(function (li) { html += '<li>' + li.querySelector('.fa').innerHTML.replace(/^（答：/, '').replace(/）$/, '') + '</li>'; }); html += '</ol>'; }
+    area.innerHTML = html; render(area);
+    document.body.classList.add('print-one');
+    var done = function () { document.body.classList.remove('print-one'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); setTimeout(done, 3000);
+    window.print();
+  }
+  function buildSet(box, base, round) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(','), n = parseInt(box.getAttribute('data-n') || '10', 10);
+    box._base = base; box._round = round; box._items = [];
+    var html = '<div class="fix-btns"><b>檢測 ' + n + ' 題</b><span class="fix-meta">第 ' + round + ' 組・#' + base + '</span><button class="show">顯示答案</button><button class="print">🖨 列印本組</button><button class="regen">🔁 換一組類似題</button>' + (round > 1 ? '<button class="orig">回到原始題組</button>' : '') + '</div><ol>';
+    var seen = {};
+    for (var i = 0; i < n; i++) {
+      var key = keys[i % keys.length], seed = base + i * 37, it = G[tier][key](G.makeRng(seed)), tries = 0;
+      while (seen[it.q] && tries++ < 12) { seed += 1000003 * (tries); it = G[tier][key](G.makeRng(seed)); }
+      seen[it.q] = 1;
+      box._items.push({ k: key, seed: seed });
+      html += '<li><span class="q">' + it.q + '</span><span class="fa">（答：' + it.a + '）</span><span class="mark"><button data-m="1" title="我答對了">○ 對</button><button data-m="0" title="我答錯了">✗ 錯</button></span></li>';
+    }
+    html += '</ol><div class="fix-foot"><button class="submit">📝 記錄本次結果</button><span>做完先按「顯示答案」對答案，把每題標 ○ 或 ✗，再按「記錄」；系統會告訴你哪一型該回頭練。</span></div><div class="fix-result"></div>';
+    box.classList.remove('show'); box.innerHTML = html; box._set = secName(box);
+    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    box.querySelector('.print').onclick = function () { printSet(box); };
+    box.querySelector('.regen').onclick = function () { buildSet(box, 10000 + Math.floor(Math.random() * 89999), round + 1); box.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    var ob = box.querySelector('.orig'); if (ob) ob.onclick = function () { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); };
+    box.querySelectorAll('.mark button').forEach(function (b) {
+      b.onclick = function () { var li = b.closest('li'), ok = b.getAttribute('data-m') === '1'; var was = li.classList.contains(ok ? 'ok' : 'ng'); li.classList.remove('ok', 'ng'); if (!was) li.classList.add(ok ? 'ok' : 'ng'); };
+    });
+    box.querySelector('.submit').onclick = function () { submitSet(box, tier); };
+    render(box);
+  }
+  function submitSet(box, tier) {
+    var lis = box.querySelectorAll('ol > li'), items = [], unmarked = 0;
+    lis.forEach(function (li, i) { var wrong = li.classList.contains('ng'); if (!li.classList.contains('ok') && !wrong) unmarked++; items.push({ k: box._items[i].k, seed: box._items[i].seed, wrong: wrong, no: i + 1 }); });
+    REC.attempts.push({ t: Date.now(), tier: tier, set: box._set, base: box._base, round: box._round, items: items.map(function (x) { return { k: x.k, seed: x.seed, wrong: x.wrong }; }) });
+    saveRec();
+    var wrong = items.filter(function (x) { return x.wrong; }), res = box.querySelector('.fix-result');
+    var html = '<b>本次 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (unmarked ? '（' + unmarked + ' 題未標記，視為答對）' : '') + '。';
+    if (!wrong.length) html += '全對！按「🔁 換一組類似題」再測一輪，連續兩輪全對就可以往上一級。';
+    else {
+      var byKey = {}; wrong.forEach(function (x) { (byKey[x.k] = byKey[x.k] || []).push(x.no); });
+      html += '錯的題型：' + Object.keys(byKey).map(function (k) { return (labelOf[tier + '.' + k] || k) + '（第 ' + byKey[k].join('、') + ' 題）'; }).join('、') + '。<br>建議回頭練習（按一下跳過去、直接出新題）：<span class="golist"></span><br>練完再按「🔁 換一組類似題」重測，題目會換數字，避免背答案。';
+    }
+    res.innerHTML = html; res.classList.add('on');
+    if (wrong.length) { var gl = res.querySelector('.golist'); Object.keys(byKey).forEach(function (k) { gl.appendChild(goBtn(tier, k)); }); }
+    renderRec();
+  }
+  document.querySelectorAll('.fixset').forEach(function (box) { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); });
+
+  /* ══════════ 我的練習紀錄（分析面板）══════════ */
+  var mr = document.getElementById('myrec');
+  function fmtDate(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+  function renderRec() {
+    if (!mr) return;
+    var st = stats(), keys = Object.keys(st.byKey), body = mr.querySelector('.mr-body'), sum = mr.querySelector('.mr-sum');
+    if (!REC.attempts.length) { sum.textContent = '還沒有紀錄。做完任何一組檢測、標記對錯並按「記錄」，這裡就會出現你的弱點分析。'; body.innerHTML = ''; return; }
+    var totN = 0, totW = 0; keys.forEach(function (k) { totN += st.byKey[k].n; totW += st.byKey[k].w; });
+    sum.textContent = '共記錄 ' + REC.attempts.length + ' 組檢測、' + totN + ' 題，答對率 ' + Math.round(100 * (totN - totW) / totN) + '%。';
+    var weak = weakList(st.byKey), html = '';
+    html += '<div class="mr-advice"><b>優先補強：</b>';
+    if (!weak.length) html += '目前沒有明顯弱點，繼續換組檢測維持手感。';
+    html += '<span class="golist"></span></div>';
+    html += '<table class="mr-t"><tr><th>題型</th><th>級</th><th>做過</th><th>錯</th><th>錯誤率</th><th>最近 5 次</th><th></th></tr>';
+    keys.map(function (k) { return st.byKey[k]; }).sort(function (a, b) { return b.w / b.n - a.w / a.n || b.n - a.n; }).forEach(function (o) {
+      var rate = Math.round(100 * o.w / o.n), isWeak = weak.indexOf(o) >= 0;
+      html += '<tr class="' + (isWeak ? 'weak' : '') + '"><td>' + esc(labelOf[o.tier + '.' + o.key] || o.key) + '</td><td>' + o.tier + '</td><td>' + o.n + '</td><td>' + o.w + '</td><td><span class="bar" style="width:' + Math.round(rate * 0.6) + 'px"></span> ' + rate + '%</td><td>' + o.last.slice(-5).map(function (w) { return w ? '✗' : '○'; }).join(' ') + '</td><td class="gocell" data-tier="' + o.tier + '" data-key="' + o.key + '"></td></tr>';
+    });
+    html += '</table>';
+    html += '<table class="mr-t"><tr><th>檢測組</th><th>次數</th><th>最近成績</th></tr>';
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s]; html += '<tr><td>' + esc(s) + '</td><td>' + o.rounds + '</td><td>' + o.hist.slice(-4).map(function (h) { return fmtDate(h.t) + '：' + (h.n - h.w) + '／' + h.n; }).join('，') + '</td></tr>'; });
+    html += '</table>';
+    body.innerHTML = html;
+    var gl = body.querySelector('.golist'); weak.slice(0, 6).forEach(function (o) { gl.appendChild(goBtn(o.tier, o.key)); });
+    body.querySelectorAll('.gocell').forEach(function (td) { var b = goBtn(td.getAttribute('data-tier'), td.getAttribute('data-key')); b.textContent = '回頭練'; td.appendChild(b); });
+  }
+  if (mr) {
+    mr.querySelector('.mr-toggle').onclick = function () { var b = mr.querySelector('.mr-body'); b.hidden = !b.hidden; this.textContent = b.hidden ? '展開' : '收起'; };
+    mr.querySelector('.mr-clear').onclick = function () { if (confirm('確定清除這台裝置上的所有練習紀錄？')) { REC = { v: 1, attempts: [] }; saveRec(); renderRec(); } };
+    renderRec();
+  }
+
+  /* 固定題卡（L3–L5）的答案／詳解 */
+  document.querySelectorAll('.fx button[data-t]').forEach(function (b) {
+    b.onclick = function () { var fx = b.closest('.fx'), t = b.getAttribute('data-t'); fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on'); };
   });
   function renderStatic() { render(document.body); }
   if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
 })();
 </script>
+<div id="printArea"></div>
 </body>
 </html>

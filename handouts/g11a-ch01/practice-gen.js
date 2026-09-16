@@ -114,7 +114,7 @@
   ];
 
   /* ══════════════════════════════════════════════════════════
-     L1　基礎（20 型）
+     L1　基礎（21 型）
      ══════════════════════════════════════════════════════════ */
   var L1 = {};
 
@@ -516,7 +516,371 @@
 
   var META_L2 = [['sectorSys', '周長與面積反求扇形'], ['sectorMax', '定周長扇形面積最大'], ['coneShortest', '圓錐側面最短路徑'], ['sumProd', 'sinθ+cosθ=k 的連鎖求值'], ['quadRootCos2', '方程式的根 → cos2θ'], ['tanQuad', '根與係數 × tan 和角'], ['systemSquare', '平方相加求 cos(A+B)'], ['halfFromCos2x', 'cos2x → 半角組合'], ['paramFit', '由最高最低點反求 (a,b,c,d)'], ['transformOrder', '伸縮與平移的順序'], ['periodJudge', '合成函數的週期'], ['rootCount', '方程式 c+k sin x=x 的解數'], ['trigIneq', '三角不等式（含孤立解）'], ['combineInterval', '疊合後的區間最值'], ['squareSub', 'sin x±cos x 的二次代換'], ['eqSumCount', 'sin bx=k 的解數與總和']];
 
-  var META = { L1: META_L1, L2: META_L2 };
+  /* ══════════════════════════════════════════════════════════
+     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
+     角一律是 π/12 的倍數（K 單位），值由 tv() 精確給出。
+     ══════════════════════════════════════════════════════════ */
+  var L3 = {};
+  var SQ3 = Math.sqrt(3), SQ2 = Math.SQRT2;
+  /* 有理數 rat + c√r/d → LaTeX（r 化簡後為 1 就併入有理數） */
+  function mixTex(rat, c, r, d) {
+    var s = simpSqrt(r); c = c * s.c; r = s.r;
+    if (c === 0) return Fr.tex(rat);
+    if (r === 1) return Fr.tex(Fr.add(rat, F(c, d)));
+    var D = rat.d * d / gcd(rat.d, d), a = rat.n * (D / rat.d), b = c * (D / d);
+    return surdFracTex(a, b, r, D);
+  }
+  /* 係數排版：n 為整數，isS3 表示 n√3；first 是不是最前面的項 */
+  function coefTex(n, isS3, first) {
+    var neg = n < 0, m = Math.abs(n);
+    var mag = isS3 ? ((m === 1 ? '' : m) + '\\sqrt3') : (m === 1 ? '' : String(m));
+    return (neg ? '-' : (first ? '' : '+')) + mag;
+  }
+  /* 依 (a 是否√3, a 正負, b 是否√3, b 正負) 找 COMB 列：a sin u + b cos u = √r² sin(u+θ) */
+  function combRow(aS3, aSg, bS3, bSg) {
+    for (var i = 0; i < COMB.length; i++) {
+      var row = COMB[i];
+      if ((Math.abs(row[0]) === 3) === aS3 && (row[0] < 0 ? -1 : 1) === aSg && (Math.abs(row[1]) === 3) === bS3 && (row[1] < 0 ? -1 : 1) === bSg) return row;
+    }
+    return null;
+  }
+  /* √R2·sin(u) 在 u = scale·x + thK（K 單位）、x ∈ [lo,hi] 上的最大／最小（候選：端點＋內部 u ≡ 6, 18） */
+  function extremaOn(R2, thK, lo, hi, scale) {
+    /* x 以 π/24 為單位（x24）回傳，u 以 π/12 為單位；內部極值點 u ≡ 6, 18 (mod 24) 在 scale=2 時 x 可能是 π/24 的奇數倍 */
+    var uLo = scale * lo + thK, uHi = scale * hi + thK, cands = [{ x24: 2 * lo, u: uLo }, { x24: 2 * hi, u: uHi }];
+    for (var u = uLo + 1; u < uHi; u++) { var um = ((u % 24) + 24) % 24; if (um === 6 || um === 18) cands.push({ x24: Math.round(2 * (u - thK) / scale), u: u }); }
+    var best = null, worst = null;
+    cands.forEach(function (c) {
+      var sv = tv(c.u * 15).sin, val = vNum(sv);
+      if (best === null || val > best.val + 1e-12) best = { x24: c.x24, val: val, sv: sv };
+      if (worst === null || val < worst.val - 1e-12) worst = { x24: c.x24, val: val, sv: sv };
+    });
+    function tex(sv) { var s = simpSqrt(R2 * sv.r); return { c: sv.c * s.c, r: s.r, d: sv.d }; }
+    return { maxX24: best.x24, minX24: worst.x24, max: tex(best.sv), min: tex(worst.sv), flat: Math.abs(best.val - worst.val) < 1e-12 };
+  }
+  function kTex(k) { return k === 24 ? '2\\pi' : k === -24 ? '-2\\pi' : piTex(k, 12); }
+  function k24Tex(k) { return k === 48 ? '2\\pi' : k === -48 ? '-2\\pi' : piTex(k, 24); }
+  function surd3(o) { return surdOver(o.c, o.r, o.d); }
+
+  /* L3-1　弧度值估大小（多選） */
+  var BND = [['0', 0, '\\dfrac12', 0.5], ['\\dfrac12', 0.5, '\\dfrac{\\sqrt3}{2}', SQ3 / 2], ['\\dfrac{\\sqrt3}{2}', SQ3 / 2, '1', 1], ['-\\dfrac12', -0.5, '0', 0], ['-\\dfrac{\\sqrt3}{2}', -SQ3 / 2, '-\\dfrac12', -0.5], ['-1', -1, '-\\dfrac{\\sqrt3}{2}', -SQ3 / 2], ['\\dfrac{\\sqrt2}{2}', SQ2 / 2, '1', 1], ['-1', -1, '-\\dfrac{\\sqrt2}{2}', -SQ2 / 2], ['0', 0, '\\dfrac{\\sqrt2}{2}', SQ2 / 2], ['-\\dfrac{\\sqrt2}{2}', -SQ2 / 2, '0', 0]];
+  var BNDT = [['0', 0, '\\dfrac{1}{\\sqrt3}', 1 / SQ3], ['\\dfrac{1}{\\sqrt3}', 1 / SQ3, '1', 1], ['1', 1, '\\sqrt3', SQ3], ['-1', -1, '0', 0], ['-\\sqrt3', -SQ3, '-1', -1], ['0', 0, '1', 1]];
+  function argVal(arg) { return arg.kind === 'rad' ? arg.v : arg.kind === 'pideg' ? Math.PI * Math.PI / 180 : Math.PI * Math.PI; }
+  function argTex(arg) { return arg.kind === 'rad' ? String(arg.v) : arg.kind === 'pideg' ? '(\\pi^\\circ)' : '(\\pi^2)'; }
+  L3.radEstimate = function (r) {
+    var items = [], ans = [], guard = 0;
+    while (items.length < 5 && guard++ < 200) {
+      var fn = r.pick(['sin', 'cos', 'cos', 'sin', 'tan']);
+      var arg = r.pick([{ kind: 'rad', v: r.int(1, 6) }, { kind: 'rad', v: r.int(1, 6) }, { kind: 'rad', v: r.int(1, 6) }, { kind: 'pideg' }, { kind: 'pisq' }]);
+      var val = { sin: Math.sin, cos: Math.cos, tan: Math.tan }[fn](argVal(arg));
+      var rows = fn === 'tan' ? BNDT : BND;
+      var okRows = rows.filter(function (b) { return Math.abs(val - b[1]) > 0.04 && Math.abs(val - b[3]) > 0.04; });
+      var trues = okRows.filter(function (b) { return b[1] < val && val < b[3]; });
+      var falses = okRows.filter(function (b) { return !(b[1] < val && val < b[3]); });
+      var wantTrue = r() < 0.5, row = wantTrue && trues.length ? r.pick(trues) : (falses.length ? r.pick(falses) : null);
+      if (!row) continue;
+      var dup = items.some(function (it) { return it.fn === fn && it.arg.kind === arg.kind && it.arg.v === arg.v; });
+      if (dup) continue;
+      var truth = row[1] < val && val < row[3];
+      items.push({ fn: fn, arg: arg, lo: row[0], hi: row[2], loV: row[1], hiV: row[3], t: truth });
+    }
+    if (items.length < 5) return L3.radEstimate(makeRng(r.int(1, 1e6)));
+    var nT = items.filter(function (i) { return i.t; }).length;
+    if (nT === 0 || nT === 5) return L3.radEstimate(makeRng(r.int(1, 1e6)));
+    var q = '選出正確的選項：<br>' + items.map(function (it, i) { if (it.t) ans.push(i + 1); return '(' + (i + 1) + ') ' + T(it.lo + '\\lt\\' + it.fn + ' ' + argTex(it.arg) + '\\lt' + it.hi); }).join('　');
+    return { q: q, a: '(' + ans.join(')(') + ')', h: '$1$ 弧度 $\\approx57.3^\\circ$：' + items.map(function (it) { return it.arg.kind === 'rad' ? '$' + it.arg.v + '\\approx' + Math.round(it.arg.v * 57.3) + '^\\circ$' : it.arg.kind === 'pideg' ? '$\\pi^\\circ\\approx3.1^\\circ$' : '$\\pi^2\\approx9.87$，減 $2\\pi$ 後約 $3.59$'; }).filter(function (s, i, a) { return a.indexOf(s) === i; }).join('、') + '，換成度數再定位。', p: { items: items.map(function (it) { return { fn: it.fn, arg: it.arg, lo: it.loV, hi: it.hiV, t: it.t }; }), ans: ans } };
+  };
+
+  /* L3-2　最高點到最低點的水平距離 → 半週期的奇數倍（多選） */
+  L3.periodFromHighLow = function (r) {
+    var dd = r.pick([2, 3, 4, 6]), dn = r.int(1, 2 * dd + 1); while (gcd(dn, dd) !== 1 && dn % dd === 0) dn = r.int(1, 2 * dd + 1);
+    var D = F(dn, dd);                                     /* 水平距離（π 單位） */
+    var x1 = F(r.int(-4, 4), r.pick([1, 2, 4])), x2 = r() < 0.5 ? Fr.add(x1, D) : Fr.sub(x1, D);
+    var odds = [1, 3, 5, 7, 9, 11], evens = [2, 4, 6, 8, 10];
+    var nT = r.int(2, 3), picks = r.shuffle(odds).slice(0, nT).concat(r.shuffle(evens).slice(0, 5 - nT));
+    picks = r.shuffle(picks);
+    var opts = picks.map(function (j) { return Fr.div(Fr.mul(F(2), D), F(j)); });
+    var ans = [];
+    var q = '已知 ' + T('A\\left(' + piTex(x1.n, x1.d) + ',1\\right)') + '、' + T('B\\left(' + piTex(x2.n, x2.d) + ',-1\\right)') + ' 為 ' + T('y=\\sin(ax+b)') + ' 圖形上兩點。下列何者可能是此函數的週期？<br>' +
+      opts.map(function (o, i) { if (picks[i] % 2 === 1) ans.push(i + 1); return '(' + (i + 1) + ') ' + T(piTex(o.n, o.d)); }).join('　');
+    return { q: q, a: '(' + ans.join(')(') + ')', h: '$A$ 是最高點、$B$ 是最低點，水平距離 $' + piTex(D.n, D.d) + '$ 必須是「半週期的奇數倍」：$' + piTex(D.n, D.d) + '=(2k+1)\\cdot\\dfrac T2$，逐一檢查每個選項的 $2k+1$ 是不是奇數。', p: { x1: [x1.n, x1.d], x2: [x2.n, x2.d], opts: opts.map(function (o) { return [o.n, o.d]; }), ans: ans } };
+  };
+
+  /* L3-3　平移後重合 → 相位差是 π 的整數倍 */
+  L3.tanShiftCoincide = function (r) {
+    var k1 = r.pick([2, 3, 4, 6, 8, 9, 10]), k2 = r.pick([2, 3, 4, 6, 8, 9, 10]); while (k2 === k1) k2 = r.pick([2, 3, 4, 6, 8, 9, 10]);
+    var m = r.pick([2, 3, 4, 6]), dir = r.pick(['右', '左']);
+    /* 右移 s：k1 − k·s·12/π… 以 K 單位：φ1 − k·(12/m) = φ2 + 12n  ⟹ k = m(φ1−φ2−12n)/12 */
+    var d = (dir === '右' ? 1 : -1) * (k1 - k2), best = null;
+    for (var n = -3; n <= 3; n++) { var kk = F(m * (d - 12 * n), 12); if (kk.n > 0 && (best === null || Fr.toNum(kk) < Fr.toNum(best))) best = kk; }
+    return { q: T('k\\gt0') + '，將 ' + T('y=\\tan\\left(kx+' + piTex(k1, 12) + '\\right)') + ' 的圖形向' + dir + '平移 ' + T(piTex(1, m)) + ' 後與 ' + T('y=\\tan\\left(kx+' + piTex(k2, 12) + '\\right)') + ' 的圖形重合，求 ' + T('k') + ' 的最小值。',
+      a: T('k=' + Fr.tex(best)), h: '向' + dir + '移 $' + piTex(1, m) + '$ 是把 $x$ 換成 $x' + (dir === '右' ? '-' : '+') + piTex(1, m) + '$；兩個 $\\tan$ 重合 ⟺ 括號內只差 $n\\pi$：$' + piTex(k1, 12) + (dir === '右' ? '-' : '+') + '\\dfrac{k\\pi}{' + m + '}=' + piTex(k2, 12) + '+n\\pi$，取讓 $k\\gt0$ 的最小者。', p: { k1: k1, k2: k2, m: m, dir: dir, ans: [best.n, best.d] } };
+  };
+
+  /* L3-4　sin bx = k 在 (0, Lπ) 的解數與總和 */
+  L3.rootSumSin = function (r) {
+    var b = r.int(2, 8), L = r.pick([1, 2, 3, 4]), kpos = r() < 0.6, M = b * L, cnt = 0, sumU = F(0);
+    if (kpos) { for (var j = 0; 2 * j + 1 <= M; j++) { cnt += 2; sumU = Fr.add(sumU, F(1 + 4 * j)); } }
+    else { for (var j2 = 0; 2 * j2 + 2 <= M; j2++) { cnt += 2; sumU = Fr.add(sumU, F(3 + 4 * j2)); } }
+    if (cnt === 0) return L3.rootSumSin(makeRng(r.int(1, 1e6)));
+    var sumX = Fr.div(sumU, F(b));
+    return { q: '設 ' + T('0\\lt x\\lt' + (L === 1 ? '\\pi' : L + '\\pi')) + '，' + T(kpos ? '0\\lt k\\lt1' : '-1\\lt k\\lt0') + '，求方程式 ' + T('\\sin' + b + 'x=k') + ' 的實數解個數，以及所有實數解的總和。',
+      a: T(cnt) + ' 個，總和 ' + T(piTex(sumX.n, sumX.d)), h: '令 $u=' + b + 'x\\in(0,' + M + '\\pi)$；$k' + (kpos ? '\\gt0' : '\\lt0') + '$ 時兩解落在每個週期的' + (kpos ? '前' : '後') + '半段 $(' + (kpos ? '2j\\pi,2j\\pi+\\pi' : '2j\\pi+\\pi,2j\\pi+2\\pi') + ')$，對稱於 $' + (kpos ? '\\dfrac{\\pi}{2}' : '\\dfrac{3\\pi}{2}') + '+2j\\pi$，每對相加 $=' + (kpos ? '\\pi+4j\\pi' : '3\\pi+4j\\pi') + '$，最後除以 $' + b + '$。', p: { b: b, L: L, kpos: kpos, cnt: cnt, sum: [sumX.n, sumX.d] } };
+  };
+
+  /* L3-5　絕對值／平方／乘積的週期相加 */
+  var PERT = [
+    { e: function (b) { return '|\\sin ' + b + '|+|\\cos ' + b + '|'; }, P: [1, 2], id: 'abs+abs' },
+    { e: function (b) { return '|\\sin ' + b + '|-|\\cos ' + b + '|'; }, P: [1, 1], id: 'abs-abs' },
+    { e: function (b) { return '|\\sin ' + b + '\\cos ' + b + '|'; }, P: [1, 2], id: 'absprod' },
+    { e: function (b) { return '|\\sin ' + b + '|+\\cos ' + b; }, P: [2, 1], id: 'abs+cos' },
+    { e: function (b) { return '\\sin^2 ' + b; }, P: [1, 1], id: 'sin2' },
+    { e: function (b) { return '|\\tan ' + b + '|'; }, P: [1, 1], id: 'abstan' },
+    { e: function (b) { return '|\\sin ' + b + '|'; }, P: [1, 1], id: 'abssin' },
+    { e: function (b) { return '\\sin ' + b + '+|\\sin ' + b + '|'; }, P: [2, 1], id: 'sin+abs' },
+    { e: function (b) { return '\\sin ' + b + '\\cos ' + b; }, P: [1, 1], id: 'prod' },
+    { e: function (b) { return '|\\sin ' + b + '+\\cos ' + b + '|'; }, P: [1, 1], id: 'abssum' },
+    { e: function (b) { return '\\cos^2 ' + b + '-\\sin^2 ' + b; }, P: [1, 1], id: 'cos2' }
+  ];
+  L3.absPeriodSum = function (r) {
+    var i1 = r.int(0, PERT.length - 1), i2 = r.int(0, PERT.length - 1); while (i2 === i1) i2 = r.int(0, PERT.length - 1);
+    var b1 = r.pick([1, 1, 2, 3]), b2 = r.pick([1, 1, 2, 3]);
+    function bT(b) { return b === 1 ? 'x' : b + 'x'; }
+    var P1 = Fr.div(F(PERT[i1].P[0], PERT[i1].P[1]), F(b1)), P2 = Fr.div(F(PERT[i2].P[0], PERT[i2].P[1]), F(b2)), S = Fr.add(P1, P2);
+    return { q: '設 ' + T('f(x)=' + PERT[i1].e(bT(b1))) + '、' + T('g(x)=' + PERT[i2].e(bT(b2))) + ' 的最小正週期分別為 ' + T('p') + '、' + T('q') + '，求 ' + T('p+q') + '。',
+      a: T('p+q=' + piTex(S.n, S.d)) + '（' + T('p=' + piTex(P1.n, P1.d)) + '、' + T('q=' + piTex(P2.n, P2.d)) + '）',
+      h: '把 $x$ 換成 $x+\\dfrac{\\pi}{2b}$ 試「$|\\sin|$ 與 $|\\cos|$ 互換」；絕對值把負半波翻上來、平方降冪成 $2bx$、乘積用倍角——先各自找出 $p$、$q$ 再相加。', p: { t1: PERT[i1].id, b1: b1, t2: PERT[i2].id, b2: b2, P1: [P1.n, P1.d], P2: [P2.n, P2.d], sum: [S.n, S.d] } };
+  };
+
+  /* L3-6　tan 與一個坐標的正負 → 定象限，再判斷五個敘述（多選） */
+  L3.quadTanPoint = function (r) {
+    var pq = r.pick([[2, 1], [3, 1], [1, 2], [1, 3], [3, 2], [2, 3], [4, 3], [3, 4]]), tsg = r.sign();
+    var coord = r.pick(['x', 'y']), csg = r.sign();
+    /* tanθ = tsg·pq[0]/pq[1]；由 coord 的正負決定象限 */
+    var quad = coord === 'y' ? (csg > 0 ? (tsg > 0 ? 1 : 2) : (tsg > 0 ? 3 : 4)) : (csg > 0 ? (tsg > 0 ? 1 : 4) : (tsg > 0 ? 3 : 2));
+    var xs = (quad === 1 || quad === 4) ? 1 : -1, ys = (quad <= 2) ? 1 : -1;
+    var R = Math.hypot(pq[0], pq[1]), s = ys * pq[0] / R, c = xs * pq[1] / R, th = Math.atan2(s, c);
+    var q2 = quadrant(((th * 2 * 180 / Math.PI) % 360 + 360) % 360);
+    var pool = [
+      { id: 'sgtc', tex: '\\sin\\theta\\gt\\cos\\theta', v: s > c },
+      { id: 'same2', txt: '標準位置角 $\\theta$ 與 $2\\theta$ 的終邊在同一象限', v: q2 === quad },
+      { id: 'cos2neg', tex: '\\cos2\\theta\\lt0', v: c * c - s * s < 0 },
+      { id: 'sinhalf', tex: '\\sin\\dfrac{\\theta}{2}\\gt0', v: false, fixed: true },
+      { id: 'halfsin', tex: '\\dfrac12\\sin\\theta\\lt\\tan\\dfrac{\\theta}{2}', v: s / 2 < s / (1 + c) },
+      { id: 'sin2pos', tex: '\\sin2\\theta\\gt0', v: 2 * s * c > 0 },
+      { id: 'tan2neg', tex: '\\tan2\\theta\\lt0', v: (2 * s * c) / (c * c - s * s) < 0 },
+      { id: 'sumpos', tex: '\\sin\\theta+\\cos\\theta\\gt0', v: s + c > 0 },
+      { id: 'absgt', tex: '|\\sin\\theta|\\gt|\\cos\\theta|', v: Math.abs(s) > Math.abs(c) }
+    ];
+    var chosen = r.shuffle(pool).slice(0, 5), ans = [];
+    var nT = chosen.filter(function (o) { return o.v; }).length;
+    if (nT === 0 || nT === 5) return L3.quadTanPoint(makeRng(r.int(1, 1e6)));
+    var q = '廣義角 ' + T('\\theta') + ' 的頂點為原點、始邊為 ' + T('x') + ' 軸正向，' + T('\\tan\\theta=' + fracTex(tsg * pq[0], pq[1])) + '，且終邊上一點 ' + T('P') + ' 的 ' + T(coord) + ' 坐標為 ' + T(csg > 0 ? r.pick([1, 2, 3]) : -r.pick([1, 2, 3])) + '。選出正確的選項：<br>' +
+      chosen.map(function (o, i) { if (o.v) ans.push(i + 1); return '(' + (i + 1) + ') ' + (o.tex ? T(o.tex) : o.txt); }).join('　');
+    return { q: q, a: '(' + ans.join(')(') + ')', h: '$\\tan\\theta' + (tsg > 0 ? '\\gt0' : '\\lt0') + '$ 且 $' + coord + (csg > 0 ? '\\gt0' : '\\lt0') + '$ ⟹ 第' + QN[quad] + '象限，取 $P(' + (xs * pq[1]) + ',' + (ys * pq[0]) + ')$、$r=\\sqrt{' + (pq[0] * pq[0] + pq[1] * pq[1]) + '}$ 逐項算；$\\dfrac{\\theta}{2}$ 的象限因 $\\theta$ 可加減 $2\\pi$ 而不確定，$\\tan\\dfrac{\\theta}{2}=\\dfrac{\\sin\\theta}{1+\\cos\\theta}$ 則是確定的。', p: { p: pq[0], q: pq[1], tsg: tsg, coord: coord, csg: csg, quad: quad, ids: chosen.map(function (o) { return o.id; }), ans: ans } };
+  };
+
+  /* 齊次二次式的排版：p cos²x + q sin x cos x + r sin²x（q 可為 √3 型） */
+  function homogTex(pc, qn, qS3, rs) {
+    var parts = [], first = true;
+    if (pc !== 0) { parts.push(coefTex(pc, false, first) + '\\cos^2x'); first = false; }
+    if (qn !== 0) { parts.push(coefTex(qn, qS3, first) + '\\sin x\\cos x'); first = false; }
+    if (rs !== 0) { parts.push(coefTex(rs, false, first) + '\\sin^2x'); first = false; }
+    return parts.join('');
+  }
+  /* L3-7　齊次式方程 → 降冪成 2x、疊合、在 (0,π) 解 */
+  var SINV = { 2: [2, 10], '-2': [14, 22], 4: [6], '-4': [18], 0: [0, 12], 3: [3, 9], '-3': [15, 21] };   /* v 代碼 → sin u = v 的 u（K 單位，[0,24)）；2=½, 4=1, 3=√2/2 */
+  var VTEX = { 2: '\\dfrac12', '-2': '-\\dfrac12', 4: '1', '-4': '-1', 0: '0', 3: '\\dfrac{\\sqrt2}{2}', '-3': '-\\dfrac{\\sqrt2}{2}' };
+  L3.homogEq = function (r) {
+    var rows = COMB.filter(function (row) { return Math.abs(row[1]) === 1; }), row = r.pick(rows), m = r.pick([1, 1, 2]);
+    var aS3 = Math.abs(row[0]) === 3, aSg = row[0] < 0 ? -1 : 1, bSg = row[1] < 0 ? -1 : 1;
+    var A = aSg * m, B = bSg * m;                                       /* A sin2x（A 可帶√3）+ B cos2x */
+    var rs = r.int(-2, 2), pc = rs + 2 * B, qn = 2 * A;                 /* p−r = 2B, q = 2A */
+    var R2 = row[2] * m * m, thK = row[3] * 12 / row[4];
+    var vcode = R2 === 2 * m * m ? r.pick([3, -3]) : r.pick([2, -2, 4, -4, 0]);
+    var Cv = { 2: m, '-2': -m, 4: 2 * m, '-4': -2 * m, 0: 0, 3: m, '-3': -m }[vcode];     /* C = √R2·v */
+    var d = Cv + (pc + rs) / 2;
+    var sols = [];
+    SINV[vcode].forEach(function (u0) { for (var n = -1; n <= 1; n++) { var u = u0 + 24 * n; if (u > thK && u < thK + 24) sols.push(u - thK); } });
+    sols.sort(function (x, y) { return x - y; });
+    if (!sols.length) return L3.homogEq(makeRng(r.int(1, 1e6)));
+    var solT = sols.map(function (u) { return piTex(u, 24); }).join(',\\ ');
+    return { q: '設 ' + T('0\\lt x\\lt\\pi') + '，解方程式 ' + T(homogTex(pc, qn, aS3, rs) + '=' + d) + '。', a: T('x=' + solT),
+      h: '$\\cos^2x=\\dfrac{1+\\cos2x}{2}$、$\\sin^2x=\\dfrac{1-\\cos2x}{2}$、$2\\sin x\\cos x=\\sin2x$ 全部降冪，整理成 $' + coefTex(A, aS3, true) + '\\sin2x' + coefTex(B, false, false) + '\\cos2x=' + Cv + '$，疊合成 $' + sqrtTex(R2) + '\\sin\\left(2x+' + piTex(thK, 12) + '\\right)=' + Cv + '$，注意 $2x+' + piTex(thK, 12) + '$ 的範圍是開區間。',
+      p: { aS3: aS3, A: A, B: B, pc: pc, qn: qn, rs: rs, d: d, R2: R2, thK: thK, vcode: vcode, sols: sols } };
+  };
+
+  /* L3-8　分式相減／相加 → 通分，分子疊合、分母倍角 */
+  var FRP = [{ a: [1, true], b: [1, false], R2: 4, phi: 30 }, { a: [1, false], b: [1, true], R2: 4, phi: 60 }, { a: [1, false], b: [1, false], R2: 2, phi: 45 }];
+  L3.fracSubCombine = function (r) {
+    var pr = r.pick(FRP), m = r.pick([1, 2, 3]), form = r.pick(['-', '+']), guard = 0, alpha, val, cand;
+    var av = (pr.a[1] ? SQ3 : 1), bv = (pr.b[1] ? SQ3 : 1), R = Math.sqrt(pr.R2);
+    var alphas = form === '-' ? [(270 - pr.phi) / 3, (90 - pr.phi) / 3] : [(90 + pr.phi) / 3, (270 + pr.phi) / 3, (450 - pr.phi) / 3];
+    alphas = alphas.filter(function (a) { return a > 0 && a < 180 && a % 15 !== 0; });
+    while (guard++ < 10) {
+      alpha = r.pick(alphas);
+      var s = Math.sin(alpha * Math.PI / 180), c = Math.cos(alpha * Math.PI / 180);
+      val = m * av / s + (form === '-' ? -1 : 1) * m * bv / c;
+      cand = null;
+      [1, -1, 2, -2, 4, -4].forEach(function (k) { if (Math.abs(val - k * m * R) < 1e-9) cand = k; });
+      if (cand !== null) break;
+    }
+    if (cand === null) return L3.fracSubCombine(makeRng(r.int(1, 1e6)));
+    var af = F(alpha, 180), aT = piTex(af.n, af.d);
+    var ans = surdOver(cand * m, pr.R2, 1);
+    return { q: '求 ' + T('\\dfrac{' + coefTex(m, pr.a[1], true) + '}{\\sin\\frac{' + (af.n === 1 ? '' : af.n) + '\\pi}{' + af.d + '}}' + form + '\\dfrac{' + coefTex(m, pr.b[1], true) + '}{\\cos\\frac{' + (af.n === 1 ? '' : af.n) + '\\pi}{' + af.d + '}}') + ' 之值。',
+      a: T(ans), h: '$' + aT + '=' + alpha + '^\\circ$，通分後分子 $' + coefTex(m, pr.a[1], true) + '\\cos' + alpha + '^\\circ' + (form === '-' ? '-' : '+') + coefTex(m, pr.b[1], true) + '\\sin' + alpha + '^\\circ$ 可以疊合成 $' + sqrtTex(pr.R2 * m * m) + '\\cos(' + alpha + '^\\circ' + (form === '-' ? '+' : '-') + pr.phi + '^\\circ)$；分母 $\\sin' + alpha + '^\\circ\\cos' + alpha + '^\\circ=\\dfrac12\\sin' + (2 * alpha) + '^\\circ$，兩個角互補或互餘。', p: { aS3: pr.a[1], bS3: pr.b[1], m: m, form: form, alpha: alpha, R2: pr.R2, k: cand } };
+  };
+
+  /* L3-9　cos(θ/2)−sin(θ/2) 已知 → 平方得 sinθ；頂角 = 180°−2θ */
+  L3.halfDiffIsos = function (r) {
+    var pq = r.pick([[2, 3], [1, 2], [3, 4], [1, 4], [3, 5], [4, 5], [5, 13], [1, 3], [2, 5]]), p = pq[0], q = pq[1];
+    var ask = r.pick(['tan', 'tan', 'sin', 'cos']);
+    var given = surdOver(1, (q - p) * q, q);                            /* √((q−p)/q) */
+    var ans;
+    if (ask === 'tan') { var den = q * q - 2 * p * p; ans = { c: -2 * p * (den < 0 ? -1 : 1), r: q * q - p * p, d: Math.abs(den) }; }
+    else if (ask === 'sin') ans = { c: 2 * p, r: q * q - p * p, d: q * q };
+    else ans = { c: 2 * p * p - q * q, r: 1, d: q * q };
+    return { q: '等腰三角形的底角為 ' + T('\\theta') + '、頂角為 ' + T('\\varphi') + '，且 ' + T('\\cos\\dfrac{\\theta}{2}-\\sin\\dfrac{\\theta}{2}=' + given) + '，求 ' + T('\\' + ask + '\\varphi') + '。',
+      a: T('\\' + ask + '\\varphi=' + surd3(ans)), h: '平方：$1-\\sin\\theta=' + Fr.tex(F(q - p, q)) + '$ ⟹ $\\sin\\theta=' + Fr.tex(F(p, q)) + '$；底角是銳角，$\\cos\\theta=' + surdOver(1, q * q - p * p, q) + '$；$\\varphi=180^\\circ-2\\theta$ ⟹ $\\sin\\varphi=\\sin2\\theta$、$\\cos\\varphi=-\\cos2\\theta$、$\\tan\\varphi=-\\tan2\\theta$。', p: { p: p, q: q, ask: ask, ans: [ans.c, ans.r, ans.d] } };
+  };
+
+  /* 依 θ 的單位要求挑區間：unit=3（π/4 型）或 2（π/6 型）；scale=2 時 lo,hi 任意整數也行（u=2k 為偶數） */
+  function pickInterval(r, unit, scale) {
+    var step = scale === 2 ? (unit === 3 ? 3 : 1) : unit;
+    var lo = step * r.int(-4, 4), len = step * r.int(2, 5); if (scale === 2 && step === 1) len = r.int(3, 8);
+    return [lo, lo + len];
+  }
+  /* L3-10　sin x cos x 與 sin²x／cos²x 混合 → 降冪、疊合、區間最值 */
+  L3.sinCosMixRange = function (r) {
+    var rows = COMB.filter(function (row) { return Math.abs(row[1]) === 1; }), row = r.pick(rows), m = r.pick([1, 1, 2]);
+    var aS3 = Math.abs(row[0]) === 3, A = (row[0] < 0 ? -1 : 1) * m, B = (row[1] < 0 ? -1 : 1) * m;
+    var shape = r.pick(['pr', 'r', 'p']), rs = shape === 'pr' ? -B : shape === 'r' ? -2 * B : 0, pc = rs + 2 * B, qn = 2 * A;
+    var K = F(pc + rs, 2), R2 = row[2] * m * m, thK = row[3] * 12 / row[4];
+    var iv = pickInterval(r, row[4] === 4 ? 3 : 2, 2), lo = iv[0], hi = iv[1];
+    var ex = extremaOn(R2, thK, lo, hi, 2);
+    if (ex.flat) return L3.sinCosMixRange(makeRng(r.int(1, 1e6)));
+    return { q: '設 ' + T(kTex(lo) + '\\le x\\le' + kTex(hi)) + '，求 ' + T('f(x)=' + homogTex(pc, qn, aS3, rs)) + ' 的最大值與最小值。',
+      a: '最大值 ' + T(mixTex(K, ex.max.c, ex.max.r, ex.max.d)) + '（' + T('x=' + k24Tex(ex.maxX24)) + '），最小值 ' + T(mixTex(K, ex.min.c, ex.min.r, ex.min.d)) + '（' + T('x=' + k24Tex(ex.minX24)) + '）',
+      h: '降冪：$f(x)=' + coefTex(A, aS3, true) + '\\sin2x' + coefTex(B, false, false) + '\\cos2x' + (K.n === 0 ? '' : (K.n > 0 ? '+' : '') + Fr.tex(K)) + '=' + sqrtTex(R2) + '\\sin\\left(2x+' + piTex(thK, 12) + '\\right)' + (K.n === 0 ? '' : (K.n > 0 ? '+' : '') + Fr.tex(K)) + '$，再看 $2x+' + piTex(thK, 12) + '$ 跑過 $\\left[' + kTex(2 * lo + thK) + ',' + kTex(2 * hi + thK) + '\\right]$ 的哪一段。',
+      p: { aS3: aS3, A: A, B: B, pc: pc, qn: qn, rs: rs, lo: lo, hi: hi, R2: R2, thK: thK, K: [K.n, K.d], maxX24: ex.maxX24, minX24: ex.minX24, max: [ex.max.c, ex.max.r, ex.max.d], min: [ex.min.c, ex.min.r, ex.min.d] } };
+  };
+
+  /* L3-11　先展開再疊合，區間最值 */
+  L3.expandCombineRange = function (r) {
+    var fam = r.pick([1, 2, 3, 4]), m = r.pick([1, 1, 2]), sA = r.sign(), form = r.pick(['cos', 'sin']);
+    /* 展開 A·trig(x+φ1) 得 a1 sin x + b1 cos x，記為 {n, s3} */
+    var A, phiK, a1, b1, trig = 'sin';
+    if (fam === 1) { A = 2 * m * sA; phiK = 2; a1 = { n: m * sA, s3: true }; b1 = { n: m * sA, s3: false }; }
+    else if (fam === 2) { A = 2 * m * sA; phiK = 4; a1 = { n: m * sA, s3: false }; b1 = { n: m * sA, s3: true }; }
+    else if (fam === 3) { A = m * sA; phiK = 3; a1 = { n: m * sA, s3: false }; b1 = { n: m * sA, s3: false }; }     /* A 實際是 m√2 */
+    else { trig = 'cos'; A = 2 * m * sA; phiK = 4; a1 = { n: -m * sA, s3: true }; b1 = { n: m * sA, s3: false }; }
+    /* 加上 B·form x：讓對應的係數反號 */
+    var Bn, Bs3, a, b;
+    if (form === 'cos') { Bn = -2 * b1.n; Bs3 = b1.s3; a = a1; b = { n: -b1.n, s3: b1.s3 }; }
+    else { Bn = -2 * a1.n; Bs3 = a1.s3; a = { n: -a1.n, s3: a1.s3 }; b = b1; }
+    var row = combRow(a.s3, a.n < 0 ? -1 : 1, b.s3, b.n < 0 ? -1 : 1);
+    if (!row) return L3.expandCombineRange(makeRng(r.int(1, 1e6)));
+    var R2 = row[2] * m * m, thK = row[3] * 12 / row[4];
+    var iv = pickInterval(r, row[4] === 4 ? 3 : 2, 1), lo = iv[0], hi = iv[1];
+    var ex = extremaOn(R2, thK, lo, hi, 1);
+    if (ex.flat) return L3.expandCombineRange(makeRng(r.int(1, 1e6)));
+    var AT = fam === 3 ? ((Math.abs(A) === 1 ? '' : Math.abs(A)) + '\\sqrt2') : String(Math.abs(A));
+    var fT = (A < 0 ? '-' : '') + AT + '\\' + trig + '\\left(x+' + piTex(phiK, 12) + '\\right)' + coefTex(Bn, Bs3, false) + '\\' + form + ' x';
+    return { q: '設 ' + T('f(x)=' + fT) + '，' + T(kTex(lo) + '\\le x\\le' + kTex(hi)) + '。若 ' + T('f(x)') + ' 的最大值為 ' + T('M') + '、最小值為 ' + T('N') + '，求 ' + T('(M,N)') + '。',
+      a: T('(M,N)=\\left(' + surd3(ex.max) + ',' + surd3(ex.min) + '\\right)') + '（' + T('x=' + k24Tex(ex.maxX24)) + ' 取最大、' + T('x=' + k24Tex(ex.minX24)) + ' 取最小）',
+      h: '先把 $' + AT + '\\' + trig + '\\left(x+' + piTex(phiK, 12) + '\\right)$ 用和角展開，合併後 $f(x)=' + coefTex(a.n, a.s3, true) + '\\sin x' + coefTex(b.n, b.s3, false) + '\\cos x=' + sqrtTex(R2) + '\\sin\\left(x' + (thK < 0 ? '-' : '+') + piTex(Math.abs(thK), 12) + '\\right)$，再看 $x' + (thK < 0 ? '-' : '+') + piTex(Math.abs(thK), 12) + '$ 跑過 $\\left[' + kTex(lo + thK) + ',' + kTex(hi + thK) + '\\right]$ 的哪一段。',
+      p: { fam: fam, m: m, sA: sA, form: form, Bn: Bn, Bs3: Bs3, lo: lo, hi: hi, R2: R2, thK: thK, maxX24: ex.maxX24, minX24: ex.minX24, max: [ex.max.c, ex.max.r, ex.max.d], min: [ex.min.c, ex.min.r, ex.min.d] } };
+  };
+
+  /* L3-12　tanA、tanB 是兩根 ＋ 第三角已知 → tan(A+B) = −tanC */
+  L3.tanRootsTriangle = function (r) {
+    var guard = 0;
+    while (guard++ < 60) {
+      var p = r.pick([-3, -2, -1, 1, 2, 3]), q = r.int(-3, 3), rr = r.pick([-3, -2, -1, 1, 2, 3]), s = r.int(-2, 2), C = r.pick([45, 135]), t = C === 45 ? 1 : -1;
+      if (p === t * rr) continue;
+      var a = F(t * (s - 1) - q, p - t * rr);
+      var av = Fr.toNum(a), S = p * av + q, P = rr * av + s, disc = S * S - 4 * P;
+      if (disc <= 1e-9) continue;
+      var x1 = (S - Math.sqrt(disc)) / 2, x2 = (S + Math.sqrt(disc)) / 2;
+      var A1 = Math.atan(x1) * 180 / Math.PI, A2 = Math.atan(x2) * 180 / Math.PI; if (A1 < 0) A1 += 180; if (A2 < 0) A2 += 180;
+      if (Math.abs(A1 + A2 + C - 180) > 1e-6) continue;
+      var pT = (Math.abs(p) === 1 ? '' : Math.abs(p)) + 'a', qT = q === 0 ? '' : (p > 0 ? signed(q) : signed(-q));
+      var cT = (Math.abs(rr) === 1 ? '' : Math.abs(rr)) + 'a' + (s === 0 ? '' : (rr > 0 ? signed(s) : signed(-s)));
+      var polyT = 'x^2' + (p > 0 ? '-' : '+') + '(' + pT + qT + ')x' + (rr > 0 ? '+' : '-') + (s === 0 ? cT : '(' + cT + ')') + '=0';
+      return { q: '在 ' + T('\\triangle ABC') + ' 中，' + T('\\tan A') + '、' + T('\\tan B') + ' 為 ' + T(polyT) + ' 的兩根，且 ' + T('\\angle C=' + C + '^\\circ') + '，求 ' + T('a') + '。',
+        a: T('a=' + Fr.tex(a)), h: '$A+B=180^\\circ-C$ ⟹ $\\tan(A+B)=-\\tan C=' + (-t) + '$；根與係數：$\\tan A+\\tan B=' + pT + qT + '$、$\\tan A\\tan B=' + (Math.abs(rr) === 1 ? (rr < 0 ? '-' : '') : rr) + 'a' + (s === 0 ? '' : signed(s)) + '$，代入 $\\dfrac{\\text{和}}{1-\\text{積}}=' + (-t) + '$ 解一次方程。', p: { p: p, q: q, r: rr, s: s, C: C, ans: [a.n, a.d] } };
+    }
+    return L3.tanRootsTriangle(makeRng(r.int(1, 1e6)));
+  };
+
+  /* L3-13　兩式平方相加，交叉項是 sin(α+β) 或 cos(α−β) */
+  var VALS = [{ t: '1', c: 1, r: 1, d: 1 }, { t: '\\sqrt2', c: 1, r: 2, d: 1 }, { t: '\\sqrt3', c: 1, r: 3, d: 1 }, { t: '\\dfrac12', c: 1, r: 1, d: 2 }, { t: '\\dfrac32', c: 3, r: 1, d: 2 }, { t: '\\dfrac{\\sqrt3}{2}', c: 1, r: 3, d: 2 }, { t: '\\dfrac{\\sqrt2}{2}', c: 1, r: 2, d: 2 }, { t: '0', c: 0, r: 1, d: 1 }, { t: '\\dfrac{\\sqrt6}{2}', c: 1, r: 6, d: 2 }, { t: '\\dfrac{\\sqrt5}{2}', c: 1, r: 5, d: 2 }, { t: '-1', c: -1, r: 1, d: 1 }, { t: '-\\dfrac12', c: -1, r: 1, d: 2 }, { t: '-\\sqrt2', c: -1, r: 2, d: 1 }];
+  L3.crossSquareSum = function (r) {
+    var guard = 0;
+    while (guard++ < 50) {
+      var vm = r.pick(VALS), vn = r.pick(VALS);
+      var m2 = F(vm.c * vm.c * vm.r, vm.d * vm.d), n2 = F(vn.c * vn.c * vn.r, vn.d * vn.d), tot = Fr.add(m2, n2);
+      if (tot.n < 0 || Fr.toNum(tot) > 4 || tot.d !== 1) continue;
+      var kind = r.pick(['ab+', 'ab-', 'ab+']), ask;
+      var base = kind === 'ab-' ? Fr.div(Fr.sub(F(2), tot), F(2)) : Fr.div(Fr.sub(tot, F(2)), F(2));   /* sin(α+β) 或 cos(α−β)／cos(α+β) */
+      var eqs, target, ansF;
+      if (kind === 'ab+') { eqs = '\\cos\\alpha+\\sin\\beta=' + vm.t + '\\\\ \\sin\\alpha+\\cos\\beta=' + vn.t; ask = r.pick(['\\sin(\\alpha+\\beta)', '\\cos(2\\alpha+2\\beta)']); }
+      else if (kind === 'ab-') { eqs = '\\sin\\alpha+\\sin\\beta=' + vm.t + '\\\\ \\cos\\alpha-\\cos\\beta=' + vn.t; ask = r.pick(['\\cos(\\alpha+\\beta)', '\\cos(2\\alpha+2\\beta)']); }
+      else { kind = 'diff'; eqs = '\\cos\\alpha+\\cos\\beta=' + vm.t + '\\\\ \\sin\\alpha+\\sin\\beta=' + vn.t; ask = r.pick(['\\cos(\\alpha-\\beta)', '\\cos(2\\alpha-2\\beta)']); }
+      var dbl = ask.indexOf('2') >= 0;
+      ansF = dbl ? (ask.indexOf('+2') >= 0 && kind === 'ab+' ? Fr.sub(F(1), Fr.mul(F(2), Fr.mul(base, base))) : Fr.sub(Fr.mul(F(2), Fr.mul(base, base)), F(1))) : base;
+      return { q: '若 ' + T('\\begin{cases}' + eqs + '\\end{cases}') + '，求 ' + T(ask) + '。', a: T(ask + '=' + Fr.tex(ansF)),
+        h: '兩式平方相加：$\\sin^2+\\cos^2$ 各收成 $1$，交叉項恰是 $2' + (kind === 'ab+' ? '\\sin(\\alpha+\\beta)' : kind === 'ab-' ? '\\cdot(-\\cos(\\alpha+\\beta))' : '\\cos(\\alpha-\\beta)') + '$：$2+2\\cdot(\\ldots)=' + Fr.tex(tot) + '$' + (dbl ? '；再用 $\\cos2u=1-2\\sin^2u=2\\cos^2u-1$。' : '。'), p: { kind: kind, m: [vm.c, vm.r, vm.d], n: [vn.c, vn.r, vn.d], ask: ask, base: [base.n, base.d], ans: [ansF.n, ansF.d] } };
+    }
+    return L3.crossSquareSum(makeRng(r.int(1, 1e6)));
+  };
+
+  /* L3-14　大角度的誘導公式：先減 2π 的倍數 */
+  L3.reduceBigAngle = function (r) {
+    var kk = r.pick([7, 9, 11, 13, 15, 17, 19, 21, 23, 25]) * r.pick([1, 1, -1]), fn = r.pick(['sin', 'cos']), sg = r.sign();
+    var pq = r.pick([[1, 3], [1, 2], [2, 1], [3, 1], [2, 3], [3, 2], [3, 4], [4, 3]]), tsg = r.sign();
+    var rng = r.pick([[1, 3], [2, 4], [0, 2], [-1, 1]]);              /* θ 的範圍（π/2 單位） */
+    var quads = { '1,3': tsg > 0 ? 3 : 2, '2,4': tsg > 0 ? 3 : 4, '0,2': tsg > 0 ? 1 : 2, '-1,1': tsg > 0 ? 1 : 4 };
+    var quad = quads[rng.join(',')];
+    var xs = (quad === 1 || quad === 4) ? 1 : -1, ys = quad <= 2 ? 1 : -1;
+    var kmod = ((kk % 4) + 4) % 4, res;                               /* fn(kπ/2 + sg·θ) */
+    var sinN = ys * pq[0], cosN = xs * pq[1], rr = pq[0] * pq[0] + pq[1] * pq[1];
+    /* 化簡：k 偶數 → 同名；奇數 → 互換；符號用一個「θ 當第一象限」的代表角數值判 */
+    var th0 = 0.3, big = kk * Math.PI / 2 + sg * th0, v0 = { sin: Math.sin, cos: Math.cos }[fn](big);
+    var useSin = (kmod % 2 === 0) ? (fn === 'sin') : (fn === 'cos');
+    var ref = useSin ? Math.sin(th0) : Math.cos(th0), sign = Math.abs(v0 - ref) < 1e-9 ? 1 : -1;
+    var numer = sign * (useSin ? sinN : cosN);
+    var ans = surdOver(numer, rr, rr);
+    var rT = function (k) { return k === 0 ? '0' : piTex(k, 2); };
+    return { q: '設 ' + T(rT(rng[0]) + '\\lt\\theta\\lt' + rT(rng[1])) + '，' + T('\\tan\\theta=' + fracTex(tsg * pq[0], pq[1])) + '，求 ' + T('\\' + fn + '\\left(' + piTex(kk, 2) + (sg > 0 ? '+' : '-') + '\\theta\\right)') + '。',
+      a: T(ans), h: '$' + piTex(kk, 2) + '=' + piTex(kk - (kmod === 3 ? 3 : kmod), 2).replace(/^0$/, '0') + '+' + (kmod === 0 ? '0' : piTex(kmod, 2)) + '$，先丟掉 $2\\pi$ 的倍數，剩 $\\' + fn + '\\left(' + (kmod === 0 ? '' : piTex(kmod, 2) + (sg > 0 ? '+' : '-')) + (kmod === 0 && sg < 0 ? '-' : '') + '\\theta\\right)=' + (sign < 0 ? '-' : '') + (useSin ? '\\sin' : '\\cos') + '\\theta$；再由 $\\tan\\theta' + (tsg > 0 ? '\\gt0' : '\\lt0') + '$ 與範圍定第' + QN[quad] + '象限，$r=\\sqrt{' + rr + '}$。', p: { k: kk, fn: fn, sg: sg, p: pq[0], q: pq[1], tsg: tsg, rng: rng, quad: quad, ans: ans } };
+  };
+
+  /* L3-15　週期模型（潮汐）：代入兩個已知時刻解 a、b，再代目標時刻 */
+  L3.tideModel = function (r) {
+    var TT = r.pick([12, 24]), phiK = r.pick([0, 2, 4, 6]), a = r.pick([2, 4, 6, 8]), b = r.int(a + 2, 16);
+    var NICE = { 0: 1, 4: 0.5, 8: -0.5, 12: -1, 16: -0.5, 20: 0.5, 6: 0, 18: 0 };
+    var times = [];
+    for (var x = 0; x <= 23; x++) { var u = (x * 12 / TT + phiK); if (u !== Math.floor(u)) continue; u = ((u % 24) + 24) % 24; if (u in NICE) times.push({ x: x, c: NICE[u] }); }
+    var pick = r.shuffle(times).slice(0, 3), guard = 0;
+    while ((pick.length < 3 || pick[0].c === pick[1].c) && guard++ < 20) pick = r.shuffle(times).slice(0, 3);
+    if (pick.length < 3 || pick[0].c === pick[1].c) return L3.tideModel(makeRng(r.int(1, 1e6)));
+    pick.sort(function (u, v) { return u.x - v.x; });
+    var known = r.shuffle(pick), t1 = known[0], t2 = known[1], t3 = known[2];
+    if (t1.c === t2.c) { var tmp = t2; t2 = t3; t3 = tmp; }
+    var d = function (t) { return a * t.c + b; };
+    var hh = function (x) { return (x < 10 ? '0' : '') + x + '{:}00'; };
+    var argT = '\\dfrac{' + (TT === 12 ? '' : '') + 'x}{' + TT + '}\\pi' + (phiK === 0 ? '' : '+' + piTex(phiK, 12));
+    return { q: '某海灣的水深 ' + T('d(x)=a\\cos\\left(' + argT + '\\right)+b') + '（' + T('x') + ' 為時刻，單位：時，' + T('a\\gt0') + '）。若當日 ' + T(hh(t1.x)) + ' 水深 ' + T(d(t1)) + ' 公尺、' + T(hh(t2.x)) + ' 水深 ' + T(d(t2)) + ' 公尺，則當日 ' + T(hh(t3.x)) + ' 的水深為多少公尺？',
+      a: T(d(t3)) + ' 公尺（' + T('a=' + a + ',\\ b=' + b) + '）', h: '把 $x=' + t1.x + ',' + t2.x + ',' + t3.x + '$ 代進括號，分別是 $' + [t1, t2, t3].map(function (t) { return piTex(((t.x * 12 / TT + phiK) % 24 + 24) % 24, 12); }).join('$、$') + '$，都是特殊角；兩個已知時刻給 $a\\cos(\\cdot)+b$ 的兩條一次方程，解出 $a,b$ 再代第三個時刻。', p: { T: TT, phiK: phiK, a: a, b: b, x1: t1.x, d1: d(t1), x2: t2.x, d2: d(t2), x3: t3.x, d3: d(t3) } };
+  };
+
+  var META_L3 = [['radEstimate', '弧度值估大小（多選）'], ['periodFromHighLow', '最高最低點的水平距離 → 週期'], ['tanShiftCoincide', 'tan 平移後重合'], ['rootSumSin', 'sin bx=k 在 (0,Lπ) 的解數與總和'], ['absPeriodSum', '絕對值／平方的週期相加'], ['quadTanPoint', 'tan 與坐標正負定象限（多選）'], ['homogEq', '齊次式方程：降冪、疊合'], ['fracSubCombine', '分式通分後疊合'], ['halfDiffIsos', 'cos(θ/2)−sin(θ/2) 已知的等腰三角形'], ['sinCosMixRange', 'sin x cos x 與平方混合的區間最值'], ['expandCombineRange', '先展開再疊合的區間最值'], ['tanRootsTriangle', '兩根為 tanA、tanB 的三角形'], ['crossSquareSum', '兩式平方相加'], ['reduceBigAngle', '大角度的誘導公式'], ['tideModel', '週期模型（潮汐）']];
+  /* 固定題 L3-n 對應的類似題型 */
+  var L3_FIX = { 'L3-1': 'radEstimate', 'L3-2': 'periodFromHighLow', 'L3-3': 'tanShiftCoincide', 'L3-4': 'rootSumSin', 'L3-5': 'absPeriodSum', 'L3-6': 'quadTanPoint', 'L3-7': 'homogEq', 'L3-8': 'fracSubCombine', 'L3-9': 'halfDiffIsos', 'L3-10': 'sinCosMixRange', 'L3-11': 'expandCombineRange', 'L3-12': 'tanRootsTriangle', 'L3-13': 'crossSquareSum', 'L3-14': 'reduceBigAngle', 'L3-15': 'tideModel' };
+
+  var META = { L1: META_L1, L2: META_L2, L3: META_L3 };
 
   /* ── HTML 安全：$…$ 裡的 < > 改成 \lt \gt ── */
   function escMath(s) {
@@ -528,7 +892,7 @@
       group[k] = function (r) { var o = f(r); o.q = escMath(o.q); o.a = escMath(o.a); o.h = escMath(o.h); return o; };
     });
   }
-  wrapAll(L1); wrapAll(L2);
+  wrapAll(L1); wrapAll(L2); wrapAll(L3);
 
-  return { makeRng: makeRng, L1: L1, L2: L2, META: META, _util: { F: F, Fr: Fr, tv: tv, piTex: piTex, exact15: exact15, countRoots: countRoots } };
+  return { makeRng: makeRng, L1: L1, L2: L2, L3: L3, L3_FIX: L3_FIX, META: META, _util: { F: F, Fr: Fr, tv: tv, piTex: piTex, exact15: exact15, countRoots: countRoots } };
 }));
