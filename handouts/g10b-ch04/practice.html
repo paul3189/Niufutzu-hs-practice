@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第四章 三角比 ── 分級練習本｜高一下</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第四章 三角比 ── 分級練習本</h1>
+  <div class="sub">高一下・配合主講義 第 1 節 銳角三角比、第 2 節 廣義角與極坐標、第 3 節 正弦定理與餘弦定理、第 4 節 三角形的面積、第 5 節 正射影與三角測量。五個程度、一本練習本：L1、L2 的題目可以無限生成，L3–L5 是各校段考、大考、科學班與教甄的固定題。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・科學班・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（11,750 題抽樣，全部用分數與根式精確重算一次）；固定題全數人工＋電腦重算。角度一律用「度」；<b>弧度、和差角、倍角、半角、疊合都是高二上的內容</b>，本書全部不用——需要 $\sin75°$、$\tan15°$ 的地方一律改走餘弦定理或 $15°$-$75°$-$90°$ 直角三角形的邊長比。</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>三個比值會搞混、看到 $210°$ 不知道往哪個象限畫、餘弦定理三個平方項不知道哪個要減的同學。</div>
+  <div><b>目標</b>30 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+</div>
+
+<h3 class="sec">1 銳角三角比</h3>
+<div class="must">先要會：<b>對／斜、鄰／斜、對／鄰</b>——先問「哪個角、哪條邊對它」再寫比值；<b>$30°$、$45°$、$60°$ 的值是畫出來的</b>（$1:\sqrt3:2$、$1:1:\sqrt2$ 兩個直角三角形）；<b>同角關係 $\sin^2\theta+\cos^2\theta=1$、$\tan\theta=\dfrac{\sin\theta}{\cos\theta}$</b>，知道一個就知道全部（畫直角三角形最快）；<b>$\sin\theta\pm\cos\theta$ 看到就平方</b>；<b>餘角 $\sin(90°-\theta)=\cos\theta$</b> 把長串頭尾配對；<b>仰角測高：已知鄰邊求對邊用 $\tan$ 乘、已知對邊求鄰邊用 $\tan$ 除</b>，兩次測量就列兩條式子相減。</div>
+<div class="gen-grid" data-tier="L1" data-keys="triDef,specialEval,sinToCos,sumProdAcute,coAngleSum,elevOne,elevTwo"></div>
+<div class="fixset" data-tier="L1" data-keys="triDef,specialEval,sinToCos,sumProdAcute,coAngleSum,elevOne,elevTwo" data-seed="9101"></div>
+
+<h3 class="sec">2 廣義角與極坐標</h3>
+<div class="must">先要會：<b>同界角加減 $360°$</b>，落在 $0°\sim360°$ 再看象限；<b>終邊上一點 $(x,y)$：$r=\sqrt{x^2+y^2}$ 永遠為正</b>，$\sin=\dfrac yr$、$\cos=\dfrac xr$、$\tan=\dfrac yx$；<b>「一全正、二正弦、三正切、四餘弦」</b>；<b>廣義角特殊值 $=$ 象限定號 $\times$ 參考角的值</b>；<b>$[r,\theta]\to(r\cos\theta,r\sin\theta)$、$(x,y)\to$ 先鎖象限再由 $|\tan|$ 找參考角</b>；<b>極坐標兩點：極角的差就是夾角</b>，距離用餘弦定理、面積用 $\dfrac12r_1r_2\sin$；<b>斜角 $\alpha$：$\tan\alpha=$ 斜率，$0°\le\alpha\lt180°$</b>，兩直線夾角就是斜角的差。</div>
+<div class="gen-grid" data-tier="L1" data-keys="coterminal,pointTrig,quadFind,reduceEval,polarConv,polarDist,slopeAngle"></div>
+<div class="fixset" data-tier="L1" data-keys="coterminal,pointTrig,quadFind,reduceEval,polarConv,polarDist,slopeAngle" data-seed="9201"></div>
+
+<h3 class="sec">3 正弦定理與餘弦定理</h3>
+<div class="must">先要會：<b>正弦定理 $\dfrac a{\sin A}=\dfrac b{\sin B}=\dfrac c{\sin C}=2R$</b>——知道「一邊與它的對角」就有 $2R$；<b>餘弦定理 $a^2=b^2+c^2-2bc\cos A$：被減的那個平方項是「對邊」</b>；<b>SSS 求角：最大角對最大邊</b>，餘弦正／零／負 ⟹ 銳／直／鈍；<b>三角形存在：兩邊差 $\lt$ 第三邊 $\lt$ 兩邊和</b>，鈍角範圍分「誰是最大邊」兩段討論；<b>SSA 先算高 $h=b\sin A$</b>：$a\lt h$ 無解、$a=h$ 一解、$h\lt a\lt b$ 兩解、$a\ge b$ 一解。</div>
+<div class="gen-grid" data-tier="L1" data-keys="sineLaw,circumR,cosLawSide,cosLawAngle,sideRange,ssaCount"></div>
+<div class="fixset" data-tier="L1" data-keys="sineLaw,circumR,cosLawSide,cosLawAngle,sideRange,ssaCount" data-seed="9301"></div>
+
+<h3 class="sec">4 三角形的面積</h3>
+<div class="must">先要會：<b>面積 $=\dfrac12ab\sin C$（兩邊夾角）</b>，已知面積反求角要想「銳角、鈍角各一」；<b>海龍 $\sqrt{s(s-a)(s-b)(s-c)}$，$s$ 是半周長</b>；<b>面積是橋：$r=\dfrac Ks$、$R=\dfrac{abc}{4K}$</b>；<b>中線長 $\overline{AM}^2=\dfrac{2b^2+2c^2-a^2}{4}$</b>；<b>角平分線：分對邊成兩邊之比，長度用「面積切兩半」</b>；<b>圓內接四邊形：對角互補 ⟹ $\cos D=-\cos B$</b>，同一條對角線寫兩次餘弦定理。</div>
+<div class="gen-grid" data-tier="L1" data-keys="areaSAS,heronArea,inOutRadius,medianLen,bisectorLen,cyclicQuad"></div>
+<div class="fixset" data-tier="L1" data-keys="areaSAS,heronArea,inOutRadius,medianLen,bisectorLen,cyclicQuad" data-seed="9401"></div>
+
+<h3 class="sec">5 正射影與三角測量</h3>
+<div class="must">先要會：<b>正射影長 $=$ 長度 $\times|\cos\theta|$</b>（夾角超過 $90°$ 用補角）；<b>投影定理 $a=b\cos C+c\cos B$</b>——一條邊等於另外兩邊投影的和；<b>長方體：先算底面對角線，再算體對角線</b>，「線與面的夾角」在含高的直角三角形裡；<b>正四角錐兩個高：體高（到底面中心）與斜高（到底邊中點）</b>，側面與底面的夾角看斜高、側稜與底面的夾角看側稜。</div>
+<div class="gen-grid" data-tier="L1" data-keys="projLen,projTheorem,cuboid,pyramid"></div>
+<div class="fixset" data-tier="L1" data-keys="projLen,projTheorem,cuboid,pyramid" data-seed="9501"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
+  <div><b>目標</b>17 個段考主力型，依 25 份段考卷的出現率排序（餘弦定理 21 卷、正弦定理 21、極坐標 18、廣義角 17、三角形面積 15、同界角 13、外接圓 13、誘導公式 12、仰角 11、平方關係 10、海龍 10、解三角形 9、圓內接四邊形 9、三角測量 8、方位角 7、角平分線 7、面積比 7）。</div>
+  <div><b>通過標準</b>固定 12 題限時 40 分鐘做完，對 10 題以上。</div>
+</div>
+
+<h3 class="sec">廣義角與極坐標：定號、化簡、極坐標三角形、斜角</h3>
+<div class="must">段考 25 卷中<b>極坐標 18 卷、廣義角 17 卷、同界角 13 卷、誘導公式 12 卷、平方關係 10 卷</b>。招式：<b>象限＋和 ⟹ 平方得積，差的正負用象限定</b>；<b>誘導公式「奇變偶不變、符號看象限」</b>，四個因子逐項化成 $\pm\sin\theta$、$\pm\cos\theta$、$\pm\dfrac1{\tan\theta}$；<b>三個極坐標點 ⟹ 極點在內部時面積 $=$ 三塊 $\dfrac12r_ir_j\sin$ 相加</b>；<b>與已知直線夾 $\varphi$ ⟹ 斜角 $\pm\varphi$，斜角 $90°$ 是鉛直線</b>；<b>「範圍內有幾個解」⟹ 單位圓上每圈數終邊，範圍不是整圈時逐個列</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="quadSumProd,reduceSimplify,polarTriangle,lineAngle,sinCount"></div>
+
+<h3 class="sec">解三角形：sin 比、補角餘弦、SSA 兩解、判形狀</h3>
+<div class="must">段考 25 卷中<b>餘弦定理 21 卷、正弦定理 21 卷、解三角形 9 卷</b>。招式：<b>$\sin$ 比 $=$ 邊比，設 $pk,qk,rk$</b>，最大角對最大邊；<b>$D$ 在 $\overline{BC}$ 上 ⟹ $\cos\angle ADB=-\cos\angle ADC$，兩個三角形各寫一次餘弦定理</b>；<b>SSA 求第三邊 ⟹ 把它當未知數放進餘弦定理解二次方程，兩個正根就是兩解</b>；<b>判形狀一律「化成邊」</b>：$\sin A\to\dfrac a{2R}$、$\cos A\to\dfrac{b^2+c^2-a^2}{2bc}$，整理成因式相乘。</div>
+<div class="gen-grid" data-tier="L2" data-keys="sineRatio,cevianLen,ssaSolve,shapeJudge"></div>
+
+<h3 class="sec">面積與圓：海龍全套、三高、圓內接四邊形、角平分線、最短線段</h3>
+<div class="must">段考 25 卷中<b>三角形面積 15 卷、外接圓 13 卷、海龍 10 卷、圓內接四邊形 9 卷、角平分線 7 卷、面積比 7 卷</b>。招式：<b>海龍算出 $K$ 後 $r=\dfrac Ks$、$R=\dfrac{abc}{4K}$、高 $=\dfrac{2K}{\text{邊}}$ 一次全出</b>；<b>只給三高 ⟹ 邊與高成反比，設 $pk,qk,rk$，兩種面積算法相等解 $k$</b>；<b>$\sin$ 比＋內切圓半徑 ⟹ $r=\dfrac Ks$ 是 $k$ 的一次式</b>；<b>圓內接四邊形：對角互補解 $\cos B$、面積 $=\dfrac12(ab+cd)\sin B$、$R=\dfrac{\overline{AC}}{2\sin B}$</b>；<b>角平分線：分比 $=$ 兩邊比、長度用面積切兩半、$\triangle ABD$ 面積 $=$ 底邊比</b>；<b>面積條件 ⟹ $xy$ 定值，$\overline{PQ}^2\ge2xy(1-\cos A)$ 算幾取等，等號要檢查落在邊上</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="heronFull,heightsHeron,cyclicQuadFull,bisector,areaMinPQ"></div>
+
+<h3 class="sec">三角測量：三點仰角、方位角、正四角錐</h3>
+<div class="must">段考 25 卷中<b>仰角 11 卷、三角測量 8 卷、方位角 7 卷、直角三角形 7 卷</b>。招式：<b>三點共線＋中點 ⟹ 塔底到三點的距離 $\dfrac h{\tan}$，用中線長公式接起來</b>；<b>方位角 ⟹ 先畫俯視圖，把「北 $\theta$ 東」翻成三角形內角，正弦定理求水平距離，再乘 $\tan$（仰角）得高</b>；<b>正四角錐 ⟹ 兩個直角三角形：體高—半邊長—斜高、體高—半對角線—側稜</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="elevMedian,bearingHeight,pyramidSolve"></div>
+
+<h3 class="sec">L2 固定 12 題（列印用）</h3>
+<div class="fixset" data-tier="L2" data-keys="quadSumProd,cevianLen,heronFull,polarTriangle,sineRatio,cyclicQuadFull,ssaSolve,elevMedian,reduceSimplify,bisector,bearingHeight,heightsHeron" data-seed="9001" data-n="12"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過。</div>
+
+<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">直角三角形＋2sinA+sinB=2 → sinB=cosA（互餘），化成同一個角再用平方關係解二次方程</span><span class="src">成功高中 113下 填 7</span></div>
+<div class="fxq">$\triangle ABC$ 中 $\angle C=90°$，$a,b,c$ 分別為 $\angle A,\angle B,\angle C$ 的對邊，且 $2\sin A+\sin B=2$。求 $a:b:c$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3:4:5$</div>
+<div class="fxs"><div class="move">招式：$\angle A+\angle B=90°$ ⟹ $\sin B=\cos A$，條件變成 $2\sin A+\cos A=2$——只剩一個角。</div>
+令 $\sin A=s$，則 $\cos A=2-2s$，代入 $s^2+(2-2s)^2=1$ ⟹ $5s^2-8s+3=0$ ⟹ $s=\dfrac35$ 或 $1$。$s=1$ 會使 $\cos A=0$（$\angle B=0°$，不成三角形）⟹ $\sin A=\dfrac35$、$\cos A=\dfrac45$ ⟹ $a:b:c=\sin A:\cos A:1=3:4:5$。</div></div>
+
+<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">2cosθ=tanθ → 通分成 2cos²θ=sinθ，cos² 換成 1−sin²，得 sinθ 的二次方程，用 |sinθ|≤1 刷根</span><span class="src">北一女中 110下 填 7</span></div>
+<div class="fxq">若 $2\cos\theta=\tan\theta$，求 $\sin\theta$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{\sqrt{17}-1}{4}$</div>
+<div class="fxs"><div class="move">招式：$\tan\theta=\dfrac{\sin\theta}{\cos\theta}$ 通分 ⟹ $2\cos^2\theta=\sin\theta$ ⟹ $2(1-\sin^2\theta)=\sin\theta$。</div>
+$2\sin^2\theta+\sin\theta-2=0$ ⟹ $\sin\theta=\dfrac{-1\pm\sqrt{17}}{4}$；$-1\le\sin\theta\le1$ 只留 $\dfrac{\sqrt{17}-1}{4}\approx0.78$（另一根 $\approx-1.28$ 不合）。</div></div>
+
+<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">1/(1+tan5°)+…+1/(1+tan85°) → 互餘配對：1/(1+tan x)+1/(1+tan(90°−x))=1，中間 45° 那項是 ½</span><span class="src">高雄中學 114 期末 填 1</span></div>
+<div class="fxq">化簡 $\dfrac1{1+\tan5°}+\dfrac1{1+\tan15°}+\dfrac1{1+\tan25°}+\cdots+\dfrac1{1+\tan85°}$（共 $9$ 項，角度每次加 $10°$）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac92$</div>
+<div class="fxs"><div class="move">招式：$\tan(90°-x)=\dfrac1{\tan x}$ ⟹ $\dfrac1{1+\tan(90°-x)}=\dfrac{\tan x}{\tan x+1}$，與 $\dfrac1{1+\tan x}$ 相加恰為 $1$。</div>
+$5°$ 與 $85°$、$15°$ 與 $75°$、$25°$ 與 $65°$、$35°$ 與 $55°$ 配成 $4$ 對得 $4$；中間 $\dfrac1{1+\tan45°}=\dfrac12$ ⟹ 總和 $\dfrac92$。（與例題 4 的 $\sin^2$ 配對是同一個骨架。）</div></div>
+
+<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">誘導公式化簡（給範圍） → 270°±θ 換函數名、180°+θ 與 −θ 不換，逐項定號後相除</span><span class="src">建國中學 113下 填 8</span></div>
+<div class="fxq">若 $90°\lt\theta\lt180°$，求 $\dfrac{\sin(270°+\theta)}{\sin(270°-\theta)}+\dfrac{\tan(180°+\theta)}{\tan(-\theta)}-\dfrac{\cos(-\theta)}{\sin(90°+\theta)}$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-1$</div>
+<div class="fxs"><div class="move">招式：把 $\theta$ 當銳角畫圖定號：$\sin(270°+\theta)=-\cos\theta$、$\sin(270°-\theta)=-\cos\theta$、$\tan(180°+\theta)=\tan\theta$、$\tan(-\theta)=-\tan\theta$、$\cos(-\theta)=\cos\theta$、$\sin(90°+\theta)=\cos\theta$。</div>
+第一項 $=\dfrac{-\cos\theta}{-\cos\theta}=1$，第二項 $=\dfrac{\tan\theta}{-\tan\theta}=-1$，第三項 $=\dfrac{\cos\theta}{\cos\theta}=1$ ⟹ $1-1-1=-1$。範圍 $90°\lt\theta\lt180°$ 只是保證 $\cos\theta\ne0$、$\tan\theta\ne0$，答案與 $\theta$ 無關。</div></div>
+
+<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">(sin250°, cos250°) 化極坐標 → r=1；用餘角公式把 sin250° 寫成 cos(−160°)、cos250° 寫成 sin(−160°)，終邊就是 −160°</span><span class="src">北一女中 110下 填 8</span></div>
+<div class="fxq">直角坐標系與極坐標系的原點重合、極軸為 $x$ 軸正向。已知 $P$ 點的直角坐標為 $(\sin250°,\cos250°)$，求 $P$ 的極坐標 $[r,\theta]$（$r\gt0$，$0°\le\theta\lt360°$）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$[1,200°]$</div>
+<div class="fxs"><div class="move">招式：$r=\sqrt{\sin^2250°+\cos^2250°}=1$；要找 $\theta$ 使 $(\cos\theta,\sin\theta)=(\sin250°,\cos250°)$——用餘角公式把「$\sin$」變「$\cos$」。</div>
+$\sin250°=\cos(90°-250°)=\cos(-160°)$、$\cos250°=\sin(90°-250°)=\sin(-160°)$ ⟹ $P=(\cos(-160°),\sin(-160°))$ ⟹ $\theta=-160°$，最小正同界角 $200°$。檢查：$250°$ 在第三象限 ⟹ $\sin250°\lt0$、$\cos250°\lt0$ ⟹ $P$ 在第三象限，$200°$ 也在第三象限 ✓。</div></div>
+
+<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">四個極坐標點的長度比與面積比 → 極角的差就是夾角：餘弦定理算 AB、CD；面積比只看 r₁r₂sin(夾角)，sin100°=sin80°</span><span class="src">台中一中 113 期末 填 8</span></div>
+<div class="fxq">平面上 $O$ 為極點，四點的極坐標為 $A[10,40°]$、$B[16,100°]$、$C[5,200°]$、$D[3,320°]$。若 $\overline{AB}$ 的長為 $\overline{CD}$ 的 $p$ 倍，$\triangle OBC$ 的面積為 $\triangle OAD$ 面積的 $q$ 倍，求 $p+3q$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$10$</div>
+<div class="fxs"><div class="move">招式：$\angle AOB=60°$、$\angle COD=120°$、$\angle BOC=100°$、$\angle AOD=360°-320°+40°=80°$——夾角全部由極角相減得到。</div>
+$\overline{AB}^2=100+256-2(10)(16)\cos60°=196$ ⟹ $14$；$\overline{CD}^2=25+9-2(5)(3)\cos120°=49$ ⟹ $7$ ⟹ $p=2$。<br>
+$q=\dfrac{\frac12(16)(5)\sin100°}{\frac12(10)(3)\sin80°}=\dfrac{80}{30}=\dfrac83$（$\sin100°=\sin80°$）⟹ $p+3q=2+8=10$。</div></div>
+
+<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">tanθ+1/tanθ=169/60 → 倒數和＝1/(sinθcosθ)；(sinθ−cosθ)²=1−2sinθcosθ，0°<θ<45° 決定負號</span><span class="src">台中女中 113 期末 填 10</span></div>
+<div class="fxq">設 $0°\lt\theta\lt45°$，若 $\tan\theta+\dfrac1{\tan\theta}=\dfrac{169}{60}$，求 $\sin\theta-\cos\theta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-\dfrac7{13}$</div>
+<div class="fxs"><div class="move">招式：$\tan\theta+\dfrac1{\tan\theta}=\dfrac{\sin\theta}{\cos\theta}+\dfrac{\cos\theta}{\sin\theta}=\dfrac{\sin^2\theta+\cos^2\theta}{\sin\theta\cos\theta}=\dfrac1{\sin\theta\cos\theta}$。</div>
+$\sin\theta\cos\theta=\dfrac{60}{169}$ ⟹ $(\sin\theta-\cos\theta)^2=1-\dfrac{120}{169}=\dfrac{49}{169}$。$\theta\lt45°$ 時 $\sin\theta\lt\cos\theta$ ⟹ 取負根 $-\dfrac7{13}$。（順便：$\sin\theta+\cos\theta=\dfrac{17}{13}$，可解出 $\sin\theta=\dfrac5{13}$、$\cos\theta=\dfrac{12}{13}$ 驗算。）</div></div>
+
+<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">第三象限＋tanθ−1/cosθ=5 → 通分成 sinθ−1=5cosθ，與平方關係聯立；cosθ=0 的根不合</span><span class="src">板橋高中 113 期末 填 9</span></div>
+<div class="fxq">已知 $\theta$ 為第三象限角且 $\tan\theta-\dfrac1{\cos\theta}=5$，求 $\cos\theta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-\dfrac5{13}$</div>
+<div class="fxs"><div class="move">招式：同分母通分 $\dfrac{\sin\theta-1}{\cos\theta}=5$ ⟹ $\sin\theta=5\cos\theta+1$，這是「一次式代入平方關係」。</div>
+$(5\cos\theta+1)^2+\cos^2\theta=1$ ⟹ $26\cos^2\theta+10\cos\theta=0$ ⟹ $\cos\theta=0$（分母，不合）或 $\cos\theta=-\dfrac5{13}$。此時 $\sin\theta=-\dfrac{25}{13}+1=-\dfrac{12}{13}$，兩者皆負，確為第三象限 ✓。</div></div>
+
+<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">cosθ+3sinθ=2（銳角） → 把 cosθ 用 sinθ 表示代入平方關係；兩根中用「cosθ>0」刷掉一個</span><span class="src">武陵高中 113 期末 填 7</span></div>
+<div class="fxq">設 $\cos\theta+3\sin\theta=2$ 且 $0°\lt\theta\lt90°$。若 $\cos\theta+\sin\theta=\dfrac{b+\sqrt c}{a}$（$a,b,c$ 為正整數，$a,b$ 互質），求 $a+b+c$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$15$</div>
+<div class="fxs"><div class="move">招式：令 $\sin\theta=s$，$\cos\theta=2-3s$ 代入 $s^2+\cos^2\theta=1$ ⟹ $10s^2-12s+3=0$ ⟹ $s=\dfrac{6\pm\sqrt6}{10}$。</div>
+$\theta$ 為銳角 ⟹ $\cos\theta=2-3s\gt0$ ⟹ $s\lt\dfrac23$ ⟹ 取 $s=\dfrac{6-\sqrt6}{10}$（另一根 $\approx0.84$ 會使 $\cos\theta\lt0$）。$\sin\theta+\cos\theta=s+(2-3s)=2-2s=\dfrac{4+\sqrt6}{5}$ ⟹ $(a,b,c)=(5,4,6)$，$a+b+c=15$。</div></div>
+
+<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">兩棟樓、地面點兩個仰角＋甲樓頂看乙樓頂仰角 15° → 用 15°-75°-90° 三角形得 tan15°=2−√3，列一條含 h 的方程</span><span class="src">成功高中 113 期末 填 16</span></div>
+<div class="fxq">甲、乙兩棟大樓，甲樓高 $20$ 公尺。在兩樓之間的地面點 $A$ 分別測得甲、乙樓頂的仰角為 $45°$ 與 $30°$；又在甲樓頂測得乙樓頂的仰角為 $15°$。求乙樓的高。（提示：$15°$-$75°$-$90°$ 直角三角形的兩股比為 $(\sqrt3-1):(\sqrt3+1)$，故 $\tan15°=2-\sqrt3$。）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$10(3+\sqrt3)$ 公尺</div>
+<div class="fxs"><div class="move">招式：設乙樓高 $h$。$A$ 到甲樓底 $=20$（仰角 $45°$）、$A$ 到乙樓底 $=\dfrac{h}{\tan30°}=\sqrt3h$ ⟹ 兩樓相距 $20+\sqrt3h$；從甲樓頂看乙樓頂，高度差 $h-20$、水平距 $20+\sqrt3h$。</div>
+$\dfrac{h-20}{20+\sqrt3h}=\tan15°=2-\sqrt3$ ⟹ $h-20=(2-\sqrt3)(20+\sqrt3h)=40-20\sqrt3+(2\sqrt3-3)h$ ⟹ $(4-2\sqrt3)h=60-20\sqrt3$ ⟹ $h=\dfrac{10(3-\sqrt3)}{2-\sqrt3}=10(3-\sqrt3)(2+\sqrt3)=10(3+\sqrt3)\approx47.3$。<br>
+<span class="note-sm">$\tan15°$ 的來源：在 $30°$-$60°$-$90°$ 三角形（邊 $1,\sqrt3,2$）把 $30°$ 對半分——延長長股到 $\sqrt3+1$，得 $15°$ 的對邊 $1$、鄰邊 $2+\sqrt3$，所以 $\tan15°=\dfrac1{2+\sqrt3}=2-\sqrt3$。不需要半角公式。</span></div></div>
+
+<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">箏形＋∠BAD=150° → 餘弦定理算對稱軸 BD；箏形面積＝½·BD·AC＝2△ABD，反求另一條對角線</span><span class="src">成功高中 113 期末 填 17</span></div>
+<div class="fxq">箏形 $ABCD$ 中 $\overline{AB}=\overline{BC}=\sqrt3$、$\overline{AD}=\overline{CD}=3$、$\angle BAD=150°$。求 $\overline{AC}$（化為最簡根式）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{3\sqrt7}{7}$</div>
+<div class="fxs"><div class="move">招式：$\overline{BD}$ 是箏形的對稱軸，垂直平分 $\overline{AC}$ ⟹ 面積 $=\dfrac12\overline{BD}\cdot\overline{AC}$；另一方面面積 $=2[\triangle ABD]$。</div>
+$\overline{BD}^2=3+9-2\cdot\sqrt3\cdot3\cos150°=12+9=21$ ⟹ $\overline{BD}=\sqrt{21}$。$2[\triangle ABD]=2\cdot\dfrac12\cdot\sqrt3\cdot3\sin150°=\dfrac{3\sqrt3}2$ ⟹ $\overline{AC}=\dfrac{3\sqrt3}{\sqrt{21}}=\dfrac3{\sqrt7}=\dfrac{3\sqrt7}7$。</div></div>
+
+<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">圓內接四邊形＋∠ACB+∠CAD=90° → 兩角所對的弦：AB=2R sin∠ACB、CD=2R sin∠CAD=2R cos∠ACB，平方相加得 4R²</span><span class="src">武陵高中 113 期末 填 6</span></div>
+<div class="fxq">圓內接四邊形 $ABCD$ 中 $\overline{AB}=4$、$\overline{CD}=8$，且 $\angle ACB+\angle CAD=90°$。求此圓的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$20\pi$</div>
+<div class="fxs"><div class="move">招式：正弦定理的「$2R$」版本——$\angle ACB$ 是弦 $\overline{AB}$ 的圓周角、$\angle CAD$ 是弦 $\overline{CD}$ 的圓周角，兩弦都在同一個圓上。</div>
+$\overline{AB}=2R\sin\angle ACB$、$\overline{CD}=2R\sin\angle CAD=2R\cos\angle ACB$ ⟹ $\overline{AB}^2+\overline{CD}^2=4R^2(\sin^2+\cos^2)=4R^2$ ⟹ $4R^2=80$ ⟹ $R^2=20$，面積 $20\pi$。<span class="note-sm">（與難題 H8「兩弦垂直」是同一件事：對角線 $\overline{AC}\perp\overline{BD}$ ⟺ 那兩個圓周角互餘。）</span></div></div>
+
+<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">銳角三角形＋AB、tanB、cosC 求面積 → 從 A 作高把底邊切兩段，各用自己的角算；別去求 sinA</span><span class="src">台中一中 103上 填 2</span></div>
+<div class="fxq">銳角 $\triangle ABC$ 中 $\overline{AB}=25$、$\tan B=\dfrac34$、$\cos C=\dfrac8{17}$。求 $\triangle ABC$ 的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$210$</div>
+<div class="fxs"><div class="move">招式：作高 $\overline{AD}\perp\overline{BC}$，兩個直角三角形各自用已知的三角比。</div>
+$\tan B=\dfrac34$ ⟹ $\sin B=\dfrac35$、$\cos B=\dfrac45$ ⟹ $\overline{AD}=25\cdot\dfrac35=15$、$\overline{BD}=25\cdot\dfrac45=20$。$\cos C=\dfrac8{17}$ ⟹ $\sin C=\dfrac{15}{17}$、$\tan C=\dfrac{15}8$ ⟹ $\overline{DC}=\dfrac{\overline{AD}}{\tan C}=8$ ⟹ $\overline{BC}=28$，面積 $=\dfrac12\cdot28\cdot15=210$。<span class="note-sm">想用 $\dfrac12\overline{AB}\cdot\overline{AC}\sin A$ 會需要 $\sin(B+C)$——那是高二上的和角公式；切高才是這一章的路。</span></div></div>
+
+<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">2(a−b+c)=5(sinA−sinB+sinC) → 每個 sin 都是「邊÷2R」，整個括號被 2R 除，比較係數就有 R</span><span class="src">華江高中 102上 填 7</span></div>
+<div class="fxq">$\triangle ABC$ 中 $a,b,c$ 為 $\angle A,\angle B,\angle C$ 的對邊。若 $2(a-b+c)=5(\sin A-\sin B+\sin C)$，求外接圓半徑 $R$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac54$</div>
+<div class="fxs"><div class="move">招式：正弦定理 $\sin A=\dfrac a{2R}$、$\sin B=\dfrac b{2R}$、$\sin C=\dfrac c{2R}$ 全部代入。</div>
+右式 $=\dfrac5{2R}(a-b+c)$；三角形不等式 $a+c\gt b$ 保證 $a-b+c\gt0$，可以約掉 ⟹ $2=\dfrac5{2R}$ ⟹ $R=\dfrac54$。</div></div>
+
+<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">面積＋兩邊求第三邊 → sinC 定了，cosC 有正負兩個；餘弦定理給兩個答案（銳角、鈍角各一）</span><span class="src">建國中學 102上 填 6</span></div>
+<div class="fxq">$\triangle ABC$ 的面積為 $6$，$\overline{BC}=4$、$\overline{AC}=5$。求 $\overline{AB}$ 的所有可能值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3$ 或 $\sqrt{73}$</div>
+<div class="fxs"><div class="move">招式：$\dfrac12\cdot4\cdot5\sin C=6$ ⟹ $\sin C=\dfrac35$ ⟹ $\cos C=\pm\dfrac45$——「面積」只給 $\sin$，永遠要想兩解。</div>
+$\overline{AB}^2=16+25-40\cos C=41\mp32$ ⟹ $9$ 或 $73$ ⟹ $\overline{AB}=3$（$\angle C$ 為銳角，恰是 $3,4,5$ 直角三角形）或 $\sqrt{73}$（$\angle C$ 為鈍角）。</div></div>
+</section>
+
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">直角三角形＋3cosA+5cosB=5 → cosB=sinA 化成同一個角，代平方關係解二次方程；s=1 是退化解</span><span class="src">北一女中 113下 填 7</span></div>
+<div class="fxq">已知 $\triangle ABC$ 中 $\angle C=90°$，若 $3\cos A+5\cos B=5$，求 $\sin A$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac8{17}$</div>
+<div class="fxs"><div class="move">招式：$\cos B=\sin A$（互餘）⟹ $3\cos A+5\sin A=5$；令 $\sin A=s$，$\cos A=\dfrac{5-5s}{3}$。</div>
+$s^2+\dfrac{(5-5s)^2}{9}=1$ ⟹ $34s^2-50s+16=0$ ⟹ $17s^2-25s+8=0$ ⟹ $(17s-8)(s-1)=0$。$s=1$ 使 $\cos A=0$（$\angle A=90°$，與 $\angle C=90°$ 衝突）⟹ $\sin A=\dfrac8{17}$（此時 $\cos A=\dfrac{15}{17}$，$8,15,17$ ✓）。</div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">0°≤θ≤500° 的三角方程 → cos² 換 sin² 得二次方程，再把每個解的同界角逐一列到 500° 為止</span><span class="src">高雄中學 113 三段 填 3</span></div>
+<div class="fxq">$0°\le\theta\le500°$，且 $2\cos^2\theta+1=5\sin\theta$。求所有滿足條件的 $\theta$ 的總和（單位：度）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$570$</div>
+<div class="fxs"><div class="move">招式：$2(1-\sin^2\theta)+1=5\sin\theta$ ⟹ $2\sin^2\theta+5\sin\theta-3=0$ ⟹ $(2\sin\theta-1)(\sin\theta+3)=0$ ⟹ $\sin\theta=\dfrac12$。</div>
+$\sin\theta=\dfrac12$ 的終邊是 $30°$ 與 $150°$；加 $360°$：$390°$、$510°$——$510°\gt500°$ 出界。所以 $\theta=30°,150°,390°$，總和 $570°$。</div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">極坐標＋∠OAB=60°、AB=2 求 B → 餘弦定理得 OB=√6，正弦定理得 ∠AOB=45°，B 的極角 = 40°±45°</span><span class="src">高雄中學 113 三段 填 10</span></div>
+<div class="fxq">極坐標平面上 $O$ 為極點，$A$ 的極坐標為 $[\sqrt3+1,40°]$，$\angle OAB=60°$、$\overline{AB}=2$。求 $B$ 的極坐標 $[r,\theta]$（$0°\le\theta\lt360°$，兩解）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$[\sqrt6,85°]$ 或 $[\sqrt6,355°]$</div>
+<div class="fxs"><div class="move">招式：在 $\triangle OAB$ 用餘弦定理：$\overline{OB}^2=(\sqrt3+1)^2+4-2(\sqrt3+1)(2)\cos60°=(4+2\sqrt3)+4-(2\sqrt3+2)=6$。</div>
+正弦定理：$\sin\angle AOB=\dfrac{\overline{AB}\sin60°}{\overline{OB}}=\dfrac{\sqrt3}{\sqrt6}=\dfrac{\sqrt2}2$；$\overline{AB}=2$ 是三邊中最短的，對角必為銳角 ⟹ $\angle AOB=45°$。$B$ 可在 $\overrightarrow{OA}$ 的兩側 ⟹ 極角 $40°\pm45°=85°$ 或 $-5°$（即 $355°$）。</div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">兩個極坐標點＋sin、cos 的聯立 → 平方相加消掉 α 得 sin²β；再用「α 在第三象限」定 β 的象限，最後化直角坐標算距離</span><span class="src">高雄中學 114 期末 填 9（原題用弧度（高二上才學），本書改寫成度）</span></div>
+<div class="fxq">$A$ 的極坐標為 $[7,\alpha]$、$B$ 的極坐標為 $[4,\beta]$，其中 $180°\lt\alpha\lt270°$，且 $7\sin\alpha+8\sin\beta=0$、$7\cos\alpha-2\cos\beta=0$。求 $\overline{AB}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt{109}$</div>
+<div class="fxs"><div class="move">招式：$7\sin\alpha=-8\sin\beta$、$7\cos\alpha=2\cos\beta$ 平方相加：$49=64\sin^2\beta+4\cos^2\beta=4+60\sin^2\beta$ ⟹ $\sin^2\beta=\dfrac34$、$\cos^2\beta=\dfrac14$。</div>
+$\alpha$ 在第三象限 ⟹ $\sin\alpha\lt0$ ⟹ $\sin\beta\gt0$；$\cos\alpha\lt0$ ⟹ $\cos\beta\lt0$ ⟹ $\beta=120°$，$B=(4\cos120°,4\sin120°)=(-2,2\sqrt3)$。<br>
+$A=(7\cos\alpha,7\sin\alpha)=(2\cos\beta,-8\sin\beta)=(-1,-4\sqrt3)$ ⟹ $\overline{AB}^2=1^2+(6\sqrt3)^2=109$。</div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">塔的兩個方位角＋兩個仰角＋AB 距離 → 俯視圖裡 ∠ATB=180°−70°−65°=45°，TA、TB 都用 h 表示，餘弦定理解 h</span><span class="src">高雄中學 113 三段 填 14</span></div>
+<div class="fxq">在一座塔的北 $70°$ 東方位的地面 $A$ 點測得塔頂仰角為 $\alpha$，$\tan\alpha=2$；在此塔的南 $65°$ 東方位的地面 $B$ 點測得塔頂仰角為 $\beta$，$\sin\beta=\dfrac13$。已知 $\overline{AB}=100$ 公尺，求塔高。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$40$ 公尺</div>
+<div class="fxs"><div class="move">招式：設塔底 $T$、塔高 $h$。俯視圖：$\angle ATB=180°-70°-65°=45°$；側視圖：$\overline{TA}=\dfrac h{\tan\alpha}=\dfrac h2$、$\overline{TB}=\dfrac h{\tan\beta}=2\sqrt2h$（$\sin\beta=\dfrac13$ ⟹ $\tan\beta=\dfrac1{2\sqrt2}$）。</div>
+$\triangle TAB$ 餘弦定理：$100^2=\dfrac{h^2}4+8h^2-2\cdot\dfrac h2\cdot2\sqrt2h\cdot\dfrac{\sqrt2}2=h^2\left(\dfrac14+8-2\right)=\dfrac{25}4h^2$ ⟹ $h=40$。</div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">路上三點等距、仰角 60°、60°、45° → 兩個 60° 讓塔底在 PQ 的中垂線上，設垂足到塔底距離 d，兩條畢氏式子消 h</span><span class="src">高雄中學 112 三段 填 8</span></div>
+<div class="fxq">黃色小鴨的頂點 $A$ 在水面上的垂足為 $B$（水面與道路等高）。小宏沿筆直的河邊道路經過 $P,Q,R$ 三點觀測 $A$，仰角分別為 $60°,60°,45°$，且 $\overline{PQ}=\overline{QR}=20$ 公尺。求小鴨（$B$ 點）到河邊道路的最短距離。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$10\sqrt3$ 公尺</div>
+<div class="fxs"><div class="move">招式：設高 $\overline{AB}=h$：$\overline{BP}=\overline{BQ}=\dfrac h{\tan60°}=\dfrac h{\sqrt3}$、$\overline{BR}=h$。$\overline{BP}=\overline{BQ}$ ⟹ $B$ 在 $\overline{PQ}$ 的中垂線上，垂足 $M$ 為 $\overline{PQ}$ 中點，$\overline{BM}=d$ 就是所求。</div>
+$\overline{MP}=10$、$\overline{MR}=30$：$\dfrac{h^2}3=d^2+100$、$h^2=d^2+900$ ⟹ $d^2+900=3d^2+300$ ⟹ $d^2=300$ ⟹ $d=10\sqrt3$（此時 $h=20\sqrt3$）。</div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">sinB、cosC＋高的垂足 D、角平分線的交點 E、DE=3 → 設高 h，BD、CD 用 tan 寫；BE 用「角平分線分比＝sinC:sinB」寫，相減得 h</span><span class="src">高雄中學 113 三段 填 5</span></div>
+<div class="fxq">$\triangle ABC$ 中 $\sin B=\dfrac{\sqrt5}3$、$\cos C=\dfrac27$，$\overline{BC}$ 上有 $D$、$E$ 兩點，$\overline{AD}\perp\overline{BC}$，$\overline{AE}$ 平分 $\angle BAC$，且 $\overline{DE}=3$。求 $\overline{BC}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$16$</div>
+<div class="fxs"><div class="move">招式：$\cos B=\dfrac23$、$\tan B=\dfrac{\sqrt5}2$；$\sin C=\dfrac{3\sqrt5}7$、$\tan C=\dfrac{3\sqrt5}2$。設高 $\overline{AD}=h$：$\overline{BD}=\dfrac h{\tan B}=\dfrac{2h}{\sqrt5}$、$\overline{CD}=\dfrac h{\tan C}=\dfrac{2h}{3\sqrt5}$ ⟹ $\overline{BC}=\dfrac{8h}{3\sqrt5}$。</div>
+角平分線：$\overline{BE}:\overline{EC}=\overline{AB}:\overline{AC}=\dfrac h{\sin B}:\dfrac h{\sin C}=\sin C:\sin B=\dfrac{3\sqrt5}7:\dfrac{\sqrt5}3=9:7$ ⟹ $\overline{BE}=\dfrac9{16}\overline{BC}=\dfrac{3h}{2\sqrt5}$。<br>
+$\overline{DE}=\overline{BD}-\overline{BE}=\dfrac{2h}{\sqrt5}-\dfrac{3h}{2\sqrt5}=\dfrac{h}{2\sqrt5}=3$ ⟹ $h=6\sqrt5$ ⟹ $\overline{BC}=\dfrac{8\cdot6\sqrt5}{3\sqrt5}=16$。</div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">sin∠BAD:sin∠DAC=8:7 → 面積比 [ABD]:[ADC]=(AB·sin):(AC·sin)＝底邊比 BD:DC；再用補角餘弦解 t</span><span class="src">高雄中學 113 三段 填 15</span></div>
+<div class="fxq">$\triangle ABC$ 中 $D$ 在 $\overline{BC}$ 上，$\overline{AB}=7$、$\overline{AC}=4$、$\overline{AD}=3$，且 $\sin\angle BAD:\sin\angle DAC=8:7$。求 $\overline{BC}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$9$</div>
+<div class="fxs"><div class="move">招式：$\dfrac{[\triangle ABD]}{[\triangle ADC]}=\dfrac{\frac12\cdot7\cdot3\sin\angle BAD}{\frac12\cdot4\cdot3\sin\angle DAC}=\dfrac{7\cdot8}{4\cdot7}=2$；兩三角形同高 ⟹ $\overline{BD}:\overline{DC}=2:1$。</div>
+設 $\overline{DC}=t$、$\overline{BD}=2t$。$\cos\angle ADB=-\cos\angle ADC$：$\dfrac{9+4t^2-49}{2\cdot3\cdot2t}=-\dfrac{9+t^2-16}{2\cdot3\cdot t}$ ⟹ $\dfrac{4t^2-40}{12t}=\dfrac{7-t^2}{6t}$ ⟹ $4t^2-40=14-2t^2$ ⟹ $t^2=9$ ⟹ $t=3$，$\overline{BC}=9$。</div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">以 AC 為邊向外作正方形 → ∠BAQ=90°+A，用誘導公式 sin(90°+A)=cosA、cos(90°+A)=−sinA；BQ²−BC² 恰好等於 2bc(sinA+cosA)</span><span class="src">高雄中學 113 三段 填 16</span></div>
+<div class="fxq">$\triangle ABC$ 中 $\angle CAB$ 為銳角，以 $\overline{AC}$ 為邊向外作正方形 $ACPQ$。已知 $\triangle ABC$ 與 $\triangle ABQ$ 的面積和為 $8$，且 $\overline{BC}+\overline{BQ}=16$。求 $\overline{BC}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$7$</div>
+<div class="fxs"><div class="move">招式：設 $\overline{AB}=c$、$\overline{AC}=\overline{AQ}=b$、$\angle CAB=A$，則 $\angle BAQ=90°+A$ ⟹ $\sin\angle BAQ=\cos A$、$\cos\angle BAQ=-\sin A$。</div>
+面積和：$\dfrac12bc\sin A+\dfrac12bc\cos A=\dfrac12bc(\sin A+\cos A)=8$。<br>
+$\overline{BC}^2=b^2+c^2-2bc\cos A$、$\overline{BQ}^2=b^2+c^2-2bc\cos(90°+A)=b^2+c^2+2bc\sin A$ ⟹ $\overline{BQ}^2-\overline{BC}^2=2bc(\sin A+\cos A)=32$。<br>
+$(\overline{BQ}-\overline{BC})(\overline{BQ}+\overline{BC})=32$ 且 $\overline{BQ}+\overline{BC}=16$ ⟹ $\overline{BQ}-\overline{BC}=2$ ⟹ $\overline{BC}=7$、$\overline{BQ}=9$。</div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">重心到三頂點距離 √6、√8、√10 → 把 GC 平移到 GB 旁邊（平行四邊形），三段距離變成一個三角形的三邊；它的面積是 △ABC 的 ⅓</span><span class="src">台中女中 113 期末 填 19</span></div>
+<div class="fxq">設 $G$ 為 $\triangle ABC$ 的重心，若 $\overline{GA}=\sqrt6$、$\overline{GB}=\sqrt8$、$\overline{GC}=\sqrt{10}$，求 $\triangle ABC$ 的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3\sqrt{11}$</div>
+<div class="fxs"><div class="move">招式：設 $M$ 為 $\overline{BC}$ 中點，延長 $\overline{GM}$ 到 $D$ 使 $\overline{MD}=\overline{GM}$ ⟹ $GBDC$ 是平行四邊形（對角線互相平分）⟹ $\overline{BD}=\overline{GC}=\sqrt{10}$、$\overline{GD}=2\overline{GM}=\overline{GA}=\sqrt6$。</div>
+$\triangle GBD$ 三邊 $\sqrt8,\sqrt{10},\sqrt6$：$16K^2=2(80+60+48)-(64+100+36)=176$ ⟹ $K=\sqrt{11}$（海龍的「平方版」，不必開根號再相減）。<br>
+$[\triangle GBD]=2[\triangle GBM]=[\triangle GBC]=\dfrac13[\triangle ABC]$（重心把三角形切成三等分）⟹ $[\triangle ABC]=3\sqrt{11}$。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">A 在斜角 30° 的直線上、B 在 x 軸、AB=4 求 △OAB 面積最大 → 餘弦定理 16=OA²+OB²−√3·OA·OB，配算幾 OA²+OB²≥2OA·OB</span><span class="src">武陵高中 113 期末 混合 14–16</span></div>
+<div class="fxq">坐標平面上 $O$ 為原點，第一象限有一點 $A$ 在直線 $L:x-\sqrt3y=0$ 上，另一點 $B$ 在 $x$ 軸正向上，且 $\overline{AB}=4$。(1) 求 $\angle AOB$。(2) 求 $\triangle OAB$ 面積的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $30°$　(2) $8+4\sqrt3$</div>
+<div class="fxs"><div class="move">招式：(1) $L$ 的斜率 $\dfrac{\sqrt3}3$ ⟹ 斜角 $30°$ ⟹ $\angle AOB=30°$。(2) 餘弦定理把 $\overline{OA}\cdot\overline{OB}$ 逼出上界。</div>
+$16=\overline{OA}^2+\overline{OB}^2-2\,\overline{OA}\cdot\overline{OB}\cos30°\ge2\,\overline{OA}\cdot\overline{OB}-\sqrt3\,\overline{OA}\cdot\overline{OB}=(2-\sqrt3)\,\overline{OA}\cdot\overline{OB}$ ⟹ $\overline{OA}\cdot\overline{OB}\le\dfrac{16}{2-\sqrt3}=16(2+\sqrt3)$。<br>
+面積 $=\dfrac12\overline{OA}\cdot\overline{OB}\sin30°=\dfrac14\overline{OA}\cdot\overline{OB}\le4(2+\sqrt3)=8+4\sqrt3$，等號在 $\overline{OA}=\overline{OB}$（等腰）時成立。</div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">外接圓 R=8＋圓心到兩邊的弦心距 → 弦長 2√(R²−d²)；弦心距÷R 就是對角的 cos；第三邊用投影定理 AC=AB cosA+BC cosC</span><span class="src">北一女中 103上 填 10</span></div>
+<div class="fxq">已知銳角 $\triangle ABC$ 的外接圓半徑為 $8$，且圓心到 $\overline{AB}$ 的距離為 $3$、到 $\overline{BC}$ 的距離為 $6$。求 $\overline{AC}$（化成最簡根式）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{3\sqrt{55}+3\sqrt7}{2}$</div>
+<div class="fxs"><div class="move">招式：弦心距 $d$ ⟹ 弦長 $2\sqrt{R^2-d^2}$：$\overline{AB}=2\sqrt{55}$、$\overline{BC}=2\sqrt{28}=4\sqrt7$。圓心角是圓周角的兩倍，弦心距把圓心角平分 ⟹ $\cos C=\dfrac38$（$\overline{AB}$ 的對角）、$\cos A=\dfrac68=\dfrac34$（$\overline{BC}$ 的對角）。</div>
+投影定理：$\overline{AC}=\overline{AB}\cos A+\overline{BC}\cos C=2\sqrt{55}\cdot\dfrac34+4\sqrt7\cdot\dfrac38=\dfrac{3\sqrt{55}}2+\dfrac{3\sqrt7}2$。<span class="note-sm">用正弦定理走 $\overline{AC}=2R\sin B$ 會需要 $\sin(A+C)$——高二的和角公式；投影定理是本章給的路。$102$ 學測填 G（$R=8$、弦心距 $2$、$7$）是同一題型，答案 $4\sqrt{15}$。</span></div></div>
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充：大考壓軸、經典證明與科學班・教甄專區</h2>
+<div class="goal">
+  <div><b>對象</b>數理志向、想看「這一章能走多遠」的同學；不列入通過標準。</div>
+  <div><b>目標</b>8 題大考經典 ＋ 專區 15 題（教甄 12、科學班 3）。每題都只用本章的工具解完——需要半角、和角的地方，本書都改走「補角等腰三角形」、「投影定理」這些課綱內的路。</div>
+  <div><b>通過標準</b>無。能講出每題的關鍵一步就很好了。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">砲台 θ 與 θ/2 → 等腰三角形先算 cosθ=7/18；要 cos(θ/2) 不用半角公式：在 BA 延長線上取 R 使 AR=AP，補角等腰三角形的底角就是 θ/2</span><span class="src">113 學測 A 第 6 題</span></div>
+<div class="fxq">在同一平面上，相距 $7$ 公里的 $A,B$ 兩砲台，$A$ 在 $B$ 的正東方。$A$ 向西偏北 $\theta$ 方向、$B$ 向東偏北 $\theta$ 方向發射砲彈（$\theta$ 為銳角），兩砲彈皆命中 $9$ 公里外的同一目標 $P$。接著 $A$ 改向西偏北 $\dfrac\theta2$ 方向發射，彈著點為 $9$ 公里外的 $Q$。求 $\overline{BQ}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$5$ 公里</div>
+<div class="fxs"><div class="move">招式：$\overline{AP}=\overline{BP}=9$、$\overline{AB}=7$ ⟹ 等腰三角形，$\cos\theta=\dfrac{7/2}{9}=\dfrac7{18}$。$\overline{BQ}^2=81+49-2\cdot9\cdot7\cos\dfrac\theta2$ 需要 $\cos\dfrac\theta2$。</div>
+在 $\overrightarrow{BA}$ 的延長線上取 $R$ 使 $\overline{AR}=\overline{AP}=9$：$\triangle RAP$ 等腰、頂角 $\angle RAP=180°-\theta$ ⟹ 底角 $\angle ARP=\dfrac\theta2$。$\overline{RP}^2=81+81-2\cdot81\cos(180°-\theta)=162\left(1+\dfrac7{18}\right)=225$ ⟹ $\overline{RP}=15$ ⟹ $\cos\dfrac\theta2=\dfrac{\overline{RP}^2+\overline{RA}^2-\overline{AP}^2}{2\cdot\overline{RP}\cdot\overline{RA}}=\dfrac{225}{270}=\dfrac56$。<br>
+$\overline{BQ}^2=130-126\cdot\dfrac56=25$ ⟹ $\overline{BQ}=5$。<span class="note-sm">高二上會學半角公式 $\cos\frac\theta2=\sqrt{\frac{1+\cos\theta}2}=\sqrt{\frac{25}{36}}$，答案一樣；「補角等腰三角形」是高一的版本。</span></div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">等速直線運動＋∠POQ=90°、∠QOR=30° → 坐標化：P(p,0)、Q(0,q)、R=2Q−P；在 △OQR 用餘弦定理，QR=PQ 把 p、q 綁在一起</span><span class="src">91 指考 數甲 選填 A</span></div>
+<div class="fxq">某人在 $O$ 點測量到遠處有一物作等速直線運動。開始時該物在 $P$ 點，一分鐘後在 $Q$ 點，且 $\angle POQ=90°$；再過一分鐘後在 $R$ 點，且 $\angle QOR=30°$。求 $\tan^2(\angle OPQ)$（以最簡分數表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac34$</div>
+<div class="fxs"><div class="move">招式：$O$ 為原點、$P(p,0)$、$Q(0,q)$（$\angle POQ=90°$）；等速 ⟹ $Q$ 是 $\overline{PR}$ 的中點 ⟹ $R=(-p,2q)$，$\overline{OR}^2=p^2+4q^2$、$\overline{QR}=\overline{PQ}=\sqrt{p^2+q^2}$。</div>
+$\triangle OQR$ 餘弦定理：$p^2+q^2=q^2+(p^2+4q^2)-2q\sqrt{p^2+4q^2}\cos30°$ ⟹ $4q^2=\sqrt3\,q\sqrt{p^2+4q^2}$ ⟹ $16q^2=3p^2+12q^2$ ⟹ $4q^2=3p^2$ ⟹ $\tan^2\angle OPQ=\dfrac{q^2}{p^2}=\dfrac34$。</div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">等腰直角三角形斜邊三等分點 → 坐標化：A(0,0)、B(3,0)、C(0,3)、P(2,1)、Q(1,2)，餘弦定理算 cos∠PAQ 再轉 tan</span><span class="src">93 學測 選填 D</span></div>
+<div class="fxq">$\triangle ABC$ 為等腰直角三角形，$\angle BAC=90°$。若 $P,Q$ 為斜邊 $\overline{BC}$ 的三等分點，求 $\tan\angle PAQ$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac34$</div>
+<div class="fxs"><div class="move">招式：取 $\overline{AB}=\overline{AC}=3$ 坐標化，$P(2,1)$、$Q(1,2)$ ⟹ $\overline{AP}=\overline{AQ}=\sqrt5$、$\overline{PQ}=\sqrt2$。</div>
+$\cos\angle PAQ=\dfrac{5+5-2}{2\cdot\sqrt5\cdot\sqrt5}=\dfrac45$ ⟹ $\sin\angle PAQ=\dfrac35$ ⟹ $\tan\angle PAQ=\dfrac34$。（另解：$\tan\angle PAB=\dfrac12$、$\tan\angle QAB=2$，但相減需要差角公式，高一走餘弦定理。）</div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">AB=3、AC=5、∠A=120°、M 為 BC 中點求 tan∠BAM → 中線長公式得 AM，在 △ABM 用餘弦定理得 cos，再轉 tan</span><span class="src">96 學測 選填 I</span></div>
+<div class="fxq">$\triangle ABC$ 中 $M$ 為 $\overline{BC}$ 的中點，$\overline{AB}=3$、$\overline{AC}=5$、$\angle BAC=120°$。求 $\tan\angle BAM$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$5\sqrt3$</div>
+<div class="fxs"><div class="move">招式：$\overline{BC}^2=9+25+15=49$ ⟹ $\overline{BM}=\dfrac72$；中線長 $\overline{AM}^2=\dfrac{2\cdot9+2\cdot25-49}{4}=\dfrac{19}4$。</div>
+$\cos\angle BAM=\dfrac{9+\frac{19}4-\frac{49}4}{2\cdot3\cdot\frac{\sqrt{19}}2}=\dfrac{3/2}{3\sqrt{19}}=\dfrac1{2\sqrt{19}}$ ⟹ $\sin\angle BAM=\sqrt{1-\dfrac1{76}}=\dfrac{5\sqrt3}{2\sqrt{19}}$ ⟹ $\tan\angle BAM=5\sqrt3$。<span class="note-sm">（$\tan\approx8.66$，$\angle BAM\approx83.4°$：$\overline{AC}$ 比 $\overline{AB}$ 長，中線偏向 $C$ 那邊，合理。）</span></div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">單位圓上 AB=BC、△OAB 面積 3/10 求 △OAC → 面積給 sinθ、銳角給 cosθ；AC 用「B 在劣弧上 ⟹ ∠ABC=180°−θ」的餘弦定理，不必倍角</span><span class="src">97 學測 選填 C</span></div>
+<div class="fxq">坐標平面上以原點 $O$ 為圓心的圓上有三個相異點 $A(1,0)$、$B$、$C$，且 $\overline{AB}=\overline{BC}$。已知銳角三角形 $OAB$ 的面積為 $\dfrac3{10}$，求 $\triangle OAC$ 的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{12}{25}$</div>
+<div class="fxs"><div class="move">招式：令 $\theta=\angle AOB=\angle BOC$（等弦對等圓心角）。$\dfrac12\cdot1\cdot1\sin\theta=\dfrac3{10}$ ⟹ $\sin\theta=\dfrac35$，銳角 ⟹ $\cos\theta=\dfrac45$。</div>
+$\overline{AB}^2=1+1-2\cos\theta=\dfrac25$。$B$ 在劣弧 $AC$ 上 ⟹ 圓周角 $\angle ABC=180°-\theta$ ⟹ $\overline{AC}^2=\dfrac25+\dfrac25-2\cdot\dfrac25\cos(180°-\theta)=\dfrac45+\dfrac45\cdot\dfrac45=\dfrac{36}{25}$ ⟹ $\overline{AC}=\dfrac65$。<br>
+$\triangle OAC$：$\overline{OA}=\overline{OC}=1$、底 $\dfrac65$、高 $\sqrt{1-\dfrac9{25}}=\dfrac45$ ⟹ 面積 $=\dfrac12\cdot\dfrac65\cdot\dfrac45=\dfrac{12}{25}$。<span class="note-sm">高二會用 $\frac12\sin2\theta=\sin\theta\cos\theta$ 一行解決；高一版本靠圓周角＋餘弦定理。</span></div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">觀景台三個俯角、C 為 AB 中點求公園面積 → 塔底到三點的距離用 tan 算，中線長公式得 AB，再用餘弦定理求 sin∠AOB</span><span class="src">109 指考 數甲 選填 C</span></div>
+<div class="fxq">三角形公園的頂點為 $O,A,B$，$O$ 處有 $150$ 公尺高的觀景台。從觀景台頂看 $A$、$B$ 與 $\overline{AB}$ 的中點 $C$ 的俯角分別為 $30°,60°,45°$。求公園 $\triangle OAB$ 的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$7500\sqrt2$ 平方公尺</div>
+<div class="fxs"><div class="move">招式：$\overline{OA}=\dfrac{150}{\tan30°}=150\sqrt3$、$\overline{OB}=\dfrac{150}{\tan60°}=50\sqrt3$、$\overline{OC}=\dfrac{150}{\tan45°}=150$；$\overline{OC}$ 是中線 ⟹ $4\overline{OC}^2=2\overline{OA}^2+2\overline{OB}^2-\overline{AB}^2$。</div>
+$90000=135000+15000-\overline{AB}^2$ ⟹ $\overline{AB}^2=60000$。$\cos\angle AOB=\dfrac{67500+7500-60000}{2\cdot150\sqrt3\cdot50\sqrt3}=\dfrac{15000}{45000}=\dfrac13$ ⟹ $\sin\angle AOB=\dfrac{2\sqrt2}3$ ⟹ 面積 $=\dfrac12\cdot150\sqrt3\cdot50\sqrt3\cdot\dfrac{2\sqrt2}3=7500\sqrt2$。</div></div>
+
+<div class="fx" id="L5-7"><div class="fxh"><span class="no">L5-7</span><span class="kw">∠ACB=30°、∠EDB=60°、∠AEB=120°、CD=15、ED=7 → 先找等腰（∠CAD=∠ACD=30° ⟹ DA=DC）、再找正三角形（△BED），最後 △ABE 用 120° 的餘弦定理</span><span class="src">108 學測 選填 E</span></div>
+<div class="fxq">$\triangle ABC$ 中 $\overline{AD}$ 交 $\overline{BC}$ 於 $D$、$\overline{BE}$ 交 $\overline{AD}$ 於 $E$，且 $\angle ACB=30°$、$\angle EDB=60°$、$\angle AEB=120°$。若 $\overline{CD}=15$、$\overline{ED}=7$，求 $\overline{AB}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$13$</div>
+<div class="fxs"><div class="move">招式：$\angle ADC=180°-60°=120°$，$\angle ACD=30°$ ⟹ $\angle CAD=30°$ ⟹ $\triangle ACD$ 等腰，$\overline{DA}=\overline{DC}=15$ ⟹ $\overline{AE}=15-7=8$。</div>
+$\angle AEB=120°$ ⟹ $\angle BED=60°$，又 $\angle EDB=60°$ ⟹ $\triangle BED$ 是正三角形 ⟹ $\overline{BE}=\overline{ED}=7$。<br>
+$\triangle ABE$：$\overline{AB}^2=8^2+7^2-2\cdot8\cdot7\cos120°=64+49+56=169$ ⟹ $\overline{AB}=13$。</div></div>
+
+<div class="fx" id="L5-8"><div class="fxh"><span class="no">L5-8</span><span class="kw">角平分線 BD=5、DC=7、∠B=60° → 分比給 AB:AC=5:7，設 5k、7k 用 ∠B 的餘弦定理解 k；sinC、sinA 再用正弦定理</span><span class="src">101 指考 數甲 非選二</span></div>
+<div class="fxq">$\triangle ABC$ 中 $D$ 在 $\overline{BC}$ 上且 $\overline{AD}$ 平分 $\angle BAC$。已知 $\overline{BD}=5$、$\overline{DC}=7$，且 $\angle ABC=60°$。(1) 求 $\sin\angle ACB$。(2) 求 $\sin\angle BAC$。(3) 求 $\overline{AB}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\dfrac{5\sqrt3}{14}$　(2) $\dfrac{4\sqrt3}7$　(3) $\dfrac{15}2$</div>
+<div class="fxs"><div class="move">招式：角平分線 ⟹ $\overline{AB}:\overline{AC}=\overline{BD}:\overline{DC}=5:7$，設 $\overline{AB}=5k$、$\overline{AC}=7k$，$\overline{BC}=12$。</div>
+餘弦定理（$\angle B=60°$）：$49k^2=25k^2+144-2\cdot5k\cdot12\cdot\dfrac12$ ⟹ $24k^2+60k-144=0$ ⟹ $2k^2+5k-12=0$ ⟹ $(2k-3)(k+4)=0$ ⟹ $k=\dfrac32$ ⟹ $\overline{AB}=\dfrac{15}2$、$\overline{AC}=\dfrac{21}2$。<br>
+(1) $\sin C=\dfrac{\overline{AB}\sin B}{\overline{AC}}=\dfrac{\frac{15}2\cdot\frac{\sqrt3}2}{\frac{21}2}=\dfrac{5\sqrt3}{14}$。(2) $\sin A=\dfrac{\overline{BC}\sin B}{\overline{AC}}=\dfrac{12\cdot\frac{\sqrt3}2}{\frac{21}2}=\dfrac{4\sqrt3}7$。(3) $\dfrac{15}2$。</div></div>
+
+<h3 class="sec">科學班・教甄專區（15 題）</h3>
+<div class="must">來源：嘉義高中科學班（113、115）、師大附中 111、台中一中 109、松山工農 107、文華 106、鳳山 106、家齊 111、松山家商 101、北一女 108、西松 109、羅東高工 112、高雄市 107 聯招教甄。<b>只收「用本章工具就能解完」的題</b>；用到向量條件的（台中一中 109 填 16）改寫成等角條件並註明；含和差角、倍角、半角、$\ln$、極限的教甄題一律不收。每題都經 sympy 重算。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">sin²41°+sin²19°+sin41°sin19° → 41°+19°+120°=180°：造一個三角形，三邊 ∝ 三個正弦，對 120° 寫餘弦定理</span><span class="src">師大附中 111 教甄 填 1</span></div>
+<div class="fxq">計算 $\sin^241°+\sin^219°+\sin41°\sin19°$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac34$</div>
+<div class="fxs"><div class="move">招式：$41°+19°+120°=180°$ ⟹ 取三內角為 $41°,19°,120°$ 的三角形，正弦定理 ⟹ 三邊可取 $\sin41°,\sin19°,\sin120°$。</div>
+對 $120°$ 的餘弦定理：$\sin^2120°=\sin^241°+\sin^219°-2\sin41°\sin19°\cos120°=\sin^241°+\sin^219°+\sin41°\sin19°$ ⟹ 原式 $=\sin^2120°=\dfrac34$。<span class="note-sm">一般式：$\alpha+\beta=60°$ 時 $\sin^2\alpha+\sin^2\beta+\sin\alpha\sin\beta=\frac34$。</span></div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">專區 2</span><span class="kw">x²+y²=18、y²+√3yz+z²=13、x²+xz+z²=19 → 三條都是餘弦定理（夾角 90°、150°、120°，和為 360°）：P 在三角形內部，所求＝4 倍面積</span><span class="src">師大附中 111 教甄 填 5</span></div>
+<div class="fxq">已知 $x,y,z$ 為正實數且滿足 $x^2+y^2=18$、$y^2+\sqrt3yz+z^2=13$、$x^2+xz+z^2=19$。求 $2xy+yz+\sqrt3xz$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$6\sqrt{22}$</div>
+<div class="fxs"><div class="move">招式：$-2\cos90°=0$、$-2\cos150°=\sqrt3$、$-2\cos120°=1$ ⟹ 三式是「$\overline{PA}=x$、$\overline{PB}=y$、$\overline{PC}=z$，$\angle APB=90°$、$\angle BPC=150°$、$\angle CPA=120°$」的三條餘弦定理，$\overline{AB}=\sqrt{18}$、$\overline{BC}=\sqrt{13}$、$\overline{CA}=\sqrt{19}$，三個角和 $360°$ ⟹ $P$ 在 $\triangle ABC$ 內部。</div>
+$[\triangle ABC]=\dfrac12xy\sin90°+\dfrac12yz\sin150°+\dfrac12zx\sin120°=\dfrac{2xy+yz+\sqrt3xz}{4}$ ⟹ 所求 $=4[\triangle ABC]$。<br>
+海龍平方版：$16K^2=2(18\cdot13+13\cdot19+19\cdot18)-(18^2+13^2+19^2)=1646-854=792$ ⟹ $K=\sqrt{\dfrac{99}2}=\dfrac{3\sqrt{22}}2$ ⟹ 所求 $=6\sqrt{22}$。</div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">專區 3</span><span class="kw">P 對三頂點張角皆 120°（費馬點） → 三條餘弦定理＋面積式 xy+yz+zx=2；相加得 x²+y²+z²=3，逐式相減出現 x(x+y+z)、y(x+y+z)、z(x+y+z)</span><span class="src">台中一中 109 教甄 填 16（原題以向量 $\frac{\vec{PA}}{|\vec{PA}|}+\frac{\vec{PB}}{|\vec{PB}|}+\frac{\vec{PC}}{|\vec{PC}|}=\vec0$ 給條件，本書改寫成等角條件）</span></div>
+<div class="fxq">$\triangle ABC$ 中 $\angle BAC=90°$、$\overline{AB}=1$、$\overline{AC}=\sqrt3$。$P$ 在 $\triangle ABC$ 內部且 $\angle APB=\angle BPC=\angle CPA=120°$。求 $(\overline{PA},\overline{PB},\overline{PC})$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\left(\dfrac{\sqrt7}7,\ \dfrac{2\sqrt7}7,\ \dfrac{4\sqrt7}7\right)$</div>
+<div class="fxs"><div class="move">招式：設 $\overline{PA}=x,\overline{PB}=y,\overline{PC}=z$，$\overline{BC}=2$。餘弦定理（$\cos120°=-\frac12$）：$x^2+y^2+xy=1$、$y^2+z^2+yz=4$、$z^2+x^2+zx=3$；面積：$\dfrac12(xy+yz+zx)\sin120°=\dfrac{\sqrt3}2$ ⟹ $xy+yz+zx=2$。</div>
+三式相加：$2(x^2+y^2+z^2)+2=8$ ⟹ $x^2+y^2+z^2=3$。用它減各式：$z^2-xy=2$、$x^2-yz=-1$、$y^2-zx=0$。<br>
+$x(x+y+z)=x^2+xy+xz=x^2+(2-yz)=2+(x^2-yz)=1$；同理 $y(x+y+z)=2+(y^2-zx)=2$、$z(x+y+z)=2+(z^2-xy)=4$ ⟹ $x:y:z=1:2:4$，且 $(x+y+z)^2=1+2+4=7$ ⟹ $x+y+z=\sqrt7$ ⟹ $(x,y,z)=\left(\dfrac{\sqrt7}7,\dfrac{2\sqrt7}7,\dfrac{4\sqrt7}7\right)$。<span class="note-sm">原題的向量條件「三個單位向量和為零向量」就是三個夾角都是 $120°$，那是高二上的內積；改寫後高一可解。</span></div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">專區 4</span><span class="kw">角平分線交中點連線與對邊 → 角平分線分比 5:1 給 [ABG]=100；DE∥BC 且為中點連線 ⟹ △ADF 是 △ABG 的 ¼</span><span class="src">松山工農 107 教甄 填 1</span></div>
+<div class="fxq">$\triangle ABC$ 中 $\overline{AB}=50$、$\overline{AC}=10$，面積為 $120$。$D$、$E$ 分別為 $\overline{AB}$、$\overline{AC}$ 的中點，$\angle BAC$ 的角平分線分別交 $\overline{DE}$、$\overline{BC}$ 於 $F$、$G$。求四邊形 $FDBG$ 的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$75$</div>
+<div class="fxs"><div class="move">招式：角平分線 ⟹ $\overline{BG}:\overline{GC}=\overline{AB}:\overline{AC}=5:1$ ⟹ $[\triangle ABG]=\dfrac56\cdot120=100$（同高，面積比 $=$ 底邊比）。</div>
+$D,E$ 為中點 ⟹ $\overline{DE}\parallel\overline{BC}$ 且 $\triangle ADF\sim\triangle ABG$，相似比 $1:2$ ⟹ $[\triangle ADF]=\dfrac14\cdot100=25$ ⟹ $[FDBG]=100-25=75$。</div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">專區 5</span><span class="kw">角內一點、兩邊上各取一點使周長最小 → 對兩邊作對稱點 P₁、P₂，周長 ≥ P₁P₂；OP₁=OP₂=10、∠P₁OP₂=2θ，等腰底邊＝2·10·sinθ</span><span class="src">文華高中 106 第二次教甄 填 11</span></div>
+<div class="fxq">$\angle XOY=\theta$，$0°\lt\theta\lt90°$ 且 $\sin\theta=\dfrac45$。$P$ 為 $\angle XOY$ 內部一點且 $\overline{OP}=10$。在 $\overrightarrow{OX}$、$\overrightarrow{OY}$ 上分別取 $Q$、$R$，求 $\triangle PQR$ 周長的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$16$</div>
+<div class="fxs"><div class="move">招式：令 $P_1$、$P_2$ 為 $P$ 對 $\overrightarrow{OX}$、$\overrightarrow{OY}$ 的對稱點，則 $\overline{PQ}=\overline{P_1Q}$、$\overline{PR}=\overline{P_2R}$ ⟹ 周長 $=\overline{P_1Q}+\overline{QR}+\overline{RP_2}\ge\overline{P_1P_2}$（$Q,R$ 取在 $\overline{P_1P_2}$ 上時等號成立）。</div>
+對稱保長 ⟹ $\overline{OP_1}=\overline{OP_2}=10$；$\angle P_1OP_2=2\angle XOY=2\theta$（對稱把 $\angle XOP$、$\angle POY$ 各複製一份）。等腰 $\triangle OP_1P_2$ 從 $O$ 作高，把頂角平分成 $\theta$ ⟹ $\overline{P_1P_2}=2\cdot10\sin\theta=16$。<span class="note-sm">不需要 $\sin2\theta$ 公式——「等腰三角形的高平分頂角」就夠了。</span></div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">專區 6</span><span class="kw">a²−c²=2b 與 sinA cosC=3cosA sinC → 正弦定理把 sin 換成邊、餘弦定理把 cos 換成邊：整理成 2(a²−c²)=b²</span><span class="src">鳳山高中 106 代理教甄 填 2</span></div>
+<div class="fxq">$\triangle ABC$ 中三邊長為 $a,b,c$，已知 $a^2-c^2=2b$ 且 $\sin A\cos C=3\cos A\sin C$。求 $b$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$</div>
+<div class="fxs"><div class="move">招式：$\sin A=\dfrac a{2R}$、$\sin C=\dfrac c{2R}$ ⟹ $a\cos C=3c\cos A$；再把兩個 $\cos$ 用餘弦定理換成邊。</div>
+$a\cdot\dfrac{a^2+b^2-c^2}{2ab}=3c\cdot\dfrac{b^2+c^2-a^2}{2bc}$ ⟹ $a^2+b^2-c^2=3(b^2+c^2-a^2)$ ⟹ $4(a^2-c^2)=2b^2$ ⟹ $2(a^2-c^2)=b^2$。代入 $a^2-c^2=2b$：$4b=b^2$ ⟹ $b=4$（$b\gt0$）。</div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">專區 7</span><span class="kw">sinA/(sinB sinC)+… 的最小值 → 全換成邊：原式＝(a²+b²+c²)/(2K)；證 a²+b²+c² ≥ 4√3K 只需餘弦定理＋「½cosC+(√3/2)sinC ≤ 1」（平方非負）</span><span class="src">家齊高中 111 教甄 計算 3</span></div>
+<div class="fxq">銳角 $\triangle ABC$ 中，求 $\dfrac{\sin A}{\sin B\sin C}+\dfrac{\sin B}{\sin C\sin A}+\dfrac{\sin C}{\sin A\sin B}$ 的最小值，並證明。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2\sqrt3$（正三角形時取得）</div>
+<div class="fxs"><div class="move">招式：通分後 $=\dfrac{\sin^2A+\sin^2B+\sin^2C}{\sin A\sin B\sin C}$；用 $\sin A=\dfrac a{2R}$ 換成邊：$=\dfrac{2R(a^2+b^2+c^2)}{abc}$，再用 $abc=4RK$：$=\dfrac{a^2+b^2+c^2}{2K}$。</div>
+<b>引理</b>：$a^2+b^2+c^2\ge4\sqrt3K$。證：$c^2=a^2+b^2-2ab\cos C$、$K=\dfrac12ab\sin C$ ⟹ $a^2+b^2+c^2-4\sqrt3K=2(a^2+b^2)-4ab\left(\dfrac12\cos C+\dfrac{\sqrt3}2\sin C\right)$。由 $\left(\cos C-\dfrac12\right)^2+\left(\sin C-\dfrac{\sqrt3}2\right)^2\ge0$ 展開得 $\dfrac12\cos C+\dfrac{\sqrt3}2\sin C\le1$ ⟹ 上式 $\ge2(a^2+b^2)-4ab=2(a-b)^2\ge0$。$\blacksquare$<br>
+所以原式 $\ge2\sqrt3$；等號需 $a=b$ 且 $(\cos C,\sin C)=\left(\frac12,\frac{\sqrt3}2\right)$ 即 $C=60°$ ⟹ 正三角形（直接代：$3\cdot\dfrac{\sqrt3/2}{3/4}=2\sqrt3$ ✓）。<span class="note-sm">這個引理叫 Weitzenböck 不等式；「$\frac12\cos C+\frac{\sqrt3}2\sin C\le1$」在高二會被寫成 $\sin(C+30°)\le1$。</span></div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">專區 8</span><span class="kw">證明 sin(α+β)sin(β+γ)=sinα sinγ+sinβ sinδ → 認出 α+β=∠A、sin(β+γ)=sin∠ADB；三個三角形各寫一次正弦定理，BD+DC=BC 收尾</span><span class="src">松山家商 101 教甄 證明 2</span></div>
+<div class="fxq">$\triangle ABC$ 中 $D$ 為 $\overline{BC}$ 上任一點，$\angle BAD=\alpha$、$\angle CAD=\beta$、$\angle ACD=\gamma$、$\angle ABD=\delta$。試證 $\sin(\alpha+\beta)\sin(\beta+\gamma)=\sin\alpha\sin\gamma+\sin\beta\sin\delta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">證明見詳解</div>
+<div class="fxs"><div class="move">招式：$\alpha+\beta=\angle A$；在 $\triangle ADC$ 中 $\beta+\gamma=180°-\angle ADC$ ⟹ $\sin(\beta+\gamma)=\sin\angle ADC=\sin\angle ADB$，記為 $\sin t$。要證的是 $\sin A\sin t=\sin\alpha\sin\gamma+\sin\beta\sin\delta$。</div>
+正弦定理：$\triangle ABD$ 中 $\dfrac{\overline{BD}}{\sin\alpha}=\dfrac{\overline{AB}}{\sin t}$ ⟹ $\sin\alpha=\dfrac{\overline{BD}\sin t}{\overline{AB}}$；$\triangle ACD$ 中 $\sin\beta=\dfrac{\overline{DC}\sin t}{\overline{AC}}$；$\triangle ABC$ 中 $\sin\gamma=\dfrac{\overline{AB}\sin A}{\overline{BC}}$、$\sin\delta=\dfrac{\overline{AC}\sin A}{\overline{BC}}$。<br>
+$\sin\alpha\sin\gamma+\sin\beta\sin\delta=\dfrac{\overline{BD}\sin t\sin A}{\overline{BC}}+\dfrac{\overline{DC}\sin t\sin A}{\overline{BC}}=\sin A\sin t\cdot\dfrac{\overline{BD}+\overline{DC}}{\overline{BC}}=\sin A\sin t$。$\blacksquare$<span class="note-sm">全程只用正弦定理與補角，沒有展開任何和角。</span></div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">專區 9</span><span class="kw">偵錯：AB=2、BC=3、∠A=2∠C 求 AC，學生得 AC=2 或 5/2 → 「cosC=3/4」只是必要條件（sinA=sin2C 也允許 A=180°−2C）；高一正解走角平分線＋相似</span><span class="src">北一女中 108 教甄 第 7 題（同 99 學測 選填 G）</span></div>
+<div class="fxq">題目：$\triangle ABC$ 中 $\overline{AB}=2$、$\overline{BC}=3$、$\angle A=2\angle C$，求 $\overline{AC}$。學生解法：先用正弦定理求得 $\cos C=\dfrac34$，再用餘弦定理算出 $\overline{AC}=2$ 或 $\dfrac52$。問：此方法哪裡錯誤？正確做法為何？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\overline{AC}=\dfrac52$；$\overline{AC}=2$ 是增根（它滿足 $\cos C=\frac34$ 但 $\angle A=180°-2\angle C$，不是 $2\angle C$）</div>
+<div class="fxs"><div class="move">招式（高一正解）：作 $\angle A$ 的平分線交 $\overline{BC}$ 於 $D$，則 $\angle BAD=\angle DAC=\angle C$ ⟹ $\triangle BAD\sim\triangle BCA$（共用 $\angle B$）且 $\triangle DAC$ 等腰（$\overline{DA}=\overline{DC}$）。</div>
+$\dfrac{\overline{BD}}{\overline{BA}}=\dfrac{\overline{BA}}{\overline{BC}}$ ⟹ $\overline{BD}=\dfrac43$ ⟹ $\overline{DC}=\dfrac53=\overline{AD}$；相似比 $\dfrac{\overline{AB}}{\overline{BC}}=\dfrac{\overline{AD}}{\overline{CA}}$ ⟹ $\dfrac23=\dfrac{5/3}{\overline{AC}}$ ⟹ $\overline{AC}=\dfrac52$。<br>
+<b>學生錯在哪</b>：$\cos C=\dfrac34$ 是由 $\sin A=\sin2C$ 推出的（$a=2c\cos C$ ⟹ $\cos C=\dfrac{3}{4}$），但 $\sin A=\sin2C$ 只能推出 $\angle A=2\angle C$ <b>或</b> $\angle A=180°-2\angle C$。$\overline{AC}=2$ 那一組（三邊 $2,2,3$）確實 $\cos C=\dfrac34$，可是 $\cos A=-\dfrac18$，$\angle A\approx97.2°$、$2\angle C\approx82.8°$，兩者互補而非相等——是被「$\sin$ 相等」放進來的增根，必須回原條件檢驗。<span class="note-sm">學生用的 $\sin2C=2\sin C\cos C$ 是高二上的倍角公式；上面的相似解法完全在高一範圍內。</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">專區 10</span><span class="kw">內切圓切點三角形 PQR → 內心 I 到三切點都是 r，∠QIR=180°−A；[PQR]=½r²(sinA+sinB+sinC)，正弦定理換成 (a+b+c)/2R；比值 ≤ ¼ 用海龍＋算幾</span><span class="src">西松高中 109 教甄 計算證明 2</span></div>
+<div class="fxq">$\triangle ABC$ 的內切圓與三邊切於 $P,Q,R$（分別在 $\overline{BC},\overline{CA},\overline{AB}$ 上），內切圓半徑 $r$、外接圓半徑 $R$。(1) 試證 $\dfrac{[\triangle PQR]}{[\triangle ABC]}=\dfrac r{2R}$。(2) 試證 $\dfrac{[\triangle PQR]}{[\triangle ABC]}\le\dfrac14$，因而任意三角形 $2r\le R$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">證明見詳解（等號在正三角形）</div>
+<div class="fxs"><div class="move">招式：(1) 內心 $I$ 到三切點距離皆為 $r$；四邊形 $AQIR$ 有兩個直角 ⟹ $\angle QIR=180°-A$，同理 $\angle RIP=180°-B$、$\angle PIQ=180°-C$。</div>
+(1) $[\triangle PQR]=\dfrac12r^2\left[\sin(180°-A)+\sin(180°-B)+\sin(180°-C)\right]=\dfrac12r^2(\sin A+\sin B+\sin C)=\dfrac12r^2\cdot\dfrac{a+b+c}{2R}=\dfrac{r^2s}{2R}$（$s$ 為半周長）。而 $[\triangle ABC]=rs$ ⟹ 比值 $=\dfrac r{2R}$。$\blacksquare$<br>
+(2) $r=\dfrac Ks$、$R=\dfrac{abc}{4K}$ ⟹ $\dfrac r{2R}=\dfrac{2K^2}{s\cdot abc}=\dfrac{2(s-a)(s-b)(s-c)}{abc}$（海龍 $K^2=s(s-a)(s-b)(s-c)$）。算幾：$a=(s-b)+(s-c)\ge2\sqrt{(s-b)(s-c)}$，同理 $b\ge2\sqrt{(s-c)(s-a)}$、$c\ge2\sqrt{(s-a)(s-b)}$，三式相乘 ⟹ $abc\ge8(s-a)(s-b)(s-c)$ ⟹ 比值 $\le\dfrac14$，即 $R\ge2r$，等號在 $a=b=c$。$\blacksquare$<span class="note-sm">這就是 Euler 不等式 $R\ge2r$；它的另一個證明是 Euler 定理 $\overline{OI}^2=R(R-2r)$。</span></div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">專區 11</span><span class="kw">sinA:sinB:sinC=3:5:7 求 cosA:cosB:cosC → 取邊 3,5,7 三次餘弦定理，通分到同分母 14 再比</span><span class="src">羅東高工 112 教甄 填 3</span></div>
+<div class="fxq">$\triangle ABC$ 中 $\sin A:\sin B:\sin C=3:5:7$。求 $\cos A:\cos B:\cos C$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$13:11:(-7)$</div>
+<div class="fxs"><div class="move">招式：正弦定理 ⟹ $a:b:c=3:5:7$，取 $a=3,b=5,c=7$。</div>
+$\cos A=\dfrac{25+49-9}{70}=\dfrac{13}{14}$、$\cos B=\dfrac{9+49-25}{42}=\dfrac{11}{14}$、$\cos C=\dfrac{9+25-49}{30}=-\dfrac12=-\dfrac7{14}$ ⟹ $13:11:(-7)$（$\angle C=120°$，$3,5,7$ 是最常考的鈍角三角形）。</div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">專區 12</span><span class="kw">證明測高公式 AB=r sinθ tanφ/sin(θ+φ) → △S₁S₂B 正弦定理（第三角是 θ+φ 的補角），再乘 tanφ</span><span class="src">高雄市 107 教甄聯招 第 13 題</span></div>
+<div class="fxq">觀測站 $S_1,S_2$ 相距 $r$，飛機 $A$ 在地面 $B$ 點的正上方。$S_1$ 測得 $A$ 的仰角為 $\varphi$，$\angle BS_1S_2=\theta$（$B$ 在地面），$S_2$ 測得 $\angle BS_2S_1=\theta'$。試證飛機高度 $\overline{AB}=\dfrac{r\sin\theta'\tan\varphi}{\sin(\theta+\theta')}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">證明見詳解</div>
+<div class="fxs"><div class="move">招式：俯視圖 $\triangle S_1S_2B$ 中 $\angle S_1BS_2=180°-(\theta+\theta')$ ⟹ $\sin\angle S_1BS_2=\sin(\theta+\theta')$（補角，不必展開）。</div>
+正弦定理：$\dfrac{\overline{S_1B}}{\sin\theta'}=\dfrac{r}{\sin(\theta+\theta')}$ ⟹ $\overline{S_1B}=\dfrac{r\sin\theta'}{\sin(\theta+\theta')}$。側視圖：直角 $\triangle ABS_1$ 中 $\overline{AB}=\overline{S_1B}\tan\varphi=\dfrac{r\sin\theta'\tan\varphi}{\sin(\theta+\theta')}$。$\blacksquare$<span class="note-sm">原卷把 $S_2$ 處的角記為 $\theta$、$S_1$ 處記為 $\varphi$ 的同名符號較亂，本書改記 $\theta'$；結構就是例題 36「兩點皆不可及」的骨架。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">專區 13</span><span class="kw">直徑 AB=12、PA−PB=3、∠BCP=θ → 直徑對直角 PA²+PB²=144，配 (PA−PB)² 得 PA·PB；同弧圓周角 ∠BCP=∠BAP，sinθ、cosθ 就是 PB/12、PA/12</span><span class="src">嘉義高中 115 科學班 填 4</span></div>
+<div class="fxq">$\overline{AB}$ 為圓的直徑，$P$、$C$ 為圓周上兩點（$C$ 與 $A$ 在 $\overline{BP}$ 同側），已知 $\overline{AB}=12$、$\overline{PA}-\overline{PB}=3$，$\angle BCP=\theta$。求 $\sin\theta\cos\theta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{15}{32}$</div>
+<div class="fxs"><div class="move">招式：$\angle APB=90°$（直徑所對的圓周角）⟹ $\overline{PA}^2+\overline{PB}^2=144$；$(\overline{PA}-\overline{PB})^2=9$ ⟹ $144-2\overline{PA}\cdot\overline{PB}=9$ ⟹ $\overline{PA}\cdot\overline{PB}=\dfrac{135}2$。</div>
+$\angle BCP$ 與 $\angle BAP$ 對同一弧 $\overset{\frown}{BP}$ ⟹ $\theta=\angle BAP$；在直角 $\triangle APB$ 中 $\sin\theta=\dfrac{\overline{PB}}{12}$、$\cos\theta=\dfrac{\overline{PA}}{12}$ ⟹ $\sin\theta\cos\theta=\dfrac{\overline{PA}\cdot\overline{PB}}{144}=\dfrac{135/2}{144}=\dfrac{15}{32}$。（$\overline{PA},\overline{PB}$ 各是多少根本不必解出來。）</div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">專區 14</span><span class="kw">直角三角形＋平行四邊形 DBCF、CF=6 → 坐標化：30° 給 AC=4√3、AB=8；D 用參數放在 AB 上，F=D+(C−B)，|CF|=6 解出參數；E 是對角線中點</span><span class="src">嘉義高中 113 科學班 填 15</span></div>
+<div class="fxq">直角 $\triangle ABC$ 中 $\angle ACB=90°$，$D$ 在 $\overline{AB}$ 上，四邊形 $DBCF$ 為平行四邊形，$\overline{CD}$ 與 $\overline{BF}$ 交於 $E$，$\overline{AC}$ 與 $\overline{DF}$ 交於 $G$。若 $\angle A=30°$、$\overline{BC}=4$、$\overline{CF}=6$，求 $\overline{GE}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt7$</div>
+<div class="fxs"><div class="move">招式：$C(0,0)$、$B(4,0)$、$A(0,4\sqrt3)$（$\tan30°=\dfrac{4}{\overline{AC}}$ ⟹ $\overline{AC}=4\sqrt3$）。$D=A+t(B-A)=(4t,\ 4\sqrt3(1-t))$；平行四邊形 ⟹ $F=D+(C-B)=(4t-4,\ 4\sqrt3(1-t))$。</div>
+$\overline{CF}^2=16(1-t)^2+48(1-t)^2=64(1-t)^2=36$ ⟹ $1-t=\dfrac34$ ⟹ $t=\dfrac14$ ⟹ $D(1,3\sqrt3)$、$F(-3,3\sqrt3)$。$E$ 是平行四邊形兩對角線的交點 $=\overline{CD}$ 中點 $=\left(\dfrac12,\dfrac{3\sqrt3}2\right)$；$\overline{DF}$ 水平（$y=3\sqrt3$）交 $\overline{AC}$（$x=0$）於 $G(0,3\sqrt3)$。<br>
+$\overline{GE}^2=\dfrac14+\dfrac{27}4=7$ ⟹ $\overline{GE}=\sqrt7$（官方參考答案 $\sqrt7$ ✓）。</div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">專區 15</span><span class="kw">直角三角形兩條角平分線的交點 D、E 到 AB 的距離 6、4 → 角平分線上的點到兩邊等距 ⟹ CD=6、CE=4；內心的切線長把 tan(A/2)、tan(B/2) 換成 r/(b−r)、r/(a−r)</span><span class="src">嘉義高中 113 科學班 填 16</span></div>
+<div class="fxq">直角 $\triangle ABC$ 中 $\angle C$ 為直角，$\angle BAC$ 的角平分線 $\overline{AD}$ 交 $\overline{BC}$ 於 $D$，$\angle ABC$ 的角平分線 $\overline{BE}$ 交 $\overline{AC}$ 於 $E$。已知 $D$ 到 $\overline{AB}$ 的距離為 $6$、$E$ 到 $\overline{AB}$ 的距離為 $4$。求 $\triangle ABC$ 的內切圓半徑。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2\sqrt3$</div>
+<div class="fxs"><div class="move">招式：角平分線上的點到兩邊等距 ⟹ $\overline{CD}=6$、$\overline{CE}=4$。設 $\overline{BC}=a$、$\overline{CA}=b$、內切圓半徑 $r$，切點把兩股切成 $r$ 與 $b-r$、$a-r$（直角頂點 $C$ 的兩條切線長都是 $r$）。</div>
+內心 $I$ 在 $\overline{AD}$ 上：$\tan\angle CAD=\dfrac{\overline{CD}}{\overline{AC}}=\dfrac6b$，又在切點的直角三角形裡 $\tan\angle CAD=\tan\angle IAR=\dfrac{r}{b-r}$ ⟹ $\dfrac r{b-r}=\dfrac6b$ ⟹ $b=\dfrac{6r}{6-r}$；同理 $\dfrac r{a-r}=\dfrac4a$ ⟹ $a=\dfrac{4r}{4-r}$。<br>
+直角三角形 $c=a+b-2r$ 與畢氏 $c^2=a^2+b^2$ ⟹ $(a+b)^2-4r(a+b)+4r^2=a^2+b^2$ ⟹ $ab-2r(a+b)+2r^2=0$。代入並乘 $(6-r)(4-r)$：$24r^2-2r^2(48-10r)+2r^2(6-r)(4-r)=0$ ⟹ 除以 $2r^2$：$12-48+10r+24-10r+r^2=0$ ⟹ $r^2=12$ ⟹ $r=2\sqrt3$。<br>
+驗算：$a=\dfrac{8\sqrt3}{4-2\sqrt3}=12+8\sqrt3$、$b=\dfrac{12\sqrt3}{6-2\sqrt3}=3+3\sqrt3$、$c=15+7\sqrt3$，$\dfrac{ab}{b+c}=6$ ✓、$\dfrac{ab}{a+c}=4$ ✓（官方參考答案 $2\sqrt3$ ✓）。<span class="note-sm">$\angle CAD$ 恰是 $\dfrac A2$，但整題只把它當一個角的 $\tan$ 用兩種方式寫出來，不需要半角公式。</span></div></div>
+</section>
+
+<div class="ch-nav">
+  <a href="../g10b-ch03/practice.html">← 第三章 數據分析 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <a href="../g11a-ch01/practice.html">第一章 三角函數 練習本 →</a>
+</div>
+</div>
+
+
+<script>
+(function () {
+  var G = window.PGEN;
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var labelOf = {};
+  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard';
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
+      '<div class="gh"></div><div class="ga"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+    function load() {
+      var it = G[tier][key](G.makeRng(seed));
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '提示：' + it.h;
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.seed').textContent = '#' + seed;
+      card.querySelector('.gh').classList.remove('on'); card.querySelector('.ga').classList.remove('on');
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+  document.querySelectorAll('.fixset').forEach(function (box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
+    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
+    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
+    for (var i = 0; i < n; i++) {
+      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
+      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+    }
+    box.innerHTML = html + '</ol>';
+    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    box.querySelector('.print').onclick = function () { window.print(); };
+    render(box);
+  });
+  document.querySelectorAll('.fx button').forEach(function (b) {
+    b.onclick = function () {
+      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
+      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
+    };
+  });
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+</body>
+</html>
