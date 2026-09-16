@@ -1099,7 +1099,107 @@
   /* 固定題 L3-n 對應的類似題型 */
   var L3_FIX = { 'L3-1': 'radEstimate', 'L3-2': 'periodFromHighLow', 'L3-3': 'tanShiftCoincide', 'L3-4': 'rootSumSin', 'L3-5': 'absPeriodSum', 'L3-6': 'quadTanPoint', 'L3-7': 'homogEq', 'L3-8': 'fracSubCombine', 'L3-9': 'halfDiffIsos', 'L3-10': 'sinCosMixRange', 'L3-11': 'expandCombineRange', 'L3-12': 'tanRootsTriangle', 'L3-13': 'crossSquareSum', 'L3-14': 'reduceBigAngle', 'L3-15': 'tideModel' };
 
-  var META = { L1: META_L1, L2: META_L2, L3: META_L3 };
+  /* ══════════════════════════════════════════════════════════
+     L0　章首先備診斷（5 型）：國中幾何、高一下三角比、高一上二次函數
+     ══════════════════════════════════════════════════════════ */
+  var L0 = {};
+  L0.pythag = function (r) {
+    var t = r.pick(TRIPLES), m = r.pick([1, 1, 2, 3]), a = t[0] * m, b = t[1] * m, c = t[2] * m, ask = r.pick(['c', 'c', 'leg']);
+    if (ask === 'c') return { q: '直角三角形的兩股長為 ' + T(a) + ' 與 ' + T(b) + '，求斜邊長。', a: T(c), h: '畢氏定理：斜邊$^2=$ 兩股平方和 $=' + a + '^2+' + b + '^2$。', p: { a: a, b: b, c: c, ask: ask } };
+    return { q: '直角三角形的斜邊長為 ' + T(c) + '、一股長為 ' + T(a) + '，求另一股長。', a: T(b), h: '畢氏定理：另一股 $=\\sqrt{' + c + '^2-' + a + '^2}$。', p: { a: a, b: b, c: c, ask: ask } };
+  };
+  L0.rightTriRatio = function (r) {
+    var t = r.pick(TRIPLES), fn = r.pick(['sin', 'cos', 'tan']);
+    var a = t[0], b = t[1], c = t[2], val = fn === 'sin' ? F(a, c) : fn === 'cos' ? F(b, c) : F(a, b);
+    return { q: '直角 ' + T('\\triangle ABC') + ' 中 ' + T('\\angle C=90^\\circ') + '，' + T('\\overline{BC}=' + a) + '、' + T('\\overline{AC}=' + b) + '、' + T('\\overline{AB}=' + c) + '，求 ' + T('\\' + fn + 'A') + '。', a: T('\\' + fn + 'A=' + Fr.tex(val)), h: '$\\angle A$ 的對邊是 $\\overline{BC}$、鄰邊是 $\\overline{AC}$、斜邊 $\\overline{AB}$：$\\sin=\\dfrac{\\text{對}}{\\text{斜}}$、$\\cos=\\dfrac{\\text{鄰}}{\\text{斜}}$、$\\tan=\\dfrac{\\text{對}}{\\text{鄰}}$。', p: { a: a, b: b, c: c, fn: fn, val: [val.n, val.d] } };
+  };
+  L0.quadMax = function (r) {
+    var s = r.sign(), h = r.int(-4, 4), k = r.int(-6, 6), B = -2 * s * h, C = s * h * h + k;
+    var poly = (s < 0 ? '-' : '') + 'x^2' + (B === 0 ? '' : (B > 0 ? '+' : '-') + (Math.abs(B) === 1 ? '' : Math.abs(B)) + 'x') + (C === 0 ? '' : signed(C));
+    return { q: '求二次函數 ' + T('y=' + poly) + ' 的' + (s > 0 ? '最小值' : '最大值') + '，並求此時的 ' + T('x') + '。', a: (s > 0 ? '最小值 ' : '最大值 ') + T(k) + '（' + T('x=' + h) + '）', h: '配方：$y=' + (s < 0 ? '-' : '') + '(x' + (h === 0 ? '' : signed(-h)) + ')^2' + (k === 0 ? '' : signed(k)) + '$，頂點 $(' + h + ',' + k + ')$。', p: { s: s, h: h, k: k } };
+  };
+  L0.circleMeasure = function (r) {
+    var rad = r.int(2, 12), deg = r.pick([30, 45, 60, 90, 120, 135, 150, 180, 240, 270]);
+    var arc = F(2 * rad * deg, 360), area = F(rad * rad * deg, 360);
+    return { q: '半徑 ' + T(rad) + ' 的圓中，圓心角 ' + T(degTex(deg)) + ' 所對的弧長與扇形面積各為何？（以 ' + T('\\pi') + ' 表示）', a: '弧長 ' + T(Fr.tex(arc) + '\\pi') + '，面積 ' + T(Fr.tex(area) + '\\pi'), h: '弧長 $=2\\pi r\\times\\dfrac{' + deg + '}{360}$，面積 $=\\pi r^2\\times\\dfrac{' + deg + '}{360}$。', p: { r: rad, deg: deg } };
+  };
+  L0.specialTri = function (r) {
+    var kind = r.pick(['306090', '454590']), m = r.int(1, 6);
+    if (kind === '454590') {
+      var give = r.pick(['leg', 'hyp']);
+      if (give === 'leg') return { q: '等腰直角三角形的一股長為 ' + T(m) + '，求斜邊長。', a: T(sqrtTex(2 * m * m)), h: '$45^\\circ$-$45^\\circ$-$90^\\circ$ 三邊比 $1:1:\\sqrt2$。', p: { kind: kind, m: m, give: give } };
+      return { q: '等腰直角三角形的斜邊長為 ' + T(2 * m) + '，求一股長。', a: T(sqrtTex(2 * m * m)), h: '斜邊 $=$ 股 $\\times\\sqrt2$ ⟹ 股 $=\\dfrac{' + 2 * m + '}{\\sqrt2}=' + m + '\\sqrt2$。', p: { kind: kind, m: m, give: give } };
+    }
+    var give2 = r.pick(['short', 'hyp', 'long']);
+    if (give2 === 'short') return { q: '直角三角形的一銳角為 ' + T('30^\\circ') + '，其對邊長 ' + T(m) + '，求斜邊與另一股。', a: '斜邊 ' + T(2 * m) + '，另一股 ' + T(sqrtTex(3 * m * m)), h: '$30^\\circ$-$60^\\circ$-$90^\\circ$ 三邊比 $1:\\sqrt3:2$，$30^\\circ$ 對最短邊。', p: { kind: kind, m: m, give: give2 } };
+    if (give2 === 'hyp') return { q: '直角三角形的一銳角為 ' + T('30^\\circ') + '，斜邊長 ' + T(2 * m) + '，求兩股。', a: T(m) + ' 與 ' + T(sqrtTex(3 * m * m)), h: '斜邊是最短邊的 $2$ 倍：最短邊 $' + m + '$，另一股 $' + m + '\\sqrt3$。', p: { kind: kind, m: m, give: give2 } };
+    return { q: '直角三角形的一銳角為 ' + T('60^\\circ') + '，其對邊長 ' + T(sqrtTex(3 * m * m)) + '，求斜邊與另一股。', a: '斜邊 ' + T(2 * m) + '，另一股 ' + T(m), h: '$60^\\circ$ 對的是 $\\sqrt3$ 那一邊：$' + m + '\\sqrt3\\div\\sqrt3=' + m + '$ 是最短邊。', p: { kind: kind, m: m, give: give2 } };
+  };
+  var META_L0 = [['pythag', '畢氏定理'], ['rightTriRatio', '直角三角形的三角比'], ['quadMax', '二次函數配方求極值'], ['circleMeasure', '圓的弧長與扇形面積（度數）'], ['specialTri', '30°-60°-90° 與 45°-45°-90°']];
+  /* 先備題型 → 該去哪裡複習 */
+  var PREREQ = { pythag: { txt: '畢氏定理（國中）', link: null }, rightTriRatio: { txt: '直角三角形的三角比（高一下第四章 三角比）', link: '../g10b-ch04/practice.html#L1' }, quadMax: { txt: '二次函數配方求極值（高一上第三章 多項式）', link: '../g10a-ch03/practice.html#L1' }, circleMeasure: { txt: '圓的弧長與扇形面積（國中，用度數）', link: null }, specialTri: { txt: '特殊直角三角形的邊長比（國中）', link: null } };
+
+  /* ══════════════════════════════════════════════════════════
+     對照題：同一型抽兩題，只差一個關鍵特徵（f 由 p 算出；keep 的欄位要相同）
+     ══════════════════════════════════════════════════════════ */
+  var CONTRAST = {
+    'L1.degToRad': { f: function (p) { return p.deg < 0; }, why: '負角化弧度：負號照搬，其他步驟一模一樣。' },
+    'L1.radToDeg': { f: function (p) { return p.quad; }, why: '同樣都把 $\\pi$ 當 $180^\\circ$；象限由「化到一圈內」的角決定，不是看分母。' },
+    'L1.arcArea': { f: function (p) { return p.k / p.d > 1; }, why: '圓心角超過 $\\pi$ 也一樣套 $s=r\\theta$、$A=\\frac12r^2\\theta$，弧度不用換成度。' },
+    'L1.signQuad': { f: function (p) { return p.fn; }, why: '同一個弧度值，不同函數的正負由象限口訣「一全正、二正弦、三正切、四餘弦」決定。' },
+    'L1.specialValue': { f: function (p) { return p.fn; }, why: '同一個角：參考角相同，但 $\\sin$、$\\cos$、$\\tan$ 各自的正負不同。' },
+    'L1.pointDef': { f: function (p) { return (p.x < 0 ? 'L' : 'R') + (p.y < 0 ? 'D' : 'U'); }, why: '點換到別的象限：$r$ 不變，只有正負號跟著坐標變。' },
+    'L1.fromSinQuad': { f: function (p) { return p.quad; }, keep: ['give'], why: '同一個已知值、不同象限：補出來的值大小一樣，只有正負不同。' },
+    'L1.coterminal': { f: function (p) { return p.mode; }, why: '度與弧度只是單位不同，做法都是加減整圈。' },
+    'L1.reduceFormula': { f: function (p) { return p.k % 180 === 90; }, why: '$\\pi$ 的整數倍函數名不變、$\\frac{\\pi}{2}$ 的奇數倍 $\\sin$、$\\cos$ 互換——這是唯一的差別，正負一律看象限。' },
+    'L1.sumExact': { f: function (p) { return p.fn; }, why: '同一個角拆法相同，三個函數各套各的和差角公式。' },
+    'L1.cosDiffQuad': { f: function (p) { return p.which; }, why: '和角與差角、$\\sin$ 與 $\\cos$：只差公式中間那個正負號，補值的步驟完全一樣。' },
+    'L1.tanSum': { f: function (p) { return p.sgn; }, why: '和與差：分子的號與分母的號同時反過來。' },
+    'L1.doubleFromSin': { f: function (p) { return p.give; }, why: '給 $\\sin$ 或給 $\\cos$：補齊另一個的步驟相同，倍角公式不變。' },
+    'L1.halfFromCos': { f: function (p) { return p.quad; }, keep: ['askCos'], why: '$\\cos\\theta$ 一樣但 $\\theta$ 的範圍不同 ⟹ $\\frac{\\theta}{2}$ 落在不同象限，開根號後的正負就不同。' },
+    'L1.ampPeriod': { f: function (p) { return p.b; }, why: '只有 $b$ 不同：振幅與上下界不變，週期變成 $\\frac{2\\pi}{|b|}$。' },
+    'L1.shiftFunc': { f: function (p) { return p.hs; }, why: '左移與右移：括號內的正負號相反（右減左加）。' },
+    'L1.combineStd': { f: function (p) { return p.aSign * 10 + p.bSign; }, why: '係數的正負決定 $\\theta$ 的象限，$r$ 完全不變。' },
+    'L1.maxMin': { f: function (p) { return p.d; }, why: '常數 $d$ 只是把整個圖上下搬，振幅 $\\sqrt{a^2+b^2}$ 不變。' },
+    'L1.basicEq': { f: function (p) { return p.fn; }, why: '同一個值，$\\sin$ 用 $\\pi-x$ 找第二解、$\\cos$ 用 $2\\pi-x$——對稱軸不同。' },
+    'L1.periodOf': { f: function (p) { return p.kind; }, why: '加絕對值或平方會讓週期減半；$\\tan$ 本身就是 $\\pi$。' },
+    'L2.sectorMax': { f: function (p) { return p.kind === 'perim' || p.kind === 'perimFrac' ? 'P' : 'A'; }, why: '周長固定求面積最大用二次函數頂點；面積固定求周長最小用算幾不等式，兩題答案都是 $\\theta=2$。' },
+    'L2.sumProd': { f: function (p) { return p.rg.join(','); }, why: '$\\sin\\theta+\\cos\\theta$ 的值一樣，只有 $\\theta$ 的範圍不同：平方後的結果相同，差的正負由範圍決定。' },
+    'L2.quadRootCos2': { f: function (p) { return p.fn; }, why: '根是 $\\sin\\theta$ 用 $1-2\\sin^2\\theta$，根是 $\\cos\\theta$ 用 $2\\cos^2\\theta-1$。' },
+    'L2.tanQuad': { f: function (p) { return p.mode; }, why: '正向是代根與係數求 $\\tan(\\alpha+\\beta)$，反向是由 $\\tan(\\alpha+\\beta)$ 反解係數，同一條公式。' },
+    'L2.systemSquare': { f: function (p) { return p.form; }, why: '兩式的正負號配置不同，平方相加後交叉項是 $\\cos(A+B)$ 還是 $\\cos(A-B)$、帶正號還是負號。' },
+    'L2.halfFromCos2x': { f: function (p) { return p.quad; }, why: '$\\cos2x$ 相同、$x$ 的象限不同：$\\sin x$ 的正負與 $\\frac x2$ 的象限跟著變。' },
+    'L2.periodJudge': { f: function (p) { return p.kind; }, why: '不同的合成方式（絕對值、平方、乘積、相加）各有各的週期規則。' },
+    'L2.rootCount': { f: function (p) { return p.c; }, why: '只有常數 $c$ 不同：直線平移，與正弦曲線的交點數就變了。' },
+    'L2.trigIneq': { f: function (p) { return p.op; }, why: '同一個二次式，不等號方向或含不含等號不同，解集合就在區間內外、端點開閉之間變化。' },
+    'L2.squareSub': { f: function (p) { return p.sgn; }, why: '$\\sin x+\\cos x$ 與 $\\sin x-\\cos x$ 換元後範圍都是 $[-\\sqrt2,\\sqrt2]$，二次函數一樣。' },
+    'L2.eqSumCount': { f: function (p) { return p.kpos; }, why: '$k$ 的正負決定兩解落在每個週期的前半段還是後半段，總和的公式跟著變。' },
+    'L3.tanShiftCoincide': { f: function (p) { return p.dir; }, why: '左移與右移只差 $x$ 換成 $x+s$ 或 $x-s$，其餘推導相同。' },
+    'L3.rootSumSin': { f: function (p) { return p.fn + p.kpos; }, why: '$\\sin$ 與 $\\cos$ 的兩解對稱中心不同（$\\frac{\\pi}{2}+2j\\pi$ 對 $2j\\pi+\\pi$），$k$ 的正負決定落在哪半段。' },
+    'L3.quadTanPoint': { f: function (p) { return p.coord; }, why: '給 $x$ 坐標或給 $y$ 坐標的正負，配合 $\\tan$ 的正負決定象限的方式不同。' },
+    'L3.fracSubCombine': { f: function (p) { return p.form; }, why: '相加或相減，通分後分子的疊合角度不同。' },
+    'L3.halfDiffIsos': { f: function (p) { return p.ask; }, why: '同樣先平方得 $\\sin\\theta$，問 $\\tan\\varphi$、$\\sin\\varphi$、$\\cos\\varphi$ 各用不同的倍角公式。' },
+    'L3.expandCombineRange': { f: function (p) { return p.form; }, why: '加 $B\\cos x$ 或加 $B\\sin x$，展開後抵銷的是不同的項。' },
+    'L3.tanRootsTriangle': { f: function (p) { return p.C; }, why: '$C=45^\\circ$ 與 $135^\\circ$ 只差 $\\tan C$ 的正負，$\\tan(A+B)=-\\tan C$ 的推導相同。' },
+    'L3.crossSquareSum': { f: function (p) { return p.kind; }, why: '兩式的組合方式不同，平方相加的交叉項是 $\\sin(\\alpha+\\beta)$、$\\cos(\\alpha+\\beta)$ 還是 $\\cos(\\alpha-\\beta)$。' },
+    'L3.reduceBigAngle': { f: function (p) { return p.sg; }, why: '$+\\theta$ 與 $-\\theta$：化簡後差在正負與函數名，象限判斷相同。' }
+  };
+  function contrastPair(tier, key, seedA, maxTry) {
+    var c = CONTRAST[tier + '.' + key]; if (!c) return null;
+    var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];
+    for (var n = 1; n < (maxTry || 600); n++) {
+      var s = (seedA * 7919 + n * 104729) % 900000 + 1;                    /* 連號種子的 LCG 首值幾乎相同，要跳著取 */
+      var B = wrapItem(tier, key, s);
+      if (c.f(B.p) === fA) continue;
+      var ok = true; keep.forEach(function (k) { if (JSON.stringify(B.p[k]) !== JSON.stringify(A.p[k])) ok = false; });
+      if (!ok || B.q === A.q) continue;
+      return { A: A, B: B, seedB: s, why: c.why };
+    }
+    return null;
+  }
+  function wrapItem(tier, key, seed) { return ({ L0: L0, L1: L1, L2: L2, L3: L3 })[tier][key](makeRng(seed)); }
+
+  var META = { L0: META_L0, L1: META_L1, L2: META_L2, L3: META_L3 };
 
   /* ── HTML 安全：$…$ 裡的 < > 改成 \lt \gt ── */
   function escMath(s) {
@@ -1116,7 +1216,7 @@
       };
     });
   }
-  wrapAll(L1, L1_SOL, L1_H1); wrapAll(L2); wrapAll(L3);
+  wrapAll(L0); wrapAll(L1, L1_SOL, L1_H1); wrapAll(L2); wrapAll(L3);
 
-  return { makeRng: makeRng, L1: L1, L2: L2, L3: L3, L3_FIX: L3_FIX, META: META, _util: { F: F, Fr: Fr, tv: tv, piTex: piTex, exact15: exact15, countRoots: countRoots } };
+  return { makeRng: makeRng, L0: L0, L1: L1, L2: L2, L3: L3, L3_FIX: L3_FIX, META: META, PREREQ: PREREQ, CONTRAST: CONTRAST, contrastPair: contrastPair, _util: { F: F, Fr: Fr, tv: tv, piTex: piTex, exact15: exact15, countRoots: countRoots } };
 }));
