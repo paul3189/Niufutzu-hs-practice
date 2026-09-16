@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三章 數據分析 ── 分級練習本｜高一下</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第三章 數據分析 ── 分級練習本</h1>
+  <div class="sub">高一下・配合主講義 第 1 節 一維數據（集中趨勢、百分位數、標準差、線性變換、標準化、平均成長率）、第 2 節 二維數據（散布圖、相關係數、最適直線、預測）。五個程度、一本練習本：L1、L2 的題目可以無限生成，L3–L5 是各校段考、大考、科學班與教甄的固定題。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・科學班・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（11,750 題抽樣，全部用分數精確重算一次）；固定題全數人工＋電腦重算。名詞照 108 課綱：課綱說「最適直線」，段考與大考也常寫「迴歸直線」，兩者是同一條線；百分位數採課本的「$t=\frac{nk}{100}$ 整數取兩筆平均、非整數進位」定義。<b>常態分布、信賴區間、抽樣、假設檢定都不在 108 課綱高一範圍</b>，本書一律不用。</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>分不清平均數與中位數、算標準差忘了除以 $n$ 再開根號、看到 $r$ 就以為是斜率的同學。</div>
+  <div><b>目標</b>29 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+</div>
+
+<h3 class="sec">1-1 集中趨勢與加權平均</h3>
+<div class="must">先要會：<b>先排序，$n$ 奇數取中間、偶數取中間兩筆平均</b>、<b>眾數是「出現最多次的值」不是次數</b>、<b>合併平均用人數加權，總分 $=$ 人數 $\times$ 平均</b>、<b>學期成績「至少要考幾分」：列不等式，權重加總要是 $100\%$</b>、<b>次數分配表：平均 $=\dfrac{\sum(\text{值}\times\text{次數})}{n}$、中位數看累積次數</b>、<b>新增／剔除資料先動總和再除以新的筆數</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="centralTrio,weightedMean,weightedScore,freqTable,meanShift"></div>
+<div class="fixset" data-tier="L1" data-keys="centralTrio,weightedMean,weightedScore,freqTable,meanShift" data-seed="9101"></div>
+
+<h3 class="sec">1-2 百分位數</h3>
+<div class="must">先要會：<b>$t=\dfrac{nk}{100}$——是整數就取第 $t$、$t+1$ 筆的平均；不是整數就無條件進位取第 $\lceil t\rceil$ 筆</b>、<b>資料一定要先由小到大排</b>、<b>次數有規律時（持 $k$ 顆的有 $k$ 位）先算總筆數 $\frac{m(m+1)}{2}$，再用累積次數表找第 $t$ 筆落在哪一格</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="pctPosition,pctData,pctFreq"></div>
+<div class="fixset" data-tier="L1" data-keys="pctPosition,pctData,pctFreq" data-seed="9201"></div>
+
+<h3 class="sec">1-3 分散程度：全距、變異數、標準差</h3>
+<div class="must">先要會：<b>偏差 $x_i-\mu$ 的總和必為 $0$（拿來檢查）</b>、<b>$\sigma^2=\dfrac{\sum(x_i-\mu)^2}{n}=\dfrac{\sum x_i^2}{n}-\mu^2$</b>、<b>$\sum x_i^2=n(\sigma^2+\mu^2)$、$\sum(x_i-a)^2=n\sigma^2+n(\mu-a)^2$</b>、<b>新增一筆：先算新平均，平方和搬到新平均要加 $n(\mu-\mu')^2$</b>、<b>合併兩組：$\sigma^2=\dfrac{n_1[\sigma_1^2+(\mu_1-\mu)^2]+n_2[\sigma_2^2+(\mu_2-\mu)^2]}{n_1+n_2}$，合併後的 $\sigma$ 絕不會比兩組中較小的那個更小</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="sdBasic,sdFromSums,sumSqFromStats,addOne,mergeTwo"></div>
+<div class="fixset" data-tier="L1" data-keys="sdBasic,sdFromSums,sumSqFromStats,addOne,mergeTwo" data-seed="9301"></div>
+
+<h3 class="sec">1-4 線性變換與標準化</h3>
+<div class="must">先要會：<b>$y=ax+b$ ⟹ $\mu_y=a\mu_x+b$、$\sigma_y=|a|\sigma_x$（平移不影響 $\sigma$，係數取絕對值）</b>、<b>反推調分公式：$a=\dfrac{\sigma_y}{\sigma_x}$，再用平均求 $b$</b>、<b>$z=\dfrac{x-\mu}{\sigma}$ 比「高出幾個標準差」；標準化後永遠 $\mu=0$、$\sigma=1$</b>、<b>$T=50+10z$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="linearTrans,inverseTrans,zCompare,zInverse,tScore"></div>
+<div class="fixset" data-tier="L1" data-keys="linearTrans,inverseTrans,zCompare,zInverse,tScore" data-seed="9401"></div>
+
+<h3 class="sec">1-5 平均成長率</h3>
+<div class="must">先要會：<b>成長率用「乘」的：$(1+\bar r)^n=(1+r_1)(1+r_2)\cdots(1+r_n)$，右邊乘出來會恰好是某個數的 $n$ 次方</b>、<b>只給首尾值：$(1+\bar r)^n=\dfrac{\text{末}}{\text{初}}$</b>、<b>把成長率直接平均是錯的（$+100\%$ 再 $-50\%$ 是 $0\%$，不是 $25\%$）</b>。段考一律把它放在數據分析考（五校都考）。</div>
+<div class="gen-grid" data-tier="L1" data-keys="growthRate,growthTotal"></div>
+<div class="fixset" data-tier="L1" data-keys="growthRate,growthTotal" data-seed="9501"></div>
+
+<h3 class="sec">2-1 相關係數</h3>
+<div class="must">先要會：<b>先算兩個平均，把兩排偏差寫出來；$r=\dfrac{S_{xy}}{\sqrt{S_{xx}S_{yy}}}$</b>、<b>只給 $\sum$：$S_{xx}=\sum x^2-\dfrac{(\sum x)^2}{n}$、$S_{xy}=\sum xy-\dfrac{\sum x\sum y}{n}$</b>、<b>$(ax+b,cy+d)$ 的 $r$ 只看 $ac$ 的正負：同號不變、異號變號</b>、<b>所有點共線 ⟹ $r=\pm1$；$r$ 沒有單位、永遠在 $[-1,1]$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="corrData,corrSums,corrTransform,corrPerfect"></div>
+<div class="fixset" data-tier="L1" data-keys="corrData,corrSums,corrTransform,corrPerfect" data-seed="9601"></div>
+
+<h3 class="sec">2-2 最適直線與預測</h3>
+<div class="must">先要會：<b>斜率 $=\dfrac{S_{xy}}{S_{xx}}=r\dfrac{\sigma_y}{\sigma_x}$，直線必過重心 $(\mu_x,\mu_y)$</b>、<b>預測直接從重心出發：$\hat y=\mu_y+\text{斜率}\times(x_0-\mu_x)$</b>、<b>反推：代 $\mu_x$ 得 $\mu_y$；由斜率反解 $r$ 或 $\sigma$</b>、<b>線性變換後：新斜率 $=\dfrac{s}{p}\times$ 舊斜率、過新重心</b>、<b>標準化後的最適直線是 $y''=r\,x''$（過原點，斜率就是 $r$）</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="fitData,fitStats,fitCentroid,fitTransform,stdFit"></div>
+<div class="fixset" data-tier="L1" data-keys="fitData,fitStats,fitCentroid,fitTransform,stdFit" data-seed="9701"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
+  <div><b>目標</b>18 個段考主力型，依 31 份段考卷的出現率排序（相關係數 28 卷、迴歸直線 25、標準差 23、平均數 15、標準化 14、線性變換 13、百分位數 12、中位數 11、合併標準差 11、變異數 10、最小平方法 8）。</div>
+  <div><b>通過標準</b>固定 12 題限時 40 分鐘做完，對 10 題以上。</div>
+</div>
+
+<h3 class="sec">一維進階：極值、反推、兩層加權</h3>
+<div class="must">段考 31 卷中<b>標準差 23 卷、平均數 15 卷、標準化 14 卷、線性變換 13 卷、百分位數 12 卷、中位數 11 卷、合併標準差 11 卷、變異數 10 卷、加權平均 6 卷、平均成長率 6 卷</b>。招式：<b>固定全距求最小變異數 ⟹ 兩端固定，其餘全擠到中間的整數</b>；<b>$f(x)=\sum(x-x_i)^2=n(x-\mu)^2+n\sigma^2$ ⟹ 兩個函數值相減先解 $\mu$</b>；<b>新增一筆後 $\sigma$ 已知 ⟹ 新平方和 $=n\sigma^2+\frac{n}{n+1}d^2$ 解 $d$</b>；<b>合併結果反推 ⟹ 平均式解一個未知、變異數式解另一個</b>；<b>最高分最低分拉到指定值 ⟹ 兩點決定 $y=a+bx$，$b\lt1$ 就是壓縮</b>；<b>五科比表現 ⟹ 全部化成 $z$</b>；<b>$k^2$ 位／$k+1$ 次 ⟹ 先算總筆數，再列累積次數</b>；<b>金額漲幅先換成百分比；反推最後一年 ⟹ $(1+g)^3$ 除掉已知倍率</b>；<b>等差資料 $\mu=Me$、$\sigma^2=\frac{d^2(n^2-1)}{12}$</b>；<b>兩兩乘積和 ⟹ $(\sum x)^2=\sum x^2+2\sum_{i\lt j}x_ix_j$</b>；<b>$T\ge40$ ⟺ $z\ge-1$ ⟹ $\sigma$ 大的科目門檻低</b>；<b>兩層加權：先算裡面那層</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="minVarRange,sumSqShift,reverseAdd,mergeReverse,linearReverse,zRank,pctFreqSquare,growthMixed,apStats,pairProdVar,tThreshold,weightedMin"></div>
+
+<h3 class="sec">二維進階：由迴歸直線反推、換單位、新增重心</h3>
+<div class="must">段考 31 卷中<b>相關係數 28 卷、迴歸直線 25 卷、最小平方法 8 卷、散布圖 6 卷、預測 5 卷</b>。招式：<b>資料缺兩筆＋直線已知 ⟹ 「過重心」給一式、「斜率 $=\frac{S_{xy}}{S_{xx}}$」給另一式</b>；<b>已知 $r$、直線、$\mu_y$、$\sigma_y$ ⟹ 代 $\mu_y$ 解 $\mu_x$，斜率反解 $\sigma_x$</b>；<b>兩條迴歸直線 ⟹ 交點是重心、斜率相乘是 $r^2$</b>；<b>換單位 $u=px$、$v=qy$ ⟹ 新斜率 $=\frac{q}{p}\times$ 舊斜率，$r$ 看 $pq$ 正負；$u=100-x$ 會變號</b>；<b>由斜率與 $\sigma_x$、$r$ 反推 $\sigma_y$</b>；<b>新增恰在重心那一筆 ⟹ 平均不變、$r$ 不變、變異數乘 $\frac{n}{n+1}$</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="regMissing,regReverse,regBothLines,regUnits,corrFromSlope,addCentroid"></div>
+
+<h3 class="sec">L2 固定 12 題（列印用）</h3>
+<div class="fixset" data-tier="L2" data-keys="regMissing,minVarRange,regReverse,sumSqShift,regUnits,mergeReverse,corrFromSlope,linearReverse,addCentroid,zRank,apStats,weightedMin" data-seed="9001" data-n="12"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過。</div>
+
+<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">30 筆求 P₈₀、已知 90 分以上有 10 位 → t=24 是整數，取第 24、25 筆平均；只要找出「前 7 大」就夠，不必全排</span><span class="src">中山女高 110下 填 15</span></div>
+<div class="fxq">某次考試 A 班 $30$ 位同學的成績為 $95,85,80,73,94,94,65,56,88,100,91,87,86,87,76,77,87,91,68,86,91,77,92,98,66,88,72,81,89,98$。已知 $90$ 分以上恰有 $10$ 位，求此次成績的第 $80$ 百分位數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$93$</div>
+<div class="fxs"><div class="move">招式：$t=\dfrac{30\times80}{100}=24$ 是整數 ⟹ $P_{80}=$ 第 $24$、$25$ 小的平均 $=$ 第 $7$、$6$ 大的平均。所以只要由大到小數出前 $7$ 個。</div>
+$90$ 分以上的 $10$ 個由大到小：$100,98,98,95,94,94,92,91,91,91$。第 $6$ 大 $=94$、第 $7$ 大 $=92$ ⟹ $P_{80}=\dfrac{92+94}{2}=93$。<span class="note-sm">（題目給「$90$ 分以上有 $10$ 位」就是在暗示你別排全部。）</span></div></div>
+
+<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">36 筆求 P₂₅ → t=9 是整數，取第 9、10 筆平均；由小排到第 10 個就停</span><span class="src">建國中學 111下 填 2</span></div>
+<div class="fxq">某班 $36$ 位學生成績：$26,96,10,24,58,2,5,90,7,23,13,99,48,56,81,20,87,51,61,6,62,12,67,93,64,70,78,97,86,46,2,5,81,57,40,12$。求此 $36$ 筆數據的第 $25$ 百分位數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$12.5$</div>
+<div class="fxs"><div class="move">招式：$t=\dfrac{36\times25}{100}=9$（整數）⟹ 取第 $9$、$10$ 小的平均。</div>
+由小到大前 $10$ 筆：$2,2,5,5,6,7,10,12,12,13$ ⟹ $P_{25}=\dfrac{12+13}{2}=12.5$。</div></div>
+
+<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">250 則評論分五級 → 次數分配表的百分位數：算 t，再看累積次數落在哪一級（P₂₀ 恰好卡在兩級交界，要取平均）</span><span class="src">武陵高中 112下 填 6</span></div>
+<div class="fxq">某餐廳在網路上有 $250$ 則評論：一星 $7$ 則、二星 $5$ 則、三星 $9$ 則、四星 $29$ 則，其餘皆為五星。求這 $250$ 則評論星數的第 $5$ 百分位數 $P_5$ 與第 $20$ 百分位數 $P_{20}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(P_5,P_{20})=(3,\ 4.5)$</div>
+<div class="fxs"><div class="move">招式：累積次數 $7,12,21,50,250$。$P_5$：$t=12.5$ 進位取第 $13$ 筆；$P_{20}$：$t=50$ 整數取第 $50$、$51$ 筆平均。</div>
+第 $13$ 筆落在三星（累積到二星才 $12$）⟹ $P_5=3$。第 $50$ 筆是四星的最後一則、第 $51$ 筆是五星的第一則 ⟹ $P_{20}=\dfrac{4+5}{2}=4.5$。<span class="note-sm">（承題：要讓總評價從 $4.6$ 變 $4.9$ 至少要再加幾則五星？目前總星數 $=7+10+27+116+1000=1160$，$\frac{1160+5k}{250+k}\ge4.85$ ⟹ $k\ge350$。）</span></div></div>
+
+<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">只給 Σx 與 Σx² → σ²＝平方的平均－平均的平方</span><span class="src">中山女高 110下 填 14</span></div>
+<div class="fxq">已知四個數滿足 $x_1+x_2+x_3+x_4=16$ 且 $x_1^2+x_2^2+x_3^2+x_4^2=100$。求這四個數的標準差。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3$</div>
+<div class="fxs"><div class="move">招式：$\sigma^2=\dfrac{\sum x_i^2}{n}-\mu^2$。</div>
+$\mu=\dfrac{16}{4}=4$，$\sigma^2=\dfrac{100}{4}-16=9$ ⟹ $\sigma=3$。</div></div>
+
+<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">BMI 全部相同、要體重的平均 → w=20h²，「h² 的平均」＝σ²+μ²，不是 μ²</span><span class="src">台中一中 111下 填 13</span></div>
+<div class="fxq">$\text{BMI}=\dfrac{w}{h^2}$（$w$ 為體重公斤、$h$ 為身高公尺）。某健身房 $10$ 位會員的 BMI 皆為 $20$，身高平均 $1.7$ 公尺、標準差 $0.1$ 公尺。求這 $10$ 位會員體重的算術平均數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$58$ 公斤</div>
+<div class="fxs"><div class="move">招式：$w_i=20h_i^2$ ⟹ $\mu_w=20\cdot\dfrac{1}{10}\sum h_i^2=20(\sigma_h^2+\mu_h^2)$——這不是線性變換，不能寫 $20\mu_h^2$。</div>
+$\dfrac{1}{10}\sum h_i^2=0.1^2+1.7^2=0.01+2.89=2.9$ ⟹ $\mu_w=20\times2.9=58$。<span class="note-sm">（若誤用 $20\times1.7^2=57.8$ 就是漏了 $\sigma^2$ 那一項。）</span></div></div>
+
+<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">補考生恰考到平均分 → 平方和不變、只有分母從 20 變 21</span><span class="src">武陵高中 112下 填 14</span></div>
+<div class="fxq">小武因確診未參加數學段考。其餘 $20$ 人的成績平均 $60$ 分、標準差 $\sqrt{420}$。小武補考得 $60$ 分，求全班 $21$ 人成績的標準差。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$20$</div>
+<div class="fxs"><div class="move">招式：新增一筆恰等於平均 ⟹ 平均不變、偏差平方和不變（那一筆貢獻 $0$），只有筆數變多。</div>
+原平方和 $=20\times420=8400$，新變異數 $=\dfrac{8400}{21}=400$ ⟹ $\sigma=20$。標準差<b>變小</b>了。</div></div>
+
+<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">合併後的 σ 已知、反求一組的 σ → 合併變異數公式只剩一個未知數</span><span class="src">師大附中 103下 期末 填 11</span></div>
+<div class="fxq">甲組 $30$ 人平均 $60$ 分；乙組 $20$ 人平均 $75$ 分、標準差 $5$ 分。兩組合併後 $50$ 人的標準差為 $10$ 分，求甲組的標準差。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2\sqrt{15}$ 分</div>
+<div class="fxs"><div class="move">招式：先算合併平均 $\mu=\dfrac{30(60)+20(75)}{50}=66$，再把 $\sigma_{\text{甲}}^2$ 當未知數代進合併公式。</div>
+$$\frac{30[\sigma_{\text{甲}}^2+(60-66)^2]+20[5^2+(75-66)^2]}{50}=100\ \Longrightarrow\ 30\sigma_{\text{甲}}^2+1080+2120=5000$$
+$\sigma_{\text{甲}}^2=60$ ⟹ $\sigma_{\text{甲}}=\sqrt{60}=2\sqrt{15}$。</div></div>
+
+<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">兩科標準化分數相差 2、兩科 σ 相同 → 直接把 z 的差乘回 σ 再補平均差</span><span class="src">師大附中 103下 期末 填 10</span></div>
+<div class="fxq">某班英文平均 $70$ 分、標準差 $4$ 分；數學平均 $68$ 分、標準差 $4$ 分。小華的英文標準化分數比數學標準化分數多 $2$，求小華的英文原始成績比數學原始成績多幾分。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$10$ 分</div>
+<div class="fxs"><div class="move">招式：$z_E-z_M=\dfrac{E-70}{4}-\dfrac{M-68}{4}=\dfrac{(E-M)-2}{4}=2$。</div>
+$(E-M)-2=8$ ⟹ $E-M=10$。</div></div>
+
+<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">六年經濟成長率求「平均成長率」→ 六個倍率相乘開六次方；選擇題用估算：小數字相乘 ≈ 相加</span><span class="src">台南女中 112下 單 2</span></div>
+<div class="fxq">台灣 $2018\sim2023$ 年的經濟成長率依序為 $2.79\%,\ 3.06\%,\ 3.39\%,\ 6.62\%,\ 2.59\%,\ 1.42\%$。這六年的平均成長率最接近下列何者？<br>(1) $3.1\%$　(2) $3.3\%$　(3) $3.5\%$　(4) $3.7\%$　(5) $3.9\%$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2) $3.3\%$</div>
+<div class="fxs"><div class="move">招式：$(1+\bar r)^6=\prod(1+r_i)$。精算：乘積 $\approx1.2154$，六次方根 $\approx1.0331$ ⟹ $\bar r\approx3.31\%$。</div>
+估算法：算術平均 $=\dfrac{2.79+3.06+3.39+6.62+2.59+1.42}{6}\approx3.31\%$，幾何平均永遠不超過算術平均、但成長率都很小時兩者極接近 ⟹ 選最靠近且不大於它的 $3.3\%$。<span class="note-sm">（$6.62\%$ 那一年會讓幾何平均略低於算術平均，差距在 $0.01\%$ 內。）</span></div></div>
+
+<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">哪幾組 r＝0 → 只要 Σ(x−μx)(y−μy)=0；資料對 x＝3 或 y＝0 左右對稱時，正負剛好抵消</span><span class="src">台南一中 109下 多 4</span></div>
+<div class="fxq">下列哪幾組資料 $(X,Y)$ 的相關係數為 $0$？（多選）<br>(1) $(1,0),(5,0),(3,2),(3,-2)$　(2) $(2,0),(3,1),(4,0),(3,-1)$　(3) $(1,0),(5,0),(3,2),(3,-2),(2,0)$<br>(4) $(1,0),(5,0),(3,2),(3,-2),(3,1)$　(5) $(1,0),(5,0),(3,2),(3,-2),(2,0),(4,0),(3,1)$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(3)(4)(5)</div>
+<div class="fxs"><div class="move">招式：$r=0$ ⟺ $S_{xy}=\sum(x_i-\mu_x)(y_i-\mu_y)=0$。逐組算 $\mu_x,\mu_y$ 後把偏差相乘加總。</div>
+(1) $\mu_x=3,\mu_y=0$：$(-2)(0)+(2)(0)+(0)(2)+(0)(-2)=0$ ✓　(2) $\mu_x=3,\mu_y=0$：$(-1)(0)+0+(1)(0)+0=0$ ✓<br>
+(3) $\mu_x=\frac{14}{5},\mu_y=0$：$y$ 的偏差就是 $y$ 本身，$\sum(x_i-\mu_x)y_i=\sum x_iy_i-\mu_x\sum y_i=(6-6)-0=0$ ✓　(4) $\mu_x=3,\mu_y=\frac15$：$x$ 偏差只有 $(1,0)$、$(5,0)$ 非零且 $y$ 相同 ⟹ $(-2)(-\frac15)+(2)(-\frac15)=0$ ✓　(5) 同理 $\sum x_iy_i=6-6+3=3$、$\mu_x\sum y_i=3\times1=3$ ⟹ $S_{xy}=0$ ✓<br>
+<span class="note-sm">五組全對——這題就是在考「$r=0$ 不代表沒有關係，只是沒有<b>直線</b>關係」（點都排成對稱的十字形）。</span></div></div>
+
+<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">四點求最適直線並預估 → 斜率 Sxy/Sxx、過重心；預估就是代 x</span><span class="src">台南一中 109下 填 5</span></div>
+<div class="fxq">設二維數據 $(0,2),(1,1),(1,-1),(2,-2)$。(1) 求 $y$ 對 $x$ 的最適直線。　(2) 利用 (1)，當 $x=-\dfrac32$ 時預估 $y$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $y=-2x+2$　(2) $y=5$</div>
+<div class="fxs"><div class="move">招式：$\mu_x=1$、$\mu_y=0$；$S_{xx}=1+0+0+1=2$、$S_{xy}=(-1)(2)+0+0+(1)(-2)=-4$ ⟹ 斜率 $-2$。</div>
+過 $(1,0)$：$y=-2(x-1)=-2x+2$。代 $x=-\frac32$：$y=3+2=5$。</div></div>
+
+<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">單價與需求量五筆 → 偏差表三個和；預測記得換回「碗」的單位</span><span class="src">建國中學 111下 計算 14</span></div>
+<div class="fxq">建國冰果室以不同單價 $x$（元）調查需求量 $y$（百碗）：$x:55,65,75,85,95$；$y:14,15,13,11,12$。(1) 求相關係數。　(2) 求 $y$ 對 $x$ 的迴歸直線。　(3) 若單價訂 $60$ 元，用迴歸直線預測需求量（碗）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $r=-0.8$　(2) $y=-0.08x+19$（即 $y=-0.08(x-75)+13$）　(3) $1420$ 碗</div>
+<div class="fxs"><div class="move">招式：$\mu_x=75$、$\mu_y=13$；偏差 $x:-20,-10,0,10,20$、$y:1,2,0,-2,-1$ ⟹ $S_{xx}=1000$、$S_{yy}=10$、$S_{xy}=-80$。</div>
+$r=\dfrac{-80}{\sqrt{1000\times10}}=-0.8$；斜率 $=\dfrac{-80}{1000}=-0.08$，過 $(75,13)$ ⟹ $y=-0.08x+19$。$x=60$：$y=14.2$ 百碗 $=1420$ 碗。</div></div>
+
+<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">六筆複習時數與成績 → 先寫偏差表；Sxx=10、Syy=1000 是設計好的漂亮數字</span><span class="src">師大附中 103下 期末 計算 1</span></div>
+<div class="fxq">六位學生複習數學的時數 $x$（小時）與成績 $y$（分）：$x:3,5,4,7,5,6$；$y:50,70,70,90,60,80$。(1) 求 $x$ 與 $y$ 的相關係數。　(2) 求 $\bar x$、$\bar y$ 與 $y$ 對 $x$ 的迴歸直線。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $r=0.9$　(2) $\bar x=5$、$\bar y=70$、$y=9x+25$</div>
+<div class="fxs"><div class="move">招式：偏差 $x:-2,0,-1,2,0,1$、$y:-20,0,0,20,-10,10$ ⟹ $S_{xx}=10$、$S_{yy}=1000$、$S_{xy}=40+0+0+40+0+10=90$。</div>
+$r=\dfrac{90}{\sqrt{10\times1000}}=\dfrac{90}{100}=0.9$；斜率 $\dfrac{90}{10}=9$，過 $(5,70)$ ⟹ $y=9x+25$。</div></div>
+
+<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">五組資料的 r 互推 → 只看係數乘積的正負：u=3x−5、v=−2y+7、w=7y−3</span><span class="src">台南一中 109下 填 9</span></div>
+<div class="fxq">有五組資料 $x,y,u,v,w$，且 $r(u,v)=0.83$，其中 $u=3x-5$、$v=-2y+7$、$w=7y-3$。求 $r(u,w)+r(w,y)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$0.17$</div>
+<div class="fxs"><div class="move">招式：$r(u,v)=r(3x-5,-2y+7)$，係數 $3\times(-2)\lt0$ ⟹ $r(x,y)=-0.83$。</div>
+$r(u,w)$：係數 $3\times7\gt0$ ⟹ $r(u,w)=r(x,y)=-0.83$；$w=7y-3$ 與 $y$ 完全正線性 ⟹ $r(w,y)=1$。和 $=-0.83+1=0.17$。</div></div>
+
+<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">給兩科 σ、一科 μ 與最適直線 → 代 μx 得 μy；斜率 = r·σy/σx 反解 r</span><span class="src">高雄女中 114下 3次 填 F</span></div>
+<div class="fxq">某班數學成績 $X$ 的標準差為 $10$ 分、英文成績 $Y$ 的標準差為 $8$ 分，數學平均 $60$ 分。$Y$ 對 $X$ 的最適直線為 $y=0.6x+25$。設英文平均為 $a$、兩科相關係數為 $r$，求 $(a,r)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,r)=\left(61,\ \dfrac34\right)$</div>
+<div class="fxs"><div class="move">招式：直線過重心 ⟹ $a=0.6(60)+25=61$；斜率 $0.6=r\cdot\dfrac{8}{10}$ ⟹ $r=0.75$。</div>
+兩個性質各用一次就結束；$r=0.75\le1$ 也順便檢查了合理性。</div></div>
+</section>
+
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">兩筆成績登錯要更正 → 總和沒變所以平均不變；平方和只動那兩筆</span><span class="src">高雄中學 114下 二段 填</span></div>
+<div class="fxq">某班 $50$ 位同學的數學成績算出平均數 $60$ 分、標準差 $8$ 分。隨後發現兩位同學的成績登錄有誤：甲原得 $80$ 分誤記為 $60$ 分，乙原得 $40$ 分誤記為 $60$ 分。更正後重新計算，平均數為 $\mu$、標準差為 $\sigma$，求 $(\mu,\sigma)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(\mu,\sigma)=(60,\ 4\sqrt5)$</div>
+<div class="fxs"><div class="move">招式：$80+40=60+60$ ⟹ 總和不變、$\mu=60$ 不變 ⟹ 平方和 $\sum(x_i-60)^2$ 只有那兩筆的貢獻改變。</div>
+誤記時兩筆各貢獻 $0$；更正後貢獻 $(80-60)^2+(40-60)^2=800$。原平方和 $=50\times8^2=3200$ ⟹ 新平方和 $=4000$ ⟹ $\sigma^2=\dfrac{4000}{50}=80$，$\sigma=4\sqrt5\approx8.94$。<span class="note-sm">（若兩筆不是對稱地錯，平均會變，平方和就得先搬到新平均——見 L1 §1-3。）</span></div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">唯一眾數＝第一四分位數、中位數比眾數多 3、平均 10 → 先用 P₂₅ 鎖住眾數，再逐條翻譯成等式</span><span class="src">高雄中學 114下 二段 填</span></div>
+<div class="fxq">某社團 $7$ 位同學的技能檢定分數由小到大為 $2,5,a,b,c,18,20$。已知這 $7$ 筆數據有唯一的眾數，且該眾數等於第一四分位數；中位數比眾數多 $3$ 分，算術平均數為 $10$ 分。求 $c$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$c=12$</div>
+<div class="fxs"><div class="move">招式：$n=7$，$Q_1=P_{25}$：$t=1.75$ 進位取第 $2$ 筆 $=5$ ⟹ 眾數 $=5$ ⟹ $5$ 至少出現兩次 ⟹ $a=5$。</div>
+中位數 $=$ 第 $4$ 筆 $=b=5+3=8$。平均 $10$ ⟹ 總和 $70$：$2+5+5+8+c+18+20=70$ ⟹ $c=12$。檢查：$8\le12\le18$ 且不與其他數重複，眾數 $5$ 仍唯一 ✓。</div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">含 (−1)ⁿ 的數列求百分位數 → 正負分家：負的 59 項全在前面，正項由小到大是 n 由大到小</span><span class="src">台南女中 112下 填 20</span></div>
+<div class="fxq">數列 $\left\langle\dfrac{n(-1)^n}{2n-1}\right\rangle$ 共有 $118$ 項。求這 $118$ 個數的第 $70$ 百分位數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{72}{143}$</div>
+<div class="fxs"><div class="move">招式：奇數項為負、偶數項為正，各 $59$ 項 ⟹ 排序後前 $59$ 筆是負數。$t=118\times0.7=82.6$ ⟹ 取第 $83$ 筆 $=$ 正數中第 $24$ 小。</div>
+正項 $\dfrac{n}{2n-1}=\dfrac12+\dfrac{1}{2(2n-1)}$ 隨 $n$ 遞減 ⟹ $n$ 越大值越小：第 $1$ 小是 $n=118$、第 $2$ 小是 $n=116$、……、第 $k$ 小是 $n=120-2k$。$k=24$ ⟹ $n=72$ ⟹ $\dfrac{72}{143}$。</div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">加入一筆後標準差從 3 變 5，反求那一筆 → 新平方和＝nσ²＋(n/(n+1))d²</span><span class="src">台南女中 112下 填 19</span></div>
+<div class="fxq">有 $9$ 個數據的算術平均數為 $60$、標準差為 $3$。若再加入一個數據 $y$（$y\gt60$），這 $10$ 個數據的標準差變為 $5$。求 $y$ 的近似值（四捨五入至小數點後第一位）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$y\approx73.7$</div>
+<div class="fxs"><div class="move">招式：令 $d=y-60$。新平均 $=60+\dfrac{d}{10}$；對新平均的平方和 $=9\cdot3^2+9\left(\dfrac{d}{10}\right)^2+\left(d-\dfrac{d}{10}\right)^2=81+\dfrac{9}{10}d^2$。</div>
+令其等於 $10\times5^2=250$：$\dfrac{9}{10}d^2=169$ ⟹ $d^2=\dfrac{1690}{9}$ ⟹ $d\approx13.70$ ⟹ $y\approx73.7$。<span class="note-sm">（通式：新平方和 $=n\sigma^2+\dfrac{n}{n+1}d^2$；L2 的「反推那一筆」產生器就是這個公式，數字設計成整數。）</span></div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">四科平均 ≥ 80 且 σ ≤ 5 的條件 → 翻譯成「和 ≥ 320」與「偏差平方和 ≤ 100」，逐選項找反例</span><span class="src">台中一中 111下 多 5</span></div>
+<div class="fxq">某生數學、物理、化學、生物四科（各 $0\sim100$ 分），已知數學 $75$、化學 $85$。下列哪些選項會讓四科平均不低於 $80$ 且四科標準差不大於 $5$？（多選）<br>(1) 物理 $75$、生物 $80$　(2) 物理與生物皆 $80$　(3) 物理與生物的平均為 $85$　(4) 物理與生物之和不低於 $160$ 且兩科差距不超過 $10$　(5) 物理與生物的分數都介於 $80$ 與 $84$ 之間</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(5)</div>
+<div class="fxs"><div class="move">招式：平均 $\ge80$ ⟺ 物 $+$ 生 $\ge160$；$\sigma\le5$ ⟺ $\sum(x_i-\mu)^2\le100$。</div>
+(1) $75+80\lt160$ ✗。(2) $\mu=80$，平方和 $25+25+0+0=50\le100$ ✓。(3) 取 $90,80$：$\mu=82.5$，平方和 $56.25+6.25+56.25+6.25=125\gt100$ ✗。(4) 取 $90,80$（和 $170$、差 $10$）同樣 ✗。(5) 和 $\ge160$ ✓；最壞情形 $84,84$：$\mu=82$，平方和 $49+9+4+4=66$；$80,84$：$\mu=81$，平方和 $36+16+1+9=62$——都 $\le100$ ✓。<span class="note-sm">（106 指考乙 7 的原型：國英數 $75,80,85$ 版本，數字設計完全相同。）</span></div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">先 y=ax+b 再 z=y/a+b 的兩次調分 → 合成後 z=x+常數：只是平移！</span><span class="src">台南女中 112下 多 13</span></div>
+<div class="fxq">某班 $37$ 位同學（總分 $100$）考後先以 $y_k=ax_k+b$（$a\gt0,b\gt0$）做第一次調分，再以 $z_k=\dfrac1a y_k+b$ 做第二次調分。已知 A 同學原始 $12$ 分、第二次調整後 $48$ 分；全班第二次調整後平均 $60$ 分，且兩次調整後的最高分都不超過 $100$。請選出正確選項。（多選）<br>(1) 原始分數的平均低於 $30$ 分　(2) 原始分數的標準差比第二次調整後的標準差高　(3) 原始分數都不及格（小於 $60$）　(4) $b\lt15$　(5) 每位同學第二次調整後的分數均不低於第一次調整後的分數</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)</div>
+<div class="fxs"><div class="move">招式：$z=\dfrac1a(ax+b)+b=x+b\left(1+\dfrac1a\right)$——兩次調分合起來只是<b>平移</b>一個常數 $c$。A：$12\to48$ ⟹ $c=36$。</div>
+(1) $\mu_x=\mu_z-36=24\lt30$ ✓。(2) 平移不改變 $\sigma$ ✗。(3) 只知道 $z\le100$ ⟹ $x\le64$，不保證 $\lt60$ ✗。(4) $b\left(1+\frac1a\right)=36$ ⟹ $b=\dfrac{36a}{a+1}$，$a=1$ 時 $b=18\gt15$ ✗。(5) $z\ge y$ ⟺ $\dfrac{y}{a}+b\ge y$，$a\gt1$ 時對大的 $y$ 不成立（例：$a=2,b=24$，$y=100$ 時 $z=74$）✗。</div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">迴歸性質五連判 → 標準化不改 r 與斜率正負；斜率＞1 ⟹ σy＞σx；資料點不必在直線上</span><span class="src">建國中學 111下 多 10</span></div>
+<div class="fxq">設二維數據 $(x_i,y_i)$，$i=1,\dots,20$，$X',Y'$ 為標準化後的數據，$X,Y$ 的標準差皆大於 $0$。請選出正確選項。（多選）<br>(1) 若 $(x_i',y_i')$ 大部分集中在二、四象限，則 $X'$ 與 $Y'$ 呈負相關　(2) 若 $(x_i,y_i)$ 都在一條直線上，則 $X,Y$ 為完全正相關或完全負相關　(3) 若 $Y$ 對 $X$ 的迴歸直線斜率小於 $0$，則 $Y'$ 對 $X'$ 的迴歸直線斜率也小於 $0$　(4) 若 $Y$ 對 $X$ 的迴歸直線斜率大於 $1$，則 $Y$ 的標準差比 $X$ 大　(5) 已知 $Y$ 對 $X$ 的迴歸直線為 $y-10=5(x-6)$ 且 $x_1=3$，則 $y_1=-5$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)</div>
+<div class="fxs"><div class="move">招式：$r=\dfrac1n\sum x_i'y_i'$——正負由<b>乘積和</b>決定，不是由「點的個數」決定。</div>
+(1) 「大部分」在二、四象限不保證乘積和為負（少數很遠的一、三象限點可以壓過）✗。(2) $\sigma\gt0$ 且共線 ⟹ $r=\pm1$ ✓。(3) 斜率 $=r\frac{\sigma_y}{\sigma_x}$ 與 $r$ 同號；標準化後斜率就是 $r$ ✓。(4) $r\frac{\sigma_y}{\sigma_x}\gt1$ 且 $r\le1$ ⟹ $\frac{\sigma_y}{\sigma_x}\gt1$ ✓。(5) 迴歸直線是「預測」，資料點不必落在線上 ✗。</div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">f(x)=Σ(x−aᵢ)² 給三個函數值 → f(x)=n(x−μ)²+nσ²，頂點就是平均、最小值就是 nσ²</span><span class="src">107 學測 全國第三次模考 多 10</span></div>
+<div class="fxq">設 $a_1,\dots,a_8$ 為實數，二次函數 $f(x)=(x-a_1)^2+\cdots+(x-a_8)^2=a(x-h)^2+k$。若 $f(4)=104$、$f(6)=72$、$f(7)=80$，請選出正確選項。（多選）<br>(1) $a+h+k=78$　(2) $a+h+k=86$　(3) $a_1,\dots,a_8$ 的平均數為 $9$　(4) $a_1,\dots,a_8$ 的標準差為 $3$　(5) $a_1,\dots,a_8$ 的標準差為 $\sqrt8$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(4)</div>
+<div class="fxs"><div class="move">招式：展開得 $a=8$、$h=\mu$、$k=8\sigma^2$。三個函數值中任兩個相減就能解 $h$。</div>
+$f(4)-f(6)=8[(4-h)^2-(6-h)^2]=8(4h-20)=32$ ⟹ $h=6$；$k=72-0=72$；檢查 $f(7)=8+72=80$ ✓。$a+h+k=86$ ✓(2)；$\mu=6$ ✗(3)；$\sigma^2=\dfrac{72}{8}=9$ ⟹ $\sigma=3$ ✓(4)。</div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">五筆資料有一個未知、迴歸直線已知 → 過重心求出 a，然後老實算兩個變異數</span><span class="src">武陵高中 111下 填 6</span></div>
+<div class="fxq">已知 $x,y$ 的五筆數據 $x:1,2,2,3,2$；$y:3,2,1,a,10$，且 $y$ 對 $x$ 的迴歸直線為 $y=\dfrac12x+3$。(1) 求數據 $x$ 的變異數。　(2) 求數據 $y$ 的標準差。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\dfrac25$　(2) $\sqrt{10}$</div>
+<div class="fxs"><div class="move">招式：$\mu_x=2$ 代入直線 ⟹ $\mu_y=4$ ⟹ $3+2+1+a+10=20$ ⟹ $a=4$。</div>
+(1) $x$ 的偏差 $-1,0,0,1,0$ ⟹ $\sigma_x^2=\dfrac{2}{5}$。(2) $y$ 的偏差 $-1,-2,-3,0,6$ ⟹ 平方和 $1+4+9+0+36=50$ ⟹ $\sigma_y^2=10$，$\sigma_y=\sqrt{10}$。<span class="note-sm">（順帶：$S_{xy}=(-1)(-1)+(1)(0)=1$，斜率 $\frac{1}{2}$ ✓；$r=\dfrac{1}{\sqrt{2\times50}}=0.1$——這正是 106 全國教甄聯招的原題，見專區 6。）</span></div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">兩組資料互為線性變換、給 μₜ 與 σₜ → 一路反推 μy、σy、r，再看 s 的係數是負的 ⟹ r 變號</span><span class="src">高雄中學 108下 二段 填 16</span></div>
+<div class="fxq">二維數據 $(x_i,y_i)$ 中，$y$ 對 $x$ 的迴歸直線為 $y=\dfrac35x+a$，$\mu_x=60$、$\sigma_x=2$。另一組數據 $(s_i,t_i)$ 滿足 $s_i=-\dfrac12x_i+10$、$t_i=\dfrac16y_i-1$，且 $\mu_t=7$、$\sigma_t=\dfrac12$。若 $t$ 對 $s$ 的迴歸直線為 $t=3+bs$、$t$ 與 $s$ 的相關係數為 $c$，求 $(a,b,c)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b,c)=\left(12,\ -\dfrac15,\ -\dfrac25\right)$</div>
+<div class="fxs"><div class="move">招式：由 $t$ 反推 $y$：$\mu_y=6(\mu_t+1)=48$、$\sigma_y=6\sigma_t=3$；直線過 $(60,48)$ ⟹ $48=36+a$ ⟹ $a=12$。</div>
+斜率 $\dfrac35=r\cdot\dfrac{\sigma_y}{\sigma_x}=r\cdot\dfrac32$ ⟹ $r_{xy}=\dfrac25$。$s$ 的係數 $-\frac12\lt0$、$t$ 的係數 $\frac16\gt0$ ⟹ $c=r_{st}=-\dfrac25$。$\sigma_s=\frac12\times2=1$ ⟹ $b=c\cdot\dfrac{\sigma_t}{\sigma_s}=-\dfrac25\cdot\dfrac12=-\dfrac15$。檢查：$\mu_s=-20$，$3+\left(-\frac15\right)(-20)=7=\mu_t$ ✓。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">標準化資料的 Σ(x′−y′)² → 展開：Σx′²＝Σy′²＝n、Σx′y′＝nr ⟹ 整個式子＝2n(1−r)</span><span class="src">高雄中學 113下 三段 填 9</span></div>
+<div class="fxq">有 $2025$ 筆資料 $(x_i,y_i)$，$x_i'$、$y_i'$ 為其標準化數據。已知 $\displaystyle\sum_{i=1}^{2025}(x_i'-y_i')^2=810$，求 $x$ 與 $y$ 的相關係數 $r$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$r=0.8$</div>
+<div class="fxs"><div class="move">招式：標準化後 $\sum x_i'^2=\sum y_i'^2=n$，而 $r=\dfrac1n\sum x_i'y_i'$ ⟹ $\sum x_i'y_i'=nr$。</div>
+$\sum(x_i'-y_i')^2=n+n-2nr=2n(1-r)=4050(1-r)=810$ ⟹ $1-r=0.2$ ⟹ $r=0.8$。<span class="note-sm">（同型：雄中 114 下 $\sum(X_i-2Y_i)^2=n+4n-4nr=20(5-2.4)=52$。這條「$r$ 是標準化資料乘積的平均」是本章最好用的後門，見教學手冊陸。）</span></div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">標準化資料被墨水遮掉兩格 → 兩個約束：Σx′=0 與 Σx′²=n，解出 a、b 後再算 r=Σx′y′/n</span><span class="src">高雄女中 114下 三段 填 I</span></div>
+<div class="fxq">已標準化的二維數據如下，其中 $a,b$ 遺失且 $a\gt b$：$X':\ 0.5,\ 2,\ 0,\ a,\ b,\ -1,\ -0.5,\ 0.5$；$Y':\ 0.4,\ 1.2,\ 1.2,\ -0.8,\ -2,\ 0,\ 0.4,\ -0.4$。求 $X'$ 與 $Y'$ 的相關係數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$r=\dfrac{13}{20}=0.65$（$a=0$、$b=-\dfrac32$）</div>
+<div class="fxs"><div class="move">招式：標準化資料的平均為 $0$、平方和為 $n=8$。</div>
+$\sum X'=0$：$1.5+a+b=0$ ⟹ $a+b=-1.5$；$\sum X'^2=8$：$5.75+a^2+b^2=8$ ⟹ $a^2+b^2=2.25$。$(a+b)^2=a^2+b^2+2ab$ ⟹ $ab=0$ ⟹ $(a,b)=(0,-1.5)$（$a\gt b$）。<br>
+$r=\dfrac18\sum X'Y'=\dfrac{0.2+2.4+0+0+3+0-0.2-0.2}{8}=\dfrac{5.2}{8}=0.65$。<span class="note-sm">（檢查 $Y'$：和 $=0$、平方和 $=8$ ✓，題目沒騙人。）</span></div></div>
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充專區：經典題、科學班與教甄</h2>
+<div class="goal">
+  <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
+  <div><b>目標</b>8 題經典壓軸＋15 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>通過標準</b>沒有標準——會一題算一題。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">整數只取 −1,0,1,2、給和與平方和、求立方和最大 → 用「各值出現幾次」當變數，三條線性關係</span><span class="src">106 學測 全國第二次模考 5</span></div>
+<div class="fxq">設 $a_1,\dots,a_{20}$ 均為整數，$\displaystyle\sum a_k=9$、$\displaystyle\sum a_k^2=35$，且 $-1\le a_k\le2$。令 $S=\displaystyle\sum a_k^3$，求 $S$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$51$</div>
+<div class="fxs"><div class="move">招式：設 $2,1,0,-1$ 各出現 $p,q,s,m$ 次。$2p+q-m=9$、$4p+q+m=35$、$S=8p+q-m$。</div>
+兩式相減：$2p+2m=26$ ⟹ $m=13-p$；$q=9-2p+m=22-3p$；$s=20-p-q-m=3p-15$。$S=8p+q-m=8p+(22-3p)-(13-p)=9+6p$。限制 $q\ge0$ ⟹ $p\le7$、$s\ge0$ ⟹ $p\ge5$ ⟹ $p=7$：$S=51$（此時 $q=1,s=6,m=6$）。<span class="note-sm">（把「資料」看成「次數分配」是本章思維在競賽題裡的樣子。）</span></div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">圓上等速點每秒投影一次、求 x 坐標的變異數 → 36 個 cos 值對稱：Σcos＝0、Σcos²＝18</span><span class="src">105 學測 中區第二次模考 選填 I</span></div>
+<div class="fxq">坐標平面上一圓以 $O(2,3)$ 為圓心、半徑 $1$。$P$ 在圓周上作等速率運動，$36$ 秒恰繞一圈（每秒轉 $10^\circ$）。每秒記錄一次 $P$ 在 $x$ 軸上的投影點 $Q$，求 $1\sim36$ 秒 $Q$ 點 $x$ 坐標的變異數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac12$</div>
+<div class="fxs"><div class="move">招式：$x_k=2+\cos(10k^\circ)$。平移不影響變異數 ⟹ 只看 $\cos(10k^\circ)$，$k=1,\dots,36$。</div>
+對稱性：$36$ 個角均分一圈，$\sum\cos(10k^\circ)=0$ ⟹ $\mu=0$；$\cos^2\theta=\dfrac{1+\cos2\theta}{2}$，而 $\sum\cos(20k^\circ)=0$ ⟹ $\sum\cos^2=\dfrac{36}{2}=18$ ⟹ $\sigma^2=\dfrac{18}{36}=\dfrac12$。<span class="note-sm">（用到「等分圓周的餘弦值總和為 $0$」，這是下一章三角比的對稱性；本題只需知道圓上均勻分布的點左右對稱即可。）</span></div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">7 人級分只知中位數 12、唯一眾數 10 → 全距最小時的組合只有一種：先把 10 疊三個，再讓其餘每個值最多出現兩次</span><span class="src">106 學測 臺北第一次模考 多 11</span></div>
+<div class="fxq">$7$ 名學生的數學級分（$0\sim15$ 的整數）由小到大排列，中位數為 $12$ 級分，唯一的眾數是 $10$ 級分。下列哪些選項正確？（多選）<br>(1) 全距的最小值為 $3$　(2) 全距為最小值時，只有 $3$ 種相異的分數　(3) 全距為最小值時，可能的組合只有一種　(4) 全距為最小值時，平均值高於中位數　(5) 全距為最小值時，標準差小於 $2$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(3)(5)</div>
+<div class="fxs"><div class="move">招式：$a_4=12$；$10$ 是唯一眾數且 $10\lt12$ ⟹ $10$ 只能出現在 $a_1\sim a_3$、至少兩次，其他值出現次數都要比 $10$ 少。</div>
+要全距最小就讓 $a_1=10$。若 $10$ 出現三次（$a_1=a_2=a_3=10$），$a_4=12$，$a_5,a_6,a_7\ge12$ 且每個值最多出現兩次 ⟹ $12$ 最多再一次、其餘至少 $13$ ⟹ $(10,10,10,12,12,13,13)$，全距 $3$。若 $10$ 只出現兩次，其他值最多一次 ⟹ $a_3\ge11$、$a_5,a_6,a_7$ 互異 $\ge13$ ⟹ 全距 $\ge5$。故最小全距 $3$、組合唯一 ✓(1)(2)(3)；平均 $\dfrac{80}{7}\approx11.43\lt12$ ✗(4)；$\sigma^2=\dfrac{1}{7}\sum(x-\frac{80}{7})^2\approx1.67$ ⟹ $\sigma\approx1.29\lt2$ ✓(5)。</div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">兩個單位向量正交、證 (Σa)²+(Σb)² ≤ n → 把 (1,1,…,1) 投影到 a、b 張出的平面：投影長不超過原長</span><span class="src">中山女高 110下 證明 19</span></div>
+<div class="fxq">實數列 $\langle a_n\rangle,\langle b_n\rangle$（$n\ge2$）滿足 $a_1^2+\cdots+a_n^2=1$、$b_1^2+\cdots+b_n^2=1$、$a_1b_1+\cdots+a_nb_n=0$。證明：$(a_1+\cdots+a_n)^2+(b_1+\cdots+b_n)^2\le n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">證明見詳解（等號成立 ⟺ $(1,1,\dots,1)$ 落在 $\vec a,\vec b$ 張出的平面上）</div>
+<div class="fxs"><div class="move">招式：令 $A=\sum a_i$、$B=\sum b_i$，考慮 $\displaystyle\sum_{i=1}^{n}(1-Aa_i-Bb_i)^2\ge0$。</div>
+展開：$\sum1-2A\sum a_i-2B\sum b_i+A^2\sum a_i^2+B^2\sum b_i^2+2AB\sum a_ib_i\ge0$
+$$n-2A^2-2B^2+A^2+B^2+0\ge0\ \Longrightarrow\ A^2+B^2\le n.\quad\blacksquare$$
+<span class="note-sm">統計的讀法：把 $a_i,b_i$ 想成兩組「標準化且不相關」的資料（$\sum a_i^2=1$ 就是 $n\sigma^2=1$ 的縮放版），這個不等式說「任何一組資料對兩個不相關方向的『相關係數平方和』不超過 $1$」——就是 $R^2\le1$。</span></div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">用「誤差平方和最小」推出最適直線 → 對 b 配方消掉 b，再對 a 配方；最小值＝Syy(1−r²)</span><span class="src">台中女中 113上 三段 加分題</span></div>
+<div class="fxq">對三筆數據 $(x_1,y_1),(x_2,y_2),(x_3,y_3)$，以 $y=ax+b$ 預測並定義誤差 $e_i=y_i-(ax_i+b)$。依最小平方法，求使 $e_1^2+e_2^2+e_3^2$ 最小的 $a$、$b$，以及這個最小值（用 $\bar x,\bar y,S_{xx}=\sum(x_i-\bar x)^2,S_{xy}=\sum(x_i-\bar x)(y_i-\bar y),S_{yy}$ 表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=\dfrac{S_{xy}}{S_{xx}}$、$b=\bar y-a\bar x$、最小值 $=S_{yy}-\dfrac{S_{xy}^2}{S_{xx}}=S_{yy}(1-r^2)$</div>
+<div class="fxs"><div class="move">招式：把每個 $e_i$ 改寫成「偏差」的形式：$e_i=(y_i-\bar y)-a(x_i-\bar x)+(\bar y-a\bar x-b)$，令最後那個常數為 $c$。</div>
+$\sum e_i^2=\sum[(y_i-\bar y)-a(x_i-\bar x)]^2+2c\sum[(y_i-\bar y)-a(x_i-\bar x)]+3c^2$，中間的和為 $0$（偏差和為 $0$）⟹ $=S_{yy}-2aS_{xy}+a^2S_{xx}+3c^2$。<br>
+先取 $c=0$（即 $b=\bar y-a\bar x$，直線過重心）；再對 $a$ 配方：$S_{xx}\left(a-\dfrac{S_{xy}}{S_{xx}}\right)^2+S_{yy}-\dfrac{S_{xy}^2}{S_{xx}}$ ⟹ $a=\dfrac{S_{xy}}{S_{xx}}$，最小值 $S_{yy}-\dfrac{S_{xy}^2}{S_{xx}}=S_{yy}\left(1-\dfrac{S_{xy}^2}{S_{xx}S_{yy}}\right)=S_{yy}(1-r^2)$。<span class="note-sm">這正是課綱備註「最適直線的教學重點是討論『最適』的評量標準」——以及 $r^2$ 為什麼叫「解釋比例」。</span></div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">三班群達頂標比例 20%、80%、70%，問全體能否過半 → 加權平均 ≥ 1/2 ⟺ 3y+2z ≥ 3x，再逐選項驗</span><span class="src">台中一中 111下 多 7</span></div>
+<div class="fxq">某校高三分三個班群，達數A頂標的比例分別為文史哲法商政 $20\%$、數理工程 $80\%$、生物醫藥衛生 $70\%$，三班群人數為 $x,y,z\gt0$。以「全體達頂標者不少於半數」為「學習成效優良」。請選出可以確定優良的選項。（多選）<br>(1) 已知 $x+y+z$ 即可確定　(2) $x:y:z=5:2:3$　(3) $x\lt y\lt z$　(4) $x\lt y+z$　(5) $3x=3y+2z$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)(5)</div>
+<div class="fxs"><div class="move">招式：達頂標人數 $0.2x+0.8y+0.7z\ge\dfrac12(x+y+z)$ ⟺ $0.3y+0.2z\ge0.3x$ ⟺ $3y+2z\ge3x$。</div>
+(1) 只知總人數不夠 ✗。(2) $x=5k,y=2k,z=3k$：$6k+6k=12k\lt15k$ ✗。(3) $x\lt y\lt z$ ⟹ $3y+2z\gt3x+2x\gt3x$ ✓。(4) 反例 $x=10,y=1,z=10$：$3+20=23\lt30$ ✗。(5) 等號成立恰為「半數」，題目說「不少於半數」✓。</div></div>
+
+<div class="fx" id="L5-7"><div class="fxh"><span class="no">L5-7</span><span class="kw">總成績＝0.4A＋0.6B 的統計量 → 平均會加、中位數不會加；σ 要用「和的變異數」公式，裡面藏著 r</span><span class="src">台南女中 112下 多 14</span></div>
+<div class="fxq">某研究所甄選 $117$ 人，總成績 $=$ 資料審查 $A$ 占 $40\%$ $+$ 面試 $B$ 占 $60\%$（兩者滿分皆 $100$）。請選出正確選項。（多選）<br>(1) 若 $A$ 的平均大於 $B$ 的平均，則總成績的平均也大於 $B$ 的平均　(2) 若 $B$ 的標準差大於 $A$ 的標準差，則總成績的標準差也大於 $A$ 的標準差　(3) 知道 $A$ 與 $B$ 的中位數就能求出總成績的中位數　(4) 知道 $A$、$B$ 與總成績的標準差，就能求出 $A$ 與 $B$ 的相關係數　(5) 若 $A$ 與總成績的相關係數大於 $0$，則 $A$ 與 $B$ 的相關係數也大於 $0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(4)</div>
+<div class="fxs"><div class="move">招式：$T=0.4A+0.6B$。平均是線性的：$\mu_T=0.4\mu_A+0.6\mu_B$；變異數不是：$\sigma_T^2=0.16\sigma_A^2+0.36\sigma_B^2+2(0.4)(0.6)\,r\sigma_A\sigma_B$。</div>
+(1) $\mu_A\gt\mu_B$ ⟹ $\mu_T=0.4\mu_A+0.6\mu_B\gt\mu_B$ ✓。(2) 若 $A$、$B$ 負相關，$\sigma_T$ 可以很小（極端：$B=100-A$ 時 $T$ 幾乎是常數）✗。(3) 中位數不會跟著加權相加 ✗。(4) 上式中只有 $r$ 未知 ⟹ 可解 ✓。(5) $\mathrm{Cov}(A,T)=0.4\sigma_A^2+0.6\,\mathrm{Cov}(A,B)\gt0$ 不能推出 $\mathrm{Cov}(A,B)\gt0$（$\sigma_A^2$ 那一項可以撐住）✗。<span class="note-sm">「和的變異數」公式是超綱的好用工具，推導見教學手冊陸；專區 3、4、5 的教甄題都靠它。</span></div></div>
+
+<div class="fx" id="L5-8"><div class="fxh"><span class="no">L5-8</span><span class="kw">由 Sₙ 求兩個數列的標準差之比 → aₙ=Sₙ−Sₙ₋₁ 是等差（首項脫隊）；兩數列每一項恰成 4:3 的線性關係 ⟹ σ 比＝4/3</span><span class="src">台中一中 111下 填 15</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 的前 $n$ 項和 $S_n=6n^2-2n+8$，數列 $\langle b_n\rangle$ 的前 $n$ 項和 $S_n'=\dfrac{9n^2-n+12}{2}$。求 $\langle a_n\rangle$ 前 $100$ 項的標準差是 $\langle b_n\rangle$ 前 $100$ 項標準差的多少倍？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac43$</div>
+<div class="fxs"><div class="move">招式：$a_1=S_1=12$，$n\ge2$ 時 $a_n=12n-8$；$b_1=10$，$n\ge2$ 時 $b_n=9n-5$。逐項比較：$a_n=\dfrac43 b_n+\dfrac43$（$n\ge2$：$\frac43(9n-5)+\frac43=12n-\frac{20}{3}+\frac43=12n-\frac{16}{3}$——不對！）</div>
+正確做法：直接看 $a_n-\dfrac43b_n$：$n\ge2$ 時 $12n-8-\dfrac43(9n-5)=-8+\dfrac{20}{3}=-\dfrac43$；$n=1$ 時 $12-\dfrac43(10)=-\dfrac43$。所以<b>每一項</b>都有 $a_n=\dfrac43b_n-\dfrac43$（含脫隊的首項）⟹ $\sigma_a=\dfrac43\sigma_b$。<span class="note-sm">（出題者故意讓兩個首項都脫隊，但脫隊的方式仍維持同一個線性關係。若只用 $n\ge2$ 的公式硬算 $\sigma$，前 $100$ 項的比值也恰為 $\frac43$——經程式驗算兩種算法一致。）</span></div></div>
+
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（15 題）</h3>
+<div class="note">教甄題來自各校 101–112 年試卷（掃描檔經 OCR 找頁、逐字重打），科學班題來自嘉義高中 114 年科學班甄選（含官方參考答案）。每一題都重解並用程式驗算；含條件機率、常態分布、母體與樣本標準差的題目不收。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">絕對偏差和 vs 平方偏差和 → Σ|x−c| 在中位數最小、Σ(x−c)² 在平均最小，且離開最小點就單調上升</span><span class="src">陽明高中 101 教甄 選 3</span></div>
+<div class="fxq">$19$ 項資料由小到大為 $x_1\le x_2\le\cdots\le x_{19}$，$M=\dfrac1{19}\sum x_i$，且 $x_{10}\le M\le k\le x_{11}$。令 $a=\sum|x_i-M|$、$b=\sum|x_i-k|$、$c=\sum|x_i-x_{11}|$、$p=\sum(x_i-M)^2$、$q=\sum(x_i-k)^2$、$t=\sum(x_i-x_{11})^2$。哪些正確？<br>(A) $\sum(x_i-M)=0$　(B) $a\ge b\ge c$　(C) $a\le b\le c$　(D) $p\ge q\ge t$　(E) $p\le q\le t$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(A)(C)(E)</div>
+<div class="fxs"><div class="move">招式：$f(u)=\sum|x_i-u|$ 是凸折線，在中位數 $x_{10}$ 最小，往右每過一個資料點斜率增加 $2$；$g(u)=\sum(x_i-u)^2=19(u-M)^2+19\sigma^2$ 在 $M$ 最小。</div>
+(A) 偏差和恆為 $0$ ✓。$x_{10}\le M\le k\le x_{11}$ 都在 $f$ 的遞增段（$u\ge x_{10}$ 時斜率 $\ge0$）⟹ $f(M)\le f(k)\le f(x_{11})$ 即 $a\le b\le c$ ✓(C)。$M\le k\le x_{11}$ 離 $M$ 越遠 $g$ 越大 ⟹ $p\le q\le t$ ✓(E)。</div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">專區 2</span><span class="kw">刪一筆／互換 x,y／各加減常數 → 刪掉等於平均的那筆 σ 會變大；r 對稱；同加減常數不改斜率但會改直線</span><span class="src">陽明高中 101 教甄 選 4</span></div>
+<div class="fxq">某班 $8$ 位學生的國文 $X$ 與英文 $Y$ 成績：$X:88,80,73,80,50,64,69,80$（平均 $73$）；$Y:80,72,69,70,67,60,60,74$（平均 $69$）。設標準差為 $S_X,S_Y$、相關係數 $r$、$Y$ 對 $X$ 的迴歸直線為 $L$。哪些正確？<br>(A) 只刪除丙（$73,69$），其餘 $7$ 人國文成績的標準差仍為 $S_X$　(B) 只刪除戊（$50,67$），其餘 $7$ 人的相關係數大於 $r$　(C) 將每人國文與英文互換，相關係數仍為 $r$　(D) 國文各加 $5$ 分、英文各減 $5$ 分後，新迴歸直線的斜率與 $L$ 相同　(E) 國文各加 $5$、英文各減 $5$ 後，新迴歸直線仍為 $L$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(B)(C)(D)</div>
+<div class="fxs"><div class="move">招式：(A) 丙的國文恰等於平均 ⟹ 平方和不變、分母由 $8$ 變 $7$ ⟹ $S_X$ 變大（$11.17\to11.94$）✗。</div>
+(B) 戊是遠離趨勢的離群點，刪掉後 $r$ 由約 $0.69$ 升到約 $0.96$ ✓。(C) $r$ 的定義對 $x,y$ 對稱 ✓。(D) 平移不改變 $S_{xx},S_{xy}$ ⟹ 斜率相同 ✓。(E) 新直線過新重心 $(78,64)$：$y-64=a(x-78)$，與 $L$（過 $(73,69)$）不同，除非 $a=-1$ ✗。</div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">專區 3</span><span class="kw">A 卷、B 卷分數相加後的 σ 已知，反求 r → 和的變異數 σ²(A+B)=σA²+σB²+2rσAσB</span><span class="src">中科實中 111 教甄 填 13</span></div>
+<div class="fxq">某考試分 A、B 兩卷，總成績為兩卷之和。全體考生 A 卷平均 $50$、標準差 $15$；B 卷平均 $25$、標準差 $10$；總成績的標準差為 $23$。求 A、B 兩卷得分的相關係數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$r=0.68$</div>
+<div class="fxs"><div class="move">招式：$\sum[(a_i-\mu_A)+(b_i-\mu_B)]^2=\sum(a_i-\mu_A)^2+\sum(b_i-\mu_B)^2+2\sum(a_i-\mu_A)(b_i-\mu_B)$，同除 $n$：$\sigma_{A+B}^2=\sigma_A^2+\sigma_B^2+2r\sigma_A\sigma_B$。</div>
+$23^2=15^2+10^2+2r(15)(10)$ ⟹ $529=325+300r$ ⟹ $r=\dfrac{204}{300}=0.68$。</div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">專區 4</span><span class="kw">測驗＋寫作總分的 σ＝2√23 → 先由和的變異數解 r＝5/6，再寫寫作對測驗的迴歸直線</span><span class="src">台中一中 109 教甄 填 7</span></div>
+<div class="fxq">某班國文測驗成績平均 $54$ 分、標準差 $6$ 分；國文寫作成績平均 $16$ 分、標準差 $4$ 分；兩分數相加後總成績的標準差為 $2\sqrt{23}$。若寫作成績為 $y$、測驗分數為 $x$，求 $y$ 對 $x$ 的迴歸直線。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$y=\dfrac59x-14$</div>
+<div class="fxs"><div class="move">招式：$92=36+16+2r(6)(4)$ ⟹ $48r=40$ ⟹ $r=\dfrac56$；斜率 $=r\dfrac{\sigma_y}{\sigma_x}=\dfrac56\cdot\dfrac46=\dfrac59$。</div>
+過 $(54,16)$：$y-16=\dfrac59(x-54)$ ⟹ $y=\dfrac59x-30+16=\dfrac59x-14$。<span class="note-sm">⚠ 坊間解答本寫 $y=\frac{10}{9}x-44$，是把 $\frac{\sigma_y}{\sigma_x}=\frac46$ 誤算成 $\frac43$ 的筆誤；用 $x=54$ 代回可檢查：$\frac{10}{9}(54)-44=16$ 雖然也過重心，但斜率 $\frac{10}{9}=r\frac{\sigma_y}{\sigma_x}$ 會得到 $r=\frac53\gt1$，不可能。</span></div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">專區 5</span><span class="kw">測驗與寫作的 r＝0.6，問總分的 σ → 和的變異數公式正向使用</span><span class="src">台中女中 107 教甄 填 4</span></div>
+<div class="fxq">某校國文測驗成績平均 $62$ 分、標準差 $15$ 分；寫作成績平均 $18$ 分、標準差 $5$ 分；兩者相關係數為 $0.6$。國文總成績為測驗與寫作之和，求總成績的標準差。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt{340}=2\sqrt{85}\approx18.4$ 分</div>
+<div class="fxs"><div class="move">招式：$\sigma^2=15^2+5^2+2(0.6)(15)(5)=225+25+90=340$。</div>
+若兩科不相關（$r=0$）會是 $\sqrt{250}\approx15.8$；正相關把「好的更好、差的更差」，離散程度變大。</div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">專區 6</span><span class="kw">五筆資料缺 a、b 且迴歸直線已知 → 過重心給 a+b、斜率給 a−3；再算 σ 與 r 判選項</span><span class="src">106 年全國教甄聯招 複選 10</span></div>
+<div class="fxq">二維數據 $X:1,2,2,3,2$；$Y:3,2,1,a,b$，以最小平方法求得 $Y$ 對 $X$ 的迴歸直線為 $y=\dfrac12x+3$，$X$、$Y$ 的標準差為 $\sigma_X,\sigma_Y$、相關係數為 $r$。哪些正確？<br>(A) $b\gt5$　(B) $a\lt b$　(C) $|\sigma_Y-\sigma_X|\gt5$　(D) $r=0.3$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(A)(B)</div>
+<div class="fxs"><div class="move">招式：$\mu_x=2$ ⟹ $\mu_y=4$ ⟹ $a+b=14$；$S_{xx}=2$，$S_{xy}=(-1)(3-4)+(1)(a-4)=a-3$，斜率 $\frac12$ ⟹ $a-3=1$ ⟹ $a=4$、$b=10$。</div>
+(A)(B) ✓。(C) $\sigma_X=\sqrt{0.4}\approx0.63$、$\sigma_Y=\sqrt{10}\approx3.16$，差約 $2.53$ ✗。(D) $r=\dfrac{1}{\sqrt{2\times50}}=0.1$ ✗。<span class="note-sm">（武陵 111 下把 $b=10$ 給出來、只留 $a$ 未知，就是 L4-9。）</span></div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">專區 7</span><span class="kw">物理對數學的迴歸直線 y=¾x+20 → 代 μx 得 M、斜率反解 r；「數學 80 物理一定 80」是預測值不是必然</span><span class="src">107 年全國教甄聯招 複選 12</span></div>
+<div class="fxq">全班 $40$ 人參加數學、物理測驗（各 $0\sim100$）。數學平均 $50$、標準差 $8$；物理平均 $M$、標準差 $12$；物理對數學的迴歸直線為 $y=\dfrac34x+20$。哪些正確？<br>(A) $M=57.5$　(B) 數學與物理的相關係數為 $0.5$　(C) 小王數學考 $80$，則物理也一定考 $80$　(D) 以算術平均數為中心，物理成績分布比數學分散</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(A)(B)(D)</div>
+<div class="fxs"><div class="move">招式：$M=\frac34(50)+20=57.5$ ✓；$\frac34=r\cdot\frac{12}{8}$ ⟹ $r=\frac12$ ✓。</div>
+(C) 迴歸直線給的是預測值 $80$，個別學生可高可低 ✗。(D) $\sigma_{\text{物}}=12\gt8=\sigma_{\text{數}}$ ✓。</div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">專區 8</span><span class="kw">兩種調分方案 y=2x+15、w=(x+150)/3 → 交點在 x=75；兩者與原始分數的 r 都是 1；Σz²＝n 不是 1</span><span class="src">112 年全國教甄聯招 複選 11</span></div>
+<div class="fxq">某班 $40$ 人期末考成績 $x_1,\dots,x_{40}$，平均 $25$、標準差 $9$。老師提出兩種調分方案（調分後皆不超過 $100$）：甲 $y_i=2x_i+15$；乙 $w_i=\dfrac{x_i+150}{3}$。哪些正確？<br>(A) 採方案乙，原始分數超過 $75$ 的學生，調整後分數反而降低　(B) 原始成績與方案甲成績的相關係數 $\gt$ 原始成績與方案乙成績的相關係數　(C) 若把原始分數標準化為 $z_i=\dfrac{x_i-25}{9}$，則 $z_1^2+\cdots+z_{40}^2=1$　(D) 若有一位原始分數 $25$ 分的學生因作弊被移除，則剩下的人採方案甲的平均會高於採方案乙的平均</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(A)(D)</div>
+<div class="fxs"><div class="move">招式：(A) $\dfrac{x+150}{3}\lt x$ ⟺ $x\gt75$ ✓。(B) 兩個方案都是正斜率的線性變換 ⟹ $r$ 都等於 $1$，不是「大於」✗。</div>
+(C) 標準化後 $\sum z_i^2=n\sigma_z^2=40$ ✗。(D) 移除恰等於平均的一筆，平均不變 $25$ ⟹ 甲 $2(25)+15=65$、乙 $\dfrac{175}{3}\approx58.3$ ⟹ 甲較高 ✓。</div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">專區 9</span><span class="kw">表格被墨水遮住四格、給平均與變異數 → 平均補出丁的 x；戊己的 y 由「和」與「平方和」解二次；再算 r 與斜率</span><span class="src">竹北高中 111 教甄 填 9</span></div>
+<div class="fxq">六位成年人每週逛街時數 $X$（小時）與購物消費 $Y$（萬元）：$X:15,9,10,\bullet,12,6$，平均 $10$；$Y:12,10,7,7,\bullet,\bullet$，平均 $8$、變異數 $\dfrac{16}{3}$（$\bullet$ 為被墨水遮住的數據，依序為丁的 $X$、戊與己的 $Y$）。已知戊的購物消費大於己的。若 $X$ 與 $Y$ 的相關係數為 $r$、$Y$ 對 $X$ 的迴歸直線斜率為 $m$，求 $(r,m)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(r,m)=\left(\dfrac34,\ \dfrac35\right)$</div>
+<div class="fxs"><div class="move">招式：$\sum X=60$ ⟹ 丁 $X=8$。設戊、己的 $Y$ 為 $8+A$、$8+B$：$\sum Y=48$ ⟹ $A+B=-4$；$\sum(Y-8)^2=6\times\frac{16}{3}=32$ ⟹ $16+4+1+1+A^2+B^2=32$ ⟹ $A^2+B^2=10$。</div>
+$(A+B)^2=16=10+2AB$ ⟹ $AB=3$ ⟹ $\{A,B\}=\{-1,-3\}$，戊 $\gt$ 己 ⟹ 戊 $=7$、己 $=5$。偏差 $X:5,-1,0,-2,2,-4$、$Y:4,2,-1,-1,-1,-3$ ⟹ $S_{xx}=50$、$S_{yy}=32$、$S_{xy}=20-2+0+2-2+12=30$ ⟹ $r=\dfrac{30}{\sqrt{1600}}=\dfrac34$、$m=\dfrac{30}{50}=\dfrac35$。</div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">專區 10</span><span class="kw">甲班 σ=8、乙班 σ=12 合併，σ 可能大於 12？可能小於 8？ → 合併變異數＝組內加權平均＋組間項，組間項 ≥ 0</span><span class="src">金門高中 112 教甄 計算 3</span></div>
+<div class="fxq">某老師任教高一甲、乙兩班，第一次月考甲班標準差 $8$ 分、乙班標準差 $12$ 分。將兩班合併計算，標準差有可能是下列情形嗎？請說明理由。(1) 標準差大於 $12$ 分　(2) 標準差小於 $8$ 分</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) 可能　(2) 不可能</div>
+<div class="fxs"><div class="move">招式：$\sigma^2=\dfrac{m\sigma_{\text{甲}}^2+n\sigma_{\text{乙}}^2}{m+n}+\dfrac{m(\mu_{\text{甲}}-\mu)^2+n(\mu_{\text{乙}}-\mu)^2}{m+n}$，第二項 $\ge0$、第一項介於 $\sigma_{\text{甲}}^2$ 與 $\sigma_{\text{乙}}^2$ 之間。</div>
+(2) $\sigma^2\ge\dfrac{m\cdot64+n\cdot144}{m+n}\ge64$ ⟹ $\sigma\ge8$，不可能小於 $8$。<br>
+(1) 只要兩班平均差得夠遠，組間項可以任意大。例：甲班 $\{0,16\}$（$\mu=8,\sigma=8$）、乙班 $\{76,100\}$（$\mu=88,\sigma=12$）合併 $\mu=48$，$\sigma^2=\dfrac{48^2+32^2+28^2+52^2}{4}=1704\gt144$ ⟹ $\sigma\approx41\gt12$ ✓。</div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">專區 11</span><span class="kw">5 個正整數：平均 13、全距 18、中位數＝眾數＝9 → 排成 a≤b≤9≤d≤e，e=a+18；眾數唯一逼出 b=9，剩一條 2a+d=29</span><span class="src">台南女中 112 教甄 填 17</span></div>
+<div class="fxq">已知 $5$ 個正整數的算術平均數為 $13$、全距為 $18$、中位數與眾數皆為 $9$。試問第二大的數字可能的值有多少個？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$6$ 個（$11,13,15,17,19,21$）</div>
+<div class="fxs"><div class="move">招式：設 $a\le b\le9\le d\le e$，$e=a+18$，總和 $65$ ⟹ $2a+b+d=38$。眾數 $9$ 要出現至少兩次：若 $d=9$ 則 $2a+b=29$ 而 $a\le b\le9$ ⟹ $a\ge10$ 矛盾 ⟹ $b=9$、$d=29-2a$。</div>
+$d\le e$ ⟹ $29-2a\le a+18$ ⟹ $a\ge4$；$a\le9$ ⟹ $a=4,\dots,9$ ⟹ $d=21,19,17,15,13,11$。逐一檢查眾數唯一（$a=9$ 時 $9$ 出現三次仍唯一 ✓；$d\ne e$ 因 $29-2a=a+18$ 無整數解）⟹ $6$ 個。</div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">專區 12</span><span class="kw">合併標準差公式選對並證明 → 把每筆偏差拆成「對自己班平均」＋「班平均對總平均」，交叉項因偏差和為 0 而消失</span><span class="src">關西高農 101 教甄 計算證明 11</span></div>
+<div class="fxq">甲班 $n_1$ 人平均 $\mu_1$、標準差 $\sigma_1$；乙班 $n_2$ 人平均 $\mu_2$、標準差 $\sigma_2$；$\mu=\dfrac{n_1\mu_1+n_2\mu_2}{n_1+n_2}$。合併後的標準差為：<br>(1) $\dfrac{n_1\sigma_1+n_2\sigma_2}{n_1+n_2}$　(2) $\sqrt{\dfrac{n_1\sigma_2^2+n_2\sigma_1^2+n_1(\mu_1^2-\mu^2)+n_2(\mu_2^2-\mu^2)}{n_1+n_2}}$　(3) $\sqrt{\dfrac{n_1\sigma_1^2+n_2\sigma_2^2+n_1(\mu_1-\mu)^2+n_2(\mu_2-\mu)^2}{n_1+n_2}}$　(4) 以上皆非。寫出正確選項並證明。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)</div>
+<div class="fxs"><div class="move">招式：對甲班每一筆 $x_i$，$(x_i-\mu)^2=[(x_i-\mu_1)+(\mu_1-\mu)]^2=(x_i-\mu_1)^2+2(\mu_1-\mu)(x_i-\mu_1)+(\mu_1-\mu)^2$。</div>
+對甲班求和：$\sum(x_i-\mu_1)=0$ ⟹ $\sum_{\text{甲}}(x_i-\mu)^2=n_1\sigma_1^2+n_1(\mu_1-\mu)^2$；乙班同理。相加除以 $n_1+n_2$ 再開根號即為 (3)。$\blacksquare$<br>
+<span class="note-sm">陷阱：(2) 的 $\sigma$ 下標對調了，所以是錯的；但若寫成 $n_1\sigma_1^2+n_2\sigma_2^2+n_1(\mu_1^2-\mu^2)+n_2(\mu_2^2-\mu^2)$ 則與 (3) 恆等（因 $n_1(\mu_1-\mu)+n_2(\mu_2-\mu)=0$ 使 $\sum n_i(\mu_i^2-\mu^2)=\sum n_i(\mu_i-\mu)^2$）。(1) 只有 $\mu_1=\mu_2$ 且 $\sigma_1=\sigma_2$ 時才對。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">專區 13</span><span class="kw">證明線性變換下 r*＝±r → 分子跑出 ac、分母跑出 |a||c|，商就是 ac/|ac|</span><span class="src">萬芳高中 101 代理教甄 10</span></div>
+<div class="fxq">$n$ 對數據 $(x_i,y_i)$ 的相關係數為 $r$；令 $x_i^*=ax_i+b$、$y_i^*=cy_i+d$（$a\ne0,c\ne0$），其相關係數為 $r^*$。試證：(1) 若 $ac\gt0$ 則 $r^*=r$　(2) 若 $ac\lt0$ 則 $r^*=-r$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">證明見詳解</div>
+<div class="fxs"><div class="move">招式：$\bar x^*=a\bar x+b$ ⟹ $x_i^*-\bar x^*=a(x_i-\bar x)$；同理 $y_i^*-\bar y^*=c(y_i-\bar y)$。</div>
+$$r^*=\frac{\sum a(x_i-\bar x)\,c(y_i-\bar y)}{\sqrt{\sum a^2(x_i-\bar x)^2}\sqrt{\sum c^2(y_i-\bar y)^2}}=\frac{ac\sum(x_i-\bar x)(y_i-\bar y)}{|a||c|\sqrt{\sum(x_i-\bar x)^2}\sqrt{\sum(y_i-\bar y)^2}}=\frac{ac}{|ac|}\,r$$
+$ac\gt0$ 時 $\dfrac{ac}{|ac|}=1$，$ac\lt0$ 時 $=-1$。$\blacksquare$</div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">專區 14</span><span class="kw">六筆資料去掉一筆使 r 最小 → 去掉「最違反負趨勢」的那一點（右上角的 (13,12)），剩下五筆恰好對稱</span><span class="src">台南女中 111 第二次教甄 填 17</span></div>
+<div class="fxq">二維數據 $x:8,9,10,11,12,13$；$y:11,12,10,8,9,12$。從這六筆中去掉一筆，使 $x$ 與 $y$ 的相關係數最小；此時 $y$ 對 $x$ 的迴歸直線為 $y=mx+k$，求 $(m,k)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(m,k)=\left(-\dfrac45,\ 18\right)$</div>
+<div class="fxs"><div class="move">招式：前五點大致往右下走，只有 $(13,12)$ 跳到右上角把 $r$ 拉高 ⟹ 去掉它 $r$ 最小（程式驗算：去掉各點的 $r$ 依序為 $-0.09,0,-0.21,-0.15,-0.05,\mathbf{-0.8}$）。</div>
+剩下 $(8,11),(9,12),(10,10),(11,8),(12,9)$：$\mu_x=10,\mu_y=10$；偏差 $x:-2,-1,0,1,2$、$y:1,2,0,-2,-1$ ⟹ $S_{xx}=10$、$S_{xy}=-2-2+0-2-2=-8$ ⟹ $m=-\dfrac45$，$k=10-(-\frac45)(10)=18$。</div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">專區 15</span><span class="kw">整數數列：眾數 32、平均 22、最小 10、中位數 k；換掉 k 兩次的效果 → 平均增 2 逼出 n=5，再用中位數的位置逼出每個數</span><span class="src">嘉義高中 114 科學班 填 8</span></div>
+<div class="fxq">一整數數列中，已知眾數為 $32$、算術平均數為 $22$、最小的數為 $10$，且中位數 $k$ 是數列中的一個數。若把 $k$ 換成 $k+10$，新的算術平均數與中位數分別變成 $24$ 與 $k+10$；若把 $k$ 換成 $k-8$，新的中位數為 $k-4$。求 $k$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=20$（數列為 $10,16,20,32,32$）</div>
+<div class="fxs"><div class="move">招式：換掉一個數使總和增加 $10$、平均增加 $2$ ⟹ $n=5$。總和 $110$、最小 $10$、眾數 $32$ 至少兩個 ⟹ 資料為 $10,a,k,b,c$（$a\le k\le b\le c$）。</div>
+若 $k=32$ 則 $b=c=32$ 不可能（$a=110-10-96=4\lt10$）⟹ $b=c=32$ 且 $a+k=36$。<br>
+$k\to k+10$ 後中位數是 $k+10$ ⟹ $k+10\lt32$（若 $\ge32$ 中位數會是 $32$）。$k\to k-8$ 後中位數是 $k-4$：新資料 $10,a,k-8,32,32$ 的中位數只能是 $a$ 或 $k-8$，而 $k-8\ne k-4$ ⟹ 中位數 $=a=k-4$ ⟹ $a+k=2k-4=36$ ⟹ $k=20$、$a=16$。<br>
+檢查：$10,16,20,32,32$（平均 $22$ ✓、眾數 $32$ ✓）；$10,16,30,32,32$（平均 $24$、中位數 $30=k+10$ ✓）；$10,12,16,32,32$（中位數 $16=k-4$ ✓）。官方參考答案 $20$ ✓。</div></div>
+</section>
+
+<div class="ch-nav">
+  <a href="../g10b-ch02/practice.html">← 第二章 排列組合與機率 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <a href="../g11a-ch01/practice.html">第一章 三角函數 練習本 →</a>
+</div>
+</div>
+
+
+<script>
+(function () {
+  var G = window.PGEN;
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var labelOf = {};
+  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard';
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
+      '<div class="gh"></div><div class="ga"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+    function load() {
+      var it = G[tier][key](G.makeRng(seed));
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '提示：' + it.h;
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.seed').textContent = '#' + seed;
+      card.querySelector('.gh').classList.remove('on'); card.querySelector('.ga').classList.remove('on');
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+  document.querySelectorAll('.fixset').forEach(function (box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
+    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
+    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
+    for (var i = 0; i < n; i++) {
+      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
+      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+    }
+    box.innerHTML = html + '</ol>';
+    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
+    box.querySelector('.print').onclick = function () { window.print(); };
+    render(box);
+  });
+  document.querySelectorAll('.fx button').forEach(function (b) {
+    b.onclick = function () {
+      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
+      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
+    };
+  });
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+</body>
+</html>
