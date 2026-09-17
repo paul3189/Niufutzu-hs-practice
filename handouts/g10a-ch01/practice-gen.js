@@ -139,7 +139,7 @@
       function () { var n = r.pick([8, 27, 64, 125]); return { tex: '\\sqrt[3]{' + n + '}', rat: true, why: T('\\sqrt[3]{' + n + '}=' + Math.round(Math.cbrt(n))) + '，是整數' }; },
       function () { var n = r.pick([2, 3, 4, 5, 9, 10]); return { tex: '\\sqrt[3]{' + n + '}', rat: false, why: n + ' 不是完全立方數' }; },
       function () { var a = r.int(1, 5); return { tex: a + '\\pi', rat: false, why: T('\\pi') + ' 是無理數，乘非零有理數仍是無理數' }; },
-      function () { var a = r.int(1, 9); return { tex: '\\sqrt{' + a + '}\\times\\sqrt{' + a + '}', rat: true, why: '等於 ' + T(String(a)) + '，兩個無理數的乘積可以是有理數' }; },
+      function () { var a = r.pick([2, 3, 5, 6, 7, 8]); return { tex: '\\sqrt{' + a + '}\\times\\sqrt{' + a + '}', rat: true, why: '等於 ' + T(String(a)) + '，兩個無理數的乘積可以是有理數' }; },
       function () { var a = r.pick([2, 3, 5]); return { tex: '(\\sqrt{' + a + '}+1)(\\sqrt{' + a + '}-1)', rat: true, why: '等於 ' + T(String(a - 1)) + '，平方差把根號消掉了' }; },
       function () { var a = r.pick([2, 3, 5]); return { tex: '\\sqrt{' + a + '}+1', rat: false, why: '無理數加有理數還是無理數' }; },
       function () { var a = r.int(2, 9); return { tex: '0.' + a + a + a + '\\ldots\\text{（不循環、無規律）}', rat: false, why: '無限不循環小數就是無理數' }; }
@@ -272,9 +272,9 @@
     if (v === 0) return { q: '已知 ' + T('a<b') + '，化簡 ' + T('|a-b|+|b-a+' + k + '|') + '。', a: T('2b-2a+' + k), h: '$a<b$ ⟹ $a-b<0$，所以 $|a-b|=b-a$（變號脫）；$b-a+' + k + '>0$ 直接脫，再相加。', p: { v: 0, k: k } };
     if (v === 1) return { q: '已知 ' + T('a<b') + '，化簡 ' + T('|a-b-' + k + '|-|b-a|') + '。', a: T(String(k)), h: '$a-b-' + k + '<0$ ⟹ 第一項 $=b-a+' + k + '$；$b-a>0$ ⟹ 第二項 $=b-a$，相減。', p: { v: 1, k: k } };
     if (v === 2) return { q: '已知 ' + T('a<b') + '，化簡 ' + T('|a-b|-|a-b-' + k + '|') + '。', a: T(String(-k)), h: '兩個都負：$|a-b|=b-a$、$|a-b-' + k + '|=b-a+' + k + '$，相減後 $a,b$ 都消掉。', p: { v: 2, k: k } };
-    if (v === 3) return { q: '已知 ' + T('x<' + c) + '，化簡 ' + T(absLin(1, -c) + '+' + absLin(1, -c - k)) + '。', a: T(linTex(-2, 2 * c + k)), h: '$x<' + c + '$ ⟹ $x-' + c + '<0$，$' + linTex(1, -c - k) + '$ 更小也 $<0$，兩個都要「變號脫」：$(' + c + '-x)+(' + (c + k) + '-x)$。', p: { v: 3, k: k, c: c } };
-    if (v === 4) return { q: '已知 ' + T('x>' + c) + '，化簡 ' + T(absLin(1, -c) + '-|' + linTex(-1, c - k) + '|') + '。', a: T(String(-k)), h: '$x>' + c + '$ ⟹ $x-' + c + '>0$ 直接脫；$' + linTex(-1, c - k) + '=-(' + linTex(1, k - c) + ')<0$，脫掉變成 $' + linTex(1, k - c) + '$。', p: { v: 4, k: k, c: c } };
-    if (v === 5) return { q: '已知 ' + T(c + '<x<' + (c + k)) + '，化簡 ' + T(absLin(1, -c) + '+' + absLin(1, -c - k)) + '。', a: T(String(k)), h: '$x$ 在 $' + c + '$ 與 $' + (c + k) + '$ 之間：$|x-' + c + '|=x-' + c + '$（正）、$|x-' + (c + k) + '|=' + (c + k) + '-x$（負要變號），相加 $x$ 消掉。', p: { v: 5, k: k, c: c } };
+    if (v === 3) return { q: '已知 ' + T('x<' + c) + '，化簡 ' + T(absLin(1, -c) + '+' + absLin(1, -c - k)) + '。', a: T(linTex(-2, 2 * c + k)), h: '$x<' + c + '$ ⟹ $' + linTex(1, -c) + '<0$，$' + linTex(1, -c - k) + '$ 更小也 $<0$，兩個都要「變號脫」：$(' + linTex(-1, c) + ')+(' + linTex(-1, c + k) + ')$。', p: { v: 3, k: k, c: c } };
+    if (v === 4) return { q: '已知 ' + T('x>' + c) + '，化簡 ' + T(absLin(1, -c) + '-|' + linTex(-1, c - k) + '|') + '。', a: T(String(-k)), h: '$x>' + c + '$ ⟹ $' + linTex(1, -c) + '>0$ 直接脫；$' + linTex(-1, c - k) + '=-(' + linTex(1, k - c) + ')<0$，脫掉變成 $' + linTex(1, k - c) + '$。', p: { v: 4, k: k, c: c } };
+    if (v === 5) return { q: '已知 ' + T(c + '<x<' + (c + k)) + '，化簡 ' + T(absLin(1, -c) + '+' + absLin(1, -c - k)) + '。', a: T(String(k)), h: '$x$ 在 $' + c + '$ 與 $' + (c + k) + '$ 之間：$' + absLin(1, -c) + '=' + linTex(1, -c) + '$（正）、$' + absLin(1, -c - k) + '=' + linTex(-1, c + k) + '$（負要變號），相加 $x$ 消掉。', p: { v: 5, k: k, c: c } };
     return { q: '已知 ' + T('a<b') + '，化簡 ' + T('\\sqrt{(a-b)^2}+|b-a|') + '。', a: T('2b-2a'), h: '$\\sqrt{(a-b)^2}=|a-b|$，不是 $a-b$！$a<b$ ⟹ $|a-b|=b-a$，兩項都是 $b-a$。', p: { v: 6, k: k } };
   };
 
@@ -298,20 +298,23 @@
   /* 3-4 兩定點距離和的最小值 */
   L1.absSum2 = function (r) {
     var a = r.int(-6, 3), b = a + r.int(1, 9);
-    var tex = '|x' + (a === 0 ? '' : signed(-a)) + '|+|x' + signed(-b) + '|';
+    var tex = '|x' + (a === 0 ? '' : signed(-a)) + '|+|x' + (b === 0 ? '' : signed(-b)) + '|';
     return { q: '求 ' + T(tex) + ' 的最小值。',
              a: '最小值 ' + T(String(b - a)) + '（當 ' + T(a + '\\le x\\le ' + b) + ' 時）',
              h: '$' + tex + '$ 是「$x$ 到 $' + a + '$ 與到 $' + b + '$ 的距離和」；畫數線，$x$ 落在 $' + a + '$ 與 $' + b + '$ 之間時距離和最小，就是兩點的距離。', p: { a: a, b: b, min: b - a } };
   };
 
   /* 4-1 指數律化簡 */
+  function powT(b, e) { return e === 0 ? '1' : e === 1 ? b : b + '^{' + e + '}'; }   /* b^0 寫 1、b^1 寫 b */
+  function powTail(b, e) { return e === 0 ? '=1' : e === 1 ? '=' + b : ''; }
   L1.expLaw = function (r) {
     var base = r.pick(['a', 'x', '2', '3']), v = r.int(0, 2);
     var m = r.int(2, 6), n = r.int(2, 6), k = r.int(2, 3);
-    if (v === 0) return { q: '化簡 ' + T(base + '^{' + m + '}\\cdot ' + base + '^{' + n + '}\\div ' + base + '^{' + k + '}') + '。', a: T(base + '^{' + (m + n - k) + '}'), h: '同底相乘指數相加：$' + m + '+' + n + '$；再除以 $' + base + '^{' + k + '}$ 指數減 $' + k + '$。', p: { v: 0, base: base, m: m, n: n, k: k } };
-    if (v === 1) return { q: '化簡 ' + T('\\left(' + base + '^{' + m + '}\\right)^{' + k + '}\\div ' + base + '^{' + n + '}') + '。', a: T(base + '^{' + (m * k - n) + '}'), h: '次方的次方指數相乘：$' + m + '\\times' + k + '$；再除以 $' + base + '^{' + n + '}$ 指數減 $' + n + '$。', p: { v: 1, base: base, m: m, n: n, k: k } };
+    var zero = '（任何非零數的 $0$ 次方都是 $1$）';
+    if (v === 0) return { q: '化簡 ' + T(base + '^{' + m + '}\\cdot ' + base + '^{' + n + '}\\div ' + base + '^{' + k + '}') + '。', a: T(powT(base, m + n - k)), h: '同底相乘指數相加：$' + m + '+' + n + '$；再除以 $' + base + '^{' + k + '}$ 指數減 $' + k + '$。', p: { v: 0, base: base, m: m, n: n, k: k } };
+    if (v === 1) return { q: '化簡 ' + T('\\left(' + base + '^{' + m + '}\\right)^{' + k + '}\\div ' + base + '^{' + n + '}') + '。', a: T(powT(base, m * k - n)), h: '次方的次方指數相乘：$' + m + '\\times' + k + '$；再除以 $' + base + '^{' + n + '}$ 指數減 $' + n + '$' + (m * k - n === 0 ? zero : '') + '。', p: { v: 1, base: base, m: m, n: n, k: k } };
     var p = r.int(1, 5), q = r.pick([2, 3, 4]); while (gcd(p, q) !== 1) p = r.int(1, 5);   /* 約分後根指數不能變 1 */
-    return { q: '把 ' + T('\\sqrt[' + q + ']{' + base + '^{' + p + '}}') + ' 改寫成分數指數。', a: T(base + '^{' + (q === 1 ? String(p) : '\\frac{' + p + '}{' + q + '}') + '}'), h: '$\\sqrt[q]{a^p}=a^{p/q}$：根指數 $' + q + '$ 放分母、次方 $' + p + '$ 放分子。', p: { v: 2, base: base, p: p, q: q } };
+    return { q: '把 ' + T('\\sqrt[' + q + ']{' + powT(base, p) + '}') + ' 改寫成分數指數。', a: T(base + '^{' + (q === 1 ? String(p) : '\\frac{' + p + '}{' + q + '}') + '}'), h: '$\\sqrt[q]{a^p}=a^{p/q}$：根指數 $' + q + '$ 放分母、次方 $' + p + '$ 放分子' + (p === 1 ? '（$' + base + '$ 就是 $' + base + '$ 的 $1$ 次方）' : '') + '。', p: { v: 2, base: base, p: p, q: q } };
   };
 
   /* 4-2 同底指數比較大小 */
@@ -342,7 +345,7 @@
 
   /* 4-5 位數 */
   L1.digits = function (r) {
-    var base = r.pick([2, 3, 6, 7]), n, lg = { 2: 0.3010, 3: 0.4771, 6: 0.7781, 7: 0.8451 }[base], v, d, m, tries = 0;
+    var base = r.pick([2, 3, 5, 7]), n, lg = { 2: 0.3010, 3: 0.4771, 5: 0.6990, 7: 0.8451 }[base], v, d, m, tries = 0;
     do { n = r.int(10, 60); v = Math.round(n * lg * 10000) / 10000; m = v - Math.floor(v); } while ((m < 0.005 || m > 0.995) && tries++ < 60);
     d = Math.floor(v) + 1;
     return { q: '已知 ' + T('\\log' + base + '\\approx' + lg.toFixed(4)) + '，問 ' + T(base + '^{' + n + '}') + ' 是幾位數？',
@@ -389,13 +392,13 @@
   /* 2-4 整數／小數部分再運算：1/b - 1/a 之類 */
   L2.intFracOp = function (r) {
     var n = r.int(2, 50); while (isSquare(n)) n = r.int(2, 50);
-    var k = isqrt(n), den = n - k * k, v = r.int(0, 2);
+    var k = isqrt(n), den = n - k * k, v = r.int(0, 2), sq = simpSqrt(n);   /* √n = sq.c√sq.r，答案要化到最簡 */
     var head = '設 ' + T('\\sqrt{' + n + '}') + ' 的整數部分為 ' + T('a') + '、小數部分為 ' + T('b') + '，求 ';
     if (v === 0) {   /* 1/b − 1/a = (√n+k)/den − 1/k = (k√n + k² − den)/(k·den) */
       var num0 = k * k - den, nums = k, D = k * den;
-      return { q: head + T('\\dfrac1b-\\dfrac1a') + '。', a: T(surdFracTex(num0, nums, n, D)), h: '$a=' + k + '$、$b=\\sqrt{' + n + '}-' + k + '$，$\\dfrac1b=\\dfrac{1}{\\sqrt{' + n + '}-' + k + '}$ 要乘共軛有理化，分母變成 $' + n + '-' + k * k + '=' + den + '$。', p: { n: n, k: k, v: 0 } };
+      return { q: head + T('\\dfrac1b-\\dfrac1a') + '。', a: T(surdFracTex(num0, nums * sq.c, sq.r, D)), h: '$a=' + k + '$、$b=\\sqrt{' + n + '}-' + k + '$，$\\dfrac1b=\\dfrac{1}{\\sqrt{' + n + '}-' + k + '}$ 要乘共軛有理化，分母變成 $' + n + '-' + k * k + '=' + den + '$。', p: { n: n, k: k, v: 0 } };
     }
-    if (v === 1) return { q: head + T('ab+b^2') + '。', a: T(surdTex(n, -k, n)), h: '$ab+b^2=b(a+b)$，而 $a+b$ 就是原數 $\\sqrt{' + n + '}$：$(\\sqrt{' + n + '}-' + k + ')\\sqrt{' + n + '}$。', p: { n: n, k: k, v: 1 } };
+    if (v === 1) return { q: head + T('ab+b^2') + '。', a: T(surdTex(n, -k * sq.c, sq.r)), h: '$ab+b^2=b(a+b)$，而 $a+b$ 就是原數 $\\sqrt{' + n + '}$：$(\\sqrt{' + n + '}-' + k + ')\\sqrt{' + n + '}$。', p: { n: n, k: k, v: 1 } };
     /* b² + 2ab = b(b+2a) = (√n−k)(√n+k) = n − k² */
     return { q: head + T('b^2+2ab') + '。', a: T(String(den)), h: '$b^2+2ab=b(b+2a)=(\\sqrt{' + n + '}-' + k + ')(\\sqrt{' + n + '}+' + k + ')$，平方差，根號會消掉。', p: { n: n, k: k, v: 2 } };
   };
@@ -458,7 +461,7 @@
     var A = r.pick([1, 4, 9, 16]), Bq = r.pick([1, 4, 9, 16]), sa = isqrt(A), sb = isqrt(Bq), mn = (sa + sb) * (sa + sb);
     return { q: '設 ' + T('x,y>0') + ' 且 ' + T('\\dfrac{' + A + '}{x}+\\dfrac{' + Bq + '}{y}=1') + '，求 ' + T('x+y') + ' 的最小值及此時的 ' + T('(x,y)') + '。',
              a: '最小值 ' + T(String(mn)) + '，' + T('(x,y)=(' + (A + sa * sb) + ',' + (Bq + sa * sb) + ')'),
-             h: '乘上「$1$」：$x+y=(x+y)\\left(\\dfrac{' + A + '}x+\\dfrac{' + Bq + '}y\\right)=' + (A + Bq) + '+\\dfrac{' + A + 'y}{x}+\\dfrac{' + Bq + 'x}{y}\\ge' + (A + Bq) + '+2\\sqrt{' + A * Bq + '}$。', p: { v: 4, a: A, b: Bq, min: mn } };
+             h: '乘上「$1$」：$x+y=(x+y)\\left(\\dfrac{' + A + '}x+\\dfrac{' + Bq + '}y\\right)=' + (A + Bq) + '+\\dfrac{' + coefTex(A, 'y') + '}{x}+\\dfrac{' + coefTex(Bq, 'x') + '}{y}\\ge' + (A + Bq) + '+2\\sqrt{' + A * Bq + '}$。', p: { v: 4, a: A, b: Bq, min: mn } };
   };
 
   /* 2-8 絕對值不等式三型 */
@@ -481,6 +484,7 @@
     /* |ax+b| ≤ |cx+d| ⟹ (ax+b)² ≤ (cx+d)² ⟹ ((a−c)x+(b−d))((a+c)x+(b+d)) ≤ 0 */
     var a2 = r.pick([2, 3, 4]), c2 = r.pick([1, 2]); if (a2 === c2) a2++;
     var b2 = r.int(-4, 4), d2 = r.int(-4, 4);
+    if (b2 * c2 === a2 * d2) d2 += 1;                /* 兩根重合會退化成一個點，錯開 */
     var r1 = F(-(b2 - d2), a2 - c2), r2 = F(-(b2 + d2), a2 + c2);
     var lo = Fr.lt(r1, r2) ? r1 : r2, hi = Fr.lt(r1, r2) ? r2 : r1;
     return { q: '解不等式 ' + T(absLin(a2, b2) + '\\le' + absLin(c2, d2)) + '。',
@@ -492,7 +496,7 @@
   L2.absSumIneq = function (r) {
     var a = r.int(-5, 2), b = a + r.int(1, 6), k = (b - a) + 2 * r.int(1, 5);   /* k > b−a，解 [ (a+b−k)/2, (a+b+k)/2 ] */
     var lo = F(a + b - k, 2), hi = F(a + b + k, 2);
-    return { q: '解不等式 ' + T('|x' + (a === 0 ? '' : signed(-a)) + '|+|x' + signed(-b) + '|\\le' + k) + '。',
+    return { q: '解不等式 ' + T('|x' + (a === 0 ? '' : signed(-a)) + '|+|x' + (b === 0 ? '' : signed(-b)) + '|\\le' + k) + '。',
              a: T(Fr.tex(lo, false) + '\\le x\\le' + Fr.tex(hi, false)),
              h: '到 $' + a + '$、$' + b + '$ 的距離和 $\\le' + k + '$，而兩點距離只有 $' + (b - a) + '$：多出來的 $' + (k - b + a) + '$ 平分給兩邊，從兩點往外各走 $' + Fr.tex(F(k - b + a, 2), false) + '$。或分 $x<' + a + '$、$' + a + '\\le x\\le' + b + '$、$x>' + b + '$ 三段討論。', p: { a: a, b: b, k: k, lon: lo.n, lod: lo.d, hin: hi.n, hid: hi.d } };
   };
@@ -543,7 +547,7 @@
   L2.expSymm = function (r) {
     var v = r.int(0, 3), s = v === 1 ? r.int(1, 9) : r.int(3, 12);
     if (v === 0) return { q: '已知 ' + T('a^x+a^{-x}=' + s) + '，求 ' + T('a^{2x}+a^{-2x}') + ' 與 ' + T('a^{3x}+a^{-3x}') + '。', a: T(String(s * s - 2)) + '、' + T(String(s * s * s - 3 * s)), h: '平方：$(a^x+a^{-x})^2=a^{2x}+2+a^{-2x}=' + s * s + '$；立方：$t^3-3t$，$t=' + s + '$。', p: { v: 0, s: s, a2: s * s - 2, a3: s * s * s - 3 * s } };
-    if (v === 1) return { q: '已知 ' + T('a^x-a^{-x}=' + s) + '，求 ' + T('a^{2x}+a^{-2x}') + ' 與 ' + T('a^{x}+a^{-x}') + '（' + T('a>0') + '）。', a: T(String(s * s + 2)) + '、' + T('\\sqrt{' + (s * s + 4) + '}'), h: '$(a^x-a^{-x})^2=a^{2x}-2+a^{-2x}=' + s * s + '$；$(a^x+a^{-x})^2=(a^x-a^{-x})^2+4=' + (s * s + 4) + '$，且兩正數之和為正。', p: { v: 1, s: s, a2: s * s + 2, sum2: s * s + 4 } };
+    if (v === 1) return { q: '已知 ' + T('a^x-a^{-x}=' + s) + '，求 ' + T('a^{2x}+a^{-2x}') + ' 與 ' + T('a^{x}+a^{-x}') + '（' + T('a>0') + '）。', a: T(String(s * s + 2)) + '、' + T(sqrtTex(s * s + 4)), h: '$(a^x-a^{-x})^2=a^{2x}-2+a^{-2x}=' + s * s + '$；$(a^x+a^{-x})^2=(a^x-a^{-x})^2+4=' + (s * s + 4) + '$，且兩正數之和為正。', p: { v: 1, s: s, a2: s * s + 2, sum2: s * s + 4 } };
     if (v === 2) return { q: '已知 ' + T('a>1') + '、' + T('x>0') + ' 且 ' + T('a^x+a^{-x}=' + s) + '，求 ' + T('a^{x}-a^{-x}') + '。', a: T(sqrtTex(s * s - 4)), h: '$(a^x-a^{-x})^2=(a^x+a^{-x})^2-4=' + (s * s - 4) + '$；$a>1$、$x>0$ ⟹ $a^x>1>a^{-x}$，差為正，取正根。', p: { v: 2, s: s, d2: s * s - 4 } };
     var m = s * s - 2;
     return { q: '已知 ' + T('a^{2x}+a^{-2x}=' + m) + '，求 ' + T('a^{x}+a^{-x}') + '。', a: T(String(s)), h: '$(a^x+a^{-x})^2=a^{2x}+2+a^{-2x}=' + m + '+2=' + s * s + '$，兩正數之和為正，開根號取正。', p: { v: 3, s: s, m: m } };
@@ -563,7 +567,7 @@
     }
     lead = 1;
     for (var k = 9; k >= 1; k--) if (mant >= LG[k] - 1e-12) { lead = k; break; }
-    var given = base === 12 ? '\\log2\\approx0.3010,\\ \\log3\\approx0.4771' : '\\log' + base + '\\approx' + lg.toFixed(4);
+    var given = (base === 12 || base === 6) ? '\\log2\\approx0.3010,\\ \\log3\\approx0.4771' : '\\log' + base + '\\approx' + lg.toFixed(4);
     return { q: '已知 ' + T(given) + '（必要時可用 $\\log2,\\log3$ 推其他值），問 ' + T(base + '^{' + n + '}') + ' 是幾位數？最高位數字是幾？',
              a: T(String(d)) + ' 位數，最高位數字 ' + T(String(lead)) + '　（' + T('\\log=' + v.toFixed(4)) + '，尾數 ' + T(mant.toFixed(4)) + '）',
              h: '$\\log' + base + '^{' + n + '}=' + n + '\\times' + lg.toFixed(4) + '$：整數部分（首數）$+1$ 是位數；小數部分（尾數）落在 $\\log k$ 與 $\\log(k+1)$ 之間 ⟹ 最高位是 $k$（$\\log2=0.3010$、$\\log3=0.4771$、$\\log5=0.6990$、$\\log7=0.8451$）。', p: { base: base, n: n, lg: lg, d: d, lead: lead } };
@@ -574,9 +578,9 @@
     var base = r.pick([2, 3, 5, 6, 7]), n, lg = { 2: 0.3010, 3: 0.4771, 5: 0.6990, 6: 0.7781, 7: 0.8451 }[base], v, m, tries = 0;
     do { n = r.int(10, 60); v = -Math.round(n * lg * 10000) / 10000; m = v - Math.floor(v); } while ((m < 0.005 || m > 0.995) && tries++ < 60);
     var pos = -Math.floor(v);   /* log = −k + m ⟹ 第 k 位 */
-    return { q: '已知 ' + T('\\log' + base + '\\approx' + lg.toFixed(4)) + '，問 ' + T('\\left(\\dfrac1{' + base + '}\\right)^{' + n + '}') + ' 化成小數後，從小數點後第幾位開始出現不為 0 的數字？',
+    return { q: '已知 ' + T(base === 6 ? '\\log2\\approx0.3010,\\ \\log3\\approx0.4771' : '\\log' + base + '\\approx' + lg.toFixed(4)) + '，問 ' + T('\\left(\\dfrac1{' + base + '}\\right)^{' + n + '}') + ' 化成小數後，從小數點後第幾位開始出現不為 0 的數字？',
              a: '第 ' + T(String(pos)) + ' 位（' + T('\\log=-' + (n * lg).toFixed(4) + '=-' + pos + '+' + (pos - n * lg).toFixed(4)) + '）',
-             h: '$\\log\\left(\\dfrac1{' + base + '}\\right)^{' + n + '}=-' + n + '\\times' + lg.toFixed(4) + '$，把它寫成「負整數 $+$ 正小數」（例：$-2.3=-3+0.7$），那個負整數的絕對值就是位置。', p: { base: base, n: n, pos: pos } };
+             h: (base === 6 ? '$\\log6=\\log2+\\log3\\approx0.3010+0.4771=0.7781$；' : '') + '$\\log\\left(\\dfrac1{' + base + '}\\right)^{' + n + '}=-' + n + '\\times' + lg.toFixed(4) + '$，把它寫成「負整數 $+$ 正小數」（例：$-2.3=-3+0.7$），那個負整數的絕對值就是位置。', p: { base: base, n: n, pos: pos } };
   };
 
   /* 2-17 複利：至少幾年超過 k 倍 */
@@ -796,12 +800,12 @@
   L1_SOL.expLaw = function (p) {
     var B = p.base;
     if (p.v === 0) return ['同底相乘，指數相加：$' + B + '^{' + p.m + '}\\cdot ' + B + '^{' + p.n + '}=' + B + '^{' + p.m + '+' + p.n + '}=' + B + '^{' + (p.m + p.n) + '}$。',
-      '同底相除，指數相減：$' + B + '^{' + (p.m + p.n) + '}\\div ' + B + '^{' + p.k + '}=' + B + '^{' + (p.m + p.n) + '-' + p.k + '}=' + B + '^{' + (p.m + p.n - p.k) + '}$。'];
+      '同底相除，指數相減：$' + B + '^{' + (p.m + p.n) + '}\\div ' + B + '^{' + p.k + '}=' + B + '^{' + (p.m + p.n) + '-' + p.k + '}=' + B + '^{' + (p.m + p.n - p.k) + '}' + powTail(B, p.m + p.n - p.k) + '$。'];
     if (p.v === 1) return ['次方的次方，指數相乘：$\\left(' + B + '^{' + p.m + '}\\right)^{' + p.k + '}=' + B + '^{' + p.m + '\\times' + p.k + '}=' + B + '^{' + (p.m * p.k) + '}$。',
-      '同底相除，指數相減：$' + B + '^{' + (p.m * p.k) + '}\\div ' + B + '^{' + p.n + '}=' + B + '^{' + (p.m * p.k) + '-' + p.n + '}=' + B + '^{' + (p.m * p.k - p.n) + '}$。'];
+      '同底相除，指數相減：$' + B + '^{' + (p.m * p.k) + '}\\div ' + B + '^{' + p.n + '}=' + B + '^{' + (p.m * p.k) + '-' + p.n + '}=' + B + '^{' + (p.m * p.k - p.n) + '}' + powTail(B, p.m * p.k - p.n) + '$' + (p.m * p.k - p.n === 0 ? '（任何非零數的 $0$ 次方都是 $1$）' : '') + '。'];
     var ex = p.q === 1 ? String(p.p) : '\\frac{' + p.p + '}{' + p.q + '}';
     return ['根號改分數指數的規則：$\\sqrt[q]{a^{p}}=a^{\\frac{p}{q}}$，根指數放分母、次方放分子。',
-      '這裡根指數是 $' + p.q + '$、次方是 $' + p.p + '$：$\\sqrt[' + p.q + ']{' + B + '^{' + p.p + '}}=' + B + '^{' + ex + '}$。'];
+      '這裡根指數是 $' + p.q + '$、次方是 $' + p.p + '$：$\\sqrt[' + p.q + ']{' + powT(B, p.p) + '}=' + B + '^{' + ex + '}$。'];
   };
   L1_SOL.expCompare = function (p) {
     var lbl = ['a', 'b', 'c'], es = p.es, idx = [0, 1, 2].sort(function (i, j) { return es[j] - es[i]; });
@@ -884,7 +888,7 @@
     var x = r.int(-5, 6), y = r.int(-5, 8); if (x === 0) x = 2; if (y === c) y = c + 3;
     var E = A * x + C * (y - c), Fv = B * x - Dd * (y - c);
     return { q: '設 ' + T('x,y') + ' 為有理數，且 ' + T('(' + surdTex(A, B, k) + ')x+(y-' + c + ')(' + surdTex(C, -Dd, k) + ')=' + surdTex(E, Fv, k)) + '，求 ' + T('(x,y)') + '。',
-      a: T('(x,y)=(' + x + ',\\ ' + y + ')'), h: '把左式整理成「有理部分」＋「無理部分」$\\sqrt{' + k + '}$：有理部分 $' + A + 'x+' + C + '(y-' + c + ')=' + E + '$，無理部分 $' + B + 'x-' + Dd + '(y-' + c + ')=' + Fv + '$（前提：$x,y$ 有理而 $\\sqrt{' + k + '}$ 無理），解聯立。',
+      a: T('(x,y)=(' + x + ',\\ ' + y + ')'), h: '把左式整理成「有理部分」＋「無理部分」$\\sqrt{' + k + '}$：有理部分 $' + coefTex(A, 'x') + '+' + (C === 1 ? '' : C) + '(y-' + c + ')=' + E + '$，無理部分 $' + coefTex(B, 'x') + '-' + (Dd === 1 ? '' : Dd) + '(y-' + c + ')=' + Fv + '$（前提：$x,y$ 有理而 $\\sqrt{' + k + '}$ 無理），解聯立。',
       p: { k: k, A: A, B: B, C: C, D: Dd, c: c, x: x, y: y, E: E, F: Fv } };
   };
 
@@ -897,7 +901,7 @@
     var E = a1 * x + a2 * y, Fv = b1 * x - b2 * y;             /* x(a1+b1√k) − y(b2√k − a2) */
     var in1 = (a1 * a1 + b1 * b1 * k) + '+' + (2 * a1 * b1) + '\\sqrt{' + k + '}', in2 = (a2 * a2 + b2 * b2 * k) + '-' + (2 * a2 * b2) + '\\sqrt{' + k + '}';
     return { q: '設 ' + T('x,y') + ' 為有理數，' + T('x\\sqrt{' + in1 + '}-y\\sqrt{' + in2 + '}=' + surdTex(E, Fv, k)) + '，求 ' + T('(x,y)') + '。',
-      a: T('(x,y)=(' + x + ',\\ ' + y + ')'), h: '先拆雙重根號：$\\sqrt{' + in1 + '}=\\sqrt{(' + (a1 * a1) + '+' + (b1 * b1 * k) + ')+2\\sqrt{' + (a1 * a1 * b1 * b1 * k) + '}}=' + surdTex(a1, b1, k) + '$；$\\sqrt{' + in2 + '}=' + rt2 + '$（大減小）。代入後有理、無理部分各自相等：$' + a1 + 'x+' + a2 + 'y=' + E + '$、$' + b1 + 'x-' + b2 + 'y=' + Fv + '$。',
+      a: T('(x,y)=(' + x + ',\\ ' + y + ')'), h: '先拆雙重根號：$\\sqrt{' + in1 + '}=\\sqrt{(' + (a1 * a1) + '+' + (b1 * b1 * k) + ')+2\\sqrt{' + (a1 * a1 * b1 * b1 * k) + '}}=' + surdTex(a1, b1, k) + '$；$\\sqrt{' + in2 + '}=' + rt2 + '$（大減小）。代入後有理、無理部分各自相等：$' + coefTex(a1, 'x') + '+' + coefTex(a2, 'y') + '=' + E + '$、$' + coefTex(b1, 'x') + '-' + coefTex(b2, 'y') + '=' + Fv + '$。',
       p: { k: k, a1: a1, b1: b1, a2: a2, b2: b2, x: x, y: y, E: E, F: Fv } };
   };
 
@@ -916,7 +920,7 @@
   L3.symmFromQuad = function (r) {
     var fam = r.int(0, 2), b = fam === 2 ? r.int(3, 8) : r.int(1, 6), ask = r.int(0, 3);
     var s = fam === 0 ? b : fam === 1 ? -b : b;                 /* fam 0/1：x−1/x = s；fam 2：x+1/x = s */
-    var eq = fam === 0 ? 'x^2-' + b + 'x-1=0' : fam === 1 ? 'x^2+' + b + 'x-1=0' : 'x^2-' + b + 'x+1=0';
+    var eq = fam === 0 ? 'x^2-' + coefTex(b, 'x') + '-1=0' : fam === 1 ? 'x^2+' + coefTex(b, 'x') + '-1=0' : 'x^2-' + coefTex(b, 'x') + '+1=0';
     var p2 = fam === 2 ? s * s - 2 : s * s + 2;                 /* x²+1/x² */
     var p3 = fam === 2 ? s * s * s - 3 * s : s * s * s + 3 * s;   /* x³±1/x³（fam 2 為 +，其餘為 −）*/
     var p4 = p2 * p2 - 2;
@@ -945,7 +949,7 @@
     var fee = (2 * k) + 'n' + (a - 2 * k === 0 ? '' : signed(a - 2 * k)), minv = 2 * k * m + a - k;
     return { q: '某公司買一台機器花 ' + T(String(C)) + ' 萬元，第 ' + T('n') + ' 年的維修費為 ' + T('(' + fee + ')') + ' 萬元（第 1 年 ' + a + ' 萬、第 2 年 ' + (a + 2 * k) + ' 萬、第 3 年 ' + (a + 4 * k) + ' 萬、……）。若使用 ' + T('n') + ' 年後報廢，問使用幾年時「每年平均總花費」最低？最低是多少？',
       a: T(String(m)) + ' 年，每年平均 ' + T(String(minv)) + ' 萬元',
-      h: '前 $n$ 年維修費總和是等差級數：$\\dfrac{n(' + a + '+' + fee + ')}{2}=' + coefTex(k, 'n^2') + (a - k === 0 ? '' : signed(a - k) + 'n') + '$；平均 $=\\dfrac{' + C + '}{n}+' + coefTex(k, 'n') + (a - k === 0 ? '' : signed(a - k)) + '$，典型的 $\\dfrac Kx+kx$，算幾等號在 $\\dfrac{' + C + '}{n}=' + coefTex(k, 'n') + '$，即 $n^2=' + m * m + '$。',
+      h: '前 $n$ 年維修費總和是等差級數：$\\dfrac{n(' + a + '+' + fee + ')}{2}=' + coefTex(k, 'n^2') + (a - k === 0 ? '' : '+' + coefTex(a - k, 'n')) + '$；平均 $=\\dfrac{' + C + '}{n}+' + coefTex(k, 'n') + (a - k === 0 ? '' : signed(a - k)) + '$，典型的 $\\dfrac Kx+kx$，算幾等號在 $\\dfrac{' + C + '}{n}=' + coefTex(k, 'n') + '$，即 $n^2=' + m * m + '$。',
       p: { C: C, k: k, a: a, m: m, min: minv } };
   };
 
@@ -958,7 +962,7 @@
       h: '$' + absLin(1, -a) + '=' + m + absLin(1, -b) + '$ ⟹ $' + linTex(1, -a) + '=\\pm' + m + '(' + linTex(1, -b) + ')$，兩個方程式各解一次。幾何意義：$P$ 到 $A(' + a + ')$ 的距離是到 $B(' + b + ')$ 的 $' + m + '$ 倍，內分點與外分點各一個。', p: { a: a, b: b, m: m, v: 0, x1n: x1.n, x1d: x1.d, x2n: x2.n, x2d: x2.d } };
     return { q: '數線上 ' + T('A(' + a + ')') + '、' + T('B(' + b + ')') + '，點 ' + T('P(x)') + ' 滿足 ' + T('\\overline{PA}=' + m + '\\overline{PB}') + '。求 ' + T('P') + ' 的所有可能坐標，並指出哪一個在線段 ' + T('\\overline{AB}') + ' 上。',
       a: T('x=' + Fr.tex(x1, false) + '\\ \\text{或}\\ x=' + Fr.tex(x2, false)) + '；在線段上的是 ' + T('x=' + Fr.tex(x1, false)) + '（' + T('\\overline{AB}') + ' 的 ' + T(m + ':1') + ' 內分點）',
-      h: '$\\overline{PA}=' + m + '\\,\\overline{PB}$ 就是 $' + absLin(1, -a) + '=' + m + absLin(1, -b) + '$。內分點：$\\overline{AP}:\\overline{PB}=' + m + ':1$，$x=\\dfrac{1\\cdot(' + a + ')+' + m + '\\cdot' + b + '}{' + m + '+1}$；外分點在 $B$ 右側（離 $A$ 較遠），$x=\\dfrac{' + m + '\\cdot' + b + '-(' + a + ')}{' + m + '-1}$。', p: { a: a, b: b, m: m, v: 1, x1n: x1.n, x1d: x1.d, x2n: x2.n, x2d: x2.d } };
+      h: '$\\overline{PA}=' + m + '\\,\\overline{PB}$ 就是 $' + absLin(1, -a) + '=' + m + absLin(1, -b) + '$。內分點：$\\overline{AP}:\\overline{PB}=' + m + ':1$，$x=\\dfrac{1\\cdot(' + a + ')+' + m + '\\cdot' + parT(b) + '}{' + m + '+1}$；外分點在 $B$ 右側（離 $A$ 較遠），$x=\\dfrac{' + m + '\\cdot' + parT(b) + '-(' + a + ')}{' + m + '-1}$。', p: { a: a, b: b, m: m, v: 1, x1n: x1.n, x1d: x1.d, x2n: x2.n, x2d: x2.d } };
   };
 
   /* L3-10　恰有 k 個整數解 → 卡參數 t 的範圍 */
@@ -971,7 +975,7 @@
     var ansT = lo + (loInc ? '\\le ' : '<') + 't' + (hiInc ? '\\le ' : '<') + hi;
     var side = v === 0 ? '右側要含 $' + (a + c) + '$ 到 $' + (a + c + j - 1) + '$ 但不含 $' + (a + c + j) + '$' : v === 1 ? '右側要含 $' + (a + 1) + '$ 到 $' + (a + j) + '$ 但不含 $' + (a + j + 1) + '$' : v === 2 ? '右側要含 $' + (a + 1) + '$ 到 $' + (a + j) + '$（開區間，$' + (a + j + 1) + '$ 不能進來）' : '右側要含 $' + (a + c + 1) + '$ 到 $' + (a + c + j) + '$ 但不含 $' + (a + c + j + 1) + '$（兩端都是開的）';
     return { q: '若不等式 ' + T(ineq) + ' 恰有 ' + T(String(k)) + ' 個整數解，求 ' + T('t') + ' 的範圍。', a: T(ansT),
-      h: '解集合關於 $x=' + a + '$ 對稱，整數解左右各半（' + (k % 2 ? '加上中間的 $x=' + a + '$' : '$x=' + a + '$ 本身不算') + '）：' + side + '，再把「$x-' + a + '$ 的上限 $t$」卡在兩個整數之間，注意端點能不能取。', p: { v: v, a: a, c: c, j: j, k: k, lo: lo, hi: hi, loInc: loInc, hiInc: hiInc } };
+      h: '解集合關於 $x=' + a + '$ 對稱，整數解左右各半（' + (k % 2 ? '加上中間的 $x=' + a + '$' : '$x=' + a + '$ 本身不算') + '）：' + side + '，再把「$' + absLin(1, -a) + '$ 的上限 $t$」卡在兩個整數之間，注意端點能不能取。', p: { v: v, a: a, c: c, j: j, k: k, lo: lo, hi: hi, loInc: loInc, hiInc: hiInc } };
   };
 
   /* L3-11　|x−a|+|x−b| = k 解的個數：最小值 D=b−a 在整段取到 */
@@ -1030,7 +1034,7 @@
     var eqT = (A === 1 ? '' : A) + '\\left(' + big + '\\right)' + (B === 0 ? '' : (B > 0 ? '-' : '+') + (Math.abs(B) === 1 ? '' : Math.abs(B)) + '\\left(' + small + '\\right)') + (Cc === 0 ? '' : signed(Cc)) + '=0';
     return { q: '解方程式 ' + T(eqT) + '。' + (base === 10 ? '（答案以 $\\log2$ 表示）' : ''),
       a: T('x=' + xT + '\\ \\text{或}\\ x=' + (/[+-]/.test(xT) ? '-(' + xT + ')' : '-' + xT)),
-      h: '令 $t=' + small + '$（$t\\ge2$），則 $' + big + '=t^2-2$，方程式變成 $' + A + 't^2-' + B + 't' + signed(Cc - 2 * A) + '=0$，解得 $t=' + Fr.tex(t0, false) + '$（另一根 $' + Fr.tex(t1, false) + '<2$ 不合）。再令 $u=' + base + '^x>0$：$u+\\dfrac1u=' + Fr.tex(t0, false) + '$ ⟹ $u=' + u + '$ 或 $\\dfrac1{' + u + '}$。',
+      h: '令 $t=' + small + '$（$t\\ge2$），則 $' + big + '=t^2-2$，方程式變成 $' + A + 't^2-' + coefTex(B, 't') + (Cc - 2 * A === 0 ? '' : signed(Cc - 2 * A)) + '=0$，解得 $t=' + Fr.tex(t0, false) + '$（另一根 $' + Fr.tex(t1, false) + '<2$ 不合）。再令 $u=' + base + '^x>0$：$u+\\dfrac1u=' + Fr.tex(t0, false) + '$ ⟹ $u=' + u + '$ 或 $\\dfrac1{' + u + '}$。',
       p: { base: base, u: u, t1n: t1.n, t1d: t1.d, A: A, B: B, C: Cc, xT: xT } };
   };
 
@@ -1109,7 +1113,7 @@
     if (kind === 0) return { q: '展開 ' + T('(x' + signed(sa * a) + ')^2') + '。', a: T('x^2' + signed(2 * sa * a) + 'x+' + a * a), h: '$(x+m)^2=x^2+2mx+m^2$，這裡 $m=' + sa * a + '$：中間項 $2\\times(' + sa * a + ')x$，常數項 $(' + sa * a + ')^2$。', p: { kind: 0, m: sa * a } };
     if (kind === 1) return { q: '展開 ' + T('(x+' + a + ')(x-' + a + ')') + '。', a: T('x^2-' + a * a), h: '平方差：$(x+m)(x-m)=x^2-m^2$，$m=' + a + '$。', p: { kind: 1, m: a } };
     var m = sa * a, n = sb * b, s = m + n, pp = m * n;
-    return { q: '展開 ' + T('(x' + signed(m) + ')(x' + signed(n) + ')') + '。', a: T('x^2' + (s === 0 ? '' : signed(s) + 'x') + signed(pp)), h: '$(x+m)(x+n)=x^2+(m+n)x+mn$：$m+n=' + s + '$、$mn=' + pp + '$。', p: { kind: 2, m: m, n: n } };
+    return { q: '展開 ' + T('(x' + signed(m) + ')(x' + signed(n) + ')') + '。', a: T('x^2' + (s === 0 ? '' : (s > 0 ? '+' : '-') + coefTex(Math.abs(s), 'x')) + signed(pp)), h: '$(x+m)(x+n)=x^2+(m+n)x+mn$：$m+n=' + s + '$、$mn=' + pp + '$。', p: { kind: 2, m: m, n: n } };
   };
   var META_L0 = [['primeFactor', '質因數分解'], ['fracOps', '分數四則與通分'], ['sqrtBetween', '平方根與完全平方數'], ['linIneq', '一元一次不等式'], ['mulFormula', '乘法公式展開']];
   /* 先備題型 → 該去哪裡複習（全部是國中內容，沒有本系統的前章可連） */

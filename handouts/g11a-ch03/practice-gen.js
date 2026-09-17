@@ -40,6 +40,13 @@
   };
   function simpSqrt(n) { var c = 1, r = n; for (var k = 2; k * k <= r; k++) { while (r % (k * k) === 0) { r /= k * k; c *= k; } } return { c: c, r: r }; }
   function sqrtTex(n) { if (n === 0) return '0'; var s = simpSqrt(n); if (s.r === 1) return String(s.c); return (s.c === 1 ? '' : s.c) + '\\sqrt{' + s.r + '}'; }
+  function rootTexF(f) {   /* √(n/d) 的最簡寫法：整數、c√r、\dfrac{c√r}{d} */
+    if (f.d === 1) return sqrtTex(f.n);
+    var s = simpSqrt(f.n * f.d), k = F(s.c, f.d);
+    if (s.r === 1) return Fr.tex(k);
+    var body = (k.n === 1 ? '' : k.n) + '\\sqrt{' + s.r + '}';
+    return k.d === 1 ? body : '\\dfrac{' + body + '}{' + k.d + '}';
+  }
   function T(s) { return '$' + s + '$'; }
   function term(coef, v, first) {
     if (coef === 0) return '';
@@ -290,7 +297,7 @@
   L1.weightArea = function (r) {
     var a = r.int(1, 5), b = r.int(1, 5), c = r.int(1, 5);
     return { q: T('P') + ' 在 ' + T('\\triangle ABC') + ' 內部且 ' + T(comb(a, ov('PA'), true) + comb(b, ov('PB'), false) + comb(c, ov('PC'), false) + '=\\vec0') + '，求 ' + T('\\triangle PBC:\\triangle PCA:\\triangle PAB') + '，以及 ' + T('\\dfrac{\\triangle PBC}{\\triangle ABC}') + '。',
-             a: T(a + ':' + b + ':' + c) + '，' + T(Fr.tex(F(a, a + b + c))),
+             a: T(a / gcd(gcd(a, b), c) + ':' + b / gcd(gcd(a, b), c) + ':' + c / gcd(gcd(a, b), c)) + '，' + T(Fr.tex(F(a, a + b + c))),
              h: '把 $P$ 看成三個砝碼 $a,b,c$ 的平衡點：對面三角形的面積比 $=a:b:c$。',
              p: { a: a, b: b, c: c, ans: [a, b, c, fr2(F(a, a + b + c))] } };
   };
@@ -335,7 +342,7 @@
     /* EP:PB = t : (1-t)  （P = B + t(E−B) ⇒ BP = t·BE） */
     var BP = t, PE = Fr.sub(F(1), t);
     return { q: '平行四邊形 ' + T('ABCD') + ' 中，' + T(ov('DE') + '=' + Fr.tex(e) + ov('DC')) + '、' + T(ov('AF') + '=' + Fr.tex(f) + ov('AB')) + '，' + T('\\overline{BE}') + ' 與 ' + T('\\overline{CF}') + ' 交於 ' + T('P') + '。<br>(1) 求 ' + T('\\overline{BP}:\\overline{PE}') + '　(2) 若 ' + T(ov('AP') + '=x' + ov('AB') + '+y' + ov('AD')) + '，求 ' + T('(x,y)') + '。',
-             a: '(1) ' + T(BP.n * PE.d + ':' + PE.n * BP.d) + '　(2) ' + T('(x,y)=\\left(' + Fr.tex(x) + ',\\ ' + Fr.tex(y) + '\\right)'),
+             a: '(1) ' + T(Fr.div(BP, PE).n + ':' + Fr.div(BP, PE).d) + '　(2) ' + T('(x,y)=\\left(' + Fr.tex(x) + ',\\ ' + Fr.tex(y) + '\\right)'),
              h: '以 $\\overrightarrow{AB},\\overrightarrow{AD}$ 為基底把 $E,F,B,C$ 都寫成係數；$P$ 同時在 $BE$、$CF$ 上，用「係數和為 1」設兩個參數再比對。',
              p: { e: fr2(e), f: fr2(f), ans: { BP: fr2(BP), PE: fr2(PE), x: fr2(x), y: fr2(y) } } };
   };
@@ -394,7 +401,7 @@
     var uv = F(lu * lv * (deg === 60 ? 1 : deg === 120 ? -1 : 0), deg === 90 ? 1 : 2);
     var L2v = Fr.add(F(a * a * lu * lu + b * b * lv * lv), Fr.mul(F(-2 * a * b), uv));   /* |au-bv|^2 */
     var projl = Fr.div(uv, F(lv));  /* u 在 v 上的正射影長（可為負，取絕對值） */
-    return { q: '設非零向量 ' + T(vec('u') + ',' + vec('v')) + ' 滿足 ' + T('|' + vec('u') + '|=' + lu) + '、' + T('|' + vec('v') + '|=' + lv) + '、' + T('\\left|' + comb(a, vec('u'), true) + comb(-b, vec('v'), false) + '\\right|=\\sqrt{' + Fr.tex(L2v) + '}') + '，求 ' + T(vec('u')) + ' 在 ' + T(vec('v')) + ' 上的正射影長。',
+    return { q: '設非零向量 ' + T(vec('u') + ',' + vec('v')) + ' 滿足 ' + T('|' + vec('u') + '|=' + lu) + '、' + T('|' + vec('v') + '|=' + lv) + '、' + T('\\left|' + comb(a, vec('u'), true) + comb(-b, vec('v'), false) + '\\right|=' + rootTexF(L2v)) + '，求 ' + T(vec('u')) + ' 在 ' + T(vec('v')) + ' 上的正射影長。',
              a: T(Fr.tex(F(Math.abs(projl.n), projl.d))),
              h: '先把已知長度平方展開解出 $\\vec u\\cdot\\vec v$；正射影長 $=\\dfrac{|\\vec u\\cdot\\vec v|}{|\\vec v|}$（「長度」只除一次）。',
              p: { lu: lu, lv: lv, a: a, b: b, L2: fr2(L2v), ans: fr2(F(Math.abs(projl.n), projl.d)) } };
@@ -409,7 +416,7 @@
     var g = gcd(A * x0, B * y0), p = A * x0 / g, q = B * y0 / g, M = p * x0 + q * y0;
     return { q: '實數 ' + T('x,y') + ' 滿足 ' + T((A === 1 ? '' : A) + 'x^{2}+' + (B === 1 ? '' : B) + 'y^{2}=' + C) + '。求 ' + T(term(p, 'x', true) + term(q, 'y', false)) + ' 的最大值，以及達到最大值時的 ' + T('(x,y)') + '。',
              a: '最大值 ' + T(String(M)) + '，' + T('(x,y)=' + pt(x0, y0)),
-             h: '柯西：$(px+qy)^2\\le\\left(\\dfrac{p^2}{' + A + '}+\\dfrac{q^2}{' + B + '}\\right)(' + A + 'x^2+' + B + 'y^2)$，等號在 $(' + A + 'x,' + B + 'y)\\parallel(p,q)$。',
+             h: '柯西：$(px+qy)^2\\le\\left(' + (A === 1 ? 'p^2' : '\\dfrac{p^2}{' + A + '}') + '+' + (B === 1 ? 'q^2' : '\\dfrac{q^2}{' + B + '}') + '\\right)(' + (A === 1 ? '' : A) + 'x^2+' + (B === 1 ? '' : B) + 'y^2)$，等號在 $(' + (A === 1 ? '' : A) + 'x,' + (B === 1 ? '' : B) + 'y)\\parallel(p,q)$。',
              p: { A: A, B: B, C: C, p: p, q: q, ans: { M: M, x: x0, y: y0 } } };
   };
 
@@ -431,7 +438,7 @@
   L2.circleDot = function (r) {
     var h = r.int(-4, 4), k = r.int(-4, 4), R = r.int(1, 4), q = r.pick([[3, 4], [4, -3], [-3, 4], [5, 12], [-5, 12], [6, 8], [1, 0], [0, -1], [8, -6]]);
     var M = q[0] * h + q[1] * k + R * Math.round(Math.sqrt(n2(q)));
-    return { q: '設 ' + T('P(a,b)') + ' 為圓 ' + T('(x' + (h ? (h > 0 ? '-' + h : '+' + (-h)) : '') + ')^{2}+(y' + (k ? (k > 0 ? '-' + k : '+' + (-k)) : '') + ')^{2}=' + R * R) + ' 上的點，' + T('O') + ' 為原點、' + T('Q' + vt(q)) + '，求 ' + T(ov('OP') + '\\cdot' + ov('OQ')) + ' 的最大值。',
+    return { q: '設 ' + T('P(a,b)') + ' 為圓 ' + T((h ? '(x' + (h > 0 ? '-' + h : '+' + (-h)) + ')^{2}' : 'x^{2}') + '+' + (k ? '(y' + (k > 0 ? '-' + k : '+' + (-k)) + ')^{2}' : 'y^{2}') + '=' + R * R) + ' 上的點，' + T('O') + ' 為原點、' + T('Q' + vt(q)) + '，求 ' + T(ov('OP') + '\\cdot' + ov('OQ')) + ' 的最大值。',
              a: T(String(M)),
              h: '$\\overrightarrow{OP}\\cdot\\overrightarrow{OQ}=\\overrightarrow{OM}\\cdot\\overrightarrow{OQ}+\\overrightarrow{MP}\\cdot\\overrightarrow{OQ}$（$M$ 為圓心），後者最大 $=R\\,|\\overrightarrow{OQ}|$（$\\overrightarrow{MP}$ 與 $\\overrightarrow{OQ}$ 同向時）。',
              p: { h: h, k: k, R: R, q: q, ans: M } };
@@ -487,7 +494,7 @@
     var w = add(a, [Fr.toNum(tminF) * b[0], Fr.toNum(tminF) * b[1]]);
     var min2 = Fr.sub(F(n2(a)), Fr.div(F(dot(a, b) * dot(a, b)), F(n2(b))));
     return { q: '設 ' + T(vec('a') + '=' + vt(a)) + '、' + T(vec('b') + '=' + vt(b)) + '、' + T(vec('c') + '=' + vt(c)) + '。求 (1) ' + T('(' + vec('a') + '+t' + vec('b') + ')\\parallel' + vec('c')) + ' 的 ' + T('t') + (t2F ? '　(2) ' + T('(' + vec('a') + '+t' + vec('b') + ')\\perp' + vec('c')) + ' 的 ' + T('t') : '') + '　(' + (t2F ? 3 : 2) + ') ' + T('|' + vec('a') + '+t' + vec('b') + '|') + ' 最小時的 ' + T('t') + ' 與最小值。',
-             a: '(1) ' + T('t=' + t1) + (t2F ? '　(2) ' + T('t=' + Fr.tex(t2F)) : '') + '　(' + (t2F ? 3 : 2) + ') ' + T('t=' + Fr.tex(tminF)) + '，最小值 ' + T(min2.d === 1 ? sqrtTex(min2.n) : '\\sqrt{' + Fr.tex(min2) + '}'),
+             a: '(1) ' + T('t=' + t1) + (t2F ? '　(2) ' + T('t=' + Fr.tex(t2F)) : '') + '　(' + (t2F ? 3 : 2) + ') ' + T('t=' + Fr.tex(tminF)) + '，最小值 ' + T(rootTexF(min2)),
              h: '平行：交叉相乘相等；垂直：內積為 $0$；最短：對 $t$ 配方，最小值也等於 $\\vec a$ 到直線（方向 $\\vec b$）的距離。',
              p: { a: a, b: b, c: c, ans: { t1: t1, t2: t2F ? fr2(t2F) : null, tmin: fr2(tminF), min2: fr2(min2) } } };
   };
@@ -518,7 +525,19 @@
     var Q = Fr.add(Fr.add(Fr.mul(xq, xq), Fr.mul(F(3), Fr.mul(xr, xr))), Fr.add(Fr.mul(yq, yq), Fr.mul(F(3), Fr.mul(yr, yr))));
     var Rt = Fr.mul(F(2), Fr.add(Fr.mul(xq, xr), Fr.mul(yq, yr)));
     var len2Tex = Fr.tex(Q) + (Rt.n === 0 ? '' : (Rt.n > 0 ? '+' : '-') + (Fr.eq(F(Math.abs(Rt.n), Rt.d), F(1)) ? '' : Fr.tex(F(Math.abs(Rt.n), Rt.d))) + '\\sqrt3');
-    var ansTex = Rt.n === 0 ? (Q.d === 1 ? sqrtTex(Q.n) : '\\sqrt{' + Fr.tex(Q) + '}') : '\\sqrt{' + len2Tex + '}';
+    var ansTex = Rt.n === 0 ? rootTexF(Q) : '\\sqrt{' + len2Tex + '}';
+    if (Rt.n !== 0 && Q.d === 1 && Rt.d === 1) {   /* Q+R√3=(p+q√3)² ⟺ p²、3q² 是 z²−Qz+3R²/4=0 的兩根 */
+      var disc = Q.n * Q.n - 3 * Rt.n * Rt.n, sd = Math.round(Math.sqrt(Math.max(disc, 0)));
+      if (disc >= 0 && sd * sd === disc && (Q.n + sd) % 2 === 0) {
+        [(Q.n + sd) / 2, (Q.n - sd) / 2].forEach(function (p2) {
+          var pp = Math.round(Math.sqrt(p2)), q2 = (Q.n - p2) / 3, qq = Math.round(Math.sqrt(Math.max(q2, 0)));
+          if (p2 > 0 && pp * pp === p2 && q2 > 0 && qq * qq === q2 && 2 * pp * qq === Math.abs(Rt.n)) {
+            var rt = (qq === 1 ? '' : qq) + '\\sqrt3';
+            ansTex = Rt.n > 0 ? pp + '+' + rt : (p2 > 3 * q2 ? pp + '-' + rt : rt + '-' + pp);
+          }
+        });
+      }
+    }
     return { q: '小綠從 ' + T('O') + ' 出發直行 ' + T(String(d1)) + ' 公尺到 ' + T('A') + '，左轉 ' + T(turn + '^\\circ') + ' 直行 ' + T(String(d2)) + ' 公尺到 ' + T('B') + '，再左轉 ' + T(turn2 + '^\\circ') + ' 直行 ' + T(String(d3)) + ' 公尺到 ' + T('C') + '。求 ' + T('\\overline{OC}') + '。',
              a: T(ansTex) + ' 公尺',
              h: '$\\overrightarrow{OC}=\\overrightarrow{OA}+\\overrightarrow{AB}+\\overrightarrow{BC}$；設出發方向為 $x$ 軸正向，三段的方向角依序是 $0^\\circ$、$' + ang1 + '^\\circ$、$' + ang2 + '^\\circ$，各自寫成 $(d\\cos\\theta,d\\sin\\theta)$ 相加。',

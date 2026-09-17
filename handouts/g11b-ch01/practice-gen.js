@@ -110,12 +110,12 @@
 
   /* 2-2 對稱點與投影點 */
   L1.symProj = function (r) {
-    var P = rv(r, -9, 9), tgts = ['xy 平面', 'yz 平面', 'zx 平面', 'x 軸', 'y 軸', 'z 軸', '原點'];
+    var P = rv(r, -9, 9), tgts = ['$xy$ 平面', '$yz$ 平面', '$zx$ 平面', '$x$ 軸', '$y$ 軸', '$z$ 軸', '原點'];
     var i = r.int(0, 6), j = r.int(0, 5);
     function sym(P, k) { var Q = P.slice(); if (k === 0) Q[2] = -Q[2]; else if (k === 1) Q[0] = -Q[0]; else if (k === 2) Q[1] = -Q[1]; else if (k === 3) { Q[1] = -Q[1]; Q[2] = -Q[2]; } else if (k === 4) { Q[0] = -Q[0]; Q[2] = -Q[2]; } else if (k === 5) { Q[0] = -Q[0]; Q[1] = -Q[1]; } else Q = sc(-1, Q); return Q; }
     function proj(P, k) { var Q = P.slice(); if (k === 0) Q[2] = 0; else if (k === 1) Q[0] = 0; else if (k === 2) Q[1] = 0; else if (k === 3) { Q[1] = 0; Q[2] = 0; } else if (k === 4) { Q[0] = 0; Q[2] = 0; } else { Q[0] = 0; Q[1] = 0; } return Q; }
     var S = sym(P, i), Q = proj(P, j);
-    return { q: '設 ' + T('P' + vt(P)) + '。(1) 求 ' + T('P') + ' 對 ' + tgts[i] + ' 的對稱點。(2) 求 ' + T('P') + ' 在 ' + tgts[j] + ' 上的投影點。(3) 求 (1) 的對稱點與 ' + T('P') + ' 的距離。',
+    return { q: '設 ' + T('P' + vt(P)) + '。(1) 求 ' + T('P') + ' 對' + (i === 6 ? '' : ' ') + tgts[i] + '的對稱點。(2) 求 ' + T('P') + ' 在 ' + tgts[j] + '上的投影點。(3) 求 (1) 的對稱點與 ' + T('P') + ' 的距離。',
              a: '(1) ' + T(vt(S)) + '　(2) ' + T(vt(Q)) + '　(3) ' + T(sqrtTex(n2(sub(S, P)))),
              h: '對平面對稱：只有「缺席」的那個坐標變號；對軸對稱：軸名以外的兩個坐標變號；對原點：全部變號。投影：把不在上面的坐標歸零。',
              p: { P: P, i: i, j: j, ans: { S: S, Q: Q, d2: n2(sub(S, P)) } } };
@@ -125,11 +125,12 @@
   L1.midDiv = function (r) {
     var A = rv(r, -8, 8), B; do { B = rv(r, -8, 8); } while (isZero(sub(A, B)));
     var m = r.int(1, 4), n = r.int(1, 4); if (m === n) n += 1;
+    var g0 = gcd(m, n); m /= g0; n /= g0;                          /* 2:4 → 1:2 */
     var P = [F(n * A[0] + m * B[0], m + n), F(n * A[1] + m * B[1], m + n), F(n * A[2] + m * B[2], m + n)];
     var M = [F(A[0] + B[0], 2), F(A[1] + B[1], 2), F(A[2] + B[2], 2)];
     return { q: '設 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '。(1) 求 ' + T('\\overline{AB}') + ' 與中點 ' + T('M') + '。(2) 求 ' + T('\\overline{AB}') + ' 上滿足 ' + T('\\overline{AP}:\\overline{PB}=' + m + ':' + n) + ' 的點 ' + T('P') + '。',
              a: '(1) ' + T('\\overline{AB}=' + sqrtTex(n2(sub(B, A)))) + '，' + T('M' + vtF(M)) + '　(2) ' + T('P' + vtF(P)),
-             h: '內分點「交叉配」：$P=\\dfrac{' + n + 'A+' + m + 'B}{' + (m + n) + '}$——離 $A$ 近的權重給 $A$。',
+             h: '內分點「交叉配」：$P=\\dfrac{' + term(n, 'A', true) + term(m, 'B', false) + '}{' + (m + n) + '}$——離 $A$ 近的權重給 $A$。',
              p: { A: A, B: B, m: m, n: n, ans: { d2: n2(sub(B, A)), M: M.map(fr2), P: P.map(fr2) } } };
   };
 
@@ -172,7 +173,8 @@
   L1.minSum = function (r) {
     var a = r.int(-7, 7), b = r.int(-7, 7), c = r.int(-7, 7), d = r.int(-7, 7), p = r.int(1, 8), q = r.int(1, 8);
     var A = [a, b, p], B = [c, d, -q], D2 = n2(sub(A, B));
-    return { q: '設 ' + T('x,y') + ' 為實數，求 ' + T('\\sqrt{(x' + term(-a, '', false) + ')^2+(y' + term(-b, '', false) + ')^2+' + (p * p) + '}+\\sqrt{(x' + term(-c, '', false) + ')^2+(y' + term(-d, '', false) + ')^2+' + (q * q) + '}') + ' 的最小值。',
+    function sq(v, k) { return k === 0 ? v + '^2' : '(' + v + term(-k, '', false) + ')^2'; }   /* k=0 時寫 x^2，不寫 (x)^2 */
+    return { q: '設 ' + T('x,y') + ' 為實數，求 ' + T('\\sqrt{' + sq('x', a) + '+' + sq('y', b) + '+' + (p * p) + '}+\\sqrt{' + sq('x', c) + '+' + sq('y', d) + '+' + (q * q) + '}') + ' 的最小值。',
              a: T(sqrtTex(D2)),
              h: '把 $' + (p * p) + '$ 看成 $' + p + '^2$、$' + (q * q) + '$ 看成 $(-' + q + ')^2$：式子是 $xy$ 平面上的動點到 $A' + vt(A) + '$ 與 $B' + vt(B) + '$ 的距離和；兩點在平面異側，最小值就是 $\\overline{AB}$。',
              p: { A: A, B: B, ans: D2 } };
@@ -182,7 +184,8 @@
   L1.vecOps3 = function (r) {
     var a = rv(r, -6, 6), b = rv(r, -6, 6), k1 = r.pick([2, 3, -2]), k2 = r.pick([1, -1, 2, -3]);
     var c = add(sc(k1, a), sc(k2, b)), na = n2(a);
-    var s = simpSqrt(na), unit = s.r === 1 ? vtF([F(a[0], s.c), F(a[1], s.c), F(a[2], s.c)]) : '\\dfrac{1}{' + sqrtTex(na) + '}' + vt(a);
+    var s = simpSqrt(na), gu = gcd(gcd(gcd(a[0], a[1]), a[2]), s.c);   /* (1/(2√14))(-2,-6,4) → (1/√14)(-1,-3,2) */
+    var unit = s.r === 1 ? vtF([F(a[0], s.c), F(a[1], s.c), F(a[2], s.c)]) : '\\dfrac{1}{' + (s.c / gu === 1 ? '' : s.c / gu) + '\\sqrt{' + s.r + '}}' + vt(a.map(function (v) { return v / gu; }));
     return { q: '設 ' + T(vec('a') + '=' + vt(a)) + '、' + T(vec('b') + '=' + vt(b)) + '。(1) 求 ' + T(comb(k1, vec('a'), true) + comb(k2, vec('b'), false)) + '。(2) 求 ' + T('|' + vec('a') + '|') + ' 與 ' + T('|' + vec('a') + '+' + vec('b') + '|') + '。(3) 求與 ' + T(vec('a')) + ' 同向的單位向量。',
              a: '(1) ' + T(vt(c)) + '　(2) ' + T(sqrtTex(na)) + '、' + T(sqrtTex(n2(add(a, b)))) + '　(3) ' + T(unit),
              h: '分量各自算；單位向量 $=\\dfrac{\\vec a}{|\\vec a|}$。',
@@ -216,10 +219,12 @@
   L1.divCoef = function (r) {
     var A = rv(r, -6, 6), B; do { B = rv(r, -6, 6); } while (isZero(sub(A, B)));
     var m = r.int(1, 4), n = r.int(1, 4); if (m === n) n += 1;
+    var g0 = gcd(m, n); m /= g0; n /= g0;                          /* 答案的比要最簡 */
+    function cf(v, first) { var one = v.d === 1 && Math.abs(v.n) === 1; return (v.n < 0 ? (one ? '-' : '') : (first ? '' : '+')) + (one ? '' : Fr.tex(v) + '\\,'); }   /* 係數 ±1 不印 1 */
     var ext = r() < 0.4;                                          /* 外分：AP:PB = m:n，P 在直線上但不在線段上 */
     var x = ext ? F(-n, m - n) : F(n, m + n), y = ext ? F(m, m - n) : F(m, m + n);   /* OP = x OA + y OB */
     var P = [Fr.add(Fr.mul(x, F(A[0])), Fr.mul(y, F(B[0]))), Fr.add(Fr.mul(x, F(A[1])), Fr.mul(y, F(B[1]))), Fr.add(Fr.mul(x, F(A[2])), Fr.mul(y, F(B[2])))];
-    return { q: '設 ' + T('O') + ' 為原點，' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '，且 ' + T(ov('OP') + '=' + Fr.tex(x) + '\\,' + ov('OA') + (y.n < 0 ? '' : '+') + Fr.tex(y) + '\\,' + ov('OB')) + '。(1) 說明 ' + T('P') + ' 在直線 ' + T('AB') + ' 上，並求 ' + T('P') + ' 的坐標。(2) ' + T('P') + ' 在線段 ' + T('\\overline{AB}') + ' 上嗎？求 ' + T('\\overline{AP}:\\overline{PB}') + '。',
+    return { q: '設 ' + T('O') + ' 為原點，' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '，且 ' + T(ov('OP') + '=' + cf(x, true) + ov('OA') + cf(y, false) + ov('OB')) + '。(1) 說明 ' + T('P') + ' 在直線 ' + T('AB') + ' 上，並求 ' + T('P') + ' 的坐標。(2) ' + T('P') + ' 在線段 ' + T('\\overline{AB}') + ' 上嗎？求 ' + T('\\overline{AP}:\\overline{PB}') + '。',
              a: '(1) 係數和 ' + T(Fr.tex(x, true) + (y.n < 0 ? '' : '+') + Fr.tex(y, true) + '=1') + '，' + T('P' + vtF(P)) + '　(2) ' + (ext ? '不在線段上（外分）' : '在線段上（內分）') + '，' + T('\\overline{AP}:\\overline{PB}=' + m + ':' + n),
              h: '係數和 $=1$ ⟹ 在直線上；兩係數皆正 ⟹ 在線段內；$\\overline{AP}:\\overline{PB}=|y|:|x|$（$B$ 的係數對應 $\\overline{AP}$）。',
              p: { A: A, B: B, x: fr2(x), y: fr2(y), ans: { P: P.map(fr2), m: m, n: n, ext: ext } } };
@@ -238,9 +243,11 @@
   /* 3-6 四點共平面反求坐標 */
   L1.fourCoplanar = function (r) {
     var A = rv(r, -4, 4), B = rv(r, -4, 4), C = rv(r, -4, 4), s = r.nz(-2, 2), t = r.nz(-2, 2);
+    if (isZero(sub(B, A))) B = add(B, [1, 1, 1]);
     var AB = sub(B, A), AC = sub(C, A);
     if (parallel(AB, AC)) { C = add(C, [1, 2, 0]); AC = sub(C, A); if (parallel(AB, AC)) C = add(C, [0, 0, 3]); AC = sub(C, A); }
     var D = add(A, add(sc(s, AB), sc(t, AC))), hide = r.int(0, 2);
+    var nABC = cross(AB, AC); while (nABC[hide] === 0) hide = (hide + 1) % 3;   /* 法向量在被藏的方向分量為 0 ⟹ 平面平行該軸、k 任意；換一個坐標藏 */
     return { q: '設 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '、' + T('C' + vt(C)) + '、' + T('D(' + [0, 1, 2].map(function (i) { return i === hide ? 'k' : String(D[i]); }).join(',') + ')') + ' 四點共平面，求 ' + T('k') + '，並把 ' + T(ov('AD')) + ' 寫成 ' + T('s\\,' + ov('AB') + '+t\\,' + ov('AC')) + '。',
              a: T('k=' + D[hide]) + '，' + T('(s,t)=(' + s + ',' + t + ')'),
              h: '四點共平面 ⟺ $\\overrightarrow{AD}=s\\overrightarrow{AB}+t\\overrightarrow{AC}$：用不含 $k$ 的兩個分量解 $s,t$，再代回求 $k$（或用 $\\det=0$）。',
@@ -319,7 +326,7 @@
     var mn = F(d * d, s), k = F(d, s), P = [Fr.mul(k, F(a)), Fr.mul(k, F(b)), Fr.mul(k, F(c))];
     return { q: '設 ' + T('x,y,z') + ' 為實數且 ' + T(term(a, 'x', true) + term(b, 'y', false) + term(c, 'z', false) + '=' + d) + '，求 ' + T('x^2+y^2+z^2') + ' 的最小值，並求此時的 ' + T('(x,y,z)') + '。',
              a: '最小值 ' + T(Fr.tex(mn)) + '，此時 ' + T(vtF(P)),
-             h: '柯西：$(x^2+y^2+z^2)(' + a + '^2+' + b + '^2+' + c + '^2)\\ge(' + term(a, 'x', true) + term(b, 'y', false) + term(c, 'z', false) + ')^2$，等號在 $(x,y,z)\\parallel' + vt([a, b, c]) + '$。',
+             h: '柯西：$(x^2+y^2+z^2)(' + [a, b, c].map(function (v) { return v < 0 ? '(' + v + ')^2' : v + '^2'; }).join('+') + ')\\ge(' + term(a, 'x', true) + term(b, 'y', false) + term(c, 'z', false) + ')^2$，等號在 $(x,y,z)\\parallel' + vt([a, b, c]) + '$。',
              p: { a: a, b: b, c: c, d: d, ans: { mn: fr2(mn), P: P.map(fr2) } } };
   };
 
@@ -391,7 +398,7 @@
     var a = r.int(1, 6), b = r.int(1, 6), c = r.int(1, 6), N = a * a * b * b + b * b * c * c + c * c * a * a;
     /* d = abc/√N */
     return { q: '設 ' + T('O') + ' 為原點、' + T('A(' + a + ',0,0)') + '、' + T('B(0,' + b + ',0)') + '、' + T('C(0,0,' + c + ')') + '。(1) 求四面體 ' + T('OABC') + ' 的體積。(2) 求 ' + T('\\triangle ABC') + ' 的面積。(3) 求 ' + T('O') + ' 到平面 ' + T('ABC') + ' 的距離。',
-             a: '(1) ' + T(Fr.tex(F(a * b * c, 6))) + '　(2) ' + T('\\dfrac{' + sqrtTex(N) + '}{2}') + '　(3) ' + T(sqrtFracTex(a * a * b * b * c * c, N)),
+             a: '(1) ' + T(Fr.tex(F(a * b * c, 6))) + '　(2) ' + T(radTex(1, N, 2)) + '　(3) ' + T(sqrtFracTex(a * a * b * b * c * c, N)),
              h: '牆角型：$V=\\dfrac{abc}6$；$\\overrightarrow{AB}\\times\\overrightarrow{AC}=(bc,ca,ab)$ 給面積；$d=\\dfrac{3V}{S}$——不需要平面方程式。',
              p: { a: a, b: b, c: c, ans: { V: [a * b * c, 6], N: N, d2: [a * a * b * b * c * c, N] } } };
   };
@@ -402,6 +409,7 @@
   /* 2-1 長方體兩條體對角線的夾角 */
   L2.lineFaceAngle = function (r) {
     var a = r.int(2, 8), b = r.int(2, 8), c = r.int(2, 8), which = r.int(0, 1);
+    if ((which === 0 ? b * b - a * a : a * a - b * b) + c * c === 0) c += 1;   /* 兩條體對角線恰好垂直 ⟹「取銳角」不成立 */
     var AG = [a, b, c], BH = [-a, b, c], DF = [a, -b, c];
     var other = which === 0 ? BH : DF, name = which === 0 ? 'BH' : 'DF';
     var cosv = F(dot(AG, other), n2(AG));
@@ -413,12 +421,13 @@
 
   /* 2-2 係數就是坐標：到稜的距離 */
   L2.cubeCoefDist = function (r) {
-    var x = F(r.int(1, 5), r.int(2, 6)), y = F(r.int(1, 5), r.int(2, 6)), z = F(r.int(1, 5), r.int(2, 6));
+    function inner() { var nn = r.int(1, 5), dd = r.int(2, 6); if (nn >= dd) dd = nn + 1; return F(nn, dd); }   /* 「P 在內部」⟹ 三個係數都要在 0 與 1 之間 */
+    var x = inner(), y = inner(), z = inner();
     var which = r.int(0, 2), names = ['AB', 'AD', 'AE'], coords = [x, y, z];
     var rest = [0, 1, 2].filter(function (i) { return i !== which; });
     var d2 = Fr.add(Fr.mul(coords[rest[0]], coords[rest[0]]), Fr.mul(coords[rest[1]], coords[rest[1]]));
     var toPlane = coords[[2, 0, 1][which]];   /* 到平面 ABCD 的距離 = z；到平面 ABFE = y；到平面 ADHE = x */
-    var pl = ['ABCD', 'ABFE', 'ADHE'][which === 2 ? 0 : which === 1 ? 2 : 1];
+    var pl = ['ABCD', 'ADHE', 'ABFE'][which];   /* 與 toPlane 同一個索引：z↔ABCD、x↔ADHE、y↔ABFE */
     return { q: '正立方體 ' + T('ABCD') + '-' + T('EFGH') + ' 的邊長為 ' + T('1') + '（' + T('ABCD') + ' 為底面、' + T('\\overline{AE}') + ' 鉛直），' + T('P') + ' 在其內部且 ' + T(ov('AP') + '=' + Fr.tex(x) + ov('AB') + '+' + Fr.tex(y) + ov('AD') + '+' + Fr.tex(z) + ov('AE')) + '。(1) 求 ' + T('P') + ' 到直線 ' + T(names[which]) + ' 的距離。(2) 求 ' + T('P') + ' 到平面 ' + T(pl) + ' 的距離。',
              a: '(1) ' + T(sqrtFracTex(d2.n, d2.d)) + '　(2) ' + T(Fr.tex(toPlane)),
              h: '以 $A$ 為原點、三稜為三軸，三個係數就是 $P$ 的坐標 $\\left(' + Fr.tex(x, true) + ',' + Fr.tex(y, true) + ',' + Fr.tex(z, true) + '\\right)$；到直線 $' + names[which] + '$（即某個坐標軸）的距離「把那個坐標丟掉」，到坐標平面的距離就是缺的那個坐標。',
@@ -458,7 +467,7 @@
     var D = [F(al * A[0] + be * B[0] + ga * C[0], s), F(al * A[1] + be * B[1] + ga * C[1], s), F(al * A[2] + be * B[2] + ga * C[2], s)];
     return { q: '設 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '、' + T('C' + vt(C)) + '。若 ' + T('D') + ' 滿足 ' + T(comb(al, ov('DA'), true) + comb(be, ov('DB'), false) + comb(ga, ov('DC'), false) + '=\\vec 0') + '，求 ' + T('D') + ' 的坐標。',
              a: T('D' + vtF(D)),
-             h: '把每個 $\\overrightarrow{DX}$ 寫成 $X-D$：$' + al + 'A' + term(be, 'B', false) + term(ga, 'C', false) + '=(' + al + term(be, '', false) + term(ga, '', false) + ')D$，係數和 $' + s + '\\ne0$ 才能除過去。',
+             h: '把每個 $\\overrightarrow{DX}$ 寫成 $X-D$：$' + term(al, 'A', true) + term(be, 'B', false) + term(ga, 'C', false) + '=(' + al + term(be, '', false) + term(ga, '', false) + ')D$，係數和 $' + s + '\\ne0$ 才能除過去。',
              p: { A: A, B: B, C: C, al: al, be: be, ga: ga, ans: D.map(fr2) } };
   };
 
@@ -592,6 +601,7 @@
   /* 2-16 三角錐的體積比 */
   L2.volumeRatio = function (r) {
     var ratios = [[r.int(1, 4), r.int(1, 4)], [r.int(1, 4), r.int(1, 4)], [r.int(1, 4), r.int(1, 4)]];
+    ratios = ratios.map(function (x) { var g = gcd(x[0], x[1]); return [x[0] / g, x[1] / g]; });   /* 2:2、4:4、2:4 → 最簡比 */
     var f = ratios.map(function (x) { return F(x[0], x[0] + x[1]); });
     var v = Fr.mul(Fr.mul(f[0], f[1]), f[2]);
     return { q: '三角錐 ' + T('O') + '-' + T('ABC') + ' 中，在 ' + T('\\overline{OA}') + '、' + T('\\overline{OB}') + '、' + T('\\overline{OC}') + ' 上各取 ' + T('P') + '、' + T('Q') + '、' + T('R') + '，使 ' + T('\\overline{OP}:\\overline{PA}=' + ratios[0][0] + ':' + ratios[0][1]) + '、' + T('\\overline{OQ}:\\overline{QB}=' + ratios[1][0] + ':' + ratios[1][1]) + '、' + T('\\overline{OR}:\\overline{RC}=' + ratios[2][0] + ':' + ratios[2][1]) + '。求 ' + T('V(O\\text{-}PQR):V(O\\text{-}ABC)') + '。',

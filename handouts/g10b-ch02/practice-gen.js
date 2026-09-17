@@ -152,7 +152,7 @@
     var m = r.int(3, 5), k = r.int(2, Math.min(3, m + 1)), ans = fact(m) * P(m + 1, k), together = fact(m + 1) * fact(k);
     return { q: T(String(m)) + ' 位男生與 ' + T(String(k)) + ' 位女生排成一列。(1) 若女生互不相鄰，有幾種排法？(2) 若女生必須全部相鄰，有幾種排法？',
              a: '(1) ' + T(m + '!\\times' + pT(m + 1, k) + '=' + ans) + ' 種　(2) ' + T((m + 1) + '!\\times' + k + '!=' + together) + ' 種',
-             h: '(1) 先排男生（' + m + '!），造出 ' + (m + 1) + ' 個空隙，再把女生排進去（' + pT(m + 1, k) + '）。(2) 捆綁法。',
+             h: '(1) 先排男生（' + T(m + '!') + '），造出 ' + (m + 1) + ' 個空隙，再把女生排進去（' + T(pT(m + 1, k)) + '）。(2) 捆綁法。',
              p: { m: m, k: k, ans: { apart: ans, together: together } } };
   };
   /* 2-4 固定順序：除法 */
@@ -170,7 +170,7 @@
     var tot = fact(n) / (fact(a) * fact(b) * fact(c)), others = fact(a + c) / (fact(a) * fact(c)), apart = others * C(a + c + 1, 2);
     return { q: '有 ' + T(String(a)) + ' 顆相同的紅球、' + T('2') + ' 顆相同的白球、' + T(String(c)) + ' 顆' + (c === 1 ? '' : '相同的') + '藍球，排成一列。(1) 共有幾種排法？(2) 若要求兩顆白球不相鄰，有幾種排法？',
              a: '(1) ' + T('\\dfrac{' + n + '!}{' + a + '!\\,2!\\,' + c + '!}=' + tot) + ' 種　(2) ' + T(String(apart)) + ' 種',
-             h: '(2) 先排紅、藍球（' + others + ' 種），造出 ' + (a + c + 1) + ' 個空隙，白球相同 ⟹ 選 2 個空隙 ' + cT(a + c + 1, 2) + '。',
+             h: '(2) 先排紅、藍球（' + others + ' 種），造出 ' + (a + c + 1) + ' 個空隙，白球相同 ⟹ 選 2 個空隙 ' + T(cT(a + c + 1, 2)) + '。',
              p: { a: a, b: b, c: c, ans: { tot: tot, apart: apart } } };
   };
   /* 2-6 格子路徑 */
@@ -235,7 +235,7 @@
     var n = r.int(8, 12), m = r.int(3, 5), lines = C(n, 2) - C(m, 2) + 1, tris = C(n, 3) - C(m, 3);
     return { q: '平面上有 ' + T(String(n)) + ' 個點，其中恰有 ' + T(String(m)) + ' 點共線，其餘任三點不共線。(1) 可決定幾條相異直線？(2) 可決定幾個三角形？',
              a: '(1) ' + T(cT(n, 2) + '-' + cT(m, 2) + '+1=' + lines) + ' 條　(2) ' + T(cT(n, 3) + '-' + cT(m, 3) + '=' + tris) + ' 個',
-             h: '共線的 ' + m + ' 點兩兩連線只算一條（先扣 ' + cT(m, 2) + ' 再補 1）；共線三點圍不出三角形，直接扣。',
+             h: '共線的 ' + m + ' 點兩兩連線只算一條（先扣 ' + T(cT(m, 2)) + ' 再補 1）；共線三點圍不出三角形，直接扣。',
              p: { n: n, m: m, ans: { lines: lines, tris: tris } } };
   };
   /* 3-6 矩形與正方形計數 */
@@ -252,7 +252,7 @@
     var n = r.int(5, 9), a = r.pick([1, 1, 2, 3]), b = r.pick([1, -1, 2, -2, 3]), kk = r.int(1, n - 1), m = n - 2 * kk;
     var coef = C(n, kk) * ipow(a, n - kk) * ipow(b, kk);
     var bTex = (b < 0 ? '-' : '') + '\\dfrac{' + Math.abs(b) + '}{x}', aTex = (a === 1 ? '' : a) + 'x';
-    var mTex = m === 0 ? '常數項' : T('x^{' + m + '}') + ' 的係數';
+    var mTex = m === 0 ? '常數項' : ' ' + T(m === 1 ? 'x' : 'x^{' + m + '}') + ' 的係數';
     return { q: '求 ' + T('\\left(' + aTex + (b < 0 ? '' : '+') + bTex + '\\right)^{' + n + '}') + ' 展開式中的' + mTex + '。',
              a: T(String(coef)),
              h: '一般項 $T_{k+1}=' + cT(n, 'k') + '(' + aTex + ')^{' + n + '-k}\\left(' + bTex + '\\right)^k$，$x$ 的次數是 $' + n + '-2k$，令它等於 ' + m + ' 得 $k=' + kk + '$。',
@@ -283,6 +283,7 @@
   /* 4-1 兩顆骰子 */
   L1.dice2 = function (r) {
     var kind = r.int(0, 3), s = r.int(4, 10), cnt = 0, q, h;
+    if (kind === 3 && s === 10) s = 9;                                  /* 差 6 不可能（機率 0 的退化題）→ 差 5 */
     for (var i = 1; i <= 6; i++) for (var j = 1; j <= 6; j++) {
       if (kind === 0 && i + j === s) cnt++;
       if (kind === 1 && i + j >= s) cnt++;
@@ -290,7 +291,7 @@
       if (kind === 3 && Math.abs(i - j) === s - 4) cnt++;
     }
     if (kind === 0) { q = '點數和為 ' + T(String(s)); h = '列出和為 ' + s + ' 的有序對 $(a,b)$，共 ' + cnt + ' 個。'; }
-    else if (kind === 1) { q = '點數和至少為 ' + T(String(s)); h = '「至少 ' + s + '」把和 $=' + s + ',' + (s + 1) + ',\\dots,12$ 的個數加起來。'; }
+    else if (kind === 1) { q = '點數和至少為 ' + T(String(s)); h = '「至少 ' + s + '」把和 $=' + (s >= 10 ? '10,11,12' : s + ',' + (s + 1) + ',\\dots,12') + '$ 的個數加起來。'; }
     else if (kind === 2) { q = '點數積為偶數'; h = '用餘事件：積為奇數 ⟺ 兩顆都是奇數 ⟹ $3\\times3=9$。'; }
     else { q = '點數差的絕對值為 ' + T(String(s - 4)); h = '差為 $d$ 的有序對有 $2(6-d)$ 個（$d\\ge1$），差為 0 有 6 個。'; }
     return { q: '投擲兩顆公正骰子，求「' + q + '」的機率。', a: T(pr(cnt, 36)), h: '$n(S)=6\\times6=36$。' + h,
@@ -303,14 +304,14 @@
     var tot = ipow(2, n);
     return { q: '連續投擲一枚公正硬幣 ' + T(String(n)) + ' 次。(1) 恰有 ' + T(String(k)) + ' 次正面的機率？(2) 至少有 ' + T(String(k)) + ' 次正面的機率？',
              a: '(1) ' + T('\\dfrac{' + cT(n, k) + '}{2^{' + n + '}}=' + pr(ex, tot)) + '　(2) ' + T(pr(al, tot)),
-             h: '$n(S)=2^{' + n + '}$；恰 $k$ 次正面＝選哪 $k$ 次是正面 ' + cT(n, k) + '。(2) 把 $k,\\dots,' + n + '$ 次的情形加起來（或用餘事件）。',
+             h: '$n(S)=2^{' + n + '}$；恰 $k$ 次正面＝選哪 $k$ 次是正面 ' + T(cT(n, k)) + '。(2) 把 $k,\\dots,' + n + '$ 次的情形加起來（或用餘事件）。',
              p: { n: n, k: k, ans: { ex: fr2(F(ex, tot)), al: fr2(F(al, tot)) } } };
   };
   /* 4-3 事件的運算 */
   L1.eventOps = function (r) {
     var a = r.int(4, 8), b = r.int(3, 7), ab = r.int(Math.max(1, a + b - 10), Math.min(a, b) - 1);
     var un = a + b - ab, na = 10 - a, nn = 10 - un, aOnly = a - ab, one = a + b - 2 * ab;
-    var d = function (x) { return '0.' + x; };
+    var d = function (x) { return x === 10 ? '1' : (x === 0 ? '0' : '0.' + x); };   /* 10 → 1、0 → 0（原本會寫成 0.10、0.0） */
     return { q: '已知 ' + T('P(A)=' + d(a)) + '、' + T('P(B)=' + d(b)) + '、' + T('P(A\\cap B)=' + d(ab)) + '。求 (1) ' + T('P(A\\cup B)') + '　(2) ' + T("P(A')") + '　(3) ' + T("P(A'\\cap B')") + '　(4) ' + T("P(A\\cap B')") + '　(5)「' + T('A') + '、' + T('B') + ' 恰有一個發生」的機率。',
              a: '(1) ' + T(d(un)) + '　(2) ' + T(d(na)) + '　(3) ' + T(d(nn)) + '　(4) ' + T(d(aOnly)) + '　(5) ' + T(d(one)),
              h: '畫文氏圖四塊：只 $A$＝' + d(aOnly) + '、只 $B$＝' + d(b - ab) + '、都有＝' + d(ab) + '、都沒有＝' + d(nn) + '，合計 1。',
@@ -339,6 +340,7 @@
   /* 5-1 期望值的定義 */
   L1.expBasic = function (r) {
     var a = r.int(2, 6), b = r.int(2, 6), x = r.pick([50, 100, 150, 200]), y = r.pick([10, 20, 30, 50, 60]);
+    if (y === x) y = 20;                                                /* 兩種球獎金相同就沒得算了 */
     var E = F(a * x + b * y, a + b);
     return { q: '袋中有 ' + T(String(a)) + ' 顆紅球與 ' + T(String(b)) + ' 顆藍球，任取一球：取到紅球得 ' + T(String(x)) + ' 元、藍球得 ' + T(String(y)) + ' 元。求獎金的期望值。',
              a: T(x + '\\cdot\\dfrac{' + a + '}{' + (a + b) + '}+' + y + '\\cdot\\dfrac{' + b + '}{' + (a + b) + '}=' + Fr.tex(E)) + ' 元',
@@ -358,7 +360,7 @@
   L1.fairGame = function (r) {
     var kind = r.int(0, 1), w = r.pick([10, 15, 20, 25, 30]) * (kind === 0 ? 1 : 1), pw = kind === 0 ? F(1, 6) : F(5, 36);
     var lose = Fr.div(Fr.mul(F(w), pw), Fr.sub(F(1), pw));
-    var ev = kind === 0 ? '兩顆點數相同' : '點數和為 $8$';
+    var ev = kind === 0 ? '兩顆點數相同' : '點數和為 $8$ ';
     return { q: '同時投擲兩顆公正骰子。若' + ev + '可得 ' + T(String(w)) + ' 元，否則要賠 ' + T('x') + ' 元。若此遊戲公平，求 ' + T('x') + '。',
              a: T('x=' + Fr.tex(lose)) + ' 元',
              h: '公平 ⟺ 期望值為 $0$：$' + w + '\\cdot' + Fr.tex(pw, true) + '-x\\cdot' + Fr.tex(Fr.sub(F(1), pw), true) + '=0$。',
@@ -442,11 +444,11 @@
     if (kind === 0) {
       ans = C(n - a - b + 2, 2);
       q = '求方程式 ' + T('x+y+z=' + n) + ' 滿足 ' + T('x\\ge' + a) + '、' + T('y\\ge' + b) + '、' + T('z\\ge0') + ' 的整數解共有幾組？';
-      h = '換元 $x=x\'+' + a + '$、$y=y\'+' + b + '$ 變成 $x\'+y\'+z=' + (n - a - b) + '$ 的非負整數解 ⟹ ' + cT(n - a - b + 2, 2) + '。';
+      h = '換元 $x=x\'+' + a + '$、$y=y\'+' + b + '$ 變成 $x\'+y\'+z=' + (n - a - b) + '$ 的非負整數解 ⟹ ' + T(cT(n - a - b + 2, 2)) + '。';
     } else {
       ans = C(n + 3, 3);
       q = '求不等式 ' + T('x+y+z\\le' + n) + ' 的非負整數解共有幾組？';
-      h = '引入鬆弛變數 $w=' + n + '-x-y-z\\ge0$，變成 $x+y+z+w=' + n + '$ 的非負整數解 ⟹ ' + cT(n + 3, 3) + '。';
+      h = '引入鬆弛變數 $w=' + n + '-x-y-z\\ge0$，變成 $x+y+z+w=' + n + '$ 的非負整數解 ⟹ ' + T(cT(n + 3, 3)) + '。';
     }
     return { q: q, a: T(String(ans)) + ' 組', h: h, p: { kind: kind, n: n, a: a, b: b, ans: ans } };
   };
@@ -466,7 +468,7 @@
     var n = r.int(6, 9), a = r.pick([1, 1, 2]), b = r.pick([1, -1, 2, -2, 3, -3]), kk = r.int(1, n - 1), m = 2 * n - 3 * kk;
     var coef = C(n, kk) * ipow(a, n - kk) * ipow(b, kk);
     var aTex = (a === 1 ? '' : a) + 'x^2', bTex = (b < 0 ? '-' : '+') + '\\dfrac{' + Math.abs(b) + '}{x}';
-    var mTex = m === 0 ? '常數項' : T('x^{' + m + '}') + ' 的係數';
+    var mTex = m === 0 ? '常數項' : ' ' + T(m === 1 ? 'x' : 'x^{' + m + '}') + ' 的係數';
     return { q: '求 ' + T('\\left(' + aTex + bTex + '\\right)^{' + n + '}') + ' 展開式中的' + mTex + '。',
              a: T(String(coef)),
              h: '一般項 $' + cT(n, 'k') + '(' + aTex + ')^{' + n + '-k}\\left(' + bTex.replace(/^\+/, '') + '\\right)^k$，$x$ 的次數 $2(' + n + '-k)-k=' + (2 * n) + '-3k$，令其為 ' + m + ' 得 $k=' + kk + '$。',
@@ -476,7 +478,7 @@
   L2.combIdentityVal = function (r) {
     var n = r.int(5, 9), kind = r.int(0, 3), q, a, h;
     if (kind === 0) { a = ipow(3, n); q = cT(n, 0) + '+2' + cT(n, 1) + '+2^2' + cT(n, 2) + '+\\cdots+2^{' + n + '}' + cT(n, n); h = '$(1+x)^{' + n + '}$ 代 $x=2$。'; }
-    else if (kind === 1) { a = ipow(2, n - 1); q = cT(n, 1) + '+' + cT(n, 3) + '+' + cT(n, 5) + '+\\cdots'; h = '奇次項和＝偶次項和＝$2^{' + n + '-1}$（$f(1)-f(-1)=2^{' + n + '}$）。'; }
+    else if (kind === 1) { a = ipow(2, n - 1); var odd = []; for (var t = 1; t <= n; t += 2) odd.push(cT(n, t)); q = odd.join('+'); h = '奇次項和＝偶次項和＝$2^{' + n + '-1}$（$f(1)-f(-1)=2^{' + n + '}$）。'; }
     else if (kind === 2) { a = n * ipow(2, n - 1); q = cT(n, 1) + '+2' + cT(n, 2) + '+3' + cT(n, 3) + '+\\cdots+' + n + cT(n, n); h = '用 $k' + cT(n, 'k') + '=' + n + cT(n - 1, 'k-1') + '$ 化成 $' + n + '\\cdot2^{' + (n - 1) + '}$。'; }
     else { a = C(2 * n, n); q = '\\left(' + cT(n, 0) + '\\right)^2+\\left(' + cT(n, 1) + '\\right)^2+\\cdots+\\left(' + cT(n, n) + '\\right)^2'; h = '范德蒙：從 ' + n + ' 男 ' + n + ' 女中選 ' + n + ' 人，依「幾個男生」分類 ⟹ $' + cT(2 * n, n) + '$。'; }
     return { q: '求 ' + T(q) + ' 的值。', a: T(String(a)), h: h, p: { n: n, kind: kind, ans: a } };

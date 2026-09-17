@@ -177,7 +177,7 @@
     var b = r.pick([7, 8, 9, 11, 12, 13]), g = [r.nz(-3, 3), r.int(-5, 5), r.int(-5, 5), r.int(-5, 5)], rem = r.int(-20, 20);
     var c = polyAdd(polyMul(g, [1, -b]), [rem]);
     var terms = c.map(function (k, i) { var e = 4 - i; if (e === 0 || k === 0) return null; return (k < 0 ? '-' : (i ? '+' : '')) + Math.abs(k) + '\\times ' + b + (e === 1 ? '' : '^{' + e + '}'); }).filter(Boolean).join('');
-    return { q: '求 ' + T(terms + (c[4] < 0 ? '-' : '+') + Math.abs(c[4])) + ' 的值。',
+    return { q: '求 ' + T(terms + (c[4] === 0 ? '' : (c[4] < 0 ? '-' : '+') + Math.abs(c[4]))) + ' 的值。',
              a: T(String(rem)),
              h: '把 $' + b + '$ 看成 $x$，問的是 $f(' + b + ')$，用綜合除法除以 $x-' + b + '$，最後一格就是答案。',
              p: { b: b, c: c, ans: rem } };
@@ -221,8 +221,10 @@
     var lin = lead === 1 ? [1, -r.nz(-4, 4)] : [2, r.pick([-3, -1, 1, 3])];
     var c = polyMul(polyMul([1, -p], [1, -q]), lin);
     var facs = [[1, -p], [1, -q], lin];
+    var cnt = {}, ord = [];   /* 重複的因式合併成次方 */
+    facs.forEach(function (f) { var s = polyTex(f); if (!cnt[s]) { cnt[s] = 0; ord.push(s); } cnt[s]++; });
     return { q: '將 ' + T(polyTex(c)) + ' 在有理數係數範圍內完全因式分解。',
-             a: T(facs.map(function (f) { return '(' + polyTex(f) + ')'; }).join('')),
+             a: T(ord.map(function (s) { return '(' + s + ')' + (cnt[s] > 1 ? '^{' + cnt[s] + '}' : ''); }).join('')),
              h: '先用 $\\pm$（常數項的因數）$/$（首項係數的因數）試根，找到一個根就綜合除法降次。',
              p: { c: c, ans: facs } };
   };
@@ -256,9 +258,10 @@
   L1.axisCond = function (r) {
     var h = r.int(-4, 4), d = r.int(1, 4), p = h - d, q = h + d, c = r.int(-9, 9);
     var b = -2 * h, mn = c - h * h;
-    return { q: '設 ' + T('f(x)=x^{2}+bx' + (c < 0 ? '-' : '+') + Math.abs(c)) + '，且對任意實數 ' + T('t') + ' 都有 ' + T('f(' + p + '+t)=f(' + q + '-t)') + '。求 ' + T('b') + ' 與 ' + T('f(x)') + ' 的最小值。',
+    var cond = 'f(' + (p === 0 ? 't' : p + '+t') + ')=f(' + (q === 0 ? '-t' : q + '-t') + ')';
+    return { q: '設 ' + T('f(x)=x^{2}+bx' + (c === 0 ? '' : (c < 0 ? '-' : '+') + Math.abs(c))) + '，且對任意實數 ' + T('t') + ' 都有 ' + T(cond) + '。求 ' + T('b') + ' 與 ' + T('f(x)') + ' 的最小值。',
              a: T('b=' + b) + '，最小值 ' + T(String(mn)),
-             h: '$f(' + p + '+t)=f(' + q + '-t)$ 表示對稱軸在 $' + p + '$ 與 $' + q + '$ 的正中間 $x=' + h + '$，於是 $-\\frac b2=' + h + '$。',
+             h: '$' + cond + '$ 表示對稱軸在 $' + p + '$ 與 $' + q + '$ 的正中間 $x=' + h + '$，於是 $-\\frac b2=' + h + '$。',
              p: { p: p, q: q, c: c, ans: [b, mn] } };
   };
 
@@ -332,7 +335,7 @@
     var f = polyScale(polyMul([1, -p], [1, -q]), a), sol = solveSign([{ r: p, m: 1 }, { r: q, m: 1 }], a > 0 ? 1 : -1, rel);
     return { q: '解不等式 ' + T(polyTex(f) + REL[rel] + '0') + '。',
              a: setTex(sol),
-             h: '先分解成 $' + (a === 1 ? '' : a) + factTex(p) + factTex(q) + '$；' + (a > 0 ? '開口向上' : '開口向下，先把負號除掉並反向') + '，「兩根之間為負、兩根之外為正」。',
+             h: '先分解成 $' + (a === 1 ? '' : (a === -1 ? '-' : a)) + factTex(p) + factTex(q) + '$；' + (a > 0 ? '開口向上' : '開口向下，先把負號除掉並反向') + '，「兩根之間為負、兩根之外為正」。',
              p: { f: f, factors: [[p, 1], [q, 1]], lead: a > 0 ? 1 : -1, rel: rel, ans: sol } };
   };
 
@@ -370,8 +373,11 @@
   L2.remQuadTwo = function (r) {
     var rs = r.shuffle([-3, -2, -1, 1, 2, 3, 4]).slice(0, 3), A = rs[0], B = rs[1], C = rs[2];
     var m1 = r.nz(-4, 4), n1 = r.int(-6, 6), m2 = r.nz(-4, 4), fA = m1 * A + n1, fB = m1 * B + n1, fC = fB + m2 * (C - B);
-    for (var tries = 0; tries < 30 && (fA - fC) % (A - C) !== 0; tries++) { m2 = r.nz(-4, 4); fC = fB + m2 * (C - B); }
-    if ((fA - fC) % (A - C) !== 0) { m2 = m1; fC = fB + m2 * (C - B); }
+    for (var tries = 0; tries < 30 && ((fA - fC) % (A - C) !== 0 || m2 === m1); tries++) { m2 = r.nz(-4, 4); fC = fB + m2 * (C - B); }
+    if ((fA - fC) % (A - C) !== 0 || m2 === m1) {   /* m2=m1 會讓兩個已知餘式一模一樣（退化）；(m2-m1)(A-B) 是 (A-C) 的倍數即可整除 */
+      var stp = Math.abs(A - C) / gcd(A - B, A - C);
+      m2 = (m1 > 0 && m1 - stp !== 0) ? m1 - stp : (m1 + stp !== 0 ? m1 + stp : m1 - stp); fC = fB + m2 * (C - B);
+    }
     function line(x1, y1, x2, y2) { var m = F(y1 - y2, x1 - x2), n = Fr.sub(F(y1), Fr.mul(m, F(x1))); return [m, n]; }
     var r1 = line(A, fA, B, fB), r2 = line(B, fB, C, fC), ans = line(A, fA, C, fC);
     function lt(l) { var m = l[0], n = l[1]; var s = (m.n === 0 ? '' : (Fr.eq(m, F(1)) ? '' : (Fr.eq(m, F(-1)) ? '-' : Fr.tex(m, true))) + 'x'); if (n.n !== 0) s += (n.n < 0 ? '-' : (s ? '+' : '')) + Fr.tex(F(Math.abs(n.n), n.d), true); return s || '0'; }
@@ -434,7 +440,8 @@
 
   /* 2-6 由對稱軸、y 截距、與 x 軸兩交點距離求二次函數 */
   L2.quadFromCond = function (r) {
-    var h = r.int(-3, 3), half = r.int(1, 3), a = r.pick([1, -1, 2, -2]);
+    var h, half; do { h = r.int(-3, 3); half = r.int(1, 3); } while (Math.abs(h) === half);   /* 有根為 0 ⟹ y 截距 0，a 定不出來 */
+    var a = r.pick([1, -1, 2, -2]);
     var p = h - half, q = h + half, f = polyScale(polyMul([1, -p], [1, -q]), a), c = f[2];
     return { q: '二次函數 ' + T('y=ax^{2}+bx+c') + ' 的圖形對稱軸為 ' + T('x=' + h) + '，與 ' + T('y') + ' 軸交於 ' + T(pt(0, c)) + '，與 ' + T('x') + ' 軸交於 ' + T('A,B') + ' 兩點且 ' + T('\\overline{AB}=' + (2 * half)) + '。求 ' + T('(a,b,c)') + '。',
              a: T('(a,b,c)=(' + f.join(',') + ')'),
@@ -461,7 +468,7 @@
     if (h === 0) fTex = 'f(x)=ax^{2}+b';
     return { q: '已知二次函數 ' + T(fTex) + ' 在區間 ' + T(lo + '\\le x\\le ' + hi) + ' 的最大值為 ' + T(String(M)) + '、最小值為 ' + T(String(m)) + '，求數對 ' + T('(a,b)') + ' 的所有可能值。',
              a: T('(a,b)=' + pt(aP, bP)) + ' 或 ' + T(pt(aN, bN)),
-             h: '配方 $f(x)=a' + factTex(h) + '^2+(b' + (h ? '-' + (h * h) + 'a' : '') + ')$，對稱軸 $x=' + h + '$ 剛好是右端點 ⟹ 區間內單調，最值只在兩端點，分 $a\\gt0$、$a\\lt0$ 兩種。',
+             h: '配方 $f(x)=a' + factTex(h) + '^2+(b' + (h ? '-' + (h * h === 1 ? '' : h * h) + 'a' : '') + ')$，對稱軸 $x=' + h + '$ 剛好是右端點 ⟹ 區間內單調，最值只在兩端點，分 $a\\gt0$、$a\\lt0$ 兩種。',
              p: { h: h, lo: lo, hi: hi, M: M, m: m, ans: [[aP, bP], [aN, bN]] } };
   };
 
@@ -471,16 +478,17 @@
     var q = '(m' + (c ? (c > 0 ? '+' + c : '-' + (-c)) : '') + ')x^{2}+2(m' + (c ? (c > 0 ? '+' + c : '-' + (-c)) : '') + ')x+' + n + '\\gt0';
     return { q: '設對任何實數 ' + T('x') + '，不等式 ' + T(q) + ' 恆成立。求滿足條件的整數 ' + T('m') + ' 共有幾個。',
              a: T(String(n)) + ' 個（' + T(-c + '\\le m\\lt ' + (n - c)) + '）',
-             h: '先看 $m' + (c ? (c > 0 ? '+' + c : '-' + (-c)) : '') + '=0$：式子變成 $' + n + '\\gt0$ 成立！再看 $\\gt0$ 且 $D\\lt0$：$4t^2-4nt\\lt0$ ⟹ $0\\lt t\\lt ' + n + '$（$t$ 為首項係數）。',
+             h: '先看 $m' + (c ? (c > 0 ? '+' + c : '-' + (-c)) : '') + '=0$：式子變成 $' + n + '\\gt0$ 成立！再看 $t\\gt0$ 且 $D\\lt0$：$4t^2-' + (4 * n) + 't\\lt0$ ⟹ $0\\lt t\\lt ' + n + '$（$t$ 為首項係數）。',
              p: { c: c, n: n, ans: { count: n, lo: -c, hi: n - c } } };
   };
 
   /* 2-10 拋物線恆在直線上方 */
   L2.lineBelowParab = function (r) {
     var p = r.nz(-5, 5), s = r.int(1, 4), q = r.int(-5, 5), c = q + s * s;
-    return { q: '若拋物線 ' + T('y=x^{2}+bx' + (c < 0 ? '-' : '+') + Math.abs(c)) + ' 的圖形恆在直線 ' + T('y=' + polyTex([p, q])) + ' 的上方，求實數 ' + T('b') + ' 的範圍。',
+    var bp = '(b' + (p > 0 ? '-' + p : '+' + (-p)) + ')';
+    return { q: '若拋物線 ' + T('y=x^{2}+bx' + (c === 0 ? '' : (c < 0 ? '-' : '+') + Math.abs(c))) + ' 的圖形恆在直線 ' + T('y=' + polyTex([p, q])) + ' 的上方，求實數 ' + T('b') + ' 的範圍。',
              a: T((p - 2 * s) + '\\lt b\\lt ' + (p + 2 * s)),
-             h: '相減：$x^2+(b-' + p + ')x+' + (s * s) + '\\gt0$ 恆成立 ⟹ $(b-' + p + ')^2-4\\cdot' + (s * s) + '\\lt0$。',
+             h: '相減：$x^2+' + bp + 'x+' + (s * s) + '\\gt0$ 恆成立 ⟹ $' + bp + '^2-4\\cdot' + (s * s) + '\\lt0$。',
              p: { p: p, q: q, c: c, ans: [p - 2 * s, p + 2 * s] } };
   };
 
@@ -503,7 +511,7 @@
     var x1 = h + 1, x2 = h - 2, x3 = h + 3;
     return { q: '設三次函數 ' + T('f(x)') + ' 圖形的對稱中心為 ' + T(pt(h, k)) + '，且圖形通過 ' + T(pt(x1, polyEval(f, x1))) + ' 與 ' + T(pt(x2, polyEval(f, x2))) + '。求 ' + T('f(' + x3 + ')') + '。',
              a: T('f(' + x3 + ')=' + polyEval(f, x3)),
-             h: '設 $f(x)=a(x' + (h ? (h > 0 ? '-' + h : '+' + (-h)) : '') + ')^3+p(x' + (h ? (h > 0 ? '-' + h : '+' + (-h)) : '') + ')' + (k ? (k > 0 ? '+' + k : '-' + (-k)) : '') + '$，代兩點解 $a,p$。',
+             h: '設 $f(x)=' + (h ? 'a(x' + (h > 0 ? '-' + h : '+' + (-h)) + ')^3+p(x' + (h > 0 ? '-' + h : '+' + (-h)) + ')' : 'ax^3+px') + (k ? (k > 0 ? '+' + k : '-' + (-k)) : '') + '$，代兩點解 $a,p$。',
              p: { h: h, k: k, x1: x1, y1: polyEval(f, x1), x2: x2, y2: polyEval(f, x2), x3: x3, ans: polyEval(f, x3) } };
   };
 
@@ -548,7 +556,8 @@
 
   /* 2-16 由三次不等式的解反推係數 */
   L2.ineqFromSol = function (r) {
-    var p = r.int(-4, 0), q = p + r.int(1, 3), s = q + r.int(1, 3), a = r.pick([1, -1, 2, -2]);
+    var p, q, s; do { p = r.int(-4, 0); q = p + r.int(1, 3); s = q + r.int(1, 3); } while (p * q * s === 0);   /* 有根為 0 ⟹ 常數項 0，a 定不出來 */
+    var a = r.pick([1, -1, 2, -2]);
     var f = polyScale(polyMul(polyMul([1, -p], [1, -q]), [1, -s]), a), sol = solveSign([{ r: p, m: 1 }, { r: q, m: 1 }, { r: s, m: 1 }], a > 0 ? 1 : -1, '<=');
     return { q: '設 ' + T('a,b,c') + ' 為實數。若三次不等式 ' + T('ax^{3}+bx^{2}+cx' + (f[3] < 0 ? '-' : '+') + Math.abs(f[3]) + '\\le0') + ' 的解為「' + setTex(sol) + '」，求 ' + T('(a,b,c)') + '。',
              a: T('(a,b,c)=(' + f.slice(0, 3).join(',') + ')'),

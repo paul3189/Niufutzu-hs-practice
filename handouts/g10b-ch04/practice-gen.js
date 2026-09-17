@@ -336,8 +336,8 @@
     /* 過 P 斜率 m 的直線：m 為 ±1 → x∓y+c=0；±√3 → √3x∓y+c=0；±√3/3 → x∓√3y+c=0 */
     var tex, c1;
     if (sl3.ang === 45 || sl3.ang === 135) { c1 = sl3.ang === 45 ? py - px : -(px + py); tex = 'x' + (sl3.ang === 45 ? '-' : '+') + 'y' + (c1 === 0 ? '' : (c1 > 0 ? '+' : '') + c1) + '=0'; c1 = { rat: c1, surd: 0 }; }
-    else if (sl3.ang === 60 || sl3.ang === 120) { var sgn = sl3.ang === 60 ? -1 : 1, rt = -sgn * py; tex = '\\sqrt3x' + (sgn < 0 ? '-' : '+') + 'y' + (rt === 0 ? '' : (rt > 0 ? '+' : '') + rt) + ((-px) === 0 ? '' : ((-px) > 0 ? '+' : '-') + Math.abs(px) + '\\sqrt3') + '=0'; c1 = { rat: rt, surd: -px }; }
-    else { var sg = sl3.ang === 30 ? -1 : 1, sd = -sg * py; tex = 'x' + (sg < 0 ? '-' : '+') + '\\sqrt3y' + ((-px) === 0 ? '' : ((-px) > 0 ? '+' : '') + (-px)) + (sd === 0 ? '' : (sd > 0 ? '+' : '-') + Math.abs(py) + '\\sqrt3') + '=0'; c1 = { rat: -px, surd: sd }; }
+    else if (sl3.ang === 60 || sl3.ang === 120) { var sgn = sl3.ang === 60 ? -1 : 1, rt = -sgn * py; tex = '\\sqrt3x' + (sgn < 0 ? '-' : '+') + 'y' + (rt === 0 ? '' : (rt > 0 ? '+' : '') + rt) + ((-px) === 0 ? '' : ((-px) > 0 ? '+' : '-') + (Math.abs(px) === 1 ? '' : Math.abs(px)) + '\\sqrt3') + '=0'; c1 = { rat: rt, surd: -px }; }
+    else { var sg = sl3.ang === 30 ? -1 : 1, sd = -sg * py; tex = 'x' + (sg < 0 ? '-' : '+') + '\\sqrt3y' + ((-px) === 0 ? '' : ((-px) > 0 ? '+' : '') + (-px)) + (sd === 0 ? '' : (sd > 0 ? '+' : '-') + (Math.abs(py) === 1 ? '' : Math.abs(py)) + '\\sqrt3') + '=0'; c1 = { rat: -px, surd: sd }; }
     return { q: '直線 $L$ 過點 ' + T('P' + Ptex) + '，且斜角為 ' + T(sl3.ang + '°') + '。求 $L$ 的方程式。',
              a: T(tex),
              h: '斜率 $m=\\tan' + sl3.ang + '°=' + sl3.tex + '$，點斜式 $y-(' + py + ')=m(x-(' + px + '))$ 整理成一般式。',
@@ -457,9 +457,9 @@
   };
   /* ── 4-4 角平分線長 ── */
   L1.bisectorLen = function (r) {
-    var A = r.pick([60, 90, 120]), b = r.int(2, 12), c = r.int(2, 12), half = tv(A / 2).cos, AD = sMulF(half, F(2 * b * c, b + c));
+    var A = r.pick([60, 90, 120]), b = r.int(2, 12), c = r.int(2, 12), half = tv(A / 2).cos, AD = sMulF(half, F(2 * b * c, b + c)), gR = gcd(b, c);
     return { q: ABC + ' 中 ' + T(ov('AB') + '=' + c) + '、' + T(ov('AC') + '=' + b) + '、' + T('\\angle A=' + A + '°') + '，$\\overline{AD}$ 為 $\\angle A$ 的內角平分線（$D$ 在 $\\overline{BC}$ 上）。求 ' + T(ov('BD') + ':' + ov('DC')) + ' 與 ' + T(ov('AD')) + '。',
-             a: T(ov('BD') + ':' + ov('DC') + '=' + c + ':' + b) + '、' + T(ov('AD') + '=' + sTex(AD)),
+             a: T(ov('BD') + ':' + ov('DC') + '=' + (c / gR) + ':' + (b / gR)) + '、' + T(ov('AD') + '=' + sTex(AD)),
              h: '角平分線把對邊分成兩邊之比；長度用「面積切兩半」：$\\dfrac12bc\\sin' + A + '°=\\dfrac12\\overline{AD}(b+c)\\sin' + (A / 2) + '°$。',
              p: { A: A, b: b, c: c, ans: { ratio: [c, b], AD: sArr(AD) } } };
   };
@@ -532,9 +532,11 @@
     var t = tri(r), a = t[0], b = t[1], c = t[2], quad = r.int(2, 4), sg = { 2: [1, -1], 3: [-1, -1], 4: [-1, 1] }[quad];
     if (r.int(0, 1)) { var tmp = a; a = b; b = tmp; }
     var sn = F(sg[0] * a, c), cs = F(sg[1] * b, c), sum = Fr.add(sn, cs), prod = Fr.mul(sn, cs), diff = Fr.sub(sn, cs), tn = Fr.div(sn, cs);
-    return { q: '已知 $\\theta$ 為第' + ['', '', '二', '三', '四'][quad] + '象限角，且 ' + T('\\sin\\theta+\\cos\\theta=' + Fr.tex(sum)) + '。求 (1) ' + T('\\sin\\theta\\cos\\theta') + '　(2) ' + T('\\sin\\theta-\\cos\\theta') + '　(3) ' + T('\\tan\\theta') + '。',
+    /* 第三象限 sin、cos 同為負，只給「和」定不出誰大（兩組解）⟹ 題幹要補大小關係 */
+    var q3rel = '\\sin\\theta' + (Fr.lt(cs, sn) ? '>' : '<') + '\\cos\\theta', q3 = quad === 3 ? '，又 ' + T(q3rel) : '';
+    return { q: '已知 $\\theta$ 為第' + ['', '', '二', '三', '四'][quad] + '象限角，且 ' + T('\\sin\\theta+\\cos\\theta=' + Fr.tex(sum)) + q3 + '。求 (1) ' + T('\\sin\\theta\\cos\\theta') + '　(2) ' + T('\\sin\\theta-\\cos\\theta') + '　(3) ' + T('\\tan\\theta') + '。',
              a: '(1) ' + T(Fr.tex(prod)) + '　(2) ' + T(Fr.tex(diff)) + '　(3) ' + T(Fr.tex(tn)),
-             h: '平方：$1+2\\sin\\theta\\cos\\theta=(\\text{和})^2$ 得積；$(\\sin\\theta-\\cos\\theta)^2=1-2\\sin\\theta\\cos\\theta$ 開根號後<b>用象限定號</b>（第' + ['', '', '二', '三', '四'][quad] + '象限 ' + (quad === 2 ? '$\\sin>0>\\cos$ ⟹ 差為正' : quad === 3 ? '兩者皆負，比大小看數值' : '$\\cos>0>\\sin$ ⟹ 差為負') + '）；和差聯立得 $\\sin$、$\\cos$ 再相除。',
+             h: '平方：$1+2\\sin\\theta\\cos\\theta=(\\text{和})^2$ 得積；$(\\sin\\theta-\\cos\\theta)^2=1-2\\sin\\theta\\cos\\theta$ 開根號後<b>用象限定號</b>（第' + ['', '', '二', '三', '四'][quad] + '象限 ' + (quad === 2 ? '$\\sin>0>\\cos$ ⟹ 差為正' : quad === 3 ? '兩者皆負，要靠題目給的 $' + q3rel + '$ ⟹ 差為' + (Fr.lt(cs, sn) ? '正' : '負') : '$\\cos>0>\\sin$ ⟹ 差為負') + '）；和差聯立得 $\\sin$、$\\cos$ 再相除。',
              p: { quad: quad, sum: fr2(sum), ans: { prod: fr2(prod), diff: fr2(diff), tan: fr2(tn) } } };
   };
   /* 2-2 誘導公式化簡（誘導 12 卷） */
@@ -639,6 +641,7 @@
     var pk = r.pick(cands), kk = pk[0], aa = pk[1], jj = pk[2], c = 2 * kk;
     var surd = A === 30 ? S(kk, 3, 1) : A === 60 ? S(kk, 1, 1) : S(kk, 2, 1), rat = F(jj);   /* b = c cosA ± √(a² − c² sin²A) */
     var b1 = twoTex(rat, surd), b2 = twoTex(F(-jj), surd);
+    if (surd.r === 1) { b1 = String(kk + jj); b2 = String(kk - jj); }   /* ∠A=60°：c·cosA 是整數，兩根直接寫成整數（原本會印成 2+8） */
     return { q: ABC + ' 中 ' + T('\\angle A=' + A + '°') + '、' + T(ov('AB') + '=' + c) + '、' + T(ov('BC') + '=' + aa) + '。求 ' + T(ov('AC')) + '（兩解）。',
              a: T(ov('AC') + '=' + b1) + ' 或 ' + T(b2),
              h: '把 $\\overline{AC}=b$ 當未知數放進餘弦定理：$' + aa + '^2=b^2+' + c + '^2-2\\cdot' + c + '\\cdot b\\cos' + A + '°$，解二次方程得兩個正根——這就是 SSA 的兩解。',
@@ -704,9 +707,9 @@
   /* 2-12 角平分線：對邊、分比、平分線長（角平分線 7 卷） */
   L2.bisector = function (r) {
     var A = r.pick([60, 120]), b = r.int(2, 12), c = r.int(2, 12), a2 = b * b + c * c - 2 * b * c * (A === 60 ? 0.5 : -0.5);
-    var AD = sMulF(tv(A / 2).cos, F(2 * b * c, b + c)), K = sMulF(tv(A).sin, F(b * c, 2));
+    var AD = sMulF(tv(A / 2).cos, F(2 * b * c, b + c)), K = sMulF(tv(A).sin, F(b * c, 2)), gR = gcd(b, c);
     return { q: ABC + ' 中 ' + T(ov('AB') + '=' + c) + '、' + T(ov('AC') + '=' + b) + '、' + T('\\angle A=' + A + '°') + '，$\\overline{AD}$ 為 $\\angle A$ 的內角平分線，$D$ 在 $\\overline{BC}$ 上。求 (1) ' + T(ov('BC')) + '　(2) ' + T(ov('BD') + ':' + ov('DC')) + '　(3) ' + T(ov('AD')) + '　(4) ' + T('\\triangle ABD') + ' 的面積。',
-             a: '(1) ' + T(sqrtTex(a2)) + '　(2) ' + T(c + ':' + b) + '　(3) ' + T(sTex(AD)) + '　(4) ' + T(sTex(sMulF(K, F(c, b + c)))),
+             a: '(1) ' + T(sqrtTex(a2)) + '　(2) ' + T((c / gR) + ':' + (b / gR)) + '　(3) ' + T(sTex(AD)) + '　(4) ' + T(sTex(sMulF(K, F(c, b + c)))),
              h: '(1) 餘弦定理。(2) 角平分線 ⟹ $\\overline{BD}:\\overline{DC}=\\overline{AB}:\\overline{AC}$。(3) 面積切兩半：$\\dfrac12bc\\sin' + A + '°=\\dfrac12\\overline{AD}\\,(b+c)\\sin' + (A / 2) + '°$。(4) 同高 ⟹ 面積比 $=$ 底邊比。',
              p: { A: A, b: b, c: c, ans: { a2: a2, ratio: [c, b], AD: sArr(AD), KABD: sArr(sMulF(K, F(c, b + c))) } } };
   };
@@ -723,7 +726,10 @@
   /* 2-14 三點共線的仰角測高：中點＋中線長公式（例題 35 型；仰角 11 卷） */
   L2.elevMedian = function (r) {
     var cot2 = { 30: F(3), 45: F(1), 60: F(1, 3) }, al, be, ga, v, tries = 0;
-    do { al = r.pick([30, 45, 60]); be = r.pick([30, 45, 60]); ga = r.pick([30, 45, 60]); v = Fr.sub(Fr.add(Fr.mul(F(2), cot2[al]), Fr.mul(F(2), cot2[ga])), Fr.mul(F(4), cot2[be])); tries++; } while ((v.n <= 0 || (al === be && be === ga)) && tries < 100);
+    do { al = r.pick([30, 45, 60]); be = r.pick([30, 45, 60]); ga = r.pick([30, 45, 60]); v = Fr.sub(Fr.add(Fr.mul(F(2), cot2[al]), Fr.mul(F(2), cot2[ga])), Fr.mul(F(4), cot2[be])); tries++;
+      /* △OAC 要存在且不退化：|OA−OC| < 2·OB < OA+OC ⟺ (cot²α+cot²γ−4cot²β)² < 4cot²α·cot²γ；等號＝塔底落在 AC 線上，與題幹「不共線」矛盾 */
+      var w_ = Fr.sub(Fr.add(cot2[al], cot2[ga]), Fr.mul(F(4), cot2[be])), flat = !Fr.lt(Fr.mul(w_, w_), Fr.mul(F(4), Fr.mul(cot2[al], cot2[ga])));
+    } while ((v.n <= 0 || flat || (al === be && be === ga)) && tries < 100);
     var h = r.pick([10, 12, 15, 18, 20, 24, 30, 36, 42, 60]), AB2 = Fr.mul(F(h * h, 4), v), AB = sqrtF(AB2);
     return { q: '地面上三定點 $A$、$B$、$C$ 依序測得塔頂的仰角為 ' + T(al + '°') + '、' + T(be + '°') + '、' + T(ga + '°') + '。已知 $A,B,C$ 與塔底不共線，$B$ 為 $\\overline{AC}$ 的中點，塔高 ' + T(String(h)) + ' 公尺。求 ' + T(ov('AB')) + '。',
              a: T(ov('AB') + '=' + sTex(AB)) + ' 公尺',
@@ -746,6 +752,7 @@
   L2.sinCount = function (r) {
     var kind = r.pick(['abs', 'sin', 'cos', 'ncos']), kf = r.pick([[2, 5], [3, 7], [1, 3], [2, 3], [3, 5], [4, 5], [1, 4], [3, 4], [5, 8]]);
     var M = r.pick([360, 450, 510, 540, 600, 630, 720, 750, 810, 900]), al = Math.asin(kf[0] / kf[1]) * 180 / Math.PI, sols = [], cnt = 0;
+    if (kind.indexOf('cos') >= 0) al = 90 - al;   /* cos 型的參考角是 acos(k)＝90°−asin(k)；原本誤用 asin，範圍不是整圈時解數會錯 */
     if (kind === 'abs') sols = [al, 180 - al, 180 + al, 360 - al];
     else if (kind === 'sin') sols = [al, 180 - al]; else if (kind === 'cos') sols = [al, 360 - al]; else sols = [180 - al, 180 + al];
     for (var n = -1; n <= 4; n++) sols.forEach(function (s) { var v = s + 360 * n; if (v >= 0 && v < M) cnt++; });

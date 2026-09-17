@@ -168,7 +168,7 @@
                h: '用「總和」思考：原總和 $=n\\mu$，加上新的一筆再除以 $n+1$。',
                p: { kind: 0, n: n, mu: mu, v: v, ans: fr2(mu2) } };
     }
-    var rem = [mu + r.int(16, 30), mu - r.int(16, 30)], mu3 = F(n * mu - rem[0] - rem[1], n - 2);
+    var rem = [Math.min(100, mu + r.int(16, 30)), mu - r.int(16, 30)], mu3 = F(n * mu - rem[0] - rem[1], n - 2);
     return { q: T(String(n)) + ' 位評審的評分平均為 ' + T(String(mu)) + ' 分。依規定要剔除與平均相差最多的兩個分數 ' + T(String(rem[0])) + '、' + T(String(rem[1])) + '，再以其餘 ' + T(String(n - 2)) + ' 位的平均作為成績。求此成績。',
              a: T('\\dfrac{' + n + '(' + mu + ')-' + rem[0] + '-' + rem[1] + '}{' + (n - 2) + '}=' + dec(mu3)) + ' 分',
              h: '總分 $=' + n + '\\times' + mu + '$，扣掉被剔除的兩個分數，再除以剩下的人數。',
@@ -233,7 +233,7 @@
              p: { n: n, sx: sx, sxx: sxx, ans: { mu: fr2(mu), var: fr2(va) } } };
   };
   L1.sumSqFromStats = function (r) {
-    var n = r.pick([5, 8, 10, 12, 15, 20]), mu = r.int(5, 60), sg = r.int(2, 12), a = mu + r.pick([-5, -4, -3, -2, 2, 3, 4, 5]);
+    var n = r.pick([5, 8, 10, 12, 15, 20]), mu = r.int(5, 60), sg = r.int(2, 12), a = mu + r.pick([-5, -4, -3, -2, 2, 3, 4, 5]); if (a === 0) a = 10;   /* a=0 會寫成 (x_i-0)^2，而且兩小題同答案 */
     var s2 = n * (sg * sg + mu * mu), sa = n * sg * sg + n * (mu - a) * (mu - a);
     return { q: '某 ' + T(String(n)) + ' 筆資料的平均數為 ' + T(String(mu)) + '、標準差為 ' + T(String(sg)) + '。求 (1) ' + T('\\displaystyle\\sum_{i=1}^{' + n + '}x_i^2') + '　(2) ' + T('\\displaystyle\\sum_{i=1}^{' + n + '}(x_i-' + a + ')^2') + '。',
              a: '(1) ' + T(n + '(' + sg + '^2+' + mu + '^2)=' + s2) + '　(2) ' + T(n + '\\cdot' + sg + '^2+' + n + '(' + mu + '-' + a + ')^2=' + sa),
@@ -275,7 +275,11 @@
   L1.inverseTrans = function (r) {
     var a = r.pick([F(1, 2), F(3, 5), F(4, 5), F(3, 4), F(6, 5), F(3, 2), F(2)]);
     var s1 = a.d * r.pick([2, 3, 4, 5]), mu1 = r.int(35, 60), b = r.int(8, 40);
-    var s2 = Fr.mul(a, F(s1)), mu2 = Fr.add(Fr.mul(a, F(mu1)), F(b)), s = r.int(20, 90), y = Fr.add(Fr.mul(a, F(s)), F(b));
+    var s = r.int(20, 90), av = Fr.toNum(a);          /* 成績要落在 0～100：依序壓 μ_x、b、s（rng 取用順序不變） */
+    if (av * mu1 > 80) mu1 = Math.floor(80 / av) - (mu1 % 5);
+    if (av * mu1 + b > 90) b = Math.floor(90 - av * mu1);
+    if (av * s + b > 100) s = Math.floor((100 - b) / av);
+    var s2 = Fr.mul(a, F(s1)), mu2 = Fr.add(Fr.mul(a, F(mu1)), F(b)), y = Fr.add(Fr.mul(a, F(s)), F(b));
     return { q: '老師把全班成績依 ' + T('y=ax+b') + '（' + T('a\\gt0') + '）調整後，平均數由 ' + T(String(mu1)) + ' 變成 ' + T(dec(mu2)) + '、標準差由 ' + T(String(s1)) + ' 變成 ' + T(dec(s2)) + '。(1) 求 ' + T('a') + ' 與 ' + T('b') + '。　(2) 原本考 ' + T(String(s)) + ' 分的同學，調整後是幾分？',
              a: '(1) ' + T('a=\\dfrac{' + dec(s2) + '}{' + s1 + '}=' + dec(a)) + '、' + T('b=' + dec(mu2) + '-' + dec(a) + '(' + mu1 + ')=' + b) + '　(2) ' + T(dec(y)) + ' 分',
              h: '標準差只跟 $a$ 有關：$a=\\dfrac{\\sigma_y}{\\sigma_x}$；再用平均數 $\\mu_y=a\\mu_x+b$ 求 $b$。',
@@ -286,6 +290,7 @@
     do {
       m1 = r.int(55, 80); m2 = r.int(55, 80); g1 = r.pick([4, 5, 8, 10, 12]); g2 = r.pick([4, 5, 8, 10, 12]);
       x1 = m1 + g1 * r.pick([-1, 1, 2]) + r.pick([0, g1 / 2 | 0]); x2 = m2 + g2 * r.pick([-1, 1, 2]) + r.pick([0, g2 / 2 | 0]);
+      while (x1 > 100) x1 -= g1; while (x2 > 100) x2 -= g2;      /* 分數不超過 100 */
       z1 = F(x1 - m1, g1); z2 = F(x2 - m2, g2); tries++;
     } while (Fr.eq(z1, z2) && tries < 30);
     var better = Fr.lt(z2, z1) ? 0 : 1;
@@ -297,12 +302,13 @@
   L1.zInverse = function (r) {
     var mu = r.int(55, 80), sg = r.pick([4, 5, 6, 8, 10, 12]), kind = r.int(0, 1);
     if (kind === 0) {
-      var z = r.pick([F(-2), F(-3, 2), F(-1), F(-1, 2), F(1, 2), F(1), F(3, 2), F(2), F(5, 2)]), x = Fr.add(F(mu), Fr.mul(z, F(sg)));
+      var z = r.pick([F(-2), F(-3, 2), F(-1), F(-1, 2), F(1, 2), F(1), F(3, 2), F(2), F(5, 2)]); if (mu + Fr.toNum(z) * sg > 100) z = F(-z.n, z.d);   /* 原始分數不超過 100 */
+      var x = Fr.add(F(mu), Fr.mul(z, F(sg)));
       return { q: '某科成績的平均數為 ' + T(String(mu)) + '、標準差為 ' + T(String(sg)) + '。某生的標準化分數 ' + T('z=' + dec(z)) + '，求他的原始分數。',
                a: T('x=' + mu + '+(' + dec(z) + ')(' + sg + ')=' + dec(x)) + ' 分', h: '由 $z=\\dfrac{x-\\mu}{\\sigma}$ 反解 $x=\\mu+z\\sigma$。',
                p: { kind: 0, mu: mu, sg: sg, z: fr2(z), ans: fr2(x) } };
     }
-    var xv = mu + sg * r.pick([-2, -1, 1, 2]) + r.pick([0, 0, sg / 2 | 0, -(sg / 2 | 0)]), zz = F(xv - mu, sg);
+    var xv = mu + sg * r.pick([-2, -1, 1, 2]) + r.pick([0, 0, sg / 2 | 0, -(sg / 2 | 0)]); while (xv > 100) xv -= sg; var zz = F(xv - mu, sg);
     return { q: '某科成績的平均數為 ' + T(String(mu)) + '、標準差為 ' + T(String(sg)) + '。考 ' + T(String(xv)) + ' 分的同學，標準化分數 ' + T('z') + ' 是多少？標準化之後全班成績的平均數與標準差各是多少？',
              a: T('z=\\dfrac{' + xv + '-' + mu + '}{' + sg + '}=' + dec(zz)) + '；標準化後平均 ' + T('0') + '、標準差 ' + T('1'),
              h: '$z=\\dfrac{x-\\mu}{\\sigma}$；任何資料標準化後都是 $\\mu_z=0$、$\\sigma_z=1$。',
@@ -311,12 +317,13 @@
   L1.tScore = function (r) {
     var mu = r.int(55, 75), sg = r.pick([4, 5, 8, 10, 12, 15]), kind = r.int(0, 1);
     if (kind === 0) {
-      var s = mu + sg * r.pick([-2, -1, 1, 2]) + r.pick([0, sg / 2 | 0, -(sg / 2 | 0)]), Tv = Fr.add(F(50), Fr.mul(F(10), F(s - mu, sg)));
+      var s = mu + sg * r.pick([-2, -1, 1, 2]) + r.pick([0, sg / 2 | 0, -(sg / 2 | 0)]); while (s > 100) s -= sg; var Tv = Fr.add(F(50), Fr.mul(F(10), F(s - mu, sg)));
       return { q: T('T') + ' 分數定義為 ' + T('T=50+10\\cdot\\dfrac{S-\\mu}{\\sigma}') + '。某科平均 ' + T(String(mu)) + ' 分、標準差 ' + T(String(sg)) + ' 分，某生考 ' + T(String(s)) + ' 分，求他的 ' + T('T') + ' 分數。',
                a: T('T=50+10\\cdot\\dfrac{' + s + '-' + mu + '}{' + sg + '}=' + dec(Tv)), h: '先算 $z$，再 $T=50+10z$：$T$ 分數就是把 $z$ 放大 $10$ 倍後搬到 $50$。',
                p: { kind: 0, mu: mu, sg: sg, s: s, ans: fr2(Tv) } };
     }
-    var Tg = r.pick([30, 35, 40, 45, 55, 60, 65, 70, 75]), S = Fr.add(F(mu), Fr.mul(F(Tg - 50, 10), F(sg)));
+    var Tg = r.pick([30, 35, 40, 45, 55, 60, 65, 70, 75]); if (mu + (Tg - 50) / 10 * sg > 100) Tg = 100 - Tg;   /* 原始成績不超過 100 */
+    var S = Fr.add(F(mu), Fr.mul(F(Tg - 50, 10), F(sg)));
     return { q: T('T') + ' 分數定義為 ' + T('T=50+10\\cdot\\dfrac{S-\\mu}{\\sigma}') + '。某科平均 ' + T(String(mu)) + ' 分、標準差 ' + T(String(sg)) + ' 分。' + T('T') + ' 分數為 ' + T(String(Tg)) + ' 的同學，原始成績是幾分？',
              a: T('z=\\dfrac{' + Tg + '-50}{10}=' + dec(F(Tg - 50, 10))) + ' ⟹ ' + T('S=' + mu + '+(' + dec(F(Tg - 50, 10)) + ')(' + sg + ')=' + dec(S)) + ' 分',
              h: '由 $T$ 反推 $z=\\dfrac{T-50}{10}$，再 $S=\\mu+z\\sigma$。',
@@ -401,16 +408,17 @@
     var sx = r.pick([4, 5, 8, 10]), sy = r.pick([4, 6, 8, 10, 12]), mx = r.int(40, 70), my = r.int(40, 80);
     var slope = Fr.mul(rr, F(sy, sx)), icpt = Fr.sub(F(my), Fr.mul(slope, F(mx))), x0 = mx + r.pick([-10, -5, 5, 10, 20]), yh = Fr.add(F(my), Fr.mul(slope, F(x0 - mx)));
     return { q: '已知 ' + T('\\mu_x=' + mx + '、\\mu_y=' + my + '、\\sigma_x=' + sx + '、\\sigma_y=' + sy) + '，相關係數 ' + T('r=' + dec(rr)) + '。(1) 求 ' + T('y') + ' 對 ' + T('x') + ' 的最適直線。　(2) 當 ' + T('x=' + x0) + ' 時，' + T('y') + ' 的預測值是多少？',
-             a: '(1) 斜率 ' + T('=r\\dfrac{\\sigma_y}{\\sigma_x}=' + dec(rr) + '\\times\\dfrac{' + sy + '}{' + sx + '}=' + dec(slope)) + '，過 ' + T('(' + mx + ',' + my + ')') + ' ⟹ ' + T(lineTex(slope, icpt)) + '　(2) ' + T('\\hat y=' + my + '+' + dec(slope) + '(' + x0 + '-' + mx + ')=' + dec(yh)),
+             a: '(1) 斜率 ' + T('=r\\dfrac{\\sigma_y}{\\sigma_x}=' + dec(rr) + '\\times\\dfrac{' + sy + '}{' + sx + '}=' + dec(slope)) + '，過 ' + T('(' + mx + ',' + my + ')') + ' ⟹ ' + T(lineTex(slope, icpt)) + '　(2) ' + T('\\hat y=' + my + '+' + (Fr.eq(slope, F(1)) ? '' : slope.n < 0 ? '(' + dec(slope) + ')' : dec(slope)) + '(' + x0 + '-' + mx + ')=' + dec(yh)),
              h: '斜率 $=r\\dfrac{\\sigma_y}{\\sigma_x}$；直線必過 $(\\mu_x,\\mu_y)$。預測時直接從重心出發：$\\hat y=\\mu_y+\\text{斜率}\\times(x_0-\\mu_x)$。',
              p: { r: fr2(rr), sx: sx, sy: sy, mx: mx, my: my, x0: x0, ans: { a: fr2(slope), b: fr2(icpt), yh: fr2(yh) } } };
   };
   L1.fitCentroid = function (r) {
     var rr = r.pick([F(3, 5), F(4, 5), F(3, 4), F(1, 2), F(2, 5), F(-3, 5), F(-4, 5), F(-1, 2)]);
     var sx = r.pick([4, 5, 8, 10, 12]), sy = r.pick([4, 5, 6, 8, 10, 12]), a = Fr.mul(rr, F(sy, sx));
-    var mx = r.int(40, 75), b = r.int(-30, 60), my = Fr.add(Fr.mul(a, F(mx)), F(b));
+    var mx = r.int(40, 75), b = r.int(40, 85) - Math.round(Fr.toNum(a) * mx); if (b === 0) b = 1;   /* 先選英文平均（40～85 附近）再反推整數截距；舊版 b∈[-30,60] 會算出負的或破百的平均 */
+    var my = Fr.add(Fr.mul(a, F(mx)), F(b));
     return { q: '某班數學成績 ' + T('x') + ' 的平均數為 ' + T(String(mx)) + '、標準差為 ' + T(String(sx)) + '；英文成績 ' + T('y') + ' 的標準差為 ' + T(String(sy)) + '。已知 ' + T('y') + ' 對 ' + T('x') + ' 的最適直線為 ' + T(lineTex(a, F(b))) + '。(1) 求英文成績的平均數。　(2) 求兩科的相關係數 ' + T('r') + '。',
-             a: '(1) 直線過重心 ⟹ ' + T('\\mu_y=' + dec(a) + '(' + mx + ')' + (b >= 0 ? '+' + b : b) + '=' + dec(my)) + '　(2) ' + T(dec(a) + '=r\\cdot\\dfrac{' + sy + '}{' + sx + '}') + ' ⟹ ' + T('r=' + dec(rr)),
+             a: '(1) 直線過重心 ⟹ ' + T('\\mu_y=' + (Fr.eq(a, F(1)) ? String(mx) : Fr.eq(a, F(-1)) ? '-' + mx : dec(a) + '(' + mx + ')') + (b > 0 ? '+' + b : b) + '=' + dec(my)) + '　(2) ' + T(dec(a) + '=r\\cdot\\dfrac{' + sy + '}{' + sx + '}') + ' ⟹ ' + T('r=' + dec(rr)),
              h: '兩個性質：直線必過 $(\\mu_x,\\mu_y)$（代 $\\mu_x$ 就得 $\\mu_y$）；斜率 $=r\\dfrac{\\sigma_y}{\\sigma_x}$（反解 $r$）。',
              p: { a: fr2(a), b: b, mx: mx, sx: sx, sy: sy, ans: { my: fr2(my), r: fr2(rr) } } };
   };
@@ -451,7 +459,7 @@
     var ys = [y1, a, yb, y4], mx = F(x1 + x2, 2), my = F(y1 + a + yb + y4, 4), c = Fr.sub(my, Fr.mul(s, mx));
     return { q: '已知兩變數 ' + T('x') + ' 與 ' + T('y') + ' 的四筆數據為 ' + T('x:\\ ' + xs.join(',\\ ')) + '；' + T('y:\\ ' + y1 + ',\\ a,\\ b,\\ ' + y4) + '，且用最小平方法求得 ' + T('y') + ' 對 ' + T('x') + ' 的迴歸直線為 ' + T(lineTex(s, c)) + '。求 ' + T('a') + '、' + T('b') + ' 與 ' + T('y') + ' 的平均數。',
              a: T('\\mu_x=' + dec(mx)) + ' 代入直線得 ' + T('\\mu_y=' + dec(my)) + ' ⟹ ' + T('a+b=' + (a + yb)) + '；斜率 ' + T('=\\dfrac{S_{xy}}{S_{xx}}') + ' 給 ' + T('a-b=' + (a - yb)) + ' ⟹ ' + T('a=' + a) + '、' + T('b=' + yb) + '、' + T('\\mu_y=' + dec(my)),
-             h: '兩個條件、兩個未知數：① 直線必過 $(\\mu_x,\\mu_y)$ 給 $a+b$；② 斜率 $=\\dfrac{S_{xy}}{S_{xx}}$，$x$ 只取兩個值，偏差是 $\\mp\\frac{' + gap + '}{2}$，展開後 $\\mu_y$ 會消掉，只剩 $a-b$。',
+             h: '兩個條件、兩個未知數：① 直線必過 $(\\mu_x,\\mu_y)$ 給 $a+b$；② 斜率 $=\\dfrac{S_{xy}}{S_{xx}}$，$x$ 只取兩個值，偏差是 $\\mp' + (gap / 2) + '$，展開後 $\\mu_y$ 會消掉，只剩 $a-b$。',
              p: { x: xs, y: ys, slope: fr2(s), icpt: fr2(c), ans: { a: a, b: yb, my: fr2(my) } } };
   };
   /* 2-2 由 r、迴歸直線與 y 的統計量反推 x 的平均與標準差（例題 30 型） */
@@ -470,7 +478,7 @@
     var b1 = Fr.mul(rr, F(sy, sx)), c1 = Fr.sub(F(my), Fr.mul(b1, F(mx)));       // y = b1 x + c1
     var b2 = Fr.mul(rr, F(sx, sy)), c2 = Fr.sub(F(mx), Fr.mul(b2, F(my)));       // x = b2 y + c2
     return { q: '某二維數據中，' + T('y') + ' 對 ' + T('x') + ' 的最適直線為 ' + T(lineTex(b1, c1)) + '，' + T('x') + ' 對 ' + T('y') + ' 的最適直線為 ' + T(lineTex(b2, c2).replace(/^y=/, 'x=').replace(/x(?=[+\\-]|$)/, 'y')) + '。(1) 求 ' + T('(\\mu_x,\\mu_y)') + '。　(2) 求相關係數 ' + T('r') + '。',
-             a: '(1) 兩直線都過重心，解聯立得 ' + T('(\\mu_x,\\mu_y)=(' + mx + ',' + my + ')') + '　(2) 兩斜率相乘 ' + T(dec(b1) + '\\times' + dec(b2) + '=r^2=' + dec(Fr.mul(rr, rr))) + '，且 ' + T('r') + ' 與斜率同號 ⟹ ' + T('r=' + dec(rr)),
+             a: '(1) 兩直線都過重心，解聯立得 ' + T('(\\mu_x,\\mu_y)=(' + mx + ',' + my + ')') + '　(2) 兩斜率相乘 ' + T((b1.n < 0 ? '(' + dec(b1) + ')\\times(' + dec(b2) + ')' : dec(b1) + '\\times' + dec(b2)) + '=r^2=' + dec(Fr.mul(rr, rr))) + '，且 ' + T('r') + ' 與斜率同號 ⟹ ' + T('r=' + dec(rr)),
              h: '$y$ 對 $x$ 的斜率是 $r\\frac{\\sigma_y}{\\sigma_x}$、$x$ 對 $y$ 的斜率是 $r\\frac{\\sigma_x}{\\sigma_y}$，相乘恰為 $r^2$；兩條線都通過 $(\\mu_x,\\mu_y)$。',
              p: { b1: fr2(b1), c1: fr2(c1), b2: fr2(b2), c2: fr2(c2), ans: { mx: mx, my: my, r: fr2(rr) } } };
   };
@@ -493,10 +501,11 @@
     var rr = r.pick([F(1, 2), F(3, 5), F(3, 4), F(4, 5), F(2, 5)]), sy = r.pick([F(1), F(2), F(4), F(5), F(10), F(1, 2)]);
     var sx = r.pick([F(1, 2), F(1), F(2), F(1, 5), F(3, 10), F(4)]), a = Fr.mul(rr, Fr.div(sy, sx));
     var mx = r.pick([F(5), F(6), F(52, 10), F(8), F(10), F(12)]), b = r.pick([F(-6, 10), F(4, 10), F(1), F(-2), F(3), F(-1, 2)]), my = Fr.add(Fr.mul(a, mx), b);
+    if (Fr.toNum(my) < 2 * Fr.toNum(sy) + 2) { b = F(Math.max(1, Math.ceil(2 * Fr.toNum(sy) + 2 - Fr.toNum(Fr.mul(a, mx))))); my = Fr.add(Fr.mul(a, mx), b); }   /* 體重要為正：μ_y 至少 2σ_y+2（舊版會出現負的平均體重與 |-2.6--1.4|） */
     var px = Fr.add(mx, r.pick([F(4, 10), F(-4, 10), F(1), F(-1), F(1, 2)])), py = Fr.add(my, r.pick([F(-12, 10), F(12, 10), F(3, 2), F(-1, 2), F(2)]));
     var within = !Fr.lt(sy, Fr.abs(Fr.sub(py, my)));   // |py-my| ≤ σy
     return { q: '某物種身長 ' + T('x') + ' 與體重 ' + T('y') + ' 的相關係數為 ' + T(dec(rr)) + '，' + T('\\mu_x=' + dec(mx)) + '、' + T('\\sigma_x=' + dec(sx)) + '，' + T('y') + ' 對 ' + T('x') + ' 的迴歸直線為 ' + T(lineTex(a, b)) + '。(1) 求 ' + T('\\mu_y') + ' 與 ' + T('\\sigma_y') + '。　(2) 個體 ' + T('P(' + dec(px) + ',' + dec(py) + ')') + ' 的體重與 ' + T('\\mu_y') + ' 之差的絕對值是否超過一個標準差？',
-             a: '(1) ' + T('\\mu_y=' + dec(a) + '(' + dec(mx) + ')' + (b.n >= 0 ? '+' : '') + dec(b) + '=' + dec(my)) + '；' + T(dec(a) + '=' + dec(rr) + '\\cdot\\dfrac{\\sigma_y}{' + dec(sx) + '}') + ' ⟹ ' + T('\\sigma_y=' + dec(sy)) + '　(2) ' + T('|' + dec(py) + '-' + dec(my) + '|=' + dec(Fr.abs(Fr.sub(py, my)))) + (within ? '，沒有超過' : '，超過了') + ' ' + T('\\sigma_y=' + dec(sy)),
+             a: '(1) ' + T('\\mu_y=' + (Fr.eq(a, F(1)) ? dec(mx) : dec(a) + '(' + dec(mx) + ')') + (b.n >= 0 ? '+' : '') + dec(b) + '=' + dec(my)) + '；' + T(dec(a) + '=' + dec(rr) + '\\cdot\\dfrac{\\sigma_y}{' + dec(sx) + '}') + ' ⟹ ' + T('\\sigma_y=' + dec(sy)) + '　(2) ' + T('|' + dec(py) + '-' + dec(my) + '|=' + dec(Fr.abs(Fr.sub(py, my)))) + (within ? '，沒有超過' : '，超過了') + ' ' + T('\\sigma_y=' + dec(sy)),
              h: '重心在直線上 ⟹ 代 $\\mu_x$ 得 $\\mu_y$；斜率 $=r\\dfrac{\\sigma_y}{\\sigma_x}$ ⟹ 反解 $\\sigma_y$。',
              p: { r: fr2(rr), sx: fr2(sx), mx: fr2(mx), slope: fr2(a), icpt: fr2(b), px: fr2(px), py: fr2(py), ans: { my: fr2(my), sy: fr2(sy), within: within } } };
   };
@@ -519,7 +528,7 @@
     var arr = [M - R].concat(bestArr.map(function (c) { return M - R + c; })).concat([M]);
     return { q: '有一組皆為整數的 ' + T(String(n)) + ' 筆資料，其中最大值為 ' + T(String(M)) + '、全距為 ' + T(String(R)) + '。求此組資料變異數的最小可能值。',
              a: T('\\sigma^2_{\\min}=' + dec(best)) + '（例如 ' + T(listTex(arr)) + '）',
-             h: '最小值必為 $' + (M - R) + '$。先平移成 $0$ 與 $' + R + '$ 兩端固定，其餘 $' + (n - 2) + '$ 筆全部擠到最靠近中間的整數（$' + Math.floor(R / 2) + '$ 或 $' + Math.ceil(R / 2) + '$），變異數才最小。',
+             h: '最小值必為 $' + (M - R) + '$。先平移成 $0$ 與 $' + R + '$ 兩端固定，其餘 $' + (n - 2) + '$ 筆全部擠到最靠近中間的整數（' + (R % 2 === 0 ? '$' + (R / 2) + '$' : '$' + Math.floor(R / 2) + '$ 或 $' + Math.ceil(R / 2) + '$') + '），變異數才最小。',
              p: { n: n, M: M, R: R, ans: fr2(best) } };
   };
   /* 2-8 由 f(x)=Σ(x-x_i)² 的兩個函數值反推 μ 與 σ（107 全國模考 型） */
@@ -555,8 +564,9 @@
   };
   /* 2-11 線性調分：把最高分與最低分拉到指定值（103 指考乙 2 型） */
   L2.linearReverse = function (r) {
-    var mn = r.int(15, 35), M = mn + r.pick([50, 60, 70, 75, 80]), mu = r.int(mn + 20, M - 15);
-    var L = r.pick([40, 50, 60]), H = 100, b = F(H - L, M - mn), a = Fr.sub(F(L), Fr.mul(b, F(mn))), mu2 = Fr.add(a, Fr.mul(b, F(mu)));
+    var mn = r.int(15, 35), M = Math.min(100, mn + r.pick([50, 60, 70, 75, 80])), mu = r.int(mn + 20, M - 15);   /* 最高分不超過 100 */
+    var L = r.pick([40, 50, 60]), H = 100; if (H - L === M - mn) L = (L === 60 ? 50 : 60);   /* 避開 b=1：純平移時「標準差變大還是變小」沒有答案（舊版會答「b>1 變大」） */
+    var b = F(H - L, M - mn), a = Fr.sub(F(L), Fr.mul(b, F(mn))), mu2 = Fr.add(a, Fr.mul(b, F(mu)));
     return { q: '某班某次考試平均 ' + T(String(mu)) + ' 分、最高分 ' + T(String(M)) + '、最低分 ' + T(String(mn)) + '。欲做線性調整（調整後 ' + T('=a+b\\times') + ' 原始分數，' + T('b\\gt0') + '），使最高分變成 ' + T(String(H)) + '、最低分變成 ' + T(String(L)) + '。(1) 求 ' + T('a') + '、' + T('b') + '。　(2) 調整後的平均是多少？標準差變大還是變小？',
              a: '(1) ' + T('b=\\dfrac{' + H + '-' + L + '}{' + M + '-' + mn + '}=' + dec(b)) + '、' + T('a=' + L + '-' + dec(b) + '(' + mn + ')=' + dec(a)) + '　(2) ' + T('\\mu\'=' + dec(a) + '+' + dec(b) + '(' + mu + ')=' + dec(mu2)) + '；' + (Fr.lt(b, F(1)) ? T('b\\lt1') + ' ⟹ 標準差變小' : T('b\\gt1') + ' ⟹ 標準差變大'),
              h: '兩點決定直線：$(' + mn + ',' + L + ')$ 與 $(' + M + ',' + H + ')$ 給 $b$（斜率）與 $a$；平均照同一條式子變，標準差只乘 $b$。',
@@ -567,7 +577,7 @@
     var subs = r.shuffle(SUBJ).slice(0, 5), sc = [], mu = [], sg = [], z = [], tries = 0, ok;
     do {
       sc = []; mu = []; sg = []; z = [];
-      for (var i = 0; i < 5; i++) { var m = r.int(60, 85), g = r.pick([F(2), F(4), F(5), F(8), F(10)]); var s = m + Fr.toNum(g) * r.pick([-2, -1, 0, 1, 2]) + r.pick([0, 0, 1, -1]); sc.push(s); mu.push(m); sg.push(g); z.push(Fr.div(F(s - m), g)); }
+      for (var i = 0; i < 5; i++) { var m = r.int(60, 85), g = r.pick([F(2), F(4), F(5), F(8), F(10)]); var s = m + Fr.toNum(g) * r.pick([-2, -1, 0, 1, 2]) + r.pick([0, 0, 1, -1]); while (s > 100) s -= Fr.toNum(g); sc.push(s); mu.push(m); sg.push(g); z.push(Fr.div(F(s - m), g)); }
       var vals = z.map(Fr.toNum), srt = vals.slice().sort(function (a, b) { return b - a; }); ok = srt[0] > srt[1] && srt[3] > srt[4]; tries++;
     } while (!ok && tries < 40);
     var best = 0, worst = 0; for (i = 1; i < 5; i++) { if (Fr.lt(z[best], z[i])) best = i; if (Fr.lt(z[i], z[worst])) worst = i; }

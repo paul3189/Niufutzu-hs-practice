@@ -146,7 +146,8 @@
     var xs = F(qq, 1 - pp), c = Fr.sub(F(a1), xs);
     if (c.n === 0) a1 += 1, c = Fr.sub(F(a1), xs);
     var ak = Fr.add(Fr.mul(c, F(ipow(pp, k - 1))), xs);
-    var gen = termF(c, '\\cdot' + signedNum(pp) + '^{\\,n-1}', true) + termF(xs, '', false);
+    var pwT = signedNum(pp) + '^{\\,n-1}';                  /* c=±1 時不寫「1·」，也不能只剩 \cdot */
+    var gen = (c.d === 1 && Math.abs(c.n) === 1 ? (c.n < 0 ? '-' : '') + pwT : termF(c, '\\cdot' + pwT, true)) + termF(xs, '', false);
     return { q: '設數列 ' + T(sq(AN)) + ' 滿足 ' + T('a_1=' + a1) + '、' + T(AN1 + '=' + term(pp, 'a_n', true) + term(qq, '', false)) + '。求一般項 ' + T(AN) + ' 與 ' + T('a_{' + k + '}') + '。',
              a: T(AN + '=' + gen) + '，' + T('a_{' + k + '}=' + Fr.tex(ak)),
              h: '不動點 $x^\\ast=' + Fr.tex(xs) + '$（解 $x=' + term(pp, 'x', true) + term(qq, '', false) + '$）；$\\langle a_n-x^\\ast\\rangle$ 是公比 $' + pp + '$ 的等比數列。',
@@ -170,7 +171,7 @@
   L1.recurProd = function (r) {
     var kind = r.int(0, 3), m = r.int(6, 12), a1 = r.pick([1, 2, 3, 6]);
     var ratio = ['\\dfrac{n+1}{n}', '\\dfrac{n+2}{n}', '\\dfrac{n}{n+1}', '\\dfrac{n}{n+2}'][kind];
-    var genTex = [a1 === 1 ? 'n' : a1 + 'n', a1 % 2 === 0 ? (a1 / 2 === 1 ? 'n(n+1)' : (a1 / 2) + 'n(n+1)') : '\\dfrac{' + a1 + 'n(n+1)}{2}', a1 === 1 ? '\\dfrac1n' : '\\dfrac{' + a1 + '}{n}', '\\dfrac{' + (2 * a1) + '}{n(n+1)}'][kind];
+    var genTex = [a1 === 1 ? 'n' : a1 + 'n', a1 % 2 === 0 ? (a1 / 2 === 1 ? 'n(n+1)' : (a1 / 2) + 'n(n+1)') : '\\dfrac{' + (a1 === 1 ? '' : a1) + 'n(n+1)}{2}', a1 === 1 ? '\\dfrac1n' : '\\dfrac{' + a1 + '}{n}', '\\dfrac{' + (2 * a1) + '}{n(n+1)}'][kind];
     var am = [F(a1 * m), F(a1 * m * (m + 1), 2), F(a1, m), F(2 * a1, m * (m + 1))][kind];
     return { q: '設 ' + T('a_1=' + a1) + '，且 ' + T(AN1 + '=' + ratio + '\\,a_n') + '（' + T('n\\ge1') + '）。求一般項 ' + T(AN) + ' 與 ' + T('a_{' + m + '}') + '。',
              a: T(AN + '=' + genTex) + '，' + T('a_{' + m + '}=' + Fr.tex(am)),
@@ -213,7 +214,7 @@
     var val = SUM(1, N, function (k) { return al * k * k + be * k + ga; });
     return { q: '計算 ' + T(sigma(1, N, body)) + '。',
              a: T(String(val)),
-             h: '拆成 $' + (al ? al + '\\sum k^2' : '') + (al && be ? (be > 0 ? '+' : '') : '') + (be ? (Math.abs(be) === 1 ? (be < 0 ? '-' : '') : be) + '\\sum k' : '') + (ga ? (ga > 0 ? '+' : '-') + Math.abs(ga) + '\\cdot' + N : '') + '$，套 $\\sum k=\\frac{n(n+1)}2$、$\\sum k^2=\\frac{n(n+1)(2n+1)}6$。',
+             h: '拆成 $' + (al ? (al === 1 ? '' : al) + '\\sum k^2' : '') + (al && be ? (be > 0 ? '+' : '') : '') + (be ? (Math.abs(be) === 1 ? (be < 0 ? '-' : '') : be) + '\\sum k' : '') + (ga ? (ga > 0 ? '+' : '-') + Math.abs(ga) + '\\cdot' + N : '') + '$，套 $\\sum k=\\frac{n(n+1)}2$、$\\sum k^2=\\frac{n(n+1)(2n+1)}6$。',
              p: { N: N, al: al, be: be, ga: ga, ans: val } };
   };
 
@@ -382,18 +383,18 @@
     var p = r.int(1, zero - 1), q = m + n + 1 - p;
     return { q: '設等差數列 ' + T(sq(AN)) + ' 的公差 ' + T('d\\lt0') + '，且 ' + T('S_{' + m + '}=S_{' + n + '}') + '。(1) 求 ' + T('a_{' + p + '}+a_{' + q + '}') + ' 與 ' + T('S_{' + (m + n) + '}') + '。(2) 求使 ' + T('S_k') + ' 最大的 ' + T('k') + '。(3) 若又知 ' + T('a_1=' + A) + '，求 ' + T('d') + ' 與 ' + T('S_k') + ' 的最大值。',
              a: '(1) 皆為 ' + T('0') + '　(2) ' + T('k=' + kmax) + '　(3) ' + T('d=' + d) + '，最大值 ' + T(String(Smax)),
-             h: '$S_{' + m + '}=S_{' + n + '}$ ⟹ $a_{' + (m + 1) + '}+\\cdots+a_{' + n + '}=0$，這 $' + (n - m) + '$ 項的正中間 $a_{' + zero + '}=0$；對稱軸在 $' + zero + '$，故 $a_p+a_q=0$ 只要 $p+q=' + (m + n + 1) + '$。',
+             h: '$S_{' + m + '}=S_{' + n + '}$ ⟹ $a_{' + (m + 1) + '}+\\cdots+a_{' + n + '}=0$，這 $' + (n - m) + '$ 項首尾兩兩配對、每一對的和都是 $0$，正中間那一對是 $a_{' + kmax + '}+a_{' + (kmax + 1) + '}=0$（$d\\lt0$ ⟹ $a_{' + kmax + '}\\gt0\\gt a_{' + (kmax + 1) + '}$）；對稱軸在 $' + zero + '$，故 $a_p+a_q=0$ 只要 $p+q=' + (m + n + 1) + '$。',
              p: { m: m, n: n, p: p, q: q, A: A, ans: { kmax: kmax, d: d, Smax: Smax } } };
   };
 
   /* 2-2 前 n 項和之比 ⟹ 第 k 項之比 */
   L2.sumRatio = function (r) {
     var a = r.int(1, 5), b = r.int(-3, 7), c = r.int(1, 5), d = r.int(-3, 9), k = r.int(4, 15);
-    if (a * d === b * c) d += 1;
+    while (a * d === b * c || (d < 0 && (-d) % c === 0)) d += 1;   /* 比值不能是常數；cn+d 不能在某個正整數 n 為 0（否則 T_n=0） */
     var num = a * (2 * k - 1) + b, den = c * (2 * k - 1) + d; if (den <= 0) den = c * (2 * k - 1) + (d = Math.abs(d) + 1);
     var g = gcd(num, den) || 1;
     return { q: '兩等差數列 ' + T(sq(AN)) + '、' + T(sq('b_n')) + ' 的前 ' + T('n') + ' 項和分別為 ' + T('S_n,T_n') + '，且 ' + T('\\dfrac{S_n}{T_n}=\\dfrac{' + lin(a, b) + '}{' + lin(c, d) + '}') + '。求 ' + T('\\dfrac{a_{' + k + '}}{b_{' + k + '}}') + '。',
-             a: T('\\dfrac{' + (num / g) + '}{' + (den / g) + '}'),
+             a: T(den / g === 1 ? String(num / g) : '\\dfrac{' + (num / g) + '}{' + (den / g) + '}'),
              h: '$a_k=\\dfrac{S_{2k-1}}{2k-1}$（奇數項的和＝項數 $\\times$ 中間項），所以第 $' + k + '$ 項之比＝前 $' + (2 * k - 1) + '$ 項和之比。',
              p: { a: a, b: b, c: c, d: d, k: k, ans: [num / g, den / g] } };
   };
@@ -430,7 +431,7 @@
     var gen = ((A * (b - 1)) === 1 ? '' : (A * (b - 1)) + '\\cdot') + b + '^{\\,n-1}';
     return { q: '已知數列 ' + T(sq(AN)) + ' 的前 ' + T('n') + ' 項和為 ' + T('S_n=' + Sn) + '。求 ' + T('a_1') + '、' + T('a_{' + m + '}') + '，並判斷 ' + T(sq(AN)) + ' 是否為等比數列。',
              a: T('a_1=' + a1) + '、' + T('a_{' + m + '}=' + am) + '；' + (isGP ? '是等比數列（' + T('a_n=' + gen) + ' 對所有 ' + T('n') + ' 成立）' : '不是（' + T('n\\ge2') + ' 時 ' + T('a_n=' + gen) + '，但 ' + T('a_1=' + a1 + '\\ne' + (A * (b - 1))) + '）'),
-             h: '$a_n=S_n-S_{n-1}$ 只對 $n\\ge2$ 成立；$S_n$ 的常數項 $' + C + '$ 就是第一項脫隊的原因。',
+             h: '$a_n=S_n-S_{n-1}$ 只對 $n\\ge2$ 成立，$a_1=S_1$ 要另外算。$S_n=A\\cdot b^{\\,n}+C$ 型只有 $C=-A$ 時第一項才合得起來；這裡 $A=' + A + '$、$C=' + C + '$，' + (isGP ? '恰好 $C=-A$，第一項合得起來。' : '$C\\ne-A$，第一項脫隊。'),
              p: { A: A, b: b, C: C, m: m, ans: { a1: a1, am: am, isGP: isGP } } };
   };
 
@@ -526,10 +527,15 @@
     var a = [a1]; for (var i = 1; i < m; i++) a.push(p * a[i - 1] + ipow(q, i));
     /* a_n = (a1 - q/(q-p)) p^{n-1} + q^n/(q-p) */
     var c = Fr.sub(F(a1), F(q, q - p)), e = F(1, q - p);
-    var gen = termF(c, '\\cdot' + p + '^{\\,n-1}', true) + termF(e, '\\cdot' + q + '^{\\,n}', false);
+    var cf = function (f, pwTex, first) {        /* 係數 0 ⟹ 整項不寫；±1 ⟹ 不寫「1·」 */
+      if (f.n === 0) return '';
+      var sgn = f.n < 0 ? '-' : (first ? '' : '+'), ab = F(Math.abs(f.n), f.d);
+      return sgn + (Fr.eq(ab, F(1)) ? '' : Fr.tex(ab, true) + '\\cdot') + pwTex;
+    };
+    var g1 = cf(c, p + '^{\\,n-1}', true), gen = g1 + cf(e, q + '^{\\,n}', g1 === '');
     return { q: '設 ' + T('a_1=' + a1) + '，且 ' + T(AN1 + '=' + p + 'a_n+' + q + '^{\\,n}') + '。(1) 求 ' + T('a_2,a_3') + '。(2) 求 ' + T('a_{' + m + '}') + '。(3) 求一般項 ' + T(AN) + '。',
              a: '(1) ' + T(a[1] + ',\\ ' + a[2]) + '　(2) ' + T(String(a[m - 1])) + '　(3) ' + T(AN + '=' + gen),
-             h: '兩邊除以 $' + q + '^{\\,n+1}$，令 $b_n=\\dfrac{a_n}{' + q + '^{\\,n}}$ 得 $b_{n+1}=\\dfrac{' + p + '}{' + q + '}b_n+\\dfrac1{' + q + '}$，回到一階線性遞迴（不動點 $\\dfrac1{' + (q - p) + '}$）。',
+             h: '兩邊除以 $' + q + '^{\\,n+1}$，令 $b_n=\\dfrac{a_n}{' + q + '^{\\,n}}$ 得 $b_{n+1}=\\dfrac{' + p + '}{' + q + '}b_n+\\dfrac1{' + q + '}$，回到一階線性遞迴（不動點 $' + Fr.tex(F(1, q - p)) + '$）。',
              p: { p: p, q: q, a1: a1, m: m, ans: { a2: a[1], a3: a[2], am: a[m - 1], c: fr2(c), e: fr2(e) } } };
   };
 
@@ -552,7 +558,7 @@
     else if (kind === 1) { rel = 'S_n=2a_n-' + c; a1 = F(c); ratio = F(2); }
     else { rel = 'S_n=3a_n-' + c; a1 = F(c, 2); ratio = F(3, 2); }
     var a2 = Fr.mul(a1, ratio), a3 = Fr.mul(a2, ratio);
-    var gen = Fr.tex(a1) + '\\cdot\\left(' + Fr.tex(ratio) + '\\right)^{n-1}';
+    var gen = (Fr.eq(a1, F(1)) ? '' : Fr.tex(a1) + '\\cdot') + '\\left(' + Fr.tex(ratio) + '\\right)^{n-1}';
     if (kind === 1) gen = c + '\\cdot2^{\\,n-1}';
     return { q: '設數列 ' + T(sq(AN)) + ' 的前 ' + T('n') + ' 項和為 ' + T('S_n') + '，且對所有正整數 ' + T('n') + '，' + T(rel) + ' 恆成立。求 ' + T('a_1,a_2,a_3') + ' 與一般項 ' + T(AN) + '。',
              a: T('a_1=' + Fr.tex(a1) + ',\\ a_2=' + Fr.tex(a2) + ',\\ a_3=' + Fr.tex(a3)) + '，' + T(AN + '=' + gen),
