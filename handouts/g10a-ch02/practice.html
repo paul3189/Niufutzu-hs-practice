@@ -510,16 +510,20 @@ $\overline{PC}=\sqrt5$，$r=1$，切線長 $t=\sqrt{5-1}=2$。斜邊上的高 $=
 $$\frac{|3a-10-3a|}{\sqrt{a^2+1}}=\frac{10}{\sqrt{a^2+1}}=\sqrt{10}\Rightarrow a^2+1=10\Rightarrow a=3,\ b=-9$$
 <span class="note-sm">檢查切點真的在右枝（$x\ge3$）：切點是圓心在直線 $3x-y-9=0$ 上的垂足 $(6,9)$，$6\ge3$ ✔；左枝由對稱得 $(0,9)$。</span></div></div>
 
-<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">切線段長固定、求最陡 → 用圓的參數點列「落地」條件，化成 sin 的二次方程</span><span class="src">台中一中 113上 填 14</span></div>
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">切線段長固定、求最陡 → 畢氏定理先定出 Q，再用「到 O 距離 2、到 Q 距離 4」兩式相減求 P</span><span class="src">台中一中 113上 填 14</span></div>
 <div class="fxq">「公雞溜滑梯」：公雞的頭是與地面相切的圓 $O$，半徑 $2$。$P$ 在圓上、$Q$ 在地面上，$\overline{PQ}$ 是圓的切線（切點 $P$），且 $\overline{PQ}=4$。要使 $\overline{PQ}$ 與地面的夾角 $\theta$ 最大，求此時 $P$ 離地面的高度。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac{16}5$</div>
-<div class="fxs"><div class="move">招式：$\sin\theta=\dfrac{P\text{ 的高度}}{4}$，所以「$\theta$ 最大」＝「$P$ 最高」；把 $P$ 設成 $(2\cos\varphi,\ 2+2\sin\varphi)$，切線方向 $\perp\overrightarrow{OP}$。</div>
-地面 $y=0$，$O(0,2)$，$P=(2\cos\varphi,2+2\sin\varphi)$，切線的單位方向 $\pm(-\sin\varphi,\cos\varphi)$。$Q=P\pm4(-\sin\varphi,\cos\varphi)$ 要落在 $y=0$：
-$$2+2\sin\varphi\pm4\cos\varphi=0\ \Longrightarrow\ (1+\sin\varphi)^2=4\cos^2\varphi=4(1-\sin^2\varphi)$$
-$$5\sin^2\varphi+2\sin\varphi-3=0\Rightarrow\sin\varphi=\frac35\ \text{或}\ -1$$
-$P$ 的高度 $=2+2\sin\varphi$，最大為 $2+\dfrac65=\dfrac{16}5$（$\sin\varphi=-1$ 是 $P$ 落在地面的退化情形）。<br>
-<span class="note-sm">直覺：$\overline{PQ}$ 固定為 $4$，繞著圓「滾」，$P$ 最高時直角 $\triangle OPQ$ 的斜邊 $\overline{OQ}=\sqrt{20}$ 剛好讓 $Q$ 落地。</span></div></div>
+<div class="fxs"><div class="move">招式：切線 ⟹ $\overline{OP}\perp\overline{PQ}$，直角 $\triangle OPQ$ 的斜邊 $\overline{OQ}$ 被畢氏定理固定 ⟹ $Q$ 的位置先定下來；再設 $P(x,y)$，用「$\overline{OP}=2$、$\overline{PQ}=4$」兩個距離條件列式，相減消去平方項。</div>
+地面 $y=0$，圓與地面相切於 $T(0,0)$，圓心 $O(0,2)$。設 $Q(q,0)$：
+$$\overline{OQ}^2=\overline{OP}^2+\overline{PQ}^2=4+16=20\ \Longrightarrow\ q^2+4=20\ \Longrightarrow\ q=\pm4$$
+左右對稱，取 $Q(4,0)$。設 $P(x,y)$：
+$$x^2+(y-2)^2=4,\qquad (x-4)^2+y^2=16$$
+展開得 $x^2+y^2-4y=0$ 與 $x^2+y^2-8x=0$，相減：$8x-4y=0\Rightarrow y=2x$。代回第一式：
+$$x^2+4x^2-8x=0\ \Longrightarrow\ 5x^2-8x=0\ \Longrightarrow\ x=0\ \text{或}\ \frac85$$
+$P=(0,0)$ 或 $\left(\dfrac85,\dfrac{16}5\right)$。前者 $P$ 就是 $T$，$\overline{PQ}$ 貼在地面上、夾角 $0^\circ$（退化情形）；後者才是滑梯，夾角最大，此時 $P$ 的高度 $=\dfrac{16}5$。<br>
+<span class="note-sm">檢查：$\overline{PQ}$ 的斜率 $=\dfrac{16/5}{8/5-4}=-\dfrac43$、$\overline{OP}$ 的斜率 $=\dfrac{16/5-2}{8/5}=\dfrac34$，相乘 $=-1$ ✔（滑梯的坡度是 $\frac43$，藏著一個 $3$-$4$-$5$ 三角形）。<br>
+幾何看法：圓外一點到圓的兩條切線段等長。從 $Q$ 出發的一條切線就是地面（切點 $T$，$\overline{QT}=4$），另一條才是滑梯——所以 $P$ 是 $T$ 對直線 $OQ$：$x+2y-4=0$ 的對稱點，用本章的鏡射做法也得到 $\left(\dfrac85,\dfrac{16}5\right)$。</span></div></div>
 
 <div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">反射後打中圓盤 → 把圓盤鏡射到桌外，變成「射線到圓心距離 ≤ 半徑」</span><span class="src">台中女中 113上 填 14</span></div>
 <div class="fxq">撞球桌為矩形 $ABCD$，$\overline{AB}=30$、$\overline{AD}=10$，圓盤半徑 $3$，放在桌子正中央。由桌角 $A$ 朝 $\overline{CD}$ 邊打球，經 $\overline{CD}$ 反射後若打中圓盤即過關。若瞄準 $\overline{CD}$ 邊上距離 $D$ 點 $k$ 單位長的位置，求 $k$ 的範圍。</div>
