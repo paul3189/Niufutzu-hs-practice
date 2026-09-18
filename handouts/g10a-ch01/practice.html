@@ -210,6 +210,8 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 .diag .fixset{margin-top:6px}
 .myrec .mr-file{display:none}
 @media print{.gcard .gc,.diag{display:none!important}}
+/* 手機：固定題的長算式在自己的框裡橫捲 */
+@media(max-width:640px){.fxq,.fxa,.fxs{overflow-x:auto;overflow-y:hidden;max-width:100%;position:relative}}
 </style>
 <link rel="stylesheet" href="../../assets/theme-cow.css">
 </head>
