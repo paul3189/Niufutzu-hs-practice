@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二章 空間中的直線與平面 ── 分級練習本｜高二下</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+
+/* ── 檢測／紀錄／類似題（2026-09-17 個人化）── */
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.fix-btns .fix-meta{font-size:.8rem;color:#aaa;margin-right:auto}
+.fixset ol li .mark{margin-left:8px;white-space:nowrap}
+.fixset ol li .mark button{padding:0 8px;font-size:.8rem;border-radius:6px}
+.fixset ol li.ok{background:#eef7f0;border-radius:6px}.fixset ol li.ng{background:#fdecec;border-radius:6px}
+.fixset ol li.ok .mark button[data-m="1"],.fixset ol li.ng .mark button[data-m="0"]{background:#333;color:#fff;border-color:#333}
+.fix-foot{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.88rem;color:var(--muted)}
+.fix-foot .submit{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .fix-foot .submit{border-color:var(--l2);color:var(--l2)}#L3 .fix-foot .submit{border-color:var(--l3);color:var(--l3)}
+.fix-result{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff8e6;border:1px solid #f3dea0;font-size:.93rem}
+.fix-result.on{display:block}
+button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radius:999px;border:1px solid var(--l1);color:var(--l1);background:#fff;cursor:pointer;font:inherit;font-size:.85rem}
+.gcard.flash,.fx.flash{box-shadow:0 0 0 3px #f0c040}
+.myrec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.myrec .mr-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.myrec .mr-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.myrec .mr-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.myrec .mr-advice{margin:10px 0 4px;font-size:.93rem}
+.myrec table.mr-t{border-collapse:collapse;width:100%;font-size:.88rem;margin-top:10px}
+.myrec .mr-t th,.myrec .mr-t td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:middle}
+.myrec .bar{display:inline-block;height:8px;background:#d9534f;border-radius:4px;vertical-align:middle}
+.myrec tr.weak td:first-child{color:#b3261e;font-weight:700}
+.myrec td button.go{padding:1px 8px;font-size:.8rem}
+.simbox{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px dashed var(--l3);background:#fffaf5}
+.simbox .st{font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between}
+.simbox .sq{margin:6px 0}
+.simbox .gh,.simbox .ga{display:none;margin-top:6px;padding:6px 10px;border-radius:6px;font-size:.93rem}
+.simbox .gh{background:#fff8e6;border:1px solid #f3dea0}.simbox .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.simbox .gh.on,.simbox .ga.on{display:block}
+.simbox .sbtn{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+.simbox button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.fx button.simbtn{border-color:var(--l3);color:var(--l3);font-weight:700}
+#printArea{display:none}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px;position:relative}
+.fx-scroll{overflow-x:auto;position:relative}
+@media print{body.print-one .wrap{display:none}body.print-one #printArea{display:block}#printArea h1{font-size:1.15rem;margin:0 0 4px}#printArea .pmeta{margin:0 0 10px;color:#444}#printArea ol li{margin:12px 0;break-inside:avoid}#printArea h2{font-size:1rem;break-before:page}.fixset .mark,.fix-foot,.fix-result,.simbox,.myrec{display:none!important}}
+
+/* ── 第二版：信心評分、錯因、錯題本、混合檢測、模擬卷（2026-09-18）── */
+.fixset ol li.qi{position:relative}
+.fixset .conf,.rvi .conf{display:block;margin:4px 0 2px;font-size:.82rem;color:var(--muted)}
+.conf .cl,.cause .cl{margin-right:4px}
+.conf button,.cause button{padding:0 9px;font-size:.8rem;border-radius:999px;margin-right:4px}
+.conf button.sel{background:#1f5fa8;color:#fff;border-color:#1f5fa8}
+.cause{display:none;margin-left:8px;font-size:.82rem;color:var(--muted)}
+.fixset ol li.ng .cause,.rvi li.ng .cause{display:inline-block}
+.cause button.sel{background:#b3261e;color:#fff;border-color:#b3261e}
+.fixset:not(.show) .mark,.rvi li:not(.show) .mark{display:none}
+.fix-note{display:none;margin:6px 0;padding:8px 12px;border-radius:8px;background:#fdecec;border:1px solid #f0b8b8;font-size:.9rem}
+.fix-note.on{display:block}
+.hcw{color:#b3261e;font-weight:700}
+button.go.read{border-color:#8a4450;color:#8a4450}
+.fix-btns .tstart{border-color:var(--l4);color:var(--l4);font-weight:700}
+.fix-btns .tclock{font-weight:700;color:var(--l4);min-width:3.5em}
+.review{background:#fff;border:1px solid #f0c9a0;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.review .rv-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.review .rv-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.review .rv-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid var(--l3);color:var(--l3);background:#fff;cursor:pointer;font-weight:700}
+.rvi{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:10px 0;background:#fffdf9}
+.rvi .rvh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+.rvi .rvh .tag{font-size:.75rem;padding:1px 8px;border-radius:999px;background:#eee;color:#555}
+.rvi .rvh .tag.hc{background:#fdecec;color:#b3261e;font-weight:700}
+.rvi .rvh .rvm{margin-left:auto;color:#aaa;font-size:.78rem}
+.rvi ol{margin:6px 0 0;padding-left:22px}
+.rvi li{margin:6px 0}
+.rvi li .rl{font-size:.75rem;color:var(--l3);font-weight:700;margin-right:6px}
+.rvi li .fa{display:none;color:var(--l2);font-size:.92rem;margin-left:6px}
+.rvi li.show .fa{display:inline}
+.rvi li.ok{background:#eef7f0;border-radius:6px}.rvi li.ng{background:#fdecec;border-radius:6px}
+.rvi li .rvans{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer;margin-left:6px}
+.rv-later{font-size:.88rem;color:var(--muted);margin-top:8px}
+.rv-later ul{margin:4px 0 0 18px;padding:0}
+.must.flash{box-shadow:0 0 0 3px #f0c040}
+@media print{.conf,.cause,.fix-note,.review,.tstart,.tclock{display:none!important}}
+
+/* ── 第三版：解題步驟、兩層提示、漸淡練習（2026-09-18）── */
+.gcard button.steps{border-color:#6a3ea1;color:#6a3ea1}
+.gcard .gs,.rvi .gs{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#f4effa;border:1px solid #d8c8ee}
+.gcard .gs.on,.rvi .gs.on{display:block}
+.gcard .gh .more{font:inherit;font-size:.8rem;padding:1px 10px;border-radius:999px;border:1px solid #c9a227;background:#fff;cursor:pointer;margin-left:6px}
+ol.steps{margin:4px 0 0;padding-left:22px}
+ol.steps li{margin:4px 0}
+ol.steps li.blank .bl{color:#8a4450;font-weight:700}
+ol.steps li.blank .hid,.fin.hid{display:none}
+.fdi.open ol.steps li.blank .bl{display:none}
+.fdi.open ol.steps li.blank .hid,.fdi.open .fin.hid{display:inline}
+.fin{margin-top:6px;font-weight:700;color:#2e7d4f}
+.fadeset{background:#fff;border:1px solid #d8c8ee;border-radius:12px;padding:10px 14px;margin:8px 0 12px}
+.fadeset .fd-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-bottom:4px}
+.fadeset details.fd{border-top:1px dashed #e0d6ee;padding:6px 0}
+.fadeset details.fd summary{cursor:pointer;font-weight:700;color:#6a3ea1;font-size:.93rem}
+.fadeset .fdi{margin:8px 0 10px 8px;padding:8px 10px;border-left:3px solid #d8c8ee;font-size:.93rem}
+.fadeset .fdt{font-weight:700;color:#6a3ea1;font-size:.85rem}
+.fadeset .fdt .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:6px}
+.fadeset .fq{margin:4px 0 6px}
+.fadeset button.reveal{font:inherit;font-size:.82rem;padding:2px 12px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-top:4px}
+.rvi button.rvsteps{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-left:6px}
+@media print{.fadeset,.gcard .gs{display:none!important}}
+
+/* ── 第四版：對照題、先備診斷、精熟狀態、匯出（2026-09-18）── */
+.gcard button.contrast{border-color:#b3641a;color:#b3641a}
+.gcard .gc{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#fff7f0;border:1px solid #f0c9a0}
+.gcard .gc.on{display:block}
+.gc-h{font-size:.88rem;color:#8a4a10;margin-bottom:6px}
+.gc-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:620px){.gc-pair{grid-template-columns:1fr}}
+.gc-item{background:#fff;border:1px solid #f0d9c0;border-radius:8px;padding:6px 8px}
+.gc-t{font-weight:700;color:#b3641a;font-size:.85rem}
+.gc-t .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:4px}
+.gc-a,.gc-why{display:none;margin-top:6px}
+.gc.open .gc-a{display:block;color:var(--l1);font-weight:700}
+.gc.open .gc-why{display:block;padding:6px 10px;border-radius:6px;background:#fff8e6;border-left:4px solid #e8b94a}
+.gc-btn{margin-top:6px;display:flex;gap:6px}
+.fixset .fix-status{flex-basis:100%;font-size:.82rem;color:var(--muted);margin-top:2px}
+.fixset .fix-status.half{color:#8a6a10}.fixset .fix-status.ok{color:#2e7d4f;font-weight:700}
+.pre-list{margin:6px 0 0 18px;padding:0}.pre-list li{margin:4px 0}
+.diag{background:#fff;border:2px dashed #6a3ea1;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.diag h3.sec{margin-top:4px;border-color:#6a3ea1}
+.diag .fixset{margin-top:6px}
+.myrec .mr-file{display:none}
+@media print{.gcard .gc,.diag{display:none!important}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第二章 空間中的直線與平面 ── 分級練習本</h1>
+  <div class="sub">高二下・配合主講義 第 1 節 平面方程式、第 2 節 點到平面的距離、第 3 節 空間中的直線方程式、第 4 節 點到直線與兩直線的距離、第 5 節 對稱、投影與綜合應用。五個程度、一本練習本：L1、L2 的題目可以無限生成，L3–L5 是各校段考、大考與教甄的固定題。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・科學班・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>開始前先做上方的<b>先備診斷 5 題</b>，有錯的先補。L1、L2 每張卡片按「新題」就換一題（數字重新抽）；「⚖ 對照題」一次給兩題只差一個關鍵特徵，先說出差在哪再揭曉。「提示」分兩層：先只告訴你這是哪一型、第一步做什麼，還是不會再按一次才給帶數字的提示；「答案」對答案；L1 還有「📘 步驟」給完整解法。每小節的<b>漸淡練習</b>每型三題：完整示範 → 自己補最後一步 → 只給第一步，適合還不會下手的同學。</li>
+    <li>每小節最後是<b>檢測 10 題</b>：先在紙上作答，每題按「有把握／不確定／猜的」，全部評完才看答案；對完每題標 ○／✗，錯的選錯因（不會下手、公式用錯、計算錯、看錯題），再按「記錄」。系統會分成<b>該回頭讀</b>與<b>該多算幾題</b>兩種建議。「換一組類似題」換數字重測，「列印本組」只印這一組。</li>
+    <li>每級最後有<b>混合檢測</b>（全章題型打亂，練「判斷這是哪一型」），L3 之後有<b>段考模擬卷</b>（L2＋L3 混合、計時 50 分鐘、交卷才看答案）。</li>
+    <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（10,250 題抽樣，全部用分數與根式精確重算一次）；固定題全數人工＋電腦重算。<b>三平面的位置關係一律用消去法分類、過交線的平面用「交線上兩點」的通法</b>——矩陣、克拉瑪公式、平面族公式、球面都超綱（矩陣與克拉瑪公式是本冊第四章、平面族公式課綱全文 0 次、球面是數學 B 的內容），本書全部不用。</li>
+  </ol>
+</div>
+
+<div class="diag" id="diag">
+  <h3 class="sec">🧭 章首先備診斷 5 題（開始前先做）</h3>
+  <div class="note">這章一直會用到空間向量的內積與外積、三階行列式與體積（高二下第一章）、二元／三元一次聯立方程式的消去法（國中／本冊第四章之前只用消去法）、平面上點到直線的距離（高一上第二章）、根式化簡（高一上第一章）。5 題都對再往下；有錯的先按連結回去補——法向量、交線、三種距離每一節都靠它們。</div>
+  <div class="fixset" data-tier="L0" data-keys="*" data-seed="601" data-n="5"></div>
+</div>
+
+<div class="review" id="review">
+  <div class="rv-h"><b>📅 今日複習（錯題本）</b><span class="rv-sum"></span><button class="rv-toggle">開始複習</button></div>
+  <div class="rv-body"></div>
+</div>
+
+<div class="myrec" id="myrec">
+  <div class="mr-h"><b>📊 我的練習紀錄</b><span class="mr-sum"></span><button class="mr-toggle">展開</button><button class="mr-copy">📋 複製摘要給老師</button><button class="mr-export">⬇ 匯出</button><button class="mr-import">⬆ 匯入</button><input type="file" class="mr-file" accept=".json,application/json"><button class="mr-clear">清除紀錄</button></div>
+  <div class="mr-body" hidden></div>
+  <div class="note-sm" style="margin-top:6px">紀錄只存在這台裝置的瀏覽器裡（不會上傳）；換裝置或清除瀏覽資料就會消失，可用「匯出／匯入」搬家。</div>
+</div>
+
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>看到平面方程式不知道係數就是法向量、直線的參數式與比例式換不過去、三種距離公式會混在一起的同學。</div>
+  <div><b>目標</b>25 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
+</div>
+
+<h3 class="sec">1 平面方程式怎麼寫</h3>
+<div class="must">先要會：<b>法向量 $\vec n=(a,b,c)$ 就是 $ax+by+cz=d$ 的係數</b>，點＋法向量代進去定 $d$；<b>三點用 $\overrightarrow{AB}\times\overrightarrow{AC}$ 當法向量</b>，答案一律化成「最簡整數、首項為正」；<b>與 $x$ 軸的交點＝令 $y=z=0$</b>；含 $z$ 軸 ⟹ 形如 $ax+by=0$、平行 $xy$ 平面 ⟹ 形如 $z=k$；<b>四點共平面</b>就是第四點也滿足前三點的平面方程式。</div>
+<div class="gen-grid" data-tier="L1" data-keys="planePointNormal,planeThreePts,planeIntercepts,planeSpecial,twoPlanesRel,coplanarK"></div>
+<div class="fadeset" data-tier="L1" data-keys="planePointNormal,planeThreePts,planeIntercepts,planeSpecial,twoPlanesRel,coplanarK" data-seed="9101"></div>
+<div class="fixset" data-tier="L1" data-keys="planePointNormal,planeThreePts,planeIntercepts,planeSpecial,twoPlanesRel,coplanarK" data-seed="8101"></div>
+
+<h3 class="sec">2 點到平面的距離、投影與對稱</h3>
+<div class="must">先要會：<b>$d=\dfrac{|ax_0+by_0+cz_0-d|}{\sqrt{a^2+b^2+c^2}}$</b>；兩平行平面要<b>先把左式化成完全一樣</b>再比常數；<b>投影點令 $H=P+t\vec n$ 代入平面解 $t$，對稱點 $=P+2t\vec n$</b>；已知距離求未知數一定有<b>兩解</b>（去絕對值）；三頂點的平面＋體積法 $h=\dfrac{3V}{S}$ 與距離公式必須一致。</div>
+<div class="gen-grid" data-tier="L1" data-keys="ptPlaneDist,parallelPlaneDist,planeProjSym,planeDistUnknown,tetraPlaneDist"></div>
+<div class="fadeset" data-tier="L1" data-keys="ptPlaneDist,parallelPlaneDist,planeProjSym,planeDistUnknown,tetraPlaneDist" data-seed="9201"></div>
+<div class="fixset" data-tier="L1" data-keys="ptPlaneDist,parallelPlaneDist,planeProjSym,planeDistUnknown,tetraPlaneDist" data-seed="8201"></div>
+
+<h3 class="sec">3 空間直線與它和平面的關係</h3>
+<div class="must">先要會：<b>參數式＝起點＋$t\vec d$</b>；比例式是消 $t$，<b>分母為 $0$ 那一項要改寫成 $y=y_0$</b>（兩個 $0$ 就寫兩條常數式）；比例式讀回點時 $x+2$ 要讀成 $x-(-2)$；<b>交點＝把參數式代入平面解 $t$</b>；先看 $\vec n\cdot\vec d$ 是不是 $0$，再看 $P_0$ 在不在平面上，才能分「相交／平行／在平面上」；<b>線面角用 $\sin$ 不是 $\cos$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="lineParamRatio,lineReadBack,lineTwoPts,linePlaneInt,linePlaneRel,linePlaneAngle"></div>
+<div class="fadeset" data-tier="L1" data-keys="lineParamRatio,lineReadBack,lineTwoPts,linePlaneInt,linePlaneRel,linePlaneAngle" data-seed="9301"></div>
+<div class="fixset" data-tier="L1" data-keys="lineParamRatio,lineReadBack,lineTwoPts,linePlaneInt,linePlaneRel,linePlaneAngle" data-seed="8301"></div>
+
+<h3 class="sec">4 點到直線與兩直線的距離</h3>
+<div class="must">先要會：<b>$d=\dfrac{|\overrightarrow{AP}\times\vec d|}{|\vec d|}$</b>；垂足令 $H=A+t\vec d$、由 $\overrightarrow{PH}\cdot\vec d=0$ 解 $t$；兩平行線距離＝其中一點到另一條的距離；<b>兩直線先看方向是否成比例，不成比例就算 $\det(\vec d_1,\vec d_2,\overrightarrow{P_1P_2})$</b>——只解前兩式就宣布相交是最典型的失分；<b>歪斜線距離 $=\dfrac{|\overrightarrow{P_1P_2}\cdot(\vec d_1\times\vec d_2)|}{|\vec d_1\times\vec d_2|}$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="ptLineDist,footPerp,parallelLineDist,twoLinesRel,skewLineDist"></div>
+<div class="fadeset" data-tier="L1" data-keys="ptLineDist,footPerp,parallelLineDist,twoLinesRel,skewLineDist" data-seed="9401"></div>
+<div class="fixset" data-tier="L1" data-keys="ptLineDist,footPerp,parallelLineDist,twoLinesRel,skewLineDist" data-seed="8401"></div>
+
+<h3 class="sec">5 對稱、反射與坐標化</h3>
+<div class="must">先要會：<b>對直線的對稱點＝先求垂足 $H$、再用 $P'=2H-P$</b>；對坐標平面的反射只把「缺席」的那個坐標變號，反射光線方向就是 $\overrightarrow{P'M}$；<b>立體圖形先以一個頂點為原點、三稜為三軸建坐標</b>，之後全部回到平面方程式與距離公式。</div>
+<div class="gen-grid" data-tier="L1" data-keys="symPtLine,mirrorReflect,boxCoord"></div>
+<div class="fadeset" data-tier="L1" data-keys="symPtLine,mirrorReflect,boxCoord" data-seed="9501"></div>
+<div class="fixset" data-tier="L1" data-keys="symPtLine,mirrorReflect,boxCoord" data-seed="8501" data-n="6"></div>
+
+
+<h3 class="sec">L1 混合檢測 12 題（全章 25 型打亂，練「判斷這是哪一型」）</h3>
+<div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
+  <div><b>目標</b>16 個段考主力型，依 31 份段考卷的出現率排序（平面方程式 22 卷、題組 10、點到平面距離 9、正立方體 9、兩平面交線 8、法向量 8、點到直線距離 7、平行平面 5、兩歪斜線距離 5、直線與平面關係 5、二面角 4、投影點 4、公垂線 4、外積 4、直線與平面交點 4、兩直線交點 4）。</div>
+  <div><b>通過標準</b>固定 12 題限時 40 分鐘做完，對 10 題以上。</div>
+</div>
+
+<h3 class="sec">平面、交線與距離的綜合：三平面、過交線的平面、角平分面、截線段、體積法、最大距離</h3>
+<div class="must">段考 31 卷中<b>平面方程式 22 卷、點到平面距離 9 卷、兩平面交線 8 卷、平行平面 5 卷、二面角 4 卷、四面體體積 3 卷、角平分 3 卷</b>。招式：<b>三平面用消去法分成「一點／一直線／空集合」</b>，第三式若是前兩式的組合就少一條有效方程式（常數也合就是交線，不合就沒有共同點）；<b>「過兩平面交線且過一點」用交線上取兩點＋該點＝三點決定平面的通法</b>；角平分面是 $\dfrac{|\cdot|}{|\vec n_1|}=\dfrac{|\cdot|}{|\vec n_2|}$ 去絕對值取 $\pm$（<b>兩解、且兩面互相垂直</b>）；被兩平行平面截的線段長一般大於兩平面的距離；含直線又垂直某平面 ⟹ $\vec n_F=\vec d\times\vec n$；「過定直線的平面到定點的最大距離」＝該點到那條直線的距離。</div>
+<div class="gen-grid" data-tier="L2" data-keys="threePlanesRel,planeThroughInter,bisectPlanes,chordTwoPlanes,tetraVolHeight,maxDistPlaneLine,planeContainLinePerp,interLineAxis"></div>
+
+<h3 class="sec">直線、投影與立體坐標化：公垂線段、角平分線、投影直線、正射影長、反射、最短路徑</h3>
+<div class="must">段考 31 卷中<b>點到直線距離 7 卷、兩歪斜線距離 5 卷、投影點 4 卷、公垂線 4 卷、正立方體 9 卷、長方體 3 卷、鏡面反射 3 卷、直線在平面投影 2 卷</b>。招式：<b>公垂線段令 $P=P_1+t\vec d_1$、$Q=P_2+s\vec d_2$（兩條線一定要用不同參數）</b>，兩個內積為 $0$ 解二元一次聯立，算完用「$\overrightarrow{PQ}\parallel\vec d_1\times\vec d_2$」雙重驗算；<b>角平分線方向一定先化單位向量再相加減</b>，$\vec d_1\cdot\vec d_2$ 的正負決定哪一條是銳角平分線；直線在平面上的投影用「投影兩個點」，交點本身就是現成的投影點；線段正射影長 $=\sqrt{\overline{AB}^2-(\text{沿法向量的分量})^2}$；<b>反射把平行 $\vec n$ 的分量變號</b>：$\vec v'=\vec v-\dfrac{2(\vec v\cdot\vec n)}{|\vec n|^2}\vec n$；同側兩點的最短路徑先作對稱點再連線；立體題一律先坐標化。</div>
+<div class="gen-grid" data-tier="L2" data-keys="commonPerpSeg,lineBisector,boxSkewDist,lineProjPlane,segProjPlane,rayReflectPlane,shortestPath,boxPlaneDist"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱；本級混合檢測 10 題連續兩輪全對。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過。</div>
+
+<div class="fx" id="L3-1" data-gen="axisTriDist"><div class="fxh"><span class="no">L3-1</span><span class="kw">三個點各在一條坐標軸上 → 設 ax+by+cz=d 代三點解出係數比，再套點到平面的距離</span><span class="src">華江高中 101下 選填 F</span></div>
+<div class="fxq">空間中有 $A(6,0,0)$、$B(0,-4,0)$、$C(0,0,-2)$ 與 $P(2,1,-1)$。求 $P$ 點到平面 $ABC$ 的距離（以最簡分數表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac57$</div>
+<div class="fxs"><div class="move">招式：三點分別落在 $x$、$y$、$z$ 軸上時不必算外積——設 $ax+by+cz=d$，代三點得 $6a=d$、$-4b=d$、$-2c=d$，取 $d=12$ 就一次讀出係數。</div>
+$d=12$ ⟹ $a=2$、$b=-3$、$c=-6$ ⟹ 平面 $E:2x-3y-6z=12$（代回三點：$12$、$12$、$12$ ✓）。<br>
+$d(P,E)=\dfrac{|2(2)-3(1)-6(-1)-12|}{\sqrt{4+9+36}}=\dfrac{|-5|}{7}=\dfrac57$。<span class="note-sm">$(2,-3,-6)$ 是常見的畢氏三元組向量，長度剛好 $7$，算完先檢查這件事可以少錯一次。</span></div></div>
+
+<div class="fx" id="L3-2" data-gen="parallelLineChoice"><div class="fxh"><span class="no">L3-2</span><span class="kw">直線與平面「沒有交點」 → 兩個條件缺一不可：方向向量與法向量內積 0（平行），而且直線上的點不在平面上（沒落在平面裡）</span><span class="src">建國中學 110下 單 1</span></div>
+<div class="fxq">設空間中平面 $E$ 的方程式為 $3x-y+2z=4$。若直線 $L$ 與平面 $E$ 平行（即沒有交點），試問 $L$ 的方程式可以是下列哪一個選項？<br>
+(1) $\dfrac{x-1}{3}=\dfrac{y+2}{-1}=\dfrac{z-3}{2}$　(2) $\dfrac{x+3}{1}=\dfrac{y-4}{2}$，$z=5$　(3) $\dfrac{x-3}{1}=\dfrac{y-3}{-1}=\dfrac{z+1}{-2}$　(4) $\dfrac{x-1}{-1}=\dfrac{y+2}{5}=\dfrac{z-2}{4}$　(5) $y$ 軸</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4)</div>
+<div class="fxs"><div class="move">招式：$\vec n=(3,-1,2)$。先算 $\vec n\cdot\vec v$：不等於 $0$ 就一定相交（直接刪）；等於 $0$ 再代一個點看在不在 $E$ 上——在，就是「$L$ 落在 $E$ 上」，那也有交點。</div>
+(1) $\vec v=(3,-1,2)=\vec n$ ⟹ $L\perp E$，相交。<br>
+(2) $\vec v=(1,2,0)$，$\vec n\cdot\vec v=3-2=1\ne0$ ⟹ 相交。<br>
+(3) $\vec v=(1,-1,-2)$，$\vec n\cdot\vec v=3+1-4=0$；但點 $(3,3,-1)$ 代入 $3(3)-3+2(-1)=4$ ⟹ $L$ 落在 $E$ 上，有無限多交點。<br>
+(4) $\vec v=(-1,5,4)$，$\vec n\cdot\vec v=-3-5+8=0$；點 $(1,-2,2)$ 代入 $3+2+4=9\ne4$ ⟹ 真的平行 ✓<br>
+(5) $y$ 軸方向 $(0,1,0)$，$\vec n\cdot\vec v=-1\ne0$ ⟹ 相交。</div></div>
+
+<div class="fx" id="L3-3" data-gen="lineTwoEqLen"><div class="fxh"><span class="no">L3-3</span><span class="kw">直線給成兩個方程式 → 先化成一個參數的點，再把長度條件寫成參數的方程式</span><span class="src">台中一中 112下 填 6</span></div>
+<div class="fxq">在坐標空間中，設 $O$ 為原點，且點 $P$ 為直線 $\begin{cases}x-3y=0\\z=0\end{cases}$ 與平面 $x+y=t$ 的交點。若 $\overline{OP}=\sqrt{10}$，則 $t=$ ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$t=\pm4$</div>
+<div class="fxs"><div class="move">招式：$z=0$、$x=3y$ ⟹ 直線上的點長成 $(3u,u,0)$，一個參數就寫完；長度條件先用，再回頭算 $t$。</div>
+$\overline{OP}^2=9u^2+u^2=10u^2=10$ ⟹ $u=\pm1$ ⟹ $P=(3,1,0)$ $\text{或}$ $(-3,-1,0)$。<br>
+代入 $x+y=t$：$t=4$ $\text{或}$ $t=-4$。<span class="note-sm">兩個答案都要寫——題目沒有限制 $t\gt0$。</span></div></div>
+
+<div class="fx" id="L3-4" data-gen="maxDistThroughPt"><div class="fxh"><span class="no">L3-4</span><span class="kw">平面過原點、法向量任意 → 點到平面的距離最大就是這個點到原點的長度（法向量轉到跟 OA 同向時取到）</span><span class="src">台中女中 112下 填 6</span></div>
+<div class="fxq">設 $a,b,c$ 為非零實數，試求點 $A(2,3,6)$ 到平面 $E:ax+by+cz=0$ 的最大距離為 ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$7$</div>
+<div class="fxs"><div class="move">招式：$E$ 通過原點 $O$，而 $O$ 在 $E$ 上 ⟹ $d(A,E)\le\overline{OA}$（垂線段永遠不長於斜線段）。等號在 $\overrightarrow{OA}\perp E$ 時成立。</div>
+$\overline{OA}=\sqrt{2^2+3^2+6^2}=7$。取 $(a,b,c)=(2,3,6)$ 時 $E:2x+3y+6z=0$，$d(A,E)=\dfrac{|4+9+36|}{7}=7$ ⟹ 最大距離 $=7$。<span class="note-sm">用公式硬推也行：$d=\dfrac{|2a+3b+6c|}{\sqrt{a^2+b^2+c^2}}\le7$ 正是柯西不等式。</span></div></div>
+
+<div class="fx" id="L3-5" data-gen="parPlanesScaled"><div class="fxh"><span class="no">L3-5</span><span class="kw">兩平行平面距離 → 先把兩式的法向量係數化成一模一樣，再取常數差除以法向量長度</span><span class="src">中山女高 112下 單 2</span></div>
+<div class="fxq">兩平行平面 $3x-4y-12z+8=0$ 和 $6x-8y-24z-9=0$ 的距離為何？<br>
+(1) $\dfrac{17}{13}$　(2) $\dfrac{25}{13}$　(3) $\dfrac{1}{26}$　(4) $\dfrac{17}{26}$　(5) $\dfrac{25}{26}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5) $\dfrac{25}{26}$</div>
+<div class="fxs"><div class="move">招式：係數沒對齊就先除。第二式整條除以 $2$：$3x-4y-12z-\dfrac92=0$。</div>
+兩式寫成 $3x-4y-12z=-8$ 與 $3x-4y-12z=\dfrac92$，$|\vec n|=\sqrt{9+16+144}=13$。<br>
+距離 $=\dfrac{\left|-8-\dfrac92\right|}{13}=\dfrac{25/2}{13}=\dfrac{25}{26}$。<span class="note-sm">忘記先除以 $2$ 的話會算成 $\dfrac{17}{13}$——選項 (1) 就是專門等這個錯誤。</span></div></div>
+
+<div class="fx" id="L3-6" data-gen="interLineDirComp"><div class="fxh"><span class="no">L3-6</span><span class="kw">兩平面的交線方向 → 兩個法向量的外積；題目指定某一個分量的值，就整條乘一個倍數去湊</span><span class="src">北一女中 112下 填 4</span></div>
+<div class="fxq">平面 $E_1:3x+2y+3z=4$ 與 $E_2:5y+3z+1=0$ 相交於直線 $L$。若 $\vec v=(\alpha,\beta,-5)$ 為 $L$ 的一個方向向量，則 $(\alpha,\beta)=$ ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(\alpha,\beta)=(3,3)$</div>
+<div class="fxs"><div class="move">招式：$\vec v\parallel\vec n_1\times\vec n_2$。$\vec n_1=(3,2,3)$、$\vec n_2=(0,5,3)$。</div>
+$\vec n_1\times\vec n_2=(2\cdot3-3\cdot5,\ 3\cdot0-3\cdot3,\ 3\cdot5-2\cdot0)=(-9,-9,15)$。<br>
+要讓第三個分量變成 $-5$，整條乘 $-\dfrac13$：$(3,3,-5)$ ⟹ $(\alpha,\beta)=(3,3)$。<br>
+驗算：$(3,3,-5)\cdot(3,2,3)=9+6-15=0$ ✓、$(3,3,-5)\cdot(0,5,3)=15-15=0$ ✓</div></div>
+
+<div class="fx" id="L3-7" data-gen="uniformMotion"><div class="fxh"><span class="no">L3-7</span><span class="kw">等速直線運動 → 位移 = 起點 + （速率 × 時間）× 單位方向向量；方向向量一定要先除以自己的長度</span><span class="src">北一女中 112下 填 6</span></div>
+<div class="fxq">質點 $S$ 以 $P(1,2,3)$ 為起點，朝 $\vec v=(2,3,6)$ 的方向以每分鐘 $14$ 單位的速率等速直線前進，則 $10$ 分鐘後 $S$ 的坐標為 ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(41,62,123)$</div>
+<div class="fxs"><div class="move">招式：$|\vec v|=\sqrt{4+9+36}=7$ ⟹ 單位方向 $\left(\dfrac27,\dfrac37,\dfrac67\right)$。走的總長度 $=14\times10=140$。</div>
+位移 $=140\cdot\left(\dfrac27,\dfrac37,\dfrac67\right)=(40,60,120)$。<br>
+$S=(1+40,\ 2+60,\ 3+120)=(41,62,123)$。<span class="note-sm">直接寫成「$10$ 分鐘 $=$ 參數 $t$ 走 $20$ 倍的 $\vec v$」也行：$140\div7=20$。</span></div></div>
+
+<div class="fx" id="L3-8" data-gen="ptLineDistCross"><div class="fxh"><span class="no">L3-8</span><span class="kw">點到直線的距離 → 取直線上一點 A，算 |AP×v|÷|v|（外積的長度就是平行四邊形面積，除以底就是高）</span><span class="src">台南一中 112下 單 1</span></div>
+<div class="fxq">點 $P(1,0,1)$ 到直線 $L:\dfrac{x-1}{2}=\dfrac{y-3}{-1}=\dfrac{z+2}{2}$ 的距離為何？<br>
+(1) $1$　(2) $2$　(3) $3$　(4) $4$　(5) $5$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3) $3$</div>
+<div class="fxs"><div class="move">招式：$L$ 上取 $A(1,3,-2)$、$\vec v=(2,-1,2)$（$|\vec v|=3$），$d=\dfrac{\left|\overrightarrow{AP}\times\vec v\right|}{|\vec v|}$。</div>
+$\overrightarrow{AP}=(0,-3,3)$，$\overrightarrow{AP}\times\vec v=\big((-3)(2)-3(-1),\ 3\cdot2-0\cdot2,\ 0\cdot(-1)-(-3)(2)\big)=(-3,6,6)$。<br>
+$\left|(-3,6,6)\right|=\sqrt{9+36+36}=9$ ⟹ $d=\dfrac93=3$。<span class="note-sm">另一條路：算投影點再算長度，但外積這條式子一行就結束，段考單選題用它最快。</span></div></div>
+
+<div class="fx" id="L3-9" data-gen="projOnLine"><div class="fxh"><span class="no">L3-9</span><span class="kw">點在直線上的投影點 → 用 t =（AC·v）÷|v|²，再把 t 代回 A+tv；不必解聯立</span><span class="src">建國中學 110下 填 8</span></div>
+<div class="fxq">空間中三點 $A(0,-1,4)$、$B(1,1,1)$ 與 $C(-2,-2,5)$。設 $C$ 點在直線 $\overleftrightarrow{AB}$ 上的投影點坐標為 $(a,b,c)$，則 $(a,b,c)=$ ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\left(-\dfrac12,\ -2,\ \dfrac{11}{2}\right)$</div>
+<div class="fxs"><div class="move">招式：$\vec v=\overrightarrow{AB}=(1,2,-3)$，$|\vec v|^2=14$；投影點 $H=A+t\vec v$，其中 $t=\dfrac{\overrightarrow{AC}\cdot\vec v}{|\vec v|^2}$。</div>
+$\overrightarrow{AC}=(-2,-1,1)$，$\overrightarrow{AC}\cdot\vec v=-2-2-3=-7$ ⟹ $t=\dfrac{-7}{14}=-\dfrac12$。<br>
+$H=(0,-1,4)-\dfrac12(1,2,-3)=\left(-\dfrac12,-2,\dfrac{11}{2}\right)$。<br>
+驗算：$\overrightarrow{HC}=\left(-\dfrac32,0,-\dfrac12\right)$，$\overrightarrow{HC}\cdot\vec v=-\dfrac32+0+\dfrac32=0$ ✓</div></div>
+
+<div class="fx" id="L3-10" data-gen="symPtLineMin"><div class="fxh"><span class="no">L3-10</span><span class="kw">點對直線的對稱點 → 先求投影點 H，再用 2H−P；「直線上動點到定點的最短距離」就是 PH</span><span class="src">新店高中 101下 填 1</span></div>
+<div class="fxq">設直線 $L:\dfrac{x-5}{2}=\dfrac{y-6}{-3}=\dfrac{z-3}{-2}$，點 $P(1,1,-2)$。<br>
+(1) 求點 $P$ 對直線 $L$ 的對稱點坐標。<br>
+(2) 設點 $A(x,y,z)$ 為直線 $L$ 上的動點，求 $\sqrt{(x-1)^2+(y-1)^2+(z+2)^2}$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $(13,5,4)$　(2) $7$</div>
+<div class="fxs"><div class="move">招式：那個根號就是 $\overline{PA}$。先求投影點 $H$：$\vec v=(2,-3,-2)$、$|\vec v|^2=17$、$A_0(5,6,3)$。</div>
+$\overrightarrow{A_0P}=(-4,-5,-5)$，$\overrightarrow{A_0P}\cdot\vec v=-8+15+10=17$ ⟹ $t=1$ ⟹ $H=(5,6,3)+(2,-3,-2)=(7,3,1)$。<br>
+(1) 對稱點 $=2H-P=(14-1,\ 6-1,\ 2+2)=(13,5,4)$。<br>
+(2) 最小值 $=\overline{PH}=\left|(6,2,3)\right|=\sqrt{36+4+9}=7$。<span class="note-sm">看到一長串根號先翻譯成「兩點距離」，題目就只是換句話說而已。</span></div></div>
+
+<div class="fx" id="L3-11" data-gen="axisSkewDist"><div class="fxh"><span class="no">L3-11</span><span class="kw">兩直線各自平行一條坐標軸 → 公垂線方向就是第三個軸，距離直接讀兩個常數的差</span><span class="src">中山女高 112下 單 4</span></div>
+<div class="fxq">在坐標空間中，兩歪斜線 $L_1:\begin{cases}y=14\\z=10\end{cases}$、$L_2:\begin{cases}x=14\\z=4\end{cases}$ 的距離為何？<br>
+(1) $4$　(2) $6$　(3) $8$　(4) $10$　(5) $14$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2) $6$</div>
+<div class="fxs"><div class="move">招式：$L_1$ 方向 $(1,0,0)$（平行 $x$ 軸、躺在 $z=10$ 這個水平面上）；$L_2$ 方向 $(0,1,0)$（平行 $y$ 軸、躺在 $z=4$ 上）。兩個方向的外積 $=(0,0,1)$，公垂線就是鉛直方向。</div>
+兩條線分別在水平面 $z=10$ 與 $z=4$ 上 ⟹ 距離 $=|10-4|=6$。<br>
+用公式核對：$\vec n=(1,0,0)\times(0,1,0)=(0,0,1)$，取 $P_1(0,14,10)$、$P_2(14,0,4)$，$\overrightarrow{P_1P_2}=(14,-14,-6)$ ⟹ $d=\dfrac{|-6|}{1}=6$ ✓</div></div>
+
+<div class="fx" id="L3-12" data-gen="chainLineDist"><div class="fxh"><span class="no">L3-12</span><span class="kw">2x=3y=6z 這種寫法 → 令它等於 6k 翻譯成參數式；兩平行線距離 = 其中一點到另一條線的距離</span><span class="src">師大附中 112下 單 1</span></div>
+<div class="fxq">直線 $L_1:2x=3y=6z$ 與 $L_2:\dfrac{x-4}{3}=\dfrac{y-5}{2}=\dfrac{z-6}{1}$ 為兩平行線，則 $L_1$、$L_2$ 的距離為下列哪一個？<br>
+(1) $\sqrt{21}$　(2) $\sqrt{23}$　(3) $\sqrt{26}$　(4) $2\sqrt6$　(5) $2\sqrt7$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\sqrt{21}$</div>
+<div class="fxs"><div class="move">招式：令 $2x=3y=6z=6k$ ⟹ $x=3k$、$y=2k$、$z=k$ ⟹ $L_1$ 過原點、方向 $(3,2,1)$，果然與 $L_2$ 平行。</div>
+兩平行線的距離 $=$ $L_2$ 上的點 $Q(4,5,6)$ 到 $L_1$ 的距離。$\overrightarrow{OQ}=(4,5,6)$、$\vec v=(3,2,1)$。<br>
+$\overrightarrow{OQ}\times\vec v=(5\cdot1-6\cdot2,\ 6\cdot3-4\cdot1,\ 4\cdot2-5\cdot3)=(-7,14,-7)$，長度 $=7\sqrt{1+4+1}=7\sqrt6$。<br>
+$d=\dfrac{7\sqrt6}{\sqrt{14}}=7\sqrt{\dfrac{6}{14}}=7\cdot\dfrac{\sqrt3}{\sqrt7}=\sqrt{21}$。</div></div>
+
+<div class="fx" id="L3-13" data-gen="twoLineSysK"><div class="fxh"><span class="no">L3-13</span><span class="kw">兩條「兩平面交線」型的直線相交求參數 → 先把沒有參數的那條化成參數式，再代進有參數的兩式</span><span class="src">中山女高 112下第三次 填 10</span></div>
+<div class="fxq">空間中兩直線 $L_1:\begin{cases}2x-y+z=3\\x+2y+3z=14\end{cases}$ 與 $L_2:\begin{cases}3x+4y-2z=5\\x-2y+3z=k\end{cases}$ 相交於一點，則 $k$ 值為何？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=6$</div>
+<div class="fxs"><div class="move">招式：$L_2$ 有兩個方程式，其中一個沒有 $k$——交點一定同時在 $L_1$ 與「$3x+4y-2z=5$」上，先用這兩個把交點定死，$k$ 最後代進去就好。</div>
+把 $L_1$ 化成參數式：令 $z=u$，由 $2x-y=3-u$、$x+2y=14-3u$ 解得 $x=4-u$、$y=5-u$ ⟹ $L_1:(4-u,\ 5-u,\ u)$。<br>
+代入 $3x+4y-2z=5$：$3(4-u)+4(5-u)-2u=32-9u=5$ ⟹ $u=3$ ⟹ 交點 $(1,2,3)$。<br>
+$k=x-2y+3z=1-4+9=6$。<span class="note-sm">順手驗第一式：$2(1)-2+3=3$ ✓、$1+4+9=14$ ✓</span></div></div>
+
+<div class="fx" id="L3-14" data-gen="lineCoordPlaneInt"><div class="fxh"><span class="no">L3-14</span><span class="kw">直線與 xy 平面的交點 → 直接令 z=0 代進兩個平面方程式解二元一次；與哪個坐標平面交，就令哪個字母為 0</span><span class="src">台南一中 112下 填 7</span></div>
+<div class="fxq">直線 $L:\begin{cases}x+y+z=3\\2x-y+3z=0\end{cases}$ 與 $xy$ 平面的交點坐標為 ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(1,2,0)$</div>
+<div class="fxs"><div class="move">招式：$xy$ 平面就是 $z=0$。直線本來就是兩個平面的交集，再加上 $z=0$ 這一條，三式聯立解得一點。</div>
+$z=0$ ⟹ $\begin{cases}x+y=3\\2x-y=0\end{cases}$ ⟹ $3x=3$ ⟹ $x=1$、$y=2$。交點 $(1,2,0)$。<br>
+驗算：$1+2+0=3$ ✓、$2-2+0=0$ ✓<span class="note-sm">與 $yz$ 平面交就令 $x=0$、與 $zx$ 平面交就令 $y=0$，同一招換個字母。</span></div></div>
+
+<div class="fx" id="L3-15" data-gen="rayMeet"><div class="fxh"><span class="no">L3-15</span><span class="kw">兩束光線的交點 → 兩條都寫成參數式，讓「最好對付的那個分量」先決定參數；平行 x 軸代表 y、z 都固定</span><span class="src">華江高中 101下第二次 選填 F</span></div>
+<div class="fxq">甲、乙兩人進行射擊練習。甲從 $(1,-1,1)$ 朝向 $(-2,2,-5)$ 發射一固定雷射光束；乙從點 $(-2,0,-1)$ 沿平行於 $x$ 軸的方向發射另一雷射光束。則兩雷射光束的交點為 $(\underline{\quad},\underline{\quad},\underline{\quad})$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(0,0,-1)$</div>
+<div class="fxs"><div class="move">招式：乙的光束平行 $x$ 軸 ⟹ 上頭每一點都是 $y=0$、$z=-1$。所以交點的 $y$、$z$ 已經知道了，只要在甲的直線上找出 $y=0$ 的那個點。</div>
+甲：方向 $(-2-1,\ 2+1,\ -5-1)=(-3,3,-6)\parallel(-1,1,-2)$ ⟹ 參數式 $(1-t,\ -1+t,\ 1-2t)$。<br>
+令 $-1+t=0$ ⟹ $t=1$ ⟹ 該點為 $(0,0,-1)$；驗證 $z$：$1-2(1)=-1$ ✓（與乙的 $z=-1$ 相符）。<br>
+交點 $(0,0,-1)$。<span class="note-sm">若 $z$ 對不上就代表兩束光歪斜、根本不相交——這一步不能省。</span></div></div>
+
+
+<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
+
+<h3 class="sec">📝 段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
+<div class="note">按「開始計時」後作答，答案寫在紙上；時間到或按「交卷」才對答案。用時會記進紀錄，多做幾組可以看自己的速度有沒有進步。</div>
+<div class="fixset" data-tier="L2" data-keys="L2:*,L3:*" data-seed="6001" data-n="14" data-mixed="1" data-timer="50"></div>
+</section>
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">兩平面的銳夾角要 tan → 先用法向量內積算 cos（取絕對值保證銳角），再用 sin²+cos²=1 把 sin 補出來相除</span><span class="src">台南一中 112下 填 8</span></div>
+<div class="fxq">若兩平面 $E_1:2x-y+2z=1$、$E_2:2x+3y-6z=2$ 的銳夾角為 $\theta$，則 $\tan\theta$ 之值為 ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{8\sqrt5}{11}$</div>
+<div class="fxs"><div class="move">招式：$\vec n_1=(2,-1,2)$（長度 $3$）、$\vec n_2=(2,3,-6)$（長度 $7$）。$\cos\theta=\dfrac{\left|\vec n_1\cdot\vec n_2\right|}{|\vec n_1||\vec n_2|}$——加絕對值就自動取到銳角。</div>
+$\vec n_1\cdot\vec n_2=4-3-12=-11$ ⟹ $\cos\theta=\dfrac{11}{21}$。<br>
+$\sin\theta=\sqrt{1-\dfrac{121}{441}}=\dfrac{\sqrt{320}}{21}=\dfrac{8\sqrt5}{21}$ ⟹ $\tan\theta=\dfrac{8\sqrt5/21}{11/21}=\dfrac{8\sqrt5}{11}$。<span class="note-sm">$\theta$ 是銳角所以 $\tan\theta\gt0$，不必再討論正負號。</span></div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">三頂點分別在三軸上、給兩邊一夾角 → 設 A(a,0,0) 等，畢氏把 a²,b²,c² 解出來；原點到平面 ABC 的距離用「三倍體積除以底面積」或直接代平面方程式</span><span class="src">建國中學 113下第一次 填 16</span></div>
+<div class="fxq">設 $O$ 為原點，$A$、$B$、$C$ 分別在 $x$ 軸、$y$ 軸、$z$ 軸上，且 $\overline{AB}=2$、$\overline{AC}=3$、$\angle BAC=60^\circ$。求 $O$ 到平面 $ABC$ 的距離。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{\sqrt6}{3}$</div>
+<div class="fxs"><div class="move">招式：設 $A(a,0,0)$、$B(0,b,0)$、$C(0,0,c)$。$\overline{AB}^2=a^2+b^2$、$\overline{AC}^2=a^2+c^2$、$\overline{BC}^2=b^2+c^2$——三個平方和只牽涉 $a^2,b^2,c^2$，餘弦定理再補一條式子就解得出來。</div>
+餘弦定理：$\cos60^\circ=\dfrac{4+9-\overline{BC}^2}{2\cdot2\cdot3}=\dfrac12$ ⟹ $\overline{BC}^2=b^2+c^2=7$。<br>
+$(a^2+b^2)+(a^2+c^2)=4+9=13$ ⟹ $2a^2+7=13$ ⟹ $a^2=3$，再得 $b^2=1$、$c^2=6$。<br>
+取 $A(\sqrt3,0,0)$、$B(0,1,0)$、$C(0,0,\sqrt6)$，平面 $ABC:\dfrac{x}{\sqrt3}+y+\dfrac{z}{\sqrt6}=1$，即 $\sqrt2\,x+\sqrt6\,y+z=\sqrt6$。<br>
+$d(O,ABC)=\dfrac{\sqrt6}{\sqrt{2+6+1}}=\dfrac{\sqrt6}{3}$。<span class="note-sm">通式：三截點在三軸上時 $\dfrac{1}{d^2}=\dfrac{1}{a^2}+\dfrac{1}{b^2}+\dfrac{1}{c^2}=\dfrac13+1+\dfrac16=\dfrac32$ ⟹ $d=\sqrt{\dfrac23}=\dfrac{\sqrt6}{3}$ ✓</span></div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">兩平面夾角求參數 → 把 cos60°=½ 兩邊平方變成 a 的二次方程；平方會製造兩解，兩個都要檢查</span><span class="src">武陵高中 112下 填 4</span></div>
+<div class="fxq">兩平面 $x+4y-z=3$ 與 $x+ay=50$ 所夾銳角為 $60^\circ$，求實數 $a=$ ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=\dfrac{7}{23}$ $\text{或}$ $a=-1$</div>
+<div class="fxs"><div class="move">招式：$\vec n_1=(1,4,-1)$（長度 $3\sqrt2$）、$\vec n_2=(1,a,0)$（長度 $\sqrt{1+a^2}$），列 $\dfrac{|1+4a|}{3\sqrt2\sqrt{1+a^2}}=\dfrac12$ 後兩邊平方。</div>
+$4(1+4a)^2=18(1+a^2)$ ⟹ $64a^2+32a+4=18a^2+18$ ⟹ $46a^2+32a-14=0$ ⟹ $23a^2+16a-7=0$。<br>
+$(23a-7)(a+1)=0$ ⟹ $a=\dfrac{7}{23}$ $\text{或}$ $a=-1$。<br>
+檢查：$a=-1$ 時 $\cos\theta=\dfrac{|1-4|}{3\sqrt2\cdot\sqrt2}=\dfrac36=\dfrac12$ ✓；$a=\dfrac{7}{23}$ 時 $|1+4a|=\dfrac{51}{23}$、$\sqrt{1+a^2}=\dfrac{\sqrt{578}}{23}=\dfrac{17\sqrt2}{23}$ ⟹ $\cos\theta=\dfrac{51/23}{3\sqrt2\cdot17\sqrt2/23}=\dfrac{51}{102}=\dfrac12$ ✓<span class="note-sm">平方之後兩根都合，兩解缺一不可。</span></div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">只知道兩點的投影點、要 PQ 最小 → 把 PQ 拆成「平行平面的分量（固定）＋沿法向量的分量（可調）」，兩個投影點的連線長就是下界</span><span class="src">師大附中 113下第一次 單 1</span></div>
+<div class="fxq">設平面 $E:x+2y+z-1=0$，$P$、$Q$ 為不在 $E$ 上的相異兩點。已知 $P$ 對 $E$ 的投影點為 $(0,-1,3)$，$Q$ 對 $E$ 的投影點為 $(-1,1,0)$，求 $\overline{PQ}$ 的最小值。<br>
+(1) $2$　(2) $3$　(3) $\sqrt{10}$　(4) $\sqrt{14}$　(5) $\sqrt{26}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4) $\sqrt{14}$</div>
+<div class="fxs"><div class="move">招式：設兩個投影點為 $F_1(0,-1,3)$、$F_2(-1,1,0)$，$\vec n=(1,2,1)$。則 $P=F_1+s\vec n$、$Q=F_2+u\vec n$，所以 $\overrightarrow{PQ}=\overrightarrow{F_1F_2}+(u-s)\vec n$。</div>
+$\overrightarrow{F_1F_2}=(-1,2,-3)$，而 $\overrightarrow{F_1F_2}\cdot\vec n=-1+4-3=0$——它本來就躺在平面方向上，與 $\vec n$ 垂直。<br>
+所以 $\overline{PQ}^2=\left|\overrightarrow{F_1F_2}\right|^2+(u-s)^2|\vec n|^2=14+6(u-s)^2\ge14$。<br>
+取 $u=s\ne0$（例如 $P=F_1+\vec n$、$Q=F_2+\vec n$，兩點都不在 $E$ 上且相異）即可達到 ⟹ 最小值 $\sqrt{14}$。<span class="note-sm">畢氏一拆，$(u-s)^2$ 這一塊就只能往上加，下界立刻看得出來。</span></div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">判斷與某條線歪斜 → 兩關卡：方向不平行（否則平行或重合），而且沒有交點；與坐標軸比時直接看「某個坐標恆等於一個非零常數」最快</span><span class="src">台南一中 112下 多 3</span></div>
+<div class="fxq">下列哪些直線與 $x$ 軸互相歪斜？<br>
+(1) $L_1:\begin{cases}x=1\\y=1\end{cases}$　(2) $L_2:\begin{cases}y=1\\z=1\end{cases}$　(3) $L_3:\begin{cases}x+y=1\\z=0\end{cases}$　(4) $L_4:\begin{cases}y+z=1\\x=0\end{cases}$　(5) $L_5:\begin{cases}x+z=0\\y=1\end{cases}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(4)(5)</div>
+<div class="fxs"><div class="move">招式：$x$ 軸 $=$ 過原點、方向 $(1,0,0)$。逐條問兩件事：方向平行嗎？有交點嗎（能不能同時滿足 $y=0$ 且 $z=0$）？</div>
+(1) 方向 $(0,0,1)$，不平行；$L_1$ 上 $y$ 永遠等於 $1$，$x$ 軸上 $y=0$ ⟹ 不相交 ⟹ 歪斜 ✓<br>
+(2) 方向 $(1,0,0)$，與 $x$ 軸平行 ⟹ 不是歪斜 ✗<br>
+(3) 方向 $(1,-1,0)$；令 $y=0,z=0$ 得 $x=1$，$(1,0,0)$ 同時在兩線上 ⟹ 相交 ✗<br>
+(4) 方向 $(0,-1,1)$，不平行；$L_4$ 上 $x\equiv0$，代入 $x$ 軸需 $y=z=0$，但 $y+z=1$ ⟹ 不相交 ⟹ 歪斜 ✓<br>
+(5) 方向 $(-1,0,1)$，不平行；$L_5$ 上 $y\equiv1\ne0$ ⟹ 不相交 ⟹ 歪斜 ✓</div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">兩個等速運動的物體何時最近 → 各寫成「起點＋t×速度向量」，相減得到相對位置，距離平方是 t 的二次函數，配方取頂點</span><span class="src">台中一中 110下 填 9</span></div>
+<div class="fxq">兩架飛機以相同速率等速直線飛行。時刻 $t_0$ 時甲在 $A(1,9,-1)$、乙在 $B(-4,4,-2)$；$2$ 秒後甲飛到 $A'(1,7,1)$，若干秒後乙飛到 $B'(-1,0,3)$。求甲、乙從 $t_0$ 起飛行 ＿＿＿ 秒後距離最近。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$10$ 秒</div>
+<div class="fxs"><div class="move">招式：先把兩架的「每秒位移向量」寫出來。甲：$\dfrac{A'-A}{2}=\dfrac{(0,-2,2)}{2}=(0,-1,1)$，速率 $\sqrt2$。乙的方向 $B'-B=(3,-4,5)$，長度 $5\sqrt2$；速率同為 $\sqrt2$ ⟹ 乙每秒位移 $=\dfrac{(3,-4,5)}{5}$。</div>
+$t$ 秒後兩機位置差 $\vec D(t)=\left[A+t(0,-1,1)\right]-\left[B+t\left(\dfrac35,-\dfrac45,1\right)\right]=(5,5,1)+t\left(-\dfrac35,-\dfrac15,0\right)$。<br>
+$\left|\vec D\right|^2=\left(5-\dfrac{3t}{5}\right)^2+\left(5-\dfrac{t}{5}\right)^2+1=\dfrac{2}{5}t^2-8t+51$。<br>
+這是開口向上的拋物線，頂點在 $t=\dfrac{8}{2\cdot\frac25}=\dfrac{8}{\frac45}=10$ ⟹ $t=10$ 秒時最近。<br>
+（驗算：$\vec D(10)=(5-6,\ 5-2,\ 1)=(-1,3,1)$，$\left|\vec D\right|^2=11$，最近距離 $\sqrt{11}$。）<span class="note-sm">「相同速率」是關鍵：乙的方向向量一定要先除以自己的長度再乘上 $\sqrt2$。</span></div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">動點在 xy 平面上、要三角形周長最小 → AB 固定，只剩 AC+BC；把 A 對 xy 平面鏡射成 A'，最短路徑就是線段 A'B 與平面的交點</span><span class="src">武陵高中 113下 填 9</span></div>
+<div class="fxq">$\triangle ABC$ 中，$A(1,-2,4)$、$B(4,7,2)$、$C(x,y,0)$。當 $\triangle ABC$ 的周長最小時，$\triangle ABC$ 的面積為 $4\sqrt{\square}$，求 $\square$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\square=10$（面積 $4\sqrt{10}$）</div>
+<div class="fxs"><div class="move">招式：$C$ 在 $z=0$ 上而 $A$、$B$ 都在上方（同側）⟹ 把 $A$ 鏡射到 $A'(1,-2,-4)$，則 $\overline{AC}+\overline{BC}=\overline{A'C}+\overline{BC}\ge\overline{A'B}$，等號在 $C$ 落在線段 $\overline{A'B}$ 上時成立。</div>
+$\overrightarrow{A'B}=(3,9,6)$，參數式 $A'+s(3,9,6)$ 的 $z$ 坐標 $=-4+6s=0$ ⟹ $s=\dfrac23$ ⟹ $C=(1+2,\ -2+6,\ 0)=(3,4,0)$。<br>
+$\overrightarrow{AB}=(3,9,-2)$、$\overrightarrow{AC}=(2,6,-4)$，$\overrightarrow{AB}\times\overrightarrow{AC}=(-24,8,0)$。<br>
+面積 $=\dfrac12\left|(-24,8,0)\right|=\dfrac12\cdot8\sqrt{10}=4\sqrt{10}$ ⟹ $\square=10$。</div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">長方體切面與體對角線的交點比例 → 建坐標（A 放原點），寫出截面平面方程式，再把對角線的參數式代進去解 t</span><span class="src">中山女高 113下 填 15</span></div>
+<div class="fxq">長方體 $ABCD$-$EFGH$ 中（$\overline{AE}$、$\overline{BF}$、$\overline{CG}$、$\overline{DH}$ 為四條側稜），$\overline{AB}=2$、$\overline{AD}=3$、$\overline{AE}=5$。平面 $S$ 通過 $C$、$F$、$H$ 三點，與直線 $\overleftrightarrow{AG}$ 交於 $P$。若 $\overrightarrow{AP}=k\,\overrightarrow{AG}$，求 $k$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=\dfrac23$</div>
+<div class="fxs"><div class="move">招式：$A(0,0,0)$、$B(2,0,0)$、$C(2,3,0)$、$D(0,3,0)$、$E(0,0,5)$、$F(2,0,5)$、$G(2,3,5)$、$H(0,3,5)$。先求平面 $CFH$。</div>
+$\overrightarrow{CF}=(0,-3,5)$、$\overrightarrow{CH}=(-2,0,5)$ ⟹ $\vec n=\overrightarrow{CF}\times\overrightarrow{CH}=(-15,-10,-6)$，取 $(15,10,6)$。<br>
+代 $C(2,3,0)$：$30+30+0=60$ ⟹ 平面 $S:15x+10y+6z=60$。（驗 $F$：$30+0+30=60$ ✓；驗 $H$：$0+30+30=60$ ✓）<br>
+$\overleftrightarrow{AG}$ 上的點 $=t(2,3,5)$，代入：$30t+30t+30t=90t=60$ ⟹ $t=\dfrac23$ ⟹ $k=\dfrac23$。<span class="note-sm">三個 $30$ 完全相同不是巧合：$C$、$F$、$H$ 到 $A$ 的「三個方向」在這個平面上是對稱的。</span></div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">平面上的圓、要圓上到平面外一點的最短距離 → 先把 B 投影到平面得 B'，問題降維成平面上的「點到圓最近點」，最後用畢氏把高度補回去</span><span class="src">北一女中 112下 填 9</span></div>
+<div class="fxq">設平面 $E:3x-2y+2z=5$。令 $C$ 為 $E$ 上以 $A(5,-1,-6)$ 為圓心、半徑 $7$ 的圓。若圓 $C$ 上最接近 $B(7,1,10)$ 的點為 $D$，則線段 $\overline{BD}$ 的長度為 ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3\sqrt{13}$</div>
+<div class="fxs"><div class="move">招式：$D$ 在平面 $E$ 上，所以 $\overline{BD}^2=d(B,E)^2+\overline{B'D}^2$，其中 $B'$ 是 $B$ 在 $E$ 上的投影。要 $\overline{BD}$ 最小就是要 $\overline{B'D}$ 最小——這是平面上「點到圓」的老問題。</div>
+先確認圓心在 $E$ 上：$3(5)-2(-1)+2(-6)=15+2-12=5$ ✓。<br>
+$\vec n=(3,-2,2)$、$|\vec n|=\sqrt{17}$；$3(7)-2(1)+2(10)-5=34$ ⟹ $d(B,E)=\dfrac{34}{\sqrt{17}}=2\sqrt{17}$。<br>
+$B'=B-\dfrac{34}{17}(3,-2,2)=(7,1,10)-2(3,-2,2)=(1,5,6)$，$\overline{AB'}=\left|(-4,6,12)\right|=14$。<br>
+$14\gt7$ ⟹ $B'$ 在圓外 ⟹ $\overline{B'D}_{\min}=14-7=7$。<br>
+$\overline{BD}=\sqrt{(2\sqrt{17})^2+7^2}=\sqrt{68+49}=\sqrt{117}=3\sqrt{13}$。</div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">三個頂點的坐標是同一組對數的輪換 → 先算三個對數的和（log5+log8+log25=log1000=3），立刻看出三點都在 x+y+z=3 上</span><span class="src">台中一中 112下 多 4</span></div>
+<div class="fxq">空間中 $\triangle ABC$ 的三頂點為 $A(\log5,\ \log8,\ \log25)$、$B(\log8,\ \log25,\ \log5)$、$C(\log25,\ \log5,\ \log8)$（以 $10$ 為底），通過三點的平面為 $ax+by+cz=d$。試選出正確的選項。<br>
+(1) $a=1$　(2) $a+b=2c$　(3) $a+b+c=d$　(4) $xy$ 平面與平面 $ABC$ 的銳夾角小於 $60^\circ$　(5) 直線 $L:\dfrac{x-1}{1}=\dfrac{y-1}{1}=\dfrac{z-1}{-2}$ 與平面 $ABC$ 平行</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)</div>
+<div class="fxs"><div class="move">招式：$\log5+\log8+\log25=\log(5\cdot8\cdot25)=\log1000=3$。三個頂點只是把同樣三個數輪換，所以三點的坐標和都是 $3$ ⟹ 三點全落在 $x+y+z=3$ 上。</div>
+三點不共線（$\overrightarrow{AB}$ 與 $\overrightarrow{AC}$ 不平行），所以平面 $ABC$ 就是 $x+y+z=3$，$(a,b,c,d)$ 只能是 $(1,1,1,3)$ 的倍數。<br>
+(1) 也可以寫成 $2x+2y+2z=6$，$a$ 不一定是 $1$ ⟹ 錯。<br>
+(2) $a+b=2c$：$1+1=2\cdot1$ ✓（等比例縮放不影響）⟹ 對。<br>
+(3) $a+b+c=3=d$ ✓ ⟹ 對。<br>
+(4) $\cos\theta=\dfrac{\left|(1,1,1)\cdot(0,0,1)\right|}{\sqrt3\cdot1}=\dfrac{1}{\sqrt3}\approx0.577\gt\dfrac12=\cos60^\circ$ ⟹ $\theta\lt60^\circ$ ⟹ 對。<br>
+(5) 方向 $(1,1,-2)$ 與 $\vec n=(1,1,1)$ 內積 $=0$，但 $L$ 上的點 $(1,1,1)$ 代入得 $3$——$L$ 整條落在平面上，不是「平行」⟹ 錯。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">已知直線與它在平面上的正射影 → 法向量 = 原方向減去它在投影方向上的分量（剩下的那一塊就垂直平面）；平面再過投影直線上的一點</span><span class="src">台中一中 110下 填 7</span></div>
+<div class="fxq">空間中，直線 $L_1:\dfrac{x-3}{5}=\dfrac{y-4}{-2}=\dfrac{z}{-5}$ 在平面 $E$ 上的正射影為直線 $L_2:\dfrac{x-3}{2}=\dfrac{y-4}{1}=\dfrac{z}{-2}$。已知平面 $E$ 的方程式為 $x+by+cz+d=0$，則 $(b,c,d)=$ ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(b,c,d)=(-4,-1,13)$</div>
+<div class="fxs"><div class="move">招式：$\vec v_1=(5,-2,-5)$ 投影到 $E$ 上剩下 $\vec v_2=(2,1,-2)$ 的方向，所以 $\vec v_1$ 減去它沿 $\vec v_2$ 的分量之後，剩下的必定垂直 $E$，那就是法向量。</div>
+$\vec v_1\cdot\vec v_2=10-2+10=18$、$|\vec v_2|^2=4+1+4=9$ ⟹ 沿 $\vec v_2$ 的分量 $=\dfrac{18}{9}\vec v_2=2(2,1,-2)=(4,2,-4)$。<br>
+$\vec n=\vec v_1-(4,2,-4)=(1,-4,-1)$。（驗算：$\vec n\cdot\vec v_2=2-4+2=0$ ✓）<br>
+兩條直線都通過 $(3,4,0)$，而 $L_2$ 在 $E$ 上 ⟹ $E:x-4y-z+d=0$ 代 $(3,4,0)$ 得 $3-16+d=0$ ⟹ $d=13$。<br>
+$E:x-4y-z+13=0$ ⟹ $(b,c,d)=(-4,-1,13)$。</div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">兩條線都平行同一平面、求 PQ+RQ 最小 → 先用兩個內積 0 定出法向量；兩條線在平面同側時把其中一條整條鏡射過去，最小值就是「鏡射後的線」與另一條線的距離</span><span class="src">中山女高 113下 題組 19–21</span></div>
+<div class="fxq">兩直線 $L_1:\dfrac{-x}{2}=\dfrac{y+2}{2}=z$、$L_2:x+3=\dfrac{y}{2}=\dfrac{z+1}{-2}$ 都與平面 $E:ax+by+2z=4$ 平行。<br>
+(1) 求 $(a,b)$。<br>
+(2) 設 $P$ 在 $L_1$ 上、$Q$ 在 $E$ 上、$R$ 在 $L_2$ 上，求 $\overline{PQ}+\overline{RQ}$ 的最小值。<br>
+(3) 承 (2)，此時 $P$ 的坐標為何？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $(a,b)=(2,1)$　(2) $6$　(3) $P(-2,0,1)$</div>
+<div class="fxs"><div class="move">招式：兩條線都平行 $E$ ⟹ 法向量 $\vec n=(a,b,2)$ 同時垂直兩個方向向量，兩個內積就把 $a$、$b$ 解出來。</div>
+$L_1$：令 $\dfrac{-x}{2}=\dfrac{y+2}{2}=z=t$ ⟹ $(-2t,\ -2+2t,\ t)$，方向 $\vec u=(-2,2,1)$，過 $A(0,-2,0)$。<br>
+$L_2$：令 $x+3=\dfrac y2=\dfrac{z+1}{-2}=s$ ⟹ $(-3+s,\ 2s,\ -1-2s)$，方向 $\vec w=(1,2,-2)$，過 $B(-3,0,-1)$。<br>
+$\vec n\cdot\vec u=-2a+2b+2=0$、$\vec n\cdot\vec w=a+2b-4=0$ ⟹ $a-b=1$ 且 $a+2b=4$ ⟹ $(a,b)=(2,1)$，$E:2x+y+2z=4$，$|\vec n|=3$。<br>
+(2) 把 $2x+y+2z-4$ 當「側別」：$A$ 得 $-6$、$B$ 得 $-12$ ⟹ 兩線同側。$d(L_1,E)=\dfrac63=2$、$d(L_2,E)=\dfrac{12}{3}=4$。<br>
+因為兩條線都平行 $E$，$\overline{PQ}\ge d(L_1,E)=2$、$\overline{RQ}\ge d(L_2,E)=4$，而且可以讓 $P$、$R$ 在 $E$ 上的投影點同時落在 $Q$——此時 $\overline{PQ}+\overline{RQ}=2+4=6$。等價說法：把 $L_1$ 對 $E$ 鏡射成 $L_1'$，$\overline{PQ}+\overline{RQ}=\overline{P'Q}+\overline{QR}\ge d(L_1',L_2)=6$。<br>
+(3) 鏡射後 $L_1'$ 過 $A'=A+\dfrac43(2,1,2)=\left(\dfrac83,-\dfrac23,\dfrac83\right)$、方向仍是 $\vec u$。求 $L_1'$ 與 $L_2$ 的公垂線段（方向必為 $\vec n$）：<br>
+令 $P'=A'+t\vec u$、$R=B+s\vec w$，$\overrightarrow{P'R}\parallel(2,1,2)$ 解得 $t=1$、$s=-\dfrac13$。<br>
+$t=1$ 對應到 $L_1$ 上的點 $P=(-2t,-2+2t,t)\big|_{t=1}=(-2,0,1)$。<span class="note-sm">$P$ 的參數與 $P'$ 相同（鏡射只是整條平移），所以直接把 $t=1$ 代回 $L_1$。</span></div></div>
+
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充：大考壓軸、經典證明與科學班・教甄專區</h2>
+<div class="goal">
+  <div><b>對象</b>數理志向、想看「這一章能走多遠」的同學；不列入通過標準。</div>
+  <div><b>目標</b>6 題大考經典 ＋ 專區 15 題（教甄）。每題都只用本章的工具解完——三平面的關係一律走幾何判斷與消去法，距離、夾角、投影、對稱四招輪流出場。</div>
+  <div><b>通過標準</b>無。能講出每題的關鍵一步就很好了。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">與正方形四頂點等距的點 → 一定在「過正方形中心、垂直該平面」的鉛直線上；先定出 P 再求三點平面</span><span class="src">98 學測 選填 G</span></div>
+<div class="fxq">坐標空間中 $xy$ 平面上有一正方形，其頂點為 $O(0,0,0)$、$A(8,0,0)$、$B(8,8,0)$、$C(0,8,0)$。另有一點 $P$ 在 $xy$ 平面的上方，且與 $O$、$A$、$B$、$C$ 四點的距離皆等於 $6$。若 $x+by+cz=d$ 為通過 $A$、$B$、$P$ 三點的平面，則 $(b,c,d)=$ ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(b,c,d)=(0,2,8)$</div>
+<div class="fxs"><div class="move">招式：到四個頂點等距 ⟹ 到對角線交點（正方形中心 $(4,4,0)$）的鉛直線上 ⟹ $P=(4,4,h)$，$h\gt0$。</div>
+$\overline{PO}^2=16+16+h^2=36$ ⟹ $h^2=4$ ⟹ $h=2$ ⟹ $P(4,4,2)$。<br>
+$\overrightarrow{AB}=(0,8,0)$、$\overrightarrow{AP}=(-4,4,2)$ ⟹ $\vec n=\overrightarrow{AB}\times\overrightarrow{AP}=(16,0,32)\parallel(1,0,2)$。<br>
+平面過 $A(8,0,0)$ ⟹ $x+2z=8$ ⟹ $(b,c,d)=(0,2,8)$。<span class="note-sm">$\overrightarrow{AB}$ 平行 $y$ 軸 ⟹ 平面方程式一定不含 $y$，$b=0$ 幾乎可以用看的。</span></div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">一個平面被另外三個平面切出三角形 → 三個頂點就是「三個平面兩兩配上主平面」的解；三次三元一次聯立，把三邊向量相減算長度</span><span class="src">104 學測 選填 D</span></div>
+<div class="fxq">平面 $x-y+z=0$ 與三平面 $x=2$、$x-y=-2$、$x+y=2$ 相交於三條直線，這三條直線圍成一個三角形。若此三角形的周長可化為 $a\sqrt b+c\sqrt d$（$a,b,c,d$ 為正整數且 $b\lt d$），求 $a,b,c,d$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=6$、$b=2$、$c=2$、$d=6$（周長 $=6\sqrt2+2\sqrt6$）</div>
+<div class="fxs"><div class="move">招式：不必先求那三條直線。三角形的頂點 $=$ 主平面 $x-y+z=0$ 與「其中兩個」平面的共同解，三種配法就是三個頂點。</div>
+$\{x-y+z=0,\ x=2,\ x-y=-2\}$ ⟹ $x=2$、$y=4$、$z=y-x=2$ ⟹ $V_1(2,4,2)$。<br>
+$\{x-y+z=0,\ x=2,\ x+y=2\}$ ⟹ $x=2$、$y=0$、$z=-2$ ⟹ $V_2(2,0,-2)$。<br>
+$\{x-y+z=0,\ x-y=-2,\ x+y=2\}$ ⟹ $x=0$、$y=2$、$z=2$ ⟹ $V_3(0,2,2)$。<br>
+$\overline{V_1V_2}=\left|(0,4,4)\right|=4\sqrt2$；$\overline{V_1V_3}=\left|(2,2,0)\right|=2\sqrt2$；$\overline{V_2V_3}=\left|(2,-2,-4)\right|=2\sqrt6$。<br>
+周長 $=4\sqrt2+2\sqrt2+2\sqrt6=6\sqrt2+2\sqrt6$ ⟹ $(a,b,c,d)=(6,2,2,6)$。</div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">「P 是平面上離原點最近的點」 → 這句話等於「OP 垂直平面」，法向量與平面方程式一次到手，五個選項全部變成代數驗算</span><span class="src">105 指考數甲 第 5 題</span></div>
+<div class="fxq">在坐標空間中，點 $P(2,2,1)$ 是平面 $E$ 上距離原點 $O(0,0,0)$ 最近的點。請選出正確的選項。<br>
+(1) 向量 $\vec v=(1,-1,0)$ 為平面 $E$ 的法向量<br>
+(2) 點 $P$ 也是平面 $E$ 上距離點 $(4,4,2)$ 最近的點<br>
+(3) 點 $(0,0,9)$ 在平面 $E$ 上<br>
+(4) 點 $(2,2,-8)$ 到平面 $E$ 的距離為 $9$<br>
+(5) 通過原點和點 $(2,2,-8)$ 的直線與平面 $E$ 會相交</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)</div>
+<div class="fxs"><div class="move">招式：最近點 ⟹ $\overrightarrow{OP}\perp E$ ⟹ $\vec n=(2,2,1)$（長度 $3$），$E:2x+2y+z=2(2)+2(2)+1=9$。之後每個選項都只是代數。</div>
+(1) $(1,-1,0)$ 與 $(2,2,1)$ 不平行 ⟹ 錯。<br>
+(2) $(4,4,2)=2\overrightarrow{OP}$ 仍在直線 $OP$ 上，而該直線垂直 $E$ ⟹ 它在 $E$ 上的投影點還是 $P$ ⟹ 對。<br>
+(3) $2(0)+2(0)+9=9$ ✓ ⟹ 對。<br>
+(4) $d=\dfrac{|2(2)+2(2)+(-8)-9|}{3}=\dfrac{|-9|}{3}=3\ne9$ ⟹ 錯。<br>
+(5) 方向 $(2,2,-8)$，$\vec n\cdot(2,2,-8)=4+4-8=0$ ⟹ 方向平行 $E$；原點代入得 $0\ne9$ ⟹ 該直線與 $E$ 平行、不相交 ⟹ 錯。<span class="note-sm">(4)(5) 都是「看起來很像」的陷阱：$(2,2,-8)$ 與 $P$ 只差在 $z$，很容易誤以為距離就是 $|1-(-8)|=9$。</span></div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">平面切正立方體的稜 → 先由三點定出平面（這裡恰是 x+y+z=0），再逐一檢查候選點的三件事：在平面上嗎、在正立方體內嗎、有沒有「兩個坐標是 ±1」（那才叫落在稜上）</span><span class="src">100 指考數甲 第 7 題</span></div>
+<div class="fxq">在坐標空間中，有一邊長為 $2$、中心在原點 $O$ 的正立方體，且各稜邊都與三坐標平面平行或垂直（因此八個頂點為 $(\pm1,\pm1,\pm1)$）。已知 $A(1,-1,0)$、$B(0,1,-1)$、$C(-1,0,1)$ 這三點都是某平面 $E$ 和正立方體稜邊的交點。試問下列哪些點也是平面 $E$ 和正立方體稜邊的交點？<br>
+(1) $\left(\dfrac12,\dfrac12,-1\right)$　(2) $(-1,1,0)$　(3) $(0,-1,-1)$　(4) $(-2,1,1)$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)</div>
+<div class="fxs"><div class="move">招式：先定平面。$\overrightarrow{AB}=(-1,2,-1)$、$\overrightarrow{AC}=(-2,1,1)$ ⟹ $\vec n=\overrightarrow{AB}\times\overrightarrow{AC}=(3,3,3)\parallel(1,1,1)$，代 $A$ 得 $E:x+y+z=0$。接著「落在稜上」這個條件要翻譯：正立方體的稜就是「恰有兩個坐標是 $\pm1$、第三個坐標在 $-1$ 與 $1$ 之間」的點。</div>
+（先驗題目給的三點：$A$ 的 $x=1$、$y=-1$ 兩個是 $\pm1$ ✓，$B$、$C$ 同理 ✓，而且三點坐標和都是 $0$ ✓）<br>
+(1) $\dfrac12+\dfrac12-1=0$，在 $E$ 上；但只有 $z=-1$ 一個坐標是 $\pm1$ ⟹ 它在正立方體的「面」上，不在稜上 ⟹ 錯。<br>
+(2) $-1+1+0=0$ ✓ 在 $E$ 上；$x=-1$、$y=1$ 兩個坐標是 $\pm1$，$z=0$ 介於 $-1$ 與 $1$ 之間 ⟹ 在稜上 ⟹ 對。<br>
+(3) $0+(-1)+(-1)=-2\ne0$ ⟹ 根本不在 $E$ 上 ⟹ 錯。<br>
+(4) $-2+1+1=0$ 在 $E$ 上，但 $x=-2$ 已經跑出正立方體（要 $-1\le x\le1$）⟹ 錯。<span class="note-sm">$E:x+y+z=0$ 通過正立方體中心，截出來的是一個正六邊形，六個頂點依序是 $(1,-1,0)$、$(1,0,-1)$、$(0,1,-1)$、$(-1,1,0)$、$(-1,0,1)$、$(0,-1,1)$——選項 (2) 正是其中之一。</span></div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">與三個平面等距、且坐標全為負 → 三條絕對值方程式各有兩解，用「a,b,c 都小於 0」直接刷掉不合的符號，剩下唯一一組</span><span class="src">114 學測 A 第 14 題</span></div>
+<div class="fxq">坐標空間中，已知點 $A$ 的坐標為 $(a,b,c)$，其中 $a,b,c$ 皆為小於 $0$ 的實數，且點 $A$ 與三平面 $E_1:4y+3z=2$、$E_2:3y+4z=-5$、$E_3:x+2y+2z=-2$ 的距離都是 $6$，則 $a+b+c=$ ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a+b+c=-11$</div>
+<div class="fxs"><div class="move">招式：$E_1$、$E_2$ 的法向量長度都是 $5$，$E_3$ 的是 $3$。先用 $E_1$、$E_2$（只含 $b$、$c$）解出 $b$、$c$，再回頭算 $a$。</div>
+$\dfrac{|4b+3c-2|}{5}=6$ ⟹ $4b+3c-2=\pm30$；因為 $b\lt0$、$c\lt0$ ⟹ $4b+3c\lt0$ ⟹ 只能取 $4b+3c=-28$。<br>
+$\dfrac{|3b+4c+5|}{5}=6$ ⟹ 同理 $3b+4c=-35$。<br>
+兩式相減（$\times4$、$\times3$ 後消去 $c$）：$16b+12c=-112$、$9b+12c=-105$ ⟹ $7b=-7$ ⟹ $b=-1$、$c=-8$ ✓（皆為負）。<br>
+$\dfrac{|a+2b+2c+2|}{3}=6$ ⟹ $|a-16|=18$ ⟹ $a=34$ $\text{或}$ $a=-2$；$a\lt0$ ⟹ $a=-2$。<br>
+$a+b+c=-2-1-8=-11$。<span class="note-sm">驗算三個距離：$\dfrac{|-4-24-2|}{5}=6$ ✓、$\dfrac{|-3-32+5|}{5}=6$ ✓、$\dfrac{|-2-2-16+2|}{3}=6$ ✓</span></div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">三平面兩兩交出三條線且兩兩夾 60° → 那就是正四面體的一個頂角；第四個平面的法向量由「四個內法向量相加為零」定出，位置再用「正四面體的高 = 邊長 ×√(2/3)」定</span><span class="src">113 分科測驗數甲 第 12–14 題</span></div>
+<div class="fxq">坐標空間中，考慮三個平面 $E_1:x+y+z=7$、$E_2:x-y+z=3$、$E_3:x-y-z=-5$。令 $E_1$ 與 $E_2$ 相交的直線為 $L_1$、$E_2$ 與 $E_3$ 相交的直線為 $L_2$、$E_1$ 與 $E_3$ 相交的直線為 $L_3$。<br>
+(1) 已知 $L_1$、$L_2$、$L_3$ 有共同交點，試求此共同交點 $P$ 的坐標。<br>
+(2) 試說明 $L_1$、$L_2$、$L_3$ 中任兩直線所夾的銳角皆為 $60^\circ$。<br>
+(3) 若第四個平面 $E_4$ 與 $E_1$、$E_2$、$E_3$ 圍出一個邊長為 $6\sqrt2$ 的正四面體，試求出 $E_4$ 的方程式（寫成 $x+ay+bz=c$ 的形式）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $P(1,2,4)$　(2) 見詳解　(3) $x+y-z=11$（另一側的 $x+y-z=-13$ 也圍出同樣大小的正四面體）</div>
+<div class="fxs"><div class="move">招式：三個法向量 $\vec n_1=(1,1,1)$、$\vec n_2=(1,-1,1)$、$\vec n_3=(1,-1,-1)$，長度都是 $\sqrt3$——這種「等長」的巧合就是正四面體的訊號。</div>
+(1) $E_1-E_2$：$2y=4$ ⟹ $y=2$；$E_2-E_3$：$2z=8$ ⟹ $z=4$；代 $E_1$ 得 $x=1$ ⟹ $P(1,2,4)$（三式全部驗過 ✓）。<br>
+(2) $\vec v_1=\vec n_1\times\vec n_2=(2,0,-2)\parallel(1,0,-1)$、$\vec v_2=\vec n_2\times\vec n_3=(2,2,0)\parallel(1,1,0)$、$\vec v_3=\vec n_1\times\vec n_3=(0,2,-2)\parallel(0,1,-1)$。<br>
+三個向量長度都是 $\sqrt2$，兩兩內積的絕對值都是 $1$ ⟹ $\cos\theta=\dfrac{1}{\sqrt2\cdot\sqrt2}=\dfrac12$ ⟹ 銳夾角皆為 $60^\circ$。<br>
+(3) 正四面體四個面的「向內單位法向量」相加為零。取 $\dfrac{\vec n_1-\vec n_2+\vec n_3}{\sqrt3}=\dfrac{(1,1,-1)}{\sqrt3}$ ⟹ 第四個法向量 $\parallel(1,1,-1)$ ⟹ $E_4:x+y-z=c$。<br>
+邊長 $6\sqrt2$ 的正四面體高 $=6\sqrt2\cdot\sqrt{\dfrac23}=4\sqrt3$，而 $P$ 是 $E_4$ 對面的頂點 ⟹ $\dfrac{|1+2-4-c|}{\sqrt3}=4\sqrt3$ ⟹ $|c+1|=12$ ⟹ $c=11$ $\text{或}$ $c=-13$。<br>
+取 $c=11$ 驗算：沿 $\vec v_1,\vec v_2,\vec v_3$ 從 $P$ 出發分別碰到 $E_4$ 於 $(7,2,-2)$、$(7,8,4)$、$(1,8,-2)$，這三點與 $P$ 兩兩距離都是 $6\sqrt2$ ✓——確實是正四面體。<span class="note-sm">$c=-13$ 是把 $E_4$ 放到 $P$ 的另一側，同樣得到邊長 $6\sqrt2$ 的正四面體，作答時寫 $x+y-z=11$ 即可。</span></div></div>
+
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（15 題）</h3>
+<div class="note">本專區取材自各校教師甄選試題（含代理教師甄選與縣市聯合甄選）。難度明顯高於段考，但用的全部是本章的工具：平面與直線的方程式、三種距離、夾角、投影與對稱。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">直線與 L1 夾 θ、又與 L1L2 決定的平面夾同一個 θ → 代表它在平面上的投影恰好和 L1 重合；把方向向量拆成「沿 L1 的分量（長 |v|cosθ）＋垂直平面的分量」</span><span class="src">關西高中 112 教甄 計算證明 2</span></div>
+<div class="fxq">坐標空間中兩直線 $L_1:\dfrac{x-3}{1}=\dfrac{y+1}{-2}=\dfrac{z}{2}$、$L_2:\dfrac{x-6}{-1}=\dfrac{y+1}{-2}=\dfrac{z-6}{a}$ 交於一點 $Q$。已知直線 $L$ 通過 $Q$ 點、與 $L_1$ 的銳夾角為 $\theta$，且 $L$ 與 $L_1$、$L_2$ 所在的平面也夾 $\theta$ 角，其中 $\cos\theta=\dfrac23$。試求 $a$、$Q$ 的坐標與直線 $L$ 的方程式。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=-2$，$Q\left(\dfrac92,-4,3\right)$；$L:\dfrac{x-\frac92}{8}=\dfrac{y+4}{-4}=\dfrac{z-3}{1}$ $\text{或}$ $\dfrac{x-\frac92}{-4}=\dfrac{y+4}{-4}=\dfrac{z-3}{7}$</div>
+<div class="fxs"><div class="move">招式：令 $|\vec v|=3$。「與 $L_1$ 夾 $\theta$」⟹ $\vec v$ 沿 $L_1$ 的分量長 $3\cos\theta=2$；「與平面夾 $\theta$」⟹ $\vec v$ 投影在平面上的長度也是 $3\cos\theta=2$。兩個 $2$ 相等 ⟹ 投影向量整條落在 $L_1$ 上。</div>
+先求交點：$L_1:(3+t,\ -1-2t,\ 2t)$、$L_2:(6-s,\ -1-2s,\ 6+as)$。由 $y$ 得 $t=s$，由 $x$ 得 $3+t=6-t$ ⟹ $t=\dfrac32$；由 $z$：$2\cdot\dfrac32=3=6+\dfrac32a$ ⟹ $a=-2$，$Q\left(\dfrac92,-4,3\right)$。<br>
+$\vec v_1=(1,-2,2)$（長 $3$）、$\vec v_2=(-1,-2,-2)$；平面法向量 $\vec n=\vec v_1\times\vec v_2=(8,0,-4)\parallel(2,0,-1)$（長 $\sqrt5$）。<br>
+$\vec v$ 的平面內分量 $=\pm2\cdot\dfrac{(1,-2,2)}{3}$；垂直分量長 $\sqrt{3^2-2^2}=\sqrt5$ ⟹ $=\pm(2,0,-1)$。<br>
+$\vec v=2\cdot\dfrac{(1,-2,2)}{3}\pm(2,0,-1)=\left(\dfrac83,-\dfrac43,\dfrac13\right)$ $\text{或}$ $\left(-\dfrac43,-\dfrac43,\dfrac73\right)$，即方向 $(8,-4,1)$ $\text{或}$ $(-4,-4,7)$。<br>
+驗算：$(8,-4,1)$ 與 $\vec v_1$ 的夾角餘弦 $=\dfrac{|8+8+2|}{9\cdot3}=\dfrac{18}{27}=\dfrac23$ ✓；與 $\vec n$ 的夾角餘弦 $=\dfrac{|16-1|}{9\sqrt5}=\dfrac{15}{9\sqrt5}=\dfrac{\sqrt5}{3}=\sin\theta$ ⟹ 與平面的夾角正好是 $\theta$ ✓</div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">專區 2</span><span class="kw">PQ 是公垂線段、A B 在兩線上任意動 → AB 可拆成 AP+PQ+QB，而 AP、QB 都垂直 PQ；內積一路消掉，只剩 |PQ|²</span><span class="src">文華高中 112 二次教甄 填 2</span></div>
+<div class="fxq">空間中點 $P$、$Q$ 分別在 $L_1:\dfrac{x+1}{2}=\dfrac{y-2}{-2}=-z$ 和 $L_2:x-3=\dfrac{y-1}{-4}=z-1$ 上，且 $\overline{PQ}$ 為 $L_1$、$L_2$ 的公垂線段。若 $A$、$B$ 分別為 $L_1$、$L_2$ 上的任意點，求向量內積 $\overrightarrow{PQ}\cdot\overrightarrow{AB}=$ ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$9$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{AB}=\overrightarrow{AP}+\overrightarrow{PQ}+\overrightarrow{QB}$。$\overrightarrow{AP}$ 沿 $L_1$、$\overrightarrow{QB}$ 沿 $L_2$，兩者都與公垂線段 $\overrightarrow{PQ}$ 垂直 ⟹ $\overrightarrow{PQ}\cdot\overrightarrow{AB}=\left|\overrightarrow{PQ}\right|^2$，與 $A$、$B$ 取在哪裡完全無關。</div>
+$\vec u=(2,-2,-1)$（過 $A_0(-1,2,0)$）、$\vec w=(1,-4,1)$（過 $B_0(3,1,1)$）。<br>
+$\vec n=\vec u\times\vec w=\big((-2)(1)-(-1)(-4),\ (-1)(1)-(2)(1),\ (2)(-4)-(-2)(1)\big)=(-6,-3,-6)$，$|\vec n|=9$。<br>
+$\overrightarrow{A_0B_0}=(4,-1,1)$，$\vec n\cdot\overrightarrow{A_0B_0}=-24+3-6=-27$ ⟹ $\left|\overrightarrow{PQ}\right|=\dfrac{27}{9}=3$。<br>
+$\overrightarrow{PQ}\cdot\overrightarrow{AB}=3^2=9$。</div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">專區 3</span><span class="kw">三條垂直段長 10、13、24 且中間那條的足是中點 → 把 L 擺成水平、S 擺成 x 軸，三段長各寫成「橫向偏移²＋高²」，B 的偏移是 A、C 的平均</span><span class="src">大直高中 112 教甄 填 7</span></div>
+<div class="fxq">空間中有兩條歪斜線 $L$ 與 $S$。直線 $L$ 上有三點 $A$、$B$、$C$，且 $\overline{AB}=\overline{BC}$；直線 $S$ 上有三點 $D$、$E$、$F$，其中 $\overline{AD}$、$\overline{BE}$、$\overline{CF}$ 皆垂直 $L$。已知 $\overline{AD}=10$、$\overline{BE}=13$、$\overline{CF}=24$，則歪斜線 $L$、$S$ 的距離為 ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{120}{13}$</div>
+<div class="fxs"><div class="move">招式：把 $S$ 放成 $x$ 軸、$L$ 放在水平面 $z=h$ 上（$h$ 就是所求距離）。$A$、$B$、$C$ 在 $L$ 上等距 ⟹ 它們到 $S$ 的「橫向偏移」$p$、$\dfrac{p+q}{2}$、$q$ 成等差。而 $\overline{AD}$、$\overline{BE}$、$\overline{CF}$ 垂直 $L$ 且端點在 $S$ 上，長度平方就是 $\text{偏移}^2+h^2$。</div>
+$\begin{cases}p^2+h^2=100\\ \left(\dfrac{p+q}{2}\right)^2+h^2=169\\ q^2+h^2=576\end{cases}$<br>
+第二式乘 $4$ 減去第一式與第三式：$2pq+2h^2=676-100-576=0$ ⟹ $pq=-h^2$。<br>
+第一式加第三式：$p^2+q^2+2h^2=676$ ⟹ $(p-q)^2=p^2+q^2-2pq=676-2h^2+2h^2=676$ ⟹ $|p-q|=26$。<br>
+第三式減第一式：$(q-p)(q+p)=476$ ⟹ $|p+q|=\dfrac{476}{26}=\dfrac{238}{13}$。<br>
+再用 $(p+q)^2=676-4h^2$：$\left(\dfrac{238}{13}\right)^2=676-4h^2$ ⟹ $4h^2=\dfrac{114244-56644}{169}=\dfrac{57600}{169}$ ⟹ $h=\dfrac{120}{13}$。<span class="note-sm">$pq=-h^2\lt0$ 表示 $A$、$C$ 分別落在 $S$ 的兩側，圖形上 $\overline{AD}$ 與 $\overline{CF}$ 是「交叉」過去的。</span></div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">專區 4</span><span class="kw">L 垂直平面 N、AB=BC → 兩個長方形 ABEI、ACFJ 把 AI=BE、AJ=CF 讀出來，而 I 是 DJ 的中點；中線長公式一步解 DI，最後再用直角三角形求距離</span><span class="src">新竹中學 112 代理教甄 計算證明 4</span></div>
+<div class="fxq">空間中，直線 $L$ 與直線 $M$ 為歪斜線，直線 $L$ 垂直平面 $N$ 於 $A$。在直線 $L$ 上另有 $B$、$C$ 兩點使得 $\overline{AB}=\overline{BC}$。直線 $M$ 交平面 $N$ 於 $D$，在直線 $M$ 上另有 $E$、$F$ 兩點使得 $\overline{BE}\perp\overline{AC}$、$\overline{CF}\perp\overline{AC}$，且 $E$、$F$ 兩點在平面 $N$ 的投影點分別為 $I$、$J$。已知 $\overline{AD}=8$、$\overline{BE}=5$、$\overline{CF}=6$，試求<br>
+(1) 線段 $\overline{IJ}$ 的長度。<br>
+(2) 直線 $L$ 與直線 $M$ 的距離。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\overline{IJ}=5$　(2) $\dfrac{24}{5}$</div>
+<div class="fxs"><div class="move">招式：$L\perp N$ ⟹ $L$ 是「鉛直線」、$N$ 是「水平面」。$\overline{BE}\perp L$ 代表 $\overline{BE}$ 水平 ⟹ $ABEI$ 是長方形 ⟹ $\overline{AI}=\overline{BE}=5$；同理 $\overline{AJ}=\overline{CF}=6$。$D$、$I$、$J$ 三點都在「$M$ 在 $N$ 上的投影直線」上。</div>
+$B$、$C$ 在 $L$ 上的高度成 $1:2$（$\overline{AB}=\overline{BC}$）⟹ 沿 $M$ 走，$\overline{DE}:\overline{DF}=1:2$ ⟹ 投影後 $\overline{DI}:\overline{DJ}=1:2$ ⟹ $I$ 是 $\overline{DJ}$ 的中點。<br>
+(1) 在 $\triangle ADJ$ 中 $\overline{AI}$ 是中線，中線長公式：$\overline{AD}^2+\overline{AJ}^2=2\left(\overline{AI}^2+\overline{DI}^2\right)$ ⟹ $64+36=2(25+\overline{DI}^2)$ ⟹ $\overline{DI}=5$ ⟹ $\overline{IJ}=\overline{DI}=5$。<br>
+(2) $\overline{DJ}=10$ 而 $\overline{AD}=8$、$\overline{AJ}=6$ ⟹ $\triangle ADJ$ 是直角三角形（$6$-$8$-$10$），$\angle DAJ=90^\circ$。<br>
+$L$ 鉛直、$M$ 的投影就是直線 $DJ$ ⟹ $d(L,M)=d(A,\overleftrightarrow{DJ})=\dfrac{8\times6}{10}=\dfrac{24}{5}$。</div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">專區 5</span><span class="kw">AC 是公垂線段 → BD = BA+AC+CD，平方後 BA·AC 與 AC·CD 全為 0，只剩 BA·CD 這一項；方向可正可負 ⟹ 兩解</span><span class="src">新竹女中 107 代理教甄 填 8</span></div>
+<div class="fxq">空間中兩歪斜線 $L$ 與 $M$，在 $L$ 上有相異兩點 $A$、$B$，在 $M$ 上有相異兩點 $C$、$D$，其中 $\overline{AC}$ 為 $L$ 與 $M$ 的公垂線段。若 $L$ 的方向向量為 $(1,2,3)$、$M$ 的方向向量為 $(3,-1,2)$，且 $\overline{AB}=6$、$\overline{CD}=5$、$\overline{AC}=4$，則 $\overline{BD}$ 的長度為 ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt{107}$ $\text{或}$ $\sqrt{47}$</div>
+<div class="fxs"><div class="move">招式：$\overrightarrow{BD}=\overrightarrow{BA}+\overrightarrow{AC}+\overrightarrow{CD}$，其中 $\overrightarrow{AC}$ 同時垂直 $\overrightarrow{BA}$ 與 $\overrightarrow{CD}$ ⟹ $\left|\overrightarrow{BD}\right|^2=36+16+25+2\,\overrightarrow{BA}\cdot\overrightarrow{CD}$。</div>
+$\cos$（兩方向夾角）$=\dfrac{(1,2,3)\cdot(3,-1,2)}{\sqrt{14}\cdot\sqrt{14}}=\dfrac{3-2+6}{14}=\dfrac12$。<br>
+$\overrightarrow{BA}\cdot\overrightarrow{CD}=\pm6\cdot5\cdot\dfrac12=\pm15$（$B$ 在 $A$ 的哪一側、$D$ 在 $C$ 的哪一側都沒有限制）。<br>
+$\left|\overrightarrow{BD}\right|^2=77\pm30=107$ $\text{或}$ $47$ ⟹ $\overline{BD}=\sqrt{107}$ $\text{或}$ $\sqrt{47}$。<span class="note-sm">$\overline{AC}=4$ 只在畢氏那一項出現一次，其餘全被垂直性吃掉。</span></div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">專區 6</span><span class="kw">正四面體的四頂點落在兩歪斜線上 → 兩條線各含一組「對稜」；正四面體的一組對稜必定互相垂直，且距離 = 邊長 ÷√2</span><span class="src">高雄市 107 教師聯合甄選 填 8</span></div>
+<div class="fxq">正四面體的四頂點落在兩歪斜線 $L_1:\begin{cases}x=4+t\\y=-3-t\\z=0\end{cases}$（$t\in\mathbb{R}$）與 $L_2:\begin{cases}x=2+s\\y=2+s\\z=1\end{cases}$（$s\in\mathbb{R}$）上，求此四面體的稜長。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt2$</div>
+<div class="fxs"><div class="move">招式：四個頂點分兩兩落在兩條線上 ⟹ $L_1$、$L_2$ 各含一條稜，而且這兩條稜沒有公共頂點（是一組「對稜」）。正四面體的對稜互相垂直，且兩者的距離 $=\dfrac{\text{邊長}}{\sqrt2}$。</div>
+先檢查垂直：$\vec v_1=(1,-1,0)$、$\vec v_2=(1,1,0)$，$\vec v_1\cdot\vec v_2=1-1=0$ ✓<br>
+距離：$\vec n=\vec v_1\times\vec v_2=(0,0,2)\parallel(0,0,1)$；取 $P_1(4,-3,0)$、$P_2(2,2,1)$，$\overrightarrow{P_1P_2}=(-2,5,1)$ ⟹ $d=\dfrac{|1|}{1}=1$。<br>
+（其實兩條線分別躺在 $z=0$ 與 $z=1$ 兩個水平面上，距離一眼就是 $1$。）<br>
+邊長 $=\sqrt2\times d=\sqrt2$。<span class="note-sm">為什麼是 $\dfrac{a}{\sqrt2}$？把邊長 $a$ 的正四面體放進邊長 $\dfrac{a}{\sqrt2}$ 的正立方體：四個頂點取正立方體的四個「交錯頂點」，一組對稜就是上下兩個面的對角線，距離正是正立方體的稜長 $\dfrac{a}{\sqrt2}$。</span></div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">專區 7</span><span class="kw">含 L2 且平行 L1 的平面 → 法向量取兩方向的外積、再過 L2 上一點；公垂線段長就是 L1 上任一點到這個平面的距離</span><span class="src">嘉義家職 101 第一次教甄 第 5 題</span></div>
+<div class="fxq">兩直線 $L_1:\dfrac{x-11}{4}=\dfrac{y+5}{-3}=\dfrac{z+7}{-1}$ 與 $L_2:\dfrac{x+5}{3}=\dfrac{y-4}{-4}=\dfrac{z-6}{-2}$ 不共平面。<br>
+(1) 求包含 $L_2$ 且與 $L_1$ 平行的平面 $E$ 的方程式。<br>
+(2) 求 $L_1$ 與 $L_2$ 之間的公垂線段長。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $2x+5y-7z+32=0$　(2) $\sqrt{78}$</div>
+<div class="fxs"><div class="move">招式：平面 $E$ 同時平行兩個方向 $\vec v_1=(4,-3,-1)$、$\vec v_2=(3,-4,-2)$ ⟹ $\vec n=\vec v_1\times\vec v_2$；(2) 兩歪斜線的距離 $=$ $L_1$ 上任一點到 $E$ 的距離。</div>
+$\vec n=\big((-3)(-2)-(-1)(-4),\ (-1)(3)-(4)(-2),\ (4)(-4)-(-3)(3)\big)=(2,5,-7)$，$|\vec n|=\sqrt{4+25+49}=\sqrt{78}$。<br>
+(1) 過 $L_2$ 上的點 $(-5,4,6)$：$2(-5)+5(4)-7(6)=-32$ ⟹ $E:2x+5y-7z=-32$，即 $2x+5y-7z+32=0$。<br>
+（驗 $\vec n\cdot\vec v_2=6-20+14=0$ ✓、$\vec n\cdot\vec v_1=8-15+7=0$ ✓）<br>
+(2) 取 $L_1$ 上的點 $(11,-5,-7)$：$d=\dfrac{|2(11)+5(-5)-7(-7)+32|}{\sqrt{78}}=\dfrac{78}{\sqrt{78}}=\sqrt{78}$。</div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">專區 8</span><span class="kw">A 在一線上、B C 在另一線上且三角形正三角形 → 面積只由「A 到那條線的距離 h」決定（正三角形高 h ⟹ 面積 h²÷√3），所以最小面積時 A 是公垂線段的端點</span><span class="src">竹北高中 111 第一次教甄 多 9</span></div>
+<div class="fxq">設兩歪斜線 $L_1:\dfrac{x-3}{2}=\dfrac{y-5}{3}=\dfrac{3-z}{-2}$、$L_2:\dfrac{x-1}{1}=\dfrac{y+4}{2}=\dfrac{z+2}{2}$，平面 $E:2x-y=6$。若 $A$ 點在 $L_1$ 上，$B$、$C$ 兩點在 $L_2$ 上，且 $\triangle ABC$ 為正三角形。請選出所有正確的選項。<br>
+(A) 直線 $L_2$ 與平面 $E$ 平行<br>
+(B) 當 $\triangle ABC$ 有最小面積時，$A$ 點坐標為 $(1,2,1)$<br>
+(C) 當 $\triangle ABC$ 有最小面積時，$A$ 點在直線 $L_2$ 的垂足坐標為 $H(0,-6,-4)$<br>
+(D) $\triangle ABC$ 的最小面積為 $3\sqrt3$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(B)(D)</div>
+<div class="fxs"><div class="move">招式：$\overline{BC}$ 在 $L_2$ 上、$A$ 在 $L_1$ 上，正三角形的高就是 $d(A,L_2)$。設高為 $h$ ⟹ 邊長 $\dfrac{2h}{\sqrt3}$ ⟹ 面積 $=\dfrac{h^2}{\sqrt3}$ ⟹ 面積最小 $\Leftrightarrow$ $h$ 最小 $\Leftrightarrow$ $A$ 是公垂線段在 $L_1$ 上的端點。</div>
+$\vec v_1=(2,3,2)$（注意 $\dfrac{3-z}{-2}=\dfrac{z-3}{2}$）過 $P_1(3,5,3)$；$\vec v_2=(1,2,2)$ 過 $P_2(1,-4,-2)$。<br>
+(A) $\vec n_E=(2,-1,0)$，$\vec n_E\cdot\vec v_2=2-2=0$；但 $P_2$ 代入 $2(1)-(-4)=6$ ⟹ $L_2$ 整條落在 $E$ 上，不是「平行」⟹ 錯。<br>
+(B)(C) 解公垂：令 $A=P_1+t\vec v_1$、$H=P_2+s\vec v_2$，要求 $\overrightarrow{AH}$ 同時垂直 $\vec v_1$、$\vec v_2$ ⟹ $12s-17t-41=0$ 與 $3s-4t-10=0$ ⟹ $t=-1$、$s=2$。<br>
+$A=(3-2,\ 5-3,\ 3-2)=(1,2,1)$ ⟹ (B) 對；$H=(1+2,\ -4+4,\ -2+4)=(3,0,2)\ne(0,-6,-4)$ ⟹ (C) 錯。<br>
+(D) $\vec n=\vec v_1\times\vec v_2=(2,-2,1)$（長 $3$），$\overrightarrow{P_1P_2}=(-2,-9,-5)$ ⟹ $h=\dfrac{|-4+18-5|}{3}=3$ ⟹ 最小面積 $=\dfrac{9}{\sqrt3}=3\sqrt3$ ⟹ 對。</div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">專區 9</span><span class="kw">動點在空間直線上、求 PA+PB 最小 → 把兩個根號都寫成同一個參數的「二次式開根號」，配方後看成平面上兩點到 x 軸的距離和，再用鏡射</span><span class="src">新北市 106 教師聯合甄選 填 11</span></div>
+<div class="fxq">在坐標空間中，給定一直線 $L:x-1=y=\dfrac{z}{\sqrt2}$ 及兩點 $A(1,1,0)$、$B(1,2,0)$。若點 $P$ 為直線 $L$ 上的動點，則 $\overline{PA}+\overline{PB}$ 的最小值為 ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt7$</div>
+<div class="fxs"><div class="move">招式：$P=(1+t,\ t,\ \sqrt2\,t)$。把兩段長度都算成 $t$ 的二次式再配方，就變成平面上「兩個定點到同一條直線上動點的距離和」。</div>
+$\overline{PA}^2=t^2+(t-1)^2+2t^2=4t^2-2t+1=\left(2t-\dfrac12\right)^2+\dfrac34$。<br>
+$\overline{PB}^2=t^2+(t-2)^2+2t^2=4t^2-4t+4=(2t-1)^2+3$。<br>
+令 $u=2t$，則 $\overline{PA}+\overline{PB}=\sqrt{\left(u-\dfrac12\right)^2+\left(\dfrac{\sqrt3}{2}\right)^2}+\sqrt{(u-1)^2+\left(\sqrt3\right)^2}$，<br>
+這正是平面上動點 $(u,0)$ 到 $M\left(\dfrac12,\dfrac{\sqrt3}{2}\right)$ 與 $N\left(1,-\sqrt3\right)$ 的距離和（兩點刻意放在 $x$ 軸異側）。<br>
+最小值 $=\overline{MN}=\sqrt{\left(\dfrac12\right)^2+\left(\dfrac{3\sqrt3}{2}\right)^2}=\sqrt{\dfrac14+\dfrac{27}{4}}=\sqrt7$。</div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">專區 10</span><span class="kw">三條直線的五個敘述挑錯的 → 前四個都是標準檢查；最後一個是陷阱：「兩點距離」只有在連線垂直該直線時才是最短距離，先算內積再下結論</span><span class="src">中科實中 101 教甄 單選 1</span></div>
+<div class="fxq">設坐標空間中三條直線 $L_1:\dfrac{x}{1}=\dfrac{y+3}{6}=\dfrac{z+4}{8}$、$L_2:\dfrac{x}{1}=\dfrac{y+3}{3}=\dfrac{z+4}{4}$、$L_3:\dfrac{x}{1}=\dfrac{y}{3}=\dfrac{z}{4}$。試問下列哪一個選項是 <b>不正確</b> 的？<br>
+(A) $L_1$ 與 $L_2$ 相交<br>
+(B) $L_2$ 與 $L_3$ 平行<br>
+(C) 三直線 $L_1$、$L_2$、$L_3$ 共平面<br>
+(D) 直線 $L:\begin{cases}x=0\\ \dfrac{y+3}{4}=\dfrac{z+4}{-3}\end{cases}$ 與直線 $L_1$、$L_2$ 皆垂直<br>
+(E) 點 $P(0,-3,-4)$ 與 $Q(0,0,0)$ 的距離即為點 $P$ 到 $L_3$ 的最短距離</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(E)</div>
+<div class="fxs"><div class="move">招式：$L_1$、$L_2$ 都通過 $P(0,-3,-4)$，$L_3$ 通過原點 $Q$；$L_2$ 與 $L_3$ 的方向都是 $(1,3,4)$。三條線的關係其實一眼就看得出來。</div>
+(A) 共同點 $P(0,-3,-4)$ ⟹ 相交 ✓<br>
+(B) 方向都是 $(1,3,4)$，而 $P$ 不在 $L_3$ 上（$\dfrac{-3}{3}=-1\ne\dfrac01=0$）⟹ 平行 ✓<br>
+(C) $L_1$、$L_2$ 決定的平面：$\vec n=(1,6,8)\times(1,3,4)=(0,4,-3)$，過 $P$ ⟹ $4(y+3)-3(z+4)=0$ ⟹ $4y-3z=0$。$L_3$ 過原點（$0=0$ ✓）且方向 $(1,3,4)$ 滿足 $4(3)-3(4)=0$ ✓ ⟹ 三線共平面 ✓<br>
+(D) $L$ 的方向 $(0,4,-3)$：$(0,4,-3)\cdot(1,6,8)=24-24=0$ ✓、$(0,4,-3)\cdot(1,3,4)=12-12=0$ ✓<br>
+(E) $\overrightarrow{QP}=(0,-3,-4)$ 與 $L_3$ 的方向 $(1,3,4)$ 內積 $=0-9-16=-25\ne0$ ⟹ $\overline{PQ}$ 並不垂直 $L_3$，所以 $\overline{PQ}=5$ 不是最短距離。<br>
+實際最短距離 $=\dfrac{\left|(0,-3,-4)\times(1,3,4)\right|}{\left|(1,3,4)\right|}=\dfrac{\left|(0,-4,3)\right|}{\sqrt{26}}=\dfrac{5}{\sqrt{26}}=\dfrac{5\sqrt{26}}{26}\lt5$ ⟹ (E) 不正確。</div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">專區 11</span><span class="kw">標準的兩歪斜線距離 → 外積求公垂方向，再把兩點的連接向量投影上去；係數都是個位數但外積長度剛好 9，是很好的手算練習</span><span class="src">竹北高中 111 第一次教甄 填 2</span></div>
+<div class="fxq">已知直線 $L_1:\dfrac{x+1}{4}=\dfrac{y-3}{-1}=\dfrac{z+3}{-1}$ 和 $L_2:\dfrac{x}{4}=\dfrac{y-1}{-3}=\dfrac{z-6}{-2}$ 為兩歪斜線，求 $L_1$ 與 $L_2$ 的距離。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$9$</div>
+<div class="fxs"><div class="move">招式：$d=\dfrac{\left|\overrightarrow{P_1P_2}\cdot(\vec v_1\times\vec v_2)\right|}{\left|\vec v_1\times\vec v_2\right|}$。</div>
+$\vec v_1=(4,-1,-1)$、$\vec v_2=(4,-3,-2)$。<br>
+$\vec v_1\times\vec v_2=\big((-1)(-2)-(-1)(-3),\ (-1)(4)-(4)(-2),\ (4)(-3)-(-1)(4)\big)=(-1,4,-8)$，長度 $\sqrt{1+16+64}=9$。<br>
+$P_1(-1,3,-3)$、$P_2(0,1,6)$ ⟹ $\overrightarrow{P_1P_2}=(1,-2,9)$，內積 $=-1-8-72=-81$。<br>
+$d=\dfrac{81}{9}=9$。</div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">專區 12</span><span class="kw">數「有幾對歪斜線」 → 任取 4 點就決定一個四面體，一個四面體恰有 3 對對稜互相歪斜；而且不同的 4 點組不會數到同一對</span><span class="src">西松高中 107 教甄 填 6</span></div>
+<div class="fxq">空間中有相異 $8$ 個點，其中任 $3$ 點不共線、任 $4$ 點不共平面。將每兩點連成一直線，可以形成 ＿＿＿ 對歪斜線。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$210$ 對</div>
+<div class="fxs"><div class="move">招式：兩條歪斜線一定不共平面 ⟹ 它們的 $4$ 個端點互不相同、且不共平面。反過來，任選 $4$ 點（由題設必不共平面）就構成一個四面體，四面體的 $6$ 條稜恰好配成 $3$ 對「對稜」，每一對都歪斜。</div>
+選 $4$ 點的方法數 $=\dbinom{8}{4}=70$；每組 $4$ 點貢獻 $3$ 對歪斜線。<br>
+不同的 $4$ 點組給出的歪斜線對也一定不同（一對歪斜線的四個端點唯一決定那組 $4$ 點）⟹ 總數 $=70\times3=210$。<span class="note-sm">共頂點的兩條線一定共平面、不歪斜，所以只有「四個端點全相異且不共平面」這一種情形要數。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">專區 13</span><span class="kw">PR、QS 都垂直 PQ → 把 PQ 當軸，PR 與 QS 都躺在垂直該軸的平面方向；兩歪斜線距離 = |PR×QS| ÷ |QS−PR|</span><span class="src">彰化女中 111 第二次教甄 填 10</span></div>
+<div class="fxq">空間中兩條歪斜線 $L_1$、$L_2$，$P$、$Q$ 兩點在 $L_1$ 上，$R$、$S$ 兩點在 $L_2$ 上，滿足 $\overline{PR}\perp\overline{PQ}$ 且 $\overline{QS}\perp\overline{PQ}$。已知 $\overline{PR}=3$、$\overline{QS}=5$，$\overrightarrow{PR}$ 與 $\overrightarrow{QS}$ 的夾角為 $120^\circ$，求兩條歪斜線 $L_1$、$L_2$ 的距離。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{15\sqrt3}{14}$</div>
+<div class="fxs"><div class="move">招式：把 $L_1$ 擺成 $z$ 軸、$P$ 放原點。$\overrightarrow{PR}$ 與 $\overrightarrow{QS}$ 都垂直 $z$ 軸 ⟹ 兩者都是水平向量。令 $\vec p=\overrightarrow{PR}$、$\vec q=\overrightarrow{QS}$，則 $L_2$ 的方向 $\overrightarrow{RS}=\overrightarrow{RP}+\overrightarrow{PQ}+\overrightarrow{QS}$ 的水平部分就是 $\vec q-\vec p$。</div>
+$L_1$ 的方向是鉛直的 $\vec k$，$L_2$ 的方向 $=(\vec q-\vec p)+c\vec k$ ⟹ 公垂方向 $\vec n=\vec k\times\left[(\vec q-\vec p)+c\vec k\right]=\vec k\times(\vec q-\vec p)$，長度 $=\left|\vec q-\vec p\right|$。<br>
+連接兩線的向量可取 $\overrightarrow{PR}=\vec p$ ⟹ $d=\dfrac{\left|\vec n\cdot\vec p\right|}{|\vec n|}=\dfrac{\left|\vec p\times\vec q\right|}{\left|\vec q-\vec p\right|}$（水平平面上的外積與三重積化簡）。<br>
+$\left|\vec p\times\vec q\right|=3\cdot5\cdot\sin120^\circ=\dfrac{15\sqrt3}{2}$；<br>
+$\left|\vec q-\vec p\right|^2=25+9-2(15)\cos120^\circ=34+15=49$ ⟹ $\left|\vec q-\vec p\right|=7$。<br>
+$d=\dfrac{15\sqrt3/2}{7}=\dfrac{15\sqrt3}{14}$。<span class="note-sm">坐標驗算：取 $P(0,0,0)$、$Q(0,0,4)$、$R(3,0,0)$、$S\left(-\dfrac52,\dfrac{5\sqrt3}{2},4\right)$，用外積公式算出的距離同樣是 $\dfrac{15\sqrt3}{14}$，而且答案與 $\overline{PQ}$ 多長完全無關。</span></div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">專區 14</span><span class="kw">四角錐「側面與側面的夾角」給 cosβ=−¼ → 把兩個側面沿公共稜的垂線段拉出來（長度相同），用餘弦定理反解高；側面與底面的夾角再用斜高直角三角形</span><span class="src">中大壢中 109 第一次教甄 填 11</span></div>
+<div class="fxq">有一個四角錐，其四個側面均為等腰三角形，且底面為邊長 $4$ 的正方形。設側面和底面的夾角為 $\alpha$、相鄰兩側面的夾角為 $\beta$。已知 $\cos\beta=-\dfrac14$，試求 $\cos\alpha$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\cos\alpha=\dfrac12$（即 $\alpha=60^\circ$）</div>
+<div class="fxs"><div class="move">招式：建坐標。底面四頂點 $A(2,2,0)$、$B(2,-2,0)$、$C(-2,-2,0)$、$D(-2,2,0)$，頂點 $O(0,0,h)$。相鄰兩側面 $OAB$、$OBC$ 的公共稜是 $\overline{OB}$；由對稱性，$A$、$C$ 到直線 $OB$ 的垂足是同一點，所以 $\beta$ 就是 $\angle$（那個垂足所張的 $A$、$C$ 夾角）。</div>
+設 $A$、$C$ 到直線 $OB$ 的距離都是 $x$，$\overline{AC}=4\sqrt2$ ⟹ 餘弦定理：$\cos\beta=\dfrac{x^2+x^2-32}{2x^2}=-\dfrac14$ ⟹ $2x^2-32=-\dfrac{x^2}{2}$ ⟹ $\dfrac{5x^2}{2}=32$ ⟹ $x^2=\dfrac{64}{5}$。<br>
+另一邊算 $x$：$\triangle OAB$ 中 $\overline{AB}=4$、$\overline{OA}=\overline{OB}=\sqrt{8+h^2}$，$\overline{AB}$ 中點到 $O$ 的距離（斜高）$=\sqrt{4+h^2}$ ⟹ 面積 $=\dfrac12\cdot4\cdot\sqrt{4+h^2}$，<br>
+$x=\dfrac{2\times\text{面積}}{\overline{OB}}=\dfrac{4\sqrt{4+h^2}}{\sqrt{8+h^2}}$ ⟹ $\dfrac{16(4+h^2)}{8+h^2}=\dfrac{64}{5}$ ⟹ $5(4+h^2)=4(8+h^2)$ ⟹ $h^2=12$ ⟹ $h=2\sqrt3$。<br>
+側面與底面的夾角：底面中心到底邊中點的距離為 $2$、高為 $h$ ⟹ 斜高 $=\sqrt{4+h^2}=4$ ⟹ $\cos\alpha=\dfrac{2}{4}=\dfrac12$。<span class="note-sm">用法向量驗算：面 $OAB$ 的法向量 $\parallel(h,0,2)=(2\sqrt3,0,2)$，與底面法向量 $(0,0,1)$ 的夾角餘弦 $=\dfrac{2}{\sqrt{12+4}}=\dfrac12$ ✓</span></div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">專區 15</span><span class="kw">圓在一個斜平面上、求平面外一點到圓上動點的最大距離 → 先把 P 投影到平面得 Q，最大值 = √( d(P,E)² + (OQ+r)² )</span><span class="src">新北市 107 教師聯合甄選 填 2</span></div>
+<div class="fxq">坐標空間中，圓 $O$ 是平面 $y=z$ 上以原點 $(0,0,0)$ 為圓心的單位圓。若點 $P$ 的坐標為 $(4,4,12)$，而點 $X$ 是圓 $O$ 上的動點，則 $\overline{PX}$ 的最大值為 ＿＿＿。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt{201}$</div>
+<div class="fxs"><div class="move">招式：$X$ 在平面 $E:y-z=0$ 上 ⟹ $\overline{PX}^2=d(P,E)^2+\overline{QX}^2$，其中 $Q$ 是 $P$ 在 $E$ 上的投影。要 $\overline{PX}$ 最大就是要 $\overline{QX}$ 最大——平面上「定點到圓」的最遠距離 $=\overline{OQ}+r$。</div>
+$\vec n=(0,1,-1)$、$|\vec n|=\sqrt2$；$d(P,E)=\dfrac{|4-12|}{\sqrt2}=4\sqrt2$。<br>
+$Q=P-\dfrac{4-12}{2}(0,1,-1)=(4,4,12)+4(0,1,-1)=(4,8,8)$，$\overline{OQ}=\sqrt{16+64+64}=12$。<br>
+$\overline{QX}_{\max}=12+1=13$ ⟹ $\overline{PX}_{\max}=\sqrt{(4\sqrt2)^2+13^2}=\sqrt{32+169}=\sqrt{201}$。<span class="note-sm">$Q$ 的確落在平面上（$8=8$ ✓）；先降維到平面內再用畢氏補高度，是這一類題的固定流程。</span></div></div>
+
+</section>
+
+<div class="ch-nav">
+  <a href="../g11b-ch01/practice.html">← 第一章 空間概念與空間向量 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <span></span>
+</div>
+</div>
+
+<script>
+(function () {
+  var G = window.PGEN, CH = 'g11b-ch02';
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var TIERS = ['L0', 'L1', 'L2', 'L3'], labelOf = {};
+  TIERS.forEach(function (L) { if (G.META[L]) G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  var DAY = 86400000, INTERVAL = [1, 3, 7, 14];            /* 錯題本間隔（天）：第 n 次全對後隔 INTERVAL[n] 天再測；連續 2 次全對畢業 */
+  var CONF = { h: '有把握', m: '不確定', l: '猜的' }, CAUSE = { start: '不會下手', formula: '公式用錯', calc: '計算錯', read: '看錯題' };
+  var READ_CAUSE = { start: 1, formula: 1 };               /* 這兩種錯因建議回頭讀「先要會」；另兩種建議多算幾題 */
+
+  /* ══════════ 練習紀錄（只存在這台裝置）══════════ */
+  var STORE = 'pgen_rec_' + CH;
+  function loadRec() {
+    var r = null; try { r = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { }
+    if (!r || !r.attempts) return { v: 2, attempts: [], wb: {} };
+    if (r.v === 1) { r.attempts.forEach(function (at) { at.items.forEach(function (x) { if (!x.t) x.t = at.tier; }); }); r.v = 2; }
+    if (!r.wb) r.wb = {};
+    return r;
+  }
+  function saveRec() { try { localStorage.setItem(STORE, JSON.stringify(REC)); } catch (e) { } }
+  var REC = loadRec();
+  function stats() {
+    var byKey = {}, bySet = {};
+    REC.attempts.forEach(function (at) {
+      at.items.forEach(function (x) {
+        var t = x.t || at.tier, k = t + '.' + x.k, o = byKey[k] || (byKey[k] = { tier: t, key: x.k, n: 0, w: 0, hc: 0, gs: 0, last: [], causes: {} });
+        o.n++; if (x.wrong) o.w++; o.last.push(x.wrong ? 1 : 0);
+        if (x.wrong && x.conf === 'h') o.hc++;
+        if (!x.wrong && x.conf === 'l') o.gs++;
+        if (x.wrong && x.cause) o.causes[x.cause] = (o.causes[x.cause] || 0) + 1;
+      });
+      if (at.kind === 'review') return;
+      var s = bySet[at.set] || (bySet[at.set] = { rounds: 0, hist: [] });
+      s.rounds++; s.hist.push({ t: at.t, n: at.items.length, w: at.items.filter(function (x) { return x.wrong; }).length, secs: at.secs });
+    });
+    return { byKey: byKey, bySet: bySet };
+  }
+  function weakList(byKey) {
+    return Object.keys(byKey).map(function (k) { return byKey[k]; }).filter(function (o) {
+      if (o.tier === 'L0') return false;
+      var lastWrong = o.last[o.last.length - 1] === 1;
+      return lastWrong || o.hc > 0 || (o.n >= 2 && (o.w + o.gs) / o.n >= 0.4);
+    }).sort(function (a, b) { if (b.hc !== a.hc) return b.hc - a.hc; var la = a.last[a.last.length - 1], lb = b.last[b.last.length - 1]; if (la !== lb) return lb - la; return (b.w + b.gs) / b.n - (a.w + a.gs) / a.n; });
+  }
+  function mainCause(o) { var best = null; Object.keys(o.causes).forEach(function (c) { if (!best || o.causes[c] > o.causes[best]) best = c; }); return best; }
+
+  /* ══════════ 跳轉：練（卡片／類似題）與讀（該小節的「先要會」）══════════ */
+  function flash(el) { if (!el) return; el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 2500); }
+  function goKey(tier, key) {
+    var el;
+    if (tier === 'L3') {
+      el = document.querySelector('.fx[data-gen="' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); var sb = el.querySelector('.simbox'); if (!sb) buildSim(el, key); else sb.querySelector('.again').click(); }
+    } else {
+      el = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.querySelector('.new').click(); }
+    }
+    flash(el);
+  }
+  function goRead(tier, key) {
+    var el;
+    if (tier === 'L3') el = document.querySelector('.fx[data-gen="' + key + '"]');
+    else {
+      var card = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      el = card ? card.parentElement.previousElementSibling : null;
+      while (el && !el.classList.contains('must')) el = el.previousElementSibling;
+    }
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }
+  }
+  function goBtn(tier, key, mode) {
+    var b = document.createElement('button'); b.className = 'go' + (mode === 'read' ? ' read' : ''); b.type = 'button';
+    b.textContent = (mode === 'read' ? '📖 讀：' : (tier === 'L3' ? '📎 ' : '🎲 ')) + (labelOf[tier + '.' + key] || key);
+    b.onclick = function () { (mode === 'read' ? goRead : goKey)(tier, key); }; return b;
+  }
+
+  /* ══════════ 解題步驟排版、漸淡練習（Renkl：全解 → 補最後一步 → 只給第一步）══════════ */
+  function stepsHtml(it, mode) {
+    if (!it.s) return '';
+    var n = it.s.length, shown = mode === 'last' ? n - 1 : mode === 'first' ? 1 : n;
+    var html = '<ol class="steps">';
+    for (var i = 0; i < n; i++) {
+      if (i < shown) html += '<li>' + it.s[i] + '</li>';
+      else html += '<li class="blank"><span class="bl">' + (mode === 'last' ? '最後一步請自己完成' : '接下來的步驟請自己完成') + '</span><span class="hid">' + it.s[i] + '</span></li>';
+    }
+    html += '</ol><div class="fin' + (mode ? ' hid' : '') + '">答：' + it.a + '</div>';
+    return html;
+  }
+  function buildFade(box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(','), base = parseInt(box.getAttribute('data-seed'), 10);
+    var html = '<div class="fd-h"><b>📘 漸淡練習</b><span>每型三題：先看完整示範，第二題自己補最後一步，第三題只給第一步。看完示範後試著遮住步驟自己寫一次。</span></div>';
+    keys.forEach(function (k, i) {
+      if (!G[tier][k]) return;
+      var its = [0, 1, 2].map(function (j) { return { it: G[tier][k](G.makeRng(base + i * 31 + j * 7)), seed: base + i * 31 + j * 7 }; });
+      if (!its[0].it.s) return;
+      html += '<details class="fd"><summary>' + esc(labelOf[tier + '.' + k] || k) + '</summary>' +
+        '<div class="fdi"><div class="fdt">① 完整示範 <span class="seed">#' + its[0].seed + '</span></div><div class="fq">' + its[0].it.q + '</div>' + stepsHtml(its[0].it) + '</div>' +
+        '<div class="fdi"><div class="fdt">② 補最後一步 <span class="seed">#' + its[1].seed + '</span></div><div class="fq">' + its[1].it.q + '</div>' + stepsHtml(its[1].it, 'last') + '<button class="reveal">顯示最後一步與答案</button></div>' +
+        '<div class="fdi"><div class="fdt">③ 只給第一步 <span class="seed">#' + its[2].seed + '</span></div><div class="fq">' + its[2].it.q + '</div>' + stepsHtml(its[2].it, 'first') + '<button class="reveal">顯示其餘步驟與答案</button></div></details>';
+    });
+    box.innerHTML = html;
+    box.querySelectorAll('.reveal').forEach(function (b) { b.onclick = function () { var d = b.parentElement; d.classList.add('open'); b.style.display = 'none'; }; });
+    box.querySelectorAll('details.fd').forEach(function (d) { d.addEventListener('toggle', function () { if (d.open && !d._r) { d._r = 1; render(d); } }); });
+  }
+  document.querySelectorAll('.fadeset').forEach(buildFade);
+
+  /* ══════════ 對照題（變異理論：只差一個關鍵特徵的兩題並列，先說差在哪再揭曉）══════════ */
+  function buildContrast(gc, tier, key, seedA) {
+    var pr = G.contrastPair(tier, key, seedA);
+    if (!pr) { gc.innerHTML = '<div class="note-sm">這一型暫時找不到對照題。</div>'; gc.classList.add('on'); return; }
+    gc.innerHTML = '<div class="gc-h"><b>⚖ 對照題</b><span>先說出：<b>兩題差在哪一個地方？答案會怎麼跟著變？</b>想清楚再按「揭曉」。</span></div>' +
+      '<div class="gc-pair"><div class="gc-item"><div class="gc-t">甲 <span class="seed">#' + seedA + '</span></div>' + pr.A.q + '<div class="gc-a">答：' + pr.A.a + '</div></div>' +
+      '<div class="gc-item"><div class="gc-t">乙 <span class="seed">#' + pr.seedB + '</span></div>' + pr.B.q + '<div class="gc-a">答：' + pr.B.a + '</div></div></div>' +
+      '<div class="gc-btn"><button class="reveal">揭曉：答案與差別</button><button class="close">收起</button></div><div class="gc-why">' + pr.why + '</div>';
+    gc.classList.add('on'); gc.removeAttribute('data-stale');
+    gc.querySelector('.reveal').onclick = function () { gc.classList.add('open'); this.style.display = 'none'; };
+    gc.querySelector('.close').onclick = function () { gc.classList.remove('on'); };
+    render(gc);
+  }
+
+  /* ══════════ 產生器卡片（L1、L2）══════════ */
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard'; card.setAttribute('data-key', tier + '.' + key); card.id = 'c-' + tier + '.' + key;
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="steps">📘 步驟</button>' + (G.CONTRAST && G.CONTRAST[tier + '.' + key] ? '<button class="contrast">⚖ 對照題</button>' : '') + '</div>' +
+      '<div class="gh"></div><div class="ga"></div><div class="gs"></div><div class="gc"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000), lastQ = '', cur = null, hl = 0;
+    function showHint() {
+      var gh = card.querySelector('.gh');
+      if (!cur.h1) { gh.innerHTML = '提示：' + cur.h; gh.classList.toggle('on'); render(gh); return; }
+      hl = Math.min(hl + 1, 2);
+      gh.innerHTML = '<div><b>提示 ①</b>（先想這是哪一型）：' + cur.h1 + (hl === 1 ? ' <button class="more">還是不會，再提示一層</button>' : '') + '</div>' + (hl === 2 ? '<div><b>提示 ②</b>（帶本題數字）：' + cur.h + '</div>' : '');
+      gh.classList.add('on'); var m = gh.querySelector('.more'); if (m) m.onclick = showHint; render(gh);
+    }
+    function load() {
+      var it = G[tier][key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G[tier][key](G.makeRng(seed)); }
+      lastQ = it.q; cur = it; hl = 0; var gcx = card.querySelector('.gc'); if (gcx && gcx.classList.contains('on')) gcx.setAttribute('data-stale', '1');
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '';
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.gs').innerHTML = stepsHtml(it);
+      card.querySelector('.steps').style.display = it.s ? '' : 'none';
+      card.querySelector('.seed').textContent = '#' + seed;
+      ['.gh', '.ga', '.gs'].forEach(function (c) { card.querySelector(c).classList.remove('on'); });
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { if (cur.h1 && hl === 0) showHint(); else card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    card.querySelector('.steps').onclick = function () { card.querySelector('.gs').classList.toggle('on'); };
+    var cb = card.querySelector('.contrast'); if (cb) cb.onclick = function () { var gc = card.querySelector('.gc'); if (gc.classList.contains('on') && !gc.getAttribute('data-stale')) { gc.classList.remove('on'); return; } buildContrast(gc, tier, key, seed); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+
+  /* ══════════ L3 固定題的「類似題」══════════ */
+  function buildSim(fx, key) {
+    var box = document.createElement('div'); box.className = 'simbox';
+    box.innerHTML = '<div class="st"><span>🎲 類似題（同型換數字）</span><span class="seed"></span></div><div class="sq"></div>' +
+      '<div class="sbtn"><button class="again">🎲 再一題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="close">收起</button></div><div class="gh"></div><div class="ga"></div>';
+    var seed = 30000 + Math.floor(Math.random() * 90000), lastQ = '';
+    function load() {
+      var it = G.L3[key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G.L3[key](G.makeRng(seed)); }
+      lastQ = it.q;
+      box.querySelector('.sq').innerHTML = it.q; box.querySelector('.gh').innerHTML = '提示：' + it.h; box.querySelector('.ga').innerHTML = '答案：' + it.a;
+      box.querySelector('.seed').textContent = '#' + seed;
+      box.querySelector('.gh').classList.remove('on'); box.querySelector('.ga').classList.remove('on');
+      render(box);
+    }
+    box.querySelector('.again').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    box.querySelector('.hint').onclick = function () { box.querySelector('.gh').classList.toggle('on'); };
+    box.querySelector('.ans').onclick = function () { box.querySelector('.ga').classList.toggle('on'); };
+    box.querySelector('.close').onclick = function () { box.remove(); };
+    fx.appendChild(box); load();
+    return box;
+  }
+  document.querySelectorAll('.fx[data-gen]').forEach(function (fx) {
+    var key = fx.getAttribute('data-gen'); if (!G.L3 || !G.L3[key]) return;
+    var b = document.createElement('button'); b.textContent = '🎲 類似題'; b.className = 'simbtn';
+    b.onclick = function () { var sb = fx.querySelector('.simbox'); if (sb) sb.querySelector('.again').click(); else buildSim(fx, key); };
+    var anchor = fx.querySelector('button[data-t="s"]');
+    anchor.parentNode.insertBefore(document.createTextNode(' '), anchor.nextSibling);
+    anchor.parentNode.insertBefore(b, anchor.nextSibling.nextSibling);
+  });
+
+  /* ══════════ 題目小工具 ══════════ */
+  function item(t, k, seed) { return G[t][k](G.makeRng(seed)); }
+  function confHtml() { return '<span class="conf"><span class="cl">作答後、看答案前：</span><button data-c="h">有把握</button><button data-c="m">不確定</button><button data-c="l">猜的</button></span>'; }
+  function markHtml() { return '<span class="mark"><button data-m="1">○ 對</button><button data-m="0">✗ 錯</button></span><span class="cause"><span class="cl">錯因：</span><button data-e="start">不會下手</button><button data-e="formula">公式用錯</button><button data-e="calc">計算錯</button><button data-e="read">看錯題</button></span>'; }
+  function wireConfMark(li) {
+    li.querySelectorAll('.conf button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-conf', b.getAttribute('data-c')); li.querySelectorAll('.conf button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+    li.querySelectorAll('.mark button').forEach(function (b) {
+      b.onclick = function () { var ok = b.getAttribute('data-m') === '1'; var was = li.classList.contains(ok ? 'ok' : 'ng'); li.classList.remove('ok', 'ng'); if (!was) li.classList.add(ok ? 'ok' : 'ng'); if (!li.classList.contains('ng')) { li.removeAttribute('data-cause'); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.remove('sel'); }); } };
+    });
+    li.querySelectorAll('.cause button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-cause', b.getAttribute('data-e')); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+  }
+  function unrated(root) { return Array.prototype.filter.call(root.querySelectorAll('li.qi'), function (li) { return !li.getAttribute('data-conf'); }).length; }
+
+  /* ══════════ 檢測題組（固定種子可列印；混合／計時／換組／信心／錯因／記錄）══════════ */
+  function secName(box) {
+    var el = box.previousElementSibling;
+    while (el && !(el.tagName === 'H3' && el.classList.contains('sec'))) el = el.previousElementSibling;
+    return el ? el.textContent.replace(/（.*?）/g, '').trim() : box.getAttribute('data-tier');
+  }
+  function expandKeys(box) {
+    var tier = box.getAttribute('data-tier'), out = [];
+    box.getAttribute('data-keys').split(',').forEach(function (s) {
+      s = s.trim(); var t = tier, k = s;
+      if (s.indexOf(':') > 0) { t = s.split(':')[0]; k = s.split(':')[1]; } else if (s.indexOf('.') > 0) { t = s.split('.')[0]; k = s.split('.')[1]; }
+      if (k === '*') G.META[t].forEach(function (p) { out.push({ t: t, k: p[0] }); }); else out.push({ t: t, k: k });
+    });
+    return out;
+  }
+  var TITLE = document.querySelector('header.hd h1').textContent;
+  function printSet(box) {
+    var area = document.getElementById('printArea');
+    var lis = box.querySelectorAll('ol > li'), showAns = box.classList.contains('show');
+    var html = '<h1>' + esc(TITLE) + '｜' + esc(box._set) + '　第 ' + box._round + ' 組（#' + box._base + '）</h1><p class="pmeta">姓名：＿＿＿＿＿　日期：＿＿＿＿　得分：＿＿／' + lis.length + '</p><ol>';
+    lis.forEach(function (li) { html += '<li>' + li.querySelector('.q').innerHTML + '</li>'; });
+    html += '</ol>';
+    if (showAns) { html += '<h2>答案</h2><ol>'; lis.forEach(function (li) { html += '<li>' + li.querySelector('.fa').innerHTML.replace(/^（答：/, '').replace(/）$/, '') + '</li>'; }); html += '</ol>'; }
+    area.innerHTML = html; render(area);
+    document.body.classList.add('print-one');
+    var done = function () { document.body.classList.remove('print-one'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); setTimeout(done, 3000);
+    window.print();
+  }
+  function fmtClock(s) { var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function buildSet(box, base, round) {
+    var keys = expandKeys(box), n = parseInt(box.getAttribute('data-n') || '10', 10), mixed = box.hasAttribute('data-mixed'), timer = parseInt(box.getAttribute('data-timer') || '0', 10);
+    if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    box._base = base; box._round = round; box._items = []; box._secs = 0;
+    if (mixed) keys = G.makeRng(base + 1).shuffle(keys);
+    var label = timer ? '段考模擬卷 ' + n + ' 題' : '檢測 ' + n + ' 題';
+    var html = '<div class="fix-btns"><b>' + label + '</b><span class="fix-meta">第 ' + round + ' 組・#' + base + (mixed ? '・混合打亂' : '') + '</span>' +
+      (timer ? '<button class="tstart">⏱ 開始計時 ' + timer + ' 分</button><span class="tclock"></span>' : '') +
+      '<button class="show">' + (timer ? '交卷・看答案' : '顯示答案') + '</button><button class="print">🖨 列印本組</button><button class="regen">🔁 換一組類似題</button>' + (round > 1 ? '<button class="orig">回到原始題組</button>' : '') + '</div>' +
+      '<div class="fix-note"></div><ol>';
+    var seen = {};
+    for (var i = 0; i < n; i++) {
+      var kk = keys[i % keys.length], seed = base + i * 37, it = item(kk.t, kk.k, seed), tries = 0;
+      while (seen[it.q] && tries++ < 12) { seed += 1000003 * tries; it = item(kk.t, kk.k, seed); }
+      seen[it.q] = 1;
+      box._items.push({ t: kk.t, k: kk.k, seed: seed });
+      html += '<li class="qi"><span class="q">' + it.q + '</span>' + confHtml() + '<span class="fa">（答：' + it.a + '）</span>' + markHtml() + '</li>';
+    }
+    html += '</ol><div class="fix-foot"><button class="submit">📝 記錄本次結果</button><span>做完每題先按「有把握／不確定／猜的」，全部評完才能看答案；對完把每題標 ○／✗，錯的選錯因，再按「記錄」。</span></div><div class="fix-result"></div>';
+    box.classList.remove('show'); box.innerHTML = html; box._set = secName(box);
+    var note = box.querySelector('.fix-note');
+    box.querySelector('.show').onclick = function () {
+      if (box.classList.contains('show')) { box.classList.remove('show'); this.textContent = timer ? '交卷・看答案' : '顯示答案'; return; }
+      var u = unrated(box);
+      if (u) { note.textContent = '還有 ' + u + ' 題沒評信心。先寫下答案、按「有把握／不確定／猜的」，再看答案——這一步是為了讓你知道自己「以為會」和「真的會」差多少。'; note.classList.add('on'); return; }
+      note.classList.remove('on'); box.classList.add('show'); this.textContent = '隱藏答案';
+      if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    };
+    box.querySelector('.print').onclick = function () { printSet(box); };
+    box.querySelector('.regen').onclick = function () { buildSet(box, 10000 + Math.floor(Math.random() * 89999), round + 1); box.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    var ob = box.querySelector('.orig'); if (ob) ob.onclick = function () { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); };
+    var ts = box.querySelector('.tstart');
+    if (ts) ts.onclick = function () {
+      if (box._tick) return;
+      var left = timer * 60, clock = box.querySelector('.tclock'); ts.disabled = true; clock.textContent = fmtClock(left);
+      box._tick = setInterval(function () { left--; box._secs++; clock.textContent = fmtClock(Math.max(left, 0)); if (left <= 0) { clearInterval(box._tick); box._tick = null; clock.textContent = '時間到'; } }, 1000);
+    };
+    box.querySelectorAll('li.qi').forEach(wireConfMark);
+    box.querySelector('.submit').onclick = function () { submitSet(box); };
+    render(box);
+  }
+  function submitSet(box) {
+    if (!box.classList.contains('show')) { var nt = box.querySelector('.fix-note'); nt.textContent = '先看答案、對完再記錄。'; nt.classList.add('on'); return; }
+    var lis = box.querySelectorAll('ol > li.qi'), items = [], unmarked = 0;
+    lis.forEach(function (li, i) {
+      var wrong = li.classList.contains('ng'); if (!li.classList.contains('ok') && !wrong) unmarked++;
+      var b = box._items[i]; items.push({ t: b.t, k: b.k, seed: b.seed, wrong: wrong, conf: li.getAttribute('data-conf') || null, cause: wrong ? (li.getAttribute('data-cause') || null) : null, no: i + 1 });
+    });
+    var at = { t: Date.now(), tier: box.getAttribute('data-tier'), set: box._set, base: box._base, round: box._round, items: items.map(function (x) { return { t: x.t, k: x.k, seed: x.seed, wrong: x.wrong, conf: x.conf, cause: x.cause }; }) };
+    if (box._secs) at.secs = box._secs;
+    REC.attempts.push(at);
+    var wrong = items.filter(function (x) { return x.wrong; }), hc = wrong.filter(function (x) { return x.conf === 'h'; }), gs = items.filter(function (x) { return !x.wrong && x.conf === 'l'; });
+    var res = box.querySelector('.fix-result');
+    if (box.getAttribute('data-tier') === 'L0') {
+      saveRec();
+      var need = {}; wrong.concat(gs).forEach(function (x) { need[x.k] = 1; });
+      var h0 = '<b>先備診斷 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (gs.length ? '（猜對 ' + gs.length + ' 題，也算要複習）' : '') + '。';
+      if (!Object.keys(need).length) h0 += '先備知識都在，直接從 L1 開始。';
+      else {
+        h0 += '<br>這章會一直用到下面這些，建議先花 20 分鐘複習再開始：<ul class="pre-list">';
+        Object.keys(need).forEach(function (k) { var pq = G.PREREQ[k] || { txt: labelOf['L0.' + k] || k, link: null }; h0 += '<li>' + esc(pq.txt) + (pq.link ? '　<a href=' + JSON.stringify(pq.link) + '>→ 去那一章的 L1 練</a>' : '　（國中內容：翻課本或問老師，這裡的卡片可先多練幾題）') + '　' + '<span class="golist" data-k="' + k + '"></span></li>'; });
+        h0 += '</ul>';
+      }
+      res.innerHTML = h0; res.classList.add('on');
+      res.querySelectorAll('.golist').forEach(function (g) { g.appendChild(goBtn('L0', g.getAttribute('data-k'))); });
+      renderRec(); return;
+    }
+    wrong.forEach(function (x) { addWB(x, x.conf === 'h' ? 'hc' : 'wrong'); }); gs.forEach(function (x) { addWB(x, 'guess'); });
+    saveRec();
+    var html = '<b>本次 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (unmarked ? '（' + unmarked + ' 題未標記，視為答對）' : '') + (box._secs ? '，用時 ' + fmtClock(box._secs) : '') + '。';
+    if (hc.length) html += '<br><span class="hcw">⚠ 有把握卻答錯 ' + hc.length + ' 題（第 ' + hc.map(function (x) { return x.no; }).join('、') + ' 題）——這種「以為會」最危險，已排到錯題本最前面。</span>';
+    if (gs.length) html += '<br>猜對 ' + gs.length + ' 題（第 ' + gs.map(function (x) { return x.no; }).join('、') + ' 題）不算通過，也放進錯題本。';
+    if (!wrong.length && !gs.length) {
+      var unsure = items.filter(function (x) { return x.conf === 'm'; }).length;
+      html += '<br>全對！' + (unsure ? '有 ' + unsure + ' 題你標「不確定」——答對但沒把握的型，再多練幾題會更穩。' : '而且每題都有把握。') + (box._secs ? '' : masteryAdvice(box));
+    }
+    else {
+      var readK = {}, drillK = {};
+      wrong.forEach(function (x) { var id = x.t + '.' + x.k; if (x.cause && READ_CAUSE[x.cause]) readK[id] = x; else drillK[id] = x; });
+      gs.forEach(function (x) { var id = x.t + '.' + x.k; if (!readK[id]) drillK[id] = x; });
+      html += '<br>錯的題型：' + wrong.concat(gs).map(function (x) { return (labelOf[x.t + '.' + x.k] || x.k) + '（第 ' + x.no + ' 題' + (x.cause ? '，' + CAUSE[x.cause] : '') + '）'; }).join('、') + '。';
+      if (Object.keys(readK).length) html += '<br><b>回頭讀</b>（不會下手／公式用錯：先看該小節的「先要會」，再練）：<span class="golist read"></span>';
+      if (Object.keys(drillK).length) html += '<br><b>多算幾題</b>（計算錯／看錯題／猜對：直接跳到卡片出新題）：<span class="golist drill"></span>';
+      html += '<br>這些題會出現在頁首的「📅 今日複習」：明天重做原題＋一題類似題，連續兩次全對才從錯題本畢業。';
+      res.innerHTML = html; res.classList.add('on');
+      var gl = res.querySelector('.golist.read'); if (gl) Object.keys(readK).forEach(function (id) { var x = readK[id]; gl.appendChild(goBtn(x.t, x.k, 'read')); gl.appendChild(goBtn(x.t, x.k)); });
+      var gd = res.querySelector('.golist.drill'); if (gd) Object.keys(drillK).forEach(function (id) { var x = drillK[id]; gd.appendChild(goBtn(x.t, x.k)); });
+      renderRec(); renderReview(); return;
+    }
+    res.innerHTML = html; res.classList.add('on');
+    renderRec(); renderReview(); renderMastery(box);
+  }
+  document.querySelectorAll('.fixset').forEach(function (box) { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); });
+
+  /* ══════════ 精熟加時間條件（Bloom 精熟學習＋間隔）：兩輪全對且無猜對、且不在同一天 ══════════ */
+  function dayKey(t) { var d = new Date(t); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+  function masteryOf(setName) {
+    var clean = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName && at.items.length && at.items.every(function (x) { return !x.wrong && x.conf !== 'l'; }); });
+    var days = []; clean.forEach(function (at) { var d = dayKey(at.t); if (days.indexOf(d) < 0) days.push(d); });
+    var last = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName; }).slice(-1)[0];
+    return { cleanRounds: clean.length, days: days, mastered: days.length >= 2, today: days.indexOf(dayKey(Date.now())) >= 0, lastCleanToday: !!(last && clean.indexOf(last) >= 0 && dayKey(last.t) === dayKey(Date.now())) };
+  }
+  function masteryAdvice(box) {
+    var m = masteryOf(box._set);
+    if (m.mastered) return '這一組已達精熟（' + m.days.slice(0, 2).join('、') + ' 兩天各全對一輪）。再練同型效益不高，去做混合檢測或下一級。';
+    if (m.today) return '今天已全對一輪。第二輪要<b>隔天</b>做才算通過——記憶要經過遺忘再撈回來才牢，今天先去別的小節。';
+    return '明天再用「🔁 換一組類似題」測一輪，兩天各全對一輪（沒有猜對）就通過。';
+  }
+  function renderMastery(box) {
+    if (box.getAttribute('data-tier') === 'L0' || box.hasAttribute('data-timer')) return;
+    var el = box.querySelector('.fix-status'); if (!el) { el = document.createElement('div'); el.className = 'fix-status'; box.querySelector('.fix-btns').appendChild(el); }
+    var m = masteryOf(box._set);
+    el.className = 'fix-status' + (m.mastered ? ' ok' : m.cleanRounds ? ' half' : '');
+    el.textContent = m.mastered ? '✅ 已精熟（' + m.days.slice(0, 2).join('、') + '）' : m.cleanRounds ? '第 1 輪全對（' + m.days[0] + '），隔天再全對一輪就精熟' : '通過標準：兩天各全對一輪（不含猜對）';
+  }
+  document.querySelectorAll('.fixset').forEach(renderMastery);
+
+  /* ══════════ 錯題本與間隔複習 ══════════ */
+  function addWB(x, reason) {
+    var id = x.t + '.' + x.k + '#' + x.seed, e = REC.wb[id];
+    if (e && e.done) e.done = false;
+    if (!e) e = REC.wb[id] = { t: x.t, k: x.k, seed: x.seed, added: Date.now(), hist: [] };
+    e.reason = reason; e.stage = 0; e.due = Date.now() + INTERVAL[0] * DAY; e.hist.push({ t: Date.now(), r: reason });
+  }
+  function wbLists() {
+    var now = Date.now(), due = [], later = [], done = 0;
+    Object.keys(REC.wb).forEach(function (id) { var e = REC.wb[id]; e.id = id; if (e.done) { done++; return; } (e.due <= now ? due : later).push(e); });
+    var pri = { hc: 0, wrong: 1, guess: 2 };
+    due.sort(function (a, b) { return (pri[a.reason] - pri[b.reason]) || (a.due - b.due); });
+    later.sort(function (a, b) { return a.due - b.due; });
+    return { due: due, later: later, done: done };
+  }
+  var rv = document.getElementById('review');
+  function fmtDate(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+  function fmtDay(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function renderReview() {
+    if (!rv) return;
+    var L = wbLists(), sum = rv.querySelector('.rv-sum'), body = rv.querySelector('.rv-body');
+    var total = L.due.length + L.later.length;
+    if (!total && !L.done) { sum.textContent = '錯題本還是空的。檢測記錄後，錯的題與猜對的題會自動進來，隔天開始排複習。'; body.innerHTML = ''; return; }
+    sum.textContent = '錯題本 ' + total + ' 題：今天到期 ' + L.due.length + ' 題' + (L.later.length ? '，之後 ' + L.later.length + ' 題（最近 ' + fmtDay(L.later[0].due) + '）' : '') + (L.done ? '；已畢業 ' + L.done + ' 題' : '') + '。';
+    if (!body.hasAttribute('data-open')) { body.innerHTML = ''; return; }
+    var html = '';
+    if (!L.due.length) html += '<p class="note-sm">今天沒有到期的題。' + (L.later.length ? '下一批在 ' + fmtDay(L.later[0].due) + '。' : '') + '</p>';
+    else html += '<p class="note-sm">每題先重做<b>原題</b>（先評信心再看答案），對了再做一題<b>同型類似題</b>；兩題都對算過一關，連續兩關全對就畢業，錯一次就回到隔天重測。有把握卻錯的排最前面。</p>';
+    L.due.forEach(function (e) {
+      var it = item(e.t, e.k, e.seed);
+      html += '<div class="rvi" data-id="' + esc(e.id) + '"><div class="rvh"><b>' + esc(labelOf[e.t + '.' + e.k] || e.k) + '</b><span class="tag' + (e.reason === 'hc' ? ' hc' : '') + '">' + (e.reason === 'hc' ? '有把握卻錯' : e.reason === 'guess' ? '猜對' : '答錯') + '</span><span class="rvm">第 ' + (e.stage + 1) + ' 關・' + e.t + '・#' + e.seed + '</span></div>' +
+        '<ol><li class="qi orig"><span class="rl">原題</span><span class="q">' + it.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + it.a + '）</span>' + markHtml() + (it.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(it) + '</div>' : '') + '</li></ol></div>';
+    });
+    if (L.later.length) html += '<details class="rv-later"><summary>之後到期的 ' + L.later.length + ' 題</summary><ul>' + L.later.map(function (e) { return '<li>' + fmtDay(e.due) + '　' + esc(labelOf[e.t + '.' + e.k] || e.k) + '（第 ' + (e.stage + 1) + ' 關）</li>'; }).join('') + '</ul></details>';
+    if (L.due.length) html += '<div class="fix-foot"><button class="rvsubmit">📝 記錄複習結果</button><span>沒標記的題不會被記錄，下次再做。</span></div><div class="fix-result rvres"></div>';
+    body.innerHTML = html;
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var li = blk.querySelector('li.orig'); wireConfMark(li);
+      li.querySelector('.rvans').onclick = function () {
+        if (!li.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; }
+        li.classList.add('show'); this.textContent = '答案';
+      };
+      var osb = li.querySelector('.rvsteps'); if (osb) osb.onclick = function () { if (!li.classList.contains('show')) { li.querySelector('.rvans').click(); if (!li.classList.contains('show')) return; } li.querySelector('.gs').classList.toggle('on'); };
+      li.querySelectorAll('.mark button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (li.classList.contains('ok') && !blk.querySelector('li.vari')) {
+            var e = REC.wb[blk.getAttribute('data-id')], vs = (e.seed * 7 + 13 + Math.floor(Math.random() * 9000)) % 900000 + 1, vit = item(e.t, e.k, vs), tries = 0;
+            while (vit.q === item(e.t, e.k, e.seed).q && tries++ < 8) { vs = Math.floor(Math.random() * 900000) + 1; vit = item(e.t, e.k, vs); }
+            var v = document.createElement('li'); v.className = 'qi vari'; v.setAttribute('data-seed', vs);
+            v.innerHTML = '<span class="rl">類似題</span><span class="q">' + vit.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + vit.a + '）</span>' + markHtml() + (vit.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(vit) + '</div>' : '');
+            var vsb = v.querySelector('.rvsteps'); if (vsb) vsb.onclick = function () { v.querySelector('.gs').classList.toggle('on'); };
+            blk.querySelector('ol').appendChild(v); wireConfMark(v);
+            v.querySelector('.rvans').onclick = function () { if (!v.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; } v.classList.add('show'); this.textContent = '答案'; };
+            render(v);
+          }
+        });
+      });
+    });
+    var sb = body.querySelector('.rvsubmit'); if (sb) sb.onclick = submitReview;
+    render(body);
+  }
+  function submitReview() {
+    var body = rv.querySelector('.rv-body'), items = [], passed = 0, failed = 0, skipped = 0, now = Date.now();
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var e = REC.wb[blk.getAttribute('data-id')], o = blk.querySelector('li.orig'), v = blk.querySelector('li.vari');
+      var oOk = o.classList.contains('ok'), oNg = o.classList.contains('ng');
+      if (!oOk && !oNg) { skipped++; return; }
+      var rec = { t: e.t, k: e.k, seed: e.seed, wrong: oNg, conf: o.getAttribute('data-conf') || null, cause: oNg ? (o.getAttribute('data-cause') || null) : null, rv: 1 };
+      items.push(rec);
+      var pass = false;
+      if (oOk && v) {
+        var vOk = v.classList.contains('ok'), vNg = v.classList.contains('ng');
+        if (!vOk && !vNg) { skipped++; items.pop(); return; }
+        items.push({ t: e.t, k: e.k, seed: parseInt(v.getAttribute('data-seed'), 10), wrong: vNg, conf: v.getAttribute('data-conf') || null, cause: vNg ? (v.getAttribute('data-cause') || null) : null, rv: 1 });
+        pass = vOk;
+      } else if (oOk && !v) { skipped++; items.pop(); return; }
+      e.hist.push({ t: now, pass: pass });
+      if (pass) { e.stage = (e.stage || 0) + 1; if (e.stage >= 2) { e.done = true; e.due = null; } else e.due = now + INTERVAL[Math.min(e.stage, INTERVAL.length - 1)] * DAY; passed++; }
+      else { e.stage = 0; e.due = now + INTERVAL[0] * DAY; failed++; }
+    });
+    if (items.length) REC.attempts.push({ t: now, kind: 'review', tier: 'rv', set: '今日複習', items: items });
+    saveRec();
+    var res = body.querySelector('.rvres'); if (res) { res.innerHTML = '過關 ' + passed + ' 題、要重來 ' + failed + ' 題' + (skipped ? '、未完成 ' + skipped + ' 題（下次再做）' : '') + '。畢業的題不會再出現；重來的題明天再測。'; res.classList.add('on'); }
+    renderRec(); setTimeout(renderReview, 1200);
+  }
+  if (rv) {
+    rv.querySelector('.rv-toggle').onclick = function () { var b = rv.querySelector('.rv-body'); if (b.hasAttribute('data-open')) { b.removeAttribute('data-open'); this.textContent = '開始複習'; } else { b.setAttribute('data-open', '1'); this.textContent = '收起'; } renderReview(); };
+    renderReview();
+  }
+
+  /* ══════════ 我的練習紀錄（分析面板）══════════ */
+  var mr = document.getElementById('myrec');
+  function renderRec() {
+    if (!mr) return;
+    var st = stats(), keys = Object.keys(st.byKey), body = mr.querySelector('.mr-body'), sum = mr.querySelector('.mr-sum');
+    if (!REC.attempts.length) { sum.textContent = '還沒有紀錄。做完任何一組檢測、標記對錯並按「記錄」，這裡就會出現你的弱點分析。'; body.innerHTML = ''; return; }
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; keys.forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    sum.textContent = '共 ' + totN + ' 題，答對率 ' + Math.round(100 * (totN - totW) / totN) + '%；有把握卻錯 ' + totHc + ' 題、猜對 ' + totGs + ' 題。';
+    var weak = weakList(st.byKey), html = '';
+    html += '<div class="mr-advice"><b>優先補強：</b>' + (weak.length ? '' : '目前沒有明顯弱點，繼續換組檢測維持手感。') + '<span class="golist"></span></div>';
+    html += '<table class="mr-t"><tr><th>題型</th><th>級</th><th>做過</th><th>錯</th><th>有把握卻錯</th><th>猜對</th><th>主要錯因</th><th>最近 5 次</th><th></th></tr>';
+    keys.map(function (k) { return st.byKey[k]; }).sort(function (a, b) { return (b.hc - a.hc) || ((b.w + b.gs) / b.n - (a.w + a.gs) / a.n) || (b.n - a.n); }).forEach(function (o) {
+      var isWeak = weak.indexOf(o) >= 0, mc = mainCause(o);
+      html += '<tr class="' + (isWeak ? 'weak' : '') + '"><td>' + esc(labelOf[o.tier + '.' + o.key] || o.key) + '</td><td>' + o.tier + '</td><td>' + o.n + '</td><td>' + o.w + '</td><td>' + (o.hc ? '<b class="hcw">' + o.hc + '</b>' : '0') + '</td><td>' + o.gs + '</td><td>' + (mc ? CAUSE[mc] : '–') + '</td><td>' + o.last.slice(-5).map(function (w) { return w ? '✗' : '○'; }).join(' ') + '</td><td class="gocell" data-tier="' + o.tier + '" data-key="' + o.key + '" data-mode="' + (mc && READ_CAUSE[mc] ? 'read' : 'drill') + '"></td></tr>';
+    });
+    html += '</table>';
+    html += '<table class="mr-t"><tr><th>檢測組</th><th>次數</th><th>最近成績</th></tr>';
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s]; html += '<tr><td>' + esc(s) + '</td><td>' + o.rounds + '</td><td>' + o.hist.slice(-4).map(function (h) { return fmtDate(h.t) + '：' + (h.n - h.w) + '／' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + '</td></tr>'; });
+    html += '</table>';
+    body.innerHTML = html;
+    var gl = body.querySelector('.golist'); weak.slice(0, 6).forEach(function (o) { var mc = mainCause(o); gl.appendChild(goBtn(o.tier, o.key, mc && READ_CAUSE[mc] ? 'read' : 'drill')); });
+    body.querySelectorAll('.gocell').forEach(function (td) { var b = goBtn(td.getAttribute('data-tier'), td.getAttribute('data-key'), td.getAttribute('data-mode')); b.textContent = td.getAttribute('data-mode') === 'read' ? '回頭讀' : '回頭練'; td.appendChild(b); });
+  }
+  function summaryText() {
+    var st = stats(), L = wbLists(), lines = [];
+    lines.push('【' + TITLE + '】練習紀錄摘要　' + fmtDate(Date.now()));
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; Object.keys(st.byKey).forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    lines.push('總計：' + totN + ' 題，答對率 ' + (totN ? Math.round(100 * (totN - totW) / totN) : 0) + '%，有把握卻錯 ' + totHc + '，猜對 ' + totGs + '；錯題本 ' + (L.due.length + L.later.length) + ' 題（到期 ' + L.due.length + '、畢業 ' + L.done + '）');
+    lines.push('各檢測組：');
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s], m = masteryOf(s); lines.push('　' + s + '：' + o.rounds + ' 次，最近 ' + o.hist.slice(-3).map(function (h) { return fmtDate(h.t) + ' ' + (h.n - h.w) + '/' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + (m.mastered ? '　✅精熟' : '')); });
+    var weak = weakList(st.byKey);
+    lines.push('優先補強：' + (weak.length ? weak.slice(0, 8).map(function (o) { var mc = mainCause(o); return (labelOf[o.tier + '.' + o.key] || o.key) + '（' + o.w + '/' + o.n + (o.hc ? '，有把握卻錯 ' + o.hc : '') + (mc ? '，' + CAUSE[mc] : '') + '）'; }).join('、') : '無'));
+    return lines.join('\n');
+  }
+  function copyText(txt, btn) {
+    var done = function () { var t0 = btn.textContent; btn.textContent = '已複製'; setTimeout(function () { btn.textContent = t0; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () { window.prompt('請手動複製：', txt); });
+    else window.prompt('請手動複製：', txt);
+  }
+  if (mr) {
+    mr.querySelector('.mr-copy').onclick = function () { copyText(summaryText(), this); };
+    mr.querySelector('.mr-export').onclick = function () {
+      var blob = new Blob([JSON.stringify(REC)], { type: 'application/json' }), a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'practice-' + CH + '-' + dayKey(Date.now()) + '.json'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    };
+    mr.querySelector('.mr-import').onclick = function () { mr.querySelector('.mr-file').click(); };
+    mr.querySelector('.mr-file').onchange = function () {
+      var f = this.files[0]; if (!f) return; var rd = new FileReader();
+      rd.onload = function () { try { var r = JSON.parse(rd.result); if (!r || !r.attempts) throw 0; if (!confirm('匯入 ' + r.attempts.length + ' 筆檢測紀錄，並覆蓋這台裝置目前的紀錄？')) return; if (!r.wb) r.wb = {}; r.v = 2; REC = r; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } catch (e) { alert('這不是本練習本匯出的紀錄檔。'); } };
+      rd.readAsText(f); this.value = '';
+    };
+    mr.querySelector('.mr-toggle').onclick = function () { var b = mr.querySelector('.mr-body'); b.hidden = !b.hidden; this.textContent = b.hidden ? '展開' : '收起'; };
+    mr.querySelector('.mr-clear').onclick = function () { if (confirm('確定清除這台裝置上的所有練習紀錄與錯題本？')) { REC = { v: 2, attempts: [], wb: {} }; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } };
+    renderRec();
+  }
+
+  /* 固定題卡（L3–L5）的答案／詳解 */
+  document.querySelectorAll('.fx button[data-t]').forEach(function (b) {
+    b.onclick = function () { var fx = b.closest('.fx'), t = b.getAttribute('data-t'); fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on'); };
+  });
+  (function () {
+    var h = decodeURIComponent(location.hash || '');
+    if (h.indexOf('#c-') === 0) { var el = document.getElementById(h.slice(1)); if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }, 300); }
+  })();
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+<div id="printArea"></div>
+</body>
+</html>
