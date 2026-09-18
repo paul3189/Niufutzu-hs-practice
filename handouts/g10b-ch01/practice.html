@@ -84,6 +84,129 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 .ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
 .ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
 @media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+
+/* ── 檢測／紀錄／類似題（2026-09-17 個人化）── */
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.fix-btns .fix-meta{font-size:.8rem;color:#aaa;margin-right:auto}
+.fixset ol li .mark{margin-left:8px;white-space:nowrap}
+.fixset ol li .mark button{padding:0 8px;font-size:.8rem;border-radius:6px}
+.fixset ol li.ok{background:#eef7f0;border-radius:6px}.fixset ol li.ng{background:#fdecec;border-radius:6px}
+.fixset ol li.ok .mark button[data-m="1"],.fixset ol li.ng .mark button[data-m="0"]{background:#333;color:#fff;border-color:#333}
+.fix-foot{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.88rem;color:var(--muted)}
+.fix-foot .submit{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .fix-foot .submit{border-color:var(--l2);color:var(--l2)}#L3 .fix-foot .submit{border-color:var(--l3);color:var(--l3)}
+.fix-result{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff8e6;border:1px solid #f3dea0;font-size:.93rem}
+.fix-result.on{display:block}
+button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radius:999px;border:1px solid var(--l1);color:var(--l1);background:#fff;cursor:pointer;font:inherit;font-size:.85rem}
+.gcard.flash,.fx.flash{box-shadow:0 0 0 3px #f0c040}
+.myrec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.myrec .mr-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.myrec .mr-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.myrec .mr-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.myrec .mr-advice{margin:10px 0 4px;font-size:.93rem}
+.myrec table.mr-t{border-collapse:collapse;width:100%;font-size:.88rem;margin-top:10px}
+.myrec .mr-t th,.myrec .mr-t td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:middle}
+.myrec .bar{display:inline-block;height:8px;background:#d9534f;border-radius:4px;vertical-align:middle}
+.myrec tr.weak td:first-child{color:#b3261e;font-weight:700}
+.myrec td button.go{padding:1px 8px;font-size:.8rem}
+.simbox{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px dashed var(--l3);background:#fffaf5}
+.simbox .st{font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between}
+.simbox .sq{margin:6px 0}
+.simbox .gh,.simbox .ga{display:none;margin-top:6px;padding:6px 10px;border-radius:6px;font-size:.93rem}
+.simbox .gh{background:#fff8e6;border:1px solid #f3dea0}.simbox .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.simbox .gh.on,.simbox .ga.on{display:block}
+.simbox .sbtn{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+.simbox button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.fx button.simbtn{border-color:var(--l3);color:var(--l3);font-weight:700}
+#printArea{display:none}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px;position:relative}
+.fx-scroll{overflow-x:auto;position:relative}
+@media print{body.print-one .wrap{display:none}body.print-one #printArea{display:block}#printArea h1{font-size:1.15rem;margin:0 0 4px}#printArea .pmeta{margin:0 0 10px;color:#444}#printArea ol li{margin:12px 0;break-inside:avoid}#printArea h2{font-size:1rem;break-before:page}.fixset .mark,.fix-foot,.fix-result,.simbox,.myrec{display:none!important}}
+
+/* ── 第二版：信心評分、錯因、錯題本、混合檢測、模擬卷（2026-09-18）── */
+.fixset ol li.qi{position:relative}
+.fixset .conf,.rvi .conf{display:block;margin:4px 0 2px;font-size:.82rem;color:var(--muted)}
+.conf .cl,.cause .cl{margin-right:4px}
+.conf button,.cause button{padding:0 9px;font-size:.8rem;border-radius:999px;margin-right:4px}
+.conf button.sel{background:#1f5fa8;color:#fff;border-color:#1f5fa8}
+.cause{display:none;margin-left:8px;font-size:.82rem;color:var(--muted)}
+.fixset ol li.ng .cause,.rvi li.ng .cause{display:inline-block}
+.cause button.sel{background:#b3261e;color:#fff;border-color:#b3261e}
+.fixset:not(.show) .mark,.rvi li:not(.show) .mark{display:none}
+.fix-note{display:none;margin:6px 0;padding:8px 12px;border-radius:8px;background:#fdecec;border:1px solid #f0b8b8;font-size:.9rem}
+.fix-note.on{display:block}
+.hcw{color:#b3261e;font-weight:700}
+button.go.read{border-color:#8a4450;color:#8a4450}
+.fix-btns .tstart{border-color:var(--l4);color:var(--l4);font-weight:700}
+.fix-btns .tclock{font-weight:700;color:var(--l4);min-width:3.5em}
+.review{background:#fff;border:1px solid #f0c9a0;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.review .rv-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.review .rv-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.review .rv-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid var(--l3);color:var(--l3);background:#fff;cursor:pointer;font-weight:700}
+.rvi{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:10px 0;background:#fffdf9}
+.rvi .rvh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+.rvi .rvh .tag{font-size:.75rem;padding:1px 8px;border-radius:999px;background:#eee;color:#555}
+.rvi .rvh .tag.hc{background:#fdecec;color:#b3261e;font-weight:700}
+.rvi .rvh .rvm{margin-left:auto;color:#aaa;font-size:.78rem}
+.rvi ol{margin:6px 0 0;padding-left:22px}
+.rvi li{margin:6px 0}
+.rvi li .rl{font-size:.75rem;color:var(--l3);font-weight:700;margin-right:6px}
+.rvi li .fa{display:none;color:var(--l2);font-size:.92rem;margin-left:6px}
+.rvi li.show .fa{display:inline}
+.rvi li.ok{background:#eef7f0;border-radius:6px}.rvi li.ng{background:#fdecec;border-radius:6px}
+.rvi li .rvans{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer;margin-left:6px}
+.rv-later{font-size:.88rem;color:var(--muted);margin-top:8px}
+.rv-later ul{margin:4px 0 0 18px;padding:0}
+.must.flash{box-shadow:0 0 0 3px #f0c040}
+@media print{.conf,.cause,.fix-note,.review,.tstart,.tclock{display:none!important}}
+
+/* ── 第三版：解題步驟、兩層提示、漸淡練習（2026-09-18）── */
+.gcard button.steps{border-color:#6a3ea1;color:#6a3ea1}
+.gcard .gs,.rvi .gs{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#f4effa;border:1px solid #d8c8ee}
+.gcard .gs.on,.rvi .gs.on{display:block}
+.gcard .gh .more{font:inherit;font-size:.8rem;padding:1px 10px;border-radius:999px;border:1px solid #c9a227;background:#fff;cursor:pointer;margin-left:6px}
+ol.steps{margin:4px 0 0;padding-left:22px}
+ol.steps li{margin:4px 0}
+ol.steps li.blank .bl{color:#8a4450;font-weight:700}
+ol.steps li.blank .hid,.fin.hid{display:none}
+.fdi.open ol.steps li.blank .bl{display:none}
+.fdi.open ol.steps li.blank .hid,.fdi.open .fin.hid{display:inline}
+.fin{margin-top:6px;font-weight:700;color:#2e7d4f}
+.fadeset{background:#fff;border:1px solid #d8c8ee;border-radius:12px;padding:10px 14px;margin:8px 0 12px}
+.fadeset .fd-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-bottom:4px}
+.fadeset details.fd{border-top:1px dashed #e0d6ee;padding:6px 0}
+.fadeset details.fd summary{cursor:pointer;font-weight:700;color:#6a3ea1;font-size:.93rem}
+.fadeset .fdi{margin:8px 0 10px 8px;padding:8px 10px;border-left:3px solid #d8c8ee;font-size:.93rem}
+.fadeset .fdt{font-weight:700;color:#6a3ea1;font-size:.85rem}
+.fadeset .fdt .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:6px}
+.fadeset .fq{margin:4px 0 6px}
+.fadeset button.reveal{font:inherit;font-size:.82rem;padding:2px 12px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-top:4px}
+.rvi button.rvsteps{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-left:6px}
+@media print{.fadeset,.gcard .gs{display:none!important}}
+
+/* ── 第四版：對照題、先備診斷、精熟狀態、匯出（2026-09-18）── */
+.gcard button.contrast{border-color:#b3641a;color:#b3641a}
+.gcard .gc{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#fff7f0;border:1px solid #f0c9a0}
+.gcard .gc.on{display:block}
+.gc-h{font-size:.88rem;color:#8a4a10;margin-bottom:6px}
+.gc-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:620px){.gc-pair{grid-template-columns:1fr}}
+.gc-item{background:#fff;border:1px solid #f0d9c0;border-radius:8px;padding:6px 8px}
+.gc-t{font-weight:700;color:#b3641a;font-size:.85rem}
+.gc-t .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:4px}
+.gc-a,.gc-why{display:none;margin-top:6px}
+.gc.open .gc-a{display:block;color:var(--l1);font-weight:700}
+.gc.open .gc-why{display:block;padding:6px 10px;border-radius:6px;background:#fff8e6;border-left:4px solid #e8b94a}
+.gc-btn{margin-top:6px;display:flex;gap:6px}
+.fixset .fix-status{flex-basis:100%;font-size:.82rem;color:var(--muted);margin-top:2px}
+.fixset .fix-status.half{color:#8a6a10}.fixset .fix-status.ok{color:#2e7d4f;font-weight:700}
+.pre-list{margin:6px 0 0 18px;padding:0}.pre-list li{margin:4px 0}
+.diag{background:#fff;border:2px dashed #6a3ea1;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.diag h3.sec{margin-top:4px;border-color:#6a3ea1}
+.diag .fixset{margin-top:6px}
+.myrec .mr-file{display:none}
+@media print{.gcard .gc,.diag{display:none!important}}
 </style>
 <link rel="stylesheet" href="../../assets/theme-cow.css">
 </head>
@@ -107,12 +230,33 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
   <b>怎麼用這本？</b>
   <ol>
     <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
-    <li>L1、L2 每張卡片按「新題」就換一題（數字重新抽），按「答案」對答案、按「提示」看切入點；每小節另附<b>固定題組</b>可列印當作業。</li>
-    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了。</li>
+    <li>開始前先做上方的<b>先備診斷 5 題</b>，有錯的先補。L1、L2 每張卡片按「新題」就換一題（數字重新抽）；「⚖ 對照題」一次給兩題只差一個關鍵特徵，先說出差在哪再揭曉。「提示」分兩層：先只告訴你這是哪一型、第一步做什麼，還是不會再按一次才給帶數字的提示；「答案」對答案；L1 還有「📘 步驟」給完整解法。每小節的<b>漸淡練習</b>每型三題：完整示範 → 自己補最後一步 → 只給第一步，適合還不會下手的同學。</li>
+    <li>每小節最後是<b>檢測 10 題</b>：先在紙上作答，每題按「有把握／不確定／猜的」，全部評完才看答案；對完每題標 ○／✗，錯的選錯因（不會下手、公式用錯、計算錯、看錯題），再按「記錄」。系統會分成<b>該回頭讀</b>與<b>該多算幾題</b>兩種建議。「換一組類似題」換數字重測，「列印本組」只印這一組。</li>
+    <li>每級最後有<b>混合檢測</b>（全章題型打亂，練「判斷這是哪一型」），L3 之後有<b>段考模擬卷</b>（L2＋L3 混合、計時 50 分鐘、交卷才看答案）。</li>
+    <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（10,000 題抽樣）；固定題全數人工＋電腦重算。本章只用有限項的等差、等比、遞迴、Σ 公式與數學歸納法；無窮多項的相加（無窮等比級數）是高三選修的內容，本書一律不碰。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（15,000 題抽樣）；固定題全數人工＋電腦重算。本章只用有限項的等差、等比、遞迴、Σ 公式與數學歸納法；無窮多項的相加（無窮等比級數）是高三選修的內容，本書一律不碰。</li>
   </ol>
 </div>
+
+<div class="diag" id="diag">
+  <h3 class="sec">🧭 章首先備診斷 5 題（開始前先做）</h3>
+  <div class="note">這章一直會用到等差、等比的第 n 項（國中）、指數律（高一上第一章）、二元一次聯立方程式（國中）、配方求極值（高一上第三章）、分數的通分（國中）。5 題都對再往下；有錯的先按連結回去補——一般項、等比級數、S_n 的最大值、裂項相消每一節都靠它們。</div>
+  <div class="fixset" data-tier="L0" data-keys="*" data-seed="601" data-n="5"></div>
+</div>
+
+<div class="review" id="review">
+  <div class="rv-h"><b>📅 今日複習（錯題本）</b><span class="rv-sum"></span><button class="rv-toggle">開始複習</button></div>
+  <div class="rv-body"></div>
+</div>
+
+<div class="myrec" id="myrec">
+  <div class="mr-h"><b>📊 我的練習紀錄</b><span class="mr-sum"></span><button class="mr-toggle">展開</button><button class="mr-copy">📋 複製摘要給老師</button><button class="mr-export">⬇ 匯出</button><button class="mr-import">⬆ 匯入</button><input type="file" class="mr-file" accept=".json,application/json"><button class="mr-clear">清除紀錄</button></div>
+  <div class="mr-body" hidden></div>
+  <div class="note-sm" style="margin-top:6px">紀錄只存在這台裝置的瀏覽器裡（不會上傳）；換裝置或清除瀏覽資料就會消失，可用「匯出／匯入」搬家。</div>
+</div>
+
 
 <!-- ═══════════════════════ L1 ═══════════════════════ -->
 <section class="tier" id="L1">
@@ -120,28 +264,35 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 <div class="goal">
   <div><b>對象</b>$a_n$ 與 $S_n$ 分不清、遞迴式看到就想「代到底」、Σ 公式背了不會拆的同學。</div>
   <div><b>目標</b>24 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
-  <div><b>通過標準</b>每小節的固定 10 題連續兩輪全對，再進 L2。</div>
+  <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
 <h3 class="sec">1-1 等差與等比：兩項定數列、對稱設法、平均成長率</h3>
 <div class="must">先要會：<b>等差兩項相減 $=(q-p)d$、等比兩項相除 $=r^{q-p}$</b>、<b>$a_n=a_1+(n-1)d$ 寫成 $dn+(a_1-d)$</b>、<b>變號位置：解 $a_n\gt0$ 再取整數</b>、<b>三數等差設 $m-d,m,m+d$；三數等比設 $\frac ar,a,ar$</b>、<b>立方根唯一、平方根要 $\pm$</b>、<b>平均成長率是幾何平均：$(1+r)^n=$ 各年倍率相乘</b>。</div>
 <div class="gen-grid" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth"></div>
+<div class="fadeset" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth" data-seed="7101"></div>
 <div class="fixset" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth" data-seed="6101"></div>
 
 <h3 class="sec">1-2 遞迴：四種基本型＋週期</h3>
 <div class="must">先要會：<b>$a_{n+1}=pa_n+q$：先解不動點 $x^\ast=px^\ast+q$，$\langle a_n-x^\ast\rangle$ 是公比 $p$ 的等比</b>、<b>$a_{n+1}=a_n+f(n)$：疊縮相加 $a_n=a_1+\sum_{k=1}^{n-1}f(k)$</b>、<b>$a_{n+1}=g(n)\,a_n$：疊縮相乘，分子分母交錯消</b>、<b>$a_{n+1}=\dfrac{a_n}{ka_n+1}$：取倒數變等差</b>、<b>分式遞迴先算前幾項，看到回到 $a_1$ 就是週期</b>。</div>
 <div class="gen-grid" data-tier="L1" data-keys="recurLinear,recurSum,recurProd,recurRecip,periodic"></div>
+<div class="fadeset" data-tier="L1" data-keys="recurLinear,recurSum,recurProd,recurRecip,periodic" data-seed="7201"></div>
 <div class="fixset" data-tier="L1" data-keys="recurLinear,recurSum,recurProd,recurRecip,periodic" data-seed="6151"></div>
 
 <h3 class="sec">2 級數：Σ 公式與五種求和技術</h3>
 <div class="must">先要會：<b>$\sum k=\frac{n(n+1)}2$、$\sum k^2=\frac{n(n+1)(2n+1)}6$、$\sum k^3=\left[\frac{n(n+1)}2\right]^2$</b>、<b>Σ 可以拆、常數可以提</b>、<b>等差和 $=\frac{n(a_1+a_n)}2$；中段和＝大減小</b>、<b>$S_n$ 最大 ⟺ 加到最後一個正項</b>、<b>等比和 $=\frac{a_1(1-r^n)}{1-r}$，三段和也成等比</b>、<b>裂項：$\frac1{(ak+b)(ak+a+b)}=\frac1a\left(\frac1{ak+b}-\frac1{ak+a+b}\right)$</b>、<b>等差 $\times$ 等比：錯位相減</b>、<b>$a_n=S_n-S_{n-1}$ 只對 $n\ge2$；$S_n$ 有常數項第一項就脫隊</b>、<b>絕對值和：找變號位置，負段整段變號</b>、<b>複利 $P(1+i)^n$、單利 $P(1+ni)$</b>。</div>
 <div class="gen-grid" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound"></div>
+<div class="fadeset" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound" data-seed="7301"></div>
 <div class="fixset" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound" data-seed="6201" data-n="11"></div>
 
 <h3 class="sec">3 數學歸納法：遞推步驟怎麼寫</h3>
 <div class="must">先要會：<b>兩步缺一不可：起始值驗證 ＋「$n=k$ 成立 ⟹ $n=k+1$ 成立」</b>、<b>恆等式型：$n=k$ 的右式 ＋ 第 $k+1$ 項，要化成 $n=k+1$ 的右式</b>、<b>整除型：設 $f(k)=mt$，把 $f(k+1)$ 寫成 $b\,f(k)+$（$m$ 的倍數）</b>、<b>起始點不一定是 $1$</b>。</div>
 <div class="gen-grid" data-tier="L1" data-keys="inductionStep,divisible"></div>
+<div class="fadeset" data-tier="L1" data-keys="inductionStep,divisible" data-seed="7401"></div>
 <div class="fixset" data-tier="L1" data-keys="inductionStep,divisible" data-seed="6301" data-n="6"></div>
+
+<h3 class="sec">L1 混合檢測 12 題（全章 24 型打亂，練「判斷這是哪一型」）</h3>
+<div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
 <!-- ═══════════════════════ L2 ═══════════════════════ -->
@@ -150,7 +301,7 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
   <div><b>目標</b>16 個段考最常見題型（依 28 份高一段考卷的出現率選出），每型都能自己完整寫出過程。</div>
-  <div><b>通過標準</b>本級固定 12 題兩輪全對、且每張卡片連續新題 3 次全對。</div>
+  <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
 <h3 class="sec">數列進階：對稱性、奇偶項、由 S_n 反推、混合遞迴</h3>
@@ -161,8 +312,8 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 <div class="must">段考 28 卷中<b>級數求和 16 卷、等比級數 14 卷、複利／年金 8 卷、裂項 4 卷、錯位相減 4 卷</b>。招式：<b>等差 $\times$ 等差＝二次式，套三個公式</b>；<b>$|a_n|$ 和：先因式分解找負段</b>；<b>$\lfloor k/m\rfloor$：每 $m$ 個一群，最後一群數個數</b>；<b>分群數列先問「前面幾群共幾項」</b>；<b>$\sum\frac{k}{2^k}=2-\frac{n+2}{2^n}$（錯位相減推一次）</b>；<b>裂項反求 $n$：化成 $\frac{n}{2n+1}$ 直接比對</b>；<b>年金：每一筆各自滾幾年，是等比級數</b>；<b>等比取 $\log$ 變等差</b>。</div>
 <div class="gen-grid" data-tier="L2" data-keys="prodAP,absQuad,floorSum,groupSeq,kOver2k,telescopeN,annuity,logGP"></div>
 
-<h3 class="sec">L2 固定 12 題（列印用）</h3>
-<div class="fixset" data-tier="L2" data-keys="arSymm,sumRatio,oddEvenGP,gpSquares,sumFromSn,weightedRecur,prodAP,absQuad,floorSum,groupSeq,kOver2k,recurMixed" data-seed="6001" data-n="12"></div>
+<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
 <!-- ═══════════════════════ L3 ═══════════════════════ -->
@@ -170,12 +321,12 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
 <div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過（L3-3 的官方答案有誤，見該題）。</div>
 
-<div class="fx" id="L3-1"><div class="fxh"><span class="no">L3-1</span><span class="kw">3a_{n+1}−2a_n=−2 → 先除成 a_{n+1}=pa_n+q，再解不動點</span><span class="src">雄中 113上 填 4</span></div>
+<div class="fx" id="L3-1" data-gen="recurDivide"><div class="fxh"><span class="no">L3-1</span><span class="kw">3a_{n+1}−2a_n=−2 → 先除成 a_{n+1}=pa_n+q，再解不動點</span><span class="src">雄中 113上 填 4</span></div>
 <div class="fxq">設 $a_1=7$，且 $3a_{n+1}-2a_n=-2$（$n\ge1$）。求 $a_8$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$a_8=-\dfrac{358}{243}$</div>
@@ -183,7 +334,7 @@ h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px sol
 $a_{n+1}+2=\dfrac23(a_n+2)$ ⟹ $a_n+2=(a_1+2)\left(\dfrac23\right)^{n-1}=9\left(\dfrac23\right)^{n-1}$。<br>
 $a_8=9\cdot\dfrac{2^7}{3^7}-2=\dfrac{128}{243}-2=\dfrac{128-486}{243}=-\dfrac{358}{243}$。</div></div>
 
-<div class="fx" id="L3-2"><div class="fxh"><span class="no">L3-2</span><span class="kw">給首項、末項、總和 → 用 S=(a₁−aₙr)/(1−r) 解 r，再定項數</span><span class="src">中山女高 110下 填 10</span></div>
+<div class="fx" id="L3-2" data-gen="gpEndsSum"><div class="fxh"><span class="no">L3-2</span><span class="kw">給首項、末項、總和 → 用 S=(a₁−aₙr)/(1−r) 解 r，再定項數</span><span class="src">中山女高 110下 填 10</span></div>
 <div class="fxq">等比數列 $\langle a_n\rangle$ 中 $a_1=2$、$a_n=512$，且 $a_1+a_2+\cdots+a_n=682$。求 $a_2+a_{n-1}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$136$</div>
@@ -191,7 +342,7 @@ $a_8=9\cdot\dfrac{2^7}{3^7}-2=\dfrac{128}{243}-2=\dfrac{128-486}{243}=-\dfrac{35
 $682=\dfrac{2-512r}{1-r}$ ⟹ $682-682r=2-512r$ ⟹ $170r=680$ ⟹ $r=4$。<br>
 $2\cdot4^{\,n-1}=512$ ⟹ $4^{\,n-1}=256=4^4$ ⟹ $n=5$。$a_2=8$、$a_4=128$，和為 $136$。</div></div>
 
-<div class="fx" id="L3-3"><div class="fxh"><span class="no">L3-3</span><span class="kw">五數等差、給和與積 → 設 m−2d,m−d,m,m+d,m+2d，積是 d² 的二次式</span><span class="src">武陵 111下 填 4</span></div>
+<div class="fx" id="L3-3" data-gen="fiveAP"><div class="fxh"><span class="no">L3-3</span><span class="kw">五數等差、給和與積 → 設 m−2d,m−d,m,m+d,m+2d，積是 d² 的二次式</span><span class="src">武陵 111下 填 4</span></div>
 <div class="fxq">五個數成等差數列，其和為 $20$、乘積為 $208$。求公差 $d$ 所有可能的值。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$d=\pm\sqrt3$ 或 $\pm\sqrt{17}$　<span class="note-sm">（題庫與原卷答案寫 $\pm3$：$d=3$ 時五數為 $-2,1,4,7,10$，乘積 $-560\ne208$，官方答案有誤。）</span></div>
@@ -199,7 +350,7 @@ $2\cdot4^{\,n-1}=512$ ⟹ $4^{\,n-1}=256=4^4$ ⟹ $n=5$。$a_2=8$、$a_4=128$，
 $16(4-d^2)(16-d^2)=208$ ⟹ $(4-d^2)(16-d^2)=13$ ⟹ $d^4-20d^2+64=13$ ⟹ $d^4-20d^2+51=0$ ⟹ $(d^2-3)(d^2-17)=0$。<br>
 驗算 $d=\sqrt3$：$(4-2\sqrt3)(4+2\sqrt3)\cdot(4-\sqrt3)(4+\sqrt3)\cdot4=(16-12)(16-3)\cdot4=4\cdot13\cdot4=208$ ✔</div></div>
 
-<div class="fx" id="L3-4"><div class="fxh"><span class="no">L3-4</span><span class="kw">首項、末項、和都給、項數不給 → 同樣用 S=(a₁−aₙr)/(1−r)</span><span class="src">高雄女中 111下 填 15</span></div>
+<div class="fx" id="L3-4" data-gen="gpEndsSumN"><div class="fxh"><span class="no">L3-4</span><span class="kw">首項、末項、和都給、項數不給 → 同樣用 S=(a₁−aₙr)/(1−r)</span><span class="src">高雄女中 111下 填 15</span></div>
 <div class="fxq">等比數列 $\langle a_n\rangle$ 首項為 $3$、末項為 $-1536$、和為 $-1023$。求第 $3$ 項。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$a_3=12$</div>
@@ -207,14 +358,14 @@ $16(4-d^2)(16-d^2)=208$ ⟹ $(4-d^2)(16-d^2)=13$ ⟹ $d^4-20d^2+64=13$ ⟹ $d^4-
 $-1023+1023r=3+1536r$ ⟹ $-1026=513r$ ⟹ $r=-2$。$a_3=3\cdot(-2)^2=12$。<br>
 <span class="note-sm">順便定項數：$3\cdot(-2)^{n-1}=-1536$ ⟹ $(-2)^{n-1}=-512=(-2)^9$ ⟹ $n=10$。</span></div></div>
 
-<div class="fx" id="L3-5"><div class="fxh"><span class="no">L3-5</span><span class="kw">刪去一項後平均 → 刪掉的那項 = S₂₅ − 24×平均，再用 aₙ=Sₙ−Sₙ₋₁ 找是第幾項</span><span class="src">竹科實中 113下 單 2</span></div>
+<div class="fx" id="L3-5" data-gen="removeTerm"><div class="fxh"><span class="no">L3-5</span><span class="kw">刪去一項後平均 → 刪掉的那項 = S₂₅ − 24×平均，再用 aₙ=Sₙ−Sₙ₋₁ 找是第幾項</span><span class="src">竹科實中 113下 單 2</span></div>
 <div class="fxq">數列 $\langle a_n\rangle$ 共 $25$ 項，前 $n$ 項和 $S_n=3n^2-2n$。若刪去某一項後，剩餘 $24$ 項的算術平均數為 $74$，則刪去的是第幾項？<br>(1) $5$　(2) $9$　(3) $14$　(4) $18$　(5) $24$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(2) 第 $9$ 項</div>
 <div class="fxs"><div class="move">招式：$S_{25}=3\cdot625-50=1825$，剩餘和 $=24\times74=1776$，刪掉的項 $=49$。</div>
 $n\ge2$ 時 $a_n=S_n-S_{n-1}=6n-5$（$a_1=S_1=1$ 也合），$6n-5=49$ ⟹ $n=9$。</div></div>
 
-<div class="fx" id="L3-6"><div class="fxh"><span class="no">L3-6</span><span class="kw">aₙ=aₙ₋₁+(指數項)+(一次項) → 疊縮相加，指數部分等比、一次部分等差分開加</span><span class="src">武陵 111下 填 9</span></div>
+<div class="fx" id="L3-6" data-gen="recurExpLin"><div class="fxh"><span class="no">L3-6</span><span class="kw">aₙ=aₙ₋₁+(指數項)+(一次項) → 疊縮相加，指數部分等比、一次部分等差分開加</span><span class="src">武陵 111下 填 9</span></div>
 <div class="fxq">設 $a_1=7$，且 $a_n=a_{n-1}+2^{\,n+1}-2n+1$（$n\ge2$）。求 $a_{10}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$a_{10}=3996$</div>
@@ -222,14 +373,14 @@ $n\ge2$ 時 $a_n=S_n-S_{n-1}=6n-5$（$a_1=S_1=1$ 也合），$6n-5=49$ ⟹ $n=9$
 $\sum_{n=2}^{10}2^{\,n+1}=2^3+\cdots+2^{11}=2^{12}-2^3=4088$；$\sum_{n=2}^{10}(-2n)=-2(2+\cdots+10)=-108$；$\sum_{n=2}^{10}1=9$。<br>
 $a_{10}=7+4088-108+9=3996$。</div></div>
 
-<div class="fx" id="L3-7"><div class="fxh"><span class="no">L3-7</span><span class="kw">給 a₃ 與 aₙ₊₁=(n+2)/n·aₙ+4 → 往前推 a₂、a₁，列前五項猜 4n²，再歸納驗證</span><span class="src">武陵 111下 題組 15–16</span></div>
+<div class="fx" id="L3-7" data-gen="recurGuess"><div class="fxh"><span class="no">L3-7</span><span class="kw">給 a₃ 與 aₙ₊₁=(n+2)/n·aₙ+4 → 往前推 a₂、a₁，列前五項猜 4n²，再歸納驗證</span><span class="src">武陵 111下 題組 15–16</span></div>
 <div class="fxq">設數列 $\langle a_n\rangle$ 滿足 $a_3=36$，且對任意正整數 $n$，$a_{n+1}=\dfrac{n+2}{n}a_n+4$。(1) 列出 $a_1,\dots,a_5$。(2) 猜測一般項並用數學歸納法證明。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(1) $4,16,36,64,100$　(2) $a_n=4n^2$</div>
 <div class="fxs"><div class="move">招式：由 $a_3=\dfrac42a_2+4=36$ 得 $a_2=16$；由 $a_2=3a_1+4$ 得 $a_1=4$；往後 $a_4=\dfrac53\cdot36+4=64$、$a_5=\dfrac64\cdot64+4=100$。</div>
 猜 $a_n=4n^2$。$n=1$：$4$ ✔。設 $a_k=4k^2$，則 $a_{k+1}=\dfrac{k+2}{k}\cdot4k^2+4=4k(k+2)+4=4(k^2+2k+1)=4(k+1)^2$ ✔。</div></div>
 
-<div class="fx" id="L3-8"><div class="fxh"><span class="no">L3-8</span><span class="kw">分式遞迴、分子分母都是一次 → 老實算四項、看分子分母各自的規律、歸納法收尾</span><span class="src">北一女中 104下 計算</span></div>
+<div class="fx" id="L3-8" data-gen="fracRecurGuess"><div class="fxh"><span class="no">L3-8</span><span class="kw">分式遞迴、分子分母都是一次 → 老實算四項、看分子分母各自的規律、歸納法收尾</span><span class="src">北一女中 104下 計算</span></div>
 <div class="fxq">數列 $\langle a_n\rangle$ 滿足 $a_1=\dfrac25$，$a_n=\dfrac{3a_{n-1}-2}{8a_{n-1}-5}$（$n\ge2$）。(1) 求 $a_2,a_3,a_4,a_5$。(2) 猜測一般項。(3) 用數學歸納法證明。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(1) $\dfrac49,\dfrac6{13},\dfrac8{17},\dfrac{10}{21}$　(2) $a_n=\dfrac{2n}{4n+1}$</div>
@@ -237,28 +388,28 @@ $a_{10}=7+4088-108+9=3996$。</div></div>
 設 $a_k=\dfrac{2k}{4k+1}$，代入：分子 $3a_k-2=\dfrac{6k-8k-2}{4k+1}=\dfrac{-2(k+1)}{4k+1}$，分母 $8a_k-5=\dfrac{16k-20k-5}{4k+1}=\dfrac{-(4k+5)}{4k+1}$。<br>
 相除得 $a_{k+1}=\dfrac{2(k+1)}{4k+5}=\dfrac{2(k+1)}{4(k+1)+1}$ ✔。</div></div>
 
-<div class="fx" id="L3-9"><div class="fxh"><span class="no">L3-9</span><span class="kw">方格斜線編號 → 第 k 條斜線有 k 個數；先問 100 在第幾條、第幾個</span><span class="src">武陵 112下 填 11</span></div>
+<div class="fx" id="L3-9" data-gen="diagonalGrid"><div class="fxh"><span class="no">L3-9</span><span class="kw">方格斜線編號 → 第 k 條斜線有 k 個數；先問 100 在第幾條、第幾個</span><span class="src">武陵 112下 填 11</span></div>
 <div class="fxq">在無限大的方格中編號：$1$ 填在第一列第一行；$2,3$ 從第二列第一行往右上填到第一列第二行；$4,5,6$ 從第三列第一行往右上填到第一列第三行……依此類推。若 $100$ 在第 $m$ 列第 $n$ 行，求 $(m,n)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(6,9)$</div>
 <div class="fxs"><div class="move">招式：第 $k$ 條斜線有 $k$ 個數，前 $k$ 條共 $\dfrac{k(k+1)}2$ 個。$\dfrac{13\cdot14}2=91\lt100\le105$ ⟹ $100$ 在第 $14$ 條斜線的第 $9$ 個。</div>
 第 $14$ 條斜線從第 $14$ 列第 $1$ 行出發，每走一個「列減 $1$、行加 $1$」：第 $9$ 個在第 $14-8=6$ 列、第 $1+8=9$ 行。</div></div>
 
-<div class="fx" id="L3-10"><div class="fxh"><span class="no">L3-10</span><span class="kw">兩個數列交錯相加 → 拆成等差級數＋等比級數，各自數項數</span><span class="src">台南一中 109下 填 1</span></div>
+<div class="fx" id="L3-10" data-gen="mixedSeries"><div class="fxh"><span class="no">L3-10</span><span class="kw">兩個數列交錯相加 → 拆成等差級數＋等比級數，各自數項數</span><span class="src">台南一中 109下 填 1</span></div>
 <div class="fxq">求 $2+3+5+6+8+12+\cdots+(3k-1)+3\cdot2^{\,k-1}+\cdots+29+1536$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$3224$</div>
 <div class="fxs"><div class="move">招式：等差部分 $2,5,8,\dots,29$（$3k-1=29$ ⟹ $k=10$）；等比部分 $3,6,12,\dots,1536$（$3\cdot2^{\,k-1}=1536$ ⟹ $k=10$）。</div>
 等差和 $=\dfrac{10(2+29)}2=155$；等比和 $=3(2^{10}-1)=3069$。合計 $3224$。</div></div>
 
-<div class="fx" id="L3-11"><div class="fxh"><span class="no">L3-11</span><span class="kw">兩個等比級數相除 → 分子公比 4、分母公比 2，用 4¹⁰−1=(2¹⁰−1)(2¹⁰+1) 約分</span><span class="src">台中一中 111下 單 1</span></div>
+<div class="fx" id="L3-11" data-gen="gpRatioSeries"><div class="fxh"><span class="no">L3-11</span><span class="kw">兩個等比級數相除 → 分子公比 4、分母公比 2，用 4¹⁰−1=(2¹⁰−1)(2¹⁰+1) 約分</span><span class="src">台中一中 111下 單 1</span></div>
 <div class="fxq">求 $\dfrac{2^2+2^4+2^6+\cdots+2^{20}}{2+2^2+2^3+\cdots+2^{10}}$。<br>(1) $2$　(2) $4$　(3) $\dfrac{1025}3$　(4) $\dfrac{2050}3$　(5) $\dfrac{4097}3$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(4) $\dfrac{2050}{3}$</div>
 <div class="fxs"><div class="move">招式：分子 $=\dfrac{4(4^{10}-1)}{3}$、分母 $=2(2^{10}-1)$。</div>
 $\dfrac{4(2^{10}-1)(2^{10}+1)}{3\cdot2(2^{10}-1)}=\dfrac{2(2^{10}+1)}{3}=\dfrac{2\cdot1025}{3}=\dfrac{2050}3$。</div></div>
 
-<div class="fx" id="L3-12"><div class="fxh"><span class="no">L3-12</span><span class="kw">Σk(k+2)(k+4) 要因式分解的答案 → 乘開套三個公式，再提 n(n+1)/4 湊出兩個一次因式</span><span class="src">北一女中 104下 填 6</span></div>
+<div class="fx" id="L3-12" data-gen="sigmaFactorForm"><div class="fxh"><span class="no">L3-12</span><span class="kw">Σk(k+2)(k+4) 要因式分解的答案 → 乘開套三個公式，再提 n(n+1)/4 湊出兩個一次因式</span><span class="src">北一女中 104下 填 6</span></div>
 <div class="fxq">已知 $\displaystyle\sum_{k=1}^{n}k(k+2)(k+4)=\dfrac{n(n+b)(n+c)(n+d)}{a}$，其中 $a,b,c,d$ 為整數且 $b\lt c\lt d$。求 $(a,b,c,d)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(4,1,4,5)$</div>
@@ -266,27 +417,34 @@ $\dfrac{4(2^{10}-1)(2^{10}+1)}{3\cdot2(2^{10}-1)}=\dfrac{2(2^{10}+1)}{3}=\dfrac{
 $\sum=\left[\dfrac{n(n+1)}2\right]^2+n(n+1)(2n+1)+4n(n+1)=\dfrac{n(n+1)}4\big[n(n+1)+4(2n+1)+16\big]=\dfrac{n(n+1)(n^2+9n+20)}4=\dfrac{n(n+1)(n+4)(n+5)}4$。<br>
 代 $n=1$ 驗算：左 $=15$，右 $=\dfrac{1\cdot2\cdot5\cdot6}4=15$ ✔</div></div>
 
-<div class="fx" id="L3-13"><div class="fxh"><span class="no">L3-13</span><span class="kw">3Sₙ=(n+2)aₙ → 寫 n−1 的式子相減，得 aₙ/aₙ₋₁，疊縮相乘</span><span class="src">武陵 112下 填 8</span></div>
+<div class="fx" id="L3-13" data-gen="snRelationProd"><div class="fxh"><span class="no">L3-13</span><span class="kw">3Sₙ=(n+2)aₙ → 寫 n−1 的式子相減，得 aₙ/aₙ₋₁，疊縮相乘</span><span class="src">武陵 112下 填 8</span></div>
 <div class="fxq">設數列 $\langle a_n\rangle$ 滿足 $a_1=1$，且 $3(a_1+a_2+\cdots+a_n)=(n+2)a_n$。求 $a_n$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$a_n=\dfrac{n(n+1)}{2}$</div>
 <div class="fxs"><div class="move">招式：$3S_n=(n+2)a_n$、$3S_{n-1}=(n+1)a_{n-1}$ 相減 ⟹ $3a_n=(n+2)a_n-(n+1)a_{n-1}$ ⟹ $(n-1)a_n=(n+1)a_{n-1}$。</div>
 $\dfrac{a_n}{a_{n-1}}=\dfrac{n+1}{n-1}$ ⟹ $a_n=1\cdot\dfrac31\cdot\dfrac42\cdots\dfrac{n+1}{n-1}=\dfrac{n(n+1)}{2}$（前幾項 $1,3,6,10$ 驗 ✔）。</div></div>
 
-<div class="fx" id="L3-14"><div class="fxh"><span class="no">L3-14</span><span class="kw">係數等差、公比為負的交錯級數 → 仍是錯位相減，乘上 −2 再相減</span><span class="src">北一女中 104下 填 4</span></div>
+<div class="fx" id="L3-14" data-gen="altStaggered"><div class="fxh"><span class="no">L3-14</span><span class="kw">係數等差、公比為負的交錯級數 → 仍是錯位相減，乘上 −2 再相減</span><span class="src">北一女中 104下 填 4</span></div>
 <div class="fxq">求 $S=1-2\times2+3\times2^2-4\times2^3+5\times2^4-6\times2^5+7\times2^6-8\times2^7$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$S=-711$</div>
 <div class="fxs"><div class="move">招式：$S=\displaystyle\sum_{k=1}^{8}k(-2)^{k-1}$，公比 $-2$；$-2S=\displaystyle\sum_{k=1}^{8}k(-2)^{k}$。</div>
 $S-(-2S)=3S=\big[1+(-2)+(-2)^2+\cdots+(-2)^7\big]-8(-2)^8=\dfrac{1-(-2)^8}{1-(-2)}-2048=\dfrac{-255}3-2048=-2133$ ⟹ $S=-711$。</div></div>
 
-<div class="fx" id="L3-15"><div class="fxh"><span class="no">L3-15</span><span class="kw">兩條含 a₃,a₅,a₈,a₁₀ 的方程 → 相除得 r⁵，配 S₉ 定 a₁；剩下是「和與積」的二次方程</span><span class="src">台南一中 109下 填 14</span></div>
+<div class="fx" id="L3-15" data-gen="gpSystemXY"><div class="fxh"><span class="no">L3-15</span><span class="kw">兩條含 a₃,a₅,a₈,a₁₀ 的方程 → 相除得 r⁵，配 S₉ 定 a₁；剩下是「和與積」的二次方程</span><span class="src">台南一中 109下 填 14</span></div>
 <div class="fxq">設 $\langle a_n\rangle$ 為等比數列，且 $a_1+\cdots+a_9=1533$。$x,y$ 皆為小於 $1$ 的實數，滿足 $12xy=1$ 與 $\begin{cases}a_3x+a_5y=16\\ a_8x+a_{10}y=512\end{cases}$。求 $3x-20y$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$-4$</div>
 <div class="fxs"><div class="move">招式：第二式是第一式的每一項各乘 $r^5$ ⟹ $r^5=\dfrac{512}{16}=32$ ⟹ $r=2$；$S_9=a_1(2^9-1)=1533$ ⟹ $a_1=3$。</div>
 $a_3=12$、$a_5=48$：$12x+48y=16$ ⟹ $3x+12y=4$；又 $(3x)(12y)=36xy=3$。<br>
 $3x$ 與 $12y$ 是 $t^2-4t+3=0$ 的兩根 $1,3$：若 $3x=3$ 則 $x=1$ 不合（須小於 $1$）；故 $3x=1,\ 12y=3$，$x=\dfrac13,\ y=\dfrac14$，$3x-20y=1-5=-4$。</div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
+
+<h3 class="sec">📝 段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
+<div class="note">按「開始計時」後作答，答案寫在紙上；時間到或按「交卷」才對答案。用時會記進紀錄，多做幾組可以看自己的速度有沒有進步。</div>
+<div class="fixset" data-tier="L2" data-keys="L2:*,L3:*" data-seed="8001" data-n="14" data-mixed="1" data-timer="50"></div>
 </section>
 
 <!-- ═══════════════════════ L4 ═══════════════════════ -->
@@ -572,57 +730,513 @@ $\ge1$ ⟺ $4n^2+24n+20\ge5n^2+20n$ ⟺ $n^2-4n-20\le0$ ⟺ $n\le2+\sqrt{24}\app
 
 <script>
 (function () {
-  var G = window.PGEN;
+  var G = window.PGEN, CH = 'g10b-ch01';
   var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
   function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
-  var labelOf = {};
-  ['L1', 'L2'].forEach(function (L) { G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  var TIERS = ['L0', 'L1', 'L2', 'L3'], labelOf = {};
+  TIERS.forEach(function (L) { if (G.META[L]) G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  var DAY = 86400000, INTERVAL = [1, 3, 7, 14];            /* 錯題本間隔（天）：第 n 次全對後隔 INTERVAL[n] 天再測；連續 2 次全對畢業 */
+  var CONF = { h: '有把握', m: '不確定', l: '猜的' }, CAUSE = { start: '不會下手', formula: '公式用錯', calc: '計算錯', read: '看錯題' };
+  var READ_CAUSE = { start: 1, formula: 1 };               /* 這兩種錯因建議回頭讀「先要會」；另兩種建議多算幾題 */
+
+  /* ══════════ 練習紀錄（只存在這台裝置）══════════ */
+  var STORE = 'pgen_rec_' + CH;
+  function loadRec() {
+    var r = null; try { r = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { }
+    if (!r || !r.attempts) return { v: 2, attempts: [], wb: {} };
+    if (r.v === 1) { r.attempts.forEach(function (at) { at.items.forEach(function (x) { if (!x.t) x.t = at.tier; }); }); r.v = 2; }
+    if (!r.wb) r.wb = {};
+    return r;
+  }
+  function saveRec() { try { localStorage.setItem(STORE, JSON.stringify(REC)); } catch (e) { } }
+  var REC = loadRec();
+  function stats() {
+    var byKey = {}, bySet = {};
+    REC.attempts.forEach(function (at) {
+      at.items.forEach(function (x) {
+        var t = x.t || at.tier, k = t + '.' + x.k, o = byKey[k] || (byKey[k] = { tier: t, key: x.k, n: 0, w: 0, hc: 0, gs: 0, last: [], causes: {} });
+        o.n++; if (x.wrong) o.w++; o.last.push(x.wrong ? 1 : 0);
+        if (x.wrong && x.conf === 'h') o.hc++;
+        if (!x.wrong && x.conf === 'l') o.gs++;
+        if (x.wrong && x.cause) o.causes[x.cause] = (o.causes[x.cause] || 0) + 1;
+      });
+      if (at.kind === 'review') return;
+      var s = bySet[at.set] || (bySet[at.set] = { rounds: 0, hist: [] });
+      s.rounds++; s.hist.push({ t: at.t, n: at.items.length, w: at.items.filter(function (x) { return x.wrong; }).length, secs: at.secs });
+    });
+    return { byKey: byKey, bySet: bySet };
+  }
+  function weakList(byKey) {
+    return Object.keys(byKey).map(function (k) { return byKey[k]; }).filter(function (o) {
+      if (o.tier === 'L0') return false;
+      var lastWrong = o.last[o.last.length - 1] === 1;
+      return lastWrong || o.hc > 0 || (o.n >= 2 && (o.w + o.gs) / o.n >= 0.4);
+    }).sort(function (a, b) { if (b.hc !== a.hc) return b.hc - a.hc; var la = a.last[a.last.length - 1], lb = b.last[b.last.length - 1]; if (la !== lb) return lb - la; return (b.w + b.gs) / b.n - (a.w + a.gs) / a.n; });
+  }
+  function mainCause(o) { var best = null; Object.keys(o.causes).forEach(function (c) { if (!best || o.causes[c] > o.causes[best]) best = c; }); return best; }
+
+  /* ══════════ 跳轉：練（卡片／類似題）與讀（該小節的「先要會」）══════════ */
+  function flash(el) { if (!el) return; el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 2500); }
+  function goKey(tier, key) {
+    var el;
+    if (tier === 'L3') {
+      el = document.querySelector('.fx[data-gen="' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); var sb = el.querySelector('.simbox'); if (!sb) buildSim(el, key); else sb.querySelector('.again').click(); }
+    } else {
+      el = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.querySelector('.new').click(); }
+    }
+    flash(el);
+  }
+  function goRead(tier, key) {
+    var el;
+    if (tier === 'L3') el = document.querySelector('.fx[data-gen="' + key + '"]');
+    else {
+      var card = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      el = card ? card.parentElement.previousElementSibling : null;
+      while (el && !el.classList.contains('must')) el = el.previousElementSibling;
+    }
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }
+  }
+  function goBtn(tier, key, mode) {
+    var b = document.createElement('button'); b.className = 'go' + (mode === 'read' ? ' read' : ''); b.type = 'button';
+    b.textContent = (mode === 'read' ? '📖 讀：' : (tier === 'L3' ? '📎 ' : '🎲 ')) + (labelOf[tier + '.' + key] || key);
+    b.onclick = function () { (mode === 'read' ? goRead : goKey)(tier, key); }; return b;
+  }
+
+  /* ══════════ 解題步驟排版、漸淡練習（Renkl：全解 → 補最後一步 → 只給第一步）══════════ */
+  function stepsHtml(it, mode) {
+    if (!it.s) return '';
+    var n = it.s.length, shown = mode === 'last' ? n - 1 : mode === 'first' ? 1 : n;
+    var html = '<ol class="steps">';
+    for (var i = 0; i < n; i++) {
+      if (i < shown) html += '<li>' + it.s[i] + '</li>';
+      else html += '<li class="blank"><span class="bl">' + (mode === 'last' ? '最後一步請自己完成' : '接下來的步驟請自己完成') + '</span><span class="hid">' + it.s[i] + '</span></li>';
+    }
+    html += '</ol><div class="fin' + (mode ? ' hid' : '') + '">答：' + it.a + '</div>';
+    return html;
+  }
+  function buildFade(box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(','), base = parseInt(box.getAttribute('data-seed'), 10);
+    var html = '<div class="fd-h"><b>📘 漸淡練習</b><span>每型三題：先看完整示範，第二題自己補最後一步，第三題只給第一步。看完示範後試著遮住步驟自己寫一次。</span></div>';
+    keys.forEach(function (k, i) {
+      if (!G[tier][k]) return;
+      var its = [0, 1, 2].map(function (j) { return { it: G[tier][k](G.makeRng(base + i * 31 + j * 7)), seed: base + i * 31 + j * 7 }; });
+      if (!its[0].it.s) return;
+      html += '<details class="fd"><summary>' + esc(labelOf[tier + '.' + k] || k) + '</summary>' +
+        '<div class="fdi"><div class="fdt">① 完整示範 <span class="seed">#' + its[0].seed + '</span></div><div class="fq">' + its[0].it.q + '</div>' + stepsHtml(its[0].it) + '</div>' +
+        '<div class="fdi"><div class="fdt">② 補最後一步 <span class="seed">#' + its[1].seed + '</span></div><div class="fq">' + its[1].it.q + '</div>' + stepsHtml(its[1].it, 'last') + '<button class="reveal">顯示最後一步與答案</button></div>' +
+        '<div class="fdi"><div class="fdt">③ 只給第一步 <span class="seed">#' + its[2].seed + '</span></div><div class="fq">' + its[2].it.q + '</div>' + stepsHtml(its[2].it, 'first') + '<button class="reveal">顯示其餘步驟與答案</button></div></details>';
+    });
+    box.innerHTML = html;
+    box.querySelectorAll('.reveal').forEach(function (b) { b.onclick = function () { var d = b.parentElement; d.classList.add('open'); b.style.display = 'none'; }; });
+    box.querySelectorAll('details.fd').forEach(function (d) { d.addEventListener('toggle', function () { if (d.open && !d._r) { d._r = 1; render(d); } }); });
+  }
+  document.querySelectorAll('.fadeset').forEach(buildFade);
+
+  /* ══════════ 對照題（變異理論：只差一個關鍵特徵的兩題並列，先說差在哪再揭曉）══════════ */
+  function buildContrast(gc, tier, key, seedA) {
+    var pr = G.contrastPair(tier, key, seedA);
+    if (!pr) { gc.innerHTML = '<div class="note-sm">這一型暫時找不到對照題。</div>'; gc.classList.add('on'); return; }
+    gc.innerHTML = '<div class="gc-h"><b>⚖ 對照題</b><span>先說出：<b>兩題差在哪一個地方？答案會怎麼跟著變？</b>想清楚再按「揭曉」。</span></div>' +
+      '<div class="gc-pair"><div class="gc-item"><div class="gc-t">甲 <span class="seed">#' + seedA + '</span></div>' + pr.A.q + '<div class="gc-a">答：' + pr.A.a + '</div></div>' +
+      '<div class="gc-item"><div class="gc-t">乙 <span class="seed">#' + pr.seedB + '</span></div>' + pr.B.q + '<div class="gc-a">答：' + pr.B.a + '</div></div></div>' +
+      '<div class="gc-btn"><button class="reveal">揭曉：答案與差別</button><button class="close">收起</button></div><div class="gc-why">' + pr.why + '</div>';
+    gc.classList.add('on'); gc.removeAttribute('data-stale');
+    gc.querySelector('.reveal').onclick = function () { gc.classList.add('open'); this.style.display = 'none'; };
+    gc.querySelector('.close').onclick = function () { gc.classList.remove('on'); };
+    render(gc);
+  }
+
+  /* ══════════ 產生器卡片（L1、L2）══════════ */
   function buildCard(tier, key, grid) {
-    var card = document.createElement('div'); card.className = 'gcard';
+    var card = document.createElement('div'); card.className = 'gcard'; card.setAttribute('data-key', tier + '.' + key); card.id = 'c-' + tier + '.' + key;
     card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
-      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button></div>' +
-      '<div class="gh"></div><div class="ga"></div>';
-    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000);
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="steps">📘 步驟</button>' + (G.CONTRAST && G.CONTRAST[tier + '.' + key] ? '<button class="contrast">⚖ 對照題</button>' : '') + '</div>' +
+      '<div class="gh"></div><div class="ga"></div><div class="gs"></div><div class="gc"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000), lastQ = '', cur = null, hl = 0;
+    function showHint() {
+      var gh = card.querySelector('.gh');
+      if (!cur.h1) { gh.innerHTML = '提示：' + cur.h; gh.classList.toggle('on'); render(gh); return; }
+      hl = Math.min(hl + 1, 2);
+      gh.innerHTML = '<div><b>提示 ①</b>（先想這是哪一型）：' + cur.h1 + (hl === 1 ? ' <button class="more">還是不會，再提示一層</button>' : '') + '</div>' + (hl === 2 ? '<div><b>提示 ②</b>（帶本題數字）：' + cur.h + '</div>' : '');
+      gh.classList.add('on'); var m = gh.querySelector('.more'); if (m) m.onclick = showHint; render(gh);
+    }
     function load() {
-      var it = G[tier][key](G.makeRng(seed));
+      var it = G[tier][key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G[tier][key](G.makeRng(seed)); }
+      lastQ = it.q; cur = it; hl = 0; var gcx = card.querySelector('.gc'); if (gcx && gcx.classList.contains('on')) gcx.setAttribute('data-stale', '1');
       card.querySelector('.gq').innerHTML = it.q;
-      card.querySelector('.gh').innerHTML = '提示：' + it.h;
+      card.querySelector('.gh').innerHTML = '';
       card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.gs').innerHTML = stepsHtml(it);
+      card.querySelector('.steps').style.display = it.s ? '' : 'none';
       card.querySelector('.seed').textContent = '#' + seed;
-      card.querySelector('.gh').classList.remove('on'); card.querySelector('.ga').classList.remove('on');
+      ['.gh', '.ga', '.gs'].forEach(function (c) { card.querySelector(c).classList.remove('on'); });
       render(card);
     }
     card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
-    card.querySelector('.hint').onclick = function () { card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.hint').onclick = function () { if (cur.h1 && hl === 0) showHint(); else card.querySelector('.gh').classList.toggle('on'); };
     card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    card.querySelector('.steps').onclick = function () { card.querySelector('.gs').classList.toggle('on'); };
+    var cb = card.querySelector('.contrast'); if (cb) cb.onclick = function () { var gc = card.querySelector('.gc'); if (gc.classList.contains('on') && !gc.getAttribute('data-stale')) { gc.classList.remove('on'); return; } buildContrast(gc, tier, key, seed); };
     grid.appendChild(card); load();
   }
   document.querySelectorAll('.gen-grid').forEach(function (grid) {
     var tier = grid.getAttribute('data-tier');
     grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
   });
-  document.querySelectorAll('.fixset').forEach(function (box) {
-    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(',');
-    var base = parseInt(box.getAttribute('data-seed'), 10), n = parseInt(box.getAttribute('data-n') || '10', 10);
-    var html = '<div class="fix-btns"><b>固定題組</b><button class="show">顯示答案</button><button class="print">🖨 列印本節</button></div><ol>';
-    for (var i = 0; i < n; i++) {
-      var key = keys[i % keys.length], it = G[tier][key](G.makeRng(base + i * 37));
-      html += '<li>' + it.q + '<span class="fa">（答：' + it.a + '）</span></li>';
+
+  /* ══════════ L3 固定題的「類似題」══════════ */
+  function buildSim(fx, key) {
+    var box = document.createElement('div'); box.className = 'simbox';
+    box.innerHTML = '<div class="st"><span>🎲 類似題（同型換數字）</span><span class="seed"></span></div><div class="sq"></div>' +
+      '<div class="sbtn"><button class="again">🎲 再一題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="close">收起</button></div><div class="gh"></div><div class="ga"></div>';
+    var seed = 30000 + Math.floor(Math.random() * 90000), lastQ = '';
+    function load() {
+      var it = G.L3[key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G.L3[key](G.makeRng(seed)); }
+      lastQ = it.q;
+      box.querySelector('.sq').innerHTML = it.q; box.querySelector('.gh').innerHTML = '提示：' + it.h; box.querySelector('.ga').innerHTML = '答案：' + it.a;
+      box.querySelector('.seed').textContent = '#' + seed;
+      box.querySelector('.gh').classList.remove('on'); box.querySelector('.ga').classList.remove('on');
+      render(box);
     }
-    box.innerHTML = html + '</ol>';
-    box.querySelector('.show').onclick = function () { box.classList.toggle('show'); this.textContent = box.classList.contains('show') ? '隱藏答案' : '顯示答案'; };
-    box.querySelector('.print').onclick = function () { window.print(); };
-    render(box);
+    box.querySelector('.again').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    box.querySelector('.hint').onclick = function () { box.querySelector('.gh').classList.toggle('on'); };
+    box.querySelector('.ans').onclick = function () { box.querySelector('.ga').classList.toggle('on'); };
+    box.querySelector('.close').onclick = function () { box.remove(); };
+    fx.appendChild(box); load();
+    return box;
+  }
+  document.querySelectorAll('.fx[data-gen]').forEach(function (fx) {
+    var key = fx.getAttribute('data-gen'); if (!G.L3 || !G.L3[key]) return;
+    var b = document.createElement('button'); b.textContent = '🎲 類似題'; b.className = 'simbtn';
+    b.onclick = function () { var sb = fx.querySelector('.simbox'); if (sb) sb.querySelector('.again').click(); else buildSim(fx, key); };
+    var anchor = fx.querySelector('button[data-t="s"]');
+    anchor.parentNode.insertBefore(document.createTextNode(' '), anchor.nextSibling);
+    anchor.parentNode.insertBefore(b, anchor.nextSibling.nextSibling);
   });
-  document.querySelectorAll('.fx button').forEach(function (b) {
-    b.onclick = function () {
-      var fx = b.closest('.fx'), t = b.getAttribute('data-t');
-      fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on');
+
+  /* ══════════ 題目小工具 ══════════ */
+  function item(t, k, seed) { return G[t][k](G.makeRng(seed)); }
+  function confHtml() { return '<span class="conf"><span class="cl">作答後、看答案前：</span><button data-c="h">有把握</button><button data-c="m">不確定</button><button data-c="l">猜的</button></span>'; }
+  function markHtml() { return '<span class="mark"><button data-m="1">○ 對</button><button data-m="0">✗ 錯</button></span><span class="cause"><span class="cl">錯因：</span><button data-e="start">不會下手</button><button data-e="formula">公式用錯</button><button data-e="calc">計算錯</button><button data-e="read">看錯題</button></span>'; }
+  function wireConfMark(li) {
+    li.querySelectorAll('.conf button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-conf', b.getAttribute('data-c')); li.querySelectorAll('.conf button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+    li.querySelectorAll('.mark button').forEach(function (b) {
+      b.onclick = function () { var ok = b.getAttribute('data-m') === '1'; var was = li.classList.contains(ok ? 'ok' : 'ng'); li.classList.remove('ok', 'ng'); if (!was) li.classList.add(ok ? 'ok' : 'ng'); if (!li.classList.contains('ng')) { li.removeAttribute('data-cause'); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.remove('sel'); }); } };
+    });
+    li.querySelectorAll('.cause button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-cause', b.getAttribute('data-e')); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+  }
+  function unrated(root) { return Array.prototype.filter.call(root.querySelectorAll('li.qi'), function (li) { return !li.getAttribute('data-conf'); }).length; }
+
+  /* ══════════ 檢測題組（固定種子可列印；混合／計時／換組／信心／錯因／記錄）══════════ */
+  function secName(box) {
+    var el = box.previousElementSibling;
+    while (el && !(el.tagName === 'H3' && el.classList.contains('sec'))) el = el.previousElementSibling;
+    return el ? el.textContent.replace(/（.*?）/g, '').trim() : box.getAttribute('data-tier');
+  }
+  function expandKeys(box) {
+    var tier = box.getAttribute('data-tier'), out = [];
+    box.getAttribute('data-keys').split(',').forEach(function (s) {
+      s = s.trim(); var t = tier, k = s;
+      if (s.indexOf(':') > 0) { t = s.split(':')[0]; k = s.split(':')[1]; } else if (s.indexOf('.') > 0) { t = s.split('.')[0]; k = s.split('.')[1]; }
+      if (k === '*') G.META[t].forEach(function (p) { out.push({ t: t, k: p[0] }); }); else out.push({ t: t, k: k });
+    });
+    return out;
+  }
+  var TITLE = document.querySelector('header.hd h1').textContent;
+  function printSet(box) {
+    var area = document.getElementById('printArea');
+    var lis = box.querySelectorAll('ol > li'), showAns = box.classList.contains('show');
+    var html = '<h1>' + esc(TITLE) + '｜' + esc(box._set) + '　第 ' + box._round + ' 組（#' + box._base + '）</h1><p class="pmeta">姓名：＿＿＿＿＿　日期：＿＿＿＿　得分：＿＿／' + lis.length + '</p><ol>';
+    lis.forEach(function (li) { html += '<li>' + li.querySelector('.q').innerHTML + '</li>'; });
+    html += '</ol>';
+    if (showAns) { html += '<h2>答案</h2><ol>'; lis.forEach(function (li) { html += '<li>' + li.querySelector('.fa').innerHTML.replace(/^（答：/, '').replace(/）$/, '') + '</li>'; }); html += '</ol>'; }
+    area.innerHTML = html; render(area);
+    document.body.classList.add('print-one');
+    var done = function () { document.body.classList.remove('print-one'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); setTimeout(done, 3000);
+    window.print();
+  }
+  function fmtClock(s) { var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function buildSet(box, base, round) {
+    var keys = expandKeys(box), n = parseInt(box.getAttribute('data-n') || '10', 10), mixed = box.hasAttribute('data-mixed'), timer = parseInt(box.getAttribute('data-timer') || '0', 10);
+    if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    box._base = base; box._round = round; box._items = []; box._secs = 0;
+    if (mixed) keys = G.makeRng(base + 1).shuffle(keys);
+    var label = timer ? '段考模擬卷 ' + n + ' 題' : '檢測 ' + n + ' 題';
+    var html = '<div class="fix-btns"><b>' + label + '</b><span class="fix-meta">第 ' + round + ' 組・#' + base + (mixed ? '・混合打亂' : '') + '</span>' +
+      (timer ? '<button class="tstart">⏱ 開始計時 ' + timer + ' 分</button><span class="tclock"></span>' : '') +
+      '<button class="show">' + (timer ? '交卷・看答案' : '顯示答案') + '</button><button class="print">🖨 列印本組</button><button class="regen">🔁 換一組類似題</button>' + (round > 1 ? '<button class="orig">回到原始題組</button>' : '') + '</div>' +
+      '<div class="fix-note"></div><ol>';
+    var seen = {};
+    for (var i = 0; i < n; i++) {
+      var kk = keys[i % keys.length], seed = base + i * 37, it = item(kk.t, kk.k, seed), tries = 0;
+      while (seen[it.q] && tries++ < 12) { seed += 1000003 * tries; it = item(kk.t, kk.k, seed); }
+      seen[it.q] = 1;
+      box._items.push({ t: kk.t, k: kk.k, seed: seed });
+      html += '<li class="qi"><span class="q">' + it.q + '</span>' + confHtml() + '<span class="fa">（答：' + it.a + '）</span>' + markHtml() + '</li>';
+    }
+    html += '</ol><div class="fix-foot"><button class="submit">📝 記錄本次結果</button><span>做完每題先按「有把握／不確定／猜的」，全部評完才能看答案；對完把每題標 ○／✗，錯的選錯因，再按「記錄」。</span></div><div class="fix-result"></div>';
+    box.classList.remove('show'); box.innerHTML = html; box._set = secName(box);
+    var note = box.querySelector('.fix-note');
+    box.querySelector('.show').onclick = function () {
+      if (box.classList.contains('show')) { box.classList.remove('show'); this.textContent = timer ? '交卷・看答案' : '顯示答案'; return; }
+      var u = unrated(box);
+      if (u) { note.textContent = '還有 ' + u + ' 題沒評信心。先寫下答案、按「有把握／不確定／猜的」，再看答案——這一步是為了讓你知道自己「以為會」和「真的會」差多少。'; note.classList.add('on'); return; }
+      note.classList.remove('on'); box.classList.add('show'); this.textContent = '隱藏答案';
+      if (box._tick) { clearInterval(box._tick); box._tick = null; }
     };
+    box.querySelector('.print').onclick = function () { printSet(box); };
+    box.querySelector('.regen').onclick = function () { buildSet(box, 10000 + Math.floor(Math.random() * 89999), round + 1); box.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    var ob = box.querySelector('.orig'); if (ob) ob.onclick = function () { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); };
+    var ts = box.querySelector('.tstart');
+    if (ts) ts.onclick = function () {
+      if (box._tick) return;
+      var left = timer * 60, clock = box.querySelector('.tclock'); ts.disabled = true; clock.textContent = fmtClock(left);
+      box._tick = setInterval(function () { left--; box._secs++; clock.textContent = fmtClock(Math.max(left, 0)); if (left <= 0) { clearInterval(box._tick); box._tick = null; clock.textContent = '時間到'; } }, 1000);
+    };
+    box.querySelectorAll('li.qi').forEach(wireConfMark);
+    box.querySelector('.submit').onclick = function () { submitSet(box); };
+    render(box);
+  }
+  function submitSet(box) {
+    if (!box.classList.contains('show')) { var nt = box.querySelector('.fix-note'); nt.textContent = '先看答案、對完再記錄。'; nt.classList.add('on'); return; }
+    var lis = box.querySelectorAll('ol > li.qi'), items = [], unmarked = 0;
+    lis.forEach(function (li, i) {
+      var wrong = li.classList.contains('ng'); if (!li.classList.contains('ok') && !wrong) unmarked++;
+      var b = box._items[i]; items.push({ t: b.t, k: b.k, seed: b.seed, wrong: wrong, conf: li.getAttribute('data-conf') || null, cause: wrong ? (li.getAttribute('data-cause') || null) : null, no: i + 1 });
+    });
+    var at = { t: Date.now(), tier: box.getAttribute('data-tier'), set: box._set, base: box._base, round: box._round, items: items.map(function (x) { return { t: x.t, k: x.k, seed: x.seed, wrong: x.wrong, conf: x.conf, cause: x.cause }; }) };
+    if (box._secs) at.secs = box._secs;
+    REC.attempts.push(at);
+    var wrong = items.filter(function (x) { return x.wrong; }), hc = wrong.filter(function (x) { return x.conf === 'h'; }), gs = items.filter(function (x) { return !x.wrong && x.conf === 'l'; });
+    var res = box.querySelector('.fix-result');
+    if (box.getAttribute('data-tier') === 'L0') {
+      saveRec();
+      var need = {}; wrong.concat(gs).forEach(function (x) { need[x.k] = 1; });
+      var h0 = '<b>先備診斷 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (gs.length ? '（猜對 ' + gs.length + ' 題，也算要複習）' : '') + '。';
+      if (!Object.keys(need).length) h0 += '先備知識都在，直接從 L1 開始。';
+      else {
+        h0 += '<br>這章會一直用到下面這些，建議先花 20 分鐘複習再開始：<ul class="pre-list">';
+        Object.keys(need).forEach(function (k) { var pq = G.PREREQ[k] || { txt: labelOf['L0.' + k] || k, link: null }; h0 += '<li>' + esc(pq.txt) + (pq.link ? '　<a href=' + JSON.stringify(pq.link) + '>→ 去那一章的 L1 練</a>' : '　（國中內容：翻課本或問老師，這裡的卡片可先多練幾題）') + '　' + '<span class="golist" data-k="' + k + '"></span></li>'; });
+        h0 += '</ul>';
+      }
+      res.innerHTML = h0; res.classList.add('on');
+      res.querySelectorAll('.golist').forEach(function (g) { g.appendChild(goBtn('L0', g.getAttribute('data-k'))); });
+      renderRec(); return;
+    }
+    wrong.forEach(function (x) { addWB(x, x.conf === 'h' ? 'hc' : 'wrong'); }); gs.forEach(function (x) { addWB(x, 'guess'); });
+    saveRec();
+    var html = '<b>本次 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (unmarked ? '（' + unmarked + ' 題未標記，視為答對）' : '') + (box._secs ? '，用時 ' + fmtClock(box._secs) : '') + '。';
+    if (hc.length) html += '<br><span class="hcw">⚠ 有把握卻答錯 ' + hc.length + ' 題（第 ' + hc.map(function (x) { return x.no; }).join('、') + ' 題）——這種「以為會」最危險，已排到錯題本最前面。</span>';
+    if (gs.length) html += '<br>猜對 ' + gs.length + ' 題（第 ' + gs.map(function (x) { return x.no; }).join('、') + ' 題）不算通過，也放進錯題本。';
+    if (!wrong.length && !gs.length) {
+      var unsure = items.filter(function (x) { return x.conf === 'm'; }).length;
+      html += '<br>全對！' + (unsure ? '有 ' + unsure + ' 題你標「不確定」——答對但沒把握的型，再多練幾題會更穩。' : '而且每題都有把握。') + (box._secs ? '' : masteryAdvice(box));
+    }
+    else {
+      var readK = {}, drillK = {};
+      wrong.forEach(function (x) { var id = x.t + '.' + x.k; if (x.cause && READ_CAUSE[x.cause]) readK[id] = x; else drillK[id] = x; });
+      gs.forEach(function (x) { var id = x.t + '.' + x.k; if (!readK[id]) drillK[id] = x; });
+      html += '<br>錯的題型：' + wrong.concat(gs).map(function (x) { return (labelOf[x.t + '.' + x.k] || x.k) + '（第 ' + x.no + ' 題' + (x.cause ? '，' + CAUSE[x.cause] : '') + '）'; }).join('、') + '。';
+      if (Object.keys(readK).length) html += '<br><b>回頭讀</b>（不會下手／公式用錯：先看該小節的「先要會」，再練）：<span class="golist read"></span>';
+      if (Object.keys(drillK).length) html += '<br><b>多算幾題</b>（計算錯／看錯題／猜對：直接跳到卡片出新題）：<span class="golist drill"></span>';
+      html += '<br>這些題會出現在頁首的「📅 今日複習」：明天重做原題＋一題類似題，連續兩次全對才從錯題本畢業。';
+      res.innerHTML = html; res.classList.add('on');
+      var gl = res.querySelector('.golist.read'); if (gl) Object.keys(readK).forEach(function (id) { var x = readK[id]; gl.appendChild(goBtn(x.t, x.k, 'read')); gl.appendChild(goBtn(x.t, x.k)); });
+      var gd = res.querySelector('.golist.drill'); if (gd) Object.keys(drillK).forEach(function (id) { var x = drillK[id]; gd.appendChild(goBtn(x.t, x.k)); });
+      renderRec(); renderReview(); return;
+    }
+    res.innerHTML = html; res.classList.add('on');
+    renderRec(); renderReview(); renderMastery(box);
+  }
+  document.querySelectorAll('.fixset').forEach(function (box) { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); });
+
+  /* ══════════ 精熟加時間條件（Bloom 精熟學習＋間隔）：兩輪全對且無猜對、且不在同一天 ══════════ */
+  function dayKey(t) { var d = new Date(t); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+  function masteryOf(setName) {
+    var clean = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName && at.items.length && at.items.every(function (x) { return !x.wrong && x.conf !== 'l'; }); });
+    var days = []; clean.forEach(function (at) { var d = dayKey(at.t); if (days.indexOf(d) < 0) days.push(d); });
+    var last = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName; }).slice(-1)[0];
+    return { cleanRounds: clean.length, days: days, mastered: days.length >= 2, today: days.indexOf(dayKey(Date.now())) >= 0, lastCleanToday: !!(last && clean.indexOf(last) >= 0 && dayKey(last.t) === dayKey(Date.now())) };
+  }
+  function masteryAdvice(box) {
+    var m = masteryOf(box._set);
+    if (m.mastered) return '這一組已達精熟（' + m.days.slice(0, 2).join('、') + ' 兩天各全對一輪）。再練同型效益不高，去做混合檢測或下一級。';
+    if (m.today) return '今天已全對一輪。第二輪要<b>隔天</b>做才算通過——記憶要經過遺忘再撈回來才牢，今天先去別的小節。';
+    return '明天再用「🔁 換一組類似題」測一輪，兩天各全對一輪（沒有猜對）就通過。';
+  }
+  function renderMastery(box) {
+    if (box.getAttribute('data-tier') === 'L0' || box.hasAttribute('data-timer')) return;
+    var el = box.querySelector('.fix-status'); if (!el) { el = document.createElement('div'); el.className = 'fix-status'; box.querySelector('.fix-btns').appendChild(el); }
+    var m = masteryOf(box._set);
+    el.className = 'fix-status' + (m.mastered ? ' ok' : m.cleanRounds ? ' half' : '');
+    el.textContent = m.mastered ? '✅ 已精熟（' + m.days.slice(0, 2).join('、') + '）' : m.cleanRounds ? '第 1 輪全對（' + m.days[0] + '），隔天再全對一輪就精熟' : '通過標準：兩天各全對一輪（不含猜對）';
+  }
+  document.querySelectorAll('.fixset').forEach(renderMastery);
+
+  /* ══════════ 錯題本與間隔複習 ══════════ */
+  function addWB(x, reason) {
+    var id = x.t + '.' + x.k + '#' + x.seed, e = REC.wb[id];
+    if (e && e.done) e.done = false;
+    if (!e) e = REC.wb[id] = { t: x.t, k: x.k, seed: x.seed, added: Date.now(), hist: [] };
+    e.reason = reason; e.stage = 0; e.due = Date.now() + INTERVAL[0] * DAY; e.hist.push({ t: Date.now(), r: reason });
+  }
+  function wbLists() {
+    var now = Date.now(), due = [], later = [], done = 0;
+    Object.keys(REC.wb).forEach(function (id) { var e = REC.wb[id]; e.id = id; if (e.done) { done++; return; } (e.due <= now ? due : later).push(e); });
+    var pri = { hc: 0, wrong: 1, guess: 2 };
+    due.sort(function (a, b) { return (pri[a.reason] - pri[b.reason]) || (a.due - b.due); });
+    later.sort(function (a, b) { return a.due - b.due; });
+    return { due: due, later: later, done: done };
+  }
+  var rv = document.getElementById('review');
+  function fmtDate(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+  function fmtDay(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function renderReview() {
+    if (!rv) return;
+    var L = wbLists(), sum = rv.querySelector('.rv-sum'), body = rv.querySelector('.rv-body');
+    var total = L.due.length + L.later.length;
+    if (!total && !L.done) { sum.textContent = '錯題本還是空的。檢測記錄後，錯的題與猜對的題會自動進來，隔天開始排複習。'; body.innerHTML = ''; return; }
+    sum.textContent = '錯題本 ' + total + ' 題：今天到期 ' + L.due.length + ' 題' + (L.later.length ? '，之後 ' + L.later.length + ' 題（最近 ' + fmtDay(L.later[0].due) + '）' : '') + (L.done ? '；已畢業 ' + L.done + ' 題' : '') + '。';
+    if (!body.hasAttribute('data-open')) { body.innerHTML = ''; return; }
+    var html = '';
+    if (!L.due.length) html += '<p class="note-sm">今天沒有到期的題。' + (L.later.length ? '下一批在 ' + fmtDay(L.later[0].due) + '。' : '') + '</p>';
+    else html += '<p class="note-sm">每題先重做<b>原題</b>（先評信心再看答案），對了再做一題<b>同型類似題</b>；兩題都對算過一關，連續兩關全對就畢業，錯一次就回到隔天重測。有把握卻錯的排最前面。</p>';
+    L.due.forEach(function (e) {
+      var it = item(e.t, e.k, e.seed);
+      html += '<div class="rvi" data-id="' + esc(e.id) + '"><div class="rvh"><b>' + esc(labelOf[e.t + '.' + e.k] || e.k) + '</b><span class="tag' + (e.reason === 'hc' ? ' hc' : '') + '">' + (e.reason === 'hc' ? '有把握卻錯' : e.reason === 'guess' ? '猜對' : '答錯') + '</span><span class="rvm">第 ' + (e.stage + 1) + ' 關・' + e.t + '・#' + e.seed + '</span></div>' +
+        '<ol><li class="qi orig"><span class="rl">原題</span><span class="q">' + it.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + it.a + '）</span>' + markHtml() + (it.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(it) + '</div>' : '') + '</li></ol></div>';
+    });
+    if (L.later.length) html += '<details class="rv-later"><summary>之後到期的 ' + L.later.length + ' 題</summary><ul>' + L.later.map(function (e) { return '<li>' + fmtDay(e.due) + '　' + esc(labelOf[e.t + '.' + e.k] || e.k) + '（第 ' + (e.stage + 1) + ' 關）</li>'; }).join('') + '</ul></details>';
+    if (L.due.length) html += '<div class="fix-foot"><button class="rvsubmit">📝 記錄複習結果</button><span>沒標記的題不會被記錄，下次再做。</span></div><div class="fix-result rvres"></div>';
+    body.innerHTML = html;
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var li = blk.querySelector('li.orig'); wireConfMark(li);
+      li.querySelector('.rvans').onclick = function () {
+        if (!li.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; }
+        li.classList.add('show'); this.textContent = '答案';
+      };
+      var osb = li.querySelector('.rvsteps'); if (osb) osb.onclick = function () { if (!li.classList.contains('show')) { li.querySelector('.rvans').click(); if (!li.classList.contains('show')) return; } li.querySelector('.gs').classList.toggle('on'); };
+      li.querySelectorAll('.mark button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (li.classList.contains('ok') && !blk.querySelector('li.vari')) {
+            var e = REC.wb[blk.getAttribute('data-id')], vs = (e.seed * 7 + 13 + Math.floor(Math.random() * 9000)) % 900000 + 1, vit = item(e.t, e.k, vs), tries = 0;
+            while (vit.q === item(e.t, e.k, e.seed).q && tries++ < 8) { vs = Math.floor(Math.random() * 900000) + 1; vit = item(e.t, e.k, vs); }
+            var v = document.createElement('li'); v.className = 'qi vari'; v.setAttribute('data-seed', vs);
+            v.innerHTML = '<span class="rl">類似題</span><span class="q">' + vit.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + vit.a + '）</span>' + markHtml() + (vit.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(vit) + '</div>' : '');
+            var vsb = v.querySelector('.rvsteps'); if (vsb) vsb.onclick = function () { v.querySelector('.gs').classList.toggle('on'); };
+            blk.querySelector('ol').appendChild(v); wireConfMark(v);
+            v.querySelector('.rvans').onclick = function () { if (!v.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; } v.classList.add('show'); this.textContent = '答案'; };
+            render(v);
+          }
+        });
+      });
+    });
+    var sb = body.querySelector('.rvsubmit'); if (sb) sb.onclick = submitReview;
+    render(body);
+  }
+  function submitReview() {
+    var body = rv.querySelector('.rv-body'), items = [], passed = 0, failed = 0, skipped = 0, now = Date.now();
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var e = REC.wb[blk.getAttribute('data-id')], o = blk.querySelector('li.orig'), v = blk.querySelector('li.vari');
+      var oOk = o.classList.contains('ok'), oNg = o.classList.contains('ng');
+      if (!oOk && !oNg) { skipped++; return; }
+      var rec = { t: e.t, k: e.k, seed: e.seed, wrong: oNg, conf: o.getAttribute('data-conf') || null, cause: oNg ? (o.getAttribute('data-cause') || null) : null, rv: 1 };
+      items.push(rec);
+      var pass = false;
+      if (oOk && v) {
+        var vOk = v.classList.contains('ok'), vNg = v.classList.contains('ng');
+        if (!vOk && !vNg) { skipped++; items.pop(); return; }
+        items.push({ t: e.t, k: e.k, seed: parseInt(v.getAttribute('data-seed'), 10), wrong: vNg, conf: v.getAttribute('data-conf') || null, cause: vNg ? (v.getAttribute('data-cause') || null) : null, rv: 1 });
+        pass = vOk;
+      } else if (oOk && !v) { skipped++; items.pop(); return; }
+      e.hist.push({ t: now, pass: pass });
+      if (pass) { e.stage = (e.stage || 0) + 1; if (e.stage >= 2) { e.done = true; e.due = null; } else e.due = now + INTERVAL[Math.min(e.stage, INTERVAL.length - 1)] * DAY; passed++; }
+      else { e.stage = 0; e.due = now + INTERVAL[0] * DAY; failed++; }
+    });
+    if (items.length) REC.attempts.push({ t: now, kind: 'review', tier: 'rv', set: '今日複習', items: items });
+    saveRec();
+    var res = body.querySelector('.rvres'); if (res) { res.innerHTML = '過關 ' + passed + ' 題、要重來 ' + failed + ' 題' + (skipped ? '、未完成 ' + skipped + ' 題（下次再做）' : '') + '。畢業的題不會再出現；重來的題明天再測。'; res.classList.add('on'); }
+    renderRec(); setTimeout(renderReview, 1200);
+  }
+  if (rv) {
+    rv.querySelector('.rv-toggle').onclick = function () { var b = rv.querySelector('.rv-body'); if (b.hasAttribute('data-open')) { b.removeAttribute('data-open'); this.textContent = '開始複習'; } else { b.setAttribute('data-open', '1'); this.textContent = '收起'; } renderReview(); };
+    renderReview();
+  }
+
+  /* ══════════ 我的練習紀錄（分析面板）══════════ */
+  var mr = document.getElementById('myrec');
+  function renderRec() {
+    if (!mr) return;
+    var st = stats(), keys = Object.keys(st.byKey), body = mr.querySelector('.mr-body'), sum = mr.querySelector('.mr-sum');
+    if (!REC.attempts.length) { sum.textContent = '還沒有紀錄。做完任何一組檢測、標記對錯並按「記錄」，這裡就會出現你的弱點分析。'; body.innerHTML = ''; return; }
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; keys.forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    sum.textContent = '共 ' + totN + ' 題，答對率 ' + Math.round(100 * (totN - totW) / totN) + '%；有把握卻錯 ' + totHc + ' 題、猜對 ' + totGs + ' 題。';
+    var weak = weakList(st.byKey), html = '';
+    html += '<div class="mr-advice"><b>優先補強：</b>' + (weak.length ? '' : '目前沒有明顯弱點，繼續換組檢測維持手感。') + '<span class="golist"></span></div>';
+    html += '<table class="mr-t"><tr><th>題型</th><th>級</th><th>做過</th><th>錯</th><th>有把握卻錯</th><th>猜對</th><th>主要錯因</th><th>最近 5 次</th><th></th></tr>';
+    keys.map(function (k) { return st.byKey[k]; }).sort(function (a, b) { return (b.hc - a.hc) || ((b.w + b.gs) / b.n - (a.w + a.gs) / a.n) || (b.n - a.n); }).forEach(function (o) {
+      var isWeak = weak.indexOf(o) >= 0, mc = mainCause(o);
+      html += '<tr class="' + (isWeak ? 'weak' : '') + '"><td>' + esc(labelOf[o.tier + '.' + o.key] || o.key) + '</td><td>' + o.tier + '</td><td>' + o.n + '</td><td>' + o.w + '</td><td>' + (o.hc ? '<b class="hcw">' + o.hc + '</b>' : '0') + '</td><td>' + o.gs + '</td><td>' + (mc ? CAUSE[mc] : '–') + '</td><td>' + o.last.slice(-5).map(function (w) { return w ? '✗' : '○'; }).join(' ') + '</td><td class="gocell" data-tier="' + o.tier + '" data-key="' + o.key + '" data-mode="' + (mc && READ_CAUSE[mc] ? 'read' : 'drill') + '"></td></tr>';
+    });
+    html += '</table>';
+    html += '<table class="mr-t"><tr><th>檢測組</th><th>次數</th><th>最近成績</th></tr>';
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s]; html += '<tr><td>' + esc(s) + '</td><td>' + o.rounds + '</td><td>' + o.hist.slice(-4).map(function (h) { return fmtDate(h.t) + '：' + (h.n - h.w) + '／' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + '</td></tr>'; });
+    html += '</table>';
+    body.innerHTML = html;
+    var gl = body.querySelector('.golist'); weak.slice(0, 6).forEach(function (o) { var mc = mainCause(o); gl.appendChild(goBtn(o.tier, o.key, mc && READ_CAUSE[mc] ? 'read' : 'drill')); });
+    body.querySelectorAll('.gocell').forEach(function (td) { var b = goBtn(td.getAttribute('data-tier'), td.getAttribute('data-key'), td.getAttribute('data-mode')); b.textContent = td.getAttribute('data-mode') === 'read' ? '回頭讀' : '回頭練'; td.appendChild(b); });
+  }
+  function summaryText() {
+    var st = stats(), L = wbLists(), lines = [];
+    lines.push('【' + TITLE + '】練習紀錄摘要　' + fmtDate(Date.now()));
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; Object.keys(st.byKey).forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    lines.push('總計：' + totN + ' 題，答對率 ' + (totN ? Math.round(100 * (totN - totW) / totN) : 0) + '%，有把握卻錯 ' + totHc + '，猜對 ' + totGs + '；錯題本 ' + (L.due.length + L.later.length) + ' 題（到期 ' + L.due.length + '、畢業 ' + L.done + '）');
+    lines.push('各檢測組：');
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s], m = masteryOf(s); lines.push('　' + s + '：' + o.rounds + ' 次，最近 ' + o.hist.slice(-3).map(function (h) { return fmtDate(h.t) + ' ' + (h.n - h.w) + '/' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + (m.mastered ? '　✅精熟' : '')); });
+    var weak = weakList(st.byKey);
+    lines.push('優先補強：' + (weak.length ? weak.slice(0, 8).map(function (o) { var mc = mainCause(o); return (labelOf[o.tier + '.' + o.key] || o.key) + '（' + o.w + '/' + o.n + (o.hc ? '，有把握卻錯 ' + o.hc : '') + (mc ? '，' + CAUSE[mc] : '') + '）'; }).join('、') : '無'));
+    return lines.join('\n');
+  }
+  function copyText(txt, btn) {
+    var done = function () { var t0 = btn.textContent; btn.textContent = '已複製'; setTimeout(function () { btn.textContent = t0; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () { window.prompt('請手動複製：', txt); });
+    else window.prompt('請手動複製：', txt);
+  }
+  if (mr) {
+    mr.querySelector('.mr-copy').onclick = function () { copyText(summaryText(), this); };
+    mr.querySelector('.mr-export').onclick = function () {
+      var blob = new Blob([JSON.stringify(REC)], { type: 'application/json' }), a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'practice-' + CH + '-' + dayKey(Date.now()) + '.json'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    };
+    mr.querySelector('.mr-import').onclick = function () { mr.querySelector('.mr-file').click(); };
+    mr.querySelector('.mr-file').onchange = function () {
+      var f = this.files[0]; if (!f) return; var rd = new FileReader();
+      rd.onload = function () { try { var r = JSON.parse(rd.result); if (!r || !r.attempts) throw 0; if (!confirm('匯入 ' + r.attempts.length + ' 筆檢測紀錄，並覆蓋這台裝置目前的紀錄？')) return; if (!r.wb) r.wb = {}; r.v = 2; REC = r; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } catch (e) { alert('這不是本練習本匯出的紀錄檔。'); } };
+      rd.readAsText(f); this.value = '';
+    };
+    mr.querySelector('.mr-toggle').onclick = function () { var b = mr.querySelector('.mr-body'); b.hidden = !b.hidden; this.textContent = b.hidden ? '展開' : '收起'; };
+    mr.querySelector('.mr-clear').onclick = function () { if (confirm('確定清除這台裝置上的所有練習紀錄與錯題本？')) { REC = { v: 2, attempts: [], wb: {} }; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } };
+    renderRec();
+  }
+
+  /* 固定題卡（L3–L5）的答案／詳解 */
+  document.querySelectorAll('.fx button[data-t]').forEach(function (b) {
+    b.onclick = function () { var fx = b.closest('.fx'), t = b.getAttribute('data-t'); fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on'); };
   });
+  (function () {
+    var h = decodeURIComponent(location.hash || '');
+    if (h.indexOf('#c-') === 0) { var el = document.getElementById(h.slice(1)); if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }, 300); }
+  })();
   function renderStatic() { render(document.body); }
   if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
 })();
 </script>
+<div id="printArea"></div>
 </body>
 </html>
