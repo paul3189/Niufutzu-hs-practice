@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三章 條件機率與貝氏定理 ── 分級練習本｜高二下</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+
+/* ── 檢測／紀錄／類似題（2026-09-17 個人化）── */
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.fix-btns .fix-meta{font-size:.8rem;color:#aaa;margin-right:auto}
+.fixset ol li .mark{margin-left:8px;white-space:nowrap}
+.fixset ol li .mark button{padding:0 8px;font-size:.8rem;border-radius:6px}
+.fixset ol li.ok{background:#eef7f0;border-radius:6px}.fixset ol li.ng{background:#fdecec;border-radius:6px}
+.fixset ol li.ok .mark button[data-m="1"],.fixset ol li.ng .mark button[data-m="0"]{background:#333;color:#fff;border-color:#333}
+.fix-foot{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.88rem;color:var(--muted)}
+.fix-foot .submit{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .fix-foot .submit{border-color:var(--l2);color:var(--l2)}#L3 .fix-foot .submit{border-color:var(--l3);color:var(--l3)}
+.fix-result{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff8e6;border:1px solid #f3dea0;font-size:.93rem}
+.fix-result.on{display:block}
+button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radius:999px;border:1px solid var(--l1);color:var(--l1);background:#fff;cursor:pointer;font:inherit;font-size:.85rem}
+.gcard.flash,.fx.flash{box-shadow:0 0 0 3px #f0c040}
+.myrec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.myrec .mr-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.myrec .mr-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.myrec .mr-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.myrec .mr-advice{margin:10px 0 4px;font-size:.93rem}
+.myrec table.mr-t{border-collapse:collapse;width:100%;font-size:.88rem;margin-top:10px}
+.myrec .mr-t th,.myrec .mr-t td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:middle}
+.myrec .bar{display:inline-block;height:8px;background:#d9534f;border-radius:4px;vertical-align:middle}
+.myrec tr.weak td:first-child{color:#b3261e;font-weight:700}
+.myrec td button.go{padding:1px 8px;font-size:.8rem}
+.simbox{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px dashed var(--l3);background:#fffaf5}
+.simbox .st{font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between}
+.simbox .sq{margin:6px 0}
+.simbox .gh,.simbox .ga{display:none;margin-top:6px;padding:6px 10px;border-radius:6px;font-size:.93rem}
+.simbox .gh{background:#fff8e6;border:1px solid #f3dea0}.simbox .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.simbox .gh.on,.simbox .ga.on{display:block}
+.simbox .sbtn{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+.simbox button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.fx button.simbtn{border-color:var(--l3);color:var(--l3);font-weight:700}
+#printArea{display:none}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px;position:relative}
+.fx-scroll{overflow-x:auto;position:relative}
+@media print{body.print-one .wrap{display:none}body.print-one #printArea{display:block}#printArea h1{font-size:1.15rem;margin:0 0 4px}#printArea .pmeta{margin:0 0 10px;color:#444}#printArea ol li{margin:12px 0;break-inside:avoid}#printArea h2{font-size:1rem;break-before:page}.fixset .mark,.fix-foot,.fix-result,.simbox,.myrec{display:none!important}}
+
+/* ── 第二版：信心評分、錯因、錯題本、混合檢測、模擬卷（2026-09-18）── */
+.fixset ol li.qi{position:relative}
+.fixset .conf,.rvi .conf{display:block;margin:4px 0 2px;font-size:.82rem;color:var(--muted)}
+.conf .cl,.cause .cl{margin-right:4px}
+.conf button,.cause button{padding:0 9px;font-size:.8rem;border-radius:999px;margin-right:4px}
+.conf button.sel{background:#1f5fa8;color:#fff;border-color:#1f5fa8}
+.cause{display:none;margin-left:8px;font-size:.82rem;color:var(--muted)}
+.fixset ol li.ng .cause,.rvi li.ng .cause{display:inline-block}
+.cause button.sel{background:#b3261e;color:#fff;border-color:#b3261e}
+.fixset:not(.show) .mark,.rvi li:not(.show) .mark{display:none}
+.fix-note{display:none;margin:6px 0;padding:8px 12px;border-radius:8px;background:#fdecec;border:1px solid #f0b8b8;font-size:.9rem}
+.fix-note.on{display:block}
+.hcw{color:#b3261e;font-weight:700}
+button.go.read{border-color:#8a4450;color:#8a4450}
+.fix-btns .tstart{border-color:var(--l4);color:var(--l4);font-weight:700}
+.fix-btns .tclock{font-weight:700;color:var(--l4);min-width:3.5em}
+.review{background:#fff;border:1px solid #f0c9a0;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.review .rv-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.review .rv-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.review .rv-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid var(--l3);color:var(--l3);background:#fff;cursor:pointer;font-weight:700}
+.rvi{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:10px 0;background:#fffdf9}
+.rvi .rvh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+.rvi .rvh .tag{font-size:.75rem;padding:1px 8px;border-radius:999px;background:#eee;color:#555}
+.rvi .rvh .tag.hc{background:#fdecec;color:#b3261e;font-weight:700}
+.rvi .rvh .rvm{margin-left:auto;color:#aaa;font-size:.78rem}
+.rvi ol{margin:6px 0 0;padding-left:22px}
+.rvi li{margin:6px 0}
+.rvi li .rl{font-size:.75rem;color:var(--l3);font-weight:700;margin-right:6px}
+.rvi li .fa{display:none;color:var(--l2);font-size:.92rem;margin-left:6px}
+.rvi li.show .fa{display:inline}
+.rvi li.ok{background:#eef7f0;border-radius:6px}.rvi li.ng{background:#fdecec;border-radius:6px}
+.rvi li .rvans{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer;margin-left:6px}
+.rv-later{font-size:.88rem;color:var(--muted);margin-top:8px}
+.rv-later ul{margin:4px 0 0 18px;padding:0}
+.must.flash{box-shadow:0 0 0 3px #f0c040}
+@media print{.conf,.cause,.fix-note,.review,.tstart,.tclock{display:none!important}}
+
+/* ── 第三版：解題步驟、兩層提示、漸淡練習（2026-09-18）── */
+.gcard button.steps{border-color:#6a3ea1;color:#6a3ea1}
+.gcard .gs,.rvi .gs{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#f4effa;border:1px solid #d8c8ee}
+.gcard .gs.on,.rvi .gs.on{display:block}
+.gcard .gh .more{font:inherit;font-size:.8rem;padding:1px 10px;border-radius:999px;border:1px solid #c9a227;background:#fff;cursor:pointer;margin-left:6px}
+ol.steps{margin:4px 0 0;padding-left:22px}
+ol.steps li{margin:4px 0}
+ol.steps li.blank .bl{color:#8a4450;font-weight:700}
+ol.steps li.blank .hid,.fin.hid{display:none}
+.fdi.open ol.steps li.blank .bl{display:none}
+.fdi.open ol.steps li.blank .hid,.fdi.open .fin.hid{display:inline}
+.fin{margin-top:6px;font-weight:700;color:#2e7d4f}
+.fadeset{background:#fff;border:1px solid #d8c8ee;border-radius:12px;padding:10px 14px;margin:8px 0 12px}
+.fadeset .fd-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-bottom:4px}
+.fadeset details.fd{border-top:1px dashed #e0d6ee;padding:6px 0}
+.fadeset details.fd summary{cursor:pointer;font-weight:700;color:#6a3ea1;font-size:.93rem}
+.fadeset .fdi{margin:8px 0 10px 8px;padding:8px 10px;border-left:3px solid #d8c8ee;font-size:.93rem}
+.fadeset .fdt{font-weight:700;color:#6a3ea1;font-size:.85rem}
+.fadeset .fdt .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:6px}
+.fadeset .fq{margin:4px 0 6px}
+.fadeset button.reveal{font:inherit;font-size:.82rem;padding:2px 12px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-top:4px}
+.rvi button.rvsteps{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-left:6px}
+@media print{.fadeset,.gcard .gs{display:none!important}}
+
+/* ── 第四版：對照題、先備診斷、精熟狀態、匯出（2026-09-18）── */
+.gcard button.contrast{border-color:#b3641a;color:#b3641a}
+.gcard .gc{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#fff7f0;border:1px solid #f0c9a0}
+.gcard .gc.on{display:block}
+.gc-h{font-size:.88rem;color:#8a4a10;margin-bottom:6px}
+.gc-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:620px){.gc-pair{grid-template-columns:1fr}}
+.gc-item{background:#fff;border:1px solid #f0d9c0;border-radius:8px;padding:6px 8px}
+.gc-t{font-weight:700;color:#b3641a;font-size:.85rem}
+.gc-t .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:4px}
+.gc-a,.gc-why{display:none;margin-top:6px}
+.gc.open .gc-a{display:block;color:var(--l1);font-weight:700}
+.gc.open .gc-why{display:block;padding:6px 10px;border-radius:6px;background:#fff8e6;border-left:4px solid #e8b94a}
+.gc-btn{margin-top:6px;display:flex;gap:6px}
+.fixset .fix-status{flex-basis:100%;font-size:.82rem;color:var(--muted);margin-top:2px}
+.fixset .fix-status.half{color:#8a6a10}.fixset .fix-status.ok{color:#2e7d4f;font-weight:700}
+.pre-list{margin:6px 0 0 18px;padding:0}.pre-list li{margin:4px 0}
+.diag{background:#fff;border:2px dashed #6a3ea1;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.diag h3.sec{margin-top:4px;border-color:#6a3ea1}
+.diag .fixset{margin-top:6px}
+.myrec .mr-file{display:none}
+@media print{.gcard .gc,.diag{display:none!important}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第三章 條件機率與貝氏定理 ── 分級練習本</h1>
+  <div class="sub">高二下・配合主講義 第 1 節 主觀機率與客觀機率、第 2 節 條件機率與乘法公式、第 3 節 獨立事件、第 4 節 貝氏定理、第 5 節 綜合應用。五個程度、一本練習本：L1、L2 的題目可以無限生成，L3–L5 是各校段考、大考與教甄的固定題。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・科學班・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>開始前先做上方的<b>先備診斷 5 題</b>，有錯的先補。L1、L2 每張卡片按「新題」就換一題（數字重新抽）；「⚖ 對照題」一次給兩題只差一個關鍵特徵，先說出差在哪再揭曉。「提示」分兩層：先只告訴你這是哪一型、第一步做什麼，還是不會再按一次才給帶數字的提示；「答案」對答案；L1 還有「📘 步驟」給完整解法。每小節的<b>漸淡練習</b>每型三題：完整示範 → 自己補最後一步 → 只給第一步，適合還不會下手的同學。</li>
+    <li>每小節最後是<b>檢測 10 題</b>：先在紙上作答，每題按「有把握／不確定／猜的」，全部評完才看答案；對完每題標 ○／✗，錯的選錯因（不會下手、公式用錯、計算錯、看錯題），再按「記錄」。系統會分成<b>該回頭讀</b>與<b>該多算幾題</b>兩種建議。「換一組類似題」換數字重測，「列印本組」只印這一組。</li>
+    <li>每級最後有<b>混合檢測</b>（全章題型打亂，練「判斷這是哪一型」），L3 之後有<b>段考模擬卷</b>（L2＋L3 混合、計時 50 分鐘、交卷才看答案）。</li>
+    <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（10,500 題抽樣，全部把樣本空間逐一窮舉、用分數精確重算一次）；固定題全數人工＋電腦重算。<b>這一章的答案一律是「一個機率值」</b>：貝氏定理的分母就是「把所有路徑加起來」，畫樹狀圖或假設 $10000$ 人列表就做得出來，不必背新公式；「$n$ 次恰中 $k$ 次」用高一下的組合數硬乘。</li>
+  </ol>
+</div>
+
+<div class="diag" id="diag">
+  <h3 class="sec">🧭 章首先備診斷 5 題（開始前先做）</h3>
+  <div class="note">這章是高一下第二章「排列組合與機率」的續集：古典機率（把樣本空間數清楚）、用組合數算取球、餘事件的「至少一個」、和事件的加法與文氏圖每一節都會再用；再加上國中就會的「從分類人數讀比例」——條件機率其實就是「分母換成已知的那一群」。5 題都對再往下；有錯的先按連結回去補。</div>
+  <div class="fixset" data-tier="L0" data-keys="*" data-seed="601" data-n="5"></div>
+</div>
+
+<div class="review" id="review">
+  <div class="rv-h"><b>📅 今日複習（錯題本）</b><span class="rv-sum"></span><button class="rv-toggle">開始複習</button></div>
+  <div class="rv-body"></div>
+</div>
+
+<div class="myrec" id="myrec">
+  <div class="mr-h"><b>📊 我的練習紀錄</b><span class="mr-sum"></span><button class="mr-toggle">展開</button><button class="mr-copy">📋 複製摘要給老師</button><button class="mr-export">⬇ 匯出</button><button class="mr-import">⬆ 匯入</button><input type="file" class="mr-file" accept=".json,application/json"><button class="mr-clear">清除紀錄</button></div>
+  <div class="mr-body" hidden></div>
+  <div class="note-sm" style="margin-top:6px">紀錄只存在這台裝置的瀏覽器裡（不會上傳）；換裝置或清除瀏覽資料就會消失，可用「匯出／匯入」搬家。</div>
+</div>
+
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>看到「已知…的條件下」不知道分母要換、分不清 $P(A\mid B)$ 與 $P(B\mid A)$、把「互斥」當成「獨立」的同學。</div>
+  <div><b>目標</b>26 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
+</div>
+
+<h3 class="sec">1 主觀機率、客觀機率與列聯表</h3>
+<div class="must">先要會：<b>客觀機率＝次數 ÷ 總次數</b>（由已知的數據得到）；<b>主觀機率也要守規矩</b>——每個機率在 $0$ 與 $1$ 之間、全部加起來是 $1$、$A\subseteq B$ 時 $P(A)\le P(B)$，違反任何一條就不合理；<b>一張列聯表藏著三種機率</b>：格子 ÷ 總數（兩件事同時發生）、邊上的合計 ÷ 總數（只看一件事）、格子 ÷ 那一列或那一行的合計（已知其中一件事）——<b>先看清楚分母是誰</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="freqTable,subjCheck,tableThree,probRules"></div>
+<div class="fadeset" data-tier="L1" data-keys="freqTable,subjCheck,tableThree,probRules" data-seed="9101"></div>
+<div class="fixset" data-tier="L1" data-keys="freqTable,subjCheck,tableThree,probRules" data-seed="8101" data-n="8"></div>
+
+<h3 class="sec">2 條件機率與乘法公式</h3>
+<div class="must">先要會：<b>「已知 $B$」只做一件事——把樣本空間換成 $B$</b>，所以 $P(A\mid B)=\dfrac{n(A\cap B)}{n(B)}=\dfrac{P(A\cap B)}{P(B)}$；<b>$P(A\mid B)$ 與 $P(B\mid A)$ 分子相同、分母不同</b>，不可以互換；<b>乘法公式是同一條式子反過來讀</b>：$P(A\cap B)=P(B)\,P(A\mid B)$（它和國中的 $(a+b)^2$ 乘法公式完全無關）；<b>不放回</b>時第二次的分母、分子都會變，<b>放回</b>時每次都一樣；樹狀圖<b>沿著一條路徑用乘的、不同路徑用加的</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="condDice,condFormula,condTable,multRule,condInverse,drawBalls,treeThree,cardKids"></div>
+<div class="fadeset" data-tier="L1" data-keys="condDice,condFormula,condTable,multRule,condInverse,drawBalls,treeThree,cardKids" data-seed="9201"></div>
+<div class="fixset" data-tier="L1" data-keys="condDice,condFormula,condTable,multRule,condInverse,drawBalls,treeThree,cardKids" data-seed="8201"></div>
+
+<h3 class="sec">3 獨立事件與重複試驗</h3>
+<div class="must">先要會：<b>獨立的定義只有一條：$P(A\cap B)=P(A)\,P(B)$</b>（等價於「知道 $B$ 發生不會改變 $A$ 的機率」），要判斷就把兩邊都算出來比；<b>互斥不是獨立</b>——互斥是 $P(A\cap B)=0$，兩個機率都不為 $0$ 的互斥事件一定<b>不</b>獨立；列聯表判獨立看<b>交叉相乘是否相等</b>；重複 $n$ 次恰成功 $k$ 次 $=C^n_k\,p^k(1-p)^{n-k}$，其中 <b>$C^n_k$ 是「哪幾次成功」的選法</b>；<b>「至少一次」$=1-(\text{每次都失敗})$</b>；「要試幾次才夠」列出 $(1-p)^n\lt1-k$ 後取常用對數，<b>除以負數時不等號要變向</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="indepCheck,indepVsExcl,indepTable,repeatTrial,atLeastOne,threeIndep,needTrials"></div>
+<div class="fadeset" data-tier="L1" data-keys="indepCheck,indepVsExcl,indepTable,repeatTrial,atLeastOne,threeIndep,needTrials" data-seed="9301"></div>
+<div class="fixset" data-tier="L1" data-keys="indepCheck,indepVsExcl,indepTable,repeatTrial,atLeastOne,threeIndep,needTrials" data-seed="8301"></div>
+
+<h3 class="sec">4 把所有路徑加起來與貝氏定理</h3>
+<div class="must">先要會：<b>先畫樹狀圖</b>，第一層是「原因」（哪一台機器、有沒有生病）、第二層是「結果」；<b>結果的機率＝把所有通往它的路徑加起來</b>；<b>貝氏定理＝「我要的那條路徑」÷「所有路徑的總和」</b>，不必背新公式；篩檢題最穩的做法是<b>假設 $10000$ 人、把四格人數填出來</b>再讀比例；盛行率很低時，<b>驗出陽性的人多半其實沒有生病</b>（因為沒病的人太多）——這是本章最反直覺、也最常考的結論。</div>
+<div class="gen-grid" data-tier="L1" data-keys="totalPath,bayesTwo,bayesScreen,bayesThree,bayesTable"></div>
+<div class="fadeset" data-tier="L1" data-keys="totalPath,bayesTwo,bayesScreen,bayesThree,bayesTable" data-seed="9401"></div>
+<div class="fixset" data-tier="L1" data-keys="totalPath,bayesTwo,bayesScreen,bayesThree,bayesTable" data-seed="8401"></div>
+
+<h3 class="sec">5 綜合：和排列組合結合、題型辨識</h3>
+<div class="must">先要會：條件機率碰到排列組合時，<b>分母是「滿足已知條件的取法數」、分子是「同時滿足兩個條件的取法數」</b>，兩個都用高一下的 $C^n_k$ 去數；<b>讀題先問三件事</b>：題目有沒有「已知／在…的條件下」？問的是「兩件事同時發生」還是「已知其中一件」？條件的方向是「由原因推結果」還是「由結果反推原因」（後者就是貝氏）。</div>
+<div class="gen-grid" data-tier="L1" data-keys="condCombo,typeIdent"></div>
+<div class="fadeset" data-tier="L1" data-keys="condCombo,typeIdent" data-seed="9501"></div>
+<div class="fixset" data-tier="L1" data-keys="condCombo,typeIdent" data-seed="8501" data-n="6"></div>
+
+
+<h3 class="sec">L1 混合檢測 12 題（全章 26 型打亂，練「判斷這是哪一型」）</h3>
+<div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
+  <div><b>目標</b>16 個段考主力型，依 27 份段考卷的出現率排序（條件機率 24 卷、貝氏定理 23、獨立事件 12、把所有路徑加起來 8、取球不放回 6、列聯表 5、骰子 5、抽籤與對稱 5、題組 5、至少命中 3、互斥 3）。</div>
+  <div><b>通過標準</b>固定 12 題限時 40 分鐘做完，對 10 題以上。</div>
+</div>
+
+<h3 class="sec">條件機率、列聯表與獨立：反求未知、兩顆骰子、組合、不放回連抽、抽籤公平性、列聯表補完</h3>
+<div class="must">段考 27 卷中<b>條件機率 24 卷、獨立事件 12 卷、取球不放回 6 卷、列聯表 5 卷、骰子 5 卷、抽籤與對稱 5 卷</b>。招式：抽象的 $P(A)$、$P(B)$ 題<b>先畫文氏圖把四塊機率填滿</b>（$A\cap B$、只有 $A$、只有 $B$、都沒有），什麼條件機率都讀得出來；<b>兩顆骰子一律用 $6\times6$ 的表格圈格子</b>；不放回連抽三次用樹狀圖逐層乘，「已知恰兩次」就把符合的路徑全部加起來當分母；<b>抽籤不論第幾個抽，抽中的機率都一樣</b>（對稱性），但「已知前面的人中了」之後就不一樣；列聯表缺格時<b>先用比例把邊上的合計補出來</b>，再用減法填格子；「要多少人才獨立」就是解 $ad=bc$。</div>
+<div class="gen-grid" data-tier="L2" data-keys="condUnknown,condDice2,condComb2,drawThree,symDraw,tableFill,tableIndepFix,indepThreePeople"></div>
+
+<h3 class="sec">重複試驗與貝氏：由至少一次反求機率、已知前幾次的重複試驗、多分支反推、兩階段取球、複檢、盛行率的影響</h3>
+<div class="must">段考 27 卷中<b>貝氏定理 23 卷、把所有路徑加起來 8 卷、至少命中 3 卷</b>（貝氏的<b>題型</b>幾乎每份都考，但「貝氏」這個名字很少出現在題幹——要認得的是題型）。招式：<b>兩階段取球</b>（先從甲袋移一顆到乙袋）第一層是「移過去的是什麼顏色」，第二層乙袋的球數已經變了；<b>複檢兩次</b>就是把樹狀圖再長一層，或把第一次算出來的機率當成第二次的起點；<b>盛行率改變</b>時只有第一層的機率換掉，其餘照舊；由總機率反推某一分支的比率，就是把「所有路徑加起來」列成一次方程式。</div>
+<div class="gen-grid" data-tier="L2" data-keys="solveP,repeatCond,needTrialsAdv,totalPath2,bayesTransfer,bayesRetest,bayesParamP,bayesCoin"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱；本級混合檢測 10 題連續兩輪全對。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過（窮舉樣本空間或逐路徑相乘）。</div>
+
+<div class="fx" id="L3-1" data-gen="diceBothWays"><div class="fxh"><span class="no">L3-1</span><span class="kw">同時要 P(A|B) 與 P(B|A) → 分子是同一個「兩件事都成立」的個數，只有分母換；把 36 格的方格表畫出來數三個數字就結束</span><span class="src">明倫高中 103下 期末 填 5</span></div>
+<div class="fxq">擲一顆公正骰子兩次。設 $A$ 為「兩次點數和為偶數」的事件，$B$ 為「第一次的點數不小於第二次的點數」的事件。求 $P(A\mid B)+P(B\mid A)$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{26}{21}$</div>
+<div class="fxs"><div class="move">招式：樣本空間就是 $6\times6=36$ 個有序對。只要數出 $n(A)$、$n(B)$、$n(A\cap B)$ 三個數字，兩個條件機率就都是「$n(A\cap B)$ 除以其中一個」。</div>
+$n(A)$：和為偶數 ⟺ 兩次同為奇數或同為偶數 ⟹ $3\times3+3\times3=18$。<br>
+$n(B)$：第一次 $\ge$ 第二次。$36$ 個有序對中「相等」有 $6$ 個，其餘 $30$ 個依對稱性一半是大於 ⟹ $6+15=21$。<br>
+$n(A\cap B)$：同為奇數的 $9$ 對中第一次 $\ge$ 第二次有 $\dfrac{9+3}{2}=6$ 對；同為偶數同理 $6$ 對 ⟹ 共 $12$。<br>
+$P(A\mid B)=\dfrac{12}{21}=\dfrac47$，$P(B\mid A)=\dfrac{12}{18}=\dfrac23$ ⟹ 相加 $=\dfrac{12}{21}+\dfrac{14}{21}=\dfrac{26}{21}$。<span class="note-sm">兩個答案相加大於 $1$ 一點也不奇怪——它們不是同一個樣本空間裡的互補事件，沒有「加起來要等於 $1$」這回事。</span></div></div>
+
+<div class="fx" id="L3-2" data-gen="compCellCond"><div class="fxh"><span class="no">L3-2</span><span class="kw">手上只有交集 A'∩B'、要的卻是 P(B|A') → 先算同一個條件下的餘事件 P(B'|A')，再用 1 減（條件不變、事件取反才可以這樣做）</span><span class="src">師大附中 112下 第二次 填 7</span></div>
+<div class="fxq">設 $A$、$B$ 為樣本空間 $S$ 中的兩事件，已知 $P(A)=\dfrac12$、$P(B)=\dfrac23$、$P(A'\cap B')=\dfrac1{12}$。求 $P(B\mid A')$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac56$</div>
+<div class="fxs"><div class="move">招式：條件是 $A'$ ⟹ 分母固定是 $P(A')$。題目給的 $P(A'\cap B')$ 剛好是「分母 $A'$、分子 $B'$」，所以先求 $P(B'\mid A')$，再用「同一個條件下，$B$ 與 $B'$ 的機率相加為 $1$」翻過來。</div>
+$P(A')=1-\dfrac12=\dfrac12$。<br>
+$P(B'\mid A')=\dfrac{P(A'\cap B')}{P(A')}=\dfrac{1/12}{1/2}=\dfrac16$。<br>
+$P(B\mid A')=1-P(B'\mid A')=1-\dfrac16=\dfrac56$。<span class="note-sm">🔴 只有「條件不動、事件取反」才能用 $1$ 減。$P(B\mid A')$ 與 $P(B\mid A)$ 之間沒有這種關係，千萬不要亂減。（順帶一提：$P(B)=\dfrac23$ 這個條件在本題其實用不到，是出題者放的干擾項。）</span></div></div>
+
+<div class="fx" id="L3-3" data-gen="indepEquation"><div class="fxh"><span class="no">L3-3</span><span class="kw">題目說「獨立」又給一條含 P(A∪B) 的等式 → 把 P(A∩B) 換成 P(A)P(B)，加法定理就變成只含一個未知數的一次方程式；獨立的事件連餘事件也獨立</span><span class="src">台中一中 110下 第二次 填 10</span></div>
+<div class="fxq">設樣本空間 $S$ 中的兩事件 $A$、$B$ 互相獨立，且 $P(A)=\dfrac14$、$P(A\cup B)=2P(B)-P(A)$。求 $P(B'\mid A)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac35$</div>
+<div class="fxs"><div class="move">招式：令 $P(B)=b$。獨立 ⟹ $P(A\cap B)=\dfrac14 b$，代進加法定理 $P(A\cup B)=P(A)+P(B)-P(A\cap B)$，整條式子只剩 $b$。</div>
+$P(A\cup B)=\dfrac14+b-\dfrac14b=\dfrac14+\dfrac34b$。<br>
+題目給 $P(A\cup B)=2b-\dfrac14$ ⟹ $\dfrac14+\dfrac34b=2b-\dfrac14$ ⟹ $\dfrac12=\dfrac54b$ ⟹ $b=\dfrac25$。<br>
+$A$、$B$ 獨立 ⟹ $A$、$B'$ 也獨立 ⟹ $P(B'\mid A)=P(B')=1-\dfrac25=\dfrac35$。<br>
+驗算：$P(A\cup B)=\dfrac14+\dfrac25-\dfrac1{10}=\dfrac{10+16-4}{40}=\dfrac{22}{40}=\dfrac{11}{20}$，而 $2b-\dfrac14=\dfrac45-\dfrac14=\dfrac{11}{20}$ ✓<span class="note-sm">「$A$、$B$ 獨立 ⟹ $A$、$B'$ 獨立」要會證：$P(A\cap B')=P(A)-P(A\cap B)=P(A)\left(1-P(B)\right)=P(A)P(B')$。</span></div></div>
+
+<div class="fx" id="L3-4" data-gen="condRange"><div class="fxh"><span class="no">L3-4</span><span class="kw">問條件機率的最大最小 → 分母 P(B) 是定值，所以只要問 P(A∩B) 能多大、能多小：上界 min(P(A),P(B))，下界 max(0, P(A)+P(B)−1)</span><span class="src">台中一中 113下 第二次 填 6</span></div>
+<div class="fxq">設 $A$、$B$ 為樣本空間中的兩事件，$P(A)=\dfrac25$、$P(B)=\dfrac45$。若 $P(A\mid B)$ 的最大值為 $M$、最小值為 $m$，求數對 $(M,m)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(M,m)=\left(\dfrac12,\ \dfrac14\right)$</div>
+<div class="fxs"><div class="move">招式：$P(A\mid B)=\dfrac{P(A\cap B)}{P(B)}=\dfrac{P(A\cap B)}{4/5}$，分母是定值 ⟹ 只要把 $P(A\cap B)$ 的範圍找出來。</div>
+上界：$A\cap B\subseteq A$ 且 $A\cap B\subseteq B$ ⟹ $P(A\cap B)\le\min\left(\dfrac25,\dfrac45\right)=\dfrac25$。<br>
+下界：$P(A\cup B)\le1$ ⟹ $P(A\cap B)\ge P(A)+P(B)-1=\dfrac25+\dfrac45-1=\dfrac15$。<br>
+$M=\dfrac{2/5}{4/5}=\dfrac12$（此時 $A\subseteq B$）、$m=\dfrac{1/5}{4/5}=\dfrac14$（此時 $A\cup B=S$）。<span class="note-sm">兩個端點都取得到：$A\subseteq B$ 與 $A\cup B=S$ 各自畫得出文氏圖，所以是最大值與最小值而不只是上下界。</span></div></div>
+
+<div class="fx" id="L3-5" data-gen="condOneZero"><div class="fxh"><span class="no">L3-5</span><span class="kw">問「條件機率等於 1 的有幾個」 → 條件機率 = 1 ⟺ 條件事件整個裝在目標事件裡面；先把五個集合列出來，用包含關係看，不必真的算分數</span><span class="src">中山女高 113下 第二次 單 7</span></div>
+<div class="fxq">擲一顆公正骰子一次。設 $A$ 為「點數為 $1$」的事件、$B$ 為「點數為奇數」的事件。在 $P(B\mid A)$、$P(B\mid A')$、$P(A\mid B')$、$P(A'\mid B')$、$P(A'\mid B)$ 這五個值之中，等於 $1$ 的共有幾個？<br>
+(1) $0$ 個　(2) $1$ 個　(3) $2$ 個　(4) $3$ 個　(5) $4$ 個</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3) $2$ 個</div>
+<div class="fxs"><div class="move">招式：$A=\{1\}$、$A'=\{2,3,4,5,6\}$、$B=\{1,3,5\}$、$B'=\{2,4,6\}$。$P(X\mid Y)=1$ ⟺ $Y\subseteq X$。</div>
+$P(B\mid A)$：$A=\{1\}\subseteq B$ ⟹ 等於 $1$ ✓<br>
+$P(B\mid A')$：$A'\cap B=\{3,5\}$ ⟹ $\dfrac25$。<br>
+$P(A\mid B')$：$B'\cap A=\varnothing$ ⟹ $0$。<br>
+$P(A'\mid B')$：$B'=\{2,4,6\}\subseteq A'$ ⟹ 等於 $1$ ✓<br>
+$P(A'\mid B)$：$B\cap A'=\{3,5\}$ ⟹ $\dfrac23$。<br>
+等於 $1$ 的有 $2$ 個 ⟹ 選 (3)。<span class="note-sm">$P(A\mid B')=0$ 是另一個極端：$0$ ⟺ 兩事件互斥。一頭一尾兩個極端值都用集合關係一眼看出，比代公式快得多。</span></div></div>
+
+<div class="fx" id="L3-6" data-gen="tableIndepPick"><div class="fxh"><span class="no">L3-6</span><span class="kw">列聯表＋「兩屬性獨立」 → 獨立表示每一列的內部比例都等於總比例；等價的快速判準是交叉相乘 ad = bc</span><span class="src">中山女高 113下 第二次 單 6</span></div>
+<div class="fxq">隨機抽出理組 $30$ 位、文組 $20$ 位同學（共 $50$ 位），詢問是否喜歡某項活動。設理組中喜歡的有 $a$ 位、不喜歡的有 $c$ 位；文組中喜歡的有 $b$ 位、不喜歡的有 $d$ 位。已知全部 $50$ 位中共有 $35$ 位表示喜歡，且「組別」與「喜好」為互相獨立的兩事件。試選出正確的選項。<br>
+(1) $a=20$　(2) $b+c=24$　(3) $a+d=28$　(4) $d=8$　(5) $ad=bc$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5) $ad=bc$</div>
+<div class="fxs"><div class="move">招式：獨立 ⟹ $P(\text{喜歡}\mid\text{理組})=P(\text{喜歡}\mid\text{文組})=P(\text{喜歡})=\dfrac{35}{50}=0.7$ ⟹ 每一列都照 $0.7$ 切開。</div>
+$a=30\times0.7=21$、$c=30-21=9$；$b=20\times0.7=14$、$d=20-14=6$。<br>
+(1) $a=21\ne20$ ✗　(2) $b+c=14+9=23\ne24$ ✗　(3) $a+d=21+6=27\ne28$ ✗　(4) $d=6\ne8$ ✗<br>
+(5) $ad=21\times6=126$、$bc=14\times9=126$ ⟹ 相等 ✓<span class="note-sm">$ad=bc$ 不只是本題成立——它就是「兩屬性獨立」的等價條件：$\dfrac{a}{a+c}=\dfrac{b}{b+d}$ 兩邊交叉相乘再整理就得到。段考看到列聯表問獨立，先算交叉乘積最快。</span></div></div>
+
+<div class="fx" id="L3-7" data-gen="kthDrawColor"><div class="fxh"><span class="no">L3-7</span><span class="kw">不放回、問「第 k 次取到某色」 → 把全部球排成一列，每個位置的機會都一樣；答案就是該色球數除以總球數，與 k 完全無關</span><span class="src">成功高中 112下 第二次 填 11</span></div>
+<div class="fxq">袋中有紅球 $1$ 顆、橙球 $2$ 顆、黃球 $3$ 顆、綠球 $4$ 顆、藍球 $5$ 顆、靛球 $6$ 顆、紫球 $7$ 顆，共 $28$ 顆。每次從袋中取出一球且不放回，求第 $7$ 次取到紫球的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac14$</div>
+<div class="fxs"><div class="move">招式：不放回把球一顆一顆取出，等於把 $28$ 顆球隨機排成一列。每一顆球排到第 $7$ 個位置的機會都相同 ⟹ 第 $7$ 個位置是紫球的機率 $=\dfrac{7}{28}$。</div>
+$P=\dfrac{7}{28}=\dfrac14$。<br>
+說得再仔細一點：把 $28$ 顆球視為互不相同（都編上號），一列有 $28!$ 種排法；第 $7$ 個位置放紫球的排法有 $7\times27!$ 種 ⟹ 機率 $=\dfrac{7\times27!}{28!}=\dfrac{7}{28}=\dfrac14$。這個算式裡完全沒有出現「$7$」這個順位，所以換成第 $1$ 次、第 $28$ 次，答案都一樣。<span class="note-sm">這就是「抽籤誰先抽都一樣」的通則。要注意的是：如果題目多給了「已知前 $6$ 次沒有取到紫球」這種條件，樣本空間就縮小了，答案會變成 $\dfrac{7}{22}$——沒有條件時才是 $\dfrac14$。</span></div></div>
+
+<div class="fx" id="L3-8" data-gen="atLeastTwoTrials"><div class="fxh"><span class="no">L3-8</span><span class="kw">互相獨立、重複 n 次、問「至少 k 次成功」 → 從反面走：1 減掉「0 次」與「1 次」；「恰好 j 次」要先用組合選出「是哪幾次成功」再乘機率</span><span class="src">中山女高 113下 第二次 填 16</span></div>
+<div class="fxq">某藥物對每一位病人的治癒機率均為 $\dfrac34$，且對不同病人的療效互相獨立。今有四位病人接受治療，求至少有兩人被治癒的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{243}{256}$</div>
+<div class="fxs"><div class="move">招式：「至少兩人」的反面只有兩種情形（$0$ 人、$1$ 人），比正面列舉（$2$、$3$、$4$ 人）少一項 ⟹ 走反面。</div>
+沒有人被治癒：四個人都沒治好 ⟹ $\left(\dfrac14\right)^4=\dfrac1{256}$。<br>
+恰有一人被治癒：先選「是哪一個人」有 $C^4_1=4$ 種，再乘 $\dfrac34\left(\dfrac14\right)^3$ ⟹ $4\times\dfrac{3}{256}=\dfrac{12}{256}$。<br>
+$P(\text{至少兩人})=1-\dfrac1{256}-\dfrac{12}{256}=\dfrac{243}{256}$。<span class="note-sm">$C^4_1$ 的意思一定要說得出來：它數的是「治好的是哪一位病人」，不是機率的一部分。把四個人編號 $1\sim4$，攤開來就是 $4$ 條長度相同的路徑。</span></div></div>
+
+<div class="fx" id="L3-9" data-gen="exactlyOneHit"><div class="fxh"><span class="no">L3-9</span><span class="kw">「在恰有一人命中的條件下，是甲命中」 → 分母是兩條路徑相加，分子只留其中一條；兩人獨立所以每條路徑就是四個數字連乘</span><span class="src">明倫高中 104下 期末 填 2</span></div>
+<div class="fxq">甲、乙兩人朝同一目標各射擊一次，命中率分別為 $\dfrac13$、$\dfrac14$，且兩人是否命中互不影響。在「恰有一人命中目標」的條件下，求是甲命中的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac35$</div>
+<div class="fxs"><div class="move">招式：「恰有一人命中」拆成兩條互斥的路徑——甲中乙不中、甲不中乙中。分母是兩條相加，分子只留第一條。</div>
+甲中乙不中：$\dfrac13\times\dfrac34=\dfrac14$。<br>
+甲不中乙中：$\dfrac23\times\dfrac14=\dfrac16$。<br>
+$P(\text{恰一人命中})=\dfrac14+\dfrac16=\dfrac{3+2}{12}=\dfrac5{12}$。<br>
+$P(\text{甲命中}\mid\text{恰一人命中})=\dfrac{1/4}{5/12}=\dfrac14\times\dfrac{12}{5}=\dfrac35$。<span class="note-sm">分子分母的分母都是 $12$，其實只要比「$3$ 比 $2$」就知道答案是 $\dfrac35$——條件機率本質上就是把兩條路徑的權重拿來比。</span></div></div>
+
+<div class="fx" id="L3-10" data-gen="bayesTwoBranch"><div class="fxh"><span class="no">L3-10</span><span class="kw">「已知結果、反問是哪個來源」 → 先把通往結果的每一條路徑乘出來當分母（把所有路徑加起來），分子只留指定的那一條</span><span class="src">北一女中 103下 期末 填 甲</span></div>
+<div class="fxq">統計某位球員的出手投籃（不含罰球），有 $48\%$ 為兩分球、$52\%$ 為三分球；其中兩分球的命中率為 $50\%$、三分球的命中率為 $40\%$。已知某一球出手後命中，求這一球是三分球的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{13}{28}$</div>
+<div class="fxs"><div class="move">招式：畫兩層樹狀圖。第一層是「兩分／三分」，第二層是「命中／沒中」。通往「命中」的葉子有兩片，加起來就是分母。</div>
+兩分且命中：$0.48\times0.5=0.24$。<br>
+三分且命中：$0.52\times0.4=0.208$。<br>
+$P(\text{命中})=0.24+0.208=0.448$。<br>
+$P(\text{三分}\mid\text{命中})=\dfrac{0.208}{0.448}=\dfrac{208}{448}=\dfrac{13}{28}$。<span class="note-sm">$\dfrac{13}{28}\approx0.464$ 比原本的 $52\%$ 低——因為三分球比較不容易進，「已經命中」這個消息會把天平往兩分球那邊推一點。算完順手做這個合理性檢查，可以擋掉分子分母寫反的錯。</span></div></div>
+
+<div class="fx" id="L3-11" data-gen="bayesUnknownRate"><div class="fxh"><span class="no">L3-11</span><span class="kw">貝氏反過來問「某一條路徑佔全部的幾成」 → 設未知的那個比率為 p，把「該路徑 ÷ 全部路徑 = 已知比例」列成一元一次方程式</span><span class="src">明倫高中 103下 期末 填 4</span></div>
+<div class="fxq">某工廠有甲、乙、丙三部機器，產量分別佔總產量的 $\dfrac13$、$\dfrac12$、$\dfrac16$。已知甲機器的不良率為 $3\%$、乙機器的不良率為 $4\%$。若調查得知所有不良品之中，產自丙機器者佔 $25\%$，求丙機器產品的不良率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$6\%$</div>
+<div class="fxs"><div class="move">招式：設丙機器的不良率為 $p$。三條「不良」的路徑加起來是全部不良率，丙那一條除以總和要等於 $\dfrac14$。</div>
+甲：$\dfrac13\times0.03=0.01$；乙：$\dfrac12\times0.04=0.02$；丙：$\dfrac16p$。<br>
+$\dfrac{\frac16p}{0.01+0.02+\frac16p}=\dfrac14$ ⟹ $4\times\dfrac{p}{6}=0.03+\dfrac{p}{6}$ ⟹ $3\times\dfrac{p}{6}=0.03$ ⟹ $\dfrac{p}{2}=0.03$ ⟹ $p=0.06$。<br>
+驗算：總不良率 $=0.01+0.02+\dfrac{0.06}{6}=0.04$，丙佔 $\dfrac{0.01}{0.04}=25\%$ ✓<span class="note-sm">看到「某一條路徑佔全部的 $\dfrac14$」，可以直接改寫成「該路徑 : 其餘路徑 $=1:3$」⟹ $\dfrac{p}{6}\times3=0.03$，一行就解完。</span></div></div>
+
+<div class="fx" id="L3-12" data-gen="bayesThreeBags"><div class="fxh"><span class="no">L3-12</span><span class="kw">先選容器、再從容器取球 → 三條路徑各是「選中該袋的機率 × 該袋內的比例」；第 (2) 小題的分母正好是第 (1) 小題的答案</span><span class="src">松山高中 104下 期末 填 2</span></div>
+<div class="fxq">甲袋有 $2$ 紅、$5$ 白、$3$ 藍球；乙袋有 $4$ 紅、$2$ 白、$2$ 藍球；丙袋有 $3$ 紅、$3$ 白、$4$ 藍球。今隨機選一袋（三袋被選中的機會均等），再從該袋中任取一球。<br>
+(1) 求取到藍球的機率。<br>
+(2) 已知取到的是藍球，求它取自甲袋的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\dfrac{19}{60}$　(2) $\dfrac6{19}$</div>
+<div class="fxs"><div class="move">招式：三袋的球數不一樣（$10$、$8$、$10$）——所以不能把藍球總數 $3+2+4=9$ 除以總球數 $28$！一定要先乘 $\dfrac13$ 再乘各袋自己的比例。</div>
+甲：$\dfrac13\times\dfrac3{10}=\dfrac1{10}$；乙：$\dfrac13\times\dfrac28=\dfrac1{12}$；丙：$\dfrac13\times\dfrac4{10}=\dfrac2{15}$。<br>
+(1) $P(\text{藍})=\dfrac1{10}+\dfrac1{12}+\dfrac2{15}=\dfrac{6+5+8}{60}=\dfrac{19}{60}$。<br>
+(2) $P(\text{甲袋}\mid\text{藍})=\dfrac{1/10}{19/60}=\dfrac{6}{19}$。<span class="note-sm">🔴 「$\dfrac9{28}$」是本題最常見的錯誤答案。只有在各袋球數相同時，那樣算才會剛好對。</span></div></div>
+
+<div class="fx" id="L3-13" data-gen="permMultiCond"><div class="fxh"><span class="no">L3-13</span><span class="kw">排列＋條件機率 → P(A|B) = n(A 且 B) ÷ n(B)，分子分母都用不盡相異物排列數算；或者直接把「已知」那個字固定下來，剩下的格子重新看一次</span><span class="src">成功高中 103下 期末 四</span></div>
+<div class="fxq">將「好」「讀」「書」三個字各 $3$ 個（共 $9$ 個字）隨機排成一列。在「最後一個字是『好』」的條件下，求第一個字也是「好」的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac14$</div>
+<div class="fxs"><div class="move">招式：兩種走法都要會。走法一是硬算兩個排列數相除；走法二是「把最後一格先釘死成『好』，剩下 $8$ 格裡有 $2$ 個『好』」，第一格是好的機率就是 $\dfrac28$。</div>
+走法一（排列數）：末字為「好」的排法 $=\dfrac{8!}{2!\,3!\,3!}=\dfrac{40320}{72}=560$ 種。<br>
+首末兩字都是「好」的排法：中間 $7$ 格放「好」$1$ 個、「讀」$3$ 個、「書」$3$ 個 ⟹ $\dfrac{7!}{1!\,3!\,3!}=\dfrac{5040}{36}=140$ 種。<br>
+條件機率 $=\dfrac{140}{560}=\dfrac14$。<br>
+走法二（縮小樣本空間）：已知末格是「好」之後，剩下 $8$ 格由「好」$2$ 個、「讀」$3$ 個、「書」$3$ 個填滿，每個字排到第一格的機會均等 ⟹ $\dfrac28=\dfrac14$ ✓<span class="note-sm">走法二快得多，但要說得出「為什麼剩下 $8$ 個字排到第一格的機會均等」——因為原本的排列是完全隨機的，把一格的內容固定下來之後，其餘各格仍然是完全隨機的排列。</span></div></div>
+
+<div class="fx" id="L3-14" data-gen="matchRemain"><div class="fxh"><span class="no">L3-14</span><span class="kw">比賽打到一半問「最後誰贏」 → 只看還沒打的局；領先的一方走反面（對手要連贏幾局才能翻盤），一行就結束</span><span class="src">成功高中 113下 第二次 填 9</span></div>
+<div class="fxq">小成與小功比賽，先勝三局者獲勝。各局勝負互相獨立，且小成每一局獲勝的機率為 $\dfrac23$。已知前兩局都由小成獲勝，求最後由小成獲勝的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{26}{27}$</div>
+<div class="fxs"><div class="move">招式：小成已經 $2$ 勝，只要再贏一局就結束；小功要翻盤，必須把接下來的三局全部贏走。反面只有一條路徑。</div>
+$P(\text{小功連贏三局})=\left(\dfrac13\right)^3=\dfrac1{27}$。<br>
+$P(\text{小成獲勝})=1-\dfrac1{27}=\dfrac{26}{27}$。<br>
+正面驗算：小成在第 $3$ 局贏 $\dfrac23$；第 $3$ 局輸、第 $4$ 局贏 $\dfrac13\times\dfrac23=\dfrac29$；第 $3$、$4$ 局皆輸、第 $5$ 局贏 $\dfrac19\times\dfrac23=\dfrac2{27}$。相加 $=\dfrac{18+6+2}{27}=\dfrac{26}{27}$ ✓<span class="note-sm">「已經打完的兩局」完全不影響後面——各局獨立就是這個意思。很多人會想把前兩局的機率也乘進去，那是多算的。</span></div></div>
+
+<div class="fx" id="L3-15" data-gen="twoStageFail"><div class="fxh"><span class="no">L3-15</span><span class="kw">兩階段關卡、已知「沒有通過」反問卡在哪一關 → 把失敗拆成互斥的兩條路徑（第一關就掛、過了第一關才掛），指定那一條除以總和</span><span class="src">110 分科模考 全國 數乙 第五次 選填 B</span></div>
+<div class="fxq">某大學數學系的申請入學必須先通過初試，再進行複試。已知初試的通過率為 $\dfrac16$，通過初試者的複試通過率為 $\dfrac18$。已知小明沒有錄取，求他是在複試失敗的機率。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac7{47}$</div>
+<div class="fxs"><div class="move">招式：只有「初試過且複試過」才叫錄取，其餘全是沒錄取。先算錄取率，再用 $1$ 減；分子是「初試過但複試沒過」那一條路徑。</div>
+$P(\text{錄取})=\dfrac16\times\dfrac18=\dfrac1{48}$ ⟹ $P(\text{沒錄取})=1-\dfrac1{48}=\dfrac{47}{48}$。<br>
+$P(\text{複試失敗})=\dfrac16\times\dfrac78=\dfrac7{48}$（注意：初試就沒過的人根本沒進複試，不算在內）。<br>
+$P(\text{複試失敗}\mid\text{沒錄取})=\dfrac{7/48}{47/48}=\dfrac7{47}$。<span class="note-sm">分母 $48$ 在最後會消掉，所以其實只要比「$7$ 比 $47$」。另一條路徑「初試就失敗」的權重是 $\dfrac56=\dfrac{40}{48}$，$7+40=47$ ✓ 兩條路徑加起來剛好是全部的失敗。</span></div></div>
+
+
+<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
+
+<h3 class="sec">📝 段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
+<div class="note">按「開始計時」後作答，答案寫在紙上；時間到或按「交卷」才對答案。用時會記進紀錄，多做幾組可以看自己的速度有沒有進步。</div>
+<div class="fixset" data-tier="L2" data-keys="L2:*,L3:*" data-seed="6001" data-n="14" data-mixed="1" data-timer="50"></div>
+</section>
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">三個事件、獨立與互斥各出現一次 → 先把每個條件翻譯成集合語言：互斥的 B、C 代表 B 整個躲在 C' 裡面，所以「在 C' 的條件下」對 B 毫無影響；獨立則讓餘事件也獨立</span><span class="src">師大附中 113下 第二次 填 11</span></div>
+<div class="fxq">設 $A$、$B$、$C$ 為樣本空間中的三個事件。已知 $A$ 與 $B$ 為獨立事件、$B$ 與 $C$ 為互斥事件，且 $P(A)=0.5$、$P(B)=0.2$、$P(C)=0.3$、$P(A-C)=0.4$（其中 $A-C$ 表示「$A$ 發生但 $C$ 沒有發生」的事件）。求 $P(A'\cap B\mid C')$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac17$</div>
+<div class="fxs"><div class="move">招式：條件是 $C'$ ⟹ 分母是 $P(C')=0.7$。分子看起來是三個事件的交集，但 $B$ 與 $C$ 互斥 ⟹ $B\subseteq C'$ ⟹ $A'\cap B\cap C'$ 其實就是 $A'\cap B$，第三個事件自動消失。</div>
+分母：$P(C')=1-0.3=0.7$。<br>
+分子：$B$、$C$ 互斥 ⟹ $B\cap C=\varnothing$ ⟹ $B$ 裡面的每一個結果都在 $C'$ 裡 ⟹ $A'\cap B\cap C'=A'\cap B$。<br>
+$A$、$B$ 獨立 ⟹ $A'$、$B$ 也獨立 ⟹ $P(A'\cap B)=P(A')P(B)=0.5\times0.2=0.1$。<br>
+$P(A'\cap B\mid C')=\dfrac{0.1}{0.7}=\dfrac17$。<br>
+（$P(A-C)=0.4$ 這個條件用來定出 $P(A\cap C)=P(A)-P(A-C)=0.5-0.4=0.1$，本題的答案用不到它，但它保證整組數據不矛盾。）<br>
+一致性檢查：把 $B$、$C$ 互斥的六個區塊列出來——<br>
+$P(A\cap B)=0.1$、$P(A\cap C)=0.1$、$A$ 落在 $B\cup C$ 之外 $=0.5-0.1-0.1=0.3$；<br>
+$P(A'\cap B)=0.1$、$P(A'\cap C)=0.2$、$A'$ 落在 $B\cup C$ 之外 $=0.5-0.1-0.2=0.2$。<br>
+六塊相加 $=0.1+0.1+0.3+0.1+0.2+0.2=1$ ✓ 且全部非負 ⟹ 這樣的機率空間確實存在。<span class="note-sm">「互斥」在這一題不是拿來加機率的，而是拿來做<b>包含關係</b>：$B$ 與 $C$ 互斥 $\iff B\subseteq C'$。看到「在某事件的餘事件條件下」就先問一句「分子那個事件是不是本來就躲在裡面」，常常可以直接砍掉一層。</span></div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">多選題問「哪些事件獨立」 → 一律回到 P(A∩B) = P(A)P(B) 這一條，每個選項算三個數字比一比；「不同骰子」才天生獨立，「兩次的點數和」幾乎都不獨立</span><span class="src">台中一中 112下 第二次 多 3</span></div>
+<div class="fxq">擲一顆均勻骰子 $2$ 次。設 $A$ 為「第一次出現奇數點」、$B$ 為「第二次出現奇數點」、$C$ 為「兩次點數和大於 $6$ 且小於 $9$」。試選出正確的選項。<br>
+(1) $P(A)\gt P(B)$　(2) $P(C)=0.3$　(3) $A$、$B$ 為獨立事件　(4) $A$、$C$ 為獨立事件　(5) $A$、$B$、$C$ 三事件為獨立事件</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)</div>
+<div class="fxs"><div class="move">招式：樣本空間 $36$ 格。$C$ 是「和為 $7$ 或 $8$」——先把它的格子數清楚（$6+5=11$ 格），後面三個選項全部用得到。</div>
+(1) $P(A)=P(B)=\dfrac{18}{36}=\dfrac12$ ⟹ 不是大於 ✗<br>
+(2) $P(C)=\dfrac{11}{36}\approx0.3056\ne0.3$ ✗<br>
+(3) $A$ 只看第一顆、$B$ 只看第二顆，$n(A\cap B)=3\times3=9$ ⟹ $P(A\cap B)=\dfrac9{36}=\dfrac14=\dfrac12\cdot\dfrac12$ ✓<br>
+(4) $A\cap C$：第一次為奇數且和為 $7$ 或 $8$ ⟹ 和 $7$ 有 $(1,6)(3,4)(5,2)$、和 $8$ 有 $(3,5)(5,3)$ ⟹ $5$ 格。$P(A\cap C)=\dfrac5{36}$，但 $P(A)P(C)=\dfrac12\cdot\dfrac{11}{36}=\dfrac{11}{72}=\dfrac{5.5}{36}$ ⟹ 不相等 ✗<br>
+(5) 三事件整體獨立必須「兩兩都獨立」才有機會，(4) 已經壞掉 ⟹ ✗<br>
+故只有 (3)。<span class="note-sm">$\dfrac{11}{36}$ 與 $0.3$ 差得很小，用小數比大小很容易看走眼——把 $0.3$ 寫成 $\dfrac{10.8}{36}$ 再比，一眼分勝負。</span></div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">「三次點數和為偶數」 → 翻譯成「出現奇數點的次數是偶數」，條件事件的機率剛好是 ½；分子要同時滿足兩件事，按「另外兩次的奇偶」分情形數</span><span class="src">台中女中 112下 第二次 填 11</span></div>
+<div class="fxq">投擲一顆公正骰子三次。已知三次點數和為偶數，求三次之中恰好出現 $1$ 次 $2$ 點的條件機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{13}{36}$</div>
+<div class="fxs"><div class="move">招式：和為偶數 ⟺ 三次裡「奇數點」出現 $0$ 次或 $2$ 次 ⟹ $n(\text{條件})=3^3+C^3_2\cdot3\cdot3^2=27+81=108$（共 $216$ 格，剛好一半）。分子要同時「恰一次 $2$ 點」與「和為偶數」。</div>
+分子：先選「哪一次是 $2$ 點」有 $3$ 種。$2$ 是偶數 ⟹ 另外兩次的奇數點個數必須是偶數（$0$ 或 $2$）。<br>
+・另外兩次都是偶數點，且都不是 $2$：各有 $\{4,6\}$ 兩種 ⟹ $2\times2=4$。<br>
+・另外兩次都是奇數點：各有 $\{1,3,5\}$ 三種 ⟹ $3\times3=9$。<br>
+每種「哪一次是 $2$ 點」對應 $4+9=13$ 種 ⟹ 分子 $=3\times13=39$。<br>
+條件機率 $=\dfrac{39}{108}=\dfrac{13}{36}$。<span class="note-sm">🔴 「另外兩次都是偶數點」時千萬別忘了排除 $2$——題目要的是「恰好一次」$2$ 點。漏掉這個限制會算成 $3\times(9+9)/108=\dfrac12$，是最常見的錯誤。</span></div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">條件是「和為質數」 → 先把 2、3、5、7、11 五個和各有幾格數出來當分母；再看這些格子裡「兩點數相同」的有哪些（只有 (1,1)）</span><span class="src">師大附中 113下 第二次 填 10</span></div>
+<div class="fxq">擲兩顆公正骰子一次。設 $A$ 為「兩點數之和為質數」的事件、$B$ 為「兩點數相異」的事件。求 $P(B\mid A)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{14}{15}$</div>
+<div class="fxs"><div class="move">招式：兩顆骰子的和介於 $2$ 到 $12$，其中的質數是 $2,3,5,7,11$。把這五個和的格數列出來就是分母。</div>
+和 $=2$：$1$ 格；$3$：$2$ 格；$5$：$4$ 格；$7$：$6$ 格；$11$：$2$ 格 ⟹ $n(A)=1+2+4+6+2=15$。<br>
+在這 $15$ 格裡找「兩點數相同」的：$(1,1)$ 和 $2$ ✓；$(2,2)$ 和 $4$ 不是質數；$(3,3)$ 和 $6$、$(4,4)$ 和 $8$、$(5,5)$ 和 $10$、$(6,6)$ 和 $12$ 都不是質數 ⟹ 只有 $1$ 格。<br>
+$n(A\cap B)=15-1=14$ ⟹ $P(B\mid A)=\dfrac{14}{15}$。<span class="note-sm">同點數的和一定是偶數，而唯一的偶質數是 $2$——用這句話一秒就知道「只有 $(1,1)$」，不必逐一檢查六個。</span></div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">不放回抽數字、問「由小到大排」 → 任三個相異數的 3! 種抽出順序機會均等，遞增只佔 1/6；再用計數驗證條件不會改變這個比例</span><span class="src">台中一中 113下 第二次 填 8</span></div>
+<div class="fxq">將標有 $1,2,3,4,5,6$ 的六張卡片放入袋中，每次抽出一張且不放回，連抽三次。已知第二次抽到偶數，求三次抽出的數字恰好由小到大排列的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac16$</div>
+<div class="fxs"><div class="move">招式：老老實實數兩個數字。分母是「第二次為偶數」的抽法數，分子是「第二次為偶數且三數遞增」的抽法數。注意「遞增」會逼著第二次抽到的就是三個數裡的中位數。</div>
+分母：先決定第二次抽到哪個偶數（$3$ 種），再決定第一次（剩 $5$ 種）與第三次（剩 $4$ 種）⟹ $3\times5\times4=60$ 種。<br>
+分子：遞增 ⟹ 第二次抽到的是中位數，所以要數「中位數為偶數」的三數組，每一組只有一種遞增排法。<br>
+・中位數 $2$：小的只能是 $1$，大的從 $\{3,4,5,6\}$ 選 ⟹ $1\times4=4$ 組。<br>
+・中位數 $4$：小的從 $\{1,2,3\}$ 選、大的從 $\{5,6\}$ 選 ⟹ $3\times2=6$ 組。<br>
+・中位數 $6$：沒有比 $6$ 大的數 ⟹ $0$ 組。<br>
+分子 $=4+6+0=10$。<br>
+條件機率 $=\dfrac{10}{60}=\dfrac16$。<span class="note-sm">$\dfrac16$ 正好等於「沒有任何條件時三數遞增的機率」（$\dfrac1{3!}$）——也就是說「第二次抽到偶數」這個消息對「是否遞增」完全沒有幫助。這是巧合嗎？把條件換成「第二次抽到奇數」再算一次（分子 $=6+4+0=10$、分母 $=60$）也是 $\dfrac16$，就知道不是巧合了。</span></div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">「三數由小到大成等差」當條件 → 依公差 d 分類計數：首項 a 要滿足 a+2d ≤ 20，所以每個 d 有 20−2d 組；分母是把 d = 1 到 9 全部加起來</span><span class="src">師大附中 112下 第二次 填 11</span></div>
+<div class="fxq">不透明籃子中有編號 $1\sim20$ 的球各一個（共 $20$ 個），每球被取出的機會均等。一次取出三球，在「三球號碼由小到大恰形成等差數列」的條件下，求公差為 $2$ 的機率。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{8}{45}$</div>
+<div class="fxs"><div class="move">招式：三數成等差 ⟺ 可以寫成 $a,\ a+d,\ a+2d$（$a\ge1$、$d\ge1$）。限制只有 $a+2d\le20$ ⟹ 給定 $d$ 時 $a$ 有 $20-2d$ 種。</div>
+$d$ 的範圍：$a\ge1$ 且 $a+2d\le20$ ⟹ $2d\le19$ ⟹ $d\le9$。<br>
+等差三數組總數 $=\sum_{d=1}^{9}(20-2d)=18+16+14+12+10+8+6+4+2=90$。<br>
+其中 $d=2$ 者：$a$ 可取 $1\sim16$ ⟹ $16$ 組。<br>
+條件機率 $=\dfrac{16}{90}=\dfrac8{45}$。<span class="note-sm">$18+16+\cdots+2$ 是等差級數，$\dfrac{(18+2)\times9}{2}=90$ 一行算完。另外注意：分母不是 $C^{20}_3=1140$——題目已經把樣本空間縮小到「成等差」那 $90$ 組了。</span></div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">「恰兩人命中且某人命中」 → 先把那個人釘死在「命中」，問題降成「其餘三人恰一人命中」；此時那個人的機率變成共同因式，可以整條約掉，只比三個分子</span><span class="src">師大附中 112下 第二次 填 10</span></div>
+<div class="fxq">甲、乙、丙、丁四人各射擊一發，命中率分別為 $\dfrac13$、$\dfrac35$、$\dfrac57$、$\dfrac79$，且彼此獨立。在「恰有兩人擊中且丁擊中」的條件下，求甲也擊中的機率。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac19$</div>
+<div class="fxs"><div class="move">招式：條件已經指定「丁擊中」，而且總共只有兩人擊中 ⟹ 甲、乙、丙之中恰有一人擊中。每一條路徑都含有因式 $P(\text{丁中})=\dfrac79$，分子分母一起約掉，所以只要比甲、乙、丙三條路徑。</div>
+未命中率：甲 $\dfrac23$、乙 $\dfrac25$、丙 $\dfrac27$。<br>
+只有甲中：$\dfrac13\times\dfrac25\times\dfrac27=\dfrac4{105}$。<br>
+只有乙中：$\dfrac23\times\dfrac35\times\dfrac27=\dfrac{12}{105}$。<br>
+只有丙中：$\dfrac23\times\dfrac25\times\dfrac57=\dfrac{20}{105}$。<br>
+三條路徑的分母相同 ⟹ 直接比分子 $4:12:20$。<br>
+$P(\text{甲中}\mid\text{恰兩人中且丁中})=\dfrac{4}{4+12+20}=\dfrac4{36}=\dfrac19$。<span class="note-sm">四個命中率的分母是 $3,5,7,9$、分子是 $1,3,5,7$——出題者故意讓每條路徑的分母都是 $105$，就是要你「只比分子」。看到這種設計就知道不必通分。</span></div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">看到「卡片的一面」「硬幣的一面」 → 樣本空間要換成「面」而不是「卡片」；數黑面總共幾個，其中有幾個的背面是白的</span><span class="src">台中女中 113下 第二次 填 15</span></div>
+<div class="fxq">箱中有六張卡片：$3$ 張兩面都是黑色、$2$ 張兩面都是白色、$1$ 張一面黑一面白。隨機抽出一張放在桌上，看到朝上的那一面是黑色。求這張卡片另一面是白色的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac17$</div>
+<div class="fxs"><div class="move">招式：抽卡片（$6$ 種）之後還要決定哪一面朝上（$2$ 種）⟹ 真正的樣本空間是 $12$ 個「面」，而且每一個面朝上的機會相同。</div>
+黑色的面共有：$3$ 張雙黑卡貢獻 $3\times2=6$ 個，黑白卡貢獻 $1$ 個 ⟹ 共 $7$ 個。<br>
+這 $7$ 個黑面之中，「另一面是白色」的只有黑白卡的那一個黑面 ⟹ $1$ 個。<br>
+$P=\dfrac17$。<br>
+用貝氏寫也一樣：$P(\text{黑白卡}\mid\text{看到黑})=\dfrac{\frac16\cdot\frac12}{\frac36\cdot1+\frac16\cdot\frac12}=\dfrac{1/12}{7/12}=\dfrac17$。<span class="note-sm">🔴 直覺很容易答 $\dfrac14$（「看到黑，所以是 $3$ 張雙黑或 $1$ 張黑白，共 $4$ 張」）。錯在把四張卡片當成等機率——雙黑卡露出黑面的機會是黑白卡的兩倍。</span></div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">檢驗題的「每 97 位健康者有 1 位呈陽性」 → 那是「在健康的條件下」的比率，要再乘上健康者的比例才是那一條路徑的機率；兩條路徑加起來當分母</span><span class="src">北一女中 112下 第二次 填 11</span></div>
+<div class="fxq">某地區流感確診者佔總人口的 $3\%$。已知流感確診者中有 $80\%$ 檢測為陽性；而健康者平均每 $97$ 位之中有 $1$ 位也會呈陽性。若小綠檢驗結果為陽性，求他確實為流感確診者的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{12}{17}$</div>
+<div class="fxs"><div class="move">招式：兩條通往「陽性」的路徑——「確診且陽性」與「健康且陽性」。第二條的機率是 $0.97\times\dfrac1{97}$，這個乘積會漂亮地化成 $0.01$，正是出題者設計數字的用意。</div>
+確診且陽性：$0.03\times0.8=0.024$。<br>
+健康且陽性：$0.97\times\dfrac1{97}=0.01$。<br>
+$P(\text{陽性})=0.024+0.01=0.034$。<br>
+$P(\text{確診}\mid\text{陽性})=\dfrac{0.024}{0.034}=\dfrac{24}{34}=\dfrac{12}{17}$。<span class="note-sm">$\dfrac{12}{17}\approx0.706$。同樣的檢驗，如果盛行率從 $3\%$ 掉到 $0.3\%$，答案會掉到 $\dfrac{0.0024}{0.0024+0.00997}\approx0.19$——檢驗準不準只是一半，另一半是「這個病本來有多常見」。這是本章最重要的一句話。</span></div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">兩個證人各自說了同一句話 → 「兩人都說紅」有兩種可能的真相；在真相已定的條件下兩人的說詞獨立，所以那一條路徑就是三個數字連乘</span><span class="src">建國中學 113下 第二次 填 14</span></div>
+<div class="fxq">袋中有 $4$ 顆紅球與 $6$ 顆白球，任取一球。甲說實話的機率為 $0.7$、乙說實話的機率為 $0.6$，兩人是否說實話互相獨立，且與球的顏色無關。已知甲、乙兩人都說「這顆球是紅球」，求這顆球實際上是白球的機率。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac3{10}$</div>
+<div class="fxs"><div class="move">招式：兩人只會說「紅」或「白」。球是紅的時候，「說紅」＝說實話；球是白的時候，「說紅」＝說謊。先把真相分成兩種，再各自把兩人的機率乘上去。</div>
+球是紅（機率 $0.4$）：兩人都說紅 $=0.7\times0.6=0.42$ ⟹ 路徑機率 $0.4\times0.42=0.168$。<br>
+球是白（機率 $0.6$）：兩人都說紅（都說謊）$=0.3\times0.4=0.12$ ⟹ 路徑機率 $0.6\times0.12=0.072$。<br>
+$P(\text{兩人都說紅})=0.168+0.072=0.24$。<br>
+$P(\text{白}\mid\text{兩人都說紅})=\dfrac{0.072}{0.24}=\dfrac3{10}$。<span class="note-sm">白球本來有 $60\%$，聽完兩個人的證詞之後掉到 $30\%$——證詞確實改變了我們的判斷，但沒有把它壓到 $0$。「機率隨著新資訊被更新」就是這一章的主軸。</span></div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">先擲骰子決定從哪個袋取球 → 三種情形各算一次「取到兩白球」的機率再加起來；分子只留下「白球之中有一顆來自乙袋」的那一種情形</span><span class="src">台中一中 113下 第二次 填 10</span></div>
+<div class="fxq">甲袋有藍球 $3$ 顆、白球 $5$ 顆；乙袋有藍球 $2$ 顆、白球 $1$ 顆、紅球 $2$ 顆。擲一顆公正骰子：出現 $2$ 或 $4$ 點就從甲袋取兩球，出現 $1$、$3$ 或 $5$ 點就從乙袋取兩球，出現 $6$ 點就從甲、乙兩袋各取一球。在「取得的兩球都是白球」的條件下，求其中有一顆白球取自乙袋的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac7{47}$</div>
+<div class="fxs"><div class="move">招式：三種情形分開算。關鍵觀察：乙袋只有 $1$ 顆白球，所以「從乙袋取兩球且兩球皆白」是不可能的——第二種情形直接掛零。</div>
+情形一（點數 $2,4$，機率 $\dfrac13$）：甲袋 $8$ 球取 $2$ 皆白 $=\dfrac{C^5_2}{C^8_2}=\dfrac{10}{28}=\dfrac5{14}$ ⟹ 貢獻 $\dfrac13\times\dfrac5{14}=\dfrac5{42}=\dfrac{40}{336}$。<br>
+情形二（點數 $1,3,5$，機率 $\dfrac12$）：乙袋只有 $1$ 白 ⟹ 機率 $0$。<br>
+情形三（點數 $6$，機率 $\dfrac16$）：甲取白 $\dfrac58$、乙取白 $\dfrac15$ ⟹ $\dfrac58\times\dfrac15=\dfrac18$ ⟹ 貢獻 $\dfrac16\times\dfrac18=\dfrac1{48}=\dfrac7{336}$。<br>
+$P(\text{兩球皆白})=\dfrac{40}{336}+\dfrac{7}{336}=\dfrac{47}{336}$。<br>
+「有一顆白球來自乙袋」只可能發生在情形三 ⟹ $P=\dfrac{7/336}{47/336}=\dfrac7{47}$。<span class="note-sm">把三個貢獻都通分到 $336$ 之後，答案幾乎是用讀的。遇到多情形的題目，先找一個公分母再開始加，會少掉很多計算錯誤。</span></div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">兩人輪流取、問「誰先取到」 → 翻譯成「第一顆白球排在第幾個位置」：奇數位就是甲。位置是奇數的機率用組合數算，或把三條路徑逐條乘出來相加</span><span class="src">建國中學 113下 第二次 填 13</span></div>
+<div class="fxq">袋中有 $3$ 顆白球與 $5$ 顆黑球（共 $8$ 顆，除顏色外完全相同）。甲、乙兩人輪流從袋中取一球且取後不放回，由甲先取；誰先取到白球誰就獲勝。求獲勝者是甲的機率。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{17}{28}$</div>
+<div class="fxs"><div class="move">招式：不放回地一顆一顆取，等於把 $8$ 顆球隨機排成一列。甲拿走第 $1,3,5,7$ 個、乙拿走第 $2,4,6,8$ 個 ⟹「甲獲勝」$\iff$ <b>第一顆白球落在奇數位置</b>。黑球只有 $5$ 顆，所以第一顆白球最晚出現在第 $6$ 位。</div>
+方法一（位置法）：$3$ 顆白球的位置共 $C^8_3=56$ 種，且每一種機會均等。<br>
+「第一顆白球在第 $k$ 位」$\iff$ 前 $k-1$ 位全是黑球、第 $k$ 位是白球、另外 $2$ 顆白球落在後面的 $8-k$ 個位置 ⟹ $C^{8-k}_2$ 種。<br>
+$k=1$：$C^7_2=21$；$k=2$：$C^6_2=15$；$k=3$：$C^5_2=10$；$k=4$：$C^4_2=6$；$k=5$：$C^3_2=3$；$k=6$：$C^2_2=1$。<br>
+（合計 $21+15+10+6+3+1=56$ ✓ 與 $C^8_3$ 相符，表示沒有漏算。）<br>
+甲獲勝 ⟹ $k=1,3,5$ ⟹ $\dfrac{21+10+3}{56}=\dfrac{34}{56}=\dfrac{17}{28}$。<br>
+方法二（逐條路徑相乘）：<br>
+第 $1$ 次就取到白：$\dfrac38=\dfrac{21}{56}$。<br>
+第 $3$ 次才取到白（前兩次皆黑）：$\dfrac58\times\dfrac47\times\dfrac36=\dfrac5{28}=\dfrac{10}{56}$。<br>
+第 $5$ 次才取到白（前四次皆黑）：$\dfrac58\times\dfrac47\times\dfrac36\times\dfrac25\times\dfrac34=\dfrac3{56}$。<br>
+相加 $=\dfrac{21+10+3}{56}=\dfrac{17}{28}$ ✓<span class="note-sm">$\dfrac{17}{28}\approx0.607\gt\dfrac12$——先取的人確實比較有利。這和「不放回時每個人取到白球的機率都一樣」<b>並不矛盾</b>：那句話說的是「某一個人拿到白球」，這裡問的卻是「誰<u>先</u>拿到」，兩者是不同的事件。</span></div></div>
+
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充：大考壓軸、經典難題與科學班・教甄專區</h2>
+<div class="goal">
+  <div><b>對象</b>數理志向、想看「這一章能走多遠」的同學；不列入通過標準。</div>
+  <div><b>目標</b>6 題壓軸 ＋ 專區 13 題（教甄與科學班）。每題都只用本章的工具解完——縮小樣本空間、乘法公式、把所有路徑加起來、獨立性的檢驗，四招輪流出場。</div>
+  <div><b>通過標準</b>無。能講出每題的關鍵一步就很好了。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">條件是「三數的最大值恰為 4」 → 用「都不超過 4」減掉「都不超過 3」來數（4³−3³）；目標事件則是把點代進方程式，變成一條丟番圖式的分數方程</span><span class="src">台中一中 112下 第二次 填 8</span></div>
+<div class="fxq">投擲三顆公正骰子，依序得到點數 $a$、$b$、$c$，並作平面 $E:\dfrac{x}{a}+\dfrac{y}{b}+\dfrac{z}{c}=1$。求在「$a$、$b$、$c$ 三數中的最大值為 $4$」的條件下，平面 $E$ 通過點 $(1,1,1)$ 的條件機率。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac3{37}$</div>
+<div class="fxs"><div class="move">招式：兩件事各自翻譯。「最大值為 $4$」＝「都 $\le4$」扣掉「都 $\le3$」；「通過 $(1,1,1)$」＝ 把 $x=y=z=1$ 代入，得 $\dfrac1a+\dfrac1b+\dfrac1c=1$。</div>
+分母：$n(\text{最大值為 }4)=4^3-3^3=64-27=37$。<br>
+分子：要找 $a,b,c\in\{1,2,\ldots,6\}$、$\max=4$ 且 $\dfrac1a+\dfrac1b+\dfrac1c=1$。<br>
+先找所有滿足 $\dfrac1a+\dfrac1b+\dfrac1c=1$ 的點數組（不計順序）：$\{3,3,3\}$、$\{2,4,4\}$、$\{2,3,6\}$。<br>
+其中最大值等於 $4$ 的只有 $\{2,4,4\}$，它的排列有 $\dfrac{3!}{2!}=3$ 種：$(2,4,4)$、$(4,2,4)$、$(4,4,2)$。<br>
+條件機率 $=\dfrac3{37}$。<span class="note-sm">$\dfrac1a+\dfrac1b+\dfrac1c=1$ 的正整數解只有三組，是很值得記住的小結論：先假設 $a\le b\le c$，則 $\dfrac3a\ge1$ ⟹ $a\le3$，逐一試 $a=2,3$ 就掃完了（$a=1$ 會讓左邊超過 $1$）。</span></div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">獨立性的理論題 → 一律翻譯成「交集的個數 = 兩個邊際比例相乘 × 總數」；「不可能獨立」型要用整除性去卡，「兩個獨立推第三個」型要用 A 被三色分割去加減</span><span class="src">台中一中 113下 第二次 多 5</span></div>
+<div class="fxq">將編號 $1\sim100$ 的一百顆球各染成紅、黃、藍三色之一（三色各至少一顆），隨機取一顆。設 $A$ 為「號碼在 $1\sim25$ 之間」、$B$ 為「號碼是 $3$ 的倍數」、$C$ 為「取到紅球」、$D$ 為「取到黃球」、$E$ 為「取到藍球」。試選出正確的選項。<br>
+(1) $A$、$B$ 為獨立事件<br>
+(2) 若 $A$、$C$ 為獨立事件，則 $P(C\cap A):P(C\cap A')=1:3$<br>
+(3) $C$ 不可能與 $B$ 為獨立事件<br>
+(4) 「$A$、$C$ 獨立」「$A$、$D$ 獨立」「$A$、$E$ 獨立」有可能同時成立<br>
+(5) 若「$A$、$C$ 獨立」且「$A$、$D$ 獨立」，則「$A$、$E$」必為獨立事件</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)(5)</div>
+<div class="fxs"><div class="move">招式：$P(A)=\dfrac{25}{100}=\dfrac14$、$P(B)=\dfrac{33}{100}$（$3,6,\ldots,99$ 共 $33$ 個）。染色是我們可以自由安排的，所以 (3)(4)(5) 是在問「有沒有一種染法」。</div>
+(1) $A\cap B$ 是 $1\sim25$ 中 $3$ 的倍數 ⟹ $3,6,\ldots,24$ 共 $8$ 個 ⟹ $P(A\cap B)=\dfrac8{100}$；但 $P(A)P(B)=\dfrac14\cdot\dfrac{33}{100}=\dfrac{8.25}{100}$ ⟹ 不相等 ✗<br>
+(2) 獨立 ⟹ $P(C\cap A)=P(C)P(A)$、$P(C\cap A')=P(C)P(A')$ ⟹ 比值 $=P(A):P(A')=\dfrac14:\dfrac34=1:3$ ✓<br>
+(3) 設紅球有 $k$ 顆（$1\le k\le98$）。獨立要求 $n(C\cap B)=\dfrac{33}{100}k$ 是整數 ⟹ $100\mid 33k$ ⟹ $100\mid k$（因為 $33$ 與 $100$ 互質）⟹ $k=0$ 或 $100$，與「三色各至少一顆」矛盾 ⟹ 確實不可能 ✓<br>
+(4) 只要三色的球數都是 $4$ 的倍數，並且在 $1\sim25$ 這 $25$ 顆裡各放四分之一即可。例如紅 $4$、黃 $4$、藍 $92$：在 $1\sim25$ 中放紅 $1$、黃 $1$、藍 $23$（合計 $25$ ✓），其餘放在 $26\sim100$ ⟹ 三組都獨立 ✓<br>
+(5) $A$ 被 $C,D,E$ 三色完全分割 ⟹ $n(A\cap E)=25-n(A\cap C)-n(A\cap D)=25-\dfrac{n(C)}4-\dfrac{n(D)}4=\dfrac{100-n(C)-n(D)}4=\dfrac{n(E)}4=P(A)\,n(E)$ ⟹ 獨立 ✓<br>
+故選 (2)(3)(4)(5)。<span class="note-sm">(3) 的關鍵是「機率必須由整數個球算出來」——這種「用整除性證明不可能」的手法，是獨立性理論題最常見的壓軸技巧。</span></div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">不放回抽紅包的多選題 → 位置法：只看「4 個大包落在哪 4 個位置」，C(10,4) 種等可能；有相鄰限制時用「插空法」C(7,4) 重新當樣本空間</span><span class="src">台南女中 112下 第二次 多 11</span></div>
+<div class="fxq">有 $10$ 個紅包，其中 $4$ 個是大包、$6$ 個是小包，$10$ 人依序各抽一個且不放回。試選出正確的選項。<br>
+(1) 在第一人抽中大包的條件下，第二人也抽中大包的機率為 $\dfrac25$<br>
+(2) 前三人恰有一人抽到大包的機率為 $\dfrac14$<br>
+(3) 在前兩人都抽到大包的條件下，最後一人抽到大包的機率為 $\dfrac14$<br>
+(4) 設「第五人恰好抽到最後一個大包」的機率為 $p_1$、「最後一人抽到最後一個大包」的機率為 $p_2$，則 $p_1\gt p_2$<br>
+(5) 在「沒有連續兩人抽到大包」的條件下，第 $1,3,5,7$ 位恰好抽到 $4$ 個大包的機率為 $\dfrac1{35}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)(5)</div>
+<div class="fxs"><div class="move">招式：把「$4$ 個大包落在 $10$ 個位置中的哪 $4$ 個」當樣本空間，共 $C^{10}_4=210$ 種且等可能。(1)(3) 用縮小樣本空間、(2)(4) 用位置計數、(5) 要換一個樣本空間。</div>
+(1) 第一人抽中大包後，剩 $9$ 個紅包中有 $3$ 個大包 ⟹ $\dfrac39=\dfrac13\ne\dfrac25$ ✗<br>
+(2) $\dfrac{C^4_1C^6_2}{C^{10}_3}=\dfrac{4\times15}{120}=\dfrac12\ne\dfrac14$ ✗<br>
+(3) 前兩人各抽走一個大包後，剩 $8$ 個紅包中有 $2$ 個大包，而「最後一人」不過是剩下的 $8$ 個位置之一 ⟹ $\dfrac28=\dfrac14$ ✓<br>
+(4) 「第五人抽到最後一個大包」＝ 第 $5$ 個位置是大包，而另外 $3$ 個大包全在第 $1\sim4$ 位 ⟹ $\dfrac{C^4_3}{210}=\dfrac4{210}$；「最後一人抽到最後一個大包」＝ 第 $10$ 位是大包，另外 $3$ 個大包在前 $9$ 位任選 ⟹ $\dfrac{C^9_3}{210}=\dfrac{84}{210}$ ⟹ $p_1\lt p_2$ ✗<br>
+(5) 「沒有連續兩人抽大包」＝ $4$ 個大包兩兩不相鄰。把 $6$ 個小包排好產生 $7$ 個空隙，選 $4$ 個放大包 ⟹ $C^7_4=35$ 種，且這 $35$ 種在條件下等可能。位置 $\{1,3,5,7\}$ 正是其中一種 ⟹ $\dfrac1{35}$ ✓<br>
+故選 (3)(5)。<span class="note-sm">(5) 是本題最漂亮的一步：原本 $210$ 種位置不是每一種都滿足「不相鄰」，但只要條件一給，剩下的 $35$ 種彼此仍然等可能（它們原本每一種的機率都是 $\dfrac1{210}$）⟹ 條件機率就是 $\dfrac1{35}$。</span></div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">猜數字遊戲 → 主持人報出「幾個位置正確」之後，剩下的候選答案數就是錯位排列數 D₁=0、D₂=1、D₃=2、D₄=9；注意「恰 3 個正確」不可能發生</span><span class="src">112 分科模考 全國 數甲 第六次 第 8 題</span></div>
+<div class="fxq">小德、小哲兩人玩猜數字遊戲。答案是 $1,2,3,4$ 排成的一個四位數（數字不重複），共 $24$ 種且機會均等。先由小德猜一次，主持人會報出「哪幾個數字的位置正確」（也就等於說出其餘位置都錯），再由小哲猜一次，兩人各只有一次機會。例如小德猜 $1423$，主持人說數字 $1$、$2$ 的位置正確，則小哲可判斷 $3$、$4$ 的位置都錯，必能答出正確答案 $1324$。試選出正確的選項。<br>
+(1) 小德猜對的機率為 $\dfrac1{12}$<br>
+(2) 在主持人說「小德猜的數字中只有 $3$ 的位置正確」的條件下，小哲猜對的機率為 $\dfrac12$<br>
+(3) 「小德恰有一個數字位置正確，且小哲猜對」的機率為 $\dfrac16$<br>
+(4) 小德猜的數字位置全部都不對的機率為 $\dfrac38$<br>
+(5) 在小哲猜對的條件下，小德恰有一個數字位置正確的機率為 $\dfrac4{11}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)(5)</div>
+<div class="fxs"><div class="move">招式：把小德的猜測固定下來，答案是 $24$ 個排列之一。令 $k$ 為「位置正確的個數」，則排列數 $=C^4_k\times D_{4-k}$，其中 $D_m$ 是 $m$ 個元素全部錯位的排法數：$D_1=0$、$D_2=1$、$D_3=2$、$D_4=9$。</div>
+$k=0$：$1\times9=9$ 種；$k=1$：$4\times2=8$ 種；$k=2$：$6\times1=6$ 種；$k=3$：$4\times0=0$ 種（三個對了第四個一定也對）；$k=4$：$1$ 種。合計 $9+8+6+0+1=24$ ✓<br>
+(1) 小德猜對 ⟺ $k=4$ ⟹ $\dfrac1{24}\ne\dfrac1{12}$ ✗<br>
+(2) 已知只有「$3$」的位置正確 ⟹ 其餘三個數字全部錯位 ⟹ 候選答案 $D_3=2$ 種，小哲從中猜一種 ⟹ $\dfrac12$ ✓<br>
+(3) $P(k=1)=\dfrac8{24}=\dfrac13$，在此條件下候選 $D_3=2$ 種 ⟹ $\dfrac13\times\dfrac12=\dfrac16$ ✓<br>
+(4) $P(k=0)=\dfrac9{24}=\dfrac38$ ✓<br>
+(5) 主持人報出 $k$ 之後，小哲面對 $D_{4-k}$ 個候選（$k=4$ 時小德已經猜對，不算小哲猜對）：<br>
+$P(\text{小哲猜對})=\dfrac9{24}\cdot\dfrac19+\dfrac8{24}\cdot\dfrac12+\dfrac6{24}\cdot1=\dfrac{1+4+6}{24}=\dfrac{11}{24}$。<br>
+$P(k=1\ \text{且小哲猜對})=\dfrac8{24}\cdot\dfrac12=\dfrac4{24}$ ⟹ 條件機率 $=\dfrac{4}{11}$ ✓<br>
+故選 (2)(3)(4)(5)。<span class="note-sm">$k=2$ 時候選只剩 $D_2=1$ 種，小哲必勝；$k=3$ 根本不會發生——這兩件事是本題的靈魂。錯位排列數可以用取捨原理算：$D_4=4!\left(1-\dfrac1{1!}+\dfrac1{2!}-\dfrac1{3!}+\dfrac1{4!}\right)=9$。</span></div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">「先看過一個再決定要不要換」的最佳停止策略 → 把 4 個紅包的 4! = 24 種先後順序全部列出來，逐一判斷策略會停在哪一個；分母是 24，不是機率連乘</span><span class="src">武陵高中 113下 第二次 填 6</span></div>
+<div class="fxq">桌上有四個金額互不相同的紅包，小智依隨機順序逐一打開，看到金額後必須立刻決定要不要保留（保留就結束，不再打開其他的）。小智的策略是：第一個一定放棄，之後只要看到的金額高於第一個就保留；若到最後都沒有高於第一個的，就拿最後一個。求小智恰好拿到最高金額的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{11}{24}$</div>
+<div class="fxs"><div class="move">招式：把四個紅包的金額依大小記成 $4\gt3\gt2\gt1$，順序有 $4!=24$ 種且等可能。策略是死的，所以每一種順序都可以直接推出結果——這題本質上是「數 $24$ 種排列裡有幾種成功」。</div>
+依「最高金額 $4$ 排在第幾個」分類：<br>
+・$4$ 排第 $1$ 位（$6$ 種）：第一個一定放棄 ⟹ 全部失敗，$0$ 種成功。<br>
+・$4$ 排第 $2$ 位（$6$ 種）：第二個一定高於第一個 ⟹ 全部成功，$6$ 種。<br>
+・$4$ 排第 $3$ 位（$6$ 種）：要成功必須第 $2$ 個不高於第 $1$ 個，即第 $1$ 位比第 $2$ 位大。剩下三個數 $\{1,2,3\}$ 排在第 $1,2,4$ 位，前兩位遞減的佔一半 ⟹ $3$ 種。<br>
+・$4$ 排第 $4$ 位（$6$ 種）：要成功必須第 $2$、第 $3$ 個都不高於第 $1$ 個 ⟹ 第 $1$ 位必須是 $\{1,2,3\}$ 中最大的 $3$ ⟹ 剩下 $1,2$ 任排 ⟹ $2$ 種。<br>
+成功共 $0+6+3+2=11$ 種 ⟹ 機率 $\dfrac{11}{24}$。<span class="note-sm">$\dfrac{11}{24}\approx0.458$，比「隨便拿一個」的 $\dfrac14$ 好很多。寫成 $\dfrac14\left(1+\dfrac12+\dfrac13\right)=\dfrac14\cdot\dfrac{11}6=\dfrac{11}{24}$ 就看得出通式：跳過第一個之後，「最高的排第 $k$ 位」貢獻 $\dfrac14\cdot\dfrac1{k-1}$。</span></div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">同一個人連驗兩次都陽性 → 在「是否染病」已知的條件下兩次檢驗獨立，所以只要把兩條路徑的機率各自平方；比較 b 與 2a 時分母不同，要交叉相乘</span><span class="src">師大附中 112下 第二次 填 13</span></div>
+<div class="fxq">某快篩試劑將染病者判為陽性的機率為 $90\%$，將未染病者判為陰性的機率為 $80\%$。設某地區染病者的比例為 $x$（$0\lt x\lt1$）。若「單次採檢為陽性者之中確實染病」的機率為 $a$，「連續採檢兩次皆為陽性者之中確實染病」的機率為 $b$（在是否染病已知的條件下，兩次檢驗互相獨立）。若要使 $b\gt2a$，求 $x$ 的範圍。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$0\lt x\lt\dfrac{10}{91}$</div>
+<div class="fxs"><div class="move">招式：染病者驗出陽性的機率是 $0.9$、未染病者驗出陽性的機率是 $1-0.8=0.2$。驗兩次都陽性 ⟹ 兩條路徑各自變成 $0.9^2=0.81$ 與 $0.2^2=0.04$。</div>
+$a=\dfrac{0.9x}{0.9x+0.2(1-x)}=\dfrac{9x}{9x+2(1-x)}=\dfrac{9x}{7x+2}$。<br>
+$b=\dfrac{0.81x}{0.81x+0.04(1-x)}=\dfrac{81x}{81x+4(1-x)}=\dfrac{81x}{77x+4}$。<br>
+$b\gt2a$ ⟹ $\dfrac{81x}{77x+4}\gt\dfrac{18x}{7x+2}$。因 $0\lt x\lt1$ 時兩個分母皆為正、$x\gt0$，可同除以 $x$ 並交叉相乘：<br>
+$81(7x+2)\gt18(77x+4)$ ⟹ $567x+162\gt1386x+72$ ⟹ $90\gt819x$ ⟹ $x\lt\dfrac{90}{819}=\dfrac{10}{91}$。<br>
+故 $0\lt x\lt\dfrac{10}{91}$。<span class="note-sm">驗算：取 $x=\dfrac1{20}$，$a=\dfrac{9/20}{7/20+2}=\dfrac{9}{47}\approx0.191$、$b=\dfrac{81/20}{77/20+4}=\dfrac{81}{157}\approx0.516\gt2a\approx0.383$ ✓。數學上的意思是：<b>病越罕見，多驗一次帶來的資訊增益越大</b>；病很常見時第一次陽性就已經很有把握，再驗一次也翻不了倍。</span></div></div>
+
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（13 題）</h3>
+<div class="note">本專區取材自各校教師甄選試題（含代理教師甄選與全國聯合甄選）與科學班甄選入學試題，皆逐字重打並獨立驗算。難度明顯高於段考，但用的全部是本章的工具：縮小樣本空間、乘法公式、把所有路徑加起來、獨立性的檢驗。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">搜尋過一次卻沒找到 → 這是新資訊，要把原本的機率更新；「找不到」有兩條路徑：東西在這格但沒搜到、東西根本不在這格</span><span class="src">屏東女中 112 代理教甄 填 4</span></div>
+<div class="fxq">搜救隊把海域切成許多方格，先估出殘骸掉落在每一格的機率，每次只搜尋機率最高的那一格。設 $A$ 為「殘骸落在這一格」、$B$ 為「殘骸被尋獲」。已知 $P(A)=0.7$，且殘骸確實落在這一格時被尋獲的機率為 $0.9$（若殘骸不在這一格，當然不可能在這一格被尋獲）。今搜尋這一格但沒有找到殘骸。求在此條件下，殘骸仍落在這一格的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac7{37}$</div>
+<div class="fxs"><div class="move">招式：把「沒找到」的兩條路徑寫出來——落在這一格但沒搜到（$0.7\times0.1$）、根本不在這一格（$0.3\times1$）。分母是兩條相加，分子只留第一條。</div>
+$P(\text{沒找到})=0.7\times0.1+0.3\times1=0.07+0.3=0.37$。<br>
+$P(A\mid\text{沒找到})=\dfrac{0.07}{0.37}=\dfrac7{37}$。<span class="note-sm">$0.7$ 掉到 $\dfrac7{37}\approx0.19$，而其他方格的機率總和從 $0.3$ 升到 $\dfrac{30}{37}\approx0.81$——這就是「搜過一輪沒找到就換下一格」這個策略的數學依據。1968 年美國海軍潛艇天蠍號的殘骸就是用這套方法找到的。</span></div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">專區 2</span><span class="kw">甲先抽兩個、乙再從剩下的抽兩個 → 條件只影響「剩下的奇偶各幾個」；把條件拆成兩種情形，會發現兩種情形算出來的答案一模一樣</span><span class="src">嘉義女中 112 第一次教甄 填 6</span></div>
+<div class="fxq">由正整數 $1$ 至 $20$ 這 $20$ 個數字中，甲先任意取出兩個相異數 $a$ 與 $b$，乙再從剩下的 $18$ 個數字中任意取出兩個相異數 $c$ 與 $d$。若每一個數字被取出的機會均等，求在已知 $a+b$ 為偶數的條件下，$c+d$ 為奇數的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{80}{153}$</div>
+<div class="fxs"><div class="move">招式：$1\sim20$ 中奇數、偶數各 $10$ 個。$a+b$ 為偶數 ⟺ 兩數同奇或同偶。分兩種情形看「剩下的 $18$ 個數」的奇偶分布。</div>
+情形一：$a,b$ 同為奇數 ⟹ 剩下奇數 $8$ 個、偶數 $10$ 個。$c+d$ 為奇數（一奇一偶）$=\dfrac{8\times10}{C^{18}_2}=\dfrac{80}{153}$。<br>
+情形二：$a,b$ 同為偶數 ⟹ 剩下奇數 $10$ 個、偶數 $8$ 個。同樣是 $\dfrac{10\times8}{153}=\dfrac{80}{153}$。<br>
+兩種情形的答案相同 ⟹ 不論權重如何分配，加權平均仍是 $\dfrac{80}{153}$。<span class="note-sm">「兩種情形算出同一個數，所以不必算權重」是很省時間的一招。如果兩個數不一樣，就得先算 $P(\text{同奇})=P(\text{同偶})=\dfrac{C^{10}_2}{C^{20}_2}$ 再加權——本題剛好省下這一步。</span></div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">專區 3</span><span class="kw">硬幣朝上 2 正 1 反、朝下 1 正 2 反 → 先把「三枚硬幣的組合」分類（含不含雙面幣），逐類算出朝上的機率；答案是 n 的分式方程式，解出來再用「n 為奇數」刷掉一根</span><span class="src">嘉義女中 112 第一次教甄 填 7</span></div>
+<div class="fxq">設 $n$ 為正奇數。黑箱中有 $n$ 枚硬幣，其中 $1$ 枚兩面都是人頭、$1$ 枚兩面都是字，其餘 $n-2$ 枚都是一面人頭一面字。已知每枚硬幣被取出的機會均等，每枚硬幣兩面朝上的機會也均等。將手伸入箱中握住三枚硬幣，取出後攤開，若在「此三枚硬幣朝上的面是 $2$ 個人頭和 $1$ 個字」的條件下，「此三枚硬幣的另一面是 $1$ 個人頭和 $2$ 個字」的機率為 $\dfrac47$，求 $n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$n=11$</div>
+<div class="fxs"><div class="move">招式：令混合幣有 $m=n-2$ 枚。三枚硬幣的組合只有四類：「雙頭＋雙字＋$1$ 混」「雙頭＋$2$ 混」「雙字＋$2$ 混」「$3$ 混」。每一類分別算「朝上 $2$ 頭 $1$ 字」的機率，並檢查此時「朝下」是不是 $1$ 頭 $2$ 字。</div>
+・雙頭＋雙字＋$1$ 混（$m$ 種取法）：朝上已有 $1$ 頭（雙頭幣）、$1$ 字（雙字幣），混合幣須朝上人頭 ⟹ 機率 $\dfrac12$。此時朝下為「頭、字、字」＝ $1$ 頭 $2$ 字 ✓<br>
+・雙頭＋$2$ 混（$C^m_2$ 種）：兩枚混合幣須一頭一字 ⟹ 機率 $\dfrac12$。朝下為「頭、字、頭」＝ $2$ 頭 $1$ 字 ✗<br>
+・雙字＋$2$ 混（$C^m_2$ 種）：兩枚混合幣都要朝上人頭 ⟹ 機率 $\dfrac14$。朝下為「字、字、字」✗<br>
+・$3$ 混（$C^m_3$ 種）：恰兩枚朝上人頭 ⟹ 機率 $\dfrac{C^3_2}{2^3}=\dfrac38$。朝下恰是相反的 $1$ 頭 $2$ 字 ✓<br>
+把 $C^n_3$ 這個共同分母約掉，條件機率為<br>
+$\dfrac{\frac12m+\frac38C^m_3}{\frac12m+\frac12C^m_2+\frac14C^m_2+\frac38C^m_3}=\dfrac47$。<br>
+兩邊同乘 $8$ 並整理：$7\left(4m+3C^m_3\right)=4\left(4m+6C^m_2+3C^m_3\right)$ ⟹ $12m+9C^m_3=24C^m_2$ ⟹ $4m+3C^m_3=8C^m_2$。<br>
+代入 $C^m_2=\dfrac{m(m-1)}2$、$C^m_3=\dfrac{m(m-1)(m-2)}6$ 並約掉 $m$：$8+(m-1)(m-2)=8(m-1)$ ⟹ $m^2-11m+18=0$ ⟹ $m=2$ $\text{或}$ $m=9$。<br>
+$m=2$ ⟹ $n=4$ 為偶數，不合；$m=9$ ⟹ $n=11$ ✓<br>
+驗算（$m=9$）：分子 $=\dfrac92+\dfrac38\times84=4.5+31.5=36$；分母 $=4.5+\dfrac34\times36+31.5=63$ ⟹ $\dfrac{36}{63}=\dfrac47$ ✓<span class="note-sm">「$n$ 為正奇數」不是裝飾——它正好把 $m=2$ 這一根刷掉，讓答案唯一。看到題目特別限定奇偶，通常就是為了處理二次方程式的兩根。</span></div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">專區 4</span><span class="kw">圓上等分點連成的三角形 → 用三段弧 (p,q,r)（p+q+r=12）描述；圓周角 = 對應弧的一半，所以直角 ⟺ 某段弧恰為 6、銳角 ⟺ 三段弧都小於 6</span><span class="src">屏東女中 112 代理教甄 多 1</span></div>
+<div class="fxq">在鐘錶的 $12$ 個等分刻度中，以線段連接其中 $3$ 個刻度得到一個三角形。設 $S$ 為此試驗所有三角形所成的樣本空間，$A$、$B$、$C$ 分別表示「銳角三角形」「直角三角形」「鈍角三角形」的事件。試選出正確的選項。<br>
+(1) $A$、$C$ 為互斥事件<br>
+(2) $B$ 為本試驗的基本事件<br>
+(3) 樣本空間 $S$ 的樣本點有 $\dfrac{P^{12}_3}{3!}$ 個<br>
+(4) 事件 $B$ 的樣本點有 $60$ 個<br>
+(5) 若 $a$、$b$、$c$ 分別表示 $A$、$B$、$C$ 的樣本點個數，則 $a=b=c$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)(4)</div>
+<div class="fxs"><div class="move">招式：三個頂點把圓周切成三段弧，弧長（以刻度計）為 $p,q,r$，$p+q+r=12$ 且都 $\ge1$。頂角所對的弧是「對面那一段」，圓周角等於弧的一半 ⟹ 角為直角 ⟺ 該段弧 $=6$；角為鈍角 ⟺ 該段弧 $\gt6$。</div>
+(1) 一個三角形不可能同時是銳角與鈍角三角形 ⟹ 互斥 ✓<br>
+(2) 基本事件指「只含一個樣本點」的事件，但 $B$ 含 $60$ 個樣本點 ⟹ ✗<br>
+(3) 樣本點就是「從 $12$ 個刻度取 $3$ 個」⟹ $C^{12}_3=\dfrac{P^{12}_3}{3!}=220$ ✓<br>
+(4) 直角 ⟺ 有一段弧恰為 $6$，也就是有一邊是直徑。直徑有 $6$ 條，第三個頂點有 $10$ 種選法 ⟹ $6\times10=60$ ✓<br>
+(5) 銳角 ⟺ $p,q,r$ 都 $\le5$。把 $12$ 分成三個 $1\sim5$ 的正整數：共 $10$ 種有序解，每個三角形被算 $3$ 次（三個起點）⟹ $a=\dfrac{12\times10}{3}=40$；於是 $c=220-40-60=120$ ⟹ $a=40$、$b=60$、$c=120$ 三者不相等 ✗<br>
+故選 (1)(3)(4)。<span class="note-sm">鈍角三角形比銳角三角形多得多（$120$ 比 $40$），這在「圓上隨機取三點」的經典問題裡也是一樣的結論：隨機三點構成銳角三角形的機會只有四分之一。</span></div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">專區 5</span><span class="kw">已知「陽性者中帶原者佔 2%」反推帶原率 → 設帶原比例為 p，把貝氏的分式寫出來後令它等於 0.02，變成 p 的一次方程式</span><span class="src">109 全國教甄聯招 單 2（用語改寫）</span></div>
+<div class="fxq">某種快篩試劑對某病毒的檢驗結果如下：帶原者做檢驗有 $8\%$ 的機會呈陰性反應（其餘呈陽性反應）；未帶原者做檢驗有 $1\%$ 的機會呈陽性反應（其餘呈陰性反應）。已知某地區經此試劑篩檢後，呈現陽性反應的民眾中有 $2\%$ 為此病毒的帶原者。則此地區病毒的帶原者佔全部人口的比例最接近下列何者？<br>
+(1) $2\%$　(2) $0.2\%$　(3) $0.02\%$　(4) $0.002\%$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3) $0.02\%$</div>
+<div class="fxs"><div class="move">招式：設帶原比例為 $p$。帶原者呈陽性的機率是 $1-0.08=0.92$，未帶原者呈陽性的機率是 $0.01$。兩條路徑加起來是全部的陽性。</div>
+$\dfrac{0.92p}{0.92p+0.01(1-p)}=0.02$。<br>
+先把分母整理好：$0.92p+0.01-0.01p=0.91p+0.01$。<br>
+$0.92p=0.02\left(0.91p+0.01\right)=0.0182p+0.0002$ ⟹ $0.9018p=0.0002$ ⟹ $p=\dfrac{0.0002}{0.9018}\approx0.0002218$。<br>
+$p\approx0.0222\%$，最接近 $0.02\%$ ⟹ 選 (3)。<span class="note-sm">分母 $0.9018$ 非常接近 $0.9$，所以 $p\approx\dfrac{0.0002}{0.9}\approx0.00022$——考場上不必算到底，估到這裡就足以在四個相差十倍的選項中選出答案。<br>原卷以「偽陰率」「偽陽率」稱呼這兩個比率，本專區依課綱一律改用中文描述。</span></div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">專區 6</span><span class="kw">取球過程中「兩色個數曾經相等」 → 反面是「多的那一色一路領先到底」；領先問題的答案是 (多−少)/(多＋少)</span><span class="src">109 全國教甄聯招 填 7</span></div>
+<div class="fxq">袋中有 $12$ 個白球、$8$ 個紅球，每次隨機抽取 $1$ 球且取後不放回，直到所有球取完為止。求取球過程中至少有一次「已取出的白球個數與紅球個數相等」的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac45$</div>
+<div class="fxs"><div class="move">招式：走反面。「從頭到尾沒有相等過」⟺ 第一顆一定是白球（否則第 $0$ 步之後紅先領先，之後必定會回到相等），而且白球從第 $1$ 步起一路嚴格領先到最後。這就是經典的「一路領先」問題。</div>
+把 $20$ 顆球的取出順序看成一條由 $+1$（白）與 $-1$（紅）構成的路徑，終點高度 $=12-8=4$。<br>
+「一路嚴格領先（部分和恆為正）」的路徑比例 $=\dfrac{12-8}{12+8}=\dfrac4{20}=\dfrac15$。<br>
+$P(\text{至少一次相等})=1-\dfrac15=\dfrac45$。<span class="note-sm">$\dfrac{a-b}{a+b}$ 這條公式（$a\gt b$）是「投票問題」的標準結論，證法是把「第一步走紅」的路徑與「第一步走白之後曾回到 $0$」的路徑一一配對（反射法）。本題若不記公式，也可以用程式或小規模遞推驗證——把 $12,8$ 換成 $3,1$ 手算看看，會得到 $\dfrac{3-1}{3+1}=\dfrac12$。</span></div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">專區 7</span><span class="kw">放回抽球、連續三次同色就停止 → 條件機率的好處是「前面已經確定的部分不必再算」；先檢查在條件之下有沒有「已經提早停止」的情形，再往後推</span><span class="src">111 全國教甄聯招 複選 11</span></div>
+<div class="fxq">袋中有 $10$ 個紅球、$5$ 個黑球。小華每次從袋中抽一球，看完顏色後又將球放回袋中；若連續出現三次同一顏色的球就停止。設 $a$ 為「恰好抽三次就停止」的機率；$b$ 為「在第一次抽中紅球的條件下，恰好在第四次停止」的條件機率；$c$ 為「在第一、二次都抽中黑球的條件下，恰好在第五次停止」的條件機率。試選出正確的選項。<br>
+(1) $a\le b$　(2) $b\lt c$　(3) $c\le a$　(4) $a=b+c$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)</div>
+<div class="fxs"><div class="move">招式：每次抽球獨立，$P(\text{紅})=\dfrac{10}{15}=\dfrac23$、$P(\text{黑})=\dfrac13$。三個量都化成 $\dfrac{\square}{27}$ 再比。</div>
+$a$：前三次全紅或全黑 ⟹ $\left(\dfrac23\right)^3+\left(\dfrac13\right)^3=\dfrac8{27}+\dfrac1{27}=\dfrac9{27}=\dfrac13$。<br>
+$b$：已知第 $1$ 次是紅。第四次停止 ⟹ 第 $2,3,4$ 次同色，且不能在第三次就停止。若第 $2,3,4$ 次全紅，則第 $1,2,3$ 次也全紅 ⟹ 第三次就停了，不合 ⟹ 只能第 $2,3,4$ 次全黑 ⟹ $b=\left(\dfrac13\right)^3=\dfrac1{27}$。<br>
+$c$：已知第 $1,2$ 次都是黑。第三次若也是黑就停了 ⟹ 第 $3$ 次必須是紅（機率 $\dfrac23$）；接著要在第五次停止 ⟹ 第 $3,4,5$ 次同色，而第 $3$ 次是紅 ⟹ 第 $4,5$ 次也要紅 ⟹ $c=\dfrac23\cdot\dfrac23\cdot\dfrac23=\dfrac8{27}$。<br>
+(1) $a=\dfrac9{27}\le b=\dfrac1{27}$？✗　(2) $\dfrac1{27}\lt\dfrac8{27}$ ✓　(3) $\dfrac8{27}\le\dfrac9{27}$ ✓　(4) $\dfrac1{27}+\dfrac8{27}=\dfrac9{27}=a$ ✓<br>
+故選 (2)(3)(4)。<span class="note-sm">(4) 的等式看起來像巧合，其實不是：$b$ 走的是「三黑」、$c$ 走的是「三紅」，而 $a$ 正好是這兩者相加。三個量的分母都是 $27$，把它們寫成 $\dfrac9{27}$、$\dfrac1{27}$、$\dfrac8{27}$ 之後答案一目瞭然。</span></div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">專區 8</span><span class="kw">每一回合都在兩個狀態之間跳 → 只要算出兩個「一步的機率」p(留在 A)、p(從 B 回 A)，之後每一回合就是同一條式子反覆代；三回合手算即可，不必找通式</span><span class="src">112 全國教甄聯招 複選 9</span></div>
+<div class="fxq">現有 A、B 兩箱，其中 A 箱中有一紅球二白球，B 箱中有一白球，每球被取到的機率相同。每一回合做如下的操作：自 A 箱中隨機取兩球放入 B 箱中，再從 B 箱中隨機取兩球放入 A 箱。以「紅球在 A 箱」為狀態一、「紅球在 B 箱」為狀態二。試選出正確的選項。<br>
+(1) 第一回合結束後，紅球在 A 箱的機率為 $\dfrac23$<br>
+(2) 第一回合結束後，紅球在 B 箱的機率為 $\dfrac29$<br>
+(3) 第二回合結束後，紅球在 A 箱的機率為 $\dfrac{20}{81}$<br>
+(4) 第三回合結束時，紅球在 A 箱的機率為 $\dfrac{547}{729}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(4)</div>
+<div class="fxs"><div class="move">招式：每一回合之後 A 箱恆為 $3$ 球、B 箱恆為 $1$ 球。先算兩條「一步機率」：$p$ 代表「這回合開始時紅球在 A 箱、結束時仍在 A 箱」的機率，$q$ 代表「這回合開始時紅球在 B 箱、結束時回到 A 箱」的機率。</div>
+求 $p$：A 箱 $=\{\text{紅},\text{白},\text{白}\}$、B 箱 $=\{\text{白}\}$。<br>
+・A 取出的兩球含紅球（機率 $\dfrac{C^1_1C^2_1}{C^3_2}=\dfrac23$）：此時 B 箱有三球且含紅。再從 B 取兩球放回 A，紅球留在 B 的機率 $=\dfrac{C^2_2}{C^3_2}=\dfrac13$ ⟹ 回到 A 的機率 $\dfrac23$。<br>
+・A 取出兩白（機率 $\dfrac13$）：紅球從頭到尾都在 A ⟹ 機率 $1$。<br>
+$p=\dfrac23\times\dfrac23+\dfrac13\times1=\dfrac49+\dfrac39=\dfrac79$。<br>
+求 $q$：紅球在 B 時，A 箱三球全白。取兩白入 B ⟹ B 箱為 $\{\text{紅},\text{白},\text{白}\}$，取兩球回 A，紅球被取中的機率 $=\dfrac{C^2_1}{C^3_2}=\dfrac23$ ⟹ $q=\dfrac23=\dfrac69$。<br>
+第一回合：紅球一開始在 A ⟹ $P_1=\dfrac79$ ⟹ (1) 的 $\dfrac23$ ✗；紅球在 B 的機率 $=1-\dfrac79=\dfrac29$ ⟹ (2) ✓<br>
+第二回合：$P_2=\dfrac79\cdot\dfrac79+\dfrac29\cdot\dfrac69=\dfrac{49+12}{81}=\dfrac{61}{81}$ ⟹ (3) 的 $\dfrac{20}{81}$ ✗（$\dfrac{20}{81}$ 其實是紅球在 B 的機率）。<br>
+第三回合：$P_3=\dfrac{61}{81}\cdot\dfrac79+\dfrac{20}{81}\cdot\dfrac69=\dfrac{427+120}{729}=\dfrac{547}{729}$ ⟹ (4) ✓<br>
+故選 (2)(4)。<span class="note-sm">$P_{k+1}=\dfrac79P_k+\dfrac23\left(1-P_k\right)=\dfrac19P_k+\dfrac23$——寫成這一條遞迴式，三個回合按三次計算機就好。這種「兩狀態來回跳」的題型在教甄很常見，關鍵永遠是先把兩條一步機率算對。</span></div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">專區 9</span><span class="kw">手上的球會換、袋中組成跟著變 → 只有兩種狀態（手上是白球／手上是紅球），寫出一條遞迴式；「已知第三次取到白」等於把時間軸重設，答案就是從頭再走三步</span><span class="src">復興高中 101 第二次教甄 一</span></div>
+<div class="fxq">袋中有 $2$ 個白球、$4$ 個紅球，朱哥手上有 $1$ 個白球。現自袋中每次任取一球（每球被取到的機率均等），再將手中原持有的球放入袋中，並重複此一取球的動作。已知在第三次取到白球，求在第六次取到白球的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{23}{54}$</div>
+<div class="fxs"><div class="move">招式：全部共 $3$ 白 $4$ 紅，袋中永遠 $6$ 球、手上永遠 $1$ 球。手上是白球時袋中 $2$ 白 $4$ 紅 ⟹ 下一次取到白的機率 $\dfrac26=\dfrac13$；手上是紅球時袋中 $3$ 白 $3$ 紅 ⟹ 機率 $\dfrac36=\dfrac12$。而「這次取到什麼」正好決定了「下一次手上是什麼」。</div>
+令 $p_k$ 為第 $k$ 次取到白球的機率。已知第三次取到白球 ⟹ 第四次開始時手上是白球，狀態與「一開始手上是白球」完全相同 ⟹ 所求 $=p_3$（從手上是白球起算三步）。<br>
+$p_1=\dfrac13$。<br>
+$p_{k+1}=p_k\cdot\dfrac13+\left(1-p_k\right)\cdot\dfrac12=\dfrac12-\dfrac{p_k}{6}$。<br>
+$p_2=\dfrac12-\dfrac{1/3}{6}=\dfrac12-\dfrac1{18}=\dfrac{8}{18}=\dfrac49$。<br>
+$p_3=\dfrac12-\dfrac{4/9}{6}=\dfrac12-\dfrac{4}{54}=\dfrac{27-4}{54}=\dfrac{23}{54}$。<span class="note-sm">為什麼可以「時間軸重設」？因為往後的一切只取決於「現在手上是什麼球」，而第三次取到白球就把這件事定死了——前兩次發生什麼完全不影響。這正是條件機率最省力的用法。</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">專區 10</span><span class="kw">「某一色最先取完」 → 改看最後一顆球是什麼顏色：黑色最先取完 ⟺ 最後一顆不是黑，且「黑與另一色之中最後出現的是另一色」；兩層條件連乘</span><span class="src">萬芳高中 101 代理教甄 6</span></div>
+<div class="fxq">袋中有紅球 $5$ 個、白球 $3$ 個、黑球 $4$ 個（共 $12$ 個），每球被選取的機會均等。今每次由袋中取一球且取後不放回，直到取完為止。求黑球最先被取完的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{20}{63}$</div>
+<div class="fxs"><div class="move">招式：「黑球最先取完」＝ 最後一顆黑球出現的位置比最後一顆紅球、最後一顆白球都早。分兩種情形：整袋的最後一顆是紅球，或是白球。</div>
+情形一：最後一顆（第 $12$ 顆）是紅球，機率 $\dfrac5{12}$。此時只要再確認「黑與白之中，最後出現的是白球」——只看黑、白這 $7$ 顆球的相對順序，最後一顆是白球的機率 $\dfrac37$。<br>
+貢獻 $\dfrac5{12}\times\dfrac37=\dfrac{15}{84}$。<br>
+情形二：最後一顆是白球，機率 $\dfrac3{12}$。再要求「黑與紅之中最後出現的是紅球」，只看黑、紅這 $9$ 顆，機率 $\dfrac59$。<br>
+貢獻 $\dfrac3{12}\times\dfrac59=\dfrac{15}{108}$。<br>
+相加：$\dfrac{15}{84}+\dfrac{15}{108}=\dfrac5{28}+\dfrac5{36}=\dfrac{45+35}{252}=\dfrac{80}{252}=\dfrac{20}{63}$。<span class="note-sm">「只看某兩色的相對順序」這一招要說得出道理：把其他顏色的球從序列中刪掉，剩下的相對順序仍然是均勻隨機的，所以最後一顆是白球的機率就是白球佔這兩色的比例。這比直接算排列數快得多。</span></div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">專區 11</span><span class="kw">「第 5 次成功出現在第 10 次之後」 → 翻譯成「前 10 次的成功次數最多 4 次」，變成一般的重複試驗；把 0～4 次的組合數加起來</span><span class="src">屏東高中 111 教甄 填 6</span></div>
+<div class="fxq">設擲筊時出現聖杯的機率為 $0.5$，且每次擲筊互相獨立。求第 $5$ 個聖杯出現在第 $10$ 次擲筊之後的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{193}{512}$</div>
+<div class="fxs"><div class="move">招式：「第 $5$ 個聖杯出現在第 $10$ 次之後」⟺「前 $10$ 次之中聖杯最多出現 $4$ 次」。後者是標準的重複試驗，只要把 $0,1,2,3,4$ 次的情形加起來。</div>
+前 $10$ 次共 $2^{10}=1024$ 種等可能的結果。<br>
+聖杯恰 $k$ 次的情形數 $=C^{10}_k$：<br>
+$C^{10}_0+C^{10}_1+C^{10}_2+C^{10}_3+C^{10}_4=1+10+45+120+210=386$。<br>
+$P=\dfrac{386}{1024}=\dfrac{193}{512}$。<span class="note-sm">$\dfrac{193}{512}\approx0.377$，比 $\dfrac12$ 小一點——因為「前 $10$ 次恰好 $5$ 次聖杯」這一塊（$\dfrac{252}{1024}$）被排除在外，而剩下的兩邊是對稱的：$\dfrac{1024-252}2=386$ ✓ 這是很好的驗算。</span></div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">專區 12</span><span class="kw">圍成一圈、每人擲硬幣、不能有相鄰兩正面 → 樣本空間 2⁷；把「環狀且無相鄰」的情形依「第一個人是正面還是反面」拆開遞推，別直接套直線的公式</span><span class="src">北一女中 113 科學班 單 3</span></div>
+<div class="fxq">有 $7$ 人圍坐成一圈，每個人都投擲一枚公正硬幣，每一枚出現正面或反面的機率均為 $\dfrac12$。求「沒有相鄰的兩人皆投擲出正面」的機率。<br>
+(1) $\dfrac{29}{128}$　(2) $\dfrac{31}{128}$　(3) $\dfrac{35}{128}$　(4) $\dfrac{37}{128}$　(5) $\dfrac{43}{128}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\dfrac{29}{128}$</div>
+<div class="fxs"><div class="move">招式：樣本空間是 $2^7=128$ 種正反排列，每一種機率相同 ⟹ 只要數「環狀且沒有相鄰正面」的排列有幾種。依「正面的人數」分類最乾淨。</div>
+$7$ 個位置圍成一圈，選 $k$ 個互不相鄰的位置，方法數為 $\dfrac{7}{7-k}C^{7-k}_k$：<br>
+$k=0$：$1$ 種；$k=1$：$7$ 種；$k=2$：$\dfrac75C^5_2=\dfrac75\times10=14$ 種；$k=3$：$\dfrac74C^4_3=\dfrac74\times4=7$ 種；$k\ge4$ 不可能（$7$ 個座位最多放 $3$ 個互不相鄰）。<br>
+合計 $1+7+14+7=29$ 種 ⟹ 機率 $\dfrac{29}{128}$ ⟹ 選 (1)。<br>
+（$k=2$ 也可以直接數：$C^7_2=21$ 對，扣掉相鄰的 $7$ 對 ⟹ $14$ ✓；$k=3$ 可以固定一人為正面再數，或直接列舉確認為 $7$ ✓）<span class="note-sm">🔴 不要用直線的公式 $C^{n-k+1}_k$——圍成一圈時「第 $1$ 位與第 $7$ 位」也算相鄰。兩者的差別正是這題的考點。順帶一提，$1,7,14,7$ 相加得到的 $29$ 是盧卡斯數 $L_7$。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">專區 13</span><span class="kw">依序三個點數成等差 vs 成等比 → 等差看 2b = a+c（依 b 分類數 a+c 的解），等比看 b² = ac（依 b 分類數乘積的分解）；分母都是 6³，相除時直接約掉</span><span class="src">嘉義高中 113 科學班 填 12</span></div>
+<div class="fxq">丟擲一個公正骰子 $3$ 次，依序得到的點數為 $a$、$b$、$c$。若 $a,b,c$ 恰形成一個等差數列的機率為 $P_1$、恰形成一個等比數列的機率為 $P_2$，求 $\dfrac{P_1}{P_2}$。（化成最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac94$</div>
+<div class="fxs"><div class="move">招式：兩個機率的分母都是 $6^3=216$，相除時會消掉 ⟹ 只要數兩個「情形數」。等差 ⟺ $2b=a+c$；等比 ⟺ $b^2=ac$。兩者都依中間項 $b$ 分類最快。</div>
+等差（依 $b$ 數 $a+c=2b$ 的有序解，$a,c\in\{1,\ldots,6\}$）：<br>
+$b=1$：$a+c=2$ ⟹ $1$ 組；$b=2$：$a+c=4$ ⟹ $3$ 組；$b=3$：$a+c=6$ ⟹ $5$ 組；<br>
+$b=4$：$a+c=8$ ⟹ $5$ 組；$b=5$：$a+c=10$ ⟹ $3$ 組；$b=6$：$a+c=12$ ⟹ $1$ 組。<br>
+合計 $1+3+5+5+3+1=18$ ⟹ $P_1=\dfrac{18}{216}=\dfrac1{12}$。<br>
+等比（依 $b$ 數 $ac=b^2$ 的有序解）：<br>
+$b=1$：$ac=1$ ⟹ $(1,1)$，$1$ 組；$b=2$：$ac=4$ ⟹ $(1,4)(2,2)(4,1)$，$3$ 組；<br>
+$b=3$：$ac=9$ ⟹ 只有 $(3,3)$（$1\times9$、$9\times1$ 超出 $6$），$1$ 組；<br>
+$b=4$：$ac=16$ ⟹ 只有 $(4,4)$，$1$ 組；$b=5$：$ac=25$ ⟹ $(5,5)$，$1$ 組；$b=6$：$ac=36$ ⟹ $(6,6)$，$1$ 組。<br>
+合計 $1+3+1+1+1+1=8$ ⟹ $P_2=\dfrac8{216}=\dfrac1{27}$。<br>
+$\dfrac{P_1}{P_2}=\dfrac{18}{8}=\dfrac94$。<span class="note-sm">常數數列（如 $3,3,3$）同時是等差也是等比，兩邊都要算進去，不要漏掉或重複刪。另外 $b=3$ 時很容易誤加 $(1,9)$、$(9,1)$——骰子最大只有 $6$。</span></div></div>
+
+</section>
+
+<div class="ch-nav">
+  <a href="../g11b-ch02/practice.html">← 第二章 空間中的直線與平面 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <span></span>
+</div>
+</div>
+
+<script>
+(function () {
+  var G = window.PGEN, CH = 'g11b-ch03';
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var TIERS = ['L0', 'L1', 'L2', 'L3'], labelOf = {};
+  TIERS.forEach(function (L) { if (G.META[L]) G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  var DAY = 86400000, INTERVAL = [1, 3, 7, 14];            /* 錯題本間隔（天）：第 n 次全對後隔 INTERVAL[n] 天再測；連續 2 次全對畢業 */
+  var CONF = { h: '有把握', m: '不確定', l: '猜的' }, CAUSE = { start: '不會下手', formula: '公式用錯', calc: '計算錯', read: '看錯題' };
+  var READ_CAUSE = { start: 1, formula: 1 };               /* 這兩種錯因建議回頭讀「先要會」；另兩種建議多算幾題 */
+
+  /* ══════════ 練習紀錄（只存在這台裝置）══════════ */
+  var STORE = 'pgen_rec_' + CH;
+  function loadRec() {
+    var r = null; try { r = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { }
+    if (!r || !r.attempts) return { v: 2, attempts: [], wb: {} };
+    if (r.v === 1) { r.attempts.forEach(function (at) { at.items.forEach(function (x) { if (!x.t) x.t = at.tier; }); }); r.v = 2; }
+    if (!r.wb) r.wb = {};
+    return r;
+  }
+  function saveRec() { try { localStorage.setItem(STORE, JSON.stringify(REC)); } catch (e) { } }
+  var REC = loadRec();
+  function stats() {
+    var byKey = {}, bySet = {};
+    REC.attempts.forEach(function (at) {
+      at.items.forEach(function (x) {
+        var t = x.t || at.tier, k = t + '.' + x.k, o = byKey[k] || (byKey[k] = { tier: t, key: x.k, n: 0, w: 0, hc: 0, gs: 0, last: [], causes: {} });
+        o.n++; if (x.wrong) o.w++; o.last.push(x.wrong ? 1 : 0);
+        if (x.wrong && x.conf === 'h') o.hc++;
+        if (!x.wrong && x.conf === 'l') o.gs++;
+        if (x.wrong && x.cause) o.causes[x.cause] = (o.causes[x.cause] || 0) + 1;
+      });
+      if (at.kind === 'review') return;
+      var s = bySet[at.set] || (bySet[at.set] = { rounds: 0, hist: [] });
+      s.rounds++; s.hist.push({ t: at.t, n: at.items.length, w: at.items.filter(function (x) { return x.wrong; }).length, secs: at.secs });
+    });
+    return { byKey: byKey, bySet: bySet };
+  }
+  function weakList(byKey) {
+    return Object.keys(byKey).map(function (k) { return byKey[k]; }).filter(function (o) {
+      if (o.tier === 'L0') return false;
+      var lastWrong = o.last[o.last.length - 1] === 1;
+      return lastWrong || o.hc > 0 || (o.n >= 2 && (o.w + o.gs) / o.n >= 0.4);
+    }).sort(function (a, b) { if (b.hc !== a.hc) return b.hc - a.hc; var la = a.last[a.last.length - 1], lb = b.last[b.last.length - 1]; if (la !== lb) return lb - la; return (b.w + b.gs) / b.n - (a.w + a.gs) / a.n; });
+  }
+  function mainCause(o) { var best = null; Object.keys(o.causes).forEach(function (c) { if (!best || o.causes[c] > o.causes[best]) best = c; }); return best; }
+
+  /* ══════════ 跳轉：練（卡片／類似題）與讀（該小節的「先要會」）══════════ */
+  function flash(el) { if (!el) return; el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 2500); }
+  function goKey(tier, key) {
+    var el;
+    if (tier === 'L3') {
+      el = document.querySelector('.fx[data-gen="' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); var sb = el.querySelector('.simbox'); if (!sb) buildSim(el, key); else sb.querySelector('.again').click(); }
+    } else {
+      el = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.querySelector('.new').click(); }
+    }
+    flash(el);
+  }
+  function goRead(tier, key) {
+    var el;
+    if (tier === 'L3') el = document.querySelector('.fx[data-gen="' + key + '"]');
+    else {
+      var card = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      el = card ? card.parentElement.previousElementSibling : null;
+      while (el && !el.classList.contains('must')) el = el.previousElementSibling;
+    }
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }
+  }
+  function goBtn(tier, key, mode) {
+    var b = document.createElement('button'); b.className = 'go' + (mode === 'read' ? ' read' : ''); b.type = 'button';
+    b.textContent = (mode === 'read' ? '📖 讀：' : (tier === 'L3' ? '📎 ' : '🎲 ')) + (labelOf[tier + '.' + key] || key);
+    b.onclick = function () { (mode === 'read' ? goRead : goKey)(tier, key); }; return b;
+  }
+
+  /* ══════════ 解題步驟排版、漸淡練習（Renkl：全解 → 補最後一步 → 只給第一步）══════════ */
+  function stepsHtml(it, mode) {
+    if (!it.s) return '';
+    var n = it.s.length, shown = mode === 'last' ? n - 1 : mode === 'first' ? 1 : n;
+    var html = '<ol class="steps">';
+    for (var i = 0; i < n; i++) {
+      if (i < shown) html += '<li>' + it.s[i] + '</li>';
+      else html += '<li class="blank"><span class="bl">' + (mode === 'last' ? '最後一步請自己完成' : '接下來的步驟請自己完成') + '</span><span class="hid">' + it.s[i] + '</span></li>';
+    }
+    html += '</ol><div class="fin' + (mode ? ' hid' : '') + '">答：' + it.a + '</div>';
+    return html;
+  }
+  function buildFade(box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(','), base = parseInt(box.getAttribute('data-seed'), 10);
+    var html = '<div class="fd-h"><b>📘 漸淡練習</b><span>每型三題：先看完整示範，第二題自己補最後一步，第三題只給第一步。看完示範後試著遮住步驟自己寫一次。</span></div>';
+    keys.forEach(function (k, i) {
+      if (!G[tier][k]) return;
+      var its = [0, 1, 2].map(function (j) { return { it: G[tier][k](G.makeRng(base + i * 31 + j * 7)), seed: base + i * 31 + j * 7 }; });
+      if (!its[0].it.s) return;
+      html += '<details class="fd"><summary>' + esc(labelOf[tier + '.' + k] || k) + '</summary>' +
+        '<div class="fdi"><div class="fdt">① 完整示範 <span class="seed">#' + its[0].seed + '</span></div><div class="fq">' + its[0].it.q + '</div>' + stepsHtml(its[0].it) + '</div>' +
+        '<div class="fdi"><div class="fdt">② 補最後一步 <span class="seed">#' + its[1].seed + '</span></div><div class="fq">' + its[1].it.q + '</div>' + stepsHtml(its[1].it, 'last') + '<button class="reveal">顯示最後一步與答案</button></div>' +
+        '<div class="fdi"><div class="fdt">③ 只給第一步 <span class="seed">#' + its[2].seed + '</span></div><div class="fq">' + its[2].it.q + '</div>' + stepsHtml(its[2].it, 'first') + '<button class="reveal">顯示其餘步驟與答案</button></div></details>';
+    });
+    box.innerHTML = html;
+    box.querySelectorAll('.reveal').forEach(function (b) { b.onclick = function () { var d = b.parentElement; d.classList.add('open'); b.style.display = 'none'; }; });
+    box.querySelectorAll('details.fd').forEach(function (d) { d.addEventListener('toggle', function () { if (d.open && !d._r) { d._r = 1; render(d); } }); });
+  }
+  document.querySelectorAll('.fadeset').forEach(buildFade);
+
+  /* ══════════ 對照題（變異理論：只差一個關鍵特徵的兩題並列，先說差在哪再揭曉）══════════ */
+  function buildContrast(gc, tier, key, seedA) {
+    var pr = G.contrastPair(tier, key, seedA);
+    if (!pr) { gc.innerHTML = '<div class="note-sm">這一型暫時找不到對照題。</div>'; gc.classList.add('on'); return; }
+    gc.innerHTML = '<div class="gc-h"><b>⚖ 對照題</b><span>先說出：<b>兩題差在哪一個地方？答案會怎麼跟著變？</b>想清楚再按「揭曉」。</span></div>' +
+      '<div class="gc-pair"><div class="gc-item"><div class="gc-t">甲 <span class="seed">#' + seedA + '</span></div>' + pr.A.q + '<div class="gc-a">答：' + pr.A.a + '</div></div>' +
+      '<div class="gc-item"><div class="gc-t">乙 <span class="seed">#' + pr.seedB + '</span></div>' + pr.B.q + '<div class="gc-a">答：' + pr.B.a + '</div></div></div>' +
+      '<div class="gc-btn"><button class="reveal">揭曉：答案與差別</button><button class="close">收起</button></div><div class="gc-why">' + pr.why + '</div>';
+    gc.classList.add('on'); gc.removeAttribute('data-stale');
+    gc.querySelector('.reveal').onclick = function () { gc.classList.add('open'); this.style.display = 'none'; };
+    gc.querySelector('.close').onclick = function () { gc.classList.remove('on'); };
+    render(gc);
+  }
+
+  /* ══════════ 產生器卡片（L1、L2）══════════ */
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard'; card.setAttribute('data-key', tier + '.' + key); card.id = 'c-' + tier + '.' + key;
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="steps">📘 步驟</button>' + (G.CONTRAST && G.CONTRAST[tier + '.' + key] ? '<button class="contrast">⚖ 對照題</button>' : '') + '</div>' +
+      '<div class="gh"></div><div class="ga"></div><div class="gs"></div><div class="gc"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000), lastQ = '', cur = null, hl = 0;
+    function showHint() {
+      var gh = card.querySelector('.gh');
+      if (!cur.h1) { gh.innerHTML = '提示：' + cur.h; gh.classList.toggle('on'); render(gh); return; }
+      hl = Math.min(hl + 1, 2);
+      gh.innerHTML = '<div><b>提示 ①</b>（先想這是哪一型）：' + cur.h1 + (hl === 1 ? ' <button class="more">還是不會，再提示一層</button>' : '') + '</div>' + (hl === 2 ? '<div><b>提示 ②</b>（帶本題數字）：' + cur.h + '</div>' : '');
+      gh.classList.add('on'); var m = gh.querySelector('.more'); if (m) m.onclick = showHint; render(gh);
+    }
+    function load() {
+      var it = G[tier][key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G[tier][key](G.makeRng(seed)); }
+      lastQ = it.q; cur = it; hl = 0; var gcx = card.querySelector('.gc'); if (gcx && gcx.classList.contains('on')) gcx.setAttribute('data-stale', '1');
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '';
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.gs').innerHTML = stepsHtml(it);
+      card.querySelector('.steps').style.display = it.s ? '' : 'none';
+      card.querySelector('.seed').textContent = '#' + seed;
+      ['.gh', '.ga', '.gs'].forEach(function (c) { card.querySelector(c).classList.remove('on'); });
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { if (cur.h1 && hl === 0) showHint(); else card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    card.querySelector('.steps').onclick = function () { card.querySelector('.gs').classList.toggle('on'); };
+    var cb = card.querySelector('.contrast'); if (cb) cb.onclick = function () { var gc = card.querySelector('.gc'); if (gc.classList.contains('on') && !gc.getAttribute('data-stale')) { gc.classList.remove('on'); return; } buildContrast(gc, tier, key, seed); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+
+  /* ══════════ L3 固定題的「類似題」══════════ */
+  function buildSim(fx, key) {
+    var box = document.createElement('div'); box.className = 'simbox';
+    box.innerHTML = '<div class="st"><span>🎲 類似題（同型換數字）</span><span class="seed"></span></div><div class="sq"></div>' +
+      '<div class="sbtn"><button class="again">🎲 再一題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="close">收起</button></div><div class="gh"></div><div class="ga"></div>';
+    var seed = 30000 + Math.floor(Math.random() * 90000), lastQ = '';
+    function load() {
+      var it = G.L3[key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G.L3[key](G.makeRng(seed)); }
+      lastQ = it.q;
+      box.querySelector('.sq').innerHTML = it.q; box.querySelector('.gh').innerHTML = '提示：' + it.h; box.querySelector('.ga').innerHTML = '答案：' + it.a;
+      box.querySelector('.seed').textContent = '#' + seed;
+      box.querySelector('.gh').classList.remove('on'); box.querySelector('.ga').classList.remove('on');
+      render(box);
+    }
+    box.querySelector('.again').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    box.querySelector('.hint').onclick = function () { box.querySelector('.gh').classList.toggle('on'); };
+    box.querySelector('.ans').onclick = function () { box.querySelector('.ga').classList.toggle('on'); };
+    box.querySelector('.close').onclick = function () { box.remove(); };
+    fx.appendChild(box); load();
+    return box;
+  }
+  document.querySelectorAll('.fx[data-gen]').forEach(function (fx) {
+    var key = fx.getAttribute('data-gen'); if (!G.L3 || !G.L3[key]) return;
+    var b = document.createElement('button'); b.textContent = '🎲 類似題'; b.className = 'simbtn';
+    b.onclick = function () { var sb = fx.querySelector('.simbox'); if (sb) sb.querySelector('.again').click(); else buildSim(fx, key); };
+    var anchor = fx.querySelector('button[data-t="s"]');
+    anchor.parentNode.insertBefore(document.createTextNode(' '), anchor.nextSibling);
+    anchor.parentNode.insertBefore(b, anchor.nextSibling.nextSibling);
+  });
+
+  /* ══════════ 題目小工具 ══════════ */
+  function item(t, k, seed) { return G[t][k](G.makeRng(seed)); }
+  function confHtml() { return '<span class="conf"><span class="cl">作答後、看答案前：</span><button data-c="h">有把握</button><button data-c="m">不確定</button><button data-c="l">猜的</button></span>'; }
+  function markHtml() { return '<span class="mark"><button data-m="1">○ 對</button><button data-m="0">✗ 錯</button></span><span class="cause"><span class="cl">錯因：</span><button data-e="start">不會下手</button><button data-e="formula">公式用錯</button><button data-e="calc">計算錯</button><button data-e="read">看錯題</button></span>'; }
+  function wireConfMark(li) {
+    li.querySelectorAll('.conf button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-conf', b.getAttribute('data-c')); li.querySelectorAll('.conf button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+    li.querySelectorAll('.mark button').forEach(function (b) {
+      b.onclick = function () { var ok = b.getAttribute('data-m') === '1'; var was = li.classList.contains(ok ? 'ok' : 'ng'); li.classList.remove('ok', 'ng'); if (!was) li.classList.add(ok ? 'ok' : 'ng'); if (!li.classList.contains('ng')) { li.removeAttribute('data-cause'); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.remove('sel'); }); } };
+    });
+    li.querySelectorAll('.cause button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-cause', b.getAttribute('data-e')); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+  }
+  function unrated(root) { return Array.prototype.filter.call(root.querySelectorAll('li.qi'), function (li) { return !li.getAttribute('data-conf'); }).length; }
+
+  /* ══════════ 檢測題組（固定種子可列印；混合／計時／換組／信心／錯因／記錄）══════════ */
+  function secName(box) {
+    var el = box.previousElementSibling;
+    while (el && !(el.tagName === 'H3' && el.classList.contains('sec'))) el = el.previousElementSibling;
+    return el ? el.textContent.replace(/（.*?）/g, '').trim() : box.getAttribute('data-tier');
+  }
+  function expandKeys(box) {
+    var tier = box.getAttribute('data-tier'), out = [];
+    box.getAttribute('data-keys').split(',').forEach(function (s) {
+      s = s.trim(); var t = tier, k = s;
+      if (s.indexOf(':') > 0) { t = s.split(':')[0]; k = s.split(':')[1]; } else if (s.indexOf('.') > 0) { t = s.split('.')[0]; k = s.split('.')[1]; }
+      if (k === '*') G.META[t].forEach(function (p) { out.push({ t: t, k: p[0] }); }); else out.push({ t: t, k: k });
+    });
+    return out;
+  }
+  var TITLE = document.querySelector('header.hd h1').textContent;
+  function printSet(box) {
+    var area = document.getElementById('printArea');
+    var lis = box.querySelectorAll('ol > li'), showAns = box.classList.contains('show');
+    var html = '<h1>' + esc(TITLE) + '｜' + esc(box._set) + '　第 ' + box._round + ' 組（#' + box._base + '）</h1><p class="pmeta">姓名：＿＿＿＿＿　日期：＿＿＿＿　得分：＿＿／' + lis.length + '</p><ol>';
+    lis.forEach(function (li) { html += '<li>' + li.querySelector('.q').innerHTML + '</li>'; });
+    html += '</ol>';
+    if (showAns) { html += '<h2>答案</h2><ol>'; lis.forEach(function (li) { html += '<li>' + li.querySelector('.fa').innerHTML.replace(/^（答：/, '').replace(/）$/, '') + '</li>'; }); html += '</ol>'; }
+    area.innerHTML = html; render(area);
+    document.body.classList.add('print-one');
+    var done = function () { document.body.classList.remove('print-one'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); setTimeout(done, 3000);
+    window.print();
+  }
+  function fmtClock(s) { var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function buildSet(box, base, round) {
+    var keys = expandKeys(box), n = parseInt(box.getAttribute('data-n') || '10', 10), mixed = box.hasAttribute('data-mixed'), timer = parseInt(box.getAttribute('data-timer') || '0', 10);
+    if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    box._base = base; box._round = round; box._items = []; box._secs = 0;
+    if (mixed) keys = G.makeRng(base + 1).shuffle(keys);
+    var label = timer ? '段考模擬卷 ' + n + ' 題' : '檢測 ' + n + ' 題';
+    var html = '<div class="fix-btns"><b>' + label + '</b><span class="fix-meta">第 ' + round + ' 組・#' + base + (mixed ? '・混合打亂' : '') + '</span>' +
+      (timer ? '<button class="tstart">⏱ 開始計時 ' + timer + ' 分</button><span class="tclock"></span>' : '') +
+      '<button class="show">' + (timer ? '交卷・看答案' : '顯示答案') + '</button><button class="print">🖨 列印本組</button><button class="regen">🔁 換一組類似題</button>' + (round > 1 ? '<button class="orig">回到原始題組</button>' : '') + '</div>' +
+      '<div class="fix-note"></div><ol>';
+    var seen = {};
+    for (var i = 0; i < n; i++) {
+      var kk = keys[i % keys.length], seed = base + i * 37, it = item(kk.t, kk.k, seed), tries = 0;
+      while (seen[it.q] && tries++ < 12) { seed += 1000003 * tries; it = item(kk.t, kk.k, seed); }
+      seen[it.q] = 1;
+      box._items.push({ t: kk.t, k: kk.k, seed: seed });
+      html += '<li class="qi"><span class="q">' + it.q + '</span>' + confHtml() + '<span class="fa">（答：' + it.a + '）</span>' + markHtml() + '</li>';
+    }
+    html += '</ol><div class="fix-foot"><button class="submit">📝 記錄本次結果</button><span>做完每題先按「有把握／不確定／猜的」，全部評完才能看答案；對完把每題標 ○／✗，錯的選錯因，再按「記錄」。</span></div><div class="fix-result"></div>';
+    box.classList.remove('show'); box.innerHTML = html; box._set = secName(box);
+    var note = box.querySelector('.fix-note');
+    box.querySelector('.show').onclick = function () {
+      if (box.classList.contains('show')) { box.classList.remove('show'); this.textContent = timer ? '交卷・看答案' : '顯示答案'; return; }
+      var u = unrated(box);
+      if (u) { note.textContent = '還有 ' + u + ' 題沒評信心。先寫下答案、按「有把握／不確定／猜的」，再看答案——這一步是為了讓你知道自己「以為會」和「真的會」差多少。'; note.classList.add('on'); return; }
+      note.classList.remove('on'); box.classList.add('show'); this.textContent = '隱藏答案';
+      if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    };
+    box.querySelector('.print').onclick = function () { printSet(box); };
+    box.querySelector('.regen').onclick = function () { buildSet(box, 10000 + Math.floor(Math.random() * 89999), round + 1); box.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    var ob = box.querySelector('.orig'); if (ob) ob.onclick = function () { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); };
+    var ts = box.querySelector('.tstart');
+    if (ts) ts.onclick = function () {
+      if (box._tick) return;
+      var left = timer * 60, clock = box.querySelector('.tclock'); ts.disabled = true; clock.textContent = fmtClock(left);
+      box._tick = setInterval(function () { left--; box._secs++; clock.textContent = fmtClock(Math.max(left, 0)); if (left <= 0) { clearInterval(box._tick); box._tick = null; clock.textContent = '時間到'; } }, 1000);
+    };
+    box.querySelectorAll('li.qi').forEach(wireConfMark);
+    box.querySelector('.submit').onclick = function () { submitSet(box); };
+    render(box);
+  }
+  function submitSet(box) {
+    if (!box.classList.contains('show')) { var nt = box.querySelector('.fix-note'); nt.textContent = '先看答案、對完再記錄。'; nt.classList.add('on'); return; }
+    var lis = box.querySelectorAll('ol > li.qi'), items = [], unmarked = 0;
+    lis.forEach(function (li, i) {
+      var wrong = li.classList.contains('ng'); if (!li.classList.contains('ok') && !wrong) unmarked++;
+      var b = box._items[i]; items.push({ t: b.t, k: b.k, seed: b.seed, wrong: wrong, conf: li.getAttribute('data-conf') || null, cause: wrong ? (li.getAttribute('data-cause') || null) : null, no: i + 1 });
+    });
+    var at = { t: Date.now(), tier: box.getAttribute('data-tier'), set: box._set, base: box._base, round: box._round, items: items.map(function (x) { return { t: x.t, k: x.k, seed: x.seed, wrong: x.wrong, conf: x.conf, cause: x.cause }; }) };
+    if (box._secs) at.secs = box._secs;
+    REC.attempts.push(at);
+    var wrong = items.filter(function (x) { return x.wrong; }), hc = wrong.filter(function (x) { return x.conf === 'h'; }), gs = items.filter(function (x) { return !x.wrong && x.conf === 'l'; });
+    var res = box.querySelector('.fix-result');
+    if (box.getAttribute('data-tier') === 'L0') {
+      saveRec();
+      var need = {}; wrong.concat(gs).forEach(function (x) { need[x.k] = 1; });
+      var h0 = '<b>先備診斷 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (gs.length ? '（猜對 ' + gs.length + ' 題，也算要複習）' : '') + '。';
+      if (!Object.keys(need).length) h0 += '先備知識都在，直接從 L1 開始。';
+      else {
+        h0 += '<br>這章會一直用到下面這些，建議先花 20 分鐘複習再開始：<ul class="pre-list">';
+        Object.keys(need).forEach(function (k) { var pq = G.PREREQ[k] || { txt: labelOf['L0.' + k] || k, link: null }; h0 += '<li>' + esc(pq.txt) + (pq.link ? '　<a href=' + JSON.stringify(pq.link) + '>→ 去那一章的 L1 練</a>' : '　（國中內容：翻課本或問老師，這裡的卡片可先多練幾題）') + '　' + '<span class="golist" data-k="' + k + '"></span></li>'; });
+        h0 += '</ul>';
+      }
+      res.innerHTML = h0; res.classList.add('on');
+      res.querySelectorAll('.golist').forEach(function (g) { g.appendChild(goBtn('L0', g.getAttribute('data-k'))); });
+      renderRec(); return;
+    }
+    wrong.forEach(function (x) { addWB(x, x.conf === 'h' ? 'hc' : 'wrong'); }); gs.forEach(function (x) { addWB(x, 'guess'); });
+    saveRec();
+    var html = '<b>本次 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (unmarked ? '（' + unmarked + ' 題未標記，視為答對）' : '') + (box._secs ? '，用時 ' + fmtClock(box._secs) : '') + '。';
+    if (hc.length) html += '<br><span class="hcw">⚠ 有把握卻答錯 ' + hc.length + ' 題（第 ' + hc.map(function (x) { return x.no; }).join('、') + ' 題）——這種「以為會」最危險，已排到錯題本最前面。</span>';
+    if (gs.length) html += '<br>猜對 ' + gs.length + ' 題（第 ' + gs.map(function (x) { return x.no; }).join('、') + ' 題）不算通過，也放進錯題本。';
+    if (!wrong.length && !gs.length) {
+      var unsure = items.filter(function (x) { return x.conf === 'm'; }).length;
+      html += '<br>全對！' + (unsure ? '有 ' + unsure + ' 題你標「不確定」——答對但沒把握的型，再多練幾題會更穩。' : '而且每題都有把握。') + (box._secs ? '' : masteryAdvice(box));
+    }
+    else {
+      var readK = {}, drillK = {};
+      wrong.forEach(function (x) { var id = x.t + '.' + x.k; if (x.cause && READ_CAUSE[x.cause]) readK[id] = x; else drillK[id] = x; });
+      gs.forEach(function (x) { var id = x.t + '.' + x.k; if (!readK[id]) drillK[id] = x; });
+      html += '<br>錯的題型：' + wrong.concat(gs).map(function (x) { return (labelOf[x.t + '.' + x.k] || x.k) + '（第 ' + x.no + ' 題' + (x.cause ? '，' + CAUSE[x.cause] : '') + '）'; }).join('、') + '。';
+      if (Object.keys(readK).length) html += '<br><b>回頭讀</b>（不會下手／公式用錯：先看該小節的「先要會」，再練）：<span class="golist read"></span>';
+      if (Object.keys(drillK).length) html += '<br><b>多算幾題</b>（計算錯／看錯題／猜對：直接跳到卡片出新題）：<span class="golist drill"></span>';
+      html += '<br>這些題會出現在頁首的「📅 今日複習」：明天重做原題＋一題類似題，連續兩次全對才從錯題本畢業。';
+      res.innerHTML = html; res.classList.add('on');
+      var gl = res.querySelector('.golist.read'); if (gl) Object.keys(readK).forEach(function (id) { var x = readK[id]; gl.appendChild(goBtn(x.t, x.k, 'read')); gl.appendChild(goBtn(x.t, x.k)); });
+      var gd = res.querySelector('.golist.drill'); if (gd) Object.keys(drillK).forEach(function (id) { var x = drillK[id]; gd.appendChild(goBtn(x.t, x.k)); });
+      renderRec(); renderReview(); return;
+    }
+    res.innerHTML = html; res.classList.add('on');
+    renderRec(); renderReview(); renderMastery(box);
+  }
+  document.querySelectorAll('.fixset').forEach(function (box) { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); });
+
+  /* ══════════ 精熟加時間條件（Bloom 精熟學習＋間隔）：兩輪全對且無猜對、且不在同一天 ══════════ */
+  function dayKey(t) { var d = new Date(t); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+  function masteryOf(setName) {
+    var clean = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName && at.items.length && at.items.every(function (x) { return !x.wrong && x.conf !== 'l'; }); });
+    var days = []; clean.forEach(function (at) { var d = dayKey(at.t); if (days.indexOf(d) < 0) days.push(d); });
+    var last = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName; }).slice(-1)[0];
+    return { cleanRounds: clean.length, days: days, mastered: days.length >= 2, today: days.indexOf(dayKey(Date.now())) >= 0, lastCleanToday: !!(last && clean.indexOf(last) >= 0 && dayKey(last.t) === dayKey(Date.now())) };
+  }
+  function masteryAdvice(box) {
+    var m = masteryOf(box._set);
+    if (m.mastered) return '這一組已達精熟（' + m.days.slice(0, 2).join('、') + ' 兩天各全對一輪）。再練同型效益不高，去做混合檢測或下一級。';
+    if (m.today) return '今天已全對一輪。第二輪要<b>隔天</b>做才算通過——記憶要經過遺忘再撈回來才牢，今天先去別的小節。';
+    return '明天再用「🔁 換一組類似題」測一輪，兩天各全對一輪（沒有猜對）就通過。';
+  }
+  function renderMastery(box) {
+    if (box.getAttribute('data-tier') === 'L0' || box.hasAttribute('data-timer')) return;
+    var el = box.querySelector('.fix-status'); if (!el) { el = document.createElement('div'); el.className = 'fix-status'; box.querySelector('.fix-btns').appendChild(el); }
+    var m = masteryOf(box._set);
+    el.className = 'fix-status' + (m.mastered ? ' ok' : m.cleanRounds ? ' half' : '');
+    el.textContent = m.mastered ? '✅ 已精熟（' + m.days.slice(0, 2).join('、') + '）' : m.cleanRounds ? '第 1 輪全對（' + m.days[0] + '），隔天再全對一輪就精熟' : '通過標準：兩天各全對一輪（不含猜對）';
+  }
+  document.querySelectorAll('.fixset').forEach(renderMastery);
+
+  /* ══════════ 錯題本與間隔複習 ══════════ */
+  function addWB(x, reason) {
+    var id = x.t + '.' + x.k + '#' + x.seed, e = REC.wb[id];
+    if (e && e.done) e.done = false;
+    if (!e) e = REC.wb[id] = { t: x.t, k: x.k, seed: x.seed, added: Date.now(), hist: [] };
+    e.reason = reason; e.stage = 0; e.due = Date.now() + INTERVAL[0] * DAY; e.hist.push({ t: Date.now(), r: reason });
+  }
+  function wbLists() {
+    var now = Date.now(), due = [], later = [], done = 0;
+    Object.keys(REC.wb).forEach(function (id) { var e = REC.wb[id]; e.id = id; if (e.done) { done++; return; } (e.due <= now ? due : later).push(e); });
+    var pri = { hc: 0, wrong: 1, guess: 2 };
+    due.sort(function (a, b) { return (pri[a.reason] - pri[b.reason]) || (a.due - b.due); });
+    later.sort(function (a, b) { return a.due - b.due; });
+    return { due: due, later: later, done: done };
+  }
+  var rv = document.getElementById('review');
+  function fmtDate(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+  function fmtDay(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function renderReview() {
+    if (!rv) return;
+    var L = wbLists(), sum = rv.querySelector('.rv-sum'), body = rv.querySelector('.rv-body');
+    var total = L.due.length + L.later.length;
+    if (!total && !L.done) { sum.textContent = '錯題本還是空的。檢測記錄後，錯的題與猜對的題會自動進來，隔天開始排複習。'; body.innerHTML = ''; return; }
+    sum.textContent = '錯題本 ' + total + ' 題：今天到期 ' + L.due.length + ' 題' + (L.later.length ? '，之後 ' + L.later.length + ' 題（最近 ' + fmtDay(L.later[0].due) + '）' : '') + (L.done ? '；已畢業 ' + L.done + ' 題' : '') + '。';
+    if (!body.hasAttribute('data-open')) { body.innerHTML = ''; return; }
+    var html = '';
+    if (!L.due.length) html += '<p class="note-sm">今天沒有到期的題。' + (L.later.length ? '下一批在 ' + fmtDay(L.later[0].due) + '。' : '') + '</p>';
+    else html += '<p class="note-sm">每題先重做<b>原題</b>（先評信心再看答案），對了再做一題<b>同型類似題</b>；兩題都對算過一關，連續兩關全對就畢業，錯一次就回到隔天重測。有把握卻錯的排最前面。</p>';
+    L.due.forEach(function (e) {
+      var it = item(e.t, e.k, e.seed);
+      html += '<div class="rvi" data-id="' + esc(e.id) + '"><div class="rvh"><b>' + esc(labelOf[e.t + '.' + e.k] || e.k) + '</b><span class="tag' + (e.reason === 'hc' ? ' hc' : '') + '">' + (e.reason === 'hc' ? '有把握卻錯' : e.reason === 'guess' ? '猜對' : '答錯') + '</span><span class="rvm">第 ' + (e.stage + 1) + ' 關・' + e.t + '・#' + e.seed + '</span></div>' +
+        '<ol><li class="qi orig"><span class="rl">原題</span><span class="q">' + it.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + it.a + '）</span>' + markHtml() + (it.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(it) + '</div>' : '') + '</li></ol></div>';
+    });
+    if (L.later.length) html += '<details class="rv-later"><summary>之後到期的 ' + L.later.length + ' 題</summary><ul>' + L.later.map(function (e) { return '<li>' + fmtDay(e.due) + '　' + esc(labelOf[e.t + '.' + e.k] || e.k) + '（第 ' + (e.stage + 1) + ' 關）</li>'; }).join('') + '</ul></details>';
+    if (L.due.length) html += '<div class="fix-foot"><button class="rvsubmit">📝 記錄複習結果</button><span>沒標記的題不會被記錄，下次再做。</span></div><div class="fix-result rvres"></div>';
+    body.innerHTML = html;
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var li = blk.querySelector('li.orig'); wireConfMark(li);
+      li.querySelector('.rvans').onclick = function () {
+        if (!li.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; }
+        li.classList.add('show'); this.textContent = '答案';
+      };
+      var osb = li.querySelector('.rvsteps'); if (osb) osb.onclick = function () { if (!li.classList.contains('show')) { li.querySelector('.rvans').click(); if (!li.classList.contains('show')) return; } li.querySelector('.gs').classList.toggle('on'); };
+      li.querySelectorAll('.mark button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (li.classList.contains('ok') && !blk.querySelector('li.vari')) {
+            var e = REC.wb[blk.getAttribute('data-id')], vs = (e.seed * 7 + 13 + Math.floor(Math.random() * 9000)) % 900000 + 1, vit = item(e.t, e.k, vs), tries = 0;
+            while (vit.q === item(e.t, e.k, e.seed).q && tries++ < 8) { vs = Math.floor(Math.random() * 900000) + 1; vit = item(e.t, e.k, vs); }
+            var v = document.createElement('li'); v.className = 'qi vari'; v.setAttribute('data-seed', vs);
+            v.innerHTML = '<span class="rl">類似題</span><span class="q">' + vit.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + vit.a + '）</span>' + markHtml() + (vit.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(vit) + '</div>' : '');
+            var vsb = v.querySelector('.rvsteps'); if (vsb) vsb.onclick = function () { v.querySelector('.gs').classList.toggle('on'); };
+            blk.querySelector('ol').appendChild(v); wireConfMark(v);
+            v.querySelector('.rvans').onclick = function () { if (!v.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; } v.classList.add('show'); this.textContent = '答案'; };
+            render(v);
+          }
+        });
+      });
+    });
+    var sb = body.querySelector('.rvsubmit'); if (sb) sb.onclick = submitReview;
+    render(body);
+  }
+  function submitReview() {
+    var body = rv.querySelector('.rv-body'), items = [], passed = 0, failed = 0, skipped = 0, now = Date.now();
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var e = REC.wb[blk.getAttribute('data-id')], o = blk.querySelector('li.orig'), v = blk.querySelector('li.vari');
+      var oOk = o.classList.contains('ok'), oNg = o.classList.contains('ng');
+      if (!oOk && !oNg) { skipped++; return; }
+      var rec = { t: e.t, k: e.k, seed: e.seed, wrong: oNg, conf: o.getAttribute('data-conf') || null, cause: oNg ? (o.getAttribute('data-cause') || null) : null, rv: 1 };
+      items.push(rec);
+      var pass = false;
+      if (oOk && v) {
+        var vOk = v.classList.contains('ok'), vNg = v.classList.contains('ng');
+        if (!vOk && !vNg) { skipped++; items.pop(); return; }
+        items.push({ t: e.t, k: e.k, seed: parseInt(v.getAttribute('data-seed'), 10), wrong: vNg, conf: v.getAttribute('data-conf') || null, cause: vNg ? (v.getAttribute('data-cause') || null) : null, rv: 1 });
+        pass = vOk;
+      } else if (oOk && !v) { skipped++; items.pop(); return; }
+      e.hist.push({ t: now, pass: pass });
+      if (pass) { e.stage = (e.stage || 0) + 1; if (e.stage >= 2) { e.done = true; e.due = null; } else e.due = now + INTERVAL[Math.min(e.stage, INTERVAL.length - 1)] * DAY; passed++; }
+      else { e.stage = 0; e.due = now + INTERVAL[0] * DAY; failed++; }
+    });
+    if (items.length) REC.attempts.push({ t: now, kind: 'review', tier: 'rv', set: '今日複習', items: items });
+    saveRec();
+    var res = body.querySelector('.rvres'); if (res) { res.innerHTML = '過關 ' + passed + ' 題、要重來 ' + failed + ' 題' + (skipped ? '、未完成 ' + skipped + ' 題（下次再做）' : '') + '。畢業的題不會再出現；重來的題明天再測。'; res.classList.add('on'); }
+    renderRec(); setTimeout(renderReview, 1200);
+  }
+  if (rv) {
+    rv.querySelector('.rv-toggle').onclick = function () { var b = rv.querySelector('.rv-body'); if (b.hasAttribute('data-open')) { b.removeAttribute('data-open'); this.textContent = '開始複習'; } else { b.setAttribute('data-open', '1'); this.textContent = '收起'; } renderReview(); };
+    renderReview();
+  }
+
+  /* ══════════ 我的練習紀錄（分析面板）══════════ */
+  var mr = document.getElementById('myrec');
+  function renderRec() {
+    if (!mr) return;
+    var st = stats(), keys = Object.keys(st.byKey), body = mr.querySelector('.mr-body'), sum = mr.querySelector('.mr-sum');
+    if (!REC.attempts.length) { sum.textContent = '還沒有紀錄。做完任何一組檢測、標記對錯並按「記錄」，這裡就會出現你的弱點分析。'; body.innerHTML = ''; return; }
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; keys.forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    sum.textContent = '共 ' + totN + ' 題，答對率 ' + Math.round(100 * (totN - totW) / totN) + '%；有把握卻錯 ' + totHc + ' 題、猜對 ' + totGs + ' 題。';
+    var weak = weakList(st.byKey), html = '';
+    html += '<div class="mr-advice"><b>優先補強：</b>' + (weak.length ? '' : '目前沒有明顯弱點，繼續換組檢測維持手感。') + '<span class="golist"></span></div>';
+    html += '<table class="mr-t"><tr><th>題型</th><th>級</th><th>做過</th><th>錯</th><th>有把握卻錯</th><th>猜對</th><th>主要錯因</th><th>最近 5 次</th><th></th></tr>';
+    keys.map(function (k) { return st.byKey[k]; }).sort(function (a, b) { return (b.hc - a.hc) || ((b.w + b.gs) / b.n - (a.w + a.gs) / a.n) || (b.n - a.n); }).forEach(function (o) {
+      var isWeak = weak.indexOf(o) >= 0, mc = mainCause(o);
+      html += '<tr class="' + (isWeak ? 'weak' : '') + '"><td>' + esc(labelOf[o.tier + '.' + o.key] || o.key) + '</td><td>' + o.tier + '</td><td>' + o.n + '</td><td>' + o.w + '</td><td>' + (o.hc ? '<b class="hcw">' + o.hc + '</b>' : '0') + '</td><td>' + o.gs + '</td><td>' + (mc ? CAUSE[mc] : '–') + '</td><td>' + o.last.slice(-5).map(function (w) { return w ? '✗' : '○'; }).join(' ') + '</td><td class="gocell" data-tier="' + o.tier + '" data-key="' + o.key + '" data-mode="' + (mc && READ_CAUSE[mc] ? 'read' : 'drill') + '"></td></tr>';
+    });
+    html += '</table>';
+    html += '<table class="mr-t"><tr><th>檢測組</th><th>次數</th><th>最近成績</th></tr>';
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s]; html += '<tr><td>' + esc(s) + '</td><td>' + o.rounds + '</td><td>' + o.hist.slice(-4).map(function (h) { return fmtDate(h.t) + '：' + (h.n - h.w) + '／' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + '</td></tr>'; });
+    html += '</table>';
+    body.innerHTML = html;
+    var gl = body.querySelector('.golist'); weak.slice(0, 6).forEach(function (o) { var mc = mainCause(o); gl.appendChild(goBtn(o.tier, o.key, mc && READ_CAUSE[mc] ? 'read' : 'drill')); });
+    body.querySelectorAll('.gocell').forEach(function (td) { var b = goBtn(td.getAttribute('data-tier'), td.getAttribute('data-key'), td.getAttribute('data-mode')); b.textContent = td.getAttribute('data-mode') === 'read' ? '回頭讀' : '回頭練'; td.appendChild(b); });
+  }
+  function summaryText() {
+    var st = stats(), L = wbLists(), lines = [];
+    lines.push('【' + TITLE + '】練習紀錄摘要　' + fmtDate(Date.now()));
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; Object.keys(st.byKey).forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    lines.push('總計：' + totN + ' 題，答對率 ' + (totN ? Math.round(100 * (totN - totW) / totN) : 0) + '%，有把握卻錯 ' + totHc + '，猜對 ' + totGs + '；錯題本 ' + (L.due.length + L.later.length) + ' 題（到期 ' + L.due.length + '、畢業 ' + L.done + '）');
+    lines.push('各檢測組：');
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s], m = masteryOf(s); lines.push('　' + s + '：' + o.rounds + ' 次，最近 ' + o.hist.slice(-3).map(function (h) { return fmtDate(h.t) + ' ' + (h.n - h.w) + '/' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + (m.mastered ? '　✅精熟' : '')); });
+    var weak = weakList(st.byKey);
+    lines.push('優先補強：' + (weak.length ? weak.slice(0, 8).map(function (o) { var mc = mainCause(o); return (labelOf[o.tier + '.' + o.key] || o.key) + '（' + o.w + '/' + o.n + (o.hc ? '，有把握卻錯 ' + o.hc : '') + (mc ? '，' + CAUSE[mc] : '') + '）'; }).join('、') : '無'));
+    return lines.join('\n');
+  }
+  function copyText(txt, btn) {
+    var done = function () { var t0 = btn.textContent; btn.textContent = '已複製'; setTimeout(function () { btn.textContent = t0; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () { window.prompt('請手動複製：', txt); });
+    else window.prompt('請手動複製：', txt);
+  }
+  if (mr) {
+    mr.querySelector('.mr-copy').onclick = function () { copyText(summaryText(), this); };
+    mr.querySelector('.mr-export').onclick = function () {
+      var blob = new Blob([JSON.stringify(REC)], { type: 'application/json' }), a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'practice-' + CH + '-' + dayKey(Date.now()) + '.json'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    };
+    mr.querySelector('.mr-import').onclick = function () { mr.querySelector('.mr-file').click(); };
+    mr.querySelector('.mr-file').onchange = function () {
+      var f = this.files[0]; if (!f) return; var rd = new FileReader();
+      rd.onload = function () { try { var r = JSON.parse(rd.result); if (!r || !r.attempts) throw 0; if (!confirm('匯入 ' + r.attempts.length + ' 筆檢測紀錄，並覆蓋這台裝置目前的紀錄？')) return; if (!r.wb) r.wb = {}; r.v = 2; REC = r; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } catch (e) { alert('這不是本練習本匯出的紀錄檔。'); } };
+      rd.readAsText(f); this.value = '';
+    };
+    mr.querySelector('.mr-toggle').onclick = function () { var b = mr.querySelector('.mr-body'); b.hidden = !b.hidden; this.textContent = b.hidden ? '展開' : '收起'; };
+    mr.querySelector('.mr-clear').onclick = function () { if (confirm('確定清除這台裝置上的所有練習紀錄與錯題本？')) { REC = { v: 2, attempts: [], wb: {} }; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } };
+    renderRec();
+  }
+
+  /* 固定題卡（L3–L5）的答案／詳解 */
+  document.querySelectorAll('.fx button[data-t]').forEach(function (b) {
+    b.onclick = function () { var fx = b.closest('.fx'), t = b.getAttribute('data-t'); fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on'); };
+  });
+  (function () {
+    var h = decodeURIComponent(location.hash || '');
+    if (h.indexOf('#c-') === 0) { var el = document.getElementById(h.slice(1)); if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }, 300); }
+  })();
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+<div id="printArea"></div>
+</body>
+</html>
