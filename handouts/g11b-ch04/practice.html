@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第四章 矩陣與三元一次聯立 ── 分級練習本｜高二下</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+
+/* ── 檢測／紀錄／類似題（2026-09-17 個人化）── */
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.fix-btns .fix-meta{font-size:.8rem;color:#aaa;margin-right:auto}
+.fixset ol li .mark{margin-left:8px;white-space:nowrap}
+.fixset ol li .mark button{padding:0 8px;font-size:.8rem;border-radius:6px}
+.fixset ol li.ok{background:#eef7f0;border-radius:6px}.fixset ol li.ng{background:#fdecec;border-radius:6px}
+.fixset ol li.ok .mark button[data-m="1"],.fixset ol li.ng .mark button[data-m="0"]{background:#333;color:#fff;border-color:#333}
+.fix-foot{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.88rem;color:var(--muted)}
+.fix-foot .submit{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .fix-foot .submit{border-color:var(--l2);color:var(--l2)}#L3 .fix-foot .submit{border-color:var(--l3);color:var(--l3)}
+.fix-result{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff8e6;border:1px solid #f3dea0;font-size:.93rem}
+.fix-result.on{display:block}
+button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radius:999px;border:1px solid var(--l1);color:var(--l1);background:#fff;cursor:pointer;font:inherit;font-size:.85rem}
+.gcard.flash,.fx.flash{box-shadow:0 0 0 3px #f0c040}
+.myrec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.myrec .mr-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.myrec .mr-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.myrec .mr-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.myrec .mr-advice{margin:10px 0 4px;font-size:.93rem}
+.myrec table.mr-t{border-collapse:collapse;width:100%;font-size:.88rem;margin-top:10px}
+.myrec .mr-t th,.myrec .mr-t td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:middle}
+.myrec .bar{display:inline-block;height:8px;background:#d9534f;border-radius:4px;vertical-align:middle}
+.myrec tr.weak td:first-child{color:#b3261e;font-weight:700}
+.myrec td button.go{padding:1px 8px;font-size:.8rem}
+.simbox{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px dashed var(--l3);background:#fffaf5}
+.simbox .st{font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between}
+.simbox .sq{margin:6px 0}
+.simbox .gh,.simbox .ga{display:none;margin-top:6px;padding:6px 10px;border-radius:6px;font-size:.93rem}
+.simbox .gh{background:#fff8e6;border:1px solid #f3dea0}.simbox .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.simbox .gh.on,.simbox .ga.on{display:block}
+.simbox .sbtn{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+.simbox button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.fx button.simbtn{border-color:var(--l3);color:var(--l3);font-weight:700}
+#printArea{display:none}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px;position:relative}
+.fx-scroll{overflow-x:auto;position:relative}
+@media print{body.print-one .wrap{display:none}body.print-one #printArea{display:block}#printArea h1{font-size:1.15rem;margin:0 0 4px}#printArea .pmeta{margin:0 0 10px;color:#444}#printArea ol li{margin:12px 0;break-inside:avoid}#printArea h2{font-size:1rem;break-before:page}.fixset .mark,.fix-foot,.fix-result,.simbox,.myrec{display:none!important}}
+
+/* ── 第二版：信心評分、錯因、錯題本、混合檢測、模擬卷（2026-09-18）── */
+.fixset ol li.qi{position:relative}
+.fixset .conf,.rvi .conf{display:block;margin:4px 0 2px;font-size:.82rem;color:var(--muted)}
+.conf .cl,.cause .cl{margin-right:4px}
+.conf button,.cause button{padding:0 9px;font-size:.8rem;border-radius:999px;margin-right:4px}
+.conf button.sel{background:#1f5fa8;color:#fff;border-color:#1f5fa8}
+.cause{display:none;margin-left:8px;font-size:.82rem;color:var(--muted)}
+.fixset ol li.ng .cause,.rvi li.ng .cause{display:inline-block}
+.cause button.sel{background:#b3261e;color:#fff;border-color:#b3261e}
+.fixset:not(.show) .mark,.rvi li:not(.show) .mark{display:none}
+.fix-note{display:none;margin:6px 0;padding:8px 12px;border-radius:8px;background:#fdecec;border:1px solid #f0b8b8;font-size:.9rem}
+.fix-note.on{display:block}
+.hcw{color:#b3261e;font-weight:700}
+button.go.read{border-color:#8a4450;color:#8a4450}
+.fix-btns .tstart{border-color:var(--l4);color:var(--l4);font-weight:700}
+.fix-btns .tclock{font-weight:700;color:var(--l4);min-width:3.5em}
+.review{background:#fff;border:1px solid #f0c9a0;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.review .rv-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.review .rv-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.review .rv-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid var(--l3);color:var(--l3);background:#fff;cursor:pointer;font-weight:700}
+.rvi{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:10px 0;background:#fffdf9}
+.rvi .rvh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+.rvi .rvh .tag{font-size:.75rem;padding:1px 8px;border-radius:999px;background:#eee;color:#555}
+.rvi .rvh .tag.hc{background:#fdecec;color:#b3261e;font-weight:700}
+.rvi .rvh .rvm{margin-left:auto;color:#aaa;font-size:.78rem}
+.rvi ol{margin:6px 0 0;padding-left:22px}
+.rvi li{margin:6px 0}
+.rvi li .rl{font-size:.75rem;color:var(--l3);font-weight:700;margin-right:6px}
+.rvi li .fa{display:none;color:var(--l2);font-size:.92rem;margin-left:6px}
+.rvi li.show .fa{display:inline}
+.rvi li.ok{background:#eef7f0;border-radius:6px}.rvi li.ng{background:#fdecec;border-radius:6px}
+.rvi li .rvans{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer;margin-left:6px}
+.rv-later{font-size:.88rem;color:var(--muted);margin-top:8px}
+.rv-later ul{margin:4px 0 0 18px;padding:0}
+.must.flash{box-shadow:0 0 0 3px #f0c040}
+@media print{.conf,.cause,.fix-note,.review,.tstart,.tclock{display:none!important}}
+
+/* ── 第三版：解題步驟、兩層提示、漸淡練習（2026-09-18）── */
+.gcard button.steps{border-color:#6a3ea1;color:#6a3ea1}
+.gcard .gs,.rvi .gs{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#f4effa;border:1px solid #d8c8ee}
+.gcard .gs.on,.rvi .gs.on{display:block}
+.gcard .gh .more{font:inherit;font-size:.8rem;padding:1px 10px;border-radius:999px;border:1px solid #c9a227;background:#fff;cursor:pointer;margin-left:6px}
+ol.steps{margin:4px 0 0;padding-left:22px}
+ol.steps li{margin:4px 0}
+ol.steps li.blank .bl{color:#8a4450;font-weight:700}
+ol.steps li.blank .hid,.fin.hid{display:none}
+.fdi.open ol.steps li.blank .bl{display:none}
+.fdi.open ol.steps li.blank .hid,.fdi.open .fin.hid{display:inline}
+.fin{margin-top:6px;font-weight:700;color:#2e7d4f}
+.fadeset{background:#fff;border:1px solid #d8c8ee;border-radius:12px;padding:10px 14px;margin:8px 0 12px}
+.fadeset .fd-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-bottom:4px}
+.fadeset details.fd{border-top:1px dashed #e0d6ee;padding:6px 0}
+.fadeset details.fd summary{cursor:pointer;font-weight:700;color:#6a3ea1;font-size:.93rem}
+.fadeset .fdi{margin:8px 0 10px 8px;padding:8px 10px;border-left:3px solid #d8c8ee;font-size:.93rem}
+.fadeset .fdt{font-weight:700;color:#6a3ea1;font-size:.85rem}
+.fadeset .fdt .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:6px}
+.fadeset .fq{margin:4px 0 6px}
+.fadeset button.reveal{font:inherit;font-size:.82rem;padding:2px 12px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-top:4px}
+.rvi button.rvsteps{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-left:6px}
+@media print{.fadeset,.gcard .gs{display:none!important}}
+
+/* ── 第四版：對照題、先備診斷、精熟狀態、匯出（2026-09-18）── */
+.gcard button.contrast{border-color:#b3641a;color:#b3641a}
+.gcard .gc{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#fff7f0;border:1px solid #f0c9a0}
+.gcard .gc.on{display:block}
+.gc-h{font-size:.88rem;color:#8a4a10;margin-bottom:6px}
+.gc-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:620px){.gc-pair{grid-template-columns:1fr}}
+.gc-item{background:#fff;border:1px solid #f0d9c0;border-radius:8px;padding:6px 8px}
+.gc-t{font-weight:700;color:#b3641a;font-size:.85rem}
+.gc-t .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:4px}
+.gc-a,.gc-why{display:none;margin-top:6px}
+.gc.open .gc-a{display:block;color:var(--l1);font-weight:700}
+.gc.open .gc-why{display:block;padding:6px 10px;border-radius:6px;background:#fff8e6;border-left:4px solid #e8b94a}
+.gc-btn{margin-top:6px;display:flex;gap:6px}
+.fixset .fix-status{flex-basis:100%;font-size:.82rem;color:var(--muted);margin-top:2px}
+.fixset .fix-status.half{color:#8a6a10}.fixset .fix-status.ok{color:#2e7d4f;font-weight:700}
+.pre-list{margin:6px 0 0 18px;padding:0}.pre-list li{margin:4px 0}
+.diag{background:#fff;border:2px dashed #6a3ea1;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.diag h3.sec{margin-top:4px;border-color:#6a3ea1}
+.diag .fixset{margin-top:6px}
+.myrec .mr-file{display:none}
+@media print{.gcard .gc,.diag{display:none!important}}
+/* 手機：長算式在自己的框裡橫捲（position:relative 是為了關住 .katex-mathml） */
+@media(max-width:640px){.gcard .gq,.gcard .ga,.gcard .gh,.gcard .gs,.gcard .gs li,.fixset li,.fadeset li,.simbox,.fxq,.fxa,.fxs,.ctr,.diag li{overflow-x:auto;overflow-y:hidden;max-width:100%;position:relative}}
+@media(max-width:820px){.gen-grid{grid-template-columns:minmax(0,1fr)}.gcard{min-width:0;position:relative}.gcard .ctrbox,.gcard .cbox{overflow-x:auto;max-width:100%;position:relative}}  /* 格線欄位別被內容的 min-content 撐寬 */
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第四章 矩陣與三元一次聯立 ── 分級練習本</h1>
+  <div class="sub">高二下・配合主講義 第 1 節 二元一次方程組與矩陣、第 2 節 三元一次聯立、第 3 節 三平面的完整判定、第 4 節 矩陣的運算、第 5 節 矩陣的應用（線性變換與轉移方陣）。五個程度、一本練習本：L1、L2 的題目可以無限生成，L3–L5 是各校段考、大考與教甄的固定題。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・科學班・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>開始前先做上方的<b>先備診斷 5 題</b>，有錯的先補。L1、L2 每張卡片按「新題」就換一題（數字重新抽）；「⚖ 對照題」一次給兩題只差一個關鍵特徵，先說出差在哪再揭曉。「提示」分兩層：先只告訴你這是哪一型、第一步做什麼，還是不會再按一次才給帶數字的提示；「答案」對答案；L1 還有「📘 步驟」給完整解法。每小節的<b>漸淡練習</b>每型三題：完整示範 → 自己補最後一步 → 只給第一步，適合還不會下手的同學。</li>
+    <li>每小節最後是<b>檢測 10 題</b>：先在紙上作答，每題按「有把握／不確定／猜的」，全部評完才看答案；對完每題標 ○／✗，錯的選錯因（不會下手、公式用錯、計算錯、看錯題），再按「記錄」。系統會分成<b>該回頭讀</b>與<b>該多算幾題</b>兩種建議。「換一組類似題」換數字重測，「列印本組」只印這一組。</li>
+    <li>每級最後有<b>混合檢測</b>（全章題型打亂，練「判斷這是哪一型」），L3 之後有<b>段考模擬卷</b>（L2＋L3 混合、計時 50 分鐘、交卷才看答案）。</li>
+    <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（11,000 題抽樣，全部從題幹把方程組與矩陣重新讀回來、用分數精確重算一次）；固定題全數人工＋電腦重算。<b>解聯立的主路是消去法（列運算）</b>，克拉瑪公式只在題目指定時用；<b>反方陣只算二階</b>（三階以上只判斷存不存在）；$A^n$ 用找規律、找週期或拆成 $kI+N$；穩定狀態用解 $MX=X$ 配 $x+y=1$——這些都是課綱內的做法，不需要任何大學的工具。</li>
+  </ol>
+</div>
+
+<div class="diag" id="diag">
+  <h3 class="sec">🧭 章首先備診斷 5 題（開始前先做）</h3>
+  <div class="note">這章把「解聯立」一路升級成矩陣：國中的二元一次加減消去法、兩直線的相交／平行／重合（高一上第二章）、平面向量的線性組合（高二上第三章）、三階行列式（本冊第一章）、特殊角的三角函數值（高一下第四章，旋轉與鏡射矩陣要用）每一節都會再用。5 題都對再往下；有錯的先按連結回去補。</div>
+  <div class="fixset" data-tier="L0" data-keys="*" data-seed="601" data-n="5"></div>
+</div>
+
+<div class="review" id="review">
+  <div class="rv-h"><b>📅 今日複習（錯題本）</b><span class="rv-sum"></span><button class="rv-toggle">開始複習</button></div>
+  <div class="rv-body"></div>
+</div>
+
+<div class="myrec" id="myrec">
+  <div class="mr-h"><b>📊 我的練習紀錄</b><span class="mr-sum"></span><button class="mr-toggle">展開</button><button class="mr-copy">📋 複製摘要給老師</button><button class="mr-export">⬇ 匯出</button><button class="mr-import">⬆ 匯入</button><input type="file" class="mr-file" accept=".json,application/json"><button class="mr-clear">清除紀錄</button></div>
+  <div class="mr-body" hidden></div>
+  <div class="note-sm" style="margin-top:6px">紀錄只存在這台裝置的瀏覽器裡（不會上傳）；換裝置或清除瀏覽資料就會消失，可用「匯出／匯入」搬家。</div>
+</div>
+
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>列運算做到一半就亂掉、矩陣相乘不知道哪一列配哪一行、以為 $AB=BA$、分不清「無解」與「無限多組解」的同學。</div>
+  <div><b>目標</b>28 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
+</div>
+
+<h3 class="sec">1 二元一次方程組與矩陣</h3>
+<div class="must">先要會：<b>把係數抽出來排成方陣</b>，方程組就寫成 $AX=B$（缺的未知數係數補 $0$）；<b>方陣乘向量＝用行向量做線性組合</b>：$\begin{bmatrix}a&b\\c&d\end{bmatrix}\begin{bmatrix}x\\y\end{bmatrix}=x\begin{bmatrix}a\\c\end{bmatrix}+y\begin{bmatrix}b\\d\end{bmatrix}$；<b>二階行列式 $ad-bc$ 是兩個行向量張出的平行四邊形面積（帶正負號）</b>；克拉瑪公式 $x=\dfrac{\Delta_x}{\Delta}$、$y=\dfrac{\Delta_y}{\Delta}$ 只在 $\Delta\ne0$ 時能用；<b>$\Delta\ne0$ ⟹ 恰一組解（兩線交於一點）；$\Delta=0$ 再分「無限多組解（重合）」與「無解（平行）」</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="matForm,matVec,det2,cramer2,twoLineCase,colCombo"></div>
+<div class="fadeset" data-tier="L1" data-keys="matForm,matVec,det2,cramer2,twoLineCase,colCombo" data-seed="9101"></div>
+<div class="fixset" data-tier="L1" data-keys="matForm,matVec,det2,cramer2,twoLineCase,colCombo" data-seed="8101"></div>
+
+<h3 class="sec">2 三元一次聯立：消去法、增廣矩陣與列運算</h3>
+<div class="must">先要會：<b>消去法一次消掉一個字母</b>——用第一式消掉第二、三式的 $x$，再用新的第二式消掉第三式的 $y$；<b>增廣矩陣只是把字母丟掉、只寫數字</b>，列運算三種：兩列對調、某列乘以非零常數、某列加上另一列的倍數，<b>整列一起動、最右邊的常數項不能漏</b>；化成階梯形後<b>由下往上代回</b>；階梯形出現「$0=k$（$k\ne0$）」就是無解、出現整列都是 $0$ 就少一條有效方程式（無限多組解，要用參數 $t$ 表示）；三階克拉瑪能算但計算量大，<b>解題主路是消去法</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="augRowOp,elim3,echelonRead,cramer3,countSol3"></div>
+<div class="fadeset" data-tier="L1" data-keys="augRowOp,elim3,echelonRead,cramer3,countSol3" data-seed="9201"></div>
+<div class="fixset" data-tier="L1" data-keys="augRowOp,elim3,echelonRead,cramer3,countSol3" data-seed="8201"></div>
+
+<h3 class="sec">3 三平面的代數判定</h3>
+<div class="must">先要會：<b>$\Delta\ne0$ ⟺ 三平面恰交於一點</b>；$\Delta=0$ 時行列式就幫不上忙了，<b>一律回到消去法，看「剩幾條有效方程式、常數項合不合」</b>：有解時剩 $2$ 條＝交於一直線、剩 $1$ 條＝三平面重合；無解時要<b>回頭看原來的係數</b>有沒有平行（成比例）的平面——<b>「三平面兩兩平行」與「兩平面重合、第三面平行」化成階梯形一模一樣</b>，只能靠原係數分辨。</div>
+<div class="gen-grid" data-tier="L1" data-keys="planeOne,planeCase,planeNoSol"></div>
+<div class="fadeset" data-tier="L1" data-keys="planeOne,planeCase,planeNoSol" data-seed="9301"></div>
+<div class="fixset" data-tier="L1" data-keys="planeOne,planeCase,planeNoSol" data-seed="8301" data-n="6"></div>
+
+<h3 class="sec">4 矩陣的運算與二階反方陣</h3>
+<div class="must">先要會：加減與係數積「同位置各自算」；<b>相乘是「列乘行」</b>：$AB$ 的第 $i$ 列第 $j$ 行＝$A$ 的第 $i$ 列與 $B$ 的第 $j$ 行對應相乘再相加，<b>$A$ 的行數要等於 $B$ 的列數</b>才能乘；<b>三個陷阱</b>：$AB\ne BA$、$AB=O$ 不代表 $A=O$ 或 $B=O$、$AB=AC$ 不能直接消掉 $A$；<b>$\begin{bmatrix}a&b\\c&d\end{bmatrix}^{-1}=\dfrac1{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}$</b>（$ad-bc=0$ 就沒有反方陣）；$AX=B$ ⟹ $X=A^{-1}B$（<b>乘在左邊就一直在左邊</b>）；$A^n$ 先算 $A^2$、$A^3$ 找規律或週期；$\det(AB)=\det A\det B$、$\det(kA)=k^2\det A$（二階）。</div>
+<div class="gen-grid" data-tier="L1" data-keys="matAddK,matMul,mulTrap,inv2,invExist,invSolve,matPow,detProp"></div>
+<div class="fadeset" data-tier="L1" data-keys="matAddK,matMul,mulTrap,inv2,invExist,invSolve,matPow,detProp" data-seed="9401"></div>
+<div class="fixset" data-tier="L1" data-keys="matAddK,matMul,mulTrap,inv2,invExist,invSolve,matPow,detProp" data-seed="8401"></div>
+
+<h3 class="sec">5 線性變換與轉移方陣</h3>
+<div class="must">先要會：<b>矩陣就是一個動作</b>：$\begin{bmatrix}x'\\y'\end{bmatrix}=A\begin{bmatrix}x\\y\end{bmatrix}$，<b>兩個行向量就是 $(1,0)$、$(0,1)$ 被送去的地方</b>；五種基本變換（伸縮、旋轉 $\begin{bmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{bmatrix}$、鏡射、推移、投影）；<b>「先做 $A$ 再做 $B$」的矩陣是 $BA$</b>（靠近向量的先做）；<b>$|\det A|$ 是面積的伸縮倍率</b>，$\det A\lt0$ 表示翻面；轉移方陣<b>每一行的和都是 $1$</b>，下一期＝$M$ 乘上這一期；<b>穩定狀態解 $MX=X$ 再配上 $x+y=1$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="linTrans,basicTrans,compose,detArea,transMat,steady"></div>
+<div class="fadeset" data-tier="L1" data-keys="linTrans,basicTrans,compose,detArea,transMat,steady" data-seed="9501"></div>
+<div class="fixset" data-tier="L1" data-keys="linTrans,basicTrans,compose,detArea,transMat,steady" data-seed="8501"></div>
+
+
+<h3 class="sec">L1 混合檢測 12 題（全章 28 型打亂，練「判斷這是哪一型」）</h3>
+<div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
+  <div><b>目標</b>16 個段考主力型，依 21 份段考卷的出現率排序（矩陣乘法 14 卷、行列式 13、反方陣 13、轉移方陣 12、線性變換 12、三元一次聯立 11、列運算 10、增廣矩陣 9、旋轉矩陣 9、矩陣的乘冪 7、鏡射矩陣 7、矩陣方程 6、無限多組解 5、線性變換的合成 5、穩定狀態 5）。</div>
+  <div><b>通過標準</b>固定 12 題限時 40 分鐘做完，對 10 題以上。</div>
+</div>
+
+<h3 class="sec">聯立方程組與矩陣運算：含參數的三元聯立、由階梯形反推、無限多組解的參數式、應用題、含參數的三平面、乘法綜合、行列式、矩陣方程</h3>
+<div class="must">段考 21 卷中<b>矩陣乘法 14 卷、行列式 13 卷、反方陣 13 卷、三元一次聯立 11 卷、列運算 10 卷、增廣矩陣 9 卷、矩陣方程 6 卷、無限多組解 5 卷</b>。招式：<b>含參數的聯立先用列運算化到最後一列只剩「$(\text{含 }k\text{ 的式子})\,z=(\text{含 }k\text{ 的式子})$」</b>，左邊不為 $0$ ⟹ 恰一組解；左邊為 $0$ 時右邊也為 $0$ ⟹ 無限多組解、右邊不為 $0$ ⟹ 無解，<b>每個臨界值都要代回去分開檢查</b>；無限多組解令自由的那個未知數為 $t$，其餘用 $t$ 表示；<b>$AX=B$ 與 $XA=B$ 的答案不同</b>（$A^{-1}$ 一個乘在左邊、一個乘在右邊）；$(AB)^{-1}=B^{-1}A^{-1}$，順序要反過來。</div>
+<div class="gen-grid" data-tier="L2" data-keys="solve3Param,rowOpBack,infSol,gaussWord,planeParam,mulCombo,detAdv,invAdv"></div>
+
+<h3 class="sec">乘冪、線性變換與轉移方陣：找週期與拆 $kI+N$、由兩個像求矩陣、旋轉與鏡射、合成的順序、轉移方陣與穩定狀態</h3>
+<div class="must">段考 21 卷中<b>轉移方陣 12 卷、線性變換 12 卷、旋轉矩陣 9 卷、矩陣的乘冪 7 卷、鏡射矩陣 7 卷、線性變換的合成 5 卷、穩定狀態 5 卷</b>。招式：<b>旋轉 $\theta$ 連做 $n$ 次就是旋轉 $n\theta$</b>，轉滿 $360^\circ$ 就回到 $I$（找週期）；$A=kI+N$ 且 $N^2=O$ 時 $A^n=k^nI+nk^{n-1}N$；<b>知道兩個點被送到哪裡就能決定矩陣</b>：把「原來的兩點」與「像」各排成方陣，$A=[\text{像}][\text{原}]^{-1}$；<b>$\det=1$ 是旋轉、$\det=-1$ 是鏡射</b>（兩個行向量都是單位長且互相垂直時）；三個變換依序做，矩陣要<b>由右往左</b>排；轉移方陣的題目先確認每行和為 $1$，再解 $MX=X$。</div>
+<div class="gen-grid" data-tier="L2" data-keys="matEqAdv,powPeriod,transAdv,linTransFind,rotAdv,reflAdv,composeAdv,steadyParam"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字 → 招式」，練到看見關鍵字自動出招；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的招式名稱；本級混合檢測 10 題連續兩輪全對。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過（矩陣一律用 sympy 直接乘開或解聯立，不抄公式）。</div>
+
+<div class="fx" id="L3-1" data-gen="noSolTwoParam"><div class="fxh"><span class="no">L3-1</span><span class="kw">二元一次寫成矩陣形式又說「無解」 → 先算係數行列式 $\Delta$，$\Delta=0$ 只是候選；把 $\Delta=0$ 的每一個值代回去看「兩式是平行還是重合」，平行的那個才是無解</span><span class="src">北一女中 112下 第三次 填 5</span></div>
+<div class="fxq">設 $\begin{bmatrix}1-a&5\\-4&1+3a\end{bmatrix}\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}1\\2\end{bmatrix}$ 無解，求 $a$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=-\dfrac73$</div>
+<div class="fxs"><div class="move">招式：無解 ⟹ 一定要 $\Delta=0$（$\Delta\ne0$ 時必有唯一解）。但 $\Delta=0$ 底下還藏著「無解」與「無限多解」兩種，必須逐一代回判斷。</div>
+$\Delta=\begin{vmatrix}1-a&5\\-4&1+3a\end{vmatrix}=(1-a)(1+3a)+20=-3a^2+2a+21=-(a-3)(3a+7)$。<br>
+$\Delta=0\iff a=3$ 或 $a=-\dfrac73$。<br>
+$a=3$：方程組為 $\begin{cases}-2x+5y=1\\-4x+10y=2\end{cases}$，第二式恰為第一式的 $2$ 倍（連常數項也是）⟹ 兩式重合 ⟹ <b>無限多組解</b>。<br>
+$a=-\dfrac73$：方程組為 $\begin{cases}\dfrac{10}3x+5y=1\\-4x-6y=2\end{cases}$。把第一式乘 $\dfrac65$ 得 $4x+6y=\dfrac65$，與第二式左邊互為相反數但右邊 $-\dfrac65\ne2$ ⟹ 兩式平行不重合 ⟹ <b>無解</b> ✓<br>
+故 $a=-\dfrac73$。<span class="note-sm">🔴 只寫「$\Delta=0$」就把兩根都交出去是本題最常見的扣分。$\Delta=0$ 只保證「不是唯一解」，至於是平行還是重合，一定要代回去看常數項。</span></div></div>
+
+<div class="fx" id="L3-2" data-gen="augZeroRow"><div class="fxh"><span class="no">L3-2</span><span class="kw">增廣矩陣化成 $\begin{bmatrix}1&0&*&*\\0&1&*&*\\0&0&0&0\end{bmatrix}$ → 最後一列全零＝只剩兩條有效方程式；$a,b,c,d$ 不必猜，老老實實做兩輪列運算，把第三行與常數行讀出來就好</span><span class="src">台中一中 113下 第三次 填 7</span></div>
+<div class="fxq">聯立方程式 $\begin{cases}x+2y+3z=7\\2x+5y+7z=16\\x+3y+4z=9\end{cases}$ 的增廣矩陣經列運算後化為 $\left[\begin{array}{ccc|c}1&0&a&b\\0&1&c&d\\0&0&0&0\end{array}\right]$，求 $a+b+c+d$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$7$</div>
+<div class="fxs"><div class="move">招式：目標形狀已經寫在題目上了——前兩行是單位矩陣。所以只要「往下消一次、往上消一次」就結束，不要去解方程組。</div>
+增廣矩陣 $\left[\begin{array}{ccc|c}1&2&3&7\\2&5&7&16\\1&3&4&9\end{array}\right]$。<br>
+$R_2\to R_2-2R_1$、$R_3\to R_3-R_1$：$\left[\begin{array}{ccc|c}1&2&3&7\\0&1&1&2\\0&1&1&2\end{array}\right]$。<br>
+$R_3\to R_3-R_2$：第三列整列全零 ⟹ 只剩兩條有效方程式。<br>
+$R_1\to R_1-2R_2$（往上消）：$\left[\begin{array}{ccc|c}1&0&1&3\\0&1&1&2\\0&0&0&0\end{array}\right]$。<br>
+對照得 $(a,b,c,d)=(1,3,1,2)$ ⟹ $a+b+c+d=7$。<br>
+驗算：由 $\begin{cases}x+z=3\\y+z=2\end{cases}$ 令 $z=t$ 得 $(x,y,z)=(3-t,\ 2-t,\ t)$。取 $t=1$ 得 $(2,1,1)$，代回三式：$2+2+3=7$ ✓、$4+5+7=16$ ✓、$2+3+4=9$ ✓<span class="note-sm">「最後一列全零」代表第三式並沒有提供新資訊——這裡剛好是「第三式 ＝ 第二式 － 第一式」。判斷有無限多解時，要同時確認常數項也全零，否則就會出現 $0=k$ 的矛盾而變成無解。</span></div></div>
+
+<div class="fx" id="L3-3" data-gen="augBlurred"><div class="fxh"><span class="no">L3-3</span><span class="kw">增廣矩陣上有汙損的數字、但最後化成了單位矩陣 → 最後那一行就是解！把解直接代回「原來的三列」，每一列都是一條含未知數的一次方程式</span><span class="src">師大附中 112下 第三次 填 7</span></div>
+<div class="fxq">用矩陣列運算解某三元一次聯立方程式：$\left[\begin{array}{ccc|c}1&3&a&3\\0&1&-4&b\\0&5&c&-1\end{array}\right]\to\cdots\to\left[\begin{array}{ccc|c}1&0&0&2\\0&1&0&1\\0&0&1&-1\end{array}\right]$，其中數字 $a$、$b$、$c$ 被汙損，求 $(a,b,c)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b,c)=(2,5,6)$</div>
+<div class="fxs"><div class="move">招式：列運算<b>不會改變解</b>。右邊的最簡階梯形直接告訴我們 $(x,y,z)=(2,1,-1)$，把它代進左邊的每一列，三個未知數就分別被三條方程式抓出來。</div>
+由右式讀出解：$x=2$、$y=1$、$z=-1$。<br>
+第一列 $x+3y+az=3$ ⟹ $2+3-a=3$ ⟹ $a=2$。<br>
+第二列 $y-4z=b$ ⟹ $1+4=b$ ⟹ $b=5$。<br>
+第三列 $5y+cz=-1$ ⟹ $5-c=-1$ ⟹ $c=6$。<br>
+驗算：把 $(a,b,c)=(2,5,6)$ 代回原矩陣得 $\left[\begin{array}{ccc|c}1&3&2&3\\0&1&-4&5\\0&5&6&-1\end{array}\right]$，$R_3\to R_3-5R_2$ 得 $(0,0,26\,|\,-26)$ ⟹ $z=-1$ ✓，往上代回得 $y=5+4(-1)=1$ ✓、$x=3-3(1)-2(-1)=2$ ✓<span class="note-sm">這一招的名字叫「列運算保解」。只要看到「經一系列列運算化為⋯⋯」，就別急著模擬那一串運算，先問自己：<b>兩邊的方程組同解嗎？</b>同解就把解拿來當橋樑。</span></div></div>
+
+<div class="fx" id="L3-4" data-gen="noSolThreeParam"><div class="fxh"><span class="no">L3-4</span><span class="kw">三元一次、含一個參數、說「無解」 → 與二元完全同套路：先由 $\Delta=0$ 找候選，再用列運算看會不會冒出「$0=$ 非零」這一列</span><span class="src">台中一中 112下 第三次 填 11</span></div>
+<div class="fxq">已知 $x$、$y$、$z$ 的方程組 $\begin{bmatrix}2&1&-3\\-2&5&1\\1&8&a\end{bmatrix}\begin{bmatrix}x\\y\\z\end{bmatrix}=\begin{bmatrix}1\\2\\3\end{bmatrix}$ 無解，求 $a$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=-4$</div>
+<div class="fxs"><div class="move">招式：$\Delta\ne0$ ⟹ 三平面交於一點 ⟹ 必有唯一解。所以無解一定發生在 $\Delta=0$，先把 $\Delta$ 算出來。</div>
+$\Delta=\begin{vmatrix}2&1&-3\\-2&5&1\\1&8&a\end{vmatrix}=2(5a-8)-1(-2a-1)+(-3)(-16-5)=10a-16+2a+1+63=12a+48$。<br>
+$\Delta=0\iff a=-4$（只有一個候選）。<br>
+$a=-4$ 時做列運算：$\left[\begin{array}{ccc|c}2&1&-3&1\\-2&5&1&2\\1&8&-4&3\end{array}\right]\xrightarrow{R_2\to R_2+R_1,\ R_3\to R_3-\frac12R_1}\left[\begin{array}{ccc|c}2&1&-3&1\\0&6&-2&3\\0&\frac{15}2&-\frac52&\frac52\end{array}\right]$。<br>
+$R_3\to R_3-\dfrac54R_2$：第三列變成 $\left(0,0,0\,\middle|\,\dfrac52-\dfrac{15}4\right)=\left(0,0,0\,\middle|\,-\dfrac54\right)$ ⟹ 出現 $0=-\dfrac54$ 的矛盾 ⟹ 無解 ✓<br>
+故 $a=-4$。<span class="note-sm">本題只有一個候選值，代回去確認是「無解」而不是「無限多解」是必要步驟——如果常數項那一格剛好也是 $0$，答案就會變成「無此 $a$」。</span></div></div>
+
+<div class="fx" id="L3-5" data-gen="workRate3"><div class="fxh"><span class="no">L3-5</span><span class="kw">工作效率的應用題 → 不要設「時間」當未知數，設<b>每小時完成的比例</b>；「甲乙丙一起 $10$ 小時完成」就翻譯成 $10(x+y+z)=1$，三句話變三條一次方程式</span><span class="src">華江高中 101下 第二次 填 A</span></div>
+<div class="fxq">某公司有甲、乙、丙三條生產線，現欲生產三萬個產品。如果甲、乙、丙三條生產線同時開動，則需 $10$ 小時；如果只開動乙、丙兩條生產線，則需 $20$ 小時；如果只開動甲生產線 $10$ 小時，則需再開動丙生產線 $30$ 小時，才能完成所有產品。問如果只開動乙生產線，則需幾小時才能生產三萬個產品？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$30$ 小時</div>
+<div class="fxs"><div class="move">招式：把「三萬個產品」看成工作量 $1$，設甲、乙、丙每小時各完成 $x$、$y$、$z$（單位：整批的幾分之幾）。這樣「時間 $\times$ 效率」就是完成的比例，三句話各給一條一次方程式。</div>
+$\begin{cases}10(x+y+z)=1\\20(y+z)=1\\10x+30z=1\end{cases}\Longrightarrow\begin{cases}x+y+z=\dfrac1{10}\\y+z=\dfrac1{20}\\10x+30z=1\end{cases}$<br>
+第一式減第二式：$x=\dfrac1{10}-\dfrac1{20}=\dfrac1{20}$。<br>
+代入第三式：$10\cdot\dfrac1{20}+30z=1$ ⟹ $\dfrac12+30z=1$ ⟹ $z=\dfrac1{60}$。<br>
+再由 $y+z=\dfrac1{20}$ 得 $y=\dfrac1{20}-\dfrac1{60}=\dfrac{3-1}{60}=\dfrac1{30}$。<br>
+乙單獨完成需 $\dfrac1y=30$ 小時。<br>
+驗算：$x+y+z=\dfrac1{20}+\dfrac1{30}+\dfrac1{60}=\dfrac{3+2+1}{60}=\dfrac1{10}$ ✓、$y+z=\dfrac{2+1}{60}=\dfrac1{20}$ ✓、$10\cdot\dfrac1{20}+30\cdot\dfrac1{60}=\dfrac12+\dfrac12=1$ ✓<span class="note-sm">🔴 設「時間」當未知數會得到一堆倒數，式子立刻變成非線性。<b>設效率（單位時間的工作量）</b>是工作問題的萬用開關，水管注水、打字、影印全都適用。</span></div></div>
+
+<div class="fx" id="L3-6" data-gen="matEqShift"><div class="fxh"><span class="no">L3-6</span><span class="kw">矩陣方程式裡 $X$ 同時出現在兩邊（$AX=3X+B$）→ 先把 $X$ 移到同一邊提出來：$(A-3I)X=B$；注意提出來的是 $A-3I$ 不是 $A-3$，矩陣不能減純數字</span><span class="src">中山女高 113下 第三次 填 9</span></div>
+<div class="fxq">設 $A=\begin{bmatrix}3&1\\1&5\end{bmatrix}$、$B=\begin{bmatrix}4&-2\\1&4\end{bmatrix}$ 滿足 $AX=3X+B$。若 $X=\begin{bmatrix}a&b\\c&d\end{bmatrix}$，求 $a+b+c+d$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3$</div>
+<div class="fxs"><div class="move">招式：$AX-3X=B$。左邊要提出 $X$，必須把 $3X$ 寫成 $3IX$（$I$ 是二階單位方陣），才提得出 $(A-3I)X=B$，再左乘 $(A-3I)^{-1}$。</div>
+$A-3I=\begin{bmatrix}3-3&1\\1&5-3\end{bmatrix}=\begin{bmatrix}0&1\\1&2\end{bmatrix}$，$\det(A-3I)=0\cdot2-1\cdot1=-1\ne0$ ⟹ 可逆。<br>
+$(A-3I)^{-1}=\dfrac1{-1}\begin{bmatrix}2&-1\\-1&0\end{bmatrix}=\begin{bmatrix}-2&1\\1&0\end{bmatrix}$。<br>
+$X=(A-3I)^{-1}B=\begin{bmatrix}-2&1\\1&0\end{bmatrix}\begin{bmatrix}4&-2\\1&4\end{bmatrix}=\begin{bmatrix}-8+1&4+4\\4&-2\end{bmatrix}=\begin{bmatrix}-7&8\\4&-2\end{bmatrix}$。<br>
+$a+b+c+d=-7+8+4-2=3$。<br>
+驗算：$AX=\begin{bmatrix}3&1\\1&5\end{bmatrix}\begin{bmatrix}-7&8\\4&-2\end{bmatrix}=\begin{bmatrix}-17&22\\13&-2\end{bmatrix}$，而 $3X+B=\begin{bmatrix}-21&24\\12&-6\end{bmatrix}+\begin{bmatrix}4&-2\\1&4\end{bmatrix}=\begin{bmatrix}-17&22\\13&-2\end{bmatrix}$ ✓<span class="note-sm">🔴 $A-3$ 是<b>沒有意義</b>的寫法：矩陣只能和同階矩陣相加減。看到「矩陣 $\pm$ 純數字」就自動補上 $I$。另外 $(A-3I)^{-1}$ 要左乘（$X$ 在右邊），寫成 $B(A-3I)^{-1}$ 就錯了。</span></div></div>
+
+<div class="fx" id="L3-7" data-gen="selfInverse"><div class="fxh"><span class="no">L3-7</span><span class="kw">題目說「$A$ 等於自己的反方陣」 → 兩邊右乘 $A$ 得 $A^2=I$，變成四個一般的二次方程式；也可以用 $A^{-1}=\frac1{\det A}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}$ 逐格比對</span><span class="src">新店高中 101下 期末 填 4</span></div>
+<div class="fxq">若 $a$、$b\in\mathbb{R}$，$A=\begin{bmatrix}2&a\\3&b\end{bmatrix}$ 且 $A=A^{-1}$，求數對 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(-1,-2)$</div>
+<div class="fxs"><div class="move">招式：$A=A^{-1}$ 兩邊同時右乘 $A$ ⟹ $A^2=I$。直接把 $A^2$ 乘開，逐格與 $I$ 比較。</div>
+$A^2=\begin{bmatrix}2&a\\3&b\end{bmatrix}\begin{bmatrix}2&a\\3&b\end{bmatrix}=\begin{bmatrix}4+3a&2a+ab\\6+3b&3a+b^2\end{bmatrix}=\begin{bmatrix}1&0\\0&1\end{bmatrix}$。<br>
+由 $(1,2)$ 格：$a(2+b)=0$ ⟹ $a=0$ 或 $b=-2$。<br>
+若 $a=0$：$(1,1)$ 格得 $4=1$，矛盾 ⟹ 捨去。<br>
+故 $b=-2$；代入 $(2,1)$ 格 $6+3b=0$ ✓ 自動成立；再由 $(1,1)$ 格 $4+3a=1$ ⟹ $a=-1$。<br>
+最後檢查 $(2,2)$ 格：$3(-1)+(-2)^2=-3+4=1$ ✓<br>
+驗算：$A=\begin{bmatrix}2&-1\\3&-2\end{bmatrix}$，$\det A=-4+3=-1$，$A^{-1}=\dfrac1{-1}\begin{bmatrix}-2&1\\-3&2\end{bmatrix}=\begin{bmatrix}2&-1\\3&-2\end{bmatrix}=A$ ✓<span class="note-sm">另一條更快的路：$A=A^{-1}$ ⟹ $\det A\cdot A=\det A\cdot A^{-1}=\begin{bmatrix}d&-b\\-c&a\end{bmatrix}$。比對 $(1,1)$ 與 $(2,2)$ 格得 $\det A\cdot 2=b$、$\det A\cdot b=2$，相乘得 $(\det A)^2=1$，再分 $\det A=\pm1$ 討論即可。</span></div></div>
+
+<div class="fx" id="L3-8" data-gen="matLawPick"><div class="fxh"><span class="no">L3-8</span><span class="kw">多選題問「矩陣的哪些運算律恆成立」 → 分配律與結合律<b>都對</b>，會出事的只有「交換」與「消去」這兩件；$A^2-B^2=(A+B)(A-B)$ 要 $AB=BA$ 才成立，而 $I$ 和誰都可交換</span><span class="src">新店高中 101下 第二次 多 4</span></div>
+<div class="fxq">設 $A$、$B$、$C$ 均為 $n$ 階方陣（$O$ 為 $n$ 階零方陣，$I$ 為 $n$ 階單位方陣），則下列各性質何者<b>必</b>成立？<br>
+(1) $A(B+C)=AB+AC$　(2) $A^2-B^2=(A+B)(A-B)$　(3) 若 $A\ne O$ 且 $AB=AC$，則 $B=C$　(4) 若 $A\ne O$ 且 $B\ne O$，則 $AB\ne O$　(5) $A^3-I^3=(A-I)(A^2+A+I)$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(5)</div>
+<div class="fxs"><div class="move">招式：矩陣乘法有結合律與分配律，<b>沒有</b>交換律與消去律。凡是「把數字的因式分解直接搬過來」的選項，先檢查展開過程有沒有偷偷交換兩個矩陣的位置。</div>
+(1) 分配律對矩陣恆成立（逐格展開即得）✓<br>
+(2) $(A+B)(A-B)=A^2-AB+BA-B^2$，要等於 $A^2-B^2$ 必須 $BA=AB$。反例：$A=\begin{bmatrix}1&0\\0&0\end{bmatrix}$、$B=\begin{bmatrix}0&1\\0&0\end{bmatrix}$ ⟹ $AB=\begin{bmatrix}0&1\\0&0\end{bmatrix}$、$BA=\begin{bmatrix}0&0\\0&0\end{bmatrix}$，兩者不等 ✗<br>
+(3) 消去律要 $\det A\ne0$ 才行，「$A\ne O$」太弱。反例：$A=\begin{bmatrix}1&0\\0&0\end{bmatrix}$、$B=\begin{bmatrix}0&0\\0&1\end{bmatrix}$、$C=O$ ⟹ $AB=AC=O$ 但 $B\ne C$ ✗<br>
+(4) 同一組反例：$A=\begin{bmatrix}1&0\\0&0\end{bmatrix}\ne O$、$B=\begin{bmatrix}0&0\\0&1\end{bmatrix}\ne O$，$AB=O$ ✗<br>
+(5) 展開 $(A-I)(A^2+A+I)=A^3+A^2+A-A^2-A-I=A^3-I$。這一次沒有用到交換律——因為 $I$ 與任何同階方陣都可交換 ✓<br>
+故選 (1)(5)。<span class="note-sm">(2) 與 (5) 擺在一起就是本題的設計：<b>只要式子裡的另一個矩陣是 $I$（或 $A$ 自己的多項式），乘法就「自動可交換」</b>，數字世界的公式才搬得過來。</span></div></div>
+
+<div class="fx" id="L3-9" data-gen="powPeriodMin"><div class="fxh"><span class="no">L3-9</span><span class="kw">問「使 $A^n=A$ 的最小 $n$」 → 先算 $A^2$、$A^3$ 找週期。二階方陣算兩三次就會露餡；若 $A^3=I$，則 $A^n$ 以 $3$ 為週期</span><span class="src">中崙高中 100下 第二次 填 8</span></div>
+<div class="fxq">設 $A=\begin{bmatrix}1&3\\-1&-2\end{bmatrix}$，若 $n$ 為大於 $1$ 的正整數且 $A^n=A$，求 $n$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$</div>
+<div class="fxs"><div class="move">招式：乘冪題一律「先乘兩次看看」。只要出現 $I$ 或 $-I$，週期就定下來了，之後全部用餘數處理。</div>
+$A^2=\begin{bmatrix}1&3\\-1&-2\end{bmatrix}\begin{bmatrix}1&3\\-1&-2\end{bmatrix}=\begin{bmatrix}1-3&3-6\\-1+2&-3+4\end{bmatrix}=\begin{bmatrix}-2&-3\\1&1\end{bmatrix}$。<br>
+$A^3=A^2A=\begin{bmatrix}-2&-3\\1&1\end{bmatrix}\begin{bmatrix}1&3\\-1&-2\end{bmatrix}=\begin{bmatrix}-2+3&-6+6\\1-1&3-2\end{bmatrix}=\begin{bmatrix}1&0\\0&1\end{bmatrix}=I$。<br>
+$A^3=I$ ⟹ $A^{n}$ 的值只看 $n$ 除以 $3$ 的餘數 ⟹ $A^n=A\iff n\equiv1\pmod 3$。<br>
+大於 $1$ 的最小值是 $n=4$。<br>
+驗算：$A^4=A^3A=IA=A$ ✓<span class="note-sm">看不出規律時還有一條保險路：任何二階方陣 $A=\begin{bmatrix}a&b\\c&d\end{bmatrix}$ 都滿足 $A^2=(a+d)A-(ad-bc)I$（把兩邊乘開逐格比對即可驗證）。本題 $a+d=1+(-2)=-1$、$ad-bc=-2+3=1$ ⟹ $A^2=-A-I$，再乘一次 $A$ 得 $A^3=-A^2-A=(A+I)-A=I$，和上面一模一樣。</span></div></div>
+
+<div class="fx" id="L3-10" data-gen="shearSum"><div class="fxh"><span class="no">L3-10</span><span class="kw">看到 $\begin{bmatrix}1&k\\0&1\end{bmatrix}$ 這種「對角線全 $1$、只有一格有東西」的方陣 → $n$ 次方就是把那一格乘 $n$ 倍；要求連加就變成 $1+2+\cdots+n$ 的等差級數</span><span class="src">新店高中 101下 第二次 填 6</span></div>
+<div class="fxq">設 $A=\begin{bmatrix}1&-1\\0&1\end{bmatrix}$，若 $A+A^2+A^3+\cdots+A^{20}=\begin{bmatrix}a&b\\c&d\end{bmatrix}$，求實數 $b$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$b=-210$</div>
+<div class="fxs"><div class="move">招式：先猜 $A^n=\begin{bmatrix}1&-n\\0&1\end{bmatrix}$，再用數學歸納法一行驗完；然後矩陣的連加就是「逐格連加」。</div>
+$A^2=\begin{bmatrix}1&-1\\0&1\end{bmatrix}\begin{bmatrix}1&-1\\0&1\end{bmatrix}=\begin{bmatrix}1&-2\\0&1\end{bmatrix}$、$A^3=\begin{bmatrix}1&-3\\0&1\end{bmatrix}$ ⟹ 猜 $A^n=\begin{bmatrix}1&-n\\0&1\end{bmatrix}$。<br>
+歸納：若 $A^n=\begin{bmatrix}1&-n\\0&1\end{bmatrix}$，則 $A^{n+1}=A^nA=\begin{bmatrix}1&-n\\0&1\end{bmatrix}\begin{bmatrix}1&-1\\0&1\end{bmatrix}=\begin{bmatrix}1&-1-n\\0&1\end{bmatrix}$ ✓<br>
+逐格相加：$(1,2)$ 格為 $-(1+2+3+\cdots+20)=-\dfrac{20\times21}2=-210$。<br>
+（順帶得到 $a=d=20$、$c=0$，整個和是 $\begin{bmatrix}20&-210\\0&20\end{bmatrix}$。）<span class="note-sm">這一型也可以拆成 $A=I+N$，其中 $N=\begin{bmatrix}0&-1\\0&0\end{bmatrix}$ 滿足 $N^2=O$。於是 $A^n=(I+N)^n=I+nN$（$N^2$ 之後全是零），一行就得到通式——$I$ 與 $N$ 可交換，所以二項式定理在這裡可以放心用。</span></div></div>
+
+<div class="fx" id="L3-11" data-gen="rotCompose"><div class="fxh"><span class="no">L3-11</span><span class="kw">兩個旋轉矩陣相乘 → 角度直接相加，$R(\alpha)R(\beta)=R(\alpha+\beta)$；再問 $A^n$ 等於某個旋轉，就變成同餘方程式 $n\theta\equiv\varphi\pmod{360^\circ}$</span><span class="src">師大附中 112下 第三次 填 10</span></div>
+<div class="fxq">設 $A=\begin{bmatrix}\cos18^\circ&-\sin18^\circ\\\sin18^\circ&\cos18^\circ\end{bmatrix}\begin{bmatrix}\cos32^\circ&-\sin32^\circ\\\sin32^\circ&\cos32^\circ\end{bmatrix}$，求使 $A^n=\begin{bmatrix}0&-1\\1&0\end{bmatrix}$ 的最小自然數 $n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$n=9$</div>
+<div class="fxs"><div class="move">招式：記號 $R(\theta)=\begin{bmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{bmatrix}$。乘開後用和角公式可得 $R(\alpha)R(\beta)=R(\alpha+\beta)$——<b>旋轉的合成就是角度相加</b>，所以 $A^n=R(n\theta)$。</div>
+$A=R(18^\circ)R(32^\circ)=R(50^\circ)$ ⟹ $A^n=R(50n^\circ)$。<br>
+$\begin{bmatrix}0&-1\\1&0\end{bmatrix}=R(90^\circ)$，故條件為 $50n\equiv90\pmod{360}$。<br>
+兩邊同除以 $10$：$5n\equiv9\pmod{36}$。因 $5\times29=145=4\times36+1$，$5$ 對模 $36$ 的反元素是 $29$ ⟹ $n\equiv29\times9=261\equiv261-252=9\pmod{36}$。<br>
+最小自然數 $n=9$。<br>
+驗算：$50\times9=450=360+90$ ⟹ $A^9=R(450^\circ)=R(90^\circ)$ ✓<span class="note-sm">不熟同餘也沒關係：直接把 $50n$ 依序列出 $50,100,\ldots$，找第一個減掉 $360$ 的倍數後等於 $90$ 的就好，$n=9$ 時 $450-360=90$。要注意的是<b>旋轉角要對 $360^\circ$ 取餘數</b>，不是對 $180^\circ$。</span></div></div>
+
+<div class="fx" id="L3-12" data-gen="reflAxis"><div class="fxh"><span class="no">L3-12</span><span class="kw">給一個矩陣問「$P$ 與 $P'$ 對稱於哪條直線」 → 那是鏡射矩陣，對稱軸上的點<b>動都不動</b>；解 $A\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}x\\y\end{bmatrix}$ 就得到軸</span><span class="src">中山女高 112下 第三次 單 4</span></div>
+<div class="fxq">若二階方陣的平面變換 $\begin{bmatrix}\frac35&\frac45\\[2pt]\frac45&-\frac35\end{bmatrix}\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}x'\\y'\end{bmatrix}$，則點 $P(x,y)$ 與 $P'(x',y')$ 必對稱於下列哪一條直線？<br>
+(1) $2x-y=0$　(2) $x-2y=0$　(3) $2x+y=0$　(4) $3x-4y=0$　(5) $4x-3y=0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2) $x-2y=0$</div>
+<div class="fxs"><div class="move">招式：先確認它真的是鏡射（$\det=-1$ 且 $A^2=I$），再找<b>不動點</b>：鏡射軸上的點鏡射之後還在原地，所以解 $(A-I)\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}0\\0\end{bmatrix}$。</div>
+$\det A=\dfrac35\cdot\left(-\dfrac35\right)-\dfrac45\cdot\dfrac45=-\dfrac9{25}-\dfrac{16}{25}=-1$；$A^2=\begin{bmatrix}\frac9{25}+\frac{16}{25}&\frac{12}{25}-\frac{12}{25}\\\frac{12}{25}-\frac{12}{25}&\frac{16}{25}+\frac9{25}\end{bmatrix}=I$ ⟹ 確實是鏡射。<br>
+不動點：$\dfrac35x+\dfrac45y=x$ ⟹ $\dfrac45y=\dfrac25x$ ⟹ $y=\dfrac12x$，即 $x-2y=0$。<br>
+（第二列 $\dfrac45x-\dfrac35y=y$ ⟹ $\dfrac45x=\dfrac85y$ ⟹ 同一條直線，兩列必然一致。）<br>
+故選 (2)。<span class="note-sm">也可以背公式：以 $y=(\tan\theta)x$ 為軸的鏡射矩陣是 $\begin{bmatrix}\cos2\theta&\sin2\theta\\\sin2\theta&-\cos2\theta\end{bmatrix}$。本題 $\cos2\theta=\dfrac35$、$\sin2\theta=\dfrac45$ ⟹ $\tan\theta=\dfrac{\sin2\theta}{1+\cos2\theta}=\dfrac{4/5}{8/5}=\dfrac12$，同樣得到 $y=\dfrac12x$。<b>解不動點不必背公式，考場上更保險。</b></span></div></div>
+
+<div class="fx" id="L3-13" data-gen="detAreaRatio"><div class="fxh"><span class="no">L3-13</span><span class="kw">只給兩組「原像 → 像」卻問面積倍率 → 倍率只看 $|\det M|$，而 $M$ 由兩組對應點唯一決定；把兩組合成一個矩陣等式 $M\begin{bmatrix}3&4\\7&9\end{bmatrix}=\begin{bmatrix}1&3\\2&1\end{bmatrix}$ 更快</span><span class="src">中山女高 112下 第三次 單 5</span></div>
+<div class="fxq">設 $M$ 為二階方陣，滿足 $M\begin{bmatrix}3\\7\end{bmatrix}=\begin{bmatrix}1\\2\end{bmatrix}$、$M\begin{bmatrix}4\\9\end{bmatrix}=\begin{bmatrix}3\\1\end{bmatrix}$。已知 $A(1,1)$、$B(3,-2)$、$C(2,5)$，若 $M$ 將 $\triangle ABC$ 變換為 $\triangle A'B'C'$，且面積為原來的 $k$ 倍，求 $k$。<br>
+(1) $2$　(2) $3$　(3) $4$　(4) $5$　(5) $6$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4) $k=5$</div>
+<div class="fxs"><div class="move">招式：面積伸縮率 $=|\det M|$，與被變換的圖形<b>完全無關</b>——所以 $A$、$B$、$C$ 三個點是干擾項，根本不必算。把兩個條件併成一個矩陣等式，用行列式的乘法性質一步解決。</div>
+把兩個條件併起來：$M\begin{bmatrix}3&4\\7&9\end{bmatrix}=\begin{bmatrix}1&3\\2&1\end{bmatrix}$（左邊矩陣的兩行就是兩個原像，右邊就是兩個像）。<br>
+兩邊取行列式：$\det M\cdot\begin{vmatrix}3&4\\7&9\end{vmatrix}=\begin{vmatrix}1&3\\2&1\end{vmatrix}$ ⟹ $\det M\cdot(27-28)=1-6$ ⟹ $-\det M=-5$ ⟹ $\det M=5$。<br>
+故 $k=|\det M|=5$，選 (4)。<br>
+驗算（真的把 $M$ 解出來）：$M=\begin{bmatrix}1&3\\2&1\end{bmatrix}\begin{bmatrix}3&4\\7&9\end{bmatrix}^{-1}=\begin{bmatrix}1&3\\2&1\end{bmatrix}\cdot\dfrac1{-1}\begin{bmatrix}9&-4\\-7&3\end{bmatrix}=\begin{bmatrix}12&-5\\-11&5\end{bmatrix}$，$\det M=60-55=5$ ✓<span class="note-sm">$\triangle ABC$ 的面積其實是 $\dfrac12\left|\begin{vmatrix}2&-3\\1&4\end{vmatrix}\right|=\dfrac{11}2$，變換後是 $\dfrac{55}2$——但題目只問倍率，算它純屬浪費時間。<b>看到「面積變成幾倍」就直接衝 $\det$。</b></span></div></div>
+
+<div class="fx" id="L3-14" data-gen="transTwoStep"><div class="fxh"><span class="no">L3-14</span><span class="kw">市占率、每期固定比例互相流動、問「兩期後」 → 寫出轉移方陣 $M$（每一行的和是 $1$），答案就是 $M^2X_0$；兩期用手乘兩次最快，不必求通式</span><span class="src">中山女高 113下 第三次 填 12</span></div>
+<div class="fxq">甲、乙兩家飲料店同日開幕，初始市場占有率各為 $\dfrac12$。統計顯示：每個月甲店的顧客有 $\dfrac12$ 改去乙店、其餘 $\dfrac12$ 留在甲店；乙店的顧客有 $\dfrac13$ 改去甲店、其餘 $\dfrac23$ 留在乙店。求兩個月後甲店的市場占有率。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{29}{72}$</div>
+<div class="fxs"><div class="move">招式：狀態順序固定為（甲，乙）。轉移方陣的第一行＝「這個月在甲的人下個月分別去哪」，第二行＝「這個月在乙的人下個月分別去哪」，所以<b>每一行的和必為 $1$</b>。</div>
+$M=\begin{bmatrix}\frac12&\frac13\\[2pt]\frac12&\frac23\end{bmatrix}$（第一行 $\frac12+\frac12=1$ ✓、第二行 $\frac13+\frac23=1$ ✓），$X_0=\begin{bmatrix}\frac12\\[2pt]\frac12\end{bmatrix}$。<br>
+一個月後：$X_1=MX_0=\begin{bmatrix}\frac12\cdot\frac12+\frac13\cdot\frac12\\[2pt]\frac12\cdot\frac12+\frac23\cdot\frac12\end{bmatrix}=\begin{bmatrix}\frac5{12}\\[2pt]\frac7{12}\end{bmatrix}$（兩者相加 $=1$ ✓）。<br>
+兩個月後：$X_2=MX_1=\begin{bmatrix}\frac12\cdot\frac5{12}+\frac13\cdot\frac7{12}\\[2pt]\frac12\cdot\frac5{12}+\frac23\cdot\frac7{12}\end{bmatrix}=\begin{bmatrix}\frac5{24}+\frac7{36}\\[2pt]\frac5{24}+\frac7{18}\end{bmatrix}=\begin{bmatrix}\frac{29}{72}\\[2pt]\frac{43}{72}\end{bmatrix}$。<br>
+甲店占有率為 $\dfrac{29}{72}$（$\dfrac{29}{72}+\dfrac{43}{72}=1$ ✓）。<span class="note-sm">每算完一期就檢查「兩個分量相加是不是 $1$」，這是轉移方陣題最便宜的自我檢查。另外要小心<b>方向</b>：「甲的一半跑去乙」放在第一行第二列（從甲到乙），不是第一列第二行。</span></div></div>
+
+<div class="fx" id="L3-15" data-gen="steadyPct"><div class="fxh"><span class="no">L3-15</span><span class="kw">「長期下去會形成穩定狀態」 → 解 $MX=X$ 再配上「兩個分量相加為 $1$」；$MX=X$ 的兩條方程式一定互相等價，所以真正有用的是那個「和為 $1$」</span><span class="src">華江高中 101下 第二次 填 G</span></div>
+<div class="fxq">某市政府長期追蹤全市一百萬市民在市區與郊區之間的遷移狀況（全市市民只有住市區與住郊區兩種）。統計發現：每年住在市區的人有 $10\%$ 會遷往郊區、其餘仍住市區；而住在郊區的人有 $30\%$ 會遷往市區、其餘仍住郊區；總人口數不變。長期依此慣性會形成穩定狀態，求穩定狀態時市區人口占全市市民的百分比。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$75\%$</div>
+<div class="fxs"><div class="move">招式：穩定狀態的意思是「再轉移一次也不變」，也就是 $MX=X$。這是一個齊次方程組，$\det(M-I)=0$ 保證它有非零解，但解會有一整條直線那麼多——用「比例和為 $1$」把它釘死。</div>
+狀態順序（市區，郊區）：$M=\begin{bmatrix}0.9&0.3\\0.1&0.7\end{bmatrix}$（每一行的和都是 $1$ ✓）。<br>
+設穩定狀態 $X=\begin{bmatrix}x\\y\end{bmatrix}$，$MX=X$ 的第一列：$0.9x+0.3y=x$ ⟹ $0.3y=0.1x$ ⟹ $x=3y$。<br>
+（第二列 $0.1x+0.7y=y$ ⟹ $0.1x=0.3y$，與第一列完全相同——這正是 $\det(M-I)=0$ 的意思。）<br>
+再用 $x+y=1$：$3y+y=1$ ⟹ $y=\dfrac14$、$x=\dfrac34$。<br>
+市區占 $75\%$。<br>
+驗算：$\begin{bmatrix}0.9&0.3\\0.1&0.7\end{bmatrix}\begin{bmatrix}0.75\\0.25\end{bmatrix}=\begin{bmatrix}0.675+0.075\\0.075+0.175\end{bmatrix}=\begin{bmatrix}0.75\\0.25\end{bmatrix}$ ✓<span class="note-sm">穩定狀態的比例有個好記的規律：$x:y=(\text{郊}\to\text{市的比率}):(\text{市}\to\text{郊的比率})=0.3:0.1=3:1$——<b>大家都往「留得住人」的那一邊集中</b>。此外，穩定狀態與一開始的分配完全無關，這也是轉移方陣最漂亮的性質之一。</span></div></div>
+
+
+<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
+
+<h3 class="sec">📝 段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
+<div class="note">按「開始計時」後作答，答案寫在紙上；時間到或按「交卷」才對答案。用時會記進紀錄，多做幾組可以看自己的速度有沒有進步。</div>
+<div class="fixset" data-tier="L2" data-keys="L2:*,L3:*" data-seed="6001" data-n="14" data-mixed="1" data-timer="50"></div>
+</section>
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的招式串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">含參數的三元聯立、選項全是「若…則…」 → 先把 $\Delta$ 與「$\Delta=0$ 時的階梯形」一次算完，再逐條檢查逆命題；「A ⟹ B」與「B ⟹ A」幾乎都會被出成一組</span><span class="src">北一女中 112下 第三次 多 3</span></div>
+<div class="fxq">關於方程組 $\begin{cases}x+y+z=1\\2x+y+2z=4\\3x+2y+az=b\end{cases}$ 的解，下列哪些選項正確？<br>
+(1) 若方程組有解，則 $a\ne0$　(2) 若 $a=1$，則方程組恰有一組解　(3) 若方程組無解，則 $b\ne5$<br>
+(4) 若 $b\ne5$，則方程組無解　(5) 若方程組有無限多組解，則 $\begin{vmatrix}1&1&1\\2&1&2\\3&2&a\end{vmatrix}=0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(5)</div>
+<div class="fxs"><div class="move">招式：一次把全局算完——$\Delta=3-a$；$a\ne3$ 時恆有唯一解，$a=3$ 時看常數項 $b$ 是 $5$（無限多解）還是不是 $5$（無解）。之後五個選項全部用這張全景圖對答案。</div>
+$\Delta=\begin{vmatrix}1&1&1\\2&1&2\\3&2&a\end{vmatrix}=1(a-4)-1(2a-6)+1(4-3)=a-4-2a+6+1=3-a$。<br>
+$a=3$ 時做列運算：$R_2\to R_2-2R_1$、$R_3\to R_3-3R_1$ 得 $\left[\begin{array}{ccc|c}1&1&1&1\\0&-1&0&2\\0&-1&0&b-3\end{array}\right]$，再 $R_3\to R_3-R_2$ 得第三列 $(0,0,0\,|\,b-5)$。<br>
+⟹ $a=3$ 且 $b=5$：無限多組解；$a=3$ 且 $b\ne5$：無解；$a\ne3$：唯一解。<br>
+(1) 取 $a=0$、$b=5$，$\Delta=3\ne0$ ⟹ 有（唯一）解 $(3,-2,0)$，但 $a=0$ ⟹ 反例 ✗<br>
+(2) $a=1$ ⟹ $\Delta=2\ne0$ ⟹ 恰一組解 ✓<br>
+(3) 無解只發生在「$a=3$ 且 $b\ne5$」 ⟹ 確實 $b\ne5$ ✓<br>
+(4) 取 $a=1$、$b=6$：$\Delta\ne0$ 仍有唯一解 ⟹ 反例 ✗<br>
+(5) 無限多組解 ⟹ 不是唯一解 ⟹ $\Delta=0$ ✓<br>
+故選 (2)(3)(5)。<span class="note-sm">(3) 與 (4) 是同一件事的正逆兩向：「無解 ⟹ $b\ne5$」對，但「$b\ne5$ ⟹ 無解」錯。這種題把全景圖畫出來（$a\ne3$ ／ $a=3,b=5$ ／ $a=3,b\ne5$ 三格）再逐條比對，比逐題重算快得多。</span></div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">三元聯立有無限多解、又問某個二次式的最大值 → 先把解寫成一個參數 $t$ 的形式，代進去就變成 $t$ 的二次函數，配方即可</span><span class="src">台中女中 113下 第三次 填 8</span></div>
+<div class="fxq">已知 $\begin{cases}x+2y-z=1\\x-y+2z=4\\4x-y+5z=13\end{cases}$，求 $x^2-y^2-z^2$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$12$</div>
+<div class="fxs"><div class="move">招式：能問「最大值」，就表示解不只一組。先做列運算確認是無限多解，把解寫成 $t$ 的參數式，目標式立刻降成一元二次。</div>
+增廣矩陣 $\left[\begin{array}{ccc|c}1&2&-1&1\\1&-1&2&4\\4&-1&5&13\end{array}\right]\xrightarrow{R_2-R_1,\ R_3-4R_1}\left[\begin{array}{ccc|c}1&2&-1&1\\0&-3&3&3\\0&-9&9&9\end{array}\right]\xrightarrow{R_3-3R_2}\left[\begin{array}{ccc|c}1&2&-1&1\\0&-3&3&3\\0&0&0&0\end{array}\right]$。<br>
+最後一列全零、無矛盾 ⟹ 無限多組解。由 $-3y+3z=3$ 得 $y=z-1$；代入第一式 $x=1-2(z-1)+z=3-z$。令 $z=t$：$(x,y,z)=(3-t,\ t-1,\ t)$。<br>
+$x^2-y^2-z^2=(3-t)^2-(t-1)^2-t^2=(9-6t+t^2)-(t^2-2t+1)-t^2=-t^2-4t+8=-(t+2)^2+12$。<br>
+$t=-2$ 時取最大值 $12$，此時 $(x,y,z)=(5,-3,-2)$。<br>
+驗算：$5-6+2=1$ ✓、$5+3-4=4$ ✓、$20+3-10=13$ ✓；$25-9-4=12$ ✓<span class="note-sm">參數式的寫法不唯一（令 $y=s$ 也可以），但配方後的最大值一定相同。$-t^2$ 的係數是負的，所以有最大值沒有最小值——如果題目改問最小值，答案就是「不存在」。</span></div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">$(A+B)^3=A^3+3A^2B+3AB^2+B^3$ 這種「二項式定理成立」 → 等價於 $AB=BA$。所以選項只要逐個檢查有沒有和 $A$ 交換；$I$ 的倍數、$O$、$A$ 自己的任何次方都天生交換</span><span class="src">北一女中 112下 第三次 多 2</span></div>
+<div class="fxq">設 $A=\begin{bmatrix}1&1\\3&2\end{bmatrix}$，若二階方陣 $B$ 滿足 $(A+B)^3=A^3+3A^2B+3AB^2+B^3$，則 $B$ 可為下列哪一個方陣？<br>
+(1) $\begin{bmatrix}2&0\\0&2\end{bmatrix}$　(2) $\begin{bmatrix}0&0\\0&0\end{bmatrix}$　(3) $\begin{bmatrix}1&1\\3&2\end{bmatrix}^{2024}$　(4) $\begin{bmatrix}-2&1\\3&-1\end{bmatrix}$　(5) $\begin{bmatrix}20&25\\1&18\end{bmatrix}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(3)(4)</div>
+<div class="fxs"><div class="move">招式：老老實實展開 $(A+B)^3$ 會得到八項——$A^3$、$A^2B$、$ABA$、$BA^2$、$AB^2$、$BAB$、$B^2A$、$B^3$。要把它們併成 $3A^2B$ 與 $3AB^2$，必須能把 $B$ 自由搬過 $A$，也就是 $AB=BA$。</div>
+$AB=BA$ 時等式顯然成立；因此只要逐個算 $AB$ 與 $BA$：<br>
+(1) $B=2I$：純量倍的單位方陣與任何方陣都可交換 ✓<br>
+(2) $B=O$：$AO=OA=O$ ✓<br>
+(3) $B=A^{2024}$：$A\cdot A^{2024}=A^{2025}=A^{2024}\cdot A$ ✓（$A$ 的任何次方都和 $A$ 交換）<br>
+(4) $B=\begin{bmatrix}-2&1\\3&-1\end{bmatrix}$：$AB=\begin{bmatrix}1&1\\3&2\end{bmatrix}\begin{bmatrix}-2&1\\3&-1\end{bmatrix}=\begin{bmatrix}1&0\\0&1\end{bmatrix}$、$BA=\begin{bmatrix}-2&1\\3&-1\end{bmatrix}\begin{bmatrix}1&1\\3&2\end{bmatrix}=\begin{bmatrix}1&0\\0&1\end{bmatrix}$ ⟹ 相等（其實 $B=A^{-1}$）✓<br>
+(5) $B=\begin{bmatrix}20&25\\1&18\end{bmatrix}$：$AB=\begin{bmatrix}21&43\\62&111\end{bmatrix}$、$BA=\begin{bmatrix}95&70\\55&37\end{bmatrix}$ ⟹ $AB-BA=\begin{bmatrix}-74&-27\\7&74\end{bmatrix}\ne O$ ✗<br>
+故選 (1)(2)(3)(4)。<span class="note-sm">和 $A$ 可交換的矩陣其實就是「$A$ 的多項式」$pI+qA$ 這一族（本題 $A$ 的兩個對角元不同，剛好就是全部）。檢查 (1)(2)(3)(4) 時可以留意：$2I$、$O$、$A^{2024}$、$A^{-1}$ 全都寫得出 $pI+qA$ 的形式。</span></div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">矩陣性質多選的「進階版」 → 三個必備工具：①$\det(AB)=\det A\det B$（推出「$AB=I$ 則 $BA=I$」）②看到 $A^2=O$ 想到 $(I-A)(I+A)=I$ ③把條件重排成「兩個矩陣相乘等於 $\pm I$」就能翻面</span><span class="src">台中一中 113下 第三次 多 4</span></div>
+<div class="fxq">設 $A$、$B$ 為二階方陣，$I$、$O$ 分別為二階單位方陣與零方陣。試選出正確的選項。<br>
+(1) 若 $AB=O$，則 $BA=O$　(2) 若 $AB=I$，則 $BA=I$　(3) 若 $A^2=O$，則 $I-A$ 有反方陣<br>
+(4) 若 $AB=A-B$，則 $AB=BA$　(5) 若 $A^2=A$、$B^2=B$ 且 $(A+B)^2=A+B$，則 $AB=O$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)(5)</div>
+<div class="fxs"><div class="move">招式：「乘法不可交換」只在 (1) 真的壞掉；其餘四個都有<b>乾淨的代數證明</b>。證明的共同技巧是「把條件整理成某兩個矩陣相乘等於 $I$ 或 $-I$，再把左右兩邊對調」。</div>
+(1) 取 $A=\begin{bmatrix}1&0\\0&0\end{bmatrix}$、$B=\begin{bmatrix}0&0\\1&0\end{bmatrix}$：$AB=O$ 但 $BA=\begin{bmatrix}0&0\\1&0\end{bmatrix}\ne O$ ✗<br>
+(2) $AB=I$ ⟹ $\det A\cdot\det B=\det I=1$ ⟹ $\det A\ne0$ ⟹ $A^{-1}$ 存在。於是 $B=IB=(A^{-1}A)B=A^{-1}(AB)=A^{-1}$ ⟹ $BA=A^{-1}A=I$ ✓<br>
+(3) $(I-A)(I+A)=I+A-A-A^2=I-A^2=I$（$I$ 與 $A$ 可交換）⟹ $I-A$ 的反方陣就是 $I+A$ ✓<br>
+(4) $AB=A-B$ ⟹ 移項湊因式：$(A+I)(B-I)=AB-A+B-I=(A-B)-A+B-I=-I$。<br>
+由 (2) 的結論，$(A+I)(B-I)=-I$ ⟹ $(B-I)(A+I)=-I$ ⟹ $BA+B-A-I=-I$ ⟹ $BA=A-B=AB$ ✓<br>
+(5) 展開 $(A+B)^2=A^2+AB+BA+B^2=A+AB+BA+B$；已知它等於 $A+B$ ⟹ $AB+BA=O$。<br>
+左乘 $A$：$A^2B+ABA=O$ ⟹ $AB+ABA=O$；右乘 $A$：$ABA+BA^2=O$ ⟹ $ABA+BA=O$。<br>
+兩式相減得 $AB-BA=O$；與 $AB+BA=O$ 合併得 $2AB=O$ ⟹ $AB=O$ ✓<br>
+故選 (2)(3)(4)(5)。<span class="note-sm">(4) 的「湊因式」是矩陣題的高頻技巧：看到 $AB=A-B$ 就把它搬成 $AB-A+B-I=-I$，再從左邊提出 $(A+I)$。$I$ 之所以能自由加進來，正是因為它和誰都可交換。</span></div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">要算 $A$ 的高次多項式 → 先算 $A^2$，發現它可以寫成 $pA+qI$；之後把整個多項式<b>除以</b> $x^2-px-q$，餘式代入就是答案</span><span class="src">台中女中 113下 第三次 混 16-17</span></div>
+<div class="fxq">設 $A=\begin{bmatrix}2&-3\\4&-5\end{bmatrix}$、$I=\begin{bmatrix}1&0\\0&1\end{bmatrix}$。<br>
+<b>(16)</b> 若 $A^{-1}=xA+yI$，求 $(x,y)$。<br>
+<b>(17)</b> 求 $2A^4+11A^3+25A^2+29A+18I$（以二階方陣表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(16) $(x,y)=\left(-\dfrac12,\ -\dfrac32\right)$　(17) $\begin{bmatrix}8&-3\\4&1\end{bmatrix}$</div>
+<div class="fxs"><div class="move">招式：先算 $A^2$ 並把它用 $A$ 與 $I$ 表示。任何二階方陣 $\begin{bmatrix}a&b\\c&d\end{bmatrix}$ 都滿足 $A^2=(a+d)A-(ad-bc)I$——乘開逐格比對即可驗證，這是降冪的總開關。</div>
+$A^2=\begin{bmatrix}2&-3\\4&-5\end{bmatrix}\begin{bmatrix}2&-3\\4&-5\end{bmatrix}=\begin{bmatrix}4-12&-6+15\\8-20&-12+25\end{bmatrix}=\begin{bmatrix}-8&9\\-12&13\end{bmatrix}$。<br>
+而 $(a+d)A-(ad-bc)I=(-3)A-(-10+12)I=-3A-2I=\begin{bmatrix}-6&9\\-12&15\end{bmatrix}-\begin{bmatrix}2&0\\0&2\end{bmatrix}=\begin{bmatrix}-8&9\\-12&13\end{bmatrix}$ ✓<br>
+故 <b>$A^2+3A+2I=O$</b>。<br>
+<b>(16)</b> $\det A=-10+12=2\ne0$ ⟹ 可逆。兩邊左乘 $A^{-1}$：$A+3I+2A^{-1}=O$ ⟹ $A^{-1}=-\dfrac12A-\dfrac32I$ ⟹ $(x,y)=\left(-\dfrac12,-\dfrac32\right)$。<br>
+驗算：$-\dfrac12\begin{bmatrix}2&-3\\4&-5\end{bmatrix}-\dfrac32I=\begin{bmatrix}-1-\frac32&\frac32\\-2&\frac52-\frac32\end{bmatrix}=\begin{bmatrix}-\frac52&\frac32\\-2&1\end{bmatrix}$；而 $\dfrac1{\det A}\begin{bmatrix}-5&3\\-4&2\end{bmatrix}=\dfrac12\begin{bmatrix}-5&3\\-4&2\end{bmatrix}$，兩者相同 ✓<br>
+<b>(17)</b> 做多項式除法：$2x^4+11x^3+25x^2+29x+18=(x^2+3x+2)(2x^2+5x+6)+(x+6)$。<br>
+把 $x$ 換成 $A$（常數項自動配上 $I$）：前一項含因式 $A^2+3A+2I=O$ ⟹ 整段消失。<br>
+$2A^4+11A^3+25A^2+29A+18I=A+6I=\begin{bmatrix}2+6&-3\\4&-5+6\end{bmatrix}=\begin{bmatrix}8&-3\\4&1\end{bmatrix}$。<span class="note-sm">⚠️ 這一題的官方答案把 $(1,2)$ 元印成 $-1$，我們用「降冪」與「直接連乘 $A^4$」兩條路各算一次，都得到 $\begin{bmatrix}8&-3\\4&1\end{bmatrix}$。遇到答案對不上時，<b>換一條完全獨立的路再算一次</b>是最可靠的仲裁方式。</span></div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">把解 $(x,y)$ 用常數項 $(m,n)$ 表示，再問係數排成的向量張出多少面積 → 那張係數表正好是 $A^{-1}$；面積用 $|\det(A^{-1})|=\dfrac1{|\det A|}$，係數倍數各自提出來</span><span class="src">中山女高 113下 第三次 填 15</span></div>
+<div class="fxq">已知聯立方程式 $\begin{cases}5x+4y=m\\2x+y=n\end{cases}$ 有唯一解，且此解可寫成 $\begin{cases}x=am+bn\\y=cm+dn\end{cases}$。設 $\vec u=(a,b)$、$\vec v=(c,d)$，求 $3\vec u$ 與 $2\vec v$ 所張出的平行四邊形面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2$</div>
+<div class="fxs"><div class="move">招式：$\begin{bmatrix}x\\y\end{bmatrix}=A^{-1}\begin{bmatrix}m\\n\end{bmatrix}$，所以 $\begin{bmatrix}a&b\\c&d\end{bmatrix}$ 就是 $A^{-1}$ 本人。面積只看行列式，不必把四個數字全部算出來。</div>
+$A=\begin{bmatrix}5&4\\2&1\end{bmatrix}$，$\det A=5-8=-3\ne0$ ⟹ 唯一解，且 $\begin{bmatrix}a&b\\c&d\end{bmatrix}=A^{-1}$。<br>
+$\det\begin{bmatrix}a&b\\c&d\end{bmatrix}=\det(A^{-1})=\dfrac1{\det A}=-\dfrac13$。<br>
+$3\vec u$ 與 $2\vec v$ 張出的面積 $=\left|\det\begin{bmatrix}3a&3b\\2c&2d\end{bmatrix}\right|=3\times2\times\left|\det\begin{bmatrix}a&b\\c&d\end{bmatrix}\right|=6\times\dfrac13=2$。<br>
+驗算（真的解出來）：$A^{-1}=\dfrac1{-3}\begin{bmatrix}1&-4\\-2&5\end{bmatrix}=\begin{bmatrix}-\frac13&\frac43\\\frac23&-\frac53\end{bmatrix}$ ⟹ $x=-\dfrac m3+\dfrac{4n}3$、$y=\dfrac{2m}3-\dfrac{5n}3$。代 $(m,n)=(5\cdot1+4\cdot1,\ 2\cdot1+1\cdot1)=(9,3)$ 得 $x=-3+4=1$、$y=6-5=1$ ✓<span class="note-sm">「把一列乘上 $k$，行列式就乘 $k$」——本題兩列各乘 $3$ 與 $2$，所以面積變成 $6$ 倍。這與 $\det(kA)=k^2\det A$（兩列都乘 $k$）是同一條規則的兩個用法。</span></div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">機率題包著反方陣 → 先把「沒有反方陣」翻譯成 $\det=0$，因式分解後變成很短的條件；分母是<b>扣掉 $a=b$ 之後</b>的數對個數，別漏了那個限制</span><span class="src">台南女中 112下 第二次 填 18</span></div>
+<div class="fxq">設 $a\in\{-1,1,2,3\}$、$b\in\{0,-1,1,2\}$，且已知 $a\ne b$。若每一組合法的 $(a,b)$ 被取到的機會均等，求矩陣 $\begin{bmatrix}a&a^2\\b^2&b\end{bmatrix}$ 沒有反方陣的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac4{13}$</div>
+<div class="fxs"><div class="move">招式：$\det=ab-a^2b^2=ab(1-ab)$——提出 $ab$ 之後條件只剩「$ab=0$ 或 $ab=1$」兩種，用列舉就結束。</div>
+<b>分母</b>：$4\times4=16$ 組，扣掉 $a=b$ 的 $(-1,-1)$、$(1,1)$、$(2,2)$ 共 $3$ 組 ⟹ $16-3=13$ 組。<br>
+<b>分子</b>：$\det=a\cdot b-a^2\cdot b^2=ab(1-ab)=0\iff ab=0$ 或 $ab=1$。<br>
+・$ab=0$：$a$ 的四個值都不是 $0$ ⟹ 必須 $b=0$ ⟹ $(-1,0)$、$(1,0)$、$(2,0)$、$(3,0)$ 共 $4$ 組，且都滿足 $a\ne b$ ✓<br>
+・$ab=1$：只有 $(1,1)$ 與 $(-1,-1)$，但兩組都被 $a\ne b$ 排除 ⟹ $0$ 組。<br>
+機率 $=\dfrac4{13}$。<span class="note-sm">$a\ne b$ 這個條件同時影響分子與分母——分母少了 $3$ 組，分子的 $ab=1$ 整個被清空。漏掉它會算成 $\dfrac6{16}=\dfrac38$，剛好是最常見的錯誤答案。</span></div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">「把直線 $L_1$ 上的點變換到直線 $L_2$ 上」 → 在 $L_1$ 上隨便挑兩個好算的點，各自求像再代進 $L_2$；兩個點就給兩條方程式，剛好解兩個未知數</span><span class="src">北一女中 112下 第三次 填 10</span></div>
+<div class="fxq">設 $a$、$b$ 為實數，若方陣 $\begin{bmatrix}1&a\\b&-1\end{bmatrix}$ 所定義的線性變換把直線 $L_1:x+2y=1$ 變換到直線 $L_2:7x-4y+5=0$，求數對 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(-2,3)$</div>
+<div class="fxs"><div class="move">招式：線性變換把直線送到直線，所以「$L_1$ 上每一點的像都在 $L_2$ 上」。只要挑兩個點就能把 $a$、$b$ 逼出來，最後再驗一次。</div>
+在 $L_1$ 上取 $P(1,0)$：像為 $\begin{bmatrix}1&a\\b&-1\end{bmatrix}\begin{bmatrix}1\\0\end{bmatrix}=\begin{bmatrix}1\\b\end{bmatrix}$。代入 $L_2$：$7(1)-4b+5=0$ ⟹ $4b=12$ ⟹ $b=3$。<br>
+在 $L_1$ 上取 $Q(-1,1)$：像為 $\begin{bmatrix}1&a\\3&-1\end{bmatrix}\begin{bmatrix}-1\\1\end{bmatrix}=\begin{bmatrix}-1+a\\-4\end{bmatrix}$。代入 $L_2$：$7(-1+a)-4(-4)+5=0$ ⟹ $7a+14=0$ ⟹ $a=-2$。<br>
+故 $(a,b)=(-2,3)$。<br>
+驗算：$M=\begin{bmatrix}1&-2\\3&-1\end{bmatrix}$。$L_1$ 上任一點可寫成 $(1-2t,\ t)$，像為 $(1-2t-2t,\ 3-6t-t)=(1-4t,\ 3-7t)$。代入 $L_2$：$7(1-4t)-4(3-7t)+5=7-28t-12+28t+5=0$ ✓ 對所有 $t$ 皆成立。<span class="note-sm">🔴 「$L_1$ 上的點都跑到 $L_2$ 上」和「$L_2$ 是 $L_1$ 的像」不完全一樣——若 $\det M=0$，一整條直線可能被壓成一個點。本題 $\det M=-1+6=5\ne0$，所以像確實是整條 $L_2$。</span></div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">只給 $X_0$、$X_1$、$X_2$ 卻要 $X_3$ → 先把轉移方陣還原出來：$X_0=\begin{bmatrix}1\\0\end{bmatrix}$ 直接讀出第一行，第二行再用「每行和為 $1$」加上 $AX_1=X_2$ 補完</span><span class="src">北一女中 112下 第三次 填 13</span></div>
+<div class="fxq">已知 $A$ 為二階轉移方陣，對任意正整數 $n$ 皆有 $X_n=AX_{n-1}$。若 $X_0=\begin{bmatrix}1\\0\end{bmatrix}$、$X_1=\begin{bmatrix}\frac13\\[2pt]\frac23\end{bmatrix}$、$X_2=\begin{bmatrix}\frac12\\[2pt]\frac12\end{bmatrix}$，求 $X_3$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$X_3=\begin{bmatrix}\frac{11}{24}\\[2pt]\frac{13}{24}\end{bmatrix}$</div>
+<div class="fxs"><div class="move">招式：$A\begin{bmatrix}1\\0\end{bmatrix}$ 就是 $A$ 的<b>第一行</b>——這是最便宜的資訊。第一行到手後，第二行只剩一個未知數（因為每行和是 $1$），用 $AX_1=X_2$ 解掉。</div>
+設 $A=\begin{bmatrix}p&q\\r&s\end{bmatrix}$，轉移方陣 ⟹ $p+r=1$、$q+s=1$。<br>
+$AX_0=\begin{bmatrix}p\\r\end{bmatrix}=\begin{bmatrix}\frac13\\\frac23\end{bmatrix}$ ⟹ $p=\dfrac13$、$r=\dfrac23$（和為 $1$ ✓）。<br>
+$AX_1=X_2$ 的第一列：$\dfrac13\cdot\dfrac13+q\cdot\dfrac23=\dfrac12$ ⟹ $\dfrac{2q}3=\dfrac12-\dfrac19=\dfrac7{18}$ ⟹ $q=\dfrac7{12}$，$s=1-\dfrac7{12}=\dfrac5{12}$。<br>
+（第二列 $\dfrac23\cdot\dfrac13+\dfrac5{12}\cdot\dfrac23=\dfrac29+\dfrac5{18}=\dfrac{4+5}{18}=\dfrac12$ ✓ 自動吻合。）<br>
+$X_3=AX_2=\begin{bmatrix}\frac13&\frac7{12}\\[2pt]\frac23&\frac5{12}\end{bmatrix}\begin{bmatrix}\frac12\\[2pt]\frac12\end{bmatrix}=\begin{bmatrix}\frac16+\frac7{24}\\[2pt]\frac13+\frac5{24}\end{bmatrix}=\begin{bmatrix}\frac{4+7}{24}\\[2pt]\frac{8+5}{24}\end{bmatrix}=\begin{bmatrix}\frac{11}{24}\\[2pt]\frac{13}{24}\end{bmatrix}$（和為 $1$ ✓）。<span class="note-sm">「$A$ 乘上 $\begin{bmatrix}1\\0\end{bmatrix}$ 就是取出第一行、乘上 $\begin{bmatrix}0\\1\end{bmatrix}$ 就是取出第二行」是矩陣題的萬用開罐器。看到題目給了這種單位向量的像，先把它讀成「某一行」。</span></div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">同一題同時問「第 $n$ 期」與「長期」 → 兩件事各走各的路：$n$ 期用 $M^nX_0$ 老實乘，長期用 $MX=X$ 配比例和為 $1$；兩者完全不互通</span><span class="src">台中一中 112下 第三次 填 8</span></div>
+<div class="fxq">手機作業系統只有 iOS 與 Android 兩種：每年 iOS 使用者有 $20\%$ 改用 Android、Android 使用者有 $30\%$ 改用 iOS，其餘不變。目前的比率為 iOS $40\%$、Android $60\%$。設 $2$ 年後 iOS 與 Android 的人數比值為 $R$、多年後穩定狀態時的比值為 $r$，求數對 $(R,r)$。（化為最簡分數）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(R,r)=\left(\dfrac{11}9,\ \dfrac32\right)$</div>
+<div class="fxs"><div class="move">招式：狀態順序（iOS，Android）。轉移方陣 $M=\begin{bmatrix}0.8&0.3\\0.2&0.7\end{bmatrix}$（第一行是「原本用 iOS 的人往哪去」）。$R$ 只要乘兩次，$r$ 要解不動向量。</div>
+$X_0=\begin{bmatrix}0.4\\0.6\end{bmatrix}$。<br>
+$X_1=MX_0=\begin{bmatrix}0.8(0.4)+0.3(0.6)\\0.2(0.4)+0.7(0.6)\end{bmatrix}=\begin{bmatrix}0.32+0.18\\0.08+0.42\end{bmatrix}=\begin{bmatrix}0.5\\0.5\end{bmatrix}$。<br>
+$X_2=MX_1=\begin{bmatrix}0.4+0.15\\0.1+0.35\end{bmatrix}=\begin{bmatrix}0.55\\0.45\end{bmatrix}$ ⟹ $R=\dfrac{0.55}{0.45}=\dfrac{11}9$。<br>
+穩定狀態：$0.8x+0.3y=x$ ⟹ $0.3y=0.2x$ ⟹ $\dfrac xy=\dfrac{0.3}{0.2}=\dfrac32$ ⟹ $r=\dfrac32$。<br>
+驗算：取 $X=\begin{bmatrix}0.6\\0.4\end{bmatrix}$，$MX=\begin{bmatrix}0.48+0.12\\0.12+0.28\end{bmatrix}=\begin{bmatrix}0.6\\0.4\end{bmatrix}$ ✓<span class="note-sm">$X_2$ 的比值 $\dfrac{11}9\approx1.22$ 已經在往 $\dfrac32=1.5$ 靠近，但還差得遠——轉移方陣收斂的速度由 $\det M=0.56-0.06=0.5$ 決定，每期誤差乘 $0.5$，要十來期才會貼上去。</span></div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">旋轉與鏡射混在一起問乘冪 → 先用 $\det$ 分類（$+1$ 旋轉、$-1$ 鏡射），鏡射的平方一定是 $I$；$AB$ 與 $BA$ 是「同一個角度的相反方向」，偶次方才會一樣</span><span class="src">中山女高 112下 第三次 多 9</span></div>
+<div class="fxq">已知 $A=\begin{bmatrix}\frac12&\frac{\sqrt3}2\\[2pt]-\frac{\sqrt3}2&\frac12\end{bmatrix}$、$B=\begin{bmatrix}0&1\\1&0\end{bmatrix}$，則下列哪些選項正確？<br>
+(1) $A^6=B^6$　(2) $AB$ 為旋轉方陣　(3) $(AB)^{113}=(BA)^{113}$　(4) $(AB)^{2024}=(BA)^{2024}$　(5) $(BAB)^{10}=BA^{10}B$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(4)(5)</div>
+<div class="fxs"><div class="move">招式：先認出身分。$A=\begin{bmatrix}\cos(-60^\circ)&-\sin(-60^\circ)\\\sin(-60^\circ)&\cos(-60^\circ)\end{bmatrix}$ 是「順時針旋轉 $60^\circ$」，$\det A=1$；$B$ 是「對 $y=x$ 鏡射」，$\det B=-1$ 且 $B^2=I$。</div>
+(1) $A^6$ 是旋轉 $-360^\circ$ ⟹ $A^6=I$；$B^2=I$ ⟹ $B^6=I$ ⟹ 兩者相等 ✓<br>
+(2) $\det(AB)=\det A\cdot\det B=1\times(-1)=-1$ ⟹ 不可能是旋轉（旋轉的行列式是 $1$）✗<br>
+實際上 $AB=\begin{bmatrix}\frac{\sqrt3}2&\frac12\\[2pt]\frac12&-\frac{\sqrt3}2\end{bmatrix}$，是鏡射。<br>
+(3) $AB$、$BA$ 都是鏡射 ⟹ $(AB)^2=(BA)^2=I$ ⟹ 奇數次方回到自己：$(AB)^{113}=AB$、$(BA)^{113}=BA$。<br>
+而 $BA=\begin{bmatrix}-\frac{\sqrt3}2&\frac12\\[2pt]\frac12&\frac{\sqrt3}2\end{bmatrix}\ne AB$ ⟹ ✗<br>
+(4) $2024$ 是偶數 ⟹ $(AB)^{2024}=I=(BA)^{2024}$ ✓<br>
+(5) $B^2=I$ ⟹ $(BAB)^{10}=BAB\cdot BAB\cdots BAB=BA(BB)A(BB)\cdots AB=BA^{10}B$ ✓<br>
+故選 (1)(4)(5)。<span class="note-sm">(5) 的「中間的 $B$ 兩兩抵消」是共軛運算的通則：$(BAB^{-1})^n=BA^nB^{-1}$，而本題 $B^{-1}=B$。幾何上這句話是說——先翻過去、轉 $10$ 次、再翻回來，等於「在鏡子那一側轉 $10$ 次」。</span></div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">給的是 $A^{-1}$ 的兩個像 → 把箭頭反過來讀：$A^{-1}\vec p=\vec q$ 等價於 $A\vec q=\vec p$。於是變成熟悉的「由兩組對應點求 $A$」，併成一個矩陣等式最快</span><span class="src">台南女中 113下 第二次 填 11</span></div>
+<div class="fxq">已知 $A^{-1}\begin{bmatrix}6\\5\end{bmatrix}=\begin{bmatrix}4\\6\end{bmatrix}$ 且 $A^{-1}\begin{bmatrix}8\\7\end{bmatrix}=\begin{bmatrix}3\\5\end{bmatrix}$。若 $A=\begin{bmatrix}a&b\\c&d\end{bmatrix}$，求 $a+b+c+d$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-4$</div>
+<div class="fxs"><div class="move">招式：把 $A^{-1}$ 的條件翻成 $A$ 的條件（兩邊左乘 $A$），再把兩組併成一個矩陣等式 $A\begin{bmatrix}4&3\\6&5\end{bmatrix}=\begin{bmatrix}6&8\\5&7\end{bmatrix}$——兩個原像當兩行、兩個像當兩行。</div>
+由 $A^{-1}\begin{bmatrix}6\\5\end{bmatrix}=\begin{bmatrix}4\\6\end{bmatrix}$ 兩邊左乘 $A$ 得 $A\begin{bmatrix}4\\6\end{bmatrix}=\begin{bmatrix}6\\5\end{bmatrix}$；同理 $A\begin{bmatrix}3\\5\end{bmatrix}=\begin{bmatrix}8\\7\end{bmatrix}$。<br>
+併起來：$A\begin{bmatrix}4&3\\6&5\end{bmatrix}=\begin{bmatrix}6&8\\5&7\end{bmatrix}$。<br>
+$\begin{vmatrix}4&3\\6&5\end{vmatrix}=20-18=2\ne0$ ⟹ 可逆，$\begin{bmatrix}4&3\\6&5\end{bmatrix}^{-1}=\dfrac12\begin{bmatrix}5&-3\\-6&4\end{bmatrix}$。<br>
+$A=\begin{bmatrix}6&8\\5&7\end{bmatrix}\cdot\dfrac12\begin{bmatrix}5&-3\\-6&4\end{bmatrix}=\dfrac12\begin{bmatrix}30-48&-18+32\\25-42&-15+28\end{bmatrix}=\dfrac12\begin{bmatrix}-18&14\\-17&13\end{bmatrix}=\begin{bmatrix}-9&7\\-\frac{17}2&\frac{13}2\end{bmatrix}$。<br>
+$a+b+c+d=-9+7-\dfrac{17}2+\dfrac{13}2=-2-2=-4$。<br>
+驗算：$A\begin{bmatrix}4\\6\end{bmatrix}=\begin{bmatrix}-36+42\\-34+39\end{bmatrix}=\begin{bmatrix}6\\5\end{bmatrix}$ ✓、$A\begin{bmatrix}3\\5\end{bmatrix}=\begin{bmatrix}-27+35\\-\frac{51}2+\frac{65}2\end{bmatrix}=\begin{bmatrix}8\\7\end{bmatrix}$ ✓<span class="note-sm">🔴 併成矩陣等式時，<b>原像要放在右邊那個矩陣的「行」</b>。寫成 $\begin{bmatrix}4&6\\3&5\end{bmatrix}$（把原像當列）是最常見的錯誤，算出來的會是完全不同的矩陣。</span></div></div>
+
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充：大考壓軸、經典難題與科學班・教甄專區</h2>
+<div class="goal">
+  <div><b>對象</b>數理志向、想看「這一章能走多遠」的同學；不列入通過標準。</div>
+  <div><b>目標</b>6 題壓軸 ＋ 專區 13 題（教甄與科學班）。每題都只用本章的工具解完——列運算保解、行列式與面積、二階反方陣、旋轉與鏡射的合成、轉移方陣，五招輪流出場。</div>
+  <div><b>通過標準</b>無。能講出每題的關鍵一步就很好了。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">兩個方程組「經過相同的列運算」 → 列運算就是左乘同一個可逆方陣 $E$。常數行是線性的：把新的常數行寫成舊兩個常數行的線性組合，答案就跟著組合出來</span><span class="src">113 分科測驗 數甲 選填 9</span></div>
+<div class="fxq">設 $a$、$b$、$c$、$d$ 為實數。已知兩聯立方程組 $\begin{cases}ax+by=2\\cx+dy=1\end{cases}$ 與 $\begin{cases}ax+by=-1\\cx+dy=-1\end{cases}$ 的增廣矩陣經過<b>相同的列運算</b>後，分別得到 $\left[\begin{array}{cc|c}1&-1&3\\0&1&2\end{array}\right]$ 與 $\left[\begin{array}{cc|c}1&-1&2\\0&1&-1\end{array}\right]$。求聯立方程組 $\begin{cases}ax+by=0\\cx+dy=1\end{cases}$ 的解。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(x,y)=(-7,\ 0)$</div>
+<div class="fxs"><div class="move">招式：一串列運算 ＝ 左乘某個固定的可逆方陣 $E$。兩個方程組的<b>係數部分一樣</b>，所以化簡後的係數部分也一樣（確實都是 $\begin{bmatrix}1&-1\\0&1\end{bmatrix}$）；不同的只有常數行，而 $E$ 對常數行的作用是線性的。</div>
+設係數方陣 $M=\begin{bmatrix}a&b\\c&d\end{bmatrix}$。題目告訴我們 $EM=\begin{bmatrix}1&-1\\0&1\end{bmatrix}$，且<br>
+$E\begin{bmatrix}2\\1\end{bmatrix}=\begin{bmatrix}3\\2\end{bmatrix}$、$E\begin{bmatrix}-1\\-1\end{bmatrix}=\begin{bmatrix}2\\-1\end{bmatrix}$。<br>
+第三個方程組的常數行是 $\begin{bmatrix}0\\1\end{bmatrix}$。先把它拆成前兩個常數行的組合：設 $\begin{bmatrix}0\\1\end{bmatrix}=\alpha\begin{bmatrix}2\\1\end{bmatrix}+\beta\begin{bmatrix}-1\\-1\end{bmatrix}$ ⟹ $\begin{cases}2\alpha-\beta=0\\\alpha-\beta=1\end{cases}$ ⟹ $\alpha=-1$、$\beta=-2$。<br>
+於是 $E\begin{bmatrix}0\\1\end{bmatrix}=-E\begin{bmatrix}2\\1\end{bmatrix}-2E\begin{bmatrix}-1\\-1\end{bmatrix}=-\begin{bmatrix}3\\2\end{bmatrix}-2\begin{bmatrix}2\\-1\end{bmatrix}=\begin{bmatrix}-7\\0\end{bmatrix}$。<br>
+所以第三個方程組化簡後是 $\left[\begin{array}{cc|c}1&-1&-7\\0&1&0\end{array}\right]$，即 $\begin{cases}x-y=-7\\y=0\end{cases}$ ⟹ $(x,y)=(-7,0)$。<br>
+驗算（硬把 $M$ 解出來）：由 $E\begin{bmatrix}2\\1\end{bmatrix}=\begin{bmatrix}3\\2\end{bmatrix}$、$E\begin{bmatrix}-1\\-1\end{bmatrix}=\begin{bmatrix}2\\-1\end{bmatrix}$ 解得 $E=\begin{bmatrix}5&-7\\1&0\end{bmatrix}$，再由 $EM=\begin{bmatrix}1&-1\\0&1\end{bmatrix}$ 得 $M=\begin{bmatrix}0&1\\-\frac17&\frac67\end{bmatrix}$。解 $M\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}0\\1\end{bmatrix}$：第一式 $y=0$，第二式 $-\dfrac x7=1$ ⟹ $x=-7$ ✓<span class="note-sm">這一題的漂亮之處在於<b>完全不必知道 $a,b,c,d$</b>。只要抓住「列運算對增廣矩陣的作用是線性的」，常數行怎麼組合，答案就怎麼組合——這正是把列運算看成「左乘一個矩陣」的最大好處。</span></div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">三階方陣只給三個「像」 → 不要試圖把 $A$ 的九個元解出來。目標向量若能寫成那三個已知向量的線性組合，像就跟著組合；被送到零向量的那個方向可以任意加，解就變成一整條直線</span><span class="src">115 學測A 第 5 題</span></div>
+<div class="fxq">已知實數三階方陣 $A$ 滿足 $A\begin{bmatrix}1\\1\\0\end{bmatrix}=\begin{bmatrix}0\\-1\\1\end{bmatrix}$、$A\begin{bmatrix}0\\-1\\1\end{bmatrix}=\begin{bmatrix}1\\1\\0\end{bmatrix}$、$A\begin{bmatrix}1\\0\\-1\end{bmatrix}=\begin{bmatrix}0\\0\\0\end{bmatrix}$。試問有多少個行向量 $\vec v=\begin{bmatrix}v_1\\v_2\\v_3\end{bmatrix}$ 滿足 $A\vec v=\begin{bmatrix}1\\0\\1\end{bmatrix}$ 且 $\vec v$ 垂直於行向量 $\begin{bmatrix}0\\1\\0\end{bmatrix}$？<br>
+(1) $1$ 個　(2) $2$ 個　(3) $3$ 個　(4) $0$ 個　(5) 無窮多個</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5) 無窮多個</div>
+<div class="fxs"><div class="move">招式：記 $\vec u=(1,1,0)$、$\vec w=(0,-1,1)$、$\vec p=(1,0,-1)$，條件就是 $A\vec u=\vec w$、$A\vec w=\vec u$、$A\vec p=\vec 0$。關鍵觀察：目標向量 $(1,0,1)=\vec u+\vec w$。</div>
+先確認 $\vec u,\vec w,\vec p$ 能組合出空間中任何向量：$\begin{vmatrix}1&0&1\\1&-1&0\\0&1&-1\end{vmatrix}=1(1-0)-0+1(1-0)=2\ne0$（三個向量不共平面）✓<br>
+設 $\vec v=\alpha\vec u+\beta\vec w+\gamma\vec p$。由矩陣乘法的線性性：<br>
+$A\vec v=\alpha A\vec u+\beta A\vec w+\gamma A\vec p=\alpha\vec w+\beta\vec u+\gamma\vec 0=\beta\vec u+\alpha\vec w$。<br>
+要它等於 $(1,0,1)=\vec u+\vec w$ ⟹ $\beta=1$、$\alpha=1$，而 $\gamma$ <b>完全自由</b>。<br>
+$\vec v=\vec u+\vec w+\gamma\vec p=(1,0,1)+\gamma(1,0,-1)=(1+\gamma,\ 0,\ 1-\gamma)$。<br>
+再看垂直條件：$\vec v$ 垂直於 $(0,1,0)$ ⟺ 內積 $=v_2=0$——而上式的第二個分量本來就是 $0$，對每一個 $\gamma$ 都成立。<br>
+故滿足條件的 $\vec v$ 有無窮多個，選 (5)。<br>
+驗算：取 $\gamma=0$ 得 $\vec v=(1,0,1)=\vec u+\vec w$，$A\vec v=\vec w+\vec u=(1,0,1)$ ✓；取 $\gamma=1$ 得 $\vec v=(2,0,0)$，$A\vec v=A(\vec u+\vec w+\vec p)=\vec w+\vec u+\vec0=(1,0,1)$ ✓<span class="note-sm">$A\vec p=\vec 0$ 而 $\vec p\ne\vec 0$ ⟹ $\det A=0$ ⟹ $A$ 沒有反方陣，所以 $A\vec v=\vec b$ 只要有解就一定有無窮多解（把 $\vec p$ 的任意倍數加上去都還是解）。<b>三階方陣的反方陣本來就不必算出來</b>——這題從頭到尾只用到「線性組合」四個字。</span></div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">旋轉矩陣的題組 → 一律換成「角度」來想：$A^k$ 就是旋轉 $k$ 倍角，作用在點上就是極角相加、長度不變。矩陣乘法全部退場，只剩國中的角度加減</span><span class="src">114 學測A 第 18-20 題（題組）</span></div>
+<div class="fxq">已知 $A=\begin{bmatrix}a_1&a_2\\a_3&a_4\end{bmatrix}$、$B=\begin{bmatrix}b_1&b_2\\b_3&b_4\end{bmatrix}$ 皆為坐標平面上以原點 $O$ 為中心、逆時針旋轉一銳角的旋轉方陣，且滿足 $A^2=B^3=\begin{bmatrix}0&c\\1&d\end{bmatrix}$，其中 $c$、$d$ 為實數。設點 $P(1,1)$ 經 $A^3$ 變換後為點 $Q$，且點 $Q$ 經 $B^4$ 變換後為點 $R$。<br>
+<b>(18)</b> 試問 $c$ 之值為何？　(1) $0$　(2) $-1$　(3) $1$　(4) $-\dfrac12$　(5) $\dfrac12$<br>
+<b>(19)</b> 試求點 $Q$ 的坐標，以及 $\overrightarrow{OR}$ 與向量 $(1,0)$ 的夾角。<br>
+<b>(20)</b> 設 $L$ 為過點 $P$ 且與直線 $OQ$ 平行的直線，點 $S$ 為 $L$ 和直線 $OR$ 的交點，試求 $\angle OSP$ 與點 $S$ 的坐標。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(18) (2) $c=-1$　(19) $Q(-\sqrt2,\ 0)$；夾角 $60^\circ$　(20) $\angle OSP=60^\circ$；$S\left(-\dfrac{\sqrt3}3,\ 1\right)$</div>
+<div class="fxs"><div class="move">招式：旋轉方陣寫成 $R(\theta)=\begin{bmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{bmatrix}$，則 $R(\theta)^k=R(k\theta)$。設 $A=R(\alpha)$、$B=R(\beta)$（$0^\circ\lt\alpha,\beta\lt90^\circ$），先用 $A^2=B^3$ 的形狀把兩個角定下來。</div>
+<b>(18)</b> $A^2=R(2\alpha)=\begin{bmatrix}\cos2\alpha&-\sin2\alpha\\\sin2\alpha&\cos2\alpha\end{bmatrix}$。比對 $\begin{bmatrix}0&c\\1&d\end{bmatrix}$ 的左下角與左上角：$\sin2\alpha=1$、$\cos2\alpha=0$ ⟹ $2\alpha=90^\circ$ ⟹ $\alpha=45^\circ$（銳角 ✓）。<br>
+於是 $c=-\sin2\alpha=-1$、$d=\cos2\alpha=0$，選 (2)。<br>
+同理 $B^3=R(3\beta)=R(90^\circ)$ ⟹ $3\beta=90^\circ$ ⟹ $\beta=30^\circ$（銳角 ✓）。<br>
+<b>(19)</b> $P(1,1)$ 的極角是 $45^\circ$、長度 $\sqrt2$。$A^3=R(135^\circ)$ ⟹ $Q$ 的極角 $=45^\circ+135^\circ=180^\circ$、長度仍是 $\sqrt2$ ⟹ $Q(-\sqrt2,\ 0)$。<br>
+$B^4=R(120^\circ)$ ⟹ $R$ 的極角 $=180^\circ+120^\circ=300^\circ$、長度 $\sqrt2$ ⟹ $R\left(\dfrac{\sqrt2}2,\ -\dfrac{\sqrt6}2\right)$。<br>
+$\overrightarrow{OR}$ 的方向角是 $-60^\circ$ ⟹ 與 $(1,0)$ 的夾角為 $60^\circ$。<br>
+<b>(20)</b> $OQ$ 沿著 $x$ 軸（負向）⟹ 過 $P(1,1)$ 且平行 $OQ$ 的直線 $L:y=1$。<br>
+直線 $OR$ 的方向角 $-60^\circ$ ⟹ 斜率 $\tan(-60^\circ)=-\sqrt3$ ⟹ $OR:y=-\sqrt3x$。<br>
+交點：$1=-\sqrt3x$ ⟹ $x=-\dfrac1{\sqrt3}=-\dfrac{\sqrt3}3$ ⟹ $S\left(-\dfrac{\sqrt3}3,\ 1\right)$。<br>
+$\angle OSP$ 是水平線 $L$ 與直線 $OR$ 的夾角（$P$ 在 $S$ 的右邊、$O$ 在 $S$ 的右下方）⟹ 等於 $OR$ 與 $x$ 軸正向的夾角 $=60^\circ$。<br>
+驗算：$\overrightarrow{SO}=\left(\dfrac{\sqrt3}3,\ -1\right)$、$\overrightarrow{SP}=\left(1+\dfrac{\sqrt3}3,\ 0\right)$，$\cos\angle OSP=\dfrac{\sqrt3/3}{\sqrt{1/3+1}}=\dfrac{\sqrt3/3}{2/\sqrt3}=\dfrac12$ ⟹ $60^\circ$ ✓<span class="note-sm">整題沒有做過任何一次矩陣乘法——這就是「旋轉方陣 ⟺ 角度」這個翻譯的威力。要小心的只有兩點：極角要累加（不是相乘），以及銳角的限制把 $2\alpha=90^\circ+360^\circ k$ 的其他根全刷掉了。</span></div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">「$A$ 代表鏡射」「$B$ 代表旋轉」＋高次方 → 鏡射滿足 $A^2=I$（所以奇數次方 $=A$、偶數次方 $=I$）；旋轉用角度同餘數清點有幾種。$\det$ 是分辨兩者的照妖鏡</span><span class="src">109 指考 數甲 第 8 題</span></div>
+<div class="fxq">$A$ 代表鏡射，$A^3=\begin{bmatrix}0&-1\\-1&0\end{bmatrix}$。$B$ 代表（以原點為中心）旋轉，$B^3=\begin{bmatrix}-1&0\\0&-1\end{bmatrix}$。試選出正確的選項。<br>
+(1) $A$ 恰有三種可能　(2) $B$ 恰有三種可能　(3) $AB=BA$　(4) $AB$ 代表旋轉　(5) $BABA=I$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(5)</div>
+<div class="fxs"><div class="move">招式：鏡射連做兩次回到原點 ⟹ $A^2=I$ ⟹ $A^3=A^2\cdot A=A$。所以 $A$ 被題目<b>直接釘死</b>；旋轉則要解角度的同餘式。</div>
+<b>$A$</b>：$A^3=A$ ⟹ $A=\begin{bmatrix}0&-1\\-1&0\end{bmatrix}$，只有<b>一種</b>（它是對直線 $y=-x$ 的鏡射：$\det=0-1=-1$ ✓、$A^2=I$ ✓）⟹ (1) ✗<br>
+<b>$B$</b>：$B=R(\theta)$ ⟹ $B^3=R(3\theta)=-I=R(180^\circ)$ ⟹ $3\theta\equiv180^\circ\pmod{360^\circ}$ ⟹ $\theta=60^\circ$、$180^\circ$、$300^\circ$ 三種 ⟹ (2) ✓<br>
+(3) 取 $\theta=60^\circ$：$AB-BA=\begin{bmatrix}-\sqrt3&0\\0&\sqrt3\end{bmatrix}\ne O$ ⟹ 不恆成立 ✗（只有 $\theta=180^\circ$、即 $B=-I$ 時才交換）<br>
+(4) $\det(AB)=\det A\cdot\det B=(-1)\times1=-1$，而旋轉方陣的行列式恆為 $1$ ⟹ $AB$ 不可能是旋轉 ✗<br>
+(5) $BABA=(BA)^2$。$BA$ 是「旋轉接鏡射」⟹ $\det(BA)=-1$，而且它仍然保長度 ⟹ 它是一個鏡射 ⟹ $(BA)^2=I$ ✓<br>
+（逐一驗證：$\theta=60^\circ,180^\circ,300^\circ$ 三種情形算出的 $BABA$ 都是 $I$。）<br>
+故選 (2)(5)。<span class="note-sm">「保長度」的二階方陣只有兩族：$\det=1$ 的旋轉、$\det=-1$ 的鏡射。旋轉 $\times$ 鏡射 ＝ 鏡射、鏡射 $\times$ 鏡射 ＝ 旋轉——把 $\det$ 相乘就看得出來，完全不必乘矩陣。</span></div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">倒來倒去的混合問題 → 先把「一輪之後」寫成兩條一次式，係數表就是轉移方陣；問「第 $100$ 輪」先檢查初始向量是不是不動向量；問濃度則要<b>另外追蹤酒精量</b>，體積和酒精是兩本帳</span><span class="src">98 指考 數乙 非選二</span></div>
+<div class="fxq">設有 $A$、$B$ 兩支大瓶子，開始時 $A$ 瓶裝有 $a$ 公升的<b>純酒精</b>，$B$ 瓶裝有 $b$ 公升的<b>礦泉水</b>。每一輪操作都是：先將 $A$ 瓶的溶液倒出一半到 $B$ 瓶，然後再將 $B$ 瓶的溶液倒出一半回 $A$ 瓶（不考慮酒精與水混合後體積的縮小）。設 $n$ 輪操作後 $A$ 瓶有 $a_n$ 公升的溶液、$B$ 瓶有 $b_n$ 公升的溶液。已知二階方陣 $M$ 滿足 $\begin{bmatrix}a_n\\b_n\end{bmatrix}=M^n\begin{bmatrix}a\\b\end{bmatrix}$。<br>
+(1) 求二階方陣 $M$。　(2) 當 $a=\dfrac23$、$b=\dfrac13$ 時，求 $a_{100}$ 及 $b_{100}$。　(3) 當 $a=\dfrac23$、$b=\dfrac13$ 時，第二輪操作後 $A$ 瓶的溶液中有百分之多少的酒精？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $M=\begin{bmatrix}\frac34&\frac12\\[2pt]\frac14&\frac12\end{bmatrix}$　(2) $a_{100}=\dfrac23$、$b_{100}=\dfrac13$　(3) $\dfrac{11}{16}=68.75\%$</div>
+<div class="fxs"><div class="move">招式：把一輪拆成兩個半步。設這一輪開始時 $A$ 有 $x$、$B$ 有 $y$，逐步追蹤兩瓶的體積，最後把 $x$、$y$ 的係數抄下來就是 $M$。</div>
+<b>(1)</b> 第一半步（$A$ 倒一半給 $B$）：$A$ 剩 $\dfrac x2$，$B$ 變成 $y+\dfrac x2$。<br>
+第二半步（$B$ 倒一半回 $A$）：$B$ 剩 $\dfrac12\left(y+\dfrac x2\right)=\dfrac x4+\dfrac y2$；$A$ 變成 $\dfrac x2+\dfrac x4+\dfrac y2=\dfrac{3x}4+\dfrac y2$。<br>
+$\begin{cases}x'=\frac34x+\frac12y\\y'=\frac14x+\frac12y\end{cases}\Longrightarrow M=\begin{bmatrix}\frac34&\frac12\\[2pt]\frac14&\frac12\end{bmatrix}$（每一行的和是 $1$ ⟹ 總體積不變 ✓）。<br>
+<b>(2)</b> 先試試看初始向量是不是不動向量：$M\begin{bmatrix}\frac23\\[2pt]\frac13\end{bmatrix}=\begin{bmatrix}\frac12+\frac16\\[2pt]\frac16+\frac16\end{bmatrix}=\begin{bmatrix}\frac23\\[2pt]\frac13\end{bmatrix}$ ⟹ 正是穩定狀態！<br>
+所以每一輪都不變 ⟹ $a_{100}=\dfrac23$、$b_{100}=\dfrac13$。<br>
+<b>(3)</b> 體積固定是 $\left(\dfrac23,\dfrac13\right)$，但<b>酒精量</b>要另外記一本帳。初始 $A$ 的酒精 $\dfrac23$（純）、$B$ 的酒精 $0$。<br>
+第一輪：倒一半給 $B$ ⟹ $A$：體積 $\dfrac13$、酒精 $\dfrac13$；$B$：體積 $\dfrac23$、酒精 $\dfrac13$。<br>
+再倒一半回 $A$ ⟹ 移走 $B$ 的一半（體積 $\dfrac13$、酒精 $\dfrac16$）⟹ $A$：體積 $\dfrac23$、酒精 $\dfrac13+\dfrac16=\dfrac12$；$B$：體積 $\dfrac13$、酒精 $\dfrac16$。<br>
+第二輪：倒一半給 $B$ ⟹ $A$：體積 $\dfrac13$、酒精 $\dfrac14$；$B$：體積 $\dfrac23$、酒精 $\dfrac16+\dfrac14=\dfrac5{12}$。<br>
+再倒一半回 $A$ ⟹ $A$：體積 $\dfrac23$、酒精 $\dfrac14+\dfrac5{24}=\dfrac{6+5}{24}=\dfrac{11}{24}$。<br>
+濃度 $=\dfrac{11/24}{2/3}=\dfrac{11}{24}\cdot\dfrac32=\dfrac{11}{16}=68.75\%$。<span class="note-sm">🔴 (3) 千萬不能用「體積的轉移方陣」去算酒精——倒出去的液體是<b>混合液</b>，酒精按當下的濃度等比例被帶走，和體積的分配規則不同。順帶一提，長期下去兩瓶濃度會一起趨近 $\dfrac23$（全部酒精 $\div$ 全部體積），$\dfrac{11}{16}=0.6875$ 已經很接近 $\dfrac23\approx0.667$ 了。</span></div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">行列式包著計數與機率 → 先把三階行列式展開成一條很短的式子（本題只剩兩項），再用<b>奇偶性</b>分析；「乘積是奇數 ⟺ 每個因子都是奇數」是計數的入口</span><span class="src">102 指考 數甲 第 4 題</span></div>
+<div class="fxq">考慮所有由 $1$、$2$、$3$、$4$、$5$、$6$ 各一個與三個 $0$ 所排成、形如 $\begin{vmatrix}0&a&b\\c&0&d\\e&f&0\end{vmatrix}$（對角線均為 $0$）的三階方陣。今隨機選取這樣一個方陣，試問其行列式值為奇數的機率為下列哪一個選項？<br>
+(1) $\dfrac1{20}$　(2) $\dfrac1{10}$　(3) $\dfrac12$　(4) $\dfrac9{10}$　(5) $\dfrac{19}{20}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2) $\dfrac1{10}$</div>
+<div class="fxs"><div class="move">招式：先展開行列式。對角線全是 $0$，展開後六項裡有四項含 $0$ ⟹ 只剩兩項，整題瞬間變成「$ade+bcf$ 何時為奇數」。</div>
+$\begin{vmatrix}0&a&b\\c&0&d\\e&f&0\end{vmatrix}=0(0\cdot0-df)-a(c\cdot0-de)+b(cf-0\cdot e)=ade+bcf$。<br>
+樣本空間：把 $1\sim6$ 填進 $a,b,c,d,e,f$ 六個位置 ⟹ $6!=720$ 種，機會均等。<br>
+$ade+bcf$ 為奇數 ⟺ 兩項<b>一奇一偶</b>。而「三數乘積為奇數 ⟺ 三數全為奇數」，$1\sim6$ 中奇數恰有 $1,3,5$ 三個。<br>
+・若 $\{a,d,e\}=\{1,3,5\}$：$ade$ 為奇，剩下的 $\{b,c,f\}=\{2,4,6\}$ ⟹ $bcf$ 為偶 ⟹ 和為奇 ✓ 這種排法有 $3!\times3!=36$ 種。<br>
+・若 $\{b,c,f\}=\{1,3,5\}$：同理 $36$ 種 ✓<br>
+・其餘情形：兩組各至少含一個偶數 ⟹ $ade$、$bcf$ 皆為偶 ⟹ 和為偶 ✗<br>
+兩類不會重疊，共 $72$ 種 ⟹ 機率 $=\dfrac{72}{720}=\dfrac1{10}$，選 (2)。<span class="note-sm">$1\sim6$ 裡奇數只有三個，而每一項剛好要三個因子——「奇數全被同一項吃掉」是唯一的可能，這個巧合正是本題的設計核心。若換成 $1\sim8$ 排進更大的方陣，這一招就要重新想過了。</span></div></div>
+
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（13 題）</h3>
+<div class="note">本專區取材自各校教師甄選試題（含代理教師甄選），皆逐字重打並獨立驗算。難度明顯高於段考，但用的全部是本章的工具：行列式與面積、二階反方陣、旋轉與鏡射的合成、轉移方陣每行和為 $1$、把條件翻成線性組合。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">轉移方陣＋$\det(2A)=$ 某數 → 先用 $\det(2A)=4\det A$ 把行列式挖出來，再把「每一行的和是 $1$」代進去；四個未知數會神奇地縮成 $y+z$ 一個整體</span><span class="src">屏東女中 112 代理教甄 單 2</span></div>
+<div class="fxq">若 $A=\begin{bmatrix}x&z\\y&u\end{bmatrix}$ 為轉移方陣，且 $\det(2A)=2.4$，則 $y+z$ 之值為何？<br>
+(A) $-0.2$　(B) $0.4$　(C) $0.6$　(D) $0.8$　(E) $1.2$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(B) $0.4$</div>
+<div class="fxs"><div class="move">招式：兩件事各自翻譯。「$\det(2A)$」用 $\det(kA)=k^2\det A$（二階）拆開；「轉移方陣」翻成 $x+y=1$、$z+u=1$，於是 $x=1-y$、$u=1-z$，行列式裡的交叉項會自動抵消。</div>
+$\det(2A)=2^2\det A=4\det A=2.4$ ⟹ $\det A=xu-zy=0.6$。<br>
+轉移方陣 ⟹ 每一行的和為 $1$ ⟹ $x+y=1$、$z+u=1$ ⟹ $x=1-y$、$u=1-z$。<br>
+代入：$xu-zy=(1-y)(1-z)-zy=1-y-z+yz-zy=1-(y+z)$。<br>
+故 $1-(y+z)=0.6$ ⟹ $y+z=0.4$，選 (B)。<br>
+驗算：取 $y=0.1$、$z=0.3$ ⟹ $A=\begin{bmatrix}0.9&0.3\\0.1&0.7\end{bmatrix}$，$\det A=0.63-0.03=0.6$ ✓、$\det(2A)=4(0.6)=2.4$ ✓<span class="note-sm">$\det(kA)=k^2\det A$ 對二階成立、$k^3$ 對三階成立——因為<b>每一列都被乘了 $k$</b>。寫成 $\det(2A)=2\det A$ 是矩陣題最常見的錯誤之一。另外本題也順帶證明了「轉移方陣的行列式 $=1-(\text{兩個「跑掉」的比率之和})$」，必然 $\le1$。</span></div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">專區 2</span><span class="kw">只知道 $A\begin{bmatrix}1\\1\end{bmatrix}=\begin{bmatrix}-1\\1\end{bmatrix}$ 卻問「可能是哪一種變換」 → 條件只鎖住 $a+b=-1$、$c+d=1$；把五種標準形各自代進這兩條式子，能解出參數的就可能</span><span class="src">屏東女中 112 代理教甄 多 5</span></div>
+<div class="fxq">已知二階方陣 $A=\begin{bmatrix}a&b\\c&d\end{bmatrix}$ 滿足 $A\begin{bmatrix}1\\1\end{bmatrix}=\begin{bmatrix}-1\\1\end{bmatrix}$，下列敘述哪些是正確的？<br>
+(A) $a+b+c+d=0$　(B) $A$ 可能是一轉移方陣　(C) $A$ 可能是一旋轉方陣<br>
+(D) $A$ 可能是一水平推移方陣　(E) $A$ 可能是一鏡射方陣</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(A)(C)(D)(E)</div>
+<div class="fxs"><div class="move">招式：先把條件展開成兩條式子：$A\begin{bmatrix}1\\1\end{bmatrix}=\begin{bmatrix}a+b\\c+d\end{bmatrix}=\begin{bmatrix}-1\\1\end{bmatrix}$ ⟹ $a+b=-1$、$c+d=1$。之後每一個選項都只是「能不能找到一個符合這兩條式子的標準形」。</div>
+(A) $a+b+c+d=(-1)+1=0$ ✓<br>
+(B) 轉移方陣要求每一個元都是非負實數 ⟹ $a+b\ge0$，但題目要 $a+b=-1$ ⟹ 不可能 ✗<br>
+(C) 旋轉方陣 $R(\theta)=\begin{bmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{bmatrix}$ ⟹ $\cos\theta-\sin\theta=-1$、$\sin\theta+\cos\theta=1$。兩式相加得 $2\cos\theta=0$、相減得 $2\sin\theta=2$ ⟹ $\theta=90^\circ$ ⟹ $A=\begin{bmatrix}0&-1\\1&0\end{bmatrix}$，驗算 $\begin{bmatrix}0&-1\\1&0\end{bmatrix}\begin{bmatrix}1\\1\end{bmatrix}=\begin{bmatrix}-1\\1\end{bmatrix}$ ✓<br>
+(D) 水平推移 $\begin{bmatrix}1&k\\0&1\end{bmatrix}$ ⟹ $\begin{bmatrix}1+k\\1\end{bmatrix}=\begin{bmatrix}-1\\1\end{bmatrix}$ ⟹ $k=-2$ ⟹ $A=\begin{bmatrix}1&-2\\0&1\end{bmatrix}$ ✓<br>
+(E) 鏡射 $\begin{bmatrix}\cos2\theta&\sin2\theta\\\sin2\theta&-\cos2\theta\end{bmatrix}$ ⟹ $\cos2\theta+\sin2\theta=-1$、$\sin2\theta-\cos2\theta=1$。相加得 $2\sin2\theta=0$、相減得 $2\cos2\theta=-2$ ⟹ $2\theta=180^\circ$ ⟹ $A=\begin{bmatrix}-1&0\\0&1\end{bmatrix}$（對 $y$ 軸鏡射），驗算 $\begin{bmatrix}-1&0\\0&1\end{bmatrix}\begin{bmatrix}1\\1\end{bmatrix}=\begin{bmatrix}-1\\1\end{bmatrix}$ ✓<br>
+故選 (A)(C)(D)(E)。<span class="note-sm">四個「可能」的答案其實給出了四個完全不同的矩陣——這正說明<b>一個向量的像遠遠不足以決定一個二階方陣</b>（要兩個不平行的向量才行）。(B) 之所以唯一被刷掉，是因為轉移方陣的定義裡有「非負」這個不等式條件，而不是等式條件。</span></div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">專區 3</span><span class="kw">給一組「原像 → 像」要反求鏡射方陣 → 直接設 $\begin{bmatrix}C&S\\S&-C\end{bmatrix}$（$C^2+S^2=1$）代進去解；幾何捷徑是「原像＋像」的方向就是對稱軸</span><span class="src">屏東女中 112 代理教甄 填 5</span></div>
+<div class="fxq">設 $L$ 為平面上過原點的一直線，已知點 $(7,-1)$ 對 $L$ 作鏡射變換後得到點 $(1,7)$，求此鏡射變換對應的二階方陣。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\begin{bmatrix}\frac7{25}&\frac{24}{25}\\[2pt]\frac{24}{25}&-\frac7{25}\end{bmatrix}$</div>
+<div class="fxs"><div class="move">招式：以 $y=(\tan\theta)x$ 為軸的鏡射方陣一定長成 $\begin{bmatrix}\cos2\theta&\sin2\theta\\\sin2\theta&-\cos2\theta\end{bmatrix}$，所以設 $C=\cos2\theta$、$S=\sin2\theta$（滿足 $C^2+S^2=1$），只要兩個未知數。</div>
+$\begin{bmatrix}C&S\\S&-C\end{bmatrix}\begin{bmatrix}7\\-1\end{bmatrix}=\begin{bmatrix}7C-S\\7S+C\end{bmatrix}=\begin{bmatrix}1\\7\end{bmatrix}$ ⟹ $\begin{cases}7C-S=1\\C+7S=7\end{cases}$。<br>
+由第一式 $S=7C-1$，代入第二式：$C+7(7C-1)=7$ ⟹ $50C=14$ ⟹ $C=\dfrac7{25}$、$S=\dfrac{49}{25}-1=\dfrac{24}{25}$。<br>
+檢查 $C^2+S^2=\dfrac{49+576}{625}=1$ ✓（若不等於 $1$ 就表示題目給的兩點不可能互為鏡射像）。<br>
+故方陣為 $\begin{bmatrix}\frac7{25}&\frac{24}{25}\\[2pt]\frac{24}{25}&-\frac7{25}\end{bmatrix}$。<br>
+<b>幾何捷徑</b>：鏡射時對稱軸恰好是「原像與像」的角平分線，方向向量取 $(7,-1)+(1,7)=(8,6)\parallel(4,3)$ ⟹ $\tan\theta=\dfrac34$ ⟹ $\cos2\theta=\dfrac{1-\frac9{16}}{1+\frac9{16}}=\dfrac7{25}$、$\sin2\theta=\dfrac{2\cdot\frac34}{1+\frac9{16}}=\dfrac{24}{25}$ ⟹ 同一個答案 ✓<span class="note-sm">兩點的長度必須相同才可能互為鏡射像：$|(7,-1)|=\sqrt{50}=|(1,7)|$ ✓。這個檢查一秒就能做，卻可以先判斷題目有沒有印錯。</span></div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">專區 4</span><span class="kw">「先鏡射再變換 ＝ 先變換再鏡射（換一條軸）」 → 翻成矩陣等式 $T\,F(L)=F(L')\,T$，也就是 $F(L')=T\,F(L)\,T^{-1}$；當 $T$ 是「旋轉再放大」時，效果就是把對稱軸轉同樣的角度</span><span class="src">基隆女中 112 第一次教甄 填 6</span></div>
+<div class="fxq">設坐標平面上三點 $A(1,0)$、$B(0,1)$、$P(x,y)$，已知經平面線性變換 $T$ 作用後，$A$ 被映射至點 $A'(1,\sqrt3)$、$B$ 被映射至點 $B'(-\sqrt3,1)$，而 $P$ 點被映射至點 $P'$。若點 $P$ 先對直線 $L:y=2x$ 鏡射，再經過 $T$ 作用後，其結果相當於點 $P$ 先經過 $T$ 作用，再對直線 $L':y=mx$ 鏡射，求 $m$ 之值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$m=-\dfrac{8+5\sqrt3}{11}$</div>
+<div class="fxs"><div class="move">招式：$A(1,0)$、$B(0,1)$ 的像就是 $T$ 的兩<b>行</b>，所以 $T=\begin{bmatrix}1&-\sqrt3\\\sqrt3&1\end{bmatrix}$。題目的那句話翻成矩陣就是 $T\,F(L)=F(L')\,T$。</div>
+$T=\begin{bmatrix}1&-\sqrt3\\\sqrt3&1\end{bmatrix}=2\begin{bmatrix}\frac12&-\frac{\sqrt3}2\\[2pt]\frac{\sqrt3}2&\frac12\end{bmatrix}=2R(60^\circ)$ ⟹ $T$ 是「逆時針旋轉 $60^\circ$ 再放大 $2$ 倍」。<br>
+由 $T\,F(L)=F(L')\,T$ 得 $F(L')=T\,F(L)\,T^{-1}$。放大的倍數 $2$ 在 $T$ 與 $T^{-1}$ 中互相抵消 ⟹ $F(L')=R(60^\circ)\,F(L)\,R(-60^\circ)$。<br>
+<b>關鍵性質</b>：$R(\varphi)\,F(\theta)\,R(-\varphi)=F(\theta+\varphi)$（把三個矩陣乘開，用和角公式即得）——幾何上就是「連同鏡子一起轉 $\varphi$ 角」。<br>
+$L$ 的傾斜角滿足 $\tan\theta=2$ ⟹ $L'$ 的傾斜角是 $\theta+60^\circ$ ⟹<br>
+$m=\tan(\theta+60^\circ)=\dfrac{\tan\theta+\tan60^\circ}{1-\tan\theta\tan60^\circ}=\dfrac{2+\sqrt3}{1-2\sqrt3}=\dfrac{(2+\sqrt3)(1+2\sqrt3)}{(1-2\sqrt3)(1+2\sqrt3)}=\dfrac{2+4\sqrt3+\sqrt3+6}{1-12}=\dfrac{8+5\sqrt3}{-11}$。<br>
+故 $m=-\dfrac{8+5\sqrt3}{11}\approx-1.515$。<br>
+驗算（硬算矩陣）：$F(L)=\begin{bmatrix}-\frac35&\frac45\\[2pt]\frac45&\frac35\end{bmatrix}$（$\tan\theta=2$ ⟹ $\cos2\theta=-\frac35$、$\sin2\theta=\frac45$），算出 $T\,F(L)\,T^{-1}$ 的第 $(2,1)$ 元與第 $(1,1)$ 元分別為 $-\dfrac{3\sqrt3}{10}-\dfrac25$ 與 $\dfrac3{10}-\dfrac{2\sqrt3}5$，代入 $\tan\theta'=\dfrac{\sin2\theta'}{1+\cos2\theta'}$ 得同一個值 ✓<span class="note-sm">$T\,F(L)=F(L')\,T$ 這種「兩邊各自代表一串動作」的等式叫做<b>共軛</b>。共軛的口訣是：<b>先換個角度看、做同樣的事、再換回來</b>——所以效果就是把原本的動作連同坐標一起轉過去。</span></div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">專區 5</span><span class="kw">要「證明」鏡射方陣的公式 → 把點寫成極坐標 $(r\cos\alpha,\ r\sin\alpha)$，鏡射後長度不變、極角變成 $2\theta-\alpha$，再用和角公式拆開，$x$、$y$ 的係數就是那四個元</span><span class="src">嘉義高中 112 第一次教甄 計算證明 一</span></div>
+<div class="fxq">(1) 若 $L$ 為過原點且與 $x$ 軸正向夾角為 $\theta$ 的直線，則對直線 $L$ 的鏡射變換所表示的鏡射方陣為何？請證明之。（7 分）<br>
+(2) 說明兩個鏡射方陣相乘的結果為何種幾何變換。（3 分）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $F(\theta)=\begin{bmatrix}\cos2\theta&\sin2\theta\\\sin2\theta&-\cos2\theta\end{bmatrix}$　(2) 旋轉變換，旋轉角為「兩條對稱軸夾角」的兩倍</div>
+<div class="fxs"><div class="move">招式：鏡射保長度、把極角 $\alpha$ 換成 $2\theta-\alpha$（因為對稱軸的極角 $\theta$ 恰是原像與像的極角平均）。把這句話寫成式子，再用和角公式展開成 $x$、$y$ 的一次式。</div>
+<b>(1)</b> 設 $P(x,y)$ 的極坐標為 $x=r\cos\alpha$、$y=r\sin\alpha$。鏡射後的 $P'$ 長度仍為 $r$、極角為 $2\theta-\alpha$：<br>
+$x'=r\cos(2\theta-\alpha)=r(\cos2\theta\cos\alpha+\sin2\theta\sin\alpha)=\cos2\theta\cdot x+\sin2\theta\cdot y$；<br>
+$y'=r\sin(2\theta-\alpha)=r(\sin2\theta\cos\alpha-\cos2\theta\sin\alpha)=\sin2\theta\cdot x-\cos2\theta\cdot y$。<br>
+寫成矩陣：$\begin{bmatrix}x'\\y'\end{bmatrix}=\begin{bmatrix}\cos2\theta&\sin2\theta\\\sin2\theta&-\cos2\theta\end{bmatrix}\begin{bmatrix}x\\y\end{bmatrix}$ ⟹ 得證。<br>
+（檢查：$\theta=0$ 時得 $\begin{bmatrix}1&0\\0&-1\end{bmatrix}$，正是對 $x$ 軸鏡射 ✓；$\theta=45^\circ$ 時得 $\begin{bmatrix}0&1\\1&0\end{bmatrix}$，正是對 $y=x$ 鏡射 ✓）<br>
+<b>(2)</b> $F(\theta)F(\beta)=\begin{bmatrix}\cos2\theta&\sin2\theta\\\sin2\theta&-\cos2\theta\end{bmatrix}\begin{bmatrix}\cos2\beta&\sin2\beta\\\sin2\beta&-\cos2\beta\end{bmatrix}$，逐格用和角公式：<br>
+$(1,1)$ 元 $=\cos2\theta\cos2\beta+\sin2\theta\sin2\beta=\cos(2\theta-2\beta)$；<br>
+$(1,2)$ 元 $=\cos2\theta\sin2\beta-\sin2\theta\cos2\beta=-\sin(2\theta-2\beta)$；<br>
+$(2,1)$ 元 $=\sin2\theta\cos2\beta-\cos2\theta\sin2\beta=\sin(2\theta-2\beta)$；<br>
+$(2,2)$ 元 $=\sin2\theta\sin2\beta+\cos2\theta\cos2\beta=\cos(2\theta-2\beta)$。<br>
+$F(\theta)F(\beta)=\begin{bmatrix}\cos(2\theta-2\beta)&-\sin(2\theta-2\beta)\\\sin(2\theta-2\beta)&\cos(2\theta-2\beta)\end{bmatrix}=R(2\theta-2\beta)$ ⟹ <b>兩次鏡射的合成是旋轉，旋轉角為兩軸夾角的兩倍</b>。<span class="note-sm">$\det F(\theta)=-\cos^22\theta-\sin^22\theta=-1$，兩個相乘得 $(-1)(-1)=1$ ⟹ 結果的行列式是 $1$，與「是旋轉」完全吻合。這也解釋了為什麼<b>奇數次鏡射仍是鏡射、偶數次鏡射一定是旋轉</b>。</span></div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">專區 6</span><span class="kw">三角形經線性變換後求面積 → 面積伸縮率是 $|\det T|$，所以只要「原面積 $\times|\det T|$」；原面積由三邊長用餘弦定理求 $\sin$ 再套 $\frac12ab\sin C$</span><span class="src">嘉義高中 111 第一次教甄 填 8</span></div>
+<div class="fxq">已知 $\triangle ABC$ 的三邊長分別為 $\sqrt5$、$\sqrt6$、$\sqrt7$，今給定一線性變換 $T=\begin{bmatrix}1&2\\-1&4\end{bmatrix}$，若 $\triangle ABC$ 經 $T$ 線性變換後成 $\triangle A'B'C'$，求 $\triangle A'B'C'$ 的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3\sqrt{26}$</div>
+<div class="fxs"><div class="move">招式：兩段各自獨立。第一段：用餘弦定理求出夾角的 $\sin$，再用 $\dfrac12ab\sin C$ 求原面積。第二段：乘上 $|\det T|$。三角形放在哪裡、長什麼樣都不影響倍率。</div>
+設夾在 $\sqrt5$ 與 $\sqrt6$ 之間的角為 $A$（對邊 $\sqrt7$）：<br>
+$\cos A=\dfrac{(\sqrt5)^2+(\sqrt6)^2-(\sqrt7)^2}{2\sqrt5\sqrt6}=\dfrac{5+6-7}{2\sqrt{30}}=\dfrac{4}{2\sqrt{30}}=\dfrac2{\sqrt{30}}$。<br>
+$\sin A=\sqrt{1-\dfrac4{30}}=\sqrt{\dfrac{26}{30}}=\dfrac{\sqrt{26}}{\sqrt{30}}$（$A$ 是三角形內角 ⟹ $\sin A\gt0$）。<br>
+原面積 $=\dfrac12\sqrt5\cdot\sqrt6\cdot\sin A=\dfrac12\sqrt{30}\cdot\dfrac{\sqrt{26}}{\sqrt{30}}=\dfrac{\sqrt{26}}2$。<br>
+$\det T=1\cdot4-2\cdot(-1)=6$ ⟹ 面積伸縮率 $=|\det T|=6$。<br>
+$\triangle A'B'C'$ 的面積 $=6\times\dfrac{\sqrt{26}}2=3\sqrt{26}$。<br>
+驗算（用海龍公式再算一次原面積）：$s=\dfrac{\sqrt5+\sqrt6+\sqrt7}2$，$16\cdot(\text{面積})^2=2(5\cdot6+6\cdot7+7\cdot5)-(5^2+6^2+7^2)=2(30+42+35)-(25+36+49)=214-110=104$ ⟹ 面積 $=\sqrt{104}/4=\dfrac{2\sqrt{26}}4=\dfrac{\sqrt{26}}2$ ✓<span class="note-sm">$|\det T|$ 這個倍率對<b>任何</b>圖形都一樣（三角形、圓、不規則區域皆然），這也是行列式最重要的幾何意義。本題若 $\det T\lt0$，圖形還會被「翻面」，但面積只看絕對值。</span></div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">專區 7</span><span class="kw">「$L_1$ 上的點都跑到 $L_2$、$L_2$ 上的點都跑回 $L_1$」 → 在每條線上各取<b>兩個</b>好算的點，寫出四條方程式；$a,c$ 一組、$b,d$ 一組，剛好拆成兩個二元一次</span><span class="src">中科實中 108 教甄 填 1</span></div>
+<div class="fxq">直線 $L_1:2x+y-6=0$、$L_2:8x+9y=6$。$L_1$ 上的點經由二階方陣 $A$ 的線性變換至 $L_2$，$L_2$ 上的點經由二階方陣 $A$ 的線性變換至 $L_1$，試求二階方陣 $A$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$A=\begin{bmatrix}7&8\\-6&-7\end{bmatrix}$</div>
+<div class="fxs"><div class="move">招式：設 $A=\begin{bmatrix}a&b\\c&d\end{bmatrix}$，點 $(x,y)$ 的像是 $(ax+by,\ cx+dy)$。在每條直線上取兩個整數點，代進另一條直線的方程式，就得到四條線性方程式。</div>
+$L_1$ 上取 $(3,0)$ 與 $(0,6)$，它們的像必須落在 $L_2$：<br>
+$(3,0)\mapsto(3a,3c)$：$8(3a)+9(3c)=6$ ⟹ $8a+9c=2$。<br>
+$(0,6)\mapsto(6b,6d)$：$8(6b)+9(6d)=6$ ⟹ $8b+9d=1$。<br>
+$L_2$ 上取 $\left(\dfrac34,0\right)$ 與 $\left(0,\dfrac23\right)$，它們的像必須落在 $L_1$：<br>
+$\left(\dfrac34,0\right)\mapsto\left(\dfrac{3a}4,\dfrac{3c}4\right)$：$2\cdot\dfrac{3a}4+\dfrac{3c}4=6$ ⟹ $2a+c=8$。<br>
+$\left(0,\dfrac23\right)\mapsto\left(\dfrac{2b}3,\dfrac{2d}3\right)$：$2\cdot\dfrac{2b}3+\dfrac{2d}3=6$ ⟹ $2b+d=9$。<br>
+解第一組 $\begin{cases}8a+9c=2\\2a+c=8\end{cases}$：由第二式 $c=8-2a$，代入得 $8a+72-18a=2$ ⟹ $-10a=-70$ ⟹ $a=7$、$c=-6$。<br>
+解第二組 $\begin{cases}8b+9d=1\\2b+d=9\end{cases}$：$d=9-2b$ ⟹ $8b+81-18b=1$ ⟹ $-10b=-80$ ⟹ $b=8$、$d=-7$。<br>
+$A=\begin{bmatrix}7&8\\-6&-7\end{bmatrix}$（$\det A=-49+48=-1\ne0$ ⟹ 真的把整條直線送到整條直線）。<br>
+驗算：$L_1$ 上的點寫成 $(t,\ 6-2t)$，像為 $(7t+8(6-2t),\ -6t-7(6-2t))=(48-9t,\ 8t-42)$，代入 $L_2$：$8(48-9t)+9(8t-42)=384-72t+72t-378=6$ ✓ 對所有 $t$ 成立。<span class="note-sm">為什麼要在每條線上取<b>兩個</b>點？因為一條直線上的點有一個自由度，只取一個點得到的資訊不足。取了兩個點之後，線性變換的「直線送到直線」性質保證其餘的點自動跟著跑。</span></div></div>
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">專區 8</span><span class="kw">「把 $L$ 變到 $L$、把 $M$ 變到 $M$」（兩條線各自不動）→ 一樣是每條線取兩個點代回去；最後那個三角形的面積不必重算，乘上 $|\det P|$ 就好</span><span class="src">家齊高中 111 第一次教甄 計算 1</span></div>
+<div class="fxq">考慮座標平面上的直線 $L:2x-y=0$ 與 $M:2x+3y=6$，若 $b$、$c$、$d$ 為實數且二階方陣 $P=\begin{bmatrix}7&b\\c&d\end{bmatrix}$ 所代表的線性變換將 $L$ 變換到 $L$、$M$ 變換到 $M$（即 $L$ 與 $M$ 均變換到其自身）。<br>
+(1) 求方陣 $P$。　(2) 求直線 $L$、$M$ 與 $x$ 軸所圍成的三角形經方陣 $P$ 變換後所得三角形的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $P=\begin{bmatrix}7&-3\\-4&3\end{bmatrix}$　(2) $\dfrac{81}4$</div>
+<div class="fxs"><div class="move">招式：$M$ 上有兩個很好用的整數點 $(3,0)$ 與 $(0,2)$，各給一條方程式；$L$ 上取 $(1,2)$ 再補第三條。三個未知數、三條方程式。</div>
+<b>(1)</b> $M$ 上取 $(3,0)$：像為 $\begin{bmatrix}7&b\\c&d\end{bmatrix}\begin{bmatrix}3\\0\end{bmatrix}=\begin{bmatrix}21\\3c\end{bmatrix}$，代入 $M$：$2(21)+3(3c)=6$ ⟹ $42+9c=6$ ⟹ $c=-4$。<br>
+$M$ 上取 $(0,2)$：像為 $\begin{bmatrix}2b\\2d\end{bmatrix}$，代入 $M$：$4b+6d=6$ ⟹ $2b+3d=3$。<br>
+$L$ 上取 $(1,2)$：像為 $\begin{bmatrix}7+2b\\c+2d\end{bmatrix}$，代入 $L:2x-y=0$：$2(7+2b)=c+2d$ ⟹ $14+4b=-4+2d$ ⟹ $2b=d-9$。<br>
+代入 $2b+3d=3$：$(d-9)+3d=3$ ⟹ $4d=12$ ⟹ $d=3$，$2b=-6$ ⟹ $b=-3$。<br>
+$P=\begin{bmatrix}7&-3\\-4&3\end{bmatrix}$，$\det P=21-12=9$。<br>
+驗算：$L$ 上任一點 $(t,2t)$ 的像 $=(7t-6t,\ -4t+6t)=(t,2t)$ ⟹ 居然是逐點不動 ✓；$M$ 上取 $(3,0)\mapsto(21,-12)$，$2(21)+3(-12)=42-36=6$ ✓<br>
+<b>(2)</b> 三角形的三個頂點：$L\cap x$ 軸 $=O(0,0)$；$M\cap x$ 軸 $=(3,0)$；$L\cap M$：由 $y=2x$ 代入 $2x+3y=6$ 得 $8x=6$ ⟹ $\left(\dfrac34,\dfrac32\right)$。<br>
+原面積 $=\dfrac12\times3\times\dfrac32=\dfrac94$（底為 $x$ 軸上長 $3$ 的線段、高為 $\dfrac32$）。<br>
+像的面積 $=|\det P|\times\dfrac94=9\times\dfrac94=\dfrac{81}4$。<span class="note-sm">$L$ 上的點居然一點都不動、$M$ 上的點卻會在 $M$ 上滑動（例如 $(3,0)\mapsto(21,-12)$）——「把一條直線送到自己」並不代表「逐點不動」。這也是為什麼三角形的面積會變大 $9$ 倍。</span></div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">專區 9</span><span class="kw">同一個線性變換連續作用很多次、問「第幾次進第一象限」 → 先求出矩陣，再看它是不是上（下）三角形；若是，兩個坐標可以各自寫出通式，剩下的就是解指數不等式</span><span class="src">台南二中 101 教甄 填 2</span></div>
+<div class="fxq">設平面上的線性變換 $f$，將兩點 $(1,2)$、$(2,3)$ 分別變換為 $(2,3)$、$(4,5)$。若將 $P(1,-100)$ 用線性變換 $f$ 接連進行多次變換，試求 $P$ 點首次被變換到第一象限的變換次數 $n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$n=7$</div>
+<div class="fxs"><div class="move">招式：先由兩組對應點求出 $A$（併成矩陣等式最快），再看結構。本題的 $A$ 是下三角形，所以 $x$ 坐標自己遞迴、$y$ 坐標只被 $x$ 影響——可以逐個寫出通式。</div>
+併成矩陣等式：$A\begin{bmatrix}1&2\\2&3\end{bmatrix}=\begin{bmatrix}2&4\\3&5\end{bmatrix}$。<br>
+$\begin{vmatrix}1&2\\2&3\end{vmatrix}=3-4=-1$ ⟹ $\begin{bmatrix}1&2\\2&3\end{bmatrix}^{-1}=\dfrac1{-1}\begin{bmatrix}3&-2\\-2&1\end{bmatrix}=\begin{bmatrix}-3&2\\2&-1\end{bmatrix}$。<br>
+$A=\begin{bmatrix}2&4\\3&5\end{bmatrix}\begin{bmatrix}-3&2\\2&-1\end{bmatrix}=\begin{bmatrix}-6+8&4-4\\-9+10&6-5\end{bmatrix}=\begin{bmatrix}2&0\\1&1\end{bmatrix}$。<br>
+設第 $n$ 次變換後的點為 $(x_n,y_n)$，起點 $(x_0,y_0)=(1,-100)$。由 $A$ 讀出遞迴：$x_n=2x_{n-1}$、$y_n=x_{n-1}+y_{n-1}$。<br>
+$x_n=2^n$（永遠為正）。<br>
+$y_n=y_0+(x_0+x_1+\cdots+x_{n-1})=-100+(1+2+\cdots+2^{n-1})=-100+(2^n-1)=2^n-101$。<br>
+第一象限需 $x_n\gt0$（恆成立）且 $y_n\gt0$ ⟹ $2^n\gt101$。<br>
+$2^6=64\lt101$、$2^7=128\gt101$ ⟹ 最小的 $n$ 是 $7$，此時的點為 $(128,\ 27)$。<br>
+驗算：$n=6$ 時為 $(64,\ -37)$——在第四象限，還沒進第一象限 ✓<span class="note-sm">$A=\begin{bmatrix}2&0\\1&1\end{bmatrix}$ 的下三角形結構是本題能「手算通式」的原因：$x$ 完全不受 $y$ 影響，所以先解 $x$，再把 $x$ 當已知量代進 $y$ 的遞迴。看到三角形矩陣就先找這種「單向依賴」。</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">專區 10</span><span class="kw">$X+Y=I$ 且 $XY=O$ → 立刻推出 $X^2=X$（所以 $X^n=X$，高次方全塌成一次）；再用 $aX+bY=A$ 把 $X$ 用 $A$ 表示，$a$、$b$ 由 $A^2=(a+b)A-abI$ 逼出來</span><span class="src">台南二中 101 教甄 填 3</span></div>
+<div class="fxq">設 $A=\begin{bmatrix}1&4\\3&2\end{bmatrix}$，且 $X$、$Y$ 均為二階方陣，滿足 $X+Y=I$、$XY=O$、$aX+bY=A$，其中 $a\gt b$ 且 $a$、$b$ 為常數，求 $X^n$（$n$ 為正整數）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$X^n=\dfrac17\begin{bmatrix}3&4\\3&4\end{bmatrix}$</div>
+<div class="fxs"><div class="move">招式：三個條件各有用處。$X+Y=I$ 讓我們用 $X$ 消掉 $Y$；$XY=O$ 立刻給出 $X^2=X$；$aX+bY=A$ 把 $X$ 用 $A$ 表示。最後回頭用 $X^2=X$ 反推 $a$、$b$。</div>
+<b>第一步：$X^n=X$。</b>由 $Y=I-X$ 代入 $XY=O$：$X(I-X)=O$ ⟹ $X-X^2=O$ ⟹ $X^2=X$ ⟹ $X^3=X^2X=X^2=X$ ⟹ 對所有正整數 $n$，$X^n=X$。<br>
+<b>第二步：用 $A$ 表示 $X$。</b>$aX+b(I-X)=A$ ⟹ $(a-b)X+bI=A$ ⟹ $X=\dfrac{A-bI}{a-b}$（$a\gt b$ ⟹ $a-b\ne0$）。<br>
+<b>第三步：求 $a$、$b$。</b>把 $X$ 代進 $X^2=X$：$(A-bI)^2=(a-b)(A-bI)$ ⟹ $A^2-2bA+b^2I=(a-b)A-b(a-b)I$ ⟹ 整理得 $A^2=(a+b)A-abI$。<br>
+而 $A^2=\begin{bmatrix}1&4\\3&2\end{bmatrix}\begin{bmatrix}1&4\\3&2\end{bmatrix}=\begin{bmatrix}1+12&4+8\\3+6&12+4\end{bmatrix}=\begin{bmatrix}13&12\\9&16\end{bmatrix}$。<br>
+比對 $(1,2)$ 元：$(a+b)\cdot4=12$ ⟹ $a+b=3$；比對 $(1,1)$ 元：$(a+b)\cdot1-ab=13$ ⟹ $3-ab=13$ ⟹ $ab=-10$。<br>
+⟹ $a$、$b$ 是 $t^2-3t-10=0$ 的兩根 ⟹ $t=5$ 或 $-2$；$a\gt b$ ⟹ $a=5$、$b=-2$。<br>
+<b>第四步：</b>$X=\dfrac{A+2I}{7}=\dfrac17\begin{bmatrix}3&4\\3&4\end{bmatrix}$ ⟹ $X^n=X=\dfrac17\begin{bmatrix}3&4\\3&4\end{bmatrix}$。<br>
+驗算：$X^2=\dfrac1{49}\begin{bmatrix}3&4\\3&4\end{bmatrix}\begin{bmatrix}3&4\\3&4\end{bmatrix}=\dfrac1{49}\begin{bmatrix}21&28\\21&28\end{bmatrix}=\dfrac17\begin{bmatrix}3&4\\3&4\end{bmatrix}=X$ ✓；<br>
+$Y=I-X=\dfrac17\begin{bmatrix}4&-4\\-3&3\end{bmatrix}$，$XY=\dfrac1{49}\begin{bmatrix}12-12&-12+12\\12-12&-12+12\end{bmatrix}=O$ ✓；<br>
+$5X-2Y=\dfrac17\left(\begin{bmatrix}15&20\\15&20\end{bmatrix}-\begin{bmatrix}8&-8\\-6&6\end{bmatrix}\right)=\dfrac17\begin{bmatrix}7&28\\21&14\end{bmatrix}=\begin{bmatrix}1&4\\3&2\end{bmatrix}=A$ ✓<span class="note-sm">滿足 $X^2=X$ 的矩陣把平面「壓」到一條直線上，壓過一次之後再壓也不會變——所以 $X^n=X$。本題的 $X$ 把整個平面壓到直線 $y=x$ 上（兩列相同 ⟹ 像的兩個坐標永遠相等）。</span></div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">專區 11</span><span class="kw">矩陣長成 $\frac1{1+a^2}\left[\begin{array}{cc}1&-a\\a&1\end{array}\right]$ → 它是「旋轉 $\theta$ 再縮為 $\frac1{\sqrt{1+a^2}}$ 倍」（$\tan\theta=a$）；三個點的面積用 $\det$ 拆成三塊，最後用算幾不等式求最大值</span><span class="src">台南二中 101 教甄 填 5</span></div>
+<div class="fxq">給定矩陣 $M=\begin{bmatrix}\dfrac1{1+a^2}&-\dfrac a{1+a^2}\\[4pt]\dfrac a{1+a^2}&\dfrac1{1+a^2}\end{bmatrix}$，其中 $a\gt0$。規定 $P_n=(x_n,y_n)$ 且 $\begin{bmatrix}x_1\\y_1\end{bmatrix}=\begin{bmatrix}1\\0\end{bmatrix}$、$\begin{bmatrix}x_2\\y_2\end{bmatrix}=M\begin{bmatrix}x_1\\y_1\end{bmatrix}$、$\begin{bmatrix}x_3\\y_3\end{bmatrix}=M\begin{bmatrix}x_2\\y_2\end{bmatrix}$，求 $\triangle P_1P_2P_3$ 面積的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{3\sqrt3}{32}$</div>
+<div class="fxs"><div class="move">招式：把 $M$ 認出來。$\begin{bmatrix}1&-a\\a&1\end{bmatrix}=\sqrt{1+a^2}\begin{bmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{bmatrix}$（$\tan\theta=a$），所以 $M=r\,R(\theta)$，其中 $r=\dfrac1{\sqrt{1+a^2}}=\cos\theta$：每作用一次就「轉 $\theta$、縮 $r$ 倍」。</div>
+$|OP_1|=1$、$|OP_2|=r$、$|OP_3|=r^2$，且相鄰兩點對 $O$ 的夾角都是 $\theta$。<br>
+用「以 $O$ 為頂點的三塊有向面積」拆開：<br>
+$2\,[\triangle P_1P_2P_3]=\left|\det(\overrightarrow{OP_1},\overrightarrow{OP_2})+\det(\overrightarrow{OP_2},\overrightarrow{OP_3})+\det(\overrightarrow{OP_3},\overrightarrow{OP_1})\right|$。<br>
+$\det(\overrightarrow{OP_1},\overrightarrow{OP_2})=1\cdot r\sin\theta$；$\det(\overrightarrow{OP_2},\overrightarrow{OP_3})=r\cdot r^2\sin\theta=r^3\sin\theta$；<br>
+$\det(\overrightarrow{OP_3},\overrightarrow{OP_1})=r^2\cdot1\cdot\sin(-2\theta)=-r^2\sin2\theta=-2r^2\sin\theta\cos\theta$。<br>
+由 $\cos\theta=r$、$\sin\theta=ar$（因 $\tan\theta=a$）：<br>
+$2\,[\triangle]=\left|ar^2+ar^4-2ar^4\right|=ar^2(1-r^2)$。<br>
+代 $r^2=\dfrac1{1+a^2}$、$1-r^2=\dfrac{a^2}{1+a^2}$：$2\,[\triangle]=a\cdot\dfrac1{1+a^2}\cdot\dfrac{a^2}{1+a^2}=\dfrac{a^3}{(1+a^2)^2}$。<br>
+故面積 $S=\dfrac{a^3}{2(1+a^2)^2}$。令 $u=a^2\gt0$，則 $S^2=\dfrac{u^3}{4(1+u)^4}$。<br>
+用算幾不等式（四個正數 $1,\dfrac u3,\dfrac u3,\dfrac u3$）：$\dfrac{1+u}4=\dfrac{1+\frac u3+\frac u3+\frac u3}4\ge\sqrt[4]{1\cdot\dfrac{u^3}{27}}$ ⟹ $(1+u)^4\ge\dfrac{256}{27}u^3$。<br>
+⟹ $S^2\le\dfrac{u^3}{4}\cdot\dfrac{27}{256u^3}=\dfrac{27}{1024}$ ⟹ $S\le\dfrac{3\sqrt3}{32}$，等號在 $1=\dfrac u3$ 即 $u=3$、$a=\sqrt3$ 時成立。<br>
+驗算：$a=\sqrt3$ 時 $S=\dfrac{3\sqrt3}{2\cdot16}=\dfrac{3\sqrt3}{32}$ ✓<span class="note-sm">$a=\sqrt3$ 對應 $\theta=60^\circ$、縮小倍率 $r=\dfrac12$——旋轉角太小三點幾乎共線、縮太多後面的點擠在原點附近，兩邊都會讓面積變小，最佳點就卡在中間。</span></div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">專區 12</span><span class="kw">方陣的元照某種規則蛇行排列、問某一格的數 → 先找出「沿著哪一族格子填」（本題是 $i+j$ 為定值的反對角線），再數「前面幾條總共幾格」＋「這一條排第幾個」</span><span class="src">高雄市 111 聯合教甄 填 13</span></div>
+<div class="fxq">現有一方陣 $A_n$，其內部的元依以下規則排列：$A_1=\begin{bmatrix}1\end{bmatrix}$、$A_2=\begin{bmatrix}1&3\\2&4\end{bmatrix}$、$A_3=\begin{bmatrix}1&3&4\\2&5&8\\6&7&9\end{bmatrix}$，請問 $A_{32}$ 的第 $12$ 列第 $24$ 行的元為何？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$598$</div>
+<div class="fxs"><div class="move">招式：把 $A_3$ 的 $1\sim9$ 依序標出位置，看看它們走了什麼路線。答案是「沿著列號＋行號 $=$ 定值的反對角線，一條一條地蛇行」。</div>
+由 $A_3$ 讀出填入順序（記第 $i$ 列第 $j$ 行為 $(i,j)$）：<br>
+$i+j=2$：$(1,1)=1$；<br>
+$i+j=3$：$(2,1)=2\to(1,2)=3$（列號<b>遞減</b>，由下往上）；<br>
+$i+j=4$：$(1,3)=4\to(2,2)=5\to(3,1)=6$（列號<b>遞增</b>，由上往下）；<br>
+$i+j=5$：$(3,2)=7\to(2,3)=8$（由下往上）；　$i+j=6$：$(3,3)=9$。<br>
+⟹ 規則：$i+j$ 為<b>奇數</b>時由下往上、為<b>偶數</b>時由上往下。<br>
+目標格 $(12,24)$：$i+j=36$（偶數 ⟹ 由上往下）。<br>
+<b>先數前面幾條對角線的格數</b>（$n=32$）：$i+j=s$ 時，$1\le i\le32$ 且 $1\le s-i\le32$。<br>
+・$2\le s\le33$：共 $s-1$ 格 ⟹ $s=2$ 到 $33$ 合計 $1+2+\cdots+32=\dfrac{32\times33}2=528$ 格。<br>
+・$s=34$：$i$ 從 $2$ 到 $32$ ⟹ $31$ 格；$s=35$：$i$ 從 $3$ 到 $32$ ⟹ $30$ 格。<br>
+到 $s=35$ 為止共 $528+31+30=589$ 格。<br>
+<b>再數本條的位次</b>：$s=36$ 時 $i$ 從 $4$（因 $j=36-i\le32$ ⟹ $i\ge4$）開始由上往下，$(12,24)$ 是第 $12-4+1=9$ 個。<br>
+故該元為 $589+9=598$。<br>
+驗算：用同一套規則重建 $A_2$ 得 $\begin{bmatrix}1&3\\2&4\end{bmatrix}$ ✓、重建 $A_3$ 得 $\begin{bmatrix}1&3&4\\2&5&8\\6&7&9\end{bmatrix}$ ✓（規則無誤）。<span class="note-sm">🔴 最容易錯的是「前 $s-1$ 格」這個公式只在 $s\le n+1$ 時成立。$s$ 超過 $n+1$ 之後對角線會被方陣的邊界<b>截短</b>，格數改成 $2n+1-s$——本題 $s=34,35$ 就是 $31,30$ 而不是 $33,34$。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">專區 13</span><span class="kw">「投影」的矩陣＋很高的次方 → 投影兩次等於投影一次（點已經在線上就不會再動）⟹ $A^2=A$ ⟹ $A^n=A$；矩陣本身用單位方向向量的內積寫出來</span><span class="src">新竹中學 112 代理教甄 填 8</span></div>
+<div class="fxq">已知 $L$ 為過原點與 $x$ 軸正向夾角為 $\theta$ 的直線，$P$ 對直線 $L$ 作垂直線的垂足 $P'$ 稱為 $P$ 對 $L$ 的投影。已知「對 $L$ 作投影」的作用可以表示成一個線性變換，其代表的二階方陣為 $A$，求 $A^{112}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$A^{112}=A=\begin{bmatrix}\cos^2\theta&\sin\theta\cos\theta\\\sin\theta\cos\theta&\sin^2\theta\end{bmatrix}$</div>
+<div class="fxs"><div class="move">招式：兩段。第一段用「正射影」把 $A$ 寫出來：$L$ 的單位方向向量是 $\vec e=(\cos\theta,\sin\theta)$，$P$ 的投影就是 $(\vec{OP}\cdot\vec e)\,\vec e$。第二段觀察「投影兩次 ＝ 投影一次」。</div>
+<b>求 $A$：</b>設 $P(x,y)$。$\vec{OP}\cdot\vec e=x\cos\theta+y\sin\theta$ ⟹<br>
+$P'=(x\cos\theta+y\sin\theta)(\cos\theta,\ \sin\theta)=\left(\cos^2\theta\cdot x+\sin\theta\cos\theta\cdot y,\ \ \sin\theta\cos\theta\cdot x+\sin^2\theta\cdot y\right)$。<br>
+$A=\begin{bmatrix}\cos^2\theta&\sin\theta\cos\theta\\\sin\theta\cos\theta&\sin^2\theta\end{bmatrix}$。<br>
+<b>求 $A^{112}$：</b>$P'$ 已經在 $L$ 上，再投影一次還在原地 ⟹ $A(A\vec v)=A\vec v$ 對每一個 $\vec v$ 成立 ⟹ $A^2=A$。<br>
+代數驗證：$A^2$ 的 $(1,1)$ 元 $=\cos^4\theta+\sin^2\theta\cos^2\theta=\cos^2\theta(\cos^2\theta+\sin^2\theta)=\cos^2\theta$；$(1,2)$ 元 $=\cos^2\theta\sin\theta\cos\theta+\sin\theta\cos\theta\sin^2\theta=\sin\theta\cos\theta$；其餘兩格同理 ⟹ $A^2=A$ ✓<br>
+於是 $A^3=A^2A=AA=A$，依此類推 ⟹ $A^n=A$ 對所有正整數 $n$ 成立 ⟹ $A^{112}=A$。<br>
+（$\theta\ne90^\circ$ 時也可寫成 $A=\dfrac1{1+\tan^2\theta}\begin{bmatrix}1&\tan\theta\\\tan\theta&\tan^2\theta\end{bmatrix}$。）<span class="note-sm">$\det A=\cos^2\theta\sin^2\theta-\sin^2\theta\cos^2\theta=0$ ⟹ 投影方陣<b>沒有反方陣</b>，這完全合理：整個平面被壓成一條直線之後，已經分不出原來的點在哪裡了。所有滿足 $A^2=A$ 的方陣（零方陣與單位方陣除外）都是這種「壓扁」型。</span></div></div>
+
+</section>
+
+<div class="ch-nav">
+  <a href="../g11b-ch03/practice.html">← 第三章 條件機率與貝氏定理 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <span></span>
+</div>
+</div>
+
+<script>
+(function () {
+  var G = window.PGEN, CH = 'g11b-ch04';
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var TIERS = ['L0', 'L1', 'L2', 'L3'], labelOf = {};
+  TIERS.forEach(function (L) { if (G.META[L]) G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  var DAY = 86400000, INTERVAL = [1, 3, 7, 14];            /* 錯題本間隔（天）：第 n 次全對後隔 INTERVAL[n] 天再測；連續 2 次全對畢業 */
+  var CONF = { h: '有把握', m: '不確定', l: '猜的' }, CAUSE = { start: '不會下手', formula: '公式用錯', calc: '計算錯', read: '看錯題' };
+  var READ_CAUSE = { start: 1, formula: 1 };               /* 這兩種錯因建議回頭讀「先要會」；另兩種建議多算幾題 */
+
+  /* ══════════ 練習紀錄（只存在這台裝置）══════════ */
+  var STORE = 'pgen_rec_' + CH;
+  function loadRec() {
+    var r = null; try { r = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { }
+    if (!r || !r.attempts) return { v: 2, attempts: [], wb: {} };
+    if (r.v === 1) { r.attempts.forEach(function (at) { at.items.forEach(function (x) { if (!x.t) x.t = at.tier; }); }); r.v = 2; }
+    if (!r.wb) r.wb = {};
+    return r;
+  }
+  function saveRec() { try { localStorage.setItem(STORE, JSON.stringify(REC)); } catch (e) { } }
+  var REC = loadRec();
+  function stats() {
+    var byKey = {}, bySet = {};
+    REC.attempts.forEach(function (at) {
+      at.items.forEach(function (x) {
+        var t = x.t || at.tier, k = t + '.' + x.k, o = byKey[k] || (byKey[k] = { tier: t, key: x.k, n: 0, w: 0, hc: 0, gs: 0, last: [], causes: {} });
+        o.n++; if (x.wrong) o.w++; o.last.push(x.wrong ? 1 : 0);
+        if (x.wrong && x.conf === 'h') o.hc++;
+        if (!x.wrong && x.conf === 'l') o.gs++;
+        if (x.wrong && x.cause) o.causes[x.cause] = (o.causes[x.cause] || 0) + 1;
+      });
+      if (at.kind === 'review') return;
+      var s = bySet[at.set] || (bySet[at.set] = { rounds: 0, hist: [] });
+      s.rounds++; s.hist.push({ t: at.t, n: at.items.length, w: at.items.filter(function (x) { return x.wrong; }).length, secs: at.secs });
+    });
+    return { byKey: byKey, bySet: bySet };
+  }
+  function weakList(byKey) {
+    return Object.keys(byKey).map(function (k) { return byKey[k]; }).filter(function (o) {
+      if (o.tier === 'L0') return false;
+      var lastWrong = o.last[o.last.length - 1] === 1;
+      return lastWrong || o.hc > 0 || (o.n >= 2 && (o.w + o.gs) / o.n >= 0.4);
+    }).sort(function (a, b) { if (b.hc !== a.hc) return b.hc - a.hc; var la = a.last[a.last.length - 1], lb = b.last[b.last.length - 1]; if (la !== lb) return lb - la; return (b.w + b.gs) / b.n - (a.w + a.gs) / a.n; });
+  }
+  function mainCause(o) { var best = null; Object.keys(o.causes).forEach(function (c) { if (!best || o.causes[c] > o.causes[best]) best = c; }); return best; }
+
+  /* ══════════ 跳轉：練（卡片／類似題）與讀（該小節的「先要會」）══════════ */
+  function flash(el) { if (!el) return; el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 2500); }
+  function goKey(tier, key) {
+    var el;
+    if (tier === 'L3') {
+      el = document.querySelector('.fx[data-gen="' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); var sb = el.querySelector('.simbox'); if (!sb) buildSim(el, key); else sb.querySelector('.again').click(); }
+    } else {
+      el = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.querySelector('.new').click(); }
+    }
+    flash(el);
+  }
+  function goRead(tier, key) {
+    var el;
+    if (tier === 'L3') el = document.querySelector('.fx[data-gen="' + key + '"]');
+    else {
+      var card = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      el = card ? card.parentElement.previousElementSibling : null;
+      while (el && !el.classList.contains('must')) el = el.previousElementSibling;
+    }
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }
+  }
+  function goBtn(tier, key, mode) {
+    var b = document.createElement('button'); b.className = 'go' + (mode === 'read' ? ' read' : ''); b.type = 'button';
+    b.textContent = (mode === 'read' ? '📖 讀：' : (tier === 'L3' ? '📎 ' : '🎲 ')) + (labelOf[tier + '.' + key] || key);
+    b.onclick = function () { (mode === 'read' ? goRead : goKey)(tier, key); }; return b;
+  }
+
+  /* ══════════ 解題步驟排版、漸淡練習（Renkl：全解 → 補最後一步 → 只給第一步）══════════ */
+  function stepsHtml(it, mode) {
+    if (!it.s) return '';
+    var n = it.s.length, shown = mode === 'last' ? n - 1 : mode === 'first' ? 1 : n;
+    var html = '<ol class="steps">';
+    for (var i = 0; i < n; i++) {
+      if (i < shown) html += '<li>' + it.s[i] + '</li>';
+      else html += '<li class="blank"><span class="bl">' + (mode === 'last' ? '最後一步請自己完成' : '接下來的步驟請自己完成') + '</span><span class="hid">' + it.s[i] + '</span></li>';
+    }
+    html += '</ol><div class="fin' + (mode ? ' hid' : '') + '">答：' + it.a + '</div>';
+    return html;
+  }
+  function buildFade(box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(','), base = parseInt(box.getAttribute('data-seed'), 10);
+    var html = '<div class="fd-h"><b>📘 漸淡練習</b><span>每型三題：先看完整示範，第二題自己補最後一步，第三題只給第一步。看完示範後試著遮住步驟自己寫一次。</span></div>';
+    keys.forEach(function (k, i) {
+      if (!G[tier][k]) return;
+      var its = [0, 1, 2].map(function (j) { return { it: G[tier][k](G.makeRng(base + i * 31 + j * 7)), seed: base + i * 31 + j * 7 }; });
+      if (!its[0].it.s) return;
+      html += '<details class="fd"><summary>' + esc(labelOf[tier + '.' + k] || k) + '</summary>' +
+        '<div class="fdi"><div class="fdt">① 完整示範 <span class="seed">#' + its[0].seed + '</span></div><div class="fq">' + its[0].it.q + '</div>' + stepsHtml(its[0].it) + '</div>' +
+        '<div class="fdi"><div class="fdt">② 補最後一步 <span class="seed">#' + its[1].seed + '</span></div><div class="fq">' + its[1].it.q + '</div>' + stepsHtml(its[1].it, 'last') + '<button class="reveal">顯示最後一步與答案</button></div>' +
+        '<div class="fdi"><div class="fdt">③ 只給第一步 <span class="seed">#' + its[2].seed + '</span></div><div class="fq">' + its[2].it.q + '</div>' + stepsHtml(its[2].it, 'first') + '<button class="reveal">顯示其餘步驟與答案</button></div></details>';
+    });
+    box.innerHTML = html;
+    box.querySelectorAll('.reveal').forEach(function (b) { b.onclick = function () { var d = b.parentElement; d.classList.add('open'); b.style.display = 'none'; }; });
+    box.querySelectorAll('details.fd').forEach(function (d) { d.addEventListener('toggle', function () { if (d.open && !d._r) { d._r = 1; render(d); } }); });
+  }
+  document.querySelectorAll('.fadeset').forEach(buildFade);
+
+  /* ══════════ 對照題（變異理論：只差一個關鍵特徵的兩題並列，先說差在哪再揭曉）══════════ */
+  function buildContrast(gc, tier, key, seedA) {
+    var pr = G.contrastPair(tier, key, seedA);
+    if (!pr) { gc.innerHTML = '<div class="note-sm">這一型暫時找不到對照題。</div>'; gc.classList.add('on'); return; }
+    gc.innerHTML = '<div class="gc-h"><b>⚖ 對照題</b><span>先說出：<b>兩題差在哪一個地方？答案會怎麼跟著變？</b>想清楚再按「揭曉」。</span></div>' +
+      '<div class="gc-pair"><div class="gc-item"><div class="gc-t">甲 <span class="seed">#' + seedA + '</span></div>' + pr.A.q + '<div class="gc-a">答：' + pr.A.a + '</div></div>' +
+      '<div class="gc-item"><div class="gc-t">乙 <span class="seed">#' + pr.seedB + '</span></div>' + pr.B.q + '<div class="gc-a">答：' + pr.B.a + '</div></div></div>' +
+      '<div class="gc-btn"><button class="reveal">揭曉：答案與差別</button><button class="close">收起</button></div><div class="gc-why">' + pr.why + '</div>';
+    gc.classList.add('on'); gc.removeAttribute('data-stale');
+    gc.querySelector('.reveal').onclick = function () { gc.classList.add('open'); this.style.display = 'none'; };
+    gc.querySelector('.close').onclick = function () { gc.classList.remove('on'); };
+    render(gc);
+  }
+
+  /* ══════════ 產生器卡片（L1、L2）══════════ */
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard'; card.setAttribute('data-key', tier + '.' + key); card.id = 'c-' + tier + '.' + key;
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="steps">📘 步驟</button>' + (G.CONTRAST && G.CONTRAST[tier + '.' + key] ? '<button class="contrast">⚖ 對照題</button>' : '') + '</div>' +
+      '<div class="gh"></div><div class="ga"></div><div class="gs"></div><div class="gc"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000), lastQ = '', cur = null, hl = 0;
+    function showHint() {
+      var gh = card.querySelector('.gh');
+      if (!cur.h1) { gh.innerHTML = '提示：' + cur.h; gh.classList.toggle('on'); render(gh); return; }
+      hl = Math.min(hl + 1, 2);
+      gh.innerHTML = '<div><b>提示 ①</b>（先想這是哪一型）：' + cur.h1 + (hl === 1 ? ' <button class="more">還是不會，再提示一層</button>' : '') + '</div>' + (hl === 2 ? '<div><b>提示 ②</b>（帶本題數字）：' + cur.h + '</div>' : '');
+      gh.classList.add('on'); var m = gh.querySelector('.more'); if (m) m.onclick = showHint; render(gh);
+    }
+    function load() {
+      var it = G[tier][key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G[tier][key](G.makeRng(seed)); }
+      lastQ = it.q; cur = it; hl = 0; var gcx = card.querySelector('.gc'); if (gcx && gcx.classList.contains('on')) gcx.setAttribute('data-stale', '1');
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '';
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.gs').innerHTML = stepsHtml(it);
+      card.querySelector('.steps').style.display = it.s ? '' : 'none';
+      card.querySelector('.seed').textContent = '#' + seed;
+      ['.gh', '.ga', '.gs'].forEach(function (c) { card.querySelector(c).classList.remove('on'); });
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { if (cur.h1 && hl === 0) showHint(); else card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    card.querySelector('.steps').onclick = function () { card.querySelector('.gs').classList.toggle('on'); };
+    var cb = card.querySelector('.contrast'); if (cb) cb.onclick = function () { var gc = card.querySelector('.gc'); if (gc.classList.contains('on') && !gc.getAttribute('data-stale')) { gc.classList.remove('on'); return; } buildContrast(gc, tier, key, seed); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+
+  /* ══════════ L3 固定題的「類似題」══════════ */
+  function buildSim(fx, key) {
+    var box = document.createElement('div'); box.className = 'simbox';
+    box.innerHTML = '<div class="st"><span>🎲 類似題（同型換數字）</span><span class="seed"></span></div><div class="sq"></div>' +
+      '<div class="sbtn"><button class="again">🎲 再一題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="close">收起</button></div><div class="gh"></div><div class="ga"></div>';
+    var seed = 30000 + Math.floor(Math.random() * 90000), lastQ = '';
+    function load() {
+      var it = G.L3[key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G.L3[key](G.makeRng(seed)); }
+      lastQ = it.q;
+      box.querySelector('.sq').innerHTML = it.q; box.querySelector('.gh').innerHTML = '提示：' + it.h; box.querySelector('.ga').innerHTML = '答案：' + it.a;
+      box.querySelector('.seed').textContent = '#' + seed;
+      box.querySelector('.gh').classList.remove('on'); box.querySelector('.ga').classList.remove('on');
+      render(box);
+    }
+    box.querySelector('.again').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    box.querySelector('.hint').onclick = function () { box.querySelector('.gh').classList.toggle('on'); };
+    box.querySelector('.ans').onclick = function () { box.querySelector('.ga').classList.toggle('on'); };
+    box.querySelector('.close').onclick = function () { box.remove(); };
+    fx.appendChild(box); load();
+    return box;
+  }
+  document.querySelectorAll('.fx[data-gen]').forEach(function (fx) {
+    var key = fx.getAttribute('data-gen'); if (!G.L3 || !G.L3[key]) return;
+    var b = document.createElement('button'); b.textContent = '🎲 類似題'; b.className = 'simbtn';
+    b.onclick = function () { var sb = fx.querySelector('.simbox'); if (sb) sb.querySelector('.again').click(); else buildSim(fx, key); };
+    var anchor = fx.querySelector('button[data-t="s"]');
+    anchor.parentNode.insertBefore(document.createTextNode(' '), anchor.nextSibling);
+    anchor.parentNode.insertBefore(b, anchor.nextSibling.nextSibling);
+  });
+
+  /* ══════════ 題目小工具 ══════════ */
+  function item(t, k, seed) { return G[t][k](G.makeRng(seed)); }
+  function confHtml() { return '<span class="conf"><span class="cl">作答後、看答案前：</span><button data-c="h">有把握</button><button data-c="m">不確定</button><button data-c="l">猜的</button></span>'; }
+  function markHtml() { return '<span class="mark"><button data-m="1">○ 對</button><button data-m="0">✗ 錯</button></span><span class="cause"><span class="cl">錯因：</span><button data-e="start">不會下手</button><button data-e="formula">公式用錯</button><button data-e="calc">計算錯</button><button data-e="read">看錯題</button></span>'; }
+  function wireConfMark(li) {
+    li.querySelectorAll('.conf button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-conf', b.getAttribute('data-c')); li.querySelectorAll('.conf button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+    li.querySelectorAll('.mark button').forEach(function (b) {
+      b.onclick = function () { var ok = b.getAttribute('data-m') === '1'; var was = li.classList.contains(ok ? 'ok' : 'ng'); li.classList.remove('ok', 'ng'); if (!was) li.classList.add(ok ? 'ok' : 'ng'); if (!li.classList.contains('ng')) { li.removeAttribute('data-cause'); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.remove('sel'); }); } };
+    });
+    li.querySelectorAll('.cause button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-cause', b.getAttribute('data-e')); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+  }
+  function unrated(root) { return Array.prototype.filter.call(root.querySelectorAll('li.qi'), function (li) { return !li.getAttribute('data-conf'); }).length; }
+
+  /* ══════════ 檢測題組（固定種子可列印；混合／計時／換組／信心／錯因／記錄）══════════ */
+  function secName(box) {
+    var el = box.previousElementSibling;
+    while (el && !(el.tagName === 'H3' && el.classList.contains('sec'))) el = el.previousElementSibling;
+    return el ? el.textContent.replace(/（.*?）/g, '').trim() : box.getAttribute('data-tier');
+  }
+  function expandKeys(box) {
+    var tier = box.getAttribute('data-tier'), out = [];
+    box.getAttribute('data-keys').split(',').forEach(function (s) {
+      s = s.trim(); var t = tier, k = s;
+      if (s.indexOf(':') > 0) { t = s.split(':')[0]; k = s.split(':')[1]; } else if (s.indexOf('.') > 0) { t = s.split('.')[0]; k = s.split('.')[1]; }
+      if (k === '*') G.META[t].forEach(function (p) { out.push({ t: t, k: p[0] }); }); else out.push({ t: t, k: k });
+    });
+    return out;
+  }
+  var TITLE = document.querySelector('header.hd h1').textContent;
+  function printSet(box) {
+    var area = document.getElementById('printArea');
+    var lis = box.querySelectorAll('ol > li'), showAns = box.classList.contains('show');
+    var html = '<h1>' + esc(TITLE) + '｜' + esc(box._set) + '　第 ' + box._round + ' 組（#' + box._base + '）</h1><p class="pmeta">姓名：＿＿＿＿＿　日期：＿＿＿＿　得分：＿＿／' + lis.length + '</p><ol>';
+    lis.forEach(function (li) { html += '<li>' + li.querySelector('.q').innerHTML + '</li>'; });
+    html += '</ol>';
+    if (showAns) { html += '<h2>答案</h2><ol>'; lis.forEach(function (li) { html += '<li>' + li.querySelector('.fa').innerHTML.replace(/^（答：/, '').replace(/）$/, '') + '</li>'; }); html += '</ol>'; }
+    area.innerHTML = html; render(area);
+    document.body.classList.add('print-one');
+    var done = function () { document.body.classList.remove('print-one'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); setTimeout(done, 3000);
+    window.print();
+  }
+  function fmtClock(s) { var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function buildSet(box, base, round) {
+    var keys = expandKeys(box), n = parseInt(box.getAttribute('data-n') || '10', 10), mixed = box.hasAttribute('data-mixed'), timer = parseInt(box.getAttribute('data-timer') || '0', 10);
+    if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    box._base = base; box._round = round; box._items = []; box._secs = 0;
+    if (mixed) keys = G.makeRng(base + 1).shuffle(keys);
+    var label = timer ? '段考模擬卷 ' + n + ' 題' : '檢測 ' + n + ' 題';
+    var html = '<div class="fix-btns"><b>' + label + '</b><span class="fix-meta">第 ' + round + ' 組・#' + base + (mixed ? '・混合打亂' : '') + '</span>' +
+      (timer ? '<button class="tstart">⏱ 開始計時 ' + timer + ' 分</button><span class="tclock"></span>' : '') +
+      '<button class="show">' + (timer ? '交卷・看答案' : '顯示答案') + '</button><button class="print">🖨 列印本組</button><button class="regen">🔁 換一組類似題</button>' + (round > 1 ? '<button class="orig">回到原始題組</button>' : '') + '</div>' +
+      '<div class="fix-note"></div><ol>';
+    var seen = {};
+    for (var i = 0; i < n; i++) {
+      var kk = keys[i % keys.length], seed = base + i * 37, it = item(kk.t, kk.k, seed), tries = 0;
+      while (seen[it.q] && tries++ < 12) { seed += 1000003 * tries; it = item(kk.t, kk.k, seed); }
+      seen[it.q] = 1;
+      box._items.push({ t: kk.t, k: kk.k, seed: seed });
+      html += '<li class="qi"><span class="q">' + it.q + '</span>' + confHtml() + '<span class="fa">（答：' + it.a + '）</span>' + markHtml() + '</li>';
+    }
+    html += '</ol><div class="fix-foot"><button class="submit">📝 記錄本次結果</button><span>做完每題先按「有把握／不確定／猜的」，全部評完才能看答案；對完把每題標 ○／✗，錯的選錯因，再按「記錄」。</span></div><div class="fix-result"></div>';
+    box.classList.remove('show'); box.innerHTML = html; box._set = secName(box);
+    var note = box.querySelector('.fix-note');
+    box.querySelector('.show').onclick = function () {
+      if (box.classList.contains('show')) { box.classList.remove('show'); this.textContent = timer ? '交卷・看答案' : '顯示答案'; return; }
+      var u = unrated(box);
+      if (u) { note.textContent = '還有 ' + u + ' 題沒評信心。先寫下答案、按「有把握／不確定／猜的」，再看答案——這一步是為了讓你知道自己「以為會」和「真的會」差多少。'; note.classList.add('on'); return; }
+      note.classList.remove('on'); box.classList.add('show'); this.textContent = '隱藏答案';
+      if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    };
+    box.querySelector('.print').onclick = function () { printSet(box); };
+    box.querySelector('.regen').onclick = function () { buildSet(box, 10000 + Math.floor(Math.random() * 89999), round + 1); box.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    var ob = box.querySelector('.orig'); if (ob) ob.onclick = function () { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); };
+    var ts = box.querySelector('.tstart');
+    if (ts) ts.onclick = function () {
+      if (box._tick) return;
+      var left = timer * 60, clock = box.querySelector('.tclock'); ts.disabled = true; clock.textContent = fmtClock(left);
+      box._tick = setInterval(function () { left--; box._secs++; clock.textContent = fmtClock(Math.max(left, 0)); if (left <= 0) { clearInterval(box._tick); box._tick = null; clock.textContent = '時間到'; } }, 1000);
+    };
+    box.querySelectorAll('li.qi').forEach(wireConfMark);
+    box.querySelector('.submit').onclick = function () { submitSet(box); };
+    render(box);
+  }
+  function submitSet(box) {
+    if (!box.classList.contains('show')) { var nt = box.querySelector('.fix-note'); nt.textContent = '先看答案、對完再記錄。'; nt.classList.add('on'); return; }
+    var lis = box.querySelectorAll('ol > li.qi'), items = [], unmarked = 0;
+    lis.forEach(function (li, i) {
+      var wrong = li.classList.contains('ng'); if (!li.classList.contains('ok') && !wrong) unmarked++;
+      var b = box._items[i]; items.push({ t: b.t, k: b.k, seed: b.seed, wrong: wrong, conf: li.getAttribute('data-conf') || null, cause: wrong ? (li.getAttribute('data-cause') || null) : null, no: i + 1 });
+    });
+    var at = { t: Date.now(), tier: box.getAttribute('data-tier'), set: box._set, base: box._base, round: box._round, items: items.map(function (x) { return { t: x.t, k: x.k, seed: x.seed, wrong: x.wrong, conf: x.conf, cause: x.cause }; }) };
+    if (box._secs) at.secs = box._secs;
+    REC.attempts.push(at);
+    var wrong = items.filter(function (x) { return x.wrong; }), hc = wrong.filter(function (x) { return x.conf === 'h'; }), gs = items.filter(function (x) { return !x.wrong && x.conf === 'l'; });
+    var res = box.querySelector('.fix-result');
+    if (box.getAttribute('data-tier') === 'L0') {
+      saveRec();
+      var need = {}; wrong.concat(gs).forEach(function (x) { need[x.k] = 1; });
+      var h0 = '<b>先備診斷 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (gs.length ? '（猜對 ' + gs.length + ' 題，也算要複習）' : '') + '。';
+      if (!Object.keys(need).length) h0 += '先備知識都在，直接從 L1 開始。';
+      else {
+        h0 += '<br>這章會一直用到下面這些，建議先花 20 分鐘複習再開始：<ul class="pre-list">';
+        Object.keys(need).forEach(function (k) { var pq = G.PREREQ[k] || { txt: labelOf['L0.' + k] || k, link: null }; h0 += '<li>' + esc(pq.txt) + (pq.link ? '　<a href=' + JSON.stringify(pq.link) + '>→ 去那一章的 L1 練</a>' : '　（國中內容：翻課本或問老師，這裡的卡片可先多練幾題）') + '　' + '<span class="golist" data-k="' + k + '"></span></li>'; });
+        h0 += '</ul>';
+      }
+      res.innerHTML = h0; res.classList.add('on');
+      res.querySelectorAll('.golist').forEach(function (g) { g.appendChild(goBtn('L0', g.getAttribute('data-k'))); });
+      renderRec(); return;
+    }
+    wrong.forEach(function (x) { addWB(x, x.conf === 'h' ? 'hc' : 'wrong'); }); gs.forEach(function (x) { addWB(x, 'guess'); });
+    saveRec();
+    var html = '<b>本次 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (unmarked ? '（' + unmarked + ' 題未標記，視為答對）' : '') + (box._secs ? '，用時 ' + fmtClock(box._secs) : '') + '。';
+    if (hc.length) html += '<br><span class="hcw">⚠ 有把握卻答錯 ' + hc.length + ' 題（第 ' + hc.map(function (x) { return x.no; }).join('、') + ' 題）——這種「以為會」最危險，已排到錯題本最前面。</span>';
+    if (gs.length) html += '<br>猜對 ' + gs.length + ' 題（第 ' + gs.map(function (x) { return x.no; }).join('、') + ' 題）不算通過，也放進錯題本。';
+    if (!wrong.length && !gs.length) {
+      var unsure = items.filter(function (x) { return x.conf === 'm'; }).length;
+      html += '<br>全對！' + (unsure ? '有 ' + unsure + ' 題你標「不確定」——答對但沒把握的型，再多練幾題會更穩。' : '而且每題都有把握。') + (box._secs ? '' : masteryAdvice(box));
+    }
+    else {
+      var readK = {}, drillK = {};
+      wrong.forEach(function (x) { var id = x.t + '.' + x.k; if (x.cause && READ_CAUSE[x.cause]) readK[id] = x; else drillK[id] = x; });
+      gs.forEach(function (x) { var id = x.t + '.' + x.k; if (!readK[id]) drillK[id] = x; });
+      html += '<br>錯的題型：' + wrong.concat(gs).map(function (x) { return (labelOf[x.t + '.' + x.k] || x.k) + '（第 ' + x.no + ' 題' + (x.cause ? '，' + CAUSE[x.cause] : '') + '）'; }).join('、') + '。';
+      if (Object.keys(readK).length) html += '<br><b>回頭讀</b>（不會下手／公式用錯：先看該小節的「先要會」，再練）：<span class="golist read"></span>';
+      if (Object.keys(drillK).length) html += '<br><b>多算幾題</b>（計算錯／看錯題／猜對：直接跳到卡片出新題）：<span class="golist drill"></span>';
+      html += '<br>這些題會出現在頁首的「📅 今日複習」：明天重做原題＋一題類似題，連續兩次全對才從錯題本畢業。';
+      res.innerHTML = html; res.classList.add('on');
+      var gl = res.querySelector('.golist.read'); if (gl) Object.keys(readK).forEach(function (id) { var x = readK[id]; gl.appendChild(goBtn(x.t, x.k, 'read')); gl.appendChild(goBtn(x.t, x.k)); });
+      var gd = res.querySelector('.golist.drill'); if (gd) Object.keys(drillK).forEach(function (id) { var x = drillK[id]; gd.appendChild(goBtn(x.t, x.k)); });
+      renderRec(); renderReview(); return;
+    }
+    res.innerHTML = html; res.classList.add('on');
+    renderRec(); renderReview(); renderMastery(box);
+  }
+  document.querySelectorAll('.fixset').forEach(function (box) { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); });
+
+  /* ══════════ 精熟加時間條件（Bloom 精熟學習＋間隔）：兩輪全對且無猜對、且不在同一天 ══════════ */
+  function dayKey(t) { var d = new Date(t); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+  function masteryOf(setName) {
+    var clean = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName && at.items.length && at.items.every(function (x) { return !x.wrong && x.conf !== 'l'; }); });
+    var days = []; clean.forEach(function (at) { var d = dayKey(at.t); if (days.indexOf(d) < 0) days.push(d); });
+    var last = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName; }).slice(-1)[0];
+    return { cleanRounds: clean.length, days: days, mastered: days.length >= 2, today: days.indexOf(dayKey(Date.now())) >= 0, lastCleanToday: !!(last && clean.indexOf(last) >= 0 && dayKey(last.t) === dayKey(Date.now())) };
+  }
+  function masteryAdvice(box) {
+    var m = masteryOf(box._set);
+    if (m.mastered) return '這一組已達精熟（' + m.days.slice(0, 2).join('、') + ' 兩天各全對一輪）。再練同型效益不高，去做混合檢測或下一級。';
+    if (m.today) return '今天已全對一輪。第二輪要<b>隔天</b>做才算通過——記憶要經過遺忘再撈回來才牢，今天先去別的小節。';
+    return '明天再用「🔁 換一組類似題」測一輪，兩天各全對一輪（沒有猜對）就通過。';
+  }
+  function renderMastery(box) {
+    if (box.getAttribute('data-tier') === 'L0' || box.hasAttribute('data-timer')) return;
+    var el = box.querySelector('.fix-status'); if (!el) { el = document.createElement('div'); el.className = 'fix-status'; box.querySelector('.fix-btns').appendChild(el); }
+    var m = masteryOf(box._set);
+    el.className = 'fix-status' + (m.mastered ? ' ok' : m.cleanRounds ? ' half' : '');
+    el.textContent = m.mastered ? '✅ 已精熟（' + m.days.slice(0, 2).join('、') + '）' : m.cleanRounds ? '第 1 輪全對（' + m.days[0] + '），隔天再全對一輪就精熟' : '通過標準：兩天各全對一輪（不含猜對）';
+  }
+  document.querySelectorAll('.fixset').forEach(renderMastery);
+
+  /* ══════════ 錯題本與間隔複習 ══════════ */
+  function addWB(x, reason) {
+    var id = x.t + '.' + x.k + '#' + x.seed, e = REC.wb[id];
+    if (e && e.done) e.done = false;
+    if (!e) e = REC.wb[id] = { t: x.t, k: x.k, seed: x.seed, added: Date.now(), hist: [] };
+    e.reason = reason; e.stage = 0; e.due = Date.now() + INTERVAL[0] * DAY; e.hist.push({ t: Date.now(), r: reason });
+  }
+  function wbLists() {
+    var now = Date.now(), due = [], later = [], done = 0;
+    Object.keys(REC.wb).forEach(function (id) { var e = REC.wb[id]; e.id = id; if (e.done) { done++; return; } (e.due <= now ? due : later).push(e); });
+    var pri = { hc: 0, wrong: 1, guess: 2 };
+    due.sort(function (a, b) { return (pri[a.reason] - pri[b.reason]) || (a.due - b.due); });
+    later.sort(function (a, b) { return a.due - b.due; });
+    return { due: due, later: later, done: done };
+  }
+  var rv = document.getElementById('review');
+  function fmtDate(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+  function fmtDay(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function renderReview() {
+    if (!rv) return;
+    var L = wbLists(), sum = rv.querySelector('.rv-sum'), body = rv.querySelector('.rv-body');
+    var total = L.due.length + L.later.length;
+    if (!total && !L.done) { sum.textContent = '錯題本還是空的。檢測記錄後，錯的題與猜對的題會自動進來，隔天開始排複習。'; body.innerHTML = ''; return; }
+    sum.textContent = '錯題本 ' + total + ' 題：今天到期 ' + L.due.length + ' 題' + (L.later.length ? '，之後 ' + L.later.length + ' 題（最近 ' + fmtDay(L.later[0].due) + '）' : '') + (L.done ? '；已畢業 ' + L.done + ' 題' : '') + '。';
+    if (!body.hasAttribute('data-open')) { body.innerHTML = ''; return; }
+    var html = '';
+    if (!L.due.length) html += '<p class="note-sm">今天沒有到期的題。' + (L.later.length ? '下一批在 ' + fmtDay(L.later[0].due) + '。' : '') + '</p>';
+    else html += '<p class="note-sm">每題先重做<b>原題</b>（先評信心再看答案），對了再做一題<b>同型類似題</b>；兩題都對算過一關，連續兩關全對就畢業，錯一次就回到隔天重測。有把握卻錯的排最前面。</p>';
+    L.due.forEach(function (e) {
+      var it = item(e.t, e.k, e.seed);
+      html += '<div class="rvi" data-id="' + esc(e.id) + '"><div class="rvh"><b>' + esc(labelOf[e.t + '.' + e.k] || e.k) + '</b><span class="tag' + (e.reason === 'hc' ? ' hc' : '') + '">' + (e.reason === 'hc' ? '有把握卻錯' : e.reason === 'guess' ? '猜對' : '答錯') + '</span><span class="rvm">第 ' + (e.stage + 1) + ' 關・' + e.t + '・#' + e.seed + '</span></div>' +
+        '<ol><li class="qi orig"><span class="rl">原題</span><span class="q">' + it.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + it.a + '）</span>' + markHtml() + (it.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(it) + '</div>' : '') + '</li></ol></div>';
+    });
+    if (L.later.length) html += '<details class="rv-later"><summary>之後到期的 ' + L.later.length + ' 題</summary><ul>' + L.later.map(function (e) { return '<li>' + fmtDay(e.due) + '　' + esc(labelOf[e.t + '.' + e.k] || e.k) + '（第 ' + (e.stage + 1) + ' 關）</li>'; }).join('') + '</ul></details>';
+    if (L.due.length) html += '<div class="fix-foot"><button class="rvsubmit">📝 記錄複習結果</button><span>沒標記的題不會被記錄，下次再做。</span></div><div class="fix-result rvres"></div>';
+    body.innerHTML = html;
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var li = blk.querySelector('li.orig'); wireConfMark(li);
+      li.querySelector('.rvans').onclick = function () {
+        if (!li.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; }
+        li.classList.add('show'); this.textContent = '答案';
+      };
+      var osb = li.querySelector('.rvsteps'); if (osb) osb.onclick = function () { if (!li.classList.contains('show')) { li.querySelector('.rvans').click(); if (!li.classList.contains('show')) return; } li.querySelector('.gs').classList.toggle('on'); };
+      li.querySelectorAll('.mark button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (li.classList.contains('ok') && !blk.querySelector('li.vari')) {
+            var e = REC.wb[blk.getAttribute('data-id')], vs = (e.seed * 7 + 13 + Math.floor(Math.random() * 9000)) % 900000 + 1, vit = item(e.t, e.k, vs), tries = 0;
+            while (vit.q === item(e.t, e.k, e.seed).q && tries++ < 8) { vs = Math.floor(Math.random() * 900000) + 1; vit = item(e.t, e.k, vs); }
+            var v = document.createElement('li'); v.className = 'qi vari'; v.setAttribute('data-seed', vs);
+            v.innerHTML = '<span class="rl">類似題</span><span class="q">' + vit.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + vit.a + '）</span>' + markHtml() + (vit.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(vit) + '</div>' : '');
+            var vsb = v.querySelector('.rvsteps'); if (vsb) vsb.onclick = function () { v.querySelector('.gs').classList.toggle('on'); };
+            blk.querySelector('ol').appendChild(v); wireConfMark(v);
+            v.querySelector('.rvans').onclick = function () { if (!v.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; } v.classList.add('show'); this.textContent = '答案'; };
+            render(v);
+          }
+        });
+      });
+    });
+    var sb = body.querySelector('.rvsubmit'); if (sb) sb.onclick = submitReview;
+    render(body);
+  }
+  function submitReview() {
+    var body = rv.querySelector('.rv-body'), items = [], passed = 0, failed = 0, skipped = 0, now = Date.now();
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var e = REC.wb[blk.getAttribute('data-id')], o = blk.querySelector('li.orig'), v = blk.querySelector('li.vari');
+      var oOk = o.classList.contains('ok'), oNg = o.classList.contains('ng');
+      if (!oOk && !oNg) { skipped++; return; }
+      var rec = { t: e.t, k: e.k, seed: e.seed, wrong: oNg, conf: o.getAttribute('data-conf') || null, cause: oNg ? (o.getAttribute('data-cause') || null) : null, rv: 1 };
+      items.push(rec);
+      var pass = false;
+      if (oOk && v) {
+        var vOk = v.classList.contains('ok'), vNg = v.classList.contains('ng');
+        if (!vOk && !vNg) { skipped++; items.pop(); return; }
+        items.push({ t: e.t, k: e.k, seed: parseInt(v.getAttribute('data-seed'), 10), wrong: vNg, conf: v.getAttribute('data-conf') || null, cause: vNg ? (v.getAttribute('data-cause') || null) : null, rv: 1 });
+        pass = vOk;
+      } else if (oOk && !v) { skipped++; items.pop(); return; }
+      e.hist.push({ t: now, pass: pass });
+      if (pass) { e.stage = (e.stage || 0) + 1; if (e.stage >= 2) { e.done = true; e.due = null; } else e.due = now + INTERVAL[Math.min(e.stage, INTERVAL.length - 1)] * DAY; passed++; }
+      else { e.stage = 0; e.due = now + INTERVAL[0] * DAY; failed++; }
+    });
+    if (items.length) REC.attempts.push({ t: now, kind: 'review', tier: 'rv', set: '今日複習', items: items });
+    saveRec();
+    var res = body.querySelector('.rvres'); if (res) { res.innerHTML = '過關 ' + passed + ' 題、要重來 ' + failed + ' 題' + (skipped ? '、未完成 ' + skipped + ' 題（下次再做）' : '') + '。畢業的題不會再出現；重來的題明天再測。'; res.classList.add('on'); }
+    renderRec(); setTimeout(renderReview, 1200);
+  }
+  if (rv) {
+    rv.querySelector('.rv-toggle').onclick = function () { var b = rv.querySelector('.rv-body'); if (b.hasAttribute('data-open')) { b.removeAttribute('data-open'); this.textContent = '開始複習'; } else { b.setAttribute('data-open', '1'); this.textContent = '收起'; } renderReview(); };
+    renderReview();
+  }
+
+  /* ══════════ 我的練習紀錄（分析面板）══════════ */
+  var mr = document.getElementById('myrec');
+  function renderRec() {
+    if (!mr) return;
+    var st = stats(), keys = Object.keys(st.byKey), body = mr.querySelector('.mr-body'), sum = mr.querySelector('.mr-sum');
+    if (!REC.attempts.length) { sum.textContent = '還沒有紀錄。做完任何一組檢測、標記對錯並按「記錄」，這裡就會出現你的弱點分析。'; body.innerHTML = ''; return; }
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; keys.forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    sum.textContent = '共 ' + totN + ' 題，答對率 ' + Math.round(100 * (totN - totW) / totN) + '%；有把握卻錯 ' + totHc + ' 題、猜對 ' + totGs + ' 題。';
+    var weak = weakList(st.byKey), html = '';
+    html += '<div class="mr-advice"><b>優先補強：</b>' + (weak.length ? '' : '目前沒有明顯弱點，繼續換組檢測維持手感。') + '<span class="golist"></span></div>';
+    html += '<table class="mr-t"><tr><th>題型</th><th>級</th><th>做過</th><th>錯</th><th>有把握卻錯</th><th>猜對</th><th>主要錯因</th><th>最近 5 次</th><th></th></tr>';
+    keys.map(function (k) { return st.byKey[k]; }).sort(function (a, b) { return (b.hc - a.hc) || ((b.w + b.gs) / b.n - (a.w + a.gs) / a.n) || (b.n - a.n); }).forEach(function (o) {
+      var isWeak = weak.indexOf(o) >= 0, mc = mainCause(o);
+      html += '<tr class="' + (isWeak ? 'weak' : '') + '"><td>' + esc(labelOf[o.tier + '.' + o.key] || o.key) + '</td><td>' + o.tier + '</td><td>' + o.n + '</td><td>' + o.w + '</td><td>' + (o.hc ? '<b class="hcw">' + o.hc + '</b>' : '0') + '</td><td>' + o.gs + '</td><td>' + (mc ? CAUSE[mc] : '–') + '</td><td>' + o.last.slice(-5).map(function (w) { return w ? '✗' : '○'; }).join(' ') + '</td><td class="gocell" data-tier="' + o.tier + '" data-key="' + o.key + '" data-mode="' + (mc && READ_CAUSE[mc] ? 'read' : 'drill') + '"></td></tr>';
+    });
+    html += '</table>';
+    html += '<table class="mr-t"><tr><th>檢測組</th><th>次數</th><th>最近成績</th></tr>';
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s]; html += '<tr><td>' + esc(s) + '</td><td>' + o.rounds + '</td><td>' + o.hist.slice(-4).map(function (h) { return fmtDate(h.t) + '：' + (h.n - h.w) + '／' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + '</td></tr>'; });
+    html += '</table>';
+    body.innerHTML = html;
+    var gl = body.querySelector('.golist'); weak.slice(0, 6).forEach(function (o) { var mc = mainCause(o); gl.appendChild(goBtn(o.tier, o.key, mc && READ_CAUSE[mc] ? 'read' : 'drill')); });
+    body.querySelectorAll('.gocell').forEach(function (td) { var b = goBtn(td.getAttribute('data-tier'), td.getAttribute('data-key'), td.getAttribute('data-mode')); b.textContent = td.getAttribute('data-mode') === 'read' ? '回頭讀' : '回頭練'; td.appendChild(b); });
+  }
+  function summaryText() {
+    var st = stats(), L = wbLists(), lines = [];
+    lines.push('【' + TITLE + '】練習紀錄摘要　' + fmtDate(Date.now()));
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; Object.keys(st.byKey).forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    lines.push('總計：' + totN + ' 題，答對率 ' + (totN ? Math.round(100 * (totN - totW) / totN) : 0) + '%，有把握卻錯 ' + totHc + '，猜對 ' + totGs + '；錯題本 ' + (L.due.length + L.later.length) + ' 題（到期 ' + L.due.length + '、畢業 ' + L.done + '）');
+    lines.push('各檢測組：');
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s], m = masteryOf(s); lines.push('　' + s + '：' + o.rounds + ' 次，最近 ' + o.hist.slice(-3).map(function (h) { return fmtDate(h.t) + ' ' + (h.n - h.w) + '/' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + (m.mastered ? '　✅精熟' : '')); });
+    var weak = weakList(st.byKey);
+    lines.push('優先補強：' + (weak.length ? weak.slice(0, 8).map(function (o) { var mc = mainCause(o); return (labelOf[o.tier + '.' + o.key] || o.key) + '（' + o.w + '/' + o.n + (o.hc ? '，有把握卻錯 ' + o.hc : '') + (mc ? '，' + CAUSE[mc] : '') + '）'; }).join('、') : '無'));
+    return lines.join('\n');
+  }
+  function copyText(txt, btn) {
+    var done = function () { var t0 = btn.textContent; btn.textContent = '已複製'; setTimeout(function () { btn.textContent = t0; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () { window.prompt('請手動複製：', txt); });
+    else window.prompt('請手動複製：', txt);
+  }
+  if (mr) {
+    mr.querySelector('.mr-copy').onclick = function () { copyText(summaryText(), this); };
+    mr.querySelector('.mr-export').onclick = function () {
+      var blob = new Blob([JSON.stringify(REC)], { type: 'application/json' }), a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'practice-' + CH + '-' + dayKey(Date.now()) + '.json'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    };
+    mr.querySelector('.mr-import').onclick = function () { mr.querySelector('.mr-file').click(); };
+    mr.querySelector('.mr-file').onchange = function () {
+      var f = this.files[0]; if (!f) return; var rd = new FileReader();
+      rd.onload = function () { try { var r = JSON.parse(rd.result); if (!r || !r.attempts) throw 0; if (!confirm('匯入 ' + r.attempts.length + ' 筆檢測紀錄，並覆蓋這台裝置目前的紀錄？')) return; if (!r.wb) r.wb = {}; r.v = 2; REC = r; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } catch (e) { alert('這不是本練習本匯出的紀錄檔。'); } };
+      rd.readAsText(f); this.value = '';
+    };
+    mr.querySelector('.mr-toggle').onclick = function () { var b = mr.querySelector('.mr-body'); b.hidden = !b.hidden; this.textContent = b.hidden ? '展開' : '收起'; };
+    mr.querySelector('.mr-clear').onclick = function () { if (confirm('確定清除這台裝置上的所有練習紀錄與錯題本？')) { REC = { v: 2, attempts: [], wb: {} }; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } };
+    renderRec();
+  }
+
+  /* 固定題卡（L3–L5）的答案／詳解 */
+  document.querySelectorAll('.fx button[data-t]').forEach(function (b) {
+    b.onclick = function () { var fx = b.closest('.fx'), t = b.getAttribute('data-t'); fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on'); };
+  });
+  (function () {
+    var h = decodeURIComponent(location.hash || '');
+    if (h.indexOf('#c-') === 0) { var el = document.getElementById(h.slice(1)); if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }, 300); }
+  })();
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+<div id="printArea"></div>
+</body>
+</html>
