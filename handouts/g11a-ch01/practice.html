@@ -395,26 +395,33 @@ $\theta$ 是底角（銳角），$\cos\theta=\dfrac{\sqrt5}{3}$，$\tan\theta=\d
 <div class="fxs"><div class="move">招式：$\sin x\cos x-\sin^2x=\dfrac12\sin2x-\dfrac{1-\cos2x}{2}=\dfrac{\sqrt2}{2}\sin\left(2x+\dfrac{\pi}{4}\right)-\dfrac12$。</div>
 $2x+\dfrac{\pi}{4}\in\left[-\dfrac{\pi}{4},\dfrac{\pi}{2}\right]$，$\sin$ 的範圍是 $\left[-\dfrac{\sqrt2}{2},1\right]$。最大值 $\dfrac{\sqrt2}{2}-\dfrac12=\dfrac{\sqrt2-1}{2}$（$x=\dfrac{\pi}{8}$），最小值 $-\dfrac12-\dfrac12=-1$（$x=-\dfrac{\pi}{4}$）。</div></div>
 
-<div class="fx" id="L3-11" data-gen="expandCombineRange"><div class="fxh"><span class="no">L3-11</span><span class="kw">先展開再疊合，區間最值看 x+θ 的範圍</span><span class="src">112 臺北區模考 數A 單選 2</span></div>
-<div class="fxq">設 $f(x)=2\sin\left(x+\dfrac{\pi}{6}\right)-2\cos x$，$\dfrac{\pi}{2}\le x\le\dfrac{4\pi}{3}$。若 $f(x)$ 的最大值為 $m$、最小值為 $n$，則 $(m,n)$ 為？<br>(1) $(2,-1)$　(2) $(2,-\sqrt3)$　(3) $(2,\sqrt3)$　(4) $(\sqrt3,-1)$　(5) $(\sqrt3,-\sqrt3)$</div>
+<div class="fx" id="L3-11" data-gen="expandCombineRange"><div class="fxh"><span class="no">L3-11</span><span class="kw">乘開、降次再疊合 → 區間最值看 2x−π/3 的範圍</span><span class="src">改編自 2014 中國高考 天津卷理科 第 15 題</span></div>
+<div class="fxq">已知函數 $f(x)=\cos x\cdot\sin\left(x+\dfrac{\pi}{3}\right)-\sqrt3\cos^2x+\dfrac{\sqrt3}{4}$，$x$ 為實數。<br>(1) 求 $f(x)$ 的週期。<br>(2) 求 $f(x)$ 在閉區間 $\left[-\dfrac{\pi}{4},\dfrac{\pi}{4}\right]$ 上的最大值與最小值。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">(1) $(2,-1)$</div>
-<div class="fxs"><div class="move">招式：$2\sin\left(x+\dfrac{\pi}{6}\right)=\sqrt3\sin x+\cos x$，減去 $2\cos x$ 得 $\sqrt3\sin x-\cos x=2\sin\left(x-\dfrac{\pi}{6}\right)$。</div>
-$x-\dfrac{\pi}{6}\in\left[\dfrac{\pi}{3},\dfrac{7\pi}{6}\right]$：$\sin$ 在 $\dfrac{\pi}{2}$ 取到最大 $1$，在右端 $\dfrac{7\pi}{6}$ 取到最小 $-\dfrac12$。故 $m=2$、$n=-1$。</div></div>
+<div class="fxa">(1) $\pi$　(2) 最大值 $\dfrac14$（$x=\dfrac{\pi}{4}$）、最小值 $-\dfrac12$（$x=-\dfrac{\pi}{12}$）</div>
+<div class="fxs"><div class="move">招式：先把 $\sin\left(x+\dfrac{\pi}{3}\right)$ 展開、乘進 $\cos x$，再用倍角公式降次，最後疊合成單一正弦，區間最值看 $2x-\dfrac{\pi}{3}$ 落在哪一段。</div>
+$f(x)=\cos x\left(\dfrac12\sin x+\dfrac{\sqrt3}{2}\cos x\right)-\sqrt3\cos^2x+\dfrac{\sqrt3}{4}=\dfrac12\sin x\cos x-\dfrac{\sqrt3}{2}\cos^2x+\dfrac{\sqrt3}{4}$。<br>
+用 $\sin x\cos x=\dfrac12\sin2x$、$\cos^2x=\dfrac{1+\cos2x}{2}$：$f(x)=\dfrac14\sin2x-\dfrac{\sqrt3}{4}\cos2x=\dfrac12\sin\left(2x-\dfrac{\pi}{3}\right)$。<br>
+(1) 週期 $\dfrac{2\pi}{2}=\pi$。<br>
+(2) $x\in\left[-\dfrac{\pi}{4},\dfrac{\pi}{4}\right]$ ⟹ $2x-\dfrac{\pi}{3}\in\left[-\dfrac{5\pi}{6},\dfrac{\pi}{6}\right]$。這一段裡 $\sin$ 在 $-\dfrac{\pi}{2}$ 取到最小 $-1$（對應 $x=-\dfrac{\pi}{12}$）；兩端 $\sin\left(-\dfrac{5\pi}{6}\right)=-\dfrac12$、$\sin\dfrac{\pi}{6}=\dfrac12$，最大在右端。故最大值 $\dfrac12\cdot\dfrac12=\dfrac14$（$x=\dfrac{\pi}{4}$）、最小值 $\dfrac12\cdot(-1)=-\dfrac12$（$x=-\dfrac{\pi}{12}$）。</div></div>
 
-<div class="fx" id="L3-12" data-gen="tanRootsTriangle"><div class="fxh"><span class="no">L3-12</span><span class="kw">tanA、tanB 是兩根 ＋ 第三角已知 → tan(A+B)=−tanC</span><span class="src">105 中區模考 數A 單選 5</span></div>
-<div class="fxq">在 $\triangle ABC$ 中，$\tan A$、$\tan B$ 為 $x^2+(-2a-1)x+3a=0$ 的兩根，且 $\angle C=45^\circ$，求 $a$。<br>(1) $-2$　(2) $-\dfrac15$　(3) $0$　(4) $\dfrac15$　(5) $2$</div>
+<div class="fx" id="L3-12" data-gen="tanRootsTriangle"><div class="fxh"><span class="no">L3-12</span><span class="kw">tanα、tanβ 的和與積已知 → 先求 tan(α+β)，再由 α+β 的象限定 sin 的正負</span><span class="src">改編自 2024 中國高考 新高考 II 卷 第 13 題</span></div>
+<div class="fxq">已知 $\alpha$ 為第一象限角、$\beta$ 為第三象限角，且 $\tan\alpha+\tan\beta=4$、$\tan\alpha\tan\beta=\sqrt2+1$，求 $\sin(\alpha+\beta)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">(5) $a=2$</div>
-<div class="fxs"><div class="move">招式：$A+B=180^\circ-C$ ⟹ $\tan(A+B)=-\tan C=-1$。</div>
-根與係數：$\tan A+\tan B=2a+1$、$\tan A\tan B=3a$。$\tan(A+B)=\dfrac{2a+1}{1-3a}=-1$ ⟹ $2a+1=3a-1$ ⟹ $a=2$。（此時方程式 $x^2-5x+6=0$ 的根 $2,3$ 都為正，兩角皆銳角，合理。）</div></div>
+<div class="fxa">$\sin(\alpha+\beta)=-\dfrac{2\sqrt2}{3}$</div>
+<div class="fxs"><div class="move">招式：和與積直接代 $\tan(\alpha+\beta)=\dfrac{\tan\alpha+\tan\beta}{1-\tan\alpha\tan\beta}$；$\tan$ 只給比值，$\sin$ 的正負要另外由 $\alpha+\beta$ 的象限決定。</div>
+$\tan(\alpha+\beta)=\dfrac{4}{1-(\sqrt2+1)}=\dfrac{4}{-\sqrt2}=-2\sqrt2$。<br>
+象限：$2k\pi\lt\alpha\lt2k\pi+\dfrac{\pi}{2}$、$2m\pi+\pi\lt\beta\lt2m\pi+\dfrac{3\pi}{2}$ ⟹ $\alpha+\beta$ 與 $(\pi,2\pi)$ 內的某角同界，$\sin(\alpha+\beta)\lt0$；再加上 $\tan(\alpha+\beta)\lt0$ ⟹ 第四象限。<br>
+在第四象限取終邊上一點 $(1,-2\sqrt2)$，到原點距離 $\sqrt{1+8}=3$ ⟹ $\sin(\alpha+\beta)=-\dfrac{2\sqrt2}{3}$。<span class="note-sm">（和與積也可以看成「$\tan\alpha$、$\tan\beta$ 是 $x^2-4x+(\sqrt2+1)=0$ 的兩根」：判別式 $12-4\sqrt2\gt0$、兩根皆正，和「第一、第三象限的正切都是正的」相符。）</span></div></div>
 
-<div class="fx" id="L3-13" data-gen="crossSquareSum"><div class="fxh"><span class="no">L3-13</span><span class="kw">兩式各含 sin、cos 交錯 → 平方相加，交叉項是 sin(α+β)</span><span class="src">106 全國模考 數A 單選 6</span></div>
-<div class="fxq">若 $\begin{cases}\cos\alpha+\sin\beta=1\\ \sin\alpha+\cos\beta=\sqrt2\end{cases}$，求 $\cos(2\alpha+2\beta)$。<br>(1) $-1$　(2) $0$　(3) $1$　(4) $\dfrac12$　(5) $-\dfrac12$</div>
+<div class="fx" id="L3-13" data-gen="crossSquareSum"><div class="fxh"><span class="no">L3-13</span><span class="kw">兩式各含 sin、cos 交錯 → 平方相加，交叉項是 sin(α+β)</span><span class="src">改編自 2018 中國高考 全國卷 II 理科 第 15 題</span></div>
+<div class="fxq">已知 $\sin\alpha+\cos\beta=1$、$\cos\alpha+\sin\beta=0$，求 $\sin(\alpha+\beta)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">(4) $\dfrac12$</div>
-<div class="fxs"><div class="move">招式：平方相加：$2+2(\cos\alpha\sin\beta+\sin\alpha\cos\beta)=1+2=3$ ⟹ $\sin(\alpha+\beta)=\dfrac12$。</div>
-$\cos(2\alpha+2\beta)=1-2\sin^2(\alpha+\beta)=1-2\cdot\dfrac14=\dfrac12$。</div></div>
+<div class="fxa">$\sin(\alpha+\beta)=-\dfrac12$</div>
+<div class="fxs"><div class="move">招式：兩式平方相加，$\sin^2\alpha+\cos^2\alpha$、$\sin^2\beta+\cos^2\beta$ 各湊成 $1$，交叉項 $2(\sin\alpha\cos\beta+\cos\alpha\sin\beta)=2\sin(\alpha+\beta)$。</div>
+$(\sin\alpha+\cos\beta)^2+(\cos\alpha+\sin\beta)^2=1^2+0^2$<br>
+⟹ $(\sin^2\alpha+\cos^2\alpha)+(\cos^2\beta+\sin^2\beta)+2(\sin\alpha\cos\beta+\cos\alpha\sin\beta)=1$<br>
+⟹ $2+2\sin(\alpha+\beta)=1$ ⟹ $\sin(\alpha+\beta)=-\dfrac12$。<span class="note-sm">（這樣的 $\alpha$、$\beta$ 確實存在，例如 $\alpha=\dfrac{\pi}{6}$、$\beta=-\dfrac{\pi}{3}$：$\dfrac12+\dfrac12=1$、$\dfrac{\sqrt3}{2}-\dfrac{\sqrt3}{2}=0$，而 $\sin\left(-\dfrac{\pi}{6}\right)=-\dfrac12$。）</span></div></div>
 
 <div class="fx" id="L3-14" data-gen="reduceBigAngle"><div class="fxh"><span class="no">L3-14</span><span class="kw">誘導公式遇到 23π/2 → 先減 2π 的倍數，再看剩下的 π/2 奇偶</span><span class="src">112 模考（W6）數A 單選 1</span></div>
 <div class="fxq">設 $\dfrac{\pi}{2}\lt\theta\lt\dfrac{3\pi}{2}$，$\tan\theta=\dfrac13$，求 $\sin\left(\dfrac{23\pi}{2}-\theta\right)$。<br>(1) $\dfrac{3}{\sqrt{10}}$　(2) $\dfrac{2}{\sqrt{10}}$　(3) $\dfrac{1}{\sqrt{10}}$　(4) $-\dfrac{1}{\sqrt{10}}$　(5) $-\dfrac{3}{\sqrt{10}}$</div>
@@ -512,26 +519,36 @@ $A+30^\circ\in(300^\circ,390^\circ)$，要 $\sin(A+30^\circ)=\sin204^\circ=\sin(
 $\sin2\theta\gt\sin\theta$ ⟺ $\sin\theta(2\cos\theta-1)\gt0$；在上面的範圍內 $2\cos\theta-1\lt0$，故需 $\sin\theta\lt0$ ⟹ $\theta\in(\pi,2\pi)$。<br>
 交集 $\left(\pi,\dfrac{4\pi}{3}\right)$，$a=1$、$b=\dfrac43$，$b-a=\dfrac13$。</div></div>
 
-<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">兩個相位不同的 sin、cos → 展開合併，係數會共用一個因子</span><span class="src">113 全國模考 數A 多選 9</span></div>
-<div class="fxq">設 $f(x)=\sin\left(x+\dfrac{\pi}{6}\right)-\cos\left(x-\dfrac{\pi}{6}\right)$，選出正確的選項：<br>(1) 若 $0\le x\lt2\pi$，$f(x)$ 的最大值為 $\dfrac{\sqrt6-\sqrt2}{2}$　(2) 若 $0\le x\lt2\pi$ 且 $f$ 在 $x=\alpha$ 取最小值，則 $\alpha=\dfrac{7\pi}{4}$　(3) $f$ 的週期為 $\pi$　(4) 若 $0\le\alpha\lt\beta\lt2\pi$ 且 $f(\alpha)=f(\beta)=\dfrac12$，則 $\alpha+\beta=\pi$　(5) 若 $0\le x\lt8\pi$，所有滿足 $f(x)=0$ 的相異實數解之和為 $30\pi$</div>
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">tan x 乘 sin(π/2−x) → 約成 sin x（要 cos x≠0），再展開、降次、疊合看遞增遞減</span><span class="src">改編自 2016 中國高考 天津卷理科 第 15 題</span></div>
+<div class="fxq">已知函數 $f(x)=4\tan x\sin\left(\dfrac{\pi}{2}-x\right)\cos\left(x-\dfrac{\pi}{3}\right)-\sqrt3$。<br>(1) 求 $f(x)$ 的定義域與週期。<br>(2) 討論 $f(x)$ 在區間 $\left[-\dfrac{\pi}{4},\dfrac{\pi}{4}\right]$ 上的遞增、遞減情形。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">(1)(2)(5)</div>
-<div class="fxs">展開：$f=\left(\dfrac{\sqrt3}{2}\sin x+\dfrac12\cos x\right)-\left(\dfrac{\sqrt3}{2}\cos x+\dfrac12\sin x\right)=\dfrac{\sqrt3-1}{2}(\sin x-\cos x)=\dfrac{\sqrt3-1}{2}\cdot\sqrt2\sin\left(x-\dfrac{\pi}{4}\right)$。<br>
-(1) 振幅 $\dfrac{\sqrt6-\sqrt2}{2}$，正確。(2) 最小在 $x-\dfrac{\pi}{4}=\dfrac{3\pi}{2}$ ⟹ $x=\dfrac{7\pi}{4}$，正確。(3) 週期 $2\pi$，錯。(4) 兩解對稱於對稱軸 $x-\dfrac{\pi}{4}=\dfrac{\pi}{2}$，即 $x=\dfrac{3\pi}{4}$，故 $\alpha+\beta=\dfrac{3\pi}{2}$，錯。(5) 零點 $x=\dfrac{\pi}{4}+n\pi$，$n=0,\dots,7$，和 $=8\cdot\dfrac{\pi}{4}+\pi(0+1+\cdots+7)=2\pi+28\pi=30\pi$，正確。</div></div>
+<div class="fxa">(1) 定義域：$x\ne\dfrac{\pi}{2}+k\pi$（$k$ 為整數）的所有實數；週期 $\pi$　(2) 在 $\left[-\dfrac{\pi}{4},-\dfrac{\pi}{12}\right]$ 遞減、在 $\left[-\dfrac{\pi}{12},\dfrac{\pi}{4}\right]$ 遞增</div>
+<div class="fxs"><div class="move">招式：$\tan x\sin\left(\dfrac{\pi}{2}-x\right)=\dfrac{\sin x}{\cos x}\cdot\cos x=\sin x$（前提是 $\cos x\ne0$，這也就是定義域）；剩下是「展開相位不同的 $\cos$ → 降次 → 疊合」。</div>
+(1) $\tan x$ 要有意義 ⟹ $x\ne\dfrac{\pi}{2}+k\pi$。在定義域內<br>
+$f(x)=4\sin x\left(\dfrac12\cos x+\dfrac{\sqrt3}{2}\sin x\right)-\sqrt3=2\sin x\cos x+2\sqrt3\sin^2x-\sqrt3=\sin2x+\sqrt3(1-\cos2x)-\sqrt3=\sin2x-\sqrt3\cos2x=2\sin\left(2x-\dfrac{\pi}{3}\right)$。<br>
+週期 $\dfrac{2\pi}{2}=\pi$（挖掉的點 $\dfrac{\pi}{2}+k\pi$ 也是每隔 $\pi$ 重複一次，不影響）。<br>
+(2) $x\in\left[-\dfrac{\pi}{4},\dfrac{\pi}{4}\right]$（這一段 $\cos x\gt0$，沒有被挖掉的點）⟹ $t=2x-\dfrac{\pi}{3}\in\left[-\dfrac{5\pi}{6},\dfrac{\pi}{6}\right]$。$\sin t$ 在 $\left[-\dfrac{5\pi}{6},-\dfrac{\pi}{2}\right]$ 遞減、在 $\left[-\dfrac{\pi}{2},\dfrac{\pi}{6}\right]$ 遞增；$t=-\dfrac{\pi}{2}$ 對應 $x=-\dfrac{\pi}{12}$。<br>
+故 $f(x)$ 在 $\left[-\dfrac{\pi}{4},-\dfrac{\pi}{12}\right]$ 遞減、在 $\left[-\dfrac{\pi}{12},\dfrac{\pi}{4}\right]$ 遞增。</div></div>
 
-<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">先合成單一餘弦，再逐項用對稱、週期、平移判斷</span><span class="src">112 全國模考 數A 多選 10</span></div>
-<div class="fxq">已知 $f(x)=\cos2x-\cos\left(2x-\dfrac{\pi}{3}\right)$，選出正確的選項：<br>(1) $f$ 的週期為 $\pi$　(2) 對任意實數 $a$，$f(a)=f\left(\dfrac{\pi}{3}-a\right)$　(3) 在 $[0,2\pi)$ 中滿足 $f(x)=\dfrac12$ 的所有實數 $x$ 之和為 $\dfrac{10\pi}{3}$　(4) $f(x)=\dfrac x3$ 有 $5$ 個實根　(5) $y=f(x)$ 的圖形可由 $y=2\sin^2x$ 的圖形經適當平移得到</div>
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">給零點個數反推 ω → 令 t=ωx+φ，把 x 的區間換成 t 的區間，再數零點、最高點、最低點</span><span class="src">改編自 2019 中國高考 全國卷 III 理科 第 12 題</span></div>
+<div class="fxq">設 $\omega\gt0$，函數 $f(x)=\sin\left(\omega x+\dfrac{\pi}{5}\right)$ 在 $[0,2\pi]$ 上恰有 $5$ 個零點（使 $f(x)=0$ 的 $x$）。選出正確的選項：<br>(1) 在 $(0,2\pi)$ 中恰有 $3$ 個 $x$ 使 $f(x)=1$<br>(2) 在 $(0,2\pi)$ 中恰有 $2$ 個 $x$ 使 $f(x)=-1$<br>(3) $f(x)$ 在 $\left(0,\dfrac{\pi}{10}\right)$ 上遞增<br>(4) $\omega$ 的範圍是 $\dfrac{12}{5}\le\omega\lt\dfrac{29}{10}$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">(1)(3)(4)(5)</div>
-<div class="fxs">展開：$f=\cos2x-\left(\dfrac12\cos2x+\dfrac{\sqrt3}{2}\sin2x\right)=\dfrac12\cos2x-\dfrac{\sqrt3}{2}\sin2x=\cos\left(2x+\dfrac{\pi}{3}\right)$。<br>
-(1) 週期 $\pi$，正確。(2) $f\left(\dfrac{\pi}{3}-a\right)=\cos(\pi-2a)=-\cos2a$，與 $f(a)=\cos\left(2a+\dfrac{\pi}{3}\right)$ 不恆等（代 $a=0$：$-1\ne\dfrac12$），錯。(3) $\cos\left(2x+\dfrac{\pi}{3}\right)=\dfrac12$ ⟹ $2x+\dfrac{\pi}{3}=\pm\dfrac{\pi}{3}+2n\pi$ ⟹ $x=n\pi$ 或 $x=-\dfrac{\pi}{3}+n\pi$；在 $[0,2\pi)$ 內為 $0,\pi,\dfrac{2\pi}{3},\dfrac{5\pi}{3}$，和 $=\dfrac{10\pi}{3}$，正確。(4) 直線 $y=\dfrac x3$ 只在 $-3\le x\le3$ 內與振幅 $1$ 的波相交；$f$ 週期 $\pi$，在 $[-3,3]$ 上畫圖可數得交點約在 $x\approx-2.4,-1.7,0.3,2.3,2.7$，共 $5$ 個，正確。(5) $2\sin^2x=1-\cos2x=\cos(2x+\pi)+1$，是 $\cos$ 的平移，正確。</div></div>
+<div class="fxa">(1)(3)(4)</div>
+<div class="fxs"><div class="move">招式：令 $t=\omega x+\dfrac{\pi}{5}$，$x$ 從 $0$ 走到 $2\pi$ 時 $t$ 從 $\dfrac{\pi}{5}$ 走到 $2\pi\omega+\dfrac{\pi}{5}$；題目變成「$\sin t$ 在這一段上有幾個零點、幾個最高點、幾個最低點」。</div>
+(4) $\sin t=0$ 的 $t$ 依序是 $\pi,2\pi,3\pi,\dots$（都在 $\dfrac{\pi}{5}$ 之後）。恰 $5$ 個 ⟹ $5\pi\le2\pi\omega+\dfrac{\pi}{5}\lt6\pi$ ⟹ $\dfrac{12}{5}\le\omega\lt\dfrac{29}{10}$，正確。<br>
+(1) $\sin t=1$ 的 $t=\dfrac{\pi}{2},\dfrac{5\pi}{2},\dfrac{9\pi}{2},\dfrac{13\pi}{2},\dots$；右端 $2\pi\omega+\dfrac{\pi}{5}\in[5\pi,6\pi)$，恰好含前 $3$ 個，正確。<br>
+(2) $\sin t=-1$ 的 $t=\dfrac{3\pi}{2},\dfrac{7\pi}{2},\dfrac{11\pi}{2},\dots$；$\dfrac{11\pi}{2}$ 可能在範圍內（例：$\omega=2.8$，右端 $5.8\pi$），也可能不在（$\omega=2.5$，右端 $5.2\pi$），個數是 $2$ 或 $3$，不一定，錯誤。<br>
+(3) $x\in\left(0,\dfrac{\pi}{10}\right)$ ⟹ $t\in\left(\dfrac{\pi}{5},\dfrac{\omega\pi}{10}+\dfrac{\pi}{5}\right)$，而 $\dfrac{\omega\pi}{10}+\dfrac{\pi}{5}\lt\dfrac{29\pi}{100}+\dfrac{20\pi}{100}=\dfrac{49\pi}{100}\lt\dfrac{\pi}{2}$，整段落在 $\sin$ 遞增的 $\left(0,\dfrac{\pi}{2}\right)$ 內，正確。</div></div>
 
-<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">疊合後在區間取最大 → 再做雙重根號有理化</span><span class="src">112 模考（W6）數A 填 16</span></div>
-<div class="fxq">設 $f(x)=6\sqrt3\cos x-6\sin x-7$，$0^\circ\le x\le60^\circ$。已知 $f(x)$ 的最大值為 $M$，且 $\dfrac{1}{\sqrt{M+19}}=\dfrac{b-\sqrt3}{a}$（$a,b$ 為正整數），求 $(a,b)$。</div>
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">兩個正弦平方相加 → 先降次，把相位不同的 cos 展開合併，再疊合求值域</span><span class="src">改編自 2019 中國高考 浙江卷 第 18 題</span></div>
+<div class="fxq">設函數 $f(x)=\sin x$，$x$ 為實數。<br>(1) 已知 $0\le\theta\lt2\pi$，且 $y=f(x+\theta)$ 的圖形對稱於 $y$ 軸（即 $f(x+\theta)$ 是偶函數），求 $\theta$。<br>(2) 求函數 $y=\left[f\left(x+\dfrac{\pi}{12}\right)\right]^2+\left[f\left(x+\dfrac{\pi}{4}\right)\right]^2$ 的值域。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">$(a,b)=(6,3)$</div>
-<div class="fxs">$6\sqrt3\cos x-6\sin x=12\cos(x+30^\circ)$。$x+30^\circ\in[30^\circ,90^\circ]$，$\cos$ 在 $30^\circ$ 最大：$M=12\cdot\dfrac{\sqrt3}{2}-7=6\sqrt3-7$。<br>
-$M+19=12+6\sqrt3=(9+3)+2\sqrt{27}=(3+\sqrt3)^2$，故 $\dfrac{1}{\sqrt{M+19}}=\dfrac{1}{3+\sqrt3}=\dfrac{3-\sqrt3}{6}$，$(a,b)=(6,3)$。</div></div>
+<div class="fxa">(1) $\theta=\dfrac{\pi}{2}$ 或 $\dfrac{3\pi}{2}$　(2) $\left[1-\dfrac{\sqrt3}{2},\ 1+\dfrac{\sqrt3}{2}\right]$</div>
+<div class="fxs"><div class="move">招式：(1) 對稱於 $y$ 軸 ⟺ 直線 $x=0$ 是對稱軸 ⟺ 在 $x=0$ 取到最大或最小。(2) 平方先用 $\sin^2A=\dfrac{1-\cos2A}{2}$ 降次，再把兩個相位不同的餘弦展開合併、疊合。</div>
+(1) $y=\sin(x+\theta)$ 的對稱軸滿足 $x+\theta=\dfrac{\pi}{2}+k\pi$；要 $x=0$ 是對稱軸 ⟹ $\theta=\dfrac{\pi}{2}+k\pi$，在 $[0,2\pi)$ 內是 $\dfrac{\pi}{2}$ 或 $\dfrac{3\pi}{2}$（此時 $f(x+\theta)=\cos x$ 或 $-\cos x$）。<br>
+(2) $y=\dfrac{1-\cos\left(2x+\frac{\pi}{6}\right)}{2}+\dfrac{1-\cos\left(2x+\frac{\pi}{2}\right)}{2}=1-\dfrac12\left[\cos\left(2x+\dfrac{\pi}{6}\right)+\cos\left(2x+\dfrac{\pi}{2}\right)\right]$。<br>
+中括號 $=\dfrac{\sqrt3}{2}\cos2x-\dfrac12\sin2x-\sin2x=\dfrac{\sqrt3}{2}\cos2x-\dfrac32\sin2x=\sqrt3\left(\dfrac12\cos2x-\dfrac{\sqrt3}{2}\sin2x\right)=\sqrt3\cos\left(2x+\dfrac{\pi}{3}\right)$。<br>
+故 $y=1-\dfrac{\sqrt3}{2}\cos\left(2x+\dfrac{\pi}{3}\right)$；$\cos$ 取遍 $[-1,1]$ ⟹ 值域 $\left[1-\dfrac{\sqrt3}{2},\ 1+\dfrac{\sqrt3}{2}\right]$。</div></div>
 </section>
 
 <!-- ═══════════════════════ L5 ═══════════════════════ -->
@@ -723,6 +740,9 @@ $\dfrac{|\cos\alpha|}{\sqrt{(\cos\alpha-1)^2+\sin^2\alpha}}\le1$ ⟹ $\cos^2\alp
 </div>
 </div>
 
+<script src="../../assets/firebase-config.js"></script>
+<script src="../../assets/reflex-cloud.js"></script>
+<script src="../../assets/practice-cloud.js"></script>
 <script>
 (function () {
   var G = window.PGEN, CH = 'g11a-ch01';

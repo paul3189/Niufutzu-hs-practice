@@ -562,8 +562,8 @@ $t=-2$：根號內 $1-\dfrac34=\dfrac14\ge0$ ✔，$x=3^{-2}=\dfrac19$。</div><
 <h2><span class="tag">L5</span>補充專區：經典題與教甄</h2>
 <div class="goal">
   <div><b>對象</b>學有餘力、想參加數學競賽或未來想走數理科系的同學。</div>
-  <div><b>目標</b>6 題經典 ＋ 15 題教甄／模考難題：學會把「證明」寫完整，也看看出題老師怎麼想。</div>
-  <div><b>說明</b>本區不列入段考通過標準。科學班甄選（國三）不考指對數，專區以各校教甄與分科模考為主，原卷多為掃描影像，以 OCR 讀出後逐題重打、重解、驗算。</div>
+  <div><b>目標</b>6 題經典 ＋ 15 題教甄／大考難題：學會把「證明」寫完整，也看看出題老師怎麼想。</div>
+  <div><b>說明</b>本區不列入段考通過標準。科學班甄選（國三）不考指對數，專區以各校教甄為主，另收大考與段考的壓軸題，原卷多為掃描影像，以 OCR 讀出後逐題重打、重解、驗算。</div>
 </div>
 
 <div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">證明 log₂3 是無理數 → 反證法＋算術基本定理</span><span class="src">證明題經典</span></div>
@@ -581,28 +581,31 @@ $t=-2$：根號內 $1-\dfrac34=\dfrac14\ge0$ ✔，$x=3^{-2}=\dfrac19$。</div><
 故 $b\lt c\lt a$。<br>
 <span class="note-sm">通用結論：$\log_n(n+1)$ 隨 $n$ 遞減（$n\ge2$），所以 $\log_23\gt\log_34\gt\log_45\gt\cdots$；而 $\log_35\lt\log_34\cdot$… 直接用 $\frac32$ 當中間值最快。</span></div></div>
 
-<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">甲抄錯 a、乙抄錯 b → 各自「沒抄錯」的係數還是對的：甲給 b、乙給 a</span><span class="src">106 分科模考 全國數乙 第 7 次 選填 C</span></div>
-<div class="fxq">甲、乙兩人同解 $a+\log_2x+b\log_x2=0$。甲誤寫 $a$，得兩根 $\dfrac14$、$\dfrac18$；乙誤寫 $b$，得兩根 $\dfrac12$、$64$。求正確方程式的兩根之和。</div>
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">已知兩根求係數 → 換元 u=log₂x，化成 u 的二次方程式，用根與係數</span><span class="src">板橋高中 103上 填充</span></div>
+<div class="fxq">設 $a,b$ 均為實數，若 $2$ 和 $\sqrt2$ 是方程式 $a\log_2x+\log_x8+b=0$ 的兩根，求數對 $(a,b)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">$12$</div>
-<div class="fxs"><div class="move">招式：令 $u=\log_2x$，方程式是 $u^2+au+b=0$。甲的 $b$ 正確：$u=-2,-3$ ⟹ $b=(-2)(-3)=6$；乙的 $a$ 正確：$u=-1,6$ ⟹ $a=-(-1+6)=-5$。</div>
-正確方程式 $u^2-5u+6=0$ ⟹ $u=2,3$ ⟹ $x=4,8$，和 $12$。</div></div>
+<div class="fxa">$(a,b)=(6,-9)$</div>
+<div class="fxs"><div class="move">招式：令 $u=\log_2x$，則 $\log_x8=\dfrac{\log_28}{\log_2x}=\dfrac3u$。方程式乘以 $u$ 變成 $au^2+bu+3=0$；兩根 $x=2,\sqrt2$ 對應 $u=1,\dfrac12$。</div>
+根與係數：兩根積 $1\cdot\dfrac12=\dfrac3a\Rightarrow a=6$；兩根和 $1+\dfrac12=-\dfrac ba\Rightarrow b=-9$。<br>
+<span class="note-sm">也可以直接代入：$x=2$ 得 $a+3+b=0$；$x=\sqrt2$ 得 $\dfrac a2+6+b=0$；聯立得 $a=6$、$b=-9$。驗算：$6u^2-9u+3=3(2u-1)(u-1)=0$，$u=\frac12,1$ ✔。</span></div></div>
 
-<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">三個對數相等 → 令共同值 k，把 x、y、x+y 都寫成 3 的次方</span><span class="src">107 分科模考 全國數甲 第 5 次 選填 C</span></div>
-<div class="fxq">$x,y$ 皆為大於 $0$ 且不等於 $1$ 的實數，滿足 $\log_x3=\log_y9=\log_{x+y}27$，求 $x-y$。</div>
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">連等式 2^x=3^y=5^z=a → 令共同值 a，1/x＝log_a 2，倒數的組合併成一個對數</span><span class="src">明倫高中 104上 填充</span></div>
+<div class="fxq">設 $x,y,z$ 是不為 $0$ 的實數，若 $2^x=3^y=5^z=a$，且 $\dfrac3x+\dfrac2y+\dfrac1z=4$，求 $a$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">$-1$</div>
-<div class="fxs"><div class="move">招式：令共同值為 $k$：$x^k=3$、$y^k=9$、$(x+y)^k=27$ ⟹ $y=x^2$、$x+y=x^3$。</div>
-$x+x^2=x^3$ ⟹ $x^2-x-1=0$（$x\ne0$）⟹ $x=\dfrac{1+\sqrt5}2$（取正）。$x-y=x-x^2=-1$。<br>
-<span class="note-sm">$x=\frac{1+\sqrt5}{2}\ne1$、$y=x^2\ne1$，且 $k=\log_x3\gt0$，條件都合。</span></div></div>
+<div class="fxa">$a=\sqrt[4]{360}$</div>
+<div class="fxs"><div class="move">招式：連等式令共同值 $a$（$a\gt0$；又 $x\ne0$ 所以 $a\ne1$）：$x=\log_2a$ ⟹ $\dfrac1x=\dfrac1{\log_2a}=\log_a2$，同理 $\dfrac1y=\log_a3$、$\dfrac1z=\log_a5$。</div>
+$$\frac3x+\frac2y+\frac1z=3\log_a2+2\log_a3+\log_a5=\log_a\left(2^3\cdot3^2\cdot5\right)=\log_a360=4$$
+所以 $a^4=360$，$a=\sqrt[4]{360}$（$a\gt0$）。<br>
+<span class="note-sm">這是「連等式令共同值 $k$」的標準用法：把每個未知數都寫成同一個 $k$ 的對數，要的組合就合併成一個對數。</span></div></div>
 
-<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">A²+B²+4=4A → (A−2)²+B²=0，兩個對數同時被釘死</span><span class="src">105 學測模考 全國數A 第 3 次 選填 E</span></div>
-<div class="fxq">若 $\left(\log_3(x^2+y)\right)^2+\left(\log_3\dfrac{xy}3\right)^2+4=\log_3(x^2+y)^4$，其三組解為 $(x_i,y_i)$（$i=1,2,3$），求 $y_1+y_2+y_3$。</div>
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">對數式求最小值 → 全部化成 u=log₂x，變成 u 的二次函數再配方</span><span class="src">台中女中 112上 填 12</span></div>
+<div class="fxq">求 $f(x)=2(\log_22x)^2+\log_2(2x)^2+2\log_2x+2$ 的最小值。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">$9$</div>
-<div class="fxs"><div class="move">招式：$A=\log_3(x^2+y)$、$B=\log_3\frac{xy}3$，右式 $=4A$ ⟹ $(A-2)^2+B^2=0$ ⟹ $A=2$、$B=0$。</div>
-$x^2+y=9$、$xy=3$ ⟹ $x^3-9x+3=0$，三個實根 $x_i$（判別式為正）；$y_i=\dfrac3{x_i}$。<br>
-$\sum y_i=3\sum\dfrac1{x_i}=3\cdot\dfrac{x_1x_2+x_2x_3+x_3x_1}{x_1x_2x_3}=3\cdot\dfrac{-9}{-3}=9$。</div></div>
+<div class="fxa">$-2$</div>
+<div class="fxs"><div class="move">招式：令 $u=\log_2x$（$x\gt0$，$u$ 可取所有實數）。$\log_22x=1+u$，$\log_2(2x)^2=2\log_2(2x)=2+2u$。</div>
+$$f=2(1+u)^2+(2+2u)+2u+2=2u^2+8u+6=2(u+2)^2-2$$
+$u=-2$，即 $x=2^{-2}=\dfrac14$ 時，最小值 $-2$。<br>
+<span class="note-sm">$\log_2(2x)^2=2\log_2(2x)$ 這一步要 $2x\gt0$，題目的 $\log_22x$ 已經要求 $x\gt0$，所以可以放心拉下來。</span></div></div>
 
 <div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">4^x+4^y=2^{x+1}+2^{y+1} → 換元成圓 (u−1)²+(v−1)²=2，只取第一象限</span><span class="src">109 學測模考 全國數A 第 2 次 單 6</span></div>
 <div class="fxq">設實數 $x,y$ 滿足 $4^x+4^y=2^{x+1}+2^{y+1}$，關於 $2^x+2^y$ 的極值，下列何者正確？<br>(1) 最大值 $4$、最小值 $0$　(2) 最大值 $4$，沒有最小值　(3) 最大值 $2$、最小值 $1$　(4) 最大值 $2$，沒有最小值　(5) 沒有最大值，最小值 $0$</div>
@@ -613,8 +616,8 @@ $u+v=s$ 是斜率 $-1$ 的直線族；最大在切點 $(2,2)$：$s=4$，取得�
 落在開第一象限的弧是從 $(0,2)$ 經 $(2,2)$ 到 $(2,0)$ 這一段（兩端點各有一個坐標為 $0$，取不到）；$s$ 可以任意接近 $2$ 卻取不到 $2$ ⟹ 沒有最小值 ⟹ (2)。<br>
 <span class="note-sm">常見誤判：以為圓過原點所以 $s$ 可趨近 $0$——但原點附近的弧在 $u\gt0$ 時 $v\lt0$，不在允許範圍內。</span></div></div>
 
-<h3 class="sec" id="L5-sci">🏅 教甄・模考難題專區（15 題）</h3>
-<div class="note">來源：基隆女中 112、竹科實中 109、111 全國教甄、關西高農、台南女中 112、嘉義高中 112、桃園高中 111、麗山高中 106、台中二中 108 各校教甄，以及 105–113 學測／分科模考的壓軸題。掃描卷以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。</div>
+<h3 class="sec" id="L5-sci">🏅 教甄・大考難題專區（15 題）</h3>
+<div class="note">來源：基隆女中 112、竹科實中 109、111 全國教甄、關西高農、台南女中 112、嘉義高中 112、桃園高中 111、麗山高中 106、台中二中 108 各校教甄，以及 92 指考、113 學測模考、北一女中 110、竹科實中 112 段考與 2016 中國高考（浙江卷）的壓軸題。掃描卷以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。</div>
 
 <div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">[log√n]=[√(log n)] → 令 t=√(log n)，兩個高斯符號相等的整數 a 只能是 0 或 2</span><span class="src">基隆女中 112 教甄 填 1</span></div>
 <div class="fxq">滿足 $\left[\log\sqrt n\right]=\left[\sqrt{\log n}\right]$ 的最大正整數 $n$ 為何？（$[x]$ 表不大於 $x$ 的最大整數）</div>
@@ -708,37 +711,43 @@ $\cos75^\circ=\dfrac{\sqrt6-\sqrt2}4$、$\sin75^\circ=\dfrac{\sqrt6+\sqrt2}4$，
 $A=\left(s\cos75^\circ,\ s\sin75^\circ\right)=\left(\dfrac{(\sqrt6+\sqrt2)(\sqrt6-\sqrt2)}2,\ \dfrac{(\sqrt6+\sqrt2)^2}2\right)=\left(2,\ 4+2\sqrt3\right)$。<br>
 $A$ 在 $y=a^x$ 上：$a^2=4+2\sqrt3=(\sqrt3+1)^2$ ⟹ $a=\sqrt3+1$。</div></div>
 
-<div class="fx" id="L5-S12"><div class="fxh"><span class="no">S12</span><span class="kw">OA=OB 且 A、B 對稱於 y=x → 半角公式把 ∠AOB 拆成兩個等角，先求 A 再交換坐標得 B</span><span class="src">113 學測模考 全國數A 第 4 次 填 17</span></div>
-<div class="fxq">$A(x_1,y_1)$ 在 $y=2^x$ 上、$B(x_2,y_2)$ 在 $y=\log_2x$ 上，皆在第一象限。已知 $\overline{OA}=\overline{OB}=4\sqrt{17}$ 且 $\cos\angle AOB=\dfrac8{17}$，求 $\dfrac{x_1+2x_2}{y_1+2y_2}$。</div>
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">S12</span><span class="kw">A 對 y=x 的對稱點 → 坐標互換；O、A、B 共線 → 過原點的斜率相等</span><span class="src">北一女中 110上 填 13</span></div>
+<div class="fxq">坐標平面上，$O$ 為原點，點 $A$、點 $B$ 在指數函數 $y=10^x$ 的圖形上，$O$、$A$、$B$ 三點共線，$A$ 點關於直線 $y=x$ 的對稱點為 $C$ 點。若 $B$ 點的 $y$ 坐標為 $C$ 點的 $x$ 坐標的 $2$ 倍，求 $C$ 點坐標。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">$\dfrac32$</div>
-<div class="fxs"><div class="move">招式：$\overline{OA}=\overline{OB}$ 且兩曲線互為反函數 ⟹ $B$ 是 $A$ 對 $y=x$ 的鏡射，$(x_2,y_2)=(y_1,x_1)$；$\angle AOB$ 被 $y=x$ 平分。</div>
-設 $\angle AOB=2\theta$，$\cos2\theta=\dfrac8{17}$ ⟹ $\cos\theta=\dfrac5{\sqrt{34}}$、$\sin\theta=\dfrac3{\sqrt{34}}$。$A$ 的極角為 $45^\circ+\theta$：<br>
-$x_1=4\sqrt{17}\cos(45^\circ+\theta)=4\sqrt{17}\cdot\dfrac{5-3}{\sqrt2\sqrt{34}}=4$，$y_1=4\sqrt{17}\cdot\dfrac{5+3}{\sqrt2\sqrt{34}}=16$（$2^4=16$ ✔）。<br>
-$B=(16,4)$，所求 $=\dfrac{4+32}{16+8}=\dfrac{36}{24}=\dfrac32$。</div></div>
+<div class="fxa">$C(2,\ \log2)$</div>
+<div class="fxs"><div class="move">招式：設 $A(a,10^a)$、$B(b,10^b)$，則 $C(10^a,a)$（對 $y=x$ 鏡射＝坐標互換）；共線用「過原點的斜率相等」：$\dfrac{10^a}a=\dfrac{10^b}b$。</div>
+$y_B=2x_C$：$10^b=2\cdot10^a$ ⟹ $b=a+\log2$。<br>
+代入共線：$\dfrac{10^a}a=\dfrac{2\cdot10^a}b$ ⟹ $b=2a$。<br>
+聯立：$2a=a+\log2$ ⟹ $a=\log2$，$C=\left(10^{\log2},\ \log2\right)=(2,\ \log2)$。<br>
+<span class="note-sm">檢查：$A(\log2,\ 2)$、$B(2\log2,\ 4)$，斜率 $\dfrac2{\log2}=\dfrac4{2\log2}$ ✔（$A\ne B$）；$C(2,\log2)$ 正好落在 $y=\log x$ 上——$y=10^x$ 的點對 $y=x$ 鏡射，一定落在反函數 $y=\log x$ 上。</span></div></div>
 
-<div class="fx" id="L5-S13"><div class="fxh"><span class="no">S13</span><span class="kw">先數根：log₂x=x−2 恰兩根（x=2、4）→ 再把 k=2 代進換底乘積</span><span class="src">107 分科模考 全國數乙 第 5 次 選填 B</span></div>
-<div class="fxq">若方程式 $\log_2x=x-2$ 恰有 $k$ 個實根，求 $(\log_83)(\log_9k)$。</div>
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">S13</span><span class="kw">取對數會縮小定義域 → 2log₂x＝x 只剩 x>0；凹函數與直線最多兩交點</span><span class="src">92 指考 數乙 第 7 題</span></div>
+<div class="fxq">陳老師證明了 $x^2=2^x$ 有兩個正實數解及一個負實數解後，進一步說，此方程式兩邊各取 $\log_2$，得 $2\log_2x=x$；陳老師要同學討論此新的方程式有多少實數解？<br>
+小英說：恰有三個實數解；<br>小明說：恰有兩個正實數解；<br>小華說：最多只有兩個實數解；<br>小毛說：仍然有兩個正實數解及一個負實數解；<br>小芬說：沒有實數解。<br>
+請問哪些人說的話，可以成立？<br>(1) 小英　(2) 小明　(3) 小華　(4) 小毛　(5) 小芬</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">$\dfrac16$</div>
-<div class="fxs"><div class="move">招式：先數 $y=\log_2x$ 與 $y=x-2$ 的交點。$x=4$ 時左 $2$、右 $2$ ✔ 是一根；另一根在 $(0,1)$：$x\to0^+$ 時左 $\to-\infty\lt-2$，$x=1$ 時左 $0\gt-1$，中間必穿過一次。$\log_2x$ 凹口向下、直線斜率固定，最多兩交點 ⟹ $k=2$。</div>
-$(\log_83)(\log_92)=\dfrac{\log3}{3\log2}\cdot\dfrac{\log2}{2\log3}=\dfrac16$。<br>
-<span class="note-sm">數值掃描：兩根 $x\approx0.31$ 與 $x=4$。凹函數與直線至多兩交點，是「根的個數」題的通用上界。</span></div></div>
+<div class="fxa">(2)(3)</div>
+<div class="fxs"><div class="move">招式：$\log_2x$ 只在 $x\gt0$ 有意義——取對數之後，原方程式的負根自動消失。再看 $y=2\log_2x$ 與 $y=x$ 的交點：凹口向下的曲線與直線最多兩個交點。</div>
+$x=2$：左 $2\log_22=2$、右 $2$ ✔；$x=4$：左 $2\log_24=4$、右 $4$ ✔。兩個正根都找到了，而凹函數與直線至多兩交點 ⟹ 恰有兩個實數解，都是正的。<br>
+小明 ✔、小華 ✔（「最多兩個」成立）；小英、小毛說有三個 ✘；小芬 ✘。<br>
+<span class="note-sm">原方程式 $x^2=2^x$ 的負根 $x\approx-0.77$ 去哪了？正確取對數應寫 $\log_2x^2=2\log_2|x|$，它才保留負根；寫成 $2\log_2x$ 就把 $x\lt0$ 丟掉了。這是「取對數前先看定義域」的經典陷阱。</span></div></div>
 
-<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">log_a b＋log_b a=5/2 → r+1/r，a>b>1 決定 r<1；再用 a^b=b^a</span><span class="src">107 分科模考 中區數甲 第 3 次 選填 B</span></div>
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">log_a b＋log_b a=5/2 → r+1/r，a>b>1 決定 r<1；再用 a^b=b^a</span><span class="src">改編自 2016 中國高考 浙江卷理科 第 12 題</span></div>
 <div class="fxq">已知 $a\gt b\gt1$，$\log_ab+\log_ba=\dfrac52$ 且 $a^b=b^a$，求 $(a,b)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(a,b)=(4,2)$</div>
 <div class="fxs"><div class="move">招式：$r=\log_ab$，$r+\frac1r=\frac52$ ⟹ $r=2$ 或 $\frac12$；$a\gt b\gt1$ ⟹ $0\lt r\lt1$ ⟹ $r=\frac12$ ⟹ $b=\sqrt a$。</div>
 $a^b=b^a$ ⟹ $a^{\sqrt a}=(\sqrt a)^a=a^{a/2}$ ⟹ $\sqrt a=\dfrac a2$ ⟹ $a=4$、$b=2$。驗：$4^2=2^4=16$ ✔。<br>
-<span class="note-sm">同型題（111 分科模考）把 $\frac52$ 換成 $\frac{10}3$：$r=\frac13$，$b=a^{1/3}$，$a^{2/3}=3$，$a=3\sqrt3$、$b=\sqrt3$，$a^2+b^2=30$。</span></div></div>
+<span class="note-sm">自己練：把 $\frac52$ 換成 $\frac{10}3$，同樣的步驟得 $r=\frac13$、$b=a^{1/3}$，再由 $a^b=b^a$ 解出 $a,b$。</span></div></div>
 
-<div class="fx" id="L5-S15"><div class="fxh"><span class="no">S15</span><span class="kw">兩個 log₂√ 相減等於 1 → 真數比為 4，得 y=7x，目標變一元二次</span><span class="src">106 分科模考 南區數乙 第 2 次 單 2</span></div>
-<div class="fxq">$x,y$ 為正數，且 $\log_2\sqrt{x+5y}-\log_2\sqrt{2x+y}=1$，求 $2x^2-4y$ 的最小值。<br>(1) $-98$　(2) $-49$　(3) $7$　(4) $49$　(5) $98$</div>
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">S15</span><span class="kw">指數上有 log x → 兩邊取常用對數，令 u=log x 變成區間上的二次函數</span><span class="src">竹科實中 112上 填 8</span></div>
+<div class="fxq">設 $10^3\le x\le10^6$，試求 $f(x)=x^{(\log x)+2}$ 的最小值 $10^a$、最大值 $10^b$，求數對 $(a,b)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">(1) $-98$</div>
-<div class="fxs"><div class="move">招式：$\log_2\sqrt{\dfrac{x+5y}{2x+y}}=1$ ⟹ $\dfrac{x+5y}{2x+y}=4$ ⟹ $x+5y=8x+4y$ ⟹ $y=7x$。</div>
-$2x^2-4y=2x^2-28x=2(x-7)^2-98$，$x=7$（$y=49\gt0$ ✔）時最小值 $-98$。</div></div>
+<div class="fxa">$(a,b)=(15,48)$</div>
+<div class="fxs"><div class="move">招式：底數和指數都含 $x$ ⟹ 兩邊取常用對數：$\log f(x)=(\log x+2)\log x$。令 $u=\log x$，範圍 $3\le u\le6$。</div>
+$\log f(x)=u^2+2u=(u+1)^2-1$，頂點 $u=-1$ 在區間左邊，所以在 $[3,6]$ 上遞增：<br>
+$u=3$：$\log f=15$，最小值 $10^{15}$；$u=6$：$\log f=48$，最大值 $10^{48}$。故 $(a,b)=(15,48)$。<br>
+<span class="note-sm">$\log$ 是遞增函數，$f$ 的最大、最小就是 $\log f$ 的最大、最小。區間上的二次函數要先看頂點在不在區間內——這題不在，最值落在兩端。</span></div></div>
 </section>
 
 <div class="ch-nav">
@@ -748,6 +757,9 @@ $2x^2-4y=2x^2-28x=2(x-7)^2-98$，$x=7$（$y=49\gt0$ ✔）時最小值 $-98$。<
 </div>
 </div>
 
+<script src="../../assets/firebase-config.js"></script>
+<script src="../../assets/reflex-cloud.js"></script>
+<script src="../../assets/practice-cloud.js"></script>
 <script>
 (function () {
   var G = window.PGEN, CH = 'g11a-ch02';

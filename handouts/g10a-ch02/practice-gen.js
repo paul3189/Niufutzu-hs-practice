@@ -375,24 +375,6 @@
              p: { a: a, b: b, c: c, op: op, strict: strict ? 1 : 0, gt: gt ? 1 : 0, pts: pts, ans: ans } };
   };
 
-  /* 3-2 線性規劃：頂點代入 */
-  L1.lpVertex = function (r) {
-    var V, p, q, vals;
-    do {
-      V = [[r.int(0, 6), r.int(0, 6)], [r.int(0, 6), r.int(0, 6)], [r.int(0, 6), r.int(0, 6)]];
-      p = r.nz(-4, 4); q = r.nz(-4, 4);
-      vals = V.map(function (v) { return p * v[0] + q * v[1]; });
-    } while ((V[1][0] - V[0][0]) * (V[2][1] - V[0][1]) - (V[2][0] - V[0][0]) * (V[1][1] - V[0][1]) === 0 ||
-             vals[0] === vals[1] || vals[1] === vals[2] || vals[0] === vals[2]);
-    var mx = Math.max.apply(null, vals), mn = Math.min.apply(null, vals);
-    var im = vals.indexOf(mx), imn = vals.indexOf(mn);
-    var f = term(p, 'x', true) + term(q, 'y', false);
-    return { q: '區域 ' + T('R') + ' 是以 ' + T(ptTex(V[0][0], V[0][1])) + '、' + T(ptTex(V[1][0], V[1][1])) + '、' + T(ptTex(V[2][0], V[2][1])) + ' 為頂點的三角形（含邊界）。求 ' + T('f=' + f) + ' 在 ' + T('R') + ' 上的最大值與最小值。',
-             a: '最大值 ' + T(String(mx)) + '（在 ' + T(ptTex(V[im][0], V[im][1])) + '），最小值 ' + T(String(mn)) + '（在 ' + T(ptTex(V[imn][0], V[imn][1])) + '）',
-             h: '線性目標函數的最大、最小一定出現在頂點，所以把三個頂點依序代入 $f=' + f + '$ 比大小就好。例如第一個頂點 ' + T(ptTex(V[0][0], V[0][1])) + ' 代入得 $f=' + hsub(p, q, 0, V[0][0], V[0][1]) + '$。',
-             p: { V: V, p: p, q: q, ans: [mx, mn] } };
-  };
-
   /* 4-1 圓心半徑 → 標準式與一般式 */
   L1.circStd = function (r) {
     var h = r.int(-5, 5), k = r.int(-5, 5), rad = r.int(1, 6);
@@ -637,7 +619,7 @@
              p: { a: a, b: b, c: c, A: A, B: B, ans: [x0, y0] } };
   };
 
-  /* 3-1 線性規劃（給不等式組） */
+  /* 3-1 三條不等式圍成的三角形（regionArea 用） */
   function triSystem(r) {
     var V, twice;
     do {
@@ -656,21 +638,6 @@
     }
     return { V: V, twice: Math.abs(twice), tex: '\\begin{cases}' + rows.join('\\\\ ') + '\\end{cases}', ineqs: ineqs };
   }
-  L2.lpOpt = function (r) {
-    var S, p, q, vals;
-    do {
-      S = triSystem(r); p = r.nz(-4, 4); q = r.nz(-4, 4);
-      vals = S.V.map(function (v) { return p * v[0] + q * v[1]; });
-    } while (vals[0] === vals[1] || vals[1] === vals[2] || vals[0] === vals[2]);
-    var mx = Math.max.apply(null, vals), mn = Math.min.apply(null, vals), im = vals.indexOf(mx), imn = vals.indexOf(mn);
-    var f = term(p, 'x', true) + term(q, 'y', false);
-    var ls = S.ineqs.map(function (g) { return T(lineTex(g[0], g[1], g[2])); }).join('、');
-    return { q: '設 ' + T('(x,y)') + ' 滿足 ' + T(S.tex) + '，求 ' + T('f=' + f) + ' 的最大值與最小值。',
-             a: '最大值 ' + T(String(mx)) + '（在 ' + T(ptTex(S.V[im][0], S.V[im][1])) + '），最小值 ' + T(String(mn)) + '（在 ' + T(ptTex(S.V[imn][0], S.V[imn][1])) + '）',
-             h: '先把三個不等式的等號部分看成三條直線 ' + ls + '，兩兩聯立求出三個頂點（求完記得檢查它有沒有滿足第三個不等式）；再把每個頂點代入 $f=' + f + '$ 比大小，最大最小一定出現在頂點。',
-             p: { ineqs: S.ineqs, V: S.V, p: p, q: q, ans: [mx, mn] } };
-  };
-
   /* 3-2 區域面積 */
   L2.regionArea = function (r) {
     var S = triSystem(r), A = F(S.twice, 2);
@@ -845,7 +812,6 @@
     translate: '這是「平移直線」：平移用代換，把 $x$ 換成 $x-h$、$y$ 換成 $y-k$，代換方向和移動方向相反。',
     perpBisector: '這是「中垂線」：它同時要過 $\\overline{AB}$ 的中點、又要與 $\\overline{AB}$ 垂直，所以先求中點、再處理斜率。',
     halfPlane: '這是「半平面判定」：把每個點代進不等式左邊算出正負再判斷，特別注意不等號有沒有含等號。',
-    lpVertex: '這是「線性規劃（頂點代入）」：線性目標函數的最大、最小一定出現在頂點，把每個頂點代進去比大小就好。',
     circStd: '這是「由圓心半徑寫圓方程式」：先寫標準式 $(x-h)^2+(y-k)^2=r^2$，展開合併後就是一般式。',
     circGen: '這是「由一般式求圓心半徑」：對照 $x^2+y^2+dx+ey+f=0$，用配方法或直接套圓心與半徑的公式。',
     circKind: '這是「判斷圖形是圓、一點還是沒有圖形」：配方後看右邊的正負，也就是看 $d^2+e^2-4f$ 的正負。',
@@ -1011,15 +977,6 @@
       '注意 $' + p.op + '$ ' + (p.strict ? '不含等號，算出來剛好是 $0$ 的點不算' : '含等號，算出來剛好是 $0$ 的點也算') + '，所以答案是 ' + (yes.length ? yes.join('') : '沒有任何一點滿足') + '。'];
   };
 
-  L1_SOL.lpVertex = function (p) {
-    var vals = p.V.map(function (v) { return p.p * v[0] + p.q * v[1]; });
-    var f = term(p.p, 'x', true) + term(p.q, 'y', false);
-    var im = vals.indexOf(p.ans[0]), imn = vals.indexOf(p.ans[1]);
-    return ['$f$ 是一次式（線性），在凸區域上的最大值與最小值一定出現在頂點，所以只要把三個頂點代進去比大小。',
-      '代入三個頂點：' + p.V.map(function (v, i) { return '$' + ptTex(v[0], v[1]) + '$ 得 $f=' + subT(p.p, p.q, 0, v[0], v[1]) + '=' + vals[i] + '$'; }).join('；') + '。',
-      '比大小：最大值 $' + p.ans[0] + '$（在 $' + ptTex(p.V[im][0], p.V[im][1]) + '$），最小值 $' + p.ans[1] + '$（在 $' + ptTex(p.V[imn][0], p.V[imn][1]) + '$）。'];
-  };
-
   L1_SOL.circStd = function (p) {
     var d = p.ans[0], e = p.ans[1], f = p.ans[2];
     var std = ('(x' + term(-p.h, '', false) + ')^2+(y' + term(-p.k, '', false) + ')^2=' + (p.r * p.r)).replace('(x)', 'x').replace('(y)', 'y');
@@ -1097,14 +1054,14 @@
       ['line2pt', '§1 兩點式'], ['interceptForm', '§1 截距'], ['parPerp', '§1 平行線與垂直線'], ['intersect', '§1 兩直線交點'],
       ['ptLineDist', '§2 點到直線的距離'], ['parDist', '§2 兩平行線的距離'], ['triArea', '§2 三角形面積'], ['symAxis', '§2 對稱點（軸、原點、y=x）'],
       ['translate', '§2 平移直線'], ['perpBisector', '§2 中垂線'],
-      ['halfPlane', '§3 半平面判定'], ['lpVertex', '§3 線性規劃：頂點代入'],
+      ['halfPlane', '§3 半平面判定'],
       ['circStd', '§4 圓心半徑→方程式'], ['circGen', '§4 一般式→圓心半徑'], ['circKind', '§4 圓、一點或無圖形'], ['ptCircle', '§4 點與圓的位置'],
       ['lineCircPos', '§5 直線與圓的位置關係'], ['chordLen', '§5 弦長'], ['tangentAtPt', '§5 過圓上一點的切線'], ['tangentLen', '§5 切線長']
   ];
   var META_L2 = [
       ['lineFamily', '§1 直線族恆過定點'], ['threeLines', '§1 三直線圍不成三角形'], ['minArea', '§1 截距式＋算幾：最小面積'],
       ['reflectPt', '§2 點對直線的對稱點'], ['shortestPath', '§2 反射最短路徑'], ['eqDistOnLine', '§2 直線上與兩點等距的點'],
-      ['lpOpt', '§3 線性規劃（不等式組）'], ['regionArea', '§3 不等式區域面積'], ['latticeCount', '§3 格子點計數'],
+      ['regionArea', '§3 不等式區域面積'], ['latticeCount', '§3 格子點計數'],
       ['circParam', '§4 含參數的圓'], ['circ3pt', '§4 過三點的圓'], ['circCenterOnLine', '§4 圓心在直線上'], ['circTangentLine', '§4 與直線相切的圓'],
       ['tangentExt', '§5 過圓外一點的切線'], ['chordParam', '§5 弦長反求參數'], ['circMinMax', '§5 圓上動點的最遠最近'], ['circLinePosParam', '§5 相交／相切的參數範圍']
   ];
@@ -1198,7 +1155,7 @@
       p: { A: A, B: B, C: C, ans: [[1, 0, -(x0 + p)], [0, 1, -(y0 + q)], normLine(q, p, -(q * (x0 + p) + p * y0))] } };
   };
 
-  /* L3-7　含參數的可行域面積：參數線繞定點轉，切掉一個三角形 */
+  /* L3-7　含參數的區域面積：參數線繞定點轉，切掉一個三角形 */
   L3.paramRegionArea = function (r) {
     var a, b, c, t, m, X, Y, tries = 0, area;
     do {
@@ -1326,7 +1283,7 @@
       p: { P: [px, py], C: [h, k], r: rad, ans: [f.n, f.d, sq.r] } };
   };
 
-  var META_L3 = [['shiftCoincide', '平移後與自己重合'], ['parTwoPts', '兩平行線各過一點、距離已知'], ['triAreaSlopes', '兩線與 x 軸圍三角形'], ['doubleReflectCircle', '連續兩次鏡射的三點共圓'], ['maxProjDist', '投影距離最大'], ['equidistLines', '到三頂點等距的直線'], ['paramRegionArea', '含參數的可行域面積'], ['quadRegionArea', '四條不等式圍區域的面積'], ['chordDistCircle', '過兩點＋弦心距求圓'], ['circumThreeLines', '三直線圍三角形的外接圓'], ['tangentAtAxisPt', '圓過原點與兩軸交點的切線'], ['tangentPointParams', '切於指定點求參數'], ['pointsAtDist', '圓上恰 n 點到直線等距'], ['halfCircleOne', '直線與半圓恰交一點'], ['chordOfContact', '切點弦長']];
+  var META_L3 = [['shiftCoincide', '平移後與自己重合'], ['parTwoPts', '兩平行線各過一點、距離已知'], ['triAreaSlopes', '兩線與 x 軸圍三角形'], ['doubleReflectCircle', '連續兩次鏡射的三點共圓'], ['maxProjDist', '投影距離最大'], ['equidistLines', '到三頂點等距的直線'], ['paramRegionArea', '含參數的區域面積'], ['quadRegionArea', '四條不等式圍區域的面積'], ['chordDistCircle', '過兩點＋弦心距求圓'], ['circumThreeLines', '三直線圍三角形的外接圓'], ['tangentAtAxisPt', '圓過原點與兩軸交點的切線'], ['tangentPointParams', '切於指定點求參數'], ['pointsAtDist', '圓上恰 n 點到直線等距'], ['halfCircleOne', '直線與半圓恰交一點'], ['chordOfContact', '切點弦長']];
   /* 固定題 L3-n 對應的類似題型 */
   var L3_FIX = { 'L3-1': 'shiftCoincide', 'L3-2': 'parTwoPts', 'L3-3': 'triAreaSlopes', 'L3-4': 'doubleReflectCircle', 'L3-5': 'maxProjDist', 'L3-6': 'equidistLines', 'L3-7': 'paramRegionArea', 'L3-8': 'quadRegionArea', 'L3-9': 'chordDistCircle', 'L3-10': 'circumThreeLines', 'L3-11': 'tangentAtAxisPt', 'L3-12': 'tangentPointParams', 'L3-13': 'pointsAtDist', 'L3-14': 'halfCircleOne', 'L3-15': 'chordOfContact' };
 

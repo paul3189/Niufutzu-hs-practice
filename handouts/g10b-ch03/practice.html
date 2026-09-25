@@ -521,12 +521,24 @@ $r(u,w)$：係數 $3\times7\gt0$ ⟹ $r(u,w)=r(x,y)=-0.83$；$w=7y-3$ 與 $y$ �
 <div class="fxs"><div class="move">招式：$r=\dfrac1n\sum x_i'y_i'$——正負由<b>乘積和</b>決定，不是由「點的個數」決定。</div>
 (1) 「大部分」在二、四象限不保證乘積和為負（少數很遠的一、三象限點可以壓過）✗。(2) $\sigma\gt0$ 且共線 ⟹ $r=\pm1$ ✓。(3) 斜率 $=r\frac{\sigma_y}{\sigma_x}$ 與 $r$ 同號；標準化後斜率就是 $r$ ✓。(4) $r\frac{\sigma_y}{\sigma_x}\gt1$ 且 $r\le1$ ⟹ $\frac{\sigma_y}{\sigma_x}\gt1$ ✓。(5) 迴歸直線是「預測」，資料點不必落在線上 ✗。</div></div>
 
-<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">f(x)=Σ(x−aᵢ)² 給三個函數值 → f(x)=n(x−μ)²+nσ²，頂點就是平均、最小值就是 nσ²</span><span class="src">107 學測 全國第三次模考 多 10</span></div>
-<div class="fxq">設 $a_1,\dots,a_8$ 為實數，二次函數 $f(x)=(x-a_1)^2+\cdots+(x-a_8)^2=a(x-h)^2+k$。若 $f(4)=104$、$f(6)=72$、$f(7)=80$，請選出正確選項。（多選）<br>(1) $a+h+k=78$　(2) $a+h+k=86$　(3) $a_1,\dots,a_8$ 的平均數為 $9$　(4) $a_1,\dots,a_8$ 的標準差為 $3$　(5) $a_1,\dots,a_8$ 的標準差為 $\sqrt8$</div>
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">A 組各數與全體平均之差的平方和 → 拆成 m·S²＋m(x̄−w̄)²（交叉項為 0），再合併兩組求全體變異數</span><span class="src">改編自 2017 日本 センター試験（追試）數學 I・A 第 2 問 [3]</span></div>
+<div class="fxq">A 組 $m$ 人、B 組 $n$ 人參加同一次測驗，得分分別為 A 組 $x_1,x_2,\dots,x_m$、B 組 $y_1,y_2,\dots,y_n$。兩組的平均分別為 $\bar x$、$\bar y$，變異數分別為 $S_A^2$、$S_B^2$；兩組合起來 $(m+n)$ 人的平均為 $\bar w$、變異數為 $S^2$。<br>
+【甲】A 組每人得分與 $\bar w$ 之差的平方和 $(x_1-\bar w)^2+(x_2-\bar w)^2+\cdots+(x_m-\bar w)^2$ 用 $\bar x$、$S_A^2$、$\bar w$ 表示，是下列哪一個？<br>
+(1) $S_A^2+(\bar x)^2+(\bar w)^2$　(2) $S_A^2+(\bar x-\bar w)^2$　(3) $mS_A^2+m\left\{(\bar x)^2+(\bar w)^2\right\}$　(4) $mS_A^2+m(\bar x-\bar w)^2$<br>
+【乙】兩組合起來的變異數 $S^2$ 等於下列哪一個？<br>
+(1) $\dfrac{mS_A^2+nS_B^2+(m+n)\left\{(\bar x+\bar y)^2-(\bar w)^2\right\}}{m+n}$<br>
+(2) $\dfrac{mS_A^2+nS_B^2-(m+n)\left\{(\bar x)^2+(\bar y)^2-(\bar w)^2\right\}}{m+n}$<br>
+(3) $\dfrac{mS_A^2+nS_B^2-\left\{m(\bar x)^2+n(\bar y)^2\right\}+(m+n)(\bar w)^2}{m+n}$<br>
+(4) $\dfrac{mS_A^2+nS_B^2+m(\bar x)^2+n(\bar y)^2+(m+n)(\bar w)^2}{m+n}$<br>
+(5) $\dfrac{mS_A^2+nS_B^2+m(\bar x)^2+n(\bar y)^2-(m+n)(\bar w)^2}{m+n}$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">(2)(4)</div>
-<div class="fxs"><div class="move">招式：展開得 $a=8$、$h=\mu$、$k=8\sigma^2$。三個函數值中任兩個相減就能解 $h$。</div>
-$f(4)-f(6)=8[(4-h)^2-(6-h)^2]=8(4h-20)=32$ ⟹ $h=6$；$k=72-0=72$；檢查 $f(7)=8+72=80$ ✓。$a+h+k=86$ ✓(2)；$\mu=6$ ✗(3)；$\sigma^2=\dfrac{72}{8}=9$ ⟹ $\sigma=3$ ✓(4)。</div></div>
+<div class="fxa">【甲】(4)　【乙】(5)</div>
+<div class="fxs"><div class="move">招式：$x_i-\bar w=(x_i-\bar x)+(\bar x-\bar w)$ 平方後加總，交叉項 $2(\bar x-\bar w)\displaystyle\sum(x_i-\bar x)=0$ 消掉——這就是「$f(t)=\displaystyle\sum(x_i-t)^2=m(t-\bar x)^2+mS_A^2$」代 $t=\bar w$。</div>
+【甲】$\displaystyle\sum_{i=1}^{m}(x_i-\bar w)^2=\sum(x_i-\bar x)^2+2(\bar x-\bar w)\sum(x_i-\bar x)+m(\bar x-\bar w)^2=mS_A^2+0+m(\bar x-\bar w)^2$，選 (4)。<br>
+【乙】同理 B 組 $\displaystyle\sum_{j=1}^{n}(y_j-\bar w)^2=nS_B^2+n(\bar y-\bar w)^2$，兩組相加就是全體對 $\bar w$ 的平方和：<br>
+$(m+n)S^2=mS_A^2+nS_B^2+m(\bar x-\bar w)^2+n(\bar y-\bar w)^2$。<br>
+後兩項展開 $=m(\bar x)^2+n(\bar y)^2-2\bar w(m\bar x+n\bar y)+(m+n)(\bar w)^2$，再用 $m\bar x+n\bar y=(m+n)\bar w$ ⟹ $=m(\bar x)^2+n(\bar y)^2-(m+n)(\bar w)^2$。<br>
+故 $S^2=\dfrac{mS_A^2+nS_B^2+m(\bar x)^2+n(\bar y)^2-(m+n)(\bar w)^2}{m+n}$，選 (5)。<span class="note-sm">（也可以用「變異數＝平方的平均－平均的平方」：A 組平方和 $=m\left(S_A^2+(\bar x)^2\right)$、B 組 $=n\left(S_B^2+(\bar y)^2\right)$，全體平方的平均減去 $(\bar w)^2$ 就是同一式。）</span></div></div>
 
 <div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">五筆資料有一個未知、迴歸直線已知 → 過重心求出 a，然後老實算兩個變異數</span><span class="src">武陵高中 111下 填 6</span></div>
 <div class="fxq">已知 $x,y$ 的五筆數據 $x:1,2,2,3,2$；$y:3,2,1,a,10$，且 $y$ 對 $x$ 的迴歸直線為 $y=\dfrac12x+3$。(1) 求數據 $x$ 的變異數。　(2) 求數據 $y$ 的標準差。</div>
@@ -581,12 +593,13 @@ $r=\dfrac18\sum X'Y'=\dfrac{0.2+2.4+0+0+3+0-0.2-0.2}{8}=\dfrac{5.2}{8}=0.65$。<
 <div class="fxs"><div class="move">招式：$x_k=2+\cos(10k^\circ)$。平移不影響變異數 ⟹ 只看 $\cos(10k^\circ)$，$k=1,\dots,36$。</div>
 對稱性：$36$ 個角均分一圈，$\sum\cos(10k^\circ)=0$ ⟹ $\mu=0$；$\cos^2\theta=\dfrac{1+\cos2\theta}{2}$，而 $\sum\cos(20k^\circ)=0$ ⟹ $\sum\cos^2=\dfrac{36}{2}=18$ ⟹ $\sigma^2=\dfrac{18}{36}=\dfrac12$。<span class="note-sm">（用到「等分圓周的餘弦值總和為 $0$」，這是下一章三角比的對稱性；本題只需知道圓上均勻分布的點左右對稱即可。）</span></div></div>
 
-<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">7 人級分只知中位數 12、唯一眾數 10 → 全距最小時的組合只有一種：先把 10 疊三個，再讓其餘每個值最多出現兩次</span><span class="src">106 學測 臺北第一次模考 多 11</span></div>
-<div class="fxq">$7$ 名學生的數學級分（$0\sim15$ 的整數）由小到大排列，中位數為 $12$ 級分，唯一的眾數是 $10$ 級分。下列哪些選項正確？（多選）<br>(1) 全距的最小值為 $3$　(2) 全距為最小值時，只有 $3$ 種相異的分數　(3) 全距為最小值時，可能的組合只有一種　(4) 全距為最小值時，平均值高於中位數　(5) 全距為最小值時，標準差小於 $2$</div>
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">甲組中位數比乙組小 1 → 兩個中位數是相鄰整數，數「比中位數小的有幾個」就能定出它們是 25、26，其餘左右兩堆各自平分</span><span class="src">113 學測數A 單選 5</span></div>
+<div class="fxq">將 $1$ 到 $50$ 這 $50$ 個正整數平分成甲、乙兩組，每組各 $25$ 個數，使得甲組的中位數比乙組的中位數小 $1$。試問共有幾種分法？<br>(1) $C^{50}_{25}$　(2) $C^{48}_{24}$　(3) $C^{24}_{12}$　(4) $\left(C^{24}_{12}\right)^2$　(5) $C^{48}_{24}\cdot C^{24}_{12}$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">(1)(2)(3)(5)</div>
-<div class="fxs"><div class="move">招式：$a_4=12$；$10$ 是唯一眾數且 $10\lt12$ ⟹ $10$ 只能出現在 $a_1\sim a_3$、至少兩次，其他值出現次數都要比 $10$ 少。</div>
-要全距最小就讓 $a_1=10$。若 $10$ 出現三次（$a_1=a_2=a_3=10$），$a_4=12$，$a_5,a_6,a_7\ge12$ 且每個值最多出現兩次 ⟹ $12$ 最多再一次、其餘至少 $13$ ⟹ $(10,10,10,12,12,13,13)$，全距 $3$。若 $10$ 只出現兩次，其他值最多一次 ⟹ $a_3\ge11$、$a_5,a_6,a_7$ 互異 $\ge13$ ⟹ 全距 $\ge5$。故最小全距 $3$、組合唯一 ✓(1)(2)(3)；平均 $\dfrac{80}{7}\approx11.43\lt12$ ✗(4)；$\sigma^2=\dfrac{1}{7}\sum(x-\frac{80}{7})^2\approx1.67$ ⟹ $\sigma\approx1.29\lt2$ ✓(5)。</div></div>
+<div class="fxa">(4) $\left(C^{24}_{12}\right)^2$</div>
+<div class="fxs"><div class="move">招式：$25$ 個數的中位數是第 $13$ 小，所以每組「比中位數小的恰 $12$ 個、比中位數大的恰 $12$ 個」；兩組中位數是相鄰整數 $m$、$m+1$，數一數 $1\sim50$ 裡比 $m$ 小的有幾個就能定出 $m$。</div>
+設甲組中位數 $m$、乙組中位數 $m+1$。甲組比 $m$ 小的有 $12$ 個；乙組比 $m+1$ 小的也有 $12$ 個，而 $m$ 本身在甲組，所以乙組這 $12$ 個都比 $m$ 小。於是 $1\sim50$ 中比 $m$ 小的數恰有 $12+12=24$ 個 ⟹ $m=25$，乙組中位數為 $26$。<br>
+接著：$25$ 一定在甲組、$26$ 一定在乙組；$1\sim24$ 這 $24$ 個數甲、乙各拿 $12$ 個，有 $C^{24}_{12}$ 種；$27\sim50$ 這 $24$ 個數也各拿 $12$ 個，有 $C^{24}_{12}$ 種。共 $\left(C^{24}_{12}\right)^2$ 種，選 (4)。<span class="note-sm">（反過來檢查：甲組 $=12$ 個小數＋$25$＋$12$ 個大數，第 $13$ 小正是 $25$；乙組同理是 $26$，每一種這樣的分法都符合題意，沒有重複也沒有漏掉。）</span></div></div>
 
 <div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">兩個單位向量正交、證 (Σa)²+(Σb)² ≤ n → 把 (1,1,…,1) 投影到 a、b 張出的平面：投影長不超過原長</span><span class="src">中山女高 110下 證明 19</span></div>
 <div class="fxq">實數列 $\langle a_n\rangle,\langle b_n\rangle$（$n\ge2$）滿足 $a_1^2+\cdots+a_n^2=1$、$b_1^2+\cdots+b_n^2=1$、$a_1b_1+\cdots+a_nb_n=0$。證明：$(a_1+\cdots+a_n)^2+(b_1+\cdots+b_n)^2\le n$。</div>
@@ -748,6 +761,9 @@ $k\to k+10$ 後中位數是 $k+10$ ⟹ $k+10\lt32$（若 $\ge32$ 中位數會是
 </div>
 
 
+<script src="../../assets/firebase-config.js"></script>
+<script src="../../assets/reflex-cloud.js"></script>
+<script src="../../assets/practice-cloud.js"></script>
 <script>
 (function () {
   var G = window.PGEN, CH = 'g10b-ch03';
