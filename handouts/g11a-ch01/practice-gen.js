@@ -611,7 +611,7 @@
     var bT = b === 1 ? 'x' : b + 'x', b3T = (3 * b) + 'x', b2T = (2 * b) + 'x';
     var expr = { abstan: '|\\tan ' + bT + '|', sincos2: '\\sin ' + bT + '+\\cos ' + b2T, absabs: '|\\sin ' + bT + '|+|\\cos ' + bT + '|', prod: '\\sin ' + bT + '\\cos ' + bT, cos2: '\\cos^2 ' + bT, sum3: '\\sin ' + bT + '+\\sin ' + b3T }[kind];
     var P = { abstan: F(1, b), sincos2: F(2, b), absabs: F(1, 2 * b), prod: F(1, b), cos2: F(1, b), sum3: F(2, b) }[kind];
-    var hint = { abstan: '$\\tan$ 加絕對值週期不變（$\\tan$ 本身已是半個「正弦週期」）。', sincos2: '兩項週期取最小公倍數。', absabs: '$|\\sin|+|\\cos|$ 把 $x$ 換成 $x+\\dfrac{\\pi}{2b}$ 會互換，週期是 $\\dfrac{\\pi}{2b}$。', prod: '$\\sin\\cos=\\dfrac12\\sin(2\\cdot)$，倍角後週期減半。', cos2: '降冪：$\\cos^2=\\dfrac{1+\\cos(2\\cdot)}{2}$。', sum3: '兩項週期 $\\dfrac{2\\pi}{b}$ 與 $\\dfrac{2\\pi}{3b}$，取最小公倍數。' }[kind];
+    var hint = { abstan: '$\\tan$ 加絕對值週期不變（$\\tan$ 本身已是半個「正弦週期」）。', sincos2: '兩項週期取最小公倍數（最小公倍數一定是週期，但未必最小；這一型代值檢驗後沒有更小的）。', absabs: '$|\\sin|+|\\cos|$ 把 $x$ 換成 $x+\\dfrac{\\pi}{2b}$ 會互換，週期是 $\\dfrac{\\pi}{2b}$。', prod: '$\\sin\\cos=\\dfrac12\\sin(2\\cdot)$，倍角後週期減半。', cos2: '降冪：$\\cos^2=\\dfrac{1+\\cos(2\\cdot)}{2}$。', sum3: '兩項週期 $\\dfrac{2\\pi}{b}$ 與 $\\dfrac{2\\pi}{3b}$，取最小公倍數（最小公倍數一定是週期，但未必最小；這一型代值檢驗後沒有更小的）。' }[kind];
     return { q: '求 ' + T('y=' + expr) + ' 的最小正週期。', a: T(P.n === 1 && P.d === 1 ? '\\pi' : Fr.tex(P) + '\\pi'), h: hint, p: { b: b, kind: kind, P: [P.n, P.d] } };
   };
   /* 解的個數：c + k sin x = x，用細掃描數變號；避開幾乎相切的參數 */
