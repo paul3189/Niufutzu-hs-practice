@@ -326,7 +326,7 @@
   function refDeg(deg) { var a = ((deg % 360) + 360) % 360, r = a % 180; return r > 90 ? 180 - r : r; }
   function quadTxt(deg) { var q = quadrant(deg); return q ? '第' + QN[q] + '象限' : '終邊在坐標軸上'; }
   var L1_H1 = {
-    degToRad: '這是「度換弧度」：只要記住 $180^\\circ=\\pi$，度數乘上一個固定的比例就好。',
+    degToRad: '這是「度換弧度」：抓住 $180^\\circ=\\pi$，度數乘上一個固定的比例就好。',
     radToDeg: '這是「弧度換度」：把 $\\pi$ 直接當成 $180^\\circ$ 代進去；判象限前先把角化到一圈以內。',
     arcArea: '這是「扇形的弧長與面積」：兩條公式都只用半徑與圓心角，圓心角要用弧度。',
     sectorFromArc: '這是「由弧長反推」：弧長公式倒過來用就得到圓心角；面積用「半徑乘弧長的一半」最快。',
@@ -882,7 +882,7 @@
     var P1 = Fr.div(F(PERT[i1].P[0], PERT[i1].P[1]), F(b1)), P2 = Fr.div(F(PERT[i2].P[0], PERT[i2].P[1]), F(b2)), S = Fr.add(P1, P2);
     return { q: '設 ' + T('f(x)=' + PERT[i1].e(bT(b1))) + '、' + T('g(x)=' + PERT[i2].e(bT(b2))) + ' 的最小正週期分別為 ' + T('p') + '、' + T('q') + '，求 ' + T('p+q') + '。',
       a: T('p+q=' + piTex(S.n, S.d)) + '（' + T('p=' + piTex(P1.n, P1.d)) + '、' + T('q=' + piTex(P2.n, P2.d)) + '）',
-      h: '把 $x$ 換成 $x+\\dfrac{\\pi}{2b}$ 試「$|\\sin|$ 與 $|\\cos|$ 互換」；絕對值把負半波翻上來、平方降冪成 $2bx$、乘積用倍角——先各自找出 $p$、$q$ 再相加。', p: { t1: PERT[i1].id, b1: b1, t2: PERT[i2].id, b2: b2, P1: [P1.n, P1.d], P2: [P2.n, P2.d], sum: [S.n, S.d] } };
+      h: '把 $x$ 換成 $x+\\dfrac{\\pi}{2b}$ 試「$|\\sin|$ 與 $|\\cos|$ 互換」；絕對值把負半波翻上來、平方降冪成 $2bx$、乘積用倍角；先各自找出 $p$、$q$ 再相加。', p: { t1: PERT[i1].id, b1: b1, t2: PERT[i2].id, b2: b2, P1: [P1.n, P1.d], P2: [P2.n, P2.d], sum: [S.n, S.d] } };
   };
 
   /* L3-6　tan 與一個坐標的正負 → 定象限，再判斷五個敘述（多選） */
@@ -1172,7 +1172,7 @@
     'L1.pointDef': { f: function (p) { return (p.x < 0 ? 'L' : 'R') + (p.y < 0 ? 'D' : 'U'); }, why: '點換到別的象限：$r$ 不變，只有正負號跟著坐標變。' },
     'L1.fromSinQuad': { f: function (p) { return p.quad; }, keep: ['give'], why: '同一個已知值、不同象限：補出來的值大小一樣，只有正負不同。' },
     'L1.coterminal': { f: function (p) { return p.mode; }, why: '度與弧度只是單位不同，做法都是加減整圈。' },
-    'L1.reduceFormula': { f: function (p) { return p.k % 180 === 90; }, why: '$\\pi$ 的整數倍函數名不變、$\\frac{\\pi}{2}$ 的奇數倍 $\\sin$、$\\cos$ 互換——這是唯一的差別，正負一律看象限。' },
+    'L1.reduceFormula': { f: function (p) { return p.k % 180 === 90; }, why: '$\\pi$ 的整數倍函數名不變、$\\frac{\\pi}{2}$ 的奇數倍 $\\sin$、$\\cos$ 互換，兩種情形只差在這裡；正負一律看象限。' },
     'L1.sumExact': { f: function (p) { return p.fn; }, why: '同一個角拆法相同，三個函數各套各的和差角公式。' },
     'L1.cosDiffQuad': { f: function (p) { return p.which; }, why: '和角與差角、$\\sin$ 與 $\\cos$：只差公式中間那個正負號，補值的步驟完全一樣。' },
     'L1.tanSum': { f: function (p) { return p.sgn; }, why: '和與差：分子的號與分母的號同時反過來。' },
@@ -1182,8 +1182,8 @@
     'L1.shiftFunc': { f: function (p) { return p.hs; }, why: '左移與右移：括號內的正負號相反（右減左加）。' },
     'L1.combineStd': { f: function (p) { return p.aSign * 10 + p.bSign; }, why: '係數的正負決定 $\\theta$ 的象限，$r$ 完全不變。' },
     'L1.maxMin': { f: function (p) { return p.d; }, why: '常數 $d$ 只是把整個圖上下搬，振幅 $\\sqrt{a^2+b^2}$ 不變。' },
-    'L1.basicEq': { f: function (p) { return p.fn; }, why: '同一個值，$\\sin$ 用 $\\pi-x$ 找第二解、$\\cos$ 用 $2\\pi-x$——對稱軸不同。' },
-    'L1.periodOf': { f: function (p) { return p.kind; }, why: '加絕對值或平方會讓週期減半；$\\tan$ 本身就是 $\\pi$。' },
+    'L1.basicEq': { f: function (p) { return p.fn; }, why: '同一個值，$\\sin$ 用 $\\pi-x$ 找第二解、$\\cos$ 用 $2\\pi-x$，因為兩者的對稱軸不同。' },
+    'L1.periodOf': { f: function (p) { return p.kind; }, why: '$\\sin$、$\\cos$ 取絕對值或平方，週期減半；$\\tan$ 本身週期就是 $\\pi$，取絕對值或平方都不變。' },
     'L2.sectorMax': { f: function (p) { return p.kind === 'perim' || p.kind === 'perimFrac' ? 'P' : 'A'; }, why: '周長固定求面積最大用二次函數頂點；面積固定求周長最小用算幾不等式，兩題答案都是 $\\theta=2$。' },
     'L2.sumProd': { f: function (p) { return p.rg.join(','); }, why: '$\\sin\\theta+\\cos\\theta$ 的值一樣，只有 $\\theta$ 的範圍不同：平方後的結果相同，差的正負由範圍決定。' },
     'L2.quadRootCos2': { f: function (p) { return p.fn; }, why: '根是 $\\sin\\theta$ 用 $1-2\\sin^2\\theta$，根是 $\\cos\\theta$ 用 $2\\cos^2\\theta-1$。' },

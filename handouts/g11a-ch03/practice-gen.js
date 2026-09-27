@@ -141,7 +141,7 @@
                  : frac(comb(n, 'A', true) + comb(m, 'B', false), m + n);
     return { q: '已知 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '，點 ' + T('P') + (ext ? ' 在直線 $AB$ 上但不在線段 $AB$ 上' : ' 在線段 $AB$ 上') + '，且 ' + T('\\overline{AP}:\\overline{PB}=' + m + ':' + n) + '，求 ' + T('P') + ' 的坐標。',
              a: T('P=' + vtF(P)),
-             h: (ext ? '外分：本題 ' + T('\\overline{AP}:\\overline{PB}=' + m + ':' + n) + '，套 ' + T('P=' + fx) + '（分母是「兩個權重相減」）；' : '內分：本題 ' + T('\\overline{AP}:\\overline{PB}=' + m + ':' + n) + '，套 ' + T('P=' + fx) + '——離 $A$ 近的權重給 $A$，也就是「交叉配」；') + '把 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + ' 的坐標分量各自代進去算。',
+             h: (ext ? '外分：本題 ' + T('\\overline{AP}:\\overline{PB}=' + m + ':' + n) + '，套 ' + T('P=' + fx) + '（分母是「兩個權重相減」）；' : '內分：本題 ' + T('\\overline{AP}:\\overline{PB}=' + m + ':' + n) + '，套 ' + T('P=' + fx) + '，離 $A$ 近的權重給 $A$，也就是「交叉配」；') + '把 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + ' 的坐標分量各自代進去算。',
              p: { A: A, B: B, m: m, n: n, ext: ext, ans: [fr2(P[0]), fr2(P[1])] } };
   };
 
@@ -327,7 +327,7 @@
     var a = r.int(1, 5), b = r.int(1, 5), c = r.int(1, 5);
     return { q: T('P') + ' 在 ' + T('\\triangle ABC') + ' 內部且 ' + T(comb(a, ov('PA'), true) + comb(b, ov('PB'), false) + comb(c, ov('PC'), false) + '=\\vec0') + '，求 ' + T('\\triangle PBC:\\triangle PCA:\\triangle PAB') + '，以及 ' + T('\\dfrac{\\triangle PBC}{\\triangle ABC}') + '。',
              a: T(a / gcd(gcd(a, b), c) + ':' + b / gcd(gcd(a, b), c) + ':' + c / gcd(gcd(a, b), c)) + '，' + T(Fr.tex(F(a, a + b + c))),
-             h: '把 ' + T('P') + ' 看成三個砝碼 ' + T(String(a)) + '、' + T(String(b)) + '、' + T(String(c)) + ' 的平衡點：某個頂點的砝碼越重，它對面那個小三角形就越大——三個面積比就是這三個係數（記得約成最簡整數比）。第二問的分母是三個係數的和 ' + T(a + '+' + b + '+' + c) + '。',
+             h: '把 ' + T('P') + ' 看成三個砝碼 ' + T(String(a)) + '、' + T(String(b)) + '、' + T(String(c)) + ' 的平衡點：某個頂點的砝碼越重，它對面那個小三角形就越大，三個面積比就是這三個係數（記得約成最簡整數比）。第二問的分母是三個係數的和 ' + T(a + '+' + b + '+' + c) + '。',
              p: { a: a, b: b, c: c, ans: [a, b, c, fr2(F(a, a + b + c))] } };
   };
 
@@ -522,7 +522,7 @@
     var others = L.slice(); others.splice(others.indexOf(big), 1);
     return { q: '平面向量 ' + T(vec('a') + ',' + vec('b') + ',' + vec('c')) + ' 滿足 ' + T('|' + vec('a') + '|=' + L[0]) + '、' + T('|' + vec('b') + '|=' + L[1]) + '、' + T('|' + vec('c') + '|=' + L[2]) + '。設 ' + T('s=|' + vec('a') + '+' + vec('b') + '+' + vec('c') + '|') + '，求 ' + T('s') + ' 的範圍。',
              a: T(mn + '\\le s\\le ' + mx),
-             h: '上界：三支同向時最大，' + T('s\\le ' + L[0] + '+' + L[1] + '+' + L[2]) + '。下界：本題最長的一支是 ' + T(String(big)) + '，另外兩支是 ' + T(String(others[0])) + ' 與 ' + T(String(others[1])) + '——最長的那支能不能被另外兩支「抵銷」？三個長度圍得成三角形（含退化）就能到 $0$，否則下界是「最長減其餘兩支之和」。',
+             h: '上界：三支同向時最大，' + T('s\\le ' + L[0] + '+' + L[1] + '+' + L[2]) + '。下界：本題最長的一支是 ' + T(String(big)) + '，另外兩支是 ' + T(String(others[0])) + ' 與 ' + T(String(others[1])) + '，最長的那支能不能被另外兩支「抵銷」？三個長度圍得成三角形（含退化）就能到 $0$，否則下界是「最長減其餘兩支之和」。',
              p: { L: L, ans: [mn, mx] } };
   };
 
@@ -610,7 +610,7 @@
   var L1_H1 = {
     vecOps: '這是「向量的坐標運算」：係數先各自乘進兩個分量，再把對應分量相加；長度最後才用畢氏算。',
     chain: '這是「首尾相接的化簡」：先把每個減號的項翻成反向量，翻完之後每一項的終點都會是下一項的起點。',
-    divPoint: '這是「分點坐標」：先判斷是內分還是外分，再套分點公式——權重是「交叉配」的，$x$、$y$ 兩個坐標各算一次。',
+    divPoint: '這是「分點坐標」：先判斷是內分還是外分，再套分點公式；權重是「交叉配」的，$x$、$y$ 兩個坐標各算一次。',
     centroid: '這是「重心與面積」：重心是三頂點的平均，先反解出第三個頂點；面積再用兩個邊向量的行列式。',
     parallelCond: '這是「平行條件」：平行就是行列式為 $0$，也就是交叉相乘相等，代進去會得到一個一次方程式。',
     collinear: '這是「三點共線」：共線就是兩個邊向量平行，先把兩個邊向量寫出來（其中一個帶未知數）再交叉相乘。',
@@ -651,7 +651,7 @@
     var joined = [];
     for (i = 0; i < ch.length; i++) joined.push(ov(ch[i]));
     return ['「減一個向量」就是「加上它的反向量」：$-' + ov('XY') + '=' + ov('YX') + '$。' + (flip.length ? '本題要翻的是 ' + flip.join('、') + '。' : '本題四項都是正號，不必翻。'),
-      '翻完之後整串變成 $' + joined.join('+') + '$——每一項的終點正好是下一項的起點，可以首尾相接。',
+      '翻完之後整串變成 $' + joined.join('+') + '$，每一項的終點正好是下一項的起點，可以首尾相接。',
       '相接時中間的字母全部消掉，只剩最前面的起點 $' + p.start + '$ 與最後面的終點 $' + p.end + '$，得 ' + o.a + '。'];
   };
 
@@ -667,7 +667,7 @@
       return frac(hpz(ca) + '\\times ' + hpz(A[i]) + '+' + hpz(cb) + '\\times ' + hpz(Bq[i]), den) + '=' + frac(num[i], den) + (den === 1 ? '' : '=' + Fr.tex(F(num[i], den)));
     };
     return [(p.ext ? '$P$ 在直線 $AB$ 上但不在線段上，是外分點：$\\overline{AP}:\\overline{PB}=' + m + ':' + n + '$ ⟹ $P=' + frac(comb(ca, 'A', true) + comb(cb, 'B', false), den) + '$（外分是相減，分母也跟著相減）。'
-                : '$P$ 在線段 $AB$ 上，是內分點：$\\overline{AP}:\\overline{PB}=' + m + ':' + n + '$ ⟹ $P=' + frac(comb(ca, 'A', true) + comb(cb, 'B', false), den) + '$——離 $A$ 近的權重反而給 $A$，這就是「交叉配」。'),
+                : '$P$ 在線段 $AB$ 上，是內分點：$\\overline{AP}:\\overline{PB}=' + m + ':' + n + '$ ⟹ $P=' + frac(comb(ca, 'A', true) + comb(cb, 'B', false), den) + '$，離 $A$ 近的權重反而給 $A$，這就是「交叉配」。'),
       '$x$ 坐標：$' + sb(0) + '$。',
       '$y$ 坐標：$' + sb(1) + '$。答案：' + o.a + '。'];
   };
@@ -724,7 +724,7 @@
   /* 1-9 係數與位置 */
   L1_SOL.coefRegion = function (p, o) {
     var x = fF(p.x), y = fF(p.y), s = Fr.add(x, y);
-    return ['判準只看兩件事：兩個係數是不是都大於 $0$，以及它們的和跟 $1$ 比大小——和小於 $1$ 在三角形內部、等於 $1$ 在 $\\overline{BC}$ 上、大於 $1$ 在 $\\overline{BC}$ 外側（仍在張角內）；只要有一個係數不是正的，就落在張角外。',
+    return ['判準只看兩件事：兩個係數是不是都大於 $0$，以及它們的和跟 $1$ 比大小：和小於 $1$ 在三角形內部、等於 $1$ 在 $\\overline{BC}$ 上、大於 $1$ 在 $\\overline{BC}$ 外側（仍在張角內）；只要有一個係數不是正的，就落在張角外。',
       '本題 $x=' + Fr.tex(x) + '$、$y=' + Fr.tex(y) + '$，$x+y=' + Fr.tex(x) + (y.n < 0 ? '' : '+') + Fr.tex(y) + '=' + Fr.tex(s) + '$。',
       (p.ans.inside ? '兩個係數都是正的而且和小於 $1$，所以 $P$ 在三角形內部；面積比 $\\triangle PBC:\\triangle PCA:\\triangle PAB=(1-x-y):x:y$，因此 $\\dfrac{\\triangle PBC}{\\triangle ABC}=1-' + Fr.tex(s) + '=' + Fr.tex(Fr.sub(F(1), s)) + '$。'
                      : '對照上面的判準就能定位（和等於 $1$ 在邊上、大於 $1$ 在外側、有非正係數則在張角外），本題不在內部時不必算面積比。') + '答案：' + o.a + '。'];
@@ -734,7 +734,7 @@
   L1_SOL.weightArea = function (p, o) {
     var a = p.a, b = p.b, c = p.c, g = gcd(gcd(a, b), c);
     return ['$' + comb(a, ov('PA'), true) + comb(b, ov('PB'), false) + comb(c, ov('PC'), false) + '=\\vec0$ 可以看成：$A$、$B$、$C$ 三點各掛上 $' + a + '$、$' + b + '$、$' + c + '$ 的砝碼，而 $P$ 正好是平衡點。',
-      '平衡點的性質：某個頂點的砝碼越重，$P$ 就越靠近它，它對面的小三角形也就越大——所以 $\\triangle PBC:\\triangle PCA:\\triangle PAB=' + a + ':' + b + ':' + c + '$，約成最簡整數比是 $' + (a / g) + ':' + (b / g) + ':' + (c / g) + '$。',
+      '平衡點的性質：某個頂點的砝碼越重，$P$ 就越靠近它，它對面的小三角形也就越大，所以 $\\triangle PBC:\\triangle PCA:\\triangle PAB=' + a + ':' + b + ':' + c + '$，約成最簡整數比是 $' + (a / g) + ':' + (b / g) + ':' + (c / g) + '$。',
       '三塊小三角形合起來就是整個 $\\triangle ABC$，所以 $\\dfrac{\\triangle PBC}{\\triangle ABC}=\\dfrac{' + a + '}{' + a + '+' + b + '+' + c + '}=' + Fr.tex(F(a, a + b + c)) + '$。答案：' + o.a + '。'];
   };
 
@@ -769,7 +769,7 @@
   /* 1-14 正射影 */
   L1_SOL.projVec = function (p, o) {
     var a = p.a, b = p.b, d = dot(a, b), nb = n2(b), pr = p.ans.proj;
-    return ['正射影向量的公式是 $\\dfrac{\\vec a\\cdot\\vec b}{|\\vec b|^{2}}\\vec b$——分母是 $|\\vec b|$ 的平方，不是 $|\\vec b|$。',
+    return ['正射影向量的公式是 $\\dfrac{\\vec a\\cdot\\vec b}{|\\vec b|^{2}}\\vec b$，分母是 $|\\vec b|$ 的平方，不是 $|\\vec b|$。',
       '本題 $' + vec('a') + '\\cdot' + vec('b') + '=' + hdot(a, b) + '=' + d + '$、$|' + vec('b') + '|^{2}=' + (b[0] * b[0]) + '+' + (b[1] * b[1]) + '=' + nb + '$，所以正射影 $=\\dfrac{' + d + '}{' + nb + '}' + vt(b) + '=' + vt(pr) + '$。',
       '正射影長就是這個向量的長度：$\\sqrt{' + (pr[0] * pr[0]) + '+' + (pr[1] * pr[1]) + '}=' + sqrtTex(p.ans.len2) + '$（也等於 $\\dfrac{|\\vec a\\cdot\\vec b|}{|\\vec b|}$）。答案：' + o.a + '。'];
   };
@@ -879,7 +879,7 @@
     var t1 = (m === 1 ? '' : m * m) + 'a', t2 = u === 1 ? 'b' : '\\dfrac{b}{' + u * u + '}', t3 = '\\dfrac{' + w * w + '}{b}', t4 = '\\dfrac{' + n * n + '}{a}';
     var val = Fr.add(F(m * n), F(w, u)), ans = Fr.mul(val, val);
     return { q: '設 ' + T('a\\gt 0') + '、' + T('b\\gt 0') + '，求 ' + T('\\left(' + t1 + '+' + t2 + '\\right)\\left(' + t3 + '+' + t4 + '\\right)') + ' 的最小值。', a: T(Fr.tex(ans)),
-      h: '柯西不等式 $(x_1^2+x_2^2)(y_1^2+y_2^2)\\ge(x_1y_1+x_2y_2)^2$：把含 $a$ 的兩項配成一對、含 $b$ 的兩項配成一對，讓 $a$、$b$ 相乘後消掉——$' + t1 + '\\cdot' + t4 + '=' + m * m * n * n + '$、$' + t2 + '\\cdot' + t3 + '=' + Fr.tex(F(w * w, u * u), true) + '$，各開根號再相加。注意第二個括號裡兩項的順序要對調才對得上。',
+      h: '柯西不等式 $(x_1^2+x_2^2)(y_1^2+y_2^2)\\ge(x_1y_1+x_2y_2)^2$：把含 $a$ 的兩項配成一對、含 $b$ 的兩項配成一對，讓 $a$、$b$ 相乘後消掉：$' + t1 + '\\cdot' + t4 + '=' + m * m * n * n + '$、$' + t2 + '\\cdot' + t3 + '=' + Fr.tex(F(w * w, u * u), true) + '$，各開根號再相加。注意第二個括號裡兩項的順序要對調才對得上。',
       p: { m: m, n: n, u: u, w: w, ans: fr2(ans) } };
   };
 
@@ -937,7 +937,7 @@
     if (v < 3) {
       var cs = F(2 * i * j, i * i + j * j), sn = F(Math.abs(j * j - i * i), i * i + j * j), tn = Fr.div(sn, cs), ans = [cs, sn, tn][v], fn = ['\\cos', '\\sin', '\\tan'][v];
       return { q: T('\\triangle ABC') + ' 為等腰直角三角形，' + T('\\angle BAC=90^\\circ') + '。將斜邊 ' + T('\\overline{BC}') + ' ' + nm + '等分，由 ' + T('B') + ' 往 ' + T('C') + ' 數第 ' + T(String(i)) + ' 個與第 ' + T(String(j)) + ' 個等分點分別為 ' + T('P,Q') + '，求 ' + T(fn + '\\angle PAQ') + '。', a: T(Fr.tex(ans)),
-        h: '建坐標最快：$A(0,0)$、$B(' + n + ',0)$、$C(0,' + n + ')$，等分點的坐標一眼看出：$P(' + j + ',' + i + ')$、$Q(' + i + ',' + j + ')$。再用 $\\cos\\angle PAQ=\\dfrac{' + ov('AP') + '\\cdot' + ov('AQ') + '}{|' + ov('AP') + '||' + ov('AQ') + '|}$' + (v === 0 ? '。' : '，最後由 $\\cos$ 換成 $' + fn + '$。'),
+        h: '建坐標最快：$A(0,0)$、$B(' + n + ',0)$、$C(0,' + n + ')$，等分點的坐標可以直接寫出：$P(' + j + ',' + i + ')$、$Q(' + i + ',' + j + ')$。再用 $\\cos\\angle PAQ=\\dfrac{' + ov('AP') + '\\cdot' + ov('AQ') + '}{|' + ov('AP') + '||' + ov('AQ') + '|}$' + (v === 0 ? '。' : '，最後由 $\\cos$ 換成 $' + fn + '$。'),
         p: { v: v, n: n, i: i, j: j, ans: fr2(ans) } };
     }
     var bl = r.int(2, 9), cl = r.int(2, 9), dv = F(i * j * (bl * bl + cl * cl), n * n);
@@ -1006,7 +1006,7 @@
     var rel = perp ? '\\perp ' : '\\parallel ';
     return { q: '已知 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '、' + T('C' + vt(C)) + '。若 ' + T(ov('AD') + rel + ov('BC')) + ' 且 ' + T('|' + ov('AD') + '|=' + L) + '，求 ' + T('D') + ' 的坐標。',
       a: T('D' + vt(D1)) + ' 或 ' + T(vt(D2)),
-      h: '$' + ov('BC') + '=' + vt(bc) + '$，長度 $' + pv[2] + '$。' + (perp ? '先取它的垂直方向：$(x,y)\\to(-y,x)$，得 $' + vt(rot90(bc)) + '$（長度一樣是 $' + pv[2] + '$）；' : '') + '再把長度縮放成 $' + L + '$——要乘 $\\pm\\dfrac{' + L + '}{' + pv[2] + '}$，<b>正負各一解</b>，最後接到 $A$ 上。',
+      h: '$' + ov('BC') + '=' + vt(bc) + '$，長度 $' + pv[2] + '$。' + (perp ? '先取它的垂直方向：$(x,y)\\to(-y,x)$，得 $' + vt(rot90(bc)) + '$（長度一樣是 $' + pv[2] + '$）；' : '') + '再把長度縮放成 $' + L + '$，要乘 $\\pm\\dfrac{' + L + '}{' + pv[2] + '}$，<b>正負各一解</b>，最後接到 $A$ 上。',
       p: { A: A, B: B, C: C, L: L, perp: perp ? 1 : 0, ans: [D1, D2] } };
   }
   L3.perpPoint = function (r) { return adPoint(r, true); };
@@ -1069,7 +1069,7 @@
   L0.cosLaw = function (r) {
     var b = r.int(2, 8), c = r.int(2, 8), deg = r.pick([60, 120, 90, 60, 120]), tw = deg === 60 ? -1 : deg === 120 ? 1 : 0, a2 = b * b + c * c + tw * b * c;
     return { q: T('\\triangle ABC') + ' 中 ' + T('\\overline{AB}=' + c) + '、' + T('\\overline{AC}=' + b) + '、' + T('\\angle A=' + deg + '^\\circ') + '，求 ' + T('\\overline{BC}') + '。', a: T(sqrtTex(a2)),
-      h: '餘弦定理：$\\overline{BC}^2=' + c + '^2+' + b + '^2-2\\cdot' + c + '\\cdot' + b + '\\cdot\\cos' + deg + '^\\circ$' + (deg === 120 ? '，注意 $\\cos120^\\circ$ 是負的，減負變加' : '') + '。本章 $|\\vec a-\\vec b|^2$ 的展開式其實就是餘弦定理。',
+      h: '餘弦定理：$\\overline{BC}^2=' + c + '^2+' + b + '^2-2\\cdot' + c + '\\cdot' + b + '\\cdot\\cos' + deg + '^\\circ$' + (deg === 120 ? '，注意 $\\cos120^\\circ$ 是負的，減負變加' : '') + '。本章 $|\\vec a-\\vec b|^2$ 的展開式就是餘弦定理。',
       p: { b: b, c: c, deg: deg } };
   };
   L0.linSys2 = function (r) {
@@ -1089,11 +1089,11 @@
   var META_L0 = [['distMid', '兩點距離與中點'], ['trigSpecial', '特殊角的 sin 與 cos'], ['cosLaw', '餘弦定理'], ['linSys2', '二元一次聯立方程式'], ['quadMinT', '配方求最小值']];
   /* 先備題型 → 該去哪裡複習 */
   var PREREQ = {
-    distMid: { txt: '兩點距離公式與中點（高一上第二章 直線與圓）——向量的長度、分點公式都從這裡來', link: '../g10a-ch02/practice.html#L1' },
-    trigSpecial: { txt: '特殊角（含鈍角）的 sin、cos 值（高一下第四章 三角比）——內積 |a||b|cosθ 每題都用', link: '../g10b-ch04/practice.html#L1' },
-    cosLaw: { txt: '餘弦定理（高一下第四章 三角比）——|a−b|² 的展開式就是它', link: '../g10b-ch04/practice.html#L1' },
-    linSys2: { txt: '二元一次聯立方程式（國中）——線性組合求係數、求交點都在解它', link: null },
-    quadMinT: { txt: '二次函數配方求最小值（高一上第三章 多項式函數）——|ta+b| 的最小值靠配方', link: '../g10a-ch03/practice.html#L1' }
+    distMid: { txt: '兩點距離公式與中點（高一上第二章 直線與圓）：向量的長度、分點公式都從這裡來', link: '../g10a-ch02/practice.html#L1' },
+    trigSpecial: { txt: '特殊角（含鈍角）的 sin、cos 值（高一下第四章 三角比）：內積 |a||b|cosθ 每題都用', link: '../g10b-ch04/practice.html#L1' },
+    cosLaw: { txt: '餘弦定理（高一下第四章 三角比）：|a−b|² 的展開式就是它', link: '../g10b-ch04/practice.html#L1' },
+    linSys2: { txt: '二元一次聯立方程式（國中）：線性組合求係數、求交點都在解它', link: null },
+    quadMinT: { txt: '二次函數配方求最小值（高一上第三章 多項式函數）：|ta+b| 的最小值靠配方', link: '../g10a-ch03/practice.html#L1' }
   };
 
   /* ══════════════════════════════════════════════════════════
@@ -1101,7 +1101,7 @@
      ══════════════════════════════════════════════════════════ */
   function sign3(x) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
   var CONTRAST = {
-    'L1.segCoef': { f: function (p) { return !!p.ext; }, why: '內分時兩個係數都在 $0$ 與 $1$ 之間；外分（$P$ 在延長線上）時有一個係數是負的。不管內分外分，兩係數的和都是 $1$——這是判斷「$P$ 在不在直線 $AB$ 上」的判準。' },
+    'L1.segCoef': { f: function (p) { return !!p.ext; }, why: '內分時兩個係數都在 $0$ 與 $1$ 之間；外分（$P$ 在延長線上）時有一個係數是負的。不管內分外分，兩係數的和都是 $1$，這是判斷「$P$ 在不在直線 $AB$ 上」的判準。' },
     'L1.dotCoord': { f: function (p) { return sign3(p.ans.dot); }, why: '內積的正負直接告訴你夾角的種類：正 ⟹ 銳角（或同向）、$0$ ⟹ 直角、負 ⟹ 鈍角（或反向）。算出 $\\cos\\theta$ 之前先看正負，可以檢查答案。' },
     'L1.dotLenAngle': { f: function (p) { return p.deg > 90; }, why: '夾角是鈍角時 $\\cos\\theta$ 為負，內積是負的；平方展開 $|k_1\\vec a+k_2\\vec b|^2$ 時中間那一項 $2k_1k_2(\\vec a\\cdot\\vec b)$ 的正負要跟著小心。' },
     'L1.projVec': { f: function (p) { return sign3(p.a[0] * p.b[0] + p.a[1] * p.b[1]); }, why: '正射影向量 $=\\dfrac{\\vec a\\cdot\\vec b}{|\\vec b|^2}\\vec b$：內積為正時與 $\\vec b$ 同方向，為負時與 $\\vec b$ 反方向；<b>正射影長</b>則永遠取非負。' },
@@ -1111,10 +1111,10 @@
     'L2.detScale': { f: function (p) { return !!p.rev; }, why: '新面積 $=|$係數行列式$|\\times$ 舊面積：一題由舊求新用乘的，一題由新反求舊用除的。' },
     'L2.sumRange': { f: function (p) { return p.ans[0] === 0; }, why: '三個長度能圍成三角形（最長的不超過另外兩個的和）時，三向量可以首尾相接回到原點，最小值是 $0$；圍不成時最小值是「最長的減另外兩個」。最大值永遠是三個長度相加。' },
     'L2.walk': { f: function (p) { return p.turn; }, why: '「左轉 $\\theta$」是行進方向改變 $\\theta$，兩段路向量的夾角就是 $\\theta$（不是 $180^\\circ-\\theta$）；轉的角度不同，$\\cos\\theta$ 的正負與大小就不同。' },
-    'L3.threeDivPts': { f: function (p) { return p.v; }, why: '不管從哪一個分點出發，都先把 $\\overrightarrow{AQ}$、$\\overrightarrow{AP}$、$\\overrightarrow{AR}$ 用 $\\overrightarrow{AB}$、$\\overrightarrow{AC}$ 寫好，再用「終點減起點」——起點換了，只是減的對象換了。' },
+    'L3.threeDivPts': { f: function (p) { return p.v; }, why: '不管從哪一個分點出發，都先把 $\\overrightarrow{AQ}$、$\\overrightarrow{AP}$、$\\overrightarrow{AR}$ 用 $\\overrightarrow{AB}$、$\\overrightarrow{AC}$ 寫好，再用「終點減起點」；起點換了，只是減的對象換了。' },
     'L3.isoRightVertex': { f: function (p) { return p.v; }, why: '直角在 $C$：從 $\\overline{AB}$ 的中點出發，把「半條 $\\overline{AB}$」旋轉 $90^\\circ$；直角在 $A$：直接把 $\\overrightarrow{AB}$ 旋轉 $90^\\circ$ 接到 $A$。旋轉的向量不同、接的起點也不同。' },
     'L3.lineAngle': { f: function (p) { return p.ask; }, why: '同樣由法向量算出 $\\cos\\theta$；要 $\\sin\\theta$ 就用 $\\sin^2\\theta+\\cos^2\\theta=1$，要 $\\tan\\theta$ 再相除。交角取銳角，所以三個值都是正的。' },
-    'L3.paraFourth': { f: function (p) { return p.v; }, why: '頂點依序 $A,B,C,D$：缺 $D$ 用 $D=A+C-B$、缺 $C$ 用 $C=B+D-A$——都來自「對角線互相平分」$A+C=B+D$。' },
+    'L3.paraFourth': { f: function (p) { return p.v; }, why: '頂點依序 $A,B,C,D$：缺 $D$ 用 $D=A+C-B$、缺 $C$ 用 $C=B+D-A$，都來自「對角線互相平分」$A+C=B+D$。' },
     'L3.detScaleArea': { f: function (p) { return p.tri; }, why: '兩向量所張的三角形面積是平行四邊形的一半：係數行列式的倍率一樣，問三角形就多除以 $2$。' },
     'L3.hypotenusePts': { f: function (p) { return p.v === 3; }, why: '等腰直角時兩個對稱的等分點到 $A$ 一樣遠，$\\cos$ 是有理數；一般的直角三角形改問內積，建坐標後內積只要坐標相乘相加，不必算長度。' },
     'L3.lenFromAngle': { f: function (p) { return p.deg; }, why: '夾角 $60^\\circ$ 時 $\\vec a\\cdot\\vec b$ 為正、$120^\\circ$ 為負、$90^\\circ$ 為 $0$：平方展開式中間那一項 $2k_1k_2(\\vec a\\cdot\\vec b)$ 跟著變。' },

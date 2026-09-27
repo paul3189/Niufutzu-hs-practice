@@ -693,7 +693,7 @@
     radicalVal: '這是「根式與分數指數求值」：先把根號改寫成分數指數，再把底數寫成同一個數的次方，讓指數相乘時約掉。',
     expOrder: '這是「同底指數比大小」：先看底數比 $1$ 大還是小（決定遞增或遞減），再單純比三個指數。',
     expEqSame: '這是「同底指數方程式」：先把兩邊的底數統一成同一個數，同底之後讓兩邊的指數相等。',
-    expIneqSame: '這是「同底指數不等式」：先判斷底數比 $1$ 大或小——大於 $1$ 比指數時不等號不變，小於 $1$ 要反向。',
+    expIneqSame: '這是「同底指數不等式」：先判斷底數比 $1$ 大或小：大於 $1$ 時比指數，不等號不變；小於 $1$ 要反向。',
     expShift: '這是「指數函數的平移」：左右移改指數裡的 $x$、上下移是整個式子加減；漸近線只跟著上下移。',
     expQuadEq: '這是「換元二次的指數方程式」：令 $t$ 等於那個指數式（記得 $t\\gt0$），把方程式變成 $t$ 的二次式再因式分解。',
     growthTimes: '這是「每期成長固定倍數」：先算經過了幾個完整的週期，倍數就是「每期倍數」自乘那麼多次。',
@@ -759,7 +759,10 @@
     return [(up ? '底數大於 $1$，指數函數<b>遞增</b>：比較兩邊的指數時，不等號方向<b>不變</b>。'
                 : '底數介於 $0$ 與 $1$，指數函數<b>遞減</b>：比較兩邊的指數時，不等號方向<b>要反過來</b>。'),
       '去掉底數只留指數：$2x' + term(p.p, '', false) + op + 'x' + term(p.q, '', false) + '$。',
-      '移項整理：$2x-x' + op + '\\left(' + p.q + '\\right)-\\left(' + p.p + '\\right)$，所以 $x' + op + bound + '$。'];
+      (function () {
+        var ex = p.q === 0 ? (p.p === 0 ? '0' : term(-p.p, '', true)) : p.q + term(-p.p, '', false);
+        return '移項整理：$x' + op + ex + '$' + (ex === String(bound) ? '。' : '，即 $x' + op + bound + '$。');
+      })()];
   };
 
   L1_SOL.expShift = function (p) {
@@ -854,7 +857,7 @@
     var loT = d === 1 ? '\\log1=0' : '\\log ' + d + '\\approx' + tab[d].toFixed(4);
     var hiT = d === 9 ? '\\log10=1' : '\\log ' + (d + 1) + '\\approx' + tab[d + 1].toFixed(4);
     return ['先取對數：$\\log ' + p.a + '^{' + p.n + '}=' + p.n + '\\log ' + p.a + '\\approx' + p.n + '\\times' + lg(p.a).toFixed(4) + '=' + v.toFixed(4) + '$。',
-      '拆成首數與尾數：$' + v.toFixed(4) + '=' + Math.floor(v) + '+' + mant.toFixed(4) + '$，尾數是 $' + mant.toFixed(4) + '$——最高位數字只看尾數。',
+      '拆成首數與尾數：$' + v.toFixed(4) + '=' + Math.floor(v) + '+' + mant.toFixed(4) + '$，尾數是 $' + mant.toFixed(4) + '$，最高位數字只看尾數。',
       '尾數 $' + mant.toFixed(4) + '$ 落在 $' + loT + '$ 與 $' + hiT + '$ 之間，所以最高位數字是 $' + d + '$。'];
   };
 
@@ -890,7 +893,7 @@
       '定義域也跟著翻過去：原來要 $x\\gt0$，現在是 $-x\\gt0$，即 $x\\lt0$。'];
     return ['對直線 $y=x$ 對稱就是求<b>反函數</b>：把 $x$ 與 $y$ 對調。',
       '$y=' + logT(p.a, 'x') + '$ 對調成 $x=' + logT(p.a, 'y') + '$。',
-      '再用對數的定義改寫：$x=' + logT(p.a, 'y') + '\\iff y=' + p.a + '^{x}$——指數函數與對數函數互為反函數。'];
+      '再用對數的定義改寫：$x=' + logT(p.a, 'y') + '\\iff y=' + p.a + '^{x}$，指數函數與對數函數互為反函數。'];
   };
 
   L1_SOL.logOrder = function (p) {
@@ -1227,40 +1230,40 @@
   var META_L0 = [['intExpLaw', '整數指數律'], ['logBasic', '常用對數的基本值'], ['quadIneq', '二次不等式'], ['quadVertex', '配方求極值'], ['geoSeq', '等比數列的一般項']];
   /* 先備題型 → 該去哪裡複習 */
   var PREREQ = {
-    intExpLaw: { txt: '整數指數律與負指數（高一上第一章 數與式）——本章把指數推廣到分數與實數，規則完全一樣', link: '../g10a-ch01/practice.html#L1' },
-    logBasic: { txt: '常用對數 log 的意義（高一上第一章 數與式）——本章的對數律全部從「log 是 10 的幾次方」出發', link: '../g10a-ch01/practice.html#L1' },
-    quadIneq: { txt: '二次不等式（高一上第三章 多項式函數）——令 t=2^x 換元之後，解的就是它', link: '../g10a-ch03/practice.html#L1' },
-    quadVertex: { txt: '二次函數配方求極值（高一上第三章 多項式函數）——換元後的最大最小值都靠配方', link: '../g10a-ch03/practice.html#L1' },
-    geoSeq: { txt: '等比數列（高一下第一章 數列與級數）——複利、半衰期、每期成長 k 倍都是等比數列', link: '../g10b-ch01/practice.html#L1' }
+    intExpLaw: { txt: '整數指數律與負指數（高一上第一章 數與式）：本章把指數推廣到分數與實數，規則完全一樣', link: '../g10a-ch01/practice.html#L1' },
+    logBasic: { txt: '常用對數 log 的意義（高一上第一章 數與式）：本章的對數律都從「log 是 10 的幾次方」出發', link: '../g10a-ch01/practice.html#L1' },
+    quadIneq: { txt: '二次不等式（高一上第三章 多項式函數）：令 t=2^x 換元之後，解的就是它', link: '../g10a-ch03/practice.html#L1' },
+    quadVertex: { txt: '二次函數配方求極值（高一上第三章 多項式函數）：換元後的最大最小值都靠配方', link: '../g10a-ch03/practice.html#L1' },
+    geoSeq: { txt: '等比數列（高一下第一章 數列與級數）：複利、半衰期、每期成長 k 倍都是等比數列', link: '../g10b-ch01/practice.html#L1' }
   };
 
   /* ══════════════════════════════════════════════════════════
      對照題：同一型抽兩題，只差一個關鍵特徵（f 由 p 算出；keep 的欄位要相同）
      ══════════════════════════════════════════════════════════ */
   var CONTRAST = {
-    'L1.expLaw': { f: function (p) { return p.s[0] < 0; }, why: '除以 $a^{s}$ 是指數「減 $s$」：$s$ 是負數時，減負等於加——最常錯的就是這個負號。' },
+    'L1.expLaw': { f: function (p) { return p.s[0] < 0; }, why: '除以 $a^{s}$ 是指數「減 $s$」：$s$ 是負數時，減負等於加，最常錯的就是這個負號。' },
     'L1.radicalVal': { f: function (p) { return p.m < 0; }, why: '指數的正負只決定「要不要取倒數」：先當成正的算出來，負指數再整個翻到分母。' },
     'L1.expOrder': { f: function (p) { return p.base[1] > 1; }, why: '底數大於 $1$：指數大的數就大；底數介於 $0$ 與 $1$：指數大的數反而小。先看底數，再比指數。' },
     'L1.expEqSame': { f: function (p) { return p.k; }, why: '右邊的底是 $a^k$：化同底時整個指數要乘 $k$（括號別忘了），$k$ 不同，解就不同。' },
     'L1.expIneqSame': { f: function (p) { return p.up; }, why: '同底比指數：底數大於 $1$ 不等號方向不變，底數介於 $0$ 與 $1$ 方向要反過來。' },
     'L1.expShift': { f: function (p) { return p.h > 0; }, keep: ['k'], why: '向右平移 $h$ 是把 $x$ 換成 $x-h$、向左是 $x+h$；漸近線只跟上下平移有關，左右怎麼移都不變。' },
     'L1.expQuadEq': { f: function (p) { return p.form; }, why: '$4^x$ 與 $2^{2x}$ 是同一個東西，都是 $(2^x)^2$：看穿這一點，兩題都是 $t$ 的二次方程式。' },
-    'L1.growthTimes': { f: function (p) { return p.type; }, why: '同一個模型 $N\\cdot k^{t/T}$：一題給時間求倍數，一題給倍數反求時間——先數「過了幾期」。' },
+    'L1.growthTimes': { f: function (p) { return p.type; }, why: '同一個模型 $N\\cdot k^{t/T}$：一題給時間求倍數，一題給倍數反求時間，都要先數「過了幾期」。' },
     'L1.logDef': { f: function (p) { return p.m < 0; }, why: '真數小於 $1$ 時對數是負的：$\\log_a\\frac1{a^n}=-n$。先把真數寫成底數的次方，指數就是答案。' },
-    'L1.logLaw': { f: function (p) { return p.t; }, why: '加 → 真數相乘、減 → 真數相除、前面的係數 → 真數的次方：三條運算律各管一種式子。' },
+    'L1.logLaw': { f: function (p) { return p.t; }, why: '對數相加變成真數相乘、相減變成真數相除、前面的係數變成真數的次方：三條運算律各管一種式子。' },
     'L1.logExpress': { f: function (p) { return p.k > 0; }, why: '真數有因數 $5$ 時要用 $\\log5=1-\\log2=1-a$ 換掉；只有 $2$ 與 $3$ 時直接拆開就好。' },
     'L1.digits': { f: function (p) { return p.a; }, keep: ['n'], why: '同樣的指數、不同的底：$\\log a^n=n\\log a$，位數由「首數 $+1$」決定，底數大一點位數就差很多。' },
     'L1.charMant': { f: function (p) { return p.type; }, why: '$\\log$ 是正的：整數部分的位數 $=$ 首數 $+1$；$\\log$ 是負的：要先寫成「負整數 $+$ 正的尾數」，才看得出小數點後第幾位。' },
     'L1.logIneqSimple': { f: function (p) { return p.up; }, why: '底數大於 $1$ 方向不變、介於 $0$ 與 $1$ 方向相反；不管哪一種，都別忘了真數要大於 $0$。' },
     'L1.logShift': { f: function (p) { return p.t === 0; }, why: '平移是把 $x$ 換成 $x-h$、整個式子再加 $k$；對稱則是把 $x$ 換成 $-x$（對 $y$ 軸）或整個式子變號（對 $x$ 軸）。' },
     'L1.logDomain': { f: function (p) { return p.type; }, why: '真數含 $x$：只要真數 $\\gt0$；連底數也含 $x$：還要再加上底數 $\\gt0$ 且 $\\ne1$ 兩個條件。' },
-    'L1.logScale': { f: function (p) { return p.type; }, why: '對數刻度的共同讀法：刻度「相差」多少，原來的量就「相乘」多少倍——差變倍數。' },
+    'L1.logScale': { f: function (p) { return p.type; }, why: '對數刻度的共同讀法：刻度「相差」多少，原來的量就「相乘」多少倍，差變成倍數。' },
     'L2.expSymmMin': { f: function (p) { return p.ans[2] === 2 * p.ans[3]; }, why: '$t=a^x+a^{-x}\\ge2$：頂點落在 $t\\ge2$ 時最小值在頂點；頂點落在 $t\\lt2$ 時取不到，最小值發生在 $t=2$。' },
     'L2.expIneqQuad': { f: function (p) { return p.strict; }, why: '兩題只差等號：$\\lt$ 的解不含端點、$\\le$ 的解含端點；換元解出 $t$ 的範圍後，端點跟著帶回來。' },
     'L2.expIntervalMax': { f: function (p) { return p.a[1] > 1; }, why: '底數大於 $1$：指數最大時函數值最大；底數介於 $0$ 與 $1$：指數最大時函數值反而最小。' },
     'L2.halfLife': { f: function (p) { return p.type; }, why: '剩下 $\\left(\\frac12\\right)^n$ 就是過了 $n$ 個半衰期：一題由半衰期求時間，一題由時間反求半衰期。' },
     'L2.compoundYears': { f: function (p) { return p.k; }, why: '同一條式子 $n\\gt\\dfrac{\\log k}{\\log(1+r)}$：目標倍數 $k$ 越大要越久，成長率 $r$ 越大就越快；情境（人口、存款、細菌）只是換個說法。' },
-    'L2.logQuadRange': { f: function (p) { return p.ans[1] === p.l; }, why: '令 $t=\\log_a x$ 後 $t$ 的範圍跟著換；最小值在頂點，最大值在「離頂點較遠」的那個端點——一題在左端、一題在右端。' },
+    'L2.logQuadRange': { f: function (p) { return p.ans[1] === p.l; }, why: '令 $t=\\log_a x$ 後 $t$ 的範圍跟著換；最小值在頂點，最大值在「離頂點較遠」的那個端點，一題在左端、一題在右端。' },
     'L2.logIneqBase': { f: function (p) { return p.up; }, why: '兩邊同底：底數大於 $1$ 真數保持方向，底數小於 $1$ 真數方向相反；兩個真數都要大於 $0$。' },
     'L2.decayRatio': { f: function (p) { return p.TA > p.TB; }, why: '半衰期短的衰變得快、剩得少：題目問的一定是「剩得多的是剩得少的幾倍」，先判斷誰的半衰期長。' },
     'L2.dbMulti': { f: function (p) { return p.type; }, why: '強度變 $n$ 倍 ⟹ 分貝「加」$10\\log n$；分貝差 $d$ ⟹ 強度是 $10^{d/10}$「倍」。一個由倍數求差，一個由差求倍數。' },
@@ -1269,7 +1272,7 @@
     'L3.expRangeSum': { f: function (p) { return p.c - 1 >= p.l && p.c - 1 <= p.r; }, why: '頂點 $t=2^{c-1}$ 在 $t$ 的範圍內，最小值在頂點；不在範圍內，最大最小都在端點。' },
     'L3.vertGap': { f: function (p) { return p.fam; }, why: '平移量是整數時 $t$ 的係數是整數；平移量是 $\\frac12$ 的奇數倍時係數帶 $\\sqrt{\\ }$，解出的 $t$ 也帶根號，$h$ 就是分數。' },
     'L3.digitsAB': { f: function (p) { return (p.m + p.k) % 2; }, why: '兩式相加、相減後要除以 $2$：範圍的端點是整數還是半整數，決定位數只有一種還是兩種可能。' },
-    'L3.logProductRoots': { f: function (p) { return p.b === 10; }, why: '不管底數是多少，令 $s=\\log_b x$ 後兩根之和都是 $-\\log_b(pq)$，所以 $\\alpha\\beta=\\dfrac{1}{pq}$——答案與底數、右邊的常數無關。' },
+    'L3.logProductRoots': { f: function (p) { return p.b === 10; }, why: '不管底數是多少，令 $s=\\log_b x$ 後兩根之和都是 $-\\log_b(pq)$，所以 $\\alpha\\beta=\\dfrac{1}{pq}$，答案與底數、右邊的常數無關。' },
     'L3.logShiftMatch': { f: function (p) { return p.dv > 0; }, why: '上下平移 $k$ 併進真數：向上是乘 $a^{k}$、向下是除以 $a^{k}$，所以 $A$ 一個是分數、一個是整數。' },
     'L3.logQuadInterval': { f: function (p) { return p.v; }, keep: ['a'], why: '底數大於 $1$ 時外層的 $\\log$ 遞增：最小值在二次式的頂點，最大值在離頂點較遠的端點。' },
     'L3.logReflectShiftMeet': { f: function (p) { return p.k > 0; }, why: '向上平移 $k$ 是把真數乘 $a^{k}$、向下是除以 $a^{k}$：令真數相等時，係數一個大於 $1$、一個小於 $1$。' }

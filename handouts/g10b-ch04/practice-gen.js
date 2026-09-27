@@ -237,7 +237,7 @@
       var tex2 = items.map(function (u, i) { return (i === 0 ? '' : (kind === 4 ? '\\cdot' : '+')) + FN[u.fn] + (kind === 4 ? '' : '^2') + u.a + '°'; }).join('');
       return { q: '求 ' + T(tex2) + ' 的值。',
                a: T(kind === 4 ? '1' : String(n)),
-               h: (kind === 4 ? '$\\tan\\theta\\cdot\\tan(90°-\\theta)=1$' : '$\\sin^2\\theta+\\sin^2(90°-\\theta)=\\sin^2\\theta+\\cos^2\\theta=1$（換成 $\\cos$ 也一樣）') + '：把和為 $90°$ 的兩項配成一對——' + pairTex.join('、') + '，本題共 $' + n + '$ 對' + (kind === 4 ? '，乘積是 $1$。' : '，相加得 $' + n + '$。'),
+               h: (kind === 4 ? '$\\tan\\theta\\cdot\\tan(90°-\\theta)=1$' : '$\\sin^2\\theta+\\sin^2(90°-\\theta)=\\sin^2\\theta+\\cos^2\\theta=1$（換成 $\\cos$ 也一樣）') + '：把和為 $90°$ 的兩項配成一對：' + pairTex.join('、') + '，本題共 $' + n + '$ 對' + (kind === 4 ? '，乘積是 $1$。' : '，相加得 $' + n + '$。'),
                p: { kind: kind, pairs: pinfo, n: n, ans: kind === 4 ? 1 : n } };
     }
     var d = r.pick([1, 2, 3, 5, 6, 9, 10, 15]), m = 90 / d - 1, fn2 = kind === 0 ? 'sin' : 'cos';
@@ -369,7 +369,7 @@
     });
     return { q: '求 ' + T(tex) + ' 的值。',
              a: T(sTex(val)),
-             h: '每個角先化到 $0°\\sim360°$（同界角），由終邊所在象限決定正負，再用參考角查特殊值——' + used.join('；') + '。',
+             h: '每個角先化到 $0°\\sim360°$（同界角），由終邊所在象限決定正負，再用參考角查特殊值：' + used.join('；') + '。',
              p: { terms: terms, ans: sArr(val) } };
   };
   /* ── 2-2 極坐標與直角坐標互換 ── */
@@ -404,16 +404,18 @@
     var d2 = r1 * r1 + r2 * r2 - 2 * r1 * r2 * (gap === 60 ? 0.5 : gap === 90 ? 0 : -0.5), area = sMulF(tv(gap).sin, F(r1 * r2, 2));
     return { q: '設 $O$ 為極點，' + T('A[' + r1 + ',' + th1 + '°]') + '、' + T('B[' + r2 + ',' + th2 + '°]') + '。求 ' + T('\\angle AOB') + '、' + T(ov('AB')) + ' 與 ' + T('\\triangle OAB') + ' 的面積。',
              a: T('\\angle AOB=' + gap + '°') + '、' + T(ov('AB') + '=' + sqrtTex(d2)) + '、面積 ' + T('=' + sTex(area)),
-             h: '夾角 $=$ 兩極角之差：$|' + th1 + '-' + th2 + '|$（超過 $180°$ 就用 $360°$ 減）$=' + gap + '°$；再用餘弦定理 ' + T(ov('AB') + '^2=' + r1 + '^2+' + r2 + '^2-' + hxMul([2, r1, r2]) + '\\cos' + gap + '°') + ' 與面積公式 ' + T('\\dfrac12\\cdot' + hxMul([r1, r2]) + '\\sin' + gap + '°') + '——極坐標把「兩邊夾角」直接送給你。',
+             h: '夾角 $=$ 兩極角之差：$|' + th1 + '-' + th2 + '|$（超過 $180°$ 就用 $360°$ 減）$=' + gap + '°$；再用餘弦定理 ' + T(ov('AB') + '^2=' + r1 + '^2+' + r2 + '^2-' + hxMul([2, r1, r2]) + '\\cos' + gap + '°') + ' 與面積公式 ' + T('\\dfrac12\\cdot' + hxMul([r1, r2]) + '\\sin' + gap + '°') + '。極坐標直接給了「兩邊夾角」。',
              p: { r1: r1, th1: th1, r2: r2, th2: th2, ans: { gap: gap, d2: d2, area: sArr(area) } } };
   };
   /* ── 2-3 斜角與斜率／兩直線夾角 ── */
-  var SLOPES = [{ m: S(1, 3, 3), ang: 30, tex: '\\dfrac{\\sqrt3}{3}' }, { m: S(1, 1, 1), ang: 45, tex: '1' }, { m: S(1, 3, 1), ang: 60, tex: '\\sqrt3' }, { m: S(-1, 3, 1), ang: 120, tex: '-\\sqrt3' }, { m: S(-1, 1, 1), ang: 135, tex: '-1' }, { m: S(-1, 3, 3), ang: 150, tex: '-\\dfrac{\\sqrt3}{3}' }, { m: S(0, 1, 1), ang: 0, tex: '0' }];
+  var SLOPES = [{ m: S(1, 3, 3), ang: 30, tex: '\\dfrac{\\sqrt3}{3}' }, { m: S(1, 1, 1), ang: 45, tex: '1' }, { m: S(1, 3, 1), ang: 60, tex: '\\sqrt3' }, { m: S(-1, 3, 1), ang: -60, tex: '-\\sqrt3' }, { m: S(-1, 1, 1), ang: -45, tex: '-1' }, { m: S(-1, 3, 3), ang: -30, tex: '-\\dfrac{\\sqrt3}{3}' }, { m: S(0, 1, 1), ang: 0, tex: '0' }];
+  function angT(a) { return a < 0 ? '(' + a + '°)' : a + '°'; }   /* \tan(-45°) 要加括號 */
+  function angNorm(a) { a = ((a % 180) + 180) % 180; return a > 90 ? a - 180 : a; }   /* 斜角範圍 -90°<α≤90° */
   function lineOfSlope(sl, r) {   /* 回傳 ax+by+c=0 的 tex（整數係數） */
     var c = r.nz(-9, 9);
     if (sl.ang === 0) return { tex: 'y=' + c, m: sl };
-    if (sl.ang === 45 || sl.ang === 135) { var s = sl.ang === 45 ? '-' : '+'; return { tex: 'x' + s + 'y' + (c > 0 ? '+' : '') + c + '=0', m: sl }; }
-    if (sl.ang === 60 || sl.ang === 120) { var s2 = sl.ang === 60 ? '-' : '+'; return { tex: '\\sqrt3x' + s2 + 'y' + (c > 0 ? '+' : '') + c + '=0', m: sl }; }
+    if (sl.ang === 45 || sl.ang === -45) { var s = sl.ang === 45 ? '-' : '+'; return { tex: 'x' + s + 'y' + (c > 0 ? '+' : '') + c + '=0', m: sl }; }
+    if (sl.ang === 60 || sl.ang === -60) { var s2 = sl.ang === 60 ? '-' : '+'; return { tex: '\\sqrt3x' + s2 + 'y' + (c > 0 ? '+' : '') + c + '=0', m: sl }; }
     var s3 = sl.ang === 30 ? '-' : '+'; return { tex: 'x' + s3 + '\\sqrt3y' + (c > 0 ? '+' : '') + c + '=0', m: sl };
   }
   L1.slopeAngle = function (r) {
@@ -422,7 +424,7 @@
       var sl = r.pick(SLOPES), L = lineOfSlope(sl, r);
       return { q: '求直線 ' + T(L.tex) + ' 的斜角。',
                a: T(sl.ang + '°'),
-               h: '先把直線整理成 $y=mx+k$ 讀出斜率 $m=' + sl.tex + '$，斜角 $\\alpha$ 滿足 $\\tan\\alpha=m$ 且 $0°\\le\\alpha<180°$（$m<0$ 時斜角是鈍角）。',
+               h: '先把直線整理成 $y=mx+k$ 讀出斜率 $m=' + sl.tex + '$，斜角 $\\alpha$ 滿足 $\\tan\\alpha=m$ 且 $-90°\\lt\\alpha\\le90°$（$m<0$ 時斜角是負的）。',
                p: { kind: 0, ang: sl.ang, ans: sl.ang } };
     }
     if (kind === 1) {
@@ -430,18 +432,18 @@
       var L1_ = lineOfSlope(s1, r), L2_ = lineOfSlope(s2, r), dif = Math.abs(s1.ang - s2.ang), acute = dif > 90 ? 180 - dif : dif;
       return { q: '求 ' + T('L_1:' + L1_.tex) + ' 與 ' + T('L_2:' + L2_.tex) + ' 的銳夾角（或直角）。',
                a: T(acute + '°'),
-               h: '兩條線的斜角分別是 $' + s1.ang + '°$ 與 $' + s2.ang + '°$，夾角就是斜角的差（差超過 $90°$ 就用 $180°$ 減）。',
+               h: '兩條線的斜角分別是 $' + s1.ang + '°$ 與 $' + s2.ang + '°$，兩個斜角相減取絕對值就是夾角，差超過 $90°$ 就用 $180°$ 減。',
                p: { kind: 1, a1: s1.ang, a2: s2.ang, ans: acute } };
     }
     var sl3 = r.pick(SLOPES.slice(0, 6)), px = r.nz(-6, 6), py = r.nz(-6, 6), Ptex = '(' + px + ',' + py + ')';
     /* 過 P 斜率 m 的直線：m 為 ±1 → x∓y+c=0；±√3 → √3x∓y+c=0；±√3/3 → x∓√3y+c=0 */
     var tex, c1;
-    if (sl3.ang === 45 || sl3.ang === 135) { c1 = sl3.ang === 45 ? py - px : -(px + py); tex = 'x' + (sl3.ang === 45 ? '-' : '+') + 'y' + (c1 === 0 ? '' : (c1 > 0 ? '+' : '') + c1) + '=0'; c1 = { rat: c1, surd: 0 }; }
-    else if (sl3.ang === 60 || sl3.ang === 120) { var sgn = sl3.ang === 60 ? -1 : 1, rt = -sgn * py; tex = '\\sqrt3x' + (sgn < 0 ? '-' : '+') + 'y' + (rt === 0 ? '' : (rt > 0 ? '+' : '') + rt) + ((-px) === 0 ? '' : ((-px) > 0 ? '+' : '-') + (Math.abs(px) === 1 ? '' : Math.abs(px)) + '\\sqrt3') + '=0'; c1 = { rat: rt, surd: -px }; }
+    if (sl3.ang === 45 || sl3.ang === -45) { c1 = sl3.ang === 45 ? py - px : -(px + py); tex = 'x' + (sl3.ang === 45 ? '-' : '+') + 'y' + (c1 === 0 ? '' : (c1 > 0 ? '+' : '') + c1) + '=0'; c1 = { rat: c1, surd: 0 }; }
+    else if (sl3.ang === 60 || sl3.ang === -60) { var sgn = sl3.ang === 60 ? -1 : 1, rt = -sgn * py; tex = '\\sqrt3x' + (sgn < 0 ? '-' : '+') + 'y' + (rt === 0 ? '' : (rt > 0 ? '+' : '') + rt) + ((-px) === 0 ? '' : ((-px) > 0 ? '+' : '-') + (Math.abs(px) === 1 ? '' : Math.abs(px)) + '\\sqrt3') + '=0'; c1 = { rat: rt, surd: -px }; }
     else { var sg = sl3.ang === 30 ? -1 : 1, sd = -sg * py; tex = 'x' + (sg < 0 ? '-' : '+') + '\\sqrt3y' + ((-px) === 0 ? '' : ((-px) > 0 ? '+' : '') + (-px)) + (sd === 0 ? '' : (sd > 0 ? '+' : '-') + (Math.abs(py) === 1 ? '' : Math.abs(py)) + '\\sqrt3') + '=0'; c1 = { rat: -px, surd: sd }; }
     return { q: '直線 $L$ 過點 ' + T('P' + Ptex) + '，且斜角為 ' + T(sl3.ang + '°') + '。求 $L$ 的方程式。',
              a: T(tex),
-             h: '斜率 $m=\\tan' + sl3.ang + '°=' + sl3.tex + '$，點斜式 $y-(' + py + ')=m(x-(' + px + '))$ 整理成一般式。',
+             h: '斜率 $m=\\tan' + angT(sl3.ang) + '=' + sl3.tex + '$，點斜式 $y-(' + py + ')=m(x-(' + px + '))$ 整理成一般式。',
              p: { kind: 2, ang: sl3.ang, px: px, py: py, ans: { tex: tex } } };
   };
 
@@ -708,11 +710,11 @@
   /* 2-4 與已知直線夾特殊角的直線（斜角；建中 113 填 11 型） */
   L2.lineAngle = function (r) {
     var s1 = r.pick(SLOPES.slice(0, 6)), phi = (s1.ang % 45 === 0 && s1.ang % 90 !== 0) ? 45 : r.pick([30, 60]), L = lineOfSlope(s1, r), px = r.nz(-6, 6), py = r.nz(-6, 6);
-    var angs = [((s1.ang + phi) % 180 + 180) % 180, ((s1.ang - phi) % 180 + 180) % 180];
+    var angs = [angNorm(s1.ang + phi), angNorm(s1.ang - phi)];
     var slopeTex = function (ang) { return ang === 90 ? '不存在（鉛直線 $x=' + px + '$）' : T('m=' + sTex(tv(ang).tan)); };
     return { q: '直線 $L$ 過點 ' + T('P(' + px + ',' + py + ')') + '，且與直線 ' + T('L_1:' + L.tex) + ' 夾 ' + T(phi + '°') + ' 角。求 $L$ 的斜角與斜率（兩解）。',
              a: '斜角 ' + T(angs[0] + '°') + '：斜率' + slopeTex(angs[0]) + '；斜角 ' + T(angs[1] + '°') + '：斜率' + slopeTex(angs[1]),
-             h: '用斜角不要用夾角公式：$L_1$ 的斜率是 $' + s1.tex + '$ ⟹ 斜角 $' + s1.ang + '°$；$L$ 的斜角 ' + T('=' + s1.ang + '°\\pm' + phi + '°') + '（超出 $0°\\sim180°$ 就加減 $180°$），本題得 $' + angs[0] + '°$ 與 $' + angs[1] + '°$。斜角 $90°$ 是鉛直線（過 $P(' + px + ',' + py + ')$ 就是 $x=' + px + '$），斜率不存在，最常被漏掉。',
+             h: '用斜角不要用夾角公式：$L_1$ 的斜率是 $' + s1.tex + '$ ⟹ 斜角 $' + s1.ang + '°$；$L$ 的斜角 ' + T('=' + s1.ang + '°\\pm' + phi + '°') + '（不在 $-90°\\lt\\alpha\\le90°$ 裡就加減 $180°$），本題得 $' + angs[0] + '°$ 與 $' + angs[1] + '°$。斜角 $90°$ 是鉛直線（過 $P(' + px + ',' + py + ')$ 就是 $x=' + px + '$），斜率不存在，最常被漏掉。',
              p: { ang1: s1.ang, phi: phi, px: px, py: py, ans: { angs: angs } } };
   };
   /* 2-5 sin 比 ⟹ 邊比：最大角、形狀、給周長求面積（正弦定理 21 卷） */
@@ -762,7 +764,7 @@
     if (surd.r === 1) { b1 = String(kk + jj); b2 = String(kk - jj); }   /* ∠A=60°：c·cosA 是整數，兩根直接寫成整數（原本會印成 2+8） */
     return { q: ABC + ' 中 ' + T('\\angle A=' + A + '°') + '、' + T(ov('AB') + '=' + c) + '、' + T(ov('BC') + '=' + aa) + '。求 ' + T(ov('AC')) + '（兩解）。',
              a: T(ov('AC') + '=' + b1) + ' 或 ' + T(b2),
-             h: '把 $\\overline{AC}=b$ 當未知數放進餘弦定理：$' + aa + '^2=b^2+' + c + '^2-2\\cdot' + c + '\\cdot b\\cos' + A + '°$，解二次方程得兩個正根——這就是 SSA 的兩解。',
+             h: '把 $\\overline{AC}=b$ 當未知數放進餘弦定理：$' + aa + '^2=b^2+' + c + '^2-2\\cdot' + c + '\\cdot b\\cos' + A + '°$，解二次方程得兩個正根，這就是 SSA 的兩解。',
              p: { A: A, c: c, a: aa, ans: { surd: sArr(surd), rat: fr2(rat) } } };
   };
   /* 2-8 由邊角關係判定形狀 */
@@ -789,7 +791,7 @@
     var rin = sDiv(K, S(a + b + c, 1, 2)), R = sDiv(S(a * b * c, 1, 4), K), hmax = sDiv(K, S(m, 1, 2));
     return { q: ABC + ' 三邊長為 ' + T(a + ',\\ ' + b + ',\\ ' + c) + '。求 (1) 面積　(2) 內切圓半徑　(3) 外接圓半徑　(4) 最長邊上的高。',
              a: '(1) ' + T(sTex(K)) + '　(2) ' + T(sTex(rin)) + '　(3) ' + T(sTex(R)) + '　(4) ' + T(sTex(hmax)),
-             h: '海龍先算面積：' + T('s=\\dfrac{' + a + '+' + b + '+' + c + '}{2}=' + Fr.tex(s)) + '、$K=\\sqrt{s(s-a)(s-b)(s-c)}$；其餘三個都從面積出發——$r=\\dfrac Ks$、' + T('R=\\dfrac{abc}{4K}=\\dfrac{' + (a * b * c) + '}{4K}') + '、最長邊是 $' + m + '$ ⟹ ' + T('h=\\dfrac{2K}{' + m + '}') + '。',
+             h: '海龍先算面積：' + T('s=\\dfrac{' + a + '+' + b + '+' + c + '}{2}=' + Fr.tex(s)) + '、$K=\\sqrt{s(s-a)(s-b)(s-c)}$；其餘三個都從面積出發：$r=\\dfrac Ks$、' + T('R=\\dfrac{abc}{4K}=\\dfrac{' + (a * b * c) + '}{4K}') + '、最長邊是 $' + m + '$ ⟹ ' + T('h=\\dfrac{2K}{' + m + '}') + '。',
              p: { a: a, b: b, c: c, ans: { K: sArr(K), r: sArr(rin), R: sArr(R), h: sArr(hmax) } } };
   };
   /* 2-10 海龍的經典情境：三高／sin 比＋內切圓半徑（例題 27 型） */
@@ -930,7 +932,7 @@
     reduceEval: '這是「廣義角的特殊值」：每個角先化成同界角，由終邊所在的象限決定正負，再用參考角查特殊值。',
     polarConv: '這是「極坐標與直角坐標互換」：一邊用餘弦、正弦乘上半徑，另一邊用距離公式求半徑再由坐標正負與參考角定出極角。',
     polarDist: '這是「極坐標下的距離與面積」：兩個極角的差直接就是夾角，剩下的交給餘弦定理與兩邊夾角的面積公式。',
-    slopeAngle: '這是「斜角與斜率」：斜率就是斜角的正切，斜角取在零度到平角之間；兩線夾角則是兩個斜角相減。',
+    slopeAngle: '這是「斜角與斜率」：斜率就是斜角的正切，斜角取在負九十度（不含）到九十度之間；兩線夾角則是兩個斜角相減。',
     sineLaw: '這是「正弦定理求邊」：先用內角和補出第三個角，再用邊與對角正弦的比值相等解出要求的邊。',
     circumR: '這是「外接圓半徑」：正弦定理的比值就是直徑，邊與它的對角正弦知道其中兩個就能求第三個。',
     cosLawSide: '這是「餘弦定理求邊」：已知兩邊與它們的夾角，直接代餘弦定理求第三邊的平方再開根號。',
@@ -1120,7 +1122,7 @@
   L1_SOL.slopeAngle = function (p, o) {
     if (p.kind === 0)
       return ['把直線整理成 $y=mx+k$，讀出斜率 ' + T('m=' + sTex(tv(p.ang).tan)) + '。',
-        '斜角 $\\alpha$ 滿足 $\\tan\\alpha=m$ 且 $0°\\le\\alpha<180°$' + (p.ang > 90 ? '；斜率是負的 ⟹ 斜角是鈍角' : '') + '。',
+        '斜角 $\\alpha$ 滿足 $\\tan\\alpha=m$ 且 $-90°\\lt\\alpha\\le90°$' + (p.ang < 0 ? '；斜率是負的 ⟹ 斜角是負的' : '') + '。',
         '所以斜角是 ' + T(p.ang + '°') + '。' + solFin(o)];
     if (p.kind === 1) {
       var dif = Math.abs(p.a1 - p.a2);
@@ -1128,7 +1130,7 @@
         '兩斜角相減：' + T('|' + p.a1 + '-' + p.a2 + '|=' + dif + '°') + (dif > 90 ? '，超過 $90°$ ⟹ 改用 ' + T('180°-' + dif + '°=' + p.ans + '°') : '') + '。',
         '所以銳夾角（或直角）是 ' + T(p.ans + '°') + '。' + solFin(o)];
     }
-    return ['斜率 ' + T('m=\\tan' + p.ang + '°=' + sTex(tv(p.ang).tan)) + '。',
+    return ['斜率 ' + T('m=\\tan' + angT(p.ang) + '=' + sTex(tv(p.ang).tan)) + '。',
       '點斜式：' + T('y-(' + p.py + ')=m(x-(' + p.px + '))') + '。',
       '兩邊乘開、把係數整理成整數，得一般式 ' + T(p.ans.tex) + '。' + solFin(o)];
   };
@@ -1369,7 +1371,7 @@
     else { ask_ = '求 ' + T('\\tan A') + ' 與 ' + T('a:b:c') + '。'; ans_ = T('\\tan A=' + Fr.tex(tn)) + '、' + T('a:b:c=' + ratio); }
     return { q: ABC + ' 中 ' + T('\\angle C=90°') + '，' + T('a,b,c') + ' 分別為 ' + T('\\angle A,\\angle B,\\angle C') + ' 的對邊，且 ' + T(eq) + '。' + ask_,
              a: ans_,
-             h: '$\\angle A+\\angle B=90°$ ⟹ $\\sin B=\\cos A$，條件變成 $' + eqCA + '$——只剩一個角。令 $\\sin A=s$，則 $\\cos A=' + cosExpr + '$，代入 $s^2+\\cos^2A=1$ 得 $' + quad + '$ ⟹ ' + roots + '；' + bad + '，所以 $\\sin A=' + Fr.tex(sn) + '$、$\\cos A=' + Fr.tex(cs) + '$，而 $a:b:c=\\sin A:\\cos A:1=' + ratio + '$。',
+             h: '$\\angle A+\\angle B=90°$ ⟹ $\\sin B=\\cos A$，條件變成 $' + eqCA + '$，只剩一個角。令 $\\sin A=s$，則 $\\cos A=' + cosExpr + '$，代入 $s^2+\\cos^2A=1$ 得 $' + quad + '$ ⟹ ' + roots + '；' + bad + '，所以 $\\sin A=' + Fr.tex(sn) + '$、$\\cos A=' + Fr.tex(cs) + '$，而 $a:b:c=\\sin A:\\cos A:1=' + ratio + '$。',
              p: { p: p, q: q, form: form, ask: ask, ans: { sin: fr2(sn), cos: fr2(cs), ratio: ratio } } };
   };
 
@@ -1483,7 +1485,7 @@
     var quad = Math.floor(th / 90) + 1, qal = Math.floor((al % 360) / 90) + 1;
     return { q: '直角坐標系與極坐標系的原點重合、極軸為 $x$ 軸正向。已知 $P$ 點的直角坐標為 ' + T('(' + xT + ',' + yT + ')') + '，求 $P$ 的極坐標 ' + T('[r,\\theta]') + '（' + T('r\\gt0') + '，' + T(rng) + '）。',
              a: T('[' + m + ',' + shown + '°]'),
-             h: '$r=\\sqrt{(' + xT + ')^2+(' + yT + ')^2}=' + l3coef(m, '\\sqrt{\\sin^2' + al + '°+\\cos^2' + al + '°}') + '=' + m + '$。接著要找 $\\theta$ 使 $(\\cos\\theta,\\sin\\theta)=' + (m === 1 ? 'P' : '\\dfrac{1}{' + m + '}P') + '$——用餘角公式把 $\\sin$ 換成 $\\cos$：$' + idx + '$ ⟹ $P=' + l3coef(m, '(\\cos(' + bs + '),\\sin(' + bs + '))') + '$ ⟹ $\\theta=' + base + '°$，取' + (rk === 0 ? '最小正同界角 ' : '落在 $-180°\\lt\\theta\\le180°$ 的同界角 ') + T(shown + '°') + '。檢查：$' + al + '°$ 在第' + L3QD[qal] + '象限，$P$ 與 ' + T(th + '°') + ' 都落在第' + L3QD[quad] + '象限 ✓。',
+             h: '$r=\\sqrt{(' + xT + ')^2+(' + yT + ')^2}=' + l3coef(m, '\\sqrt{\\sin^2' + al + '°+\\cos^2' + al + '°}') + '=' + m + '$。接著要找 $\\theta$ 使 $(\\cos\\theta,\\sin\\theta)=' + (m === 1 ? 'P' : '\\dfrac{1}{' + m + '}P') + '$。用餘角公式把 $\\sin$ 換成 $\\cos$：$' + idx + '$ ⟹ $P=' + l3coef(m, '(\\cos(' + bs + '),\\sin(' + bs + '))') + '$ ⟹ $\\theta=' + base + '°$，取' + (rk === 0 ? '最小正同界角 ' : '落在 $-180°\\lt\\theta\\le180°$ 的同界角 ') + T(shown + '°') + '。檢查：$' + al + '°$ 在第' + L3QD[qal] + '象限，$P$ 與 ' + T(th + '°') + ' 都落在第' + L3QD[quad] + '象限 ✓。',
              p: { al: al, m: m, s1: s1, s2: s2, rk: rk, ans: { r: m, th: shown } } };
   };
 
@@ -1554,8 +1556,8 @@
              a: ans_,
              h: '$\\tan\\theta+\\dfrac{1}{\\tan\\theta}=\\dfrac{\\sin\\theta}{\\cos\\theta}+\\dfrac{\\cos\\theta}{\\sin\\theta}=\\dfrac{\\sin^2\\theta+\\cos^2\\theta}{\\sin\\theta\\cos\\theta}=\\dfrac{1}{\\sin\\theta\\cos\\theta}$ ⟹ $\\sin\\theta\\cos\\theta=' + Fr.tex(pr) + '$。'
                 + '再用 $(\\sin\\theta-\\cos\\theta)^2=1-2\\sin\\theta\\cos\\theta=' + Fr.tex(Fr.mul(df, df)) + '$、$(\\sin\\theta+\\cos\\theta)^2=1+2\\sin\\theta\\cos\\theta=' + Fr.tex(Fr.mul(sm, sm)) + '$ 開根號，' + why + ' ⟹ $\\sin\\theta-\\cos\\theta=' + Fr.tex(df) + '$、$\\sin\\theta+\\cos\\theta=' + Fr.tex(sm) + '$。'
-                + (ask === 0 ? '本題只要差，答案就是 $' + Fr.tex(df) + '$——符號完全由範圍決定，別漏掉負號。'
-                 : ask === 1 ? '本題只要和，答案就是 $' + Fr.tex(sm) + '$——第三、四象限時和為負。'
+                + (ask === 0 ? '本題只要差，答案就是 $' + Fr.tex(df) + '$，正負號由範圍決定，別漏掉負號。'
+                 : ask === 1 ? '本題只要和，答案就是 $' + Fr.tex(sm) + '$，第三、四象限時和為負。'
                  : ask === 2 ? '和差兩式聯立（相加除以 $2$、相減除以 $2$）⟹ $\\sin\\theta=' + Fr.tex(sn) + '$、$\\cos\\theta=' + Fr.tex(cs) + '$。'
                              : '本題要的是 $\\sin\\theta\\cos\\theta=' + Fr.tex(pr) + '$ 與 $\\sin\\theta-\\cos\\theta=' + Fr.tex(df) + '$，開根號那一步的正負是唯一的陷阱。'),
              p: { a: a, b: b, c: c, rg: rg, ask: ask, k: fr2(k), ans: { sin: fr2(sn), cos: fr2(cs), diff: fr2(df), sum: fr2(sm), prod: fr2(pr) } } };
@@ -1753,7 +1755,7 @@
                : '$\\sin B=' + Fr.tex(F(T1[0], T1[2])) + '$、$\\cos B=' + Fr.tex(F(T1[1], T1[2])) + '$') + ' ⟹ $\\overline{AD}=' + AB + '\\times' + Fr.tex(F(T1[0], T1[2])) + '=' + AD + '$、$\\overline{BD}=' + AB + '\\times' + Fr.tex(F(T1[1], T1[2])) + '=' + BD + '$。'
            + (gc === 1 ? '由 $' + gcT + '$ 直接得 $\\overline{DC}=' : '由 $' + gcT + '$ 得 $\\tan C=' + Fr.tex(F(T2[0], T2[1])) + '$ ⟹ $\\overline{DC}=')
            + '\\dfrac{\\overline{AD}}{\\tan C}=' + AD + '\\times' + Fr.tex(F(T2[1], T2[0])) + '=' + DC + '$ ⟹ $\\overline{BC}=' + BD + '+' + DC + '=' + BC + '$，面積 $=\\dfrac12\\times' + BC + '\\times' + AD + '=' + K.n + '$。';
-    var tail = '想用 $\\dfrac12\\overline{AB}\\cdot\\overline{AC}\\sin A$ 會需要 $\\sin(B+C)$——那是高二上的和角公式；切高才是這一章的路。';
+    var tail = '想用 $\\dfrac12\\overline{AB}\\cdot\\overline{AC}\\sin A$ 會需要 $\\sin(B+C)$，那是高二上的和角公式；這一章的做法是切高。';
     var setup = '銳角 ' + ABC + ' 中 ' + T('\\overline{AB}=' + AB) + '、' + T(gbT) + '、' + T(gcT) + '。';
     if (ask === 0)
       return { q: setup + '求 ' + ABC + ' 的面積。', a: T(String(K.n)), h: hb + tail,
@@ -1811,7 +1813,7 @@
       tries++;
     } while (!ok && tries < 400);
     var p = t[2] * m, q = n, sC = F(t[0], t[2]), cC = F(t[1], t[2]), v = r.int(0, 2);
-    var hb = '$\\dfrac12\\cdot' + p + '\\cdot' + q + '\\sin C=' + K.n + '$ ⟹ $\\sin C=' + Fr.tex(sC) + '$ ⟹ $\\cos C=\\pm' + Fr.tex(cC) + '$——「面積」只給 $\\sin$，永遠要想兩解。'
+    var hb = '$\\dfrac12\\cdot' + p + '\\cdot' + q + '\\sin C=' + K.n + '$ ⟹ $\\sin C=' + Fr.tex(sC) + '$ ⟹ $\\cos C=\\pm' + Fr.tex(cC) + '$。面積只給 $\\sin$，所以要想兩解。'
            + '餘弦定理 $\\overline{AB}^2=' + (p * p) + '+' + (q * q) + '-2(' + p + ')(' + q + ')\\cos C=' + (p * p + q * q) + '\\mp' + (2 * m * n * t[1]) + '$ ⟹ $' + A1 + '$ 或 $' + A2 + '$。';
     var setup = ABC + ' 的面積為 ' + T(String(K.n)) + '，' + T('\\overline{CA}=' + p) + '、' + T('\\overline{CB}=' + q) + '。';
     if (v === 0)
@@ -1894,17 +1896,17 @@
     var x1 = r.int(-5, 5), y1 = r.int(-5, 5), dx = r.pick([1, 2, 3, 4, 5, 6]), dy; do { dy = r.int(-6, 6); } while (dy === 0);
     var m = F(dy, dx);
     return { q: '求通過 ' + T('A(' + x1 + ',' + y1 + ')') + '、' + T('B(' + (x1 + dx) + ',' + (y1 + dy) + ')') + ' 兩點的直線斜率，並說明這條直線由左到右是上升還是下降。', a: '斜率 ' + T(Fr.tex(m)) + '，' + (dy > 0 ? '上升' : '下降'),
-      h: '斜率 $=\\dfrac{' + (y1 + dy) + '-' + l0sn(y1) + '}{' + (x1 + dx) + '-' + l0sn(x1) + '}=' + Fr.tex(m) + '$；斜率為正是上升、為負是下降。本章「斜率 $=\\tan(\\text{斜角})$」把它和角度接起來：斜率為負時斜角是鈍角。',
+      h: '斜率 $=\\dfrac{' + (y1 + dy) + '-' + l0sn(y1) + '}{' + (x1 + dx) + '-' + l0sn(x1) + '}=' + Fr.tex(m) + '$；斜率為正是上升、為負是下降。本章「斜率 $=\\tan(\\text{斜角})$」把它和角度接起來：斜率為負時斜角是負的。',
       p: { A: [x1, y1], B: [x1 + dx, y1 + dy], ans: fr2(m) } };
   };
   var META_L0 = [['pythag', '畢氏定理'], ['specialTri', '特殊直角三角形的邊長比'], ['similarRatio', '相似三角形的比例'], ['surdRational', '根式化簡與有理化'], ['slope2', '兩點的斜率']];
   /* 先備題型 → 該去哪裡複習 */
   var PREREQ = {
-    pythag: { txt: '畢氏定理（國中）——由 sin 求 cos、終邊上一點到原點的距離都是它', link: null },
-    specialTri: { txt: '30°-60°-90° 與 45°-45°-90° 的邊長比（國中）——特殊角的三角比全部從這兩個三角形讀出來', link: null },
-    similarRatio: { txt: '相似三角形的對應邊成比例（國中）——三角比「只跟角度有關」的理由', link: null },
-    surdRational: { txt: '根式化簡與分母有理化（高一上第一章 數與式）——特殊角的值、餘弦定理的邊長都要化簡', link: '../g10a-ch01/practice.html#L1' },
-    slope2: { txt: '兩點的斜率（高一上第二章 直線與圓）——本章「斜率＝tan(斜角)」從這裡接上角度', link: '../g10a-ch02/practice.html#L1' }
+    pythag: { txt: '畢氏定理（國中）：由 sin 求 cos、終邊上一點到原點的距離，都要用它', link: null },
+    specialTri: { txt: '30°-60°-90° 與 45°-45°-90° 的邊長比（國中）：特殊角的三角比都從這兩個三角形讀出來', link: null },
+    similarRatio: { txt: '相似三角形的對應邊成比例（國中）：三角比「只跟角度有關」就是靠它', link: null },
+    surdRational: { txt: '根式化簡與分母有理化（高一上第一章 數與式）：特殊角的值、餘弦定理的邊長都要化簡', link: '../g10a-ch01/practice.html#L1' },
+    slope2: { txt: '兩點的斜率（高一上第二章 直線與圓）：本章的「斜率＝tan(斜角)」從這裡接上角度', link: '../g10a-ch02/practice.html#L1' }
   };
   /* ══════════════════════════════════════════════════════════
      對照題：同一型抽兩題，只差一個關鍵特徵（f 由 p 算出；keep 的欄位要相同）
@@ -1913,14 +1915,14 @@
   function quadOf(x, y) { return x > 0 ? (y > 0 ? 1 : 4) : (y > 0 ? 2 : 3); }
   var CONTRAST = {
     'L1.coterminal': { f: function (p) { return p.ans.quad; }, why: '同界角只差 $360^\\circ$ 的整數倍：先加減 $360^\\circ$ 把角度拉進 $0^\\circ\\sim360^\\circ$，再看落在哪個象限。象限不同，後面三個三角比的正負就不同（一全正、二正弦、三正切、四餘弦）。' },
-    'L1.pointTrig': { f: function (p) { return quadOf(p.x, p.y); }, why: '終邊上一點 $(x,y)$：$r=\\sqrt{x^2+y^2}$ 永遠是正的，$\\sin=\\dfrac yr$、$\\cos=\\dfrac xr$、$\\tan=\\dfrac yx$ 的正負直接由 $x,y$ 的正負決定——點換了象限，絕對值的算法一樣，只有符號跟著變。' },
-    'L1.quadFind': { f: function (p) { return p.kind === 0 ? p.ans : p.quad; }, keep: ['kind'], why: '象限決定三角比的正負（一全正、二只有 $\\sin$ 正、三只有 $\\tan$ 正、四只有 $\\cos$ 正）。由正負判斷象限，是把這張表倒過來查；已知一個三角比求另外兩個，則是先用直角三角形算出<b>絕對值</b>，再用象限<b>定號</b>——兩題的算法一樣，差別只在象限。' },
+    'L1.pointTrig': { f: function (p) { return quadOf(p.x, p.y); }, why: '終邊上一點 $(x,y)$：$r=\\sqrt{x^2+y^2}$ 永遠是正的，$\\sin=\\dfrac yr$、$\\cos=\\dfrac xr$、$\\tan=\\dfrac yx$ 的正負直接由 $x,y$ 的正負決定。點換了象限，絕對值的算法一樣，只有符號跟著變。' },
+    'L1.quadFind': { f: function (p) { return p.kind === 0 ? p.ans : p.quad; }, keep: ['kind'], why: '象限決定三角比的正負（一全正、二只有 $\\sin$ 正、三只有 $\\tan$ 正、四只有 $\\cos$ 正）。由正負判斷象限，是把這張表倒過來查；已知一個三角比求另外兩個，則是先用直角三角形算出<b>絕對值</b>，再用象限<b>定號</b>，兩題的算法一樣，差別只在象限。' },
     'L1.cosLawSide': { f: function (p) { return p.A > 90; }, why: '餘弦定理 $a^2=b^2+c^2-2bc\\cos A$：夾角是銳角時 $\\cos A\\gt0$、第三邊比畢氏定理短；夾角是鈍角時 $\\cos A\\lt0$，「減負變加」，第三邊比畢氏定理長。' },
     'L1.cosLawAngle': { f: function (p) { return p.ans.shape; }, why: '判斷三角形的形狀只要看<b>最大邊</b>所對的角：$\\cos=\\dfrac{\\text{兩小邊平方和}-\\text{最大邊平方}}{2\\times\\text{兩小邊}}$，正 ⟹ 銳角三角形、$0$ ⟹ 直角、負 ⟹ 鈍角。' },
     'L1.ssaCount': { f: function (p) { return p.ans; }, why: 'SSA（兩邊與其中一邊的對角）要比較對邊 $a$ 與高 $h=b\\sin A$：$a\\lt h$ 無解、$a=h$ 恰一解（直角）、$h\\lt a\\lt b$ 兩解、$a\\ge b$ 一解。畫出「從 $C$ 甩一條長 $a$ 的線段」就看得出來。' },
     'L1.polarDist': { f: function (p) { return p.ans.gap > 90; }, why: '兩個極坐標點的距離用餘弦定理，夾角就是極角的差：夾角是鈍角時 $\\cos$ 為負，距離比「兩個 $r$ 的畢氏」還長；面積 $\\dfrac12r_1r_2\\sin(\\text{夾角})$ 則不受銳角鈍角影響。' },
     'L1.bisectorLen': { f: function (p) { return p.A; }, why: '角平分線長用「面積拆兩塊」：$\\dfrac12bc\\sin A=\\dfrac12(b+c)\\cdot\\overline{AD}\\sin\\dfrac A2$。$A=60^\\circ$、$90^\\circ$、$120^\\circ$ 時半角是 $30^\\circ$、$45^\\circ$、$60^\\circ$，公式一樣、代的特殊角值不同。' },
-    'L2.quadSumProd': { f: function (p) { return p.quad; }, why: '已知 $\\sin\\theta+\\cos\\theta$：平方得 $\\sin\\theta\\cos\\theta$，再算 $(\\sin\\theta-\\cos\\theta)^2$；<b>差的正負要靠象限判斷</b>——第二象限 $\\sin\\gt0\\gt\\cos$，差為正；第四象限相反。' },
+    'L2.quadSumProd': { f: function (p) { return p.quad; }, why: '已知 $\\sin\\theta+\\cos\\theta$：平方得 $\\sin\\theta\\cos\\theta$，再算 $(\\sin\\theta-\\cos\\theta)^2$；<b>差的正負要靠象限判斷</b>：第二象限 $\\sin\\gt0\\gt\\cos$，差為正；第四象限相反。' },
     'L2.sineRatio': { f: function (p) { return p.ans.shape; }, why: '$\\sin A:\\sin B:\\sin C=a:b:c$，所以給正弦的比就是給邊長的比：最大邊所對的角用餘弦定理算 $\\cos$，正負決定是銳角、直角還是鈍角三角形。' },
     'L2.bisector': { f: function (p) { return p.A; }, why: '角平分線的三件事（分對邊成 $c:b$、長度用面積法、兩塊面積比也是 $c:b$）對任何夾角都成立；夾角換了，只是 $\\sin A$、$\\sin\\dfrac A2$ 代的特殊角值換了。' }
   };

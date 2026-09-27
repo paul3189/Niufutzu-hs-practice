@@ -359,7 +359,7 @@
     var pf = F(1); rates.forEach(function (v) { pf = Fr.mul(pf, F(100 + v, 100)); });
     return { q: item + '連續 ' + T(String(rates.length)) + ' 年的成長率依序為 ' + txt + '。求這 ' + T(String(rates.length)) + ' 年的平均成長率。',
              a: T('(1+\\bar r)^' + rates.length + '=' + prod + '=' + dec(pf) + '=(' + dec(F(100 + g, 100)) + ')^' + rates.length) + ' ⟹ ' + T('\\bar r=' + (g < 0 ? '-' : '') + Math.abs(g) + '\\%'),
-             h: '成長率要用「乘」的：' + T('(1+\\bar r)^' + rates.length + '=' + prod) + '，右邊乘出來恰好會是某個數的 ' + T(String(rates.length)) + ' 次方——不能把成長率直接平均。',
+             h: '成長率要用「乘」的：' + T('(1+\\bar r)^' + rates.length + '=' + prod) + '，右邊乘出來恰好會是某個數的 ' + T(String(rates.length)) + ' 次方。不能把成長率直接平均。',
              p: { rates: rates, ans: g } };
   };
   var GROWT = [[100, 121, 2, 10], [1000, 1331, 3, 10], [100, 144, 2, 20], [200, 288, 2, 20], [500, 720, 2, 20], [1000, 1728, 3, 20], [500, 864, 3, 20], [400, 625, 2, 25], [800, 1250, 2, 25], [512, 1000, 3, 25], [100, 225, 2, 50], [400, 900, 2, 50], [200, 675, 3, 50], [400, 1350, 3, 50], [100, 64, 2, -20], [500, 320, 2, -20], [1000, 512, 3, -20], [100, 81, 2, -10], [1000, 729, 3, -10], [400, 196, 2, -30], [1000, 343, 3, -30], [400, 484, 2, 10], [2000, 2662, 3, 10], [250, 360, 2, 20], [125, 216, 3, 20], [1600, 2500, 2, 25], [800, 1800, 2, 50], [160, 540, 3, 50], [100, 169, 2, 30], [1000, 2197, 3, 30], [250, 490, 2, 40], [500, 1372, 3, 40], [500, 1280, 2, 60], [1600, 900, 2, -25], [2500, 900, 2, -40], [400, 100, 2, -50]];
@@ -685,7 +685,7 @@
     var ans = Math.ceil(Fr.toNum(need) - 1e-9), bestArr = quiz.slice().sort(function (a, b) { return b - a; }).slice(0, k);
     return { q: '數學學期成績：第一次期中考 ' + T('20\\%') + '、第二次期中考 ' + T('20\\%') + '、期末考 ' + T('30\\%') + '、平時成績 ' + T('30\\%') + '；平時成績是 ' + T(String(m)) + ' 次平時考中取 ' + T(String(k)) + ' 次較高的成績求算術平均。某生兩次期中考分別為 ' + T(String(s1)) + '、' + T(String(s2)) + ' 分，平時考依序為 ' + T(listTex(quiz)) + '。若學期成績要達 ' + T(String(target)) + ' 分（含）以上，期末考至少要考幾分？（取最小整數）',
              a: '平時 ' + T('=\\dfrac{' + bestArr.join('+') + '}{' + k + '}=' + dec(F(sumArr(bestArr), k))) + '；' + T('0.2(' + s1 + ')+0.2(' + s2 + ')+0.3E+0.3(' + dec(F(sumArr(bestArr), k)) + ')\\ge' + target) + ' ⟹ ' + T('E\\ge' + dec(need)) + ' ⟹ 至少 ' + T(String(ans)) + ' 分',
-             h: '兩層加權：先算裡面那層——取較高的 $' + k + '$ 次平均 ' + T('\\dfrac{' + bestArr.join('+') + '}{' + k + '}') + '；再列外層不等式 ' + T('0.2(' + s1 + ')+0.2(' + s2 + ')+0.3E+0.3\\times\\text{平時}\\ge' + target) + ' 解 ' + T('E') + '，非整數要無條件進位。',
+             h: '兩層加權：先算裡面那層，取較高的 $' + k + '$ 次平均 ' + T('\\dfrac{' + bestArr.join('+') + '}{' + k + '}') + '；再列外層不等式 ' + T('0.2(' + s1 + ')+0.2(' + s2 + ')+0.3E+0.3\\times\\text{平時}\\ge' + target) + ' 解 ' + T('E') + '，非整數要無條件進位。',
              p: { quiz: quiz, k: k, s1: s1, s2: s2, target: target, ans: ans } };
   };
 
@@ -1217,7 +1217,7 @@
       var ob = r.pick([['正方形', '邊長', '面積', '平方公分', '公分'], ['圓形貼紙', '半徑', '面積除以 $\\pi$ 之值', '平方公分', '公分']]);
       return { q: '某組 ' + T(String(n1)) + ' 個' + ob[0] + '的' + ob[1] + '（' + ob[4] + '）平均數為 ' + T(dec(ms)) + '、標準差為 ' + T(dec(ss)) + '。求這 ' + T(String(n1)) + ' 個' + ob[0] + '的' + ob[2] + '的算術平均數。',
                a: T('\\dfrac{1}{' + n1 + '}\\sum x_i^2=\\sigma^2+\\mu^2=' + dec(Fr.mul(ss, ss)) + '+' + dec(Fr.mul(ms, ms)) + '=' + dec(e1)) + ' ' + ob[3],
-               h: '面積是' + ob[1] + '的<b>平方</b>，平方的平均 $=\\sigma^2+\\mu^2=' + dec(Fr.mul(ss, ss)) + '+' + dec(Fr.mul(ms, ms)) + '$，不是 $\\mu^2=' + dec(Fr.mul(ms, ms)) + '$——平方不是線性變換。',
+               h: '面積是' + ob[1] + '的<b>平方</b>，平方的平均 $=\\sigma^2+\\mu^2=' + dec(Fr.mul(ss, ss)) + '+' + dec(Fr.mul(ms, ms)) + '$，不是 $\\mu^2=' + dec(Fr.mul(ms, ms)) + '$，因為平方不是線性變換。',
                p: { v: 1, n: n1, mu: fr2(ms), sg: fr2(ss), ans: fr2(e1) } };
     }
     var n2 = r.pick([10, 15, 20, 24, 30]), aa = r.pick([F(2), F(3), F(5), F(1, 2), F(4), F(10)]);
@@ -1451,7 +1451,7 @@
       var s2 = F(d.sxy, d.syy), i2 = Fr.sub(F(mx), Fr.mul(s2, F(my)));
       return { q: '設二維數據 ' + T(pairsTex(d.x, d.y)) + '。(1) 求 ' + T('y') + ' 對 ' + T('x') + ' 的最適直線。　(2) 求 ' + T('x') + ' 對 ' + T('y') + ' 的最適直線。',
                a: '(1) ' + T(l3line(d.slope, d.icpt, 'x', 'y')) + '　(2) ' + T(l3line(s2, i2, 'y', 'x')),
-               h: hb + '第 (2) 小題把角色對調：斜率 $=\\dfrac{S_{xy}}{S_{yy}}=\\dfrac{' + d.sxy + '}{' + d.syy + '}=' + dec(s2) + '$，同樣過重心 $(' + mx + ',' + my + ')$，寫成 $x-' + mx + '=' + dec(s2) + '(y-' + my + ')$——兩條直線並不相同。',
+               h: hb + '第 (2) 小題把角色對調：斜率 $=\\dfrac{S_{xy}}{S_{yy}}=\\dfrac{' + d.sxy + '}{' + d.syy + '}=' + dec(s2) + '$，同樣過重心 $(' + mx + ',' + my + ')$，寫成 $x-' + mx + '=' + dec(s2) + '(y-' + my + ')$，兩條直線並不相同。',
                p: { v: 2, x: d.x, y: d.y, ans: { a: fr2(d.slope), b: fr2(d.icpt), a2: fr2(s2), b2: fr2(i2) } } };
     }
     return { q: '設二維數據 ' + T(pairsTex(d.x, d.y)) + '。(1) 求 ' + T('y') + ' 對 ' + T('x') + ' 的最適直線。　(2) 利用 (1)，當 ' + T('x=' + dec(x0)) + ' 時預估 ' + T('y') + ' 的值。',
@@ -1644,30 +1644,30 @@
   var META_L0 = [['meanMedian', '平均數與中位數'], ['sqrtSimp', '根式化簡'], ['lineSlope', '兩點的斜率與直線方程式'], ['quadMin', '配方求最小值'], ['sigmaSum', 'Σ 記號求和']];
   /* 先備題型 → 該去哪裡複習 */
   var PREREQ = {
-    meanMedian: { txt: '算術平均數與中位數（國中）——本章的集中趨勢、百分位數都從「排序、數位置」開始', link: null },
-    sqrtSimp: { txt: '根式化簡（高一上第一章 數與式）——標準差幾乎每題都要化簡根號', link: '../g10a-ch01/practice.html#L1' },
-    lineSlope: { txt: '兩點的斜率與點斜式（高一上第二章 直線與圓）——最適直線＝斜率＋通過重心', link: '../g10a-ch02/practice.html#L1' },
-    quadMin: { txt: '配方求最小值（高一上第三章 多項式）——離差平方和、最小平方法都是配方', link: '../g10a-ch03/practice.html#L1' },
-    sigmaSum: { txt: 'Σ 記號與逐項求和（高一下第一章 數列與級數）——Σx、Σx²、Σxy 是本章所有公式的原料', link: '../g10b-ch01/practice.html#L1' }
+    meanMedian: { txt: '算術平均數與中位數（國中）：本章的集中趨勢、百分位數都從「排序、數位置」開始', link: null },
+    sqrtSimp: { txt: '根式化簡（高一上第一章 數與式）：標準差幾乎每題都要化簡根號', link: '../g10a-ch01/practice.html#L1' },
+    lineSlope: { txt: '兩點的斜率與點斜式（高一上第二章 直線與圓）：最適直線＝斜率＋通過重心', link: '../g10a-ch02/practice.html#L1' },
+    quadMin: { txt: '配方求最小值（高一上第三章 多項式）：離差平方和、最小平方法都是配方', link: '../g10a-ch03/practice.html#L1' },
+    sigmaSum: { txt: 'Σ 記號與逐項求和（高一下第一章 數列與級數）：Σx、Σx²、Σxy 是本章所有公式的原料', link: '../g10b-ch01/practice.html#L1' }
   };
   /* ══════════════════════════════════════════════════════════
      對照題：同一型抽兩題，只差一個關鍵特徵（f 由 p 算出；keep 的欄位要相同）
      ══════════════════════════════════════════════════════════ */
   function sign3(x) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
   var CONTRAST = {
-    'L1.pctPosition': { f: function (p) { return p.ans.t[1] === 1; }, why: '百分位數先算 $t=\\dfrac{nk}{100}$：$t$ 是整數時取第 $t$ 筆與第 $t+1$ 筆的平均；$t$ 不是整數時無條件進位、取那一筆。兩題的差別只在 $t$ 是不是整數——這是百分位數唯一會錯的地方。' },
+    'L1.pctPosition': { f: function (p) { return p.ans.t[1] === 1; }, why: '百分位數先算 $t=\\dfrac{nk}{100}$：$t$ 是整數時取第 $t$ 筆與第 $t+1$ 筆的平均；$t$ 不是整數時無條件進位、取那一筆。兩題的差別只在 $t$ 是不是整數，百分位數最常錯的就是這裡。' },
     'L1.meanShift': { f: function (p) { return p.kind; }, why: '加入一筆資料：新總和 $=$ 舊總和 $+$ 新資料，除以 $n+1$；剔除兩個分數：總和減掉它們，除以 $n-2$。不管加或剔除，都是「回到總和」再重新平均，不能直接對平均數加減。' },
     'L1.addOne': { f: function (p) { return p.v === p.mu; }, why: '新加的資料恰好等於平均時，平均不變、離差平方和也不變，只有分母多 $1$，變異數變小；不等於平均時，平均會被拉動，要用 $\\sum x^2=n(\\sigma^2+\\mu^2)$ 回到平方和重算。' },
-    'L1.linearTrans': { f: function (p) { return p.a[0] < 0; }, why: '$y=ax+b$：平均數 $\\mu_y=a\\mu_x+b$（$a$ 的正負照乘）；標準差 $\\sigma_y=|a|\\sigma_x$——標準差永遠非負，$a$ 是負的也要取絕對值，加的常數 $b$ 完全不影響分散程度。' },
+    'L1.linearTrans': { f: function (p) { return p.a[0] < 0; }, why: '$y=ax+b$：平均數 $\\mu_y=a\\mu_x+b$（$a$ 的正負照乘）；標準差 $\\sigma_y=|a|\\sigma_x$。標準差一定非負，$a$ 是負的也要取絕對值，加的常數 $b$ 完全不影響分散程度。' },
     'L1.zCompare': { f: function (p) { return p.ans.better; }, why: '跨科比較不看原始分數、要看標準化分數 $z=\\dfrac{x-\\mu}{\\sigma}$：同樣高出平均 $10$ 分，在 $\\sigma$ 小的那一科代表贏過更多人。哪一科的 $z$ 大，哪一科就相對比較好。' },
     'L1.zInverse': { f: function (p) { return p.kind; }, why: '標準化是 $z=\\dfrac{x-\\mu}{\\sigma}$，反過來就是 $x=\\mu+z\\sigma$：一題由 $z$ 求原始分數、一題由原始分數求 $z$，用的是同一條式子的兩個方向。' },
     'L1.tScore': { f: function (p) { return p.kind; }, why: '$T$ 分數是把 $z$ 再做一次線性變換（$T=50+10z$ 之類）：由原始分數求 $T$ 是「先標準化、再變換」，由 $T$ 反求原始分數是「先還原成 $z$、再乘回 $\\sigma$ 加 $\\mu$」。' },
     'L1.corrData': { f: function (p) { return sign3(p.ans[0]); }, why: '相關係數的正負只看 $\\sum(x-\\mu_x)(y-\\mu_y)$ 的正負：一個大另一個也大（偏差同號居多）⟹ 正相關，一個大另一個小 ⟹ 負相關；分母永遠是正的。' },
-    'L1.corrPerfect': { f: function (p) { return p.ans.r; }, why: '資料完全落在直線 $y=ax+b$ 上時 $r=\\pm1$：$a\\gt0$ 是 $+1$、$a\\lt0$ 是 $-1$，與斜率的大小無關——相關係數量的是「多像一條直線」，不是「多陡」。' },
+    'L1.corrPerfect': { f: function (p) { return p.ans.r; }, why: '資料完全落在直線 $y=ax+b$ 上時 $r=\\pm1$：$a\\gt0$ 是 $+1$、$a\\lt0$ 是 $-1$，與斜率的大小無關。相關係數量的是「多像一條直線」，不是「多陡」。' },
     'L1.fitData': { f: function (p) { return sign3(p.ans.a[0]); }, why: '最適直線的斜率 $=\\dfrac{S_{xy}}{S_{xx}}$，正負與相關係數相同；直線一定通過重心 $(\\mu_x,\\mu_y)$，所以斜率定了之後截距就由重心決定。' },
     'L1.fitStats': { f: function (p) { return sign3(p.r[0]); }, why: '只給統計量時斜率 $=r\\cdot\\dfrac{\\sigma_y}{\\sigma_x}$：$r$ 為負時斜率是負的，$x$ 比平均每多 $1$，預測的 $y$ 就少 $|r|\\dfrac{\\sigma_y}{\\sigma_x}$。預測值一律從重心出發再加減。' },
     'L2.regUnits': { f: function (p) { return p.kind; }, why: '換單位 $u=px$、$v=qy$ 時新斜率 $=$ 舊斜率 $\\times\\dfrac qp$；若是 $u=100-x$ 這種「反向」的變換，斜率還要再變號，而且相關係數的正負也跟著翻。先看 $p,q$ 的正負，再算大小。' },
-    'L2.pctFreqSquare': { f: function (p) { return p.kind; }, why: '次數分配表求百分位數都是「累積次數第一次 $\\ge t$ 的那一級」：次數是 $k^2$ 時累積是 $\\sum k^2$、次數是 $k+1$ 時累積是等差級數——公式不同，找位置的方法相同。' },
+    'L2.pctFreqSquare': { f: function (p) { return p.kind; }, why: '次數分配表求百分位數都是「累積次數第一次 $\\ge t$ 的那一級」：次數是 $k^2$ 時累積是 $\\sum k^2$、次數是 $k+1$ 時累積是等差級數。公式不同，找位置的方法相同。' },
     'L2.growthMixed': { f: function (p) { return p.kind; }, why: '平均成長率是「倍率相乘再開 $n$ 次方」：漲「幾元」要先換成倍率才能相乘；反求第三年的成長率則是把目標倍率的 $n$ 次方除以前幾年的倍率。成長率不能直接相加平均。' }
   };
   function contrastPair(tier, key, seedA, maxTry) {

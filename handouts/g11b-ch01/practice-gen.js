@@ -155,7 +155,7 @@
     var M = [F(A[0] + B[0], 2), F(A[1] + B[1], 2), F(A[2] + B[2], 2)];
     return { q: '設 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '。(1) 求 ' + T('\\overline{AB}') + ' 與中點 ' + T('M') + '。(2) 求 ' + T('\\overline{AB}') + ' 上滿足 ' + T('\\overline{AP}:\\overline{PB}=' + m + ':' + n) + ' 的點 ' + T('P') + '。',
              a: '(1) ' + T('\\overline{AB}=' + sqrtTex(n2(sub(B, A)))) + '，' + T('M' + vtF(M)) + '　(2) ' + T('P' + vtF(P)),
-             h: '(1) ' + T(ov('AB') + '=' + vt(AB)) + '，' + T('\\overline{AB}^2=' + hxN2(AB)) + '；中點取兩點坐標的平均。(2) 內分 ' + T(m + ':' + n) + ' 要「交叉配」：' + T('P=\\dfrac{' + term(n, 'A', true) + term(m, 'B', false) + '}{' + (m + n) + '}') + '——離 ' + T('A') + ' 近的權重給 ' + T('A') + '；例如 ' + T('x') + ' 坐標 ' + T('=\\dfrac{' + hxPr([n, A[0]]) + '+' + hxPr([m, B[0]]) + '}{' + (m + n) + '}') + '。',
+             h: '(1) ' + T(ov('AB') + '=' + vt(AB)) + '，' + T('\\overline{AB}^2=' + hxN2(AB)) + '；中點取兩點坐標的平均。(2) 內分 ' + T(m + ':' + n) + ' 要「交叉配」：' + T('P=\\dfrac{' + term(n, 'A', true) + term(m, 'B', false) + '}{' + (m + n) + '}') + '，離 ' + T('A') + ' 近的權重給 ' + T('A') + '；例如 ' + T('x') + ' 坐標 ' + T('=\\dfrac{' + hxPr([n, A[0]]) + '+' + hxPr([m, B[0]]) + '}{' + (m + n) + '}') + '。',
              p: { A: A, B: B, m: m, n: n, ans: { d2: n2(sub(B, A)), M: M.map(fr2), P: P.map(fr2) } } };
   };
 
@@ -397,7 +397,7 @@
     var el = which === 0 ? b : a;
     return { q: '長方體 ' + T('ABCD') + '-' + T('EFGH') + ' 中 ' + T('\\overline{AB}=' + a) + '、' + T('\\overline{AD}=' + b) + '、' + T('\\overline{AE}=' + c) + '（' + T('ABCD') + ' 為底面、' + T('\\overline{AE}') + ' 鉛直）。求底面 ' + T('ABCD') + ' 與平面 ' + T(plane) + ' 所夾兩面角的餘弦值。',
              a: T(sqrtFracTex(cos2[0], cos2[1])),
-             h: '以 ' + T('A') + ' 為原點，' + T(ov('AB') + '=' + vt([a, 0, 0])) + '、' + T(ov('AD') + '=' + vt([0, b, 0])) + '、' + T(ov('AE') + '=' + vt([0, 0, c])) + '。兩面角的稜是 ' + T('\\overline{' + edge + '}') + '，平面角就落在 ' + T('\\overline{' + other + '}') + ' 與 ' + T('\\overline{' + slant + '}') + ' 之間——它在直角三角形「' + T('\\overline{' + other + '}=' + el) + '、' + T('\\overline{' + up + '}=' + c) + '、斜邊 ' + T('\\overline{' + slant + '}') + '」裡，餘弦 ' + T('=\\dfrac{\\text{鄰邊}}{\\text{斜邊}}') + '。也可以用法向量：底面取 ' + T('(0,0,1)') + '，平面 ' + T(plane) + ' 的法向量用外積求。',
+             h: '以 ' + T('A') + ' 為原點，' + T(ov('AB') + '=' + vt([a, 0, 0])) + '、' + T(ov('AD') + '=' + vt([0, b, 0])) + '、' + T(ov('AE') + '=' + vt([0, 0, c])) + '。兩面角的稜是 ' + T('\\overline{' + edge + '}') + '，平面角就落在 ' + T('\\overline{' + other + '}') + ' 與 ' + T('\\overline{' + slant + '}') + ' 之間，它在直角三角形「' + T('\\overline{' + other + '}=' + el) + '、' + T('\\overline{' + up + '}=' + c) + '、斜邊 ' + T('\\overline{' + slant + '}') + '」裡，餘弦 ' + T('=\\dfrac{\\text{鄰邊}}{\\text{斜邊}}') + '。也可以用法向量：底面取 ' + T('(0,0,1)') + '，平面 ' + T(plane) + ' 的法向量用外積求。',
              p: { a: a, b: b, c: c, which: which, ans: cos2 } };
   };
 
@@ -440,7 +440,7 @@
     /* d = abc/√N */
     return { q: '設 ' + T('O') + ' 為原點、' + T('A(' + a + ',0,0)') + '、' + T('B(0,' + b + ',0)') + '、' + T('C(0,0,' + c + ')') + '。(1) 求四面體 ' + T('OABC') + ' 的體積。(2) 求 ' + T('\\triangle ABC') + ' 的面積。(3) 求 ' + T('O') + ' 到平面 ' + T('ABC') + ' 的距離。',
              a: '(1) ' + T(Fr.tex(F(a * b * c, 6))) + '　(2) ' + T(radTex(1, N, 2)) + '　(3) ' + T(sqrtFracTex(a * a * b * b * c * c, N)),
-             h: '牆角型（三條稜互相垂直）：(1) ' + T('V=\\dfrac{1}{6}' + hxPr([a, b, c])) + '。(2) ' + T(ov('AB') + '\\times' + ov('AC') + '=(bc,\\ ca,\\ ab)=' + vt([b * c, c * a, a * b])) + '，' + T('\\triangle ABC') + ' 的面積是這個向量長度的一半。(3) 用體積法 ' + T('d=\\dfrac{3V}{S}') + '——本章不需要平面方程式。',
+             h: '牆角型（三條稜互相垂直）：(1) ' + T('V=\\dfrac{1}{6}' + hxPr([a, b, c])) + '。(2) ' + T(ov('AB') + '\\times' + ov('AC') + '=(bc,\\ ca,\\ ab)=' + vt([b * c, c * a, a * b])) + '，' + T('\\triangle ABC') + ' 的面積是這個向量長度的一半。(3) 用體積法 ' + T('d=\\dfrac{3V}{S}') + '。本章不需要平面方程式。',
              p: { a: a, b: b, c: c, ans: { V: [a * b * c, 6], N: N, d2: [a * a * b * b * c * c, N] } } };
   };
 
@@ -568,7 +568,7 @@
     var MV = E.map(function (row) { return row.map(function (e) { return e[1]; }); });
     return { q: '設 ' + T('f(x)=' + tex) + '。(1) 求 ' + T('f(x)') + ' 的常數項。(2) 求 ' + T('f(x)') + ' 的各項係數和。(3) 求各偶次項係數和。(4) 求 ' + T('f(x)') + ' 的次數與領導係數。',
              a: '(1) ' + T(String(f0)) + '　(2) ' + T(String(f1)) + '　(3) ' + T(String((f1 + fm1) / 2)) + '　(4) ' + T((f.length - 1) + '\\text{ 次，領導係數 }' + f[f.length - 1]),
-             h: '不要真的乘開：常數項 ' + T('=f(0)') + '、係數和 ' + T('=f(1)') + '、偶次項係數和 ' + T('=\\dfrac{f(1)+f(-1)}{2}') + '，每一個都只是代一個數字進去算一次三階行列式。本題 ' + T('f(0)=' + hxM3(M0)) + '、' + T('f(1)=' + hxM3(M1)) + '。次數與領導係數則看六支乘積裡 ' + T('x') + ' 的最高次——各元素的 ' + T('x') + ' 係數排起來是 ' + T(hxM3(MV)) + '，只有係數不為 ' + T('0') + ' 的位置才有貢獻。',
+             h: '不要真的乘開：常數項 ' + T('=f(0)') + '、係數和 ' + T('=f(1)') + '、偶次項係數和 ' + T('=\\dfrac{f(1)+f(-1)}{2}') + '，每一個都只是代一個數字進去算一次三階行列式。本題 ' + T('f(0)=' + hxM3(M0)) + '、' + T('f(1)=' + hxM3(M1)) + '。次數與領導係數則看六支乘積裡 ' + T('x') + ' 的最高次：各元素的 ' + T('x') + ' 係數排起來是 ' + T(hxM3(MV)) + '，只有係數不為 ' + T('0') + ' 的位置才有貢獻。',
              p: { E: E, ans: { f0: f0, f1: f1, even: (f1 + fm1) / 2, deg: f.length - 1, lead: f[f.length - 1], poly: f } } };
   };
 
@@ -578,7 +578,7 @@
     var V = F(Math.abs(d), 6), h2 = [d * d, n2(cr)];
     return { q: '設 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '、' + T('C' + vt(C)) + '、' + T('D' + vt(D)) + '。(1) 求四面體 ' + T('ABCD') + ' 的體積。(2) 求 ' + T('D') + ' 到平面 ' + T('ABC') + ' 的距離。',
              a: '(1) ' + T(Fr.tex(V)) + '　(2) ' + T(sqrtFracTex(h2[0], h2[1])),
-             h: '先把三個邊向量算出來：' + T(ov('AB') + '=' + vt(sub(B, A))) + '、' + T(ov('AC') + '=' + vt(sub(C, A))) + '、' + T(ov('AD') + '=' + vt(sub(D, A))) + '。(1) ' + T('V=\\dfrac16|\\det(' + ov('AB') + ',' + ov('AC') + ',' + ov('AD') + ')|') + '。(2) 底面積 ' + T('S=\\dfrac12|' + ov('AB') + '\\times' + ov('AC') + '|') + '，再用體積法 ' + T('h=\\dfrac{3V}{S}=\\dfrac{|\\det|}{|' + ov('AB') + '\\times' + ov('AC') + '|}') + '——本章不需要平面方程式。',
+             h: '先把三個邊向量算出來：' + T(ov('AB') + '=' + vt(sub(B, A))) + '、' + T(ov('AC') + '=' + vt(sub(C, A))) + '、' + T(ov('AD') + '=' + vt(sub(D, A))) + '。(1) ' + T('V=\\dfrac16|\\det(' + ov('AB') + ',' + ov('AC') + ',' + ov('AD') + ')|') + '。(2) 底面積 ' + T('S=\\dfrac12|' + ov('AB') + '\\times' + ov('AC') + '|') + '，再用體積法 ' + T('h=\\dfrac{3V}{S}=\\dfrac{|\\det|}{|' + ov('AB') + '\\times' + ov('AC') + '|}') + '。本章不需要平面方程式。',
              p: { A: A, B: B, C: C, D: D, ans: { V: fr2(V), h2: h2 } } };
   };
 
@@ -700,9 +700,9 @@
   var SOL_ZERO = [[2], [0], [1], [1, 2], [0, 2], [0, 1]];
 
   var L1_H1 = {
-    octantDist: '這是「卦限與各種距離」：先用三個坐標的正負定出位置，再記住到軸的距離是把軸名那個坐標丟掉、到坐標平面的距離就是缺席的那個坐標。',
+    octantDist: '這是「卦限與各種距離」：先用三個坐標的正負定出位置；到軸的距離是把軸名那個坐標丟掉、到坐標平面的距離就是缺席的那個坐標。',
     symProj: '這是「對稱點與投影點」：對平面對稱只有缺席的坐標變號、對軸對稱是軸名以外的兩個變號、對原點全部變號；投影則是把不在上面的坐標歸零。',
-    midDiv: '這是「兩點距離、中點與分點」：中點取兩端坐標的平均，內分點用「交叉配」的加權平均——離哪一端近，權重就給哪一端。',
+    midDiv: '這是「兩點距離、中點與分點」：中點取兩端坐標的平均，內分點用「交叉配」的加權平均，離哪一端近，權重就給哪一端。',
     centroidC: '這是「重心反求頂點」：重心是各頂點坐標的平均，把這個公式反過來解，就得到缺的那一個頂點。',
     equidistAxis: '這是「軸上的等距點」：先設動點只有一個坐標未知、其餘為零，再把兩段距離的平方寫出來令它們相等，平方項會自動消掉。',
     boxGeom: '這是「長方體的體對角線」：把一個頂點當原點、三條稜當三軸，體對角線與底面的夾角看它在底面的投影，與稜的夾角用內積。',
@@ -726,7 +726,7 @@
     det3calc: '這是「三階行列式的計算」：沿第一列展開成三個二階行列式，或用對角線法把六支乘積分成要加的三支與要減的三支。',
     detProps: '這是「行列式的性質」：每一列都是線性的、有兩列相同就等於零、對調兩列要變號、輪換三列不變，而絕對值就是平行六面體的體積。',
     volume3: '這是「三重積與體積」：三重積就是三個向量排成三列的行列式，平行六面體的體積取絕對值，四面體再除以六。',
-    ptPlaneAxes: '這是「牆角型的點到平面距離」：三條稜互相垂直時體積很好算，底面積用外積，最後用體積反解高——本章走體積法，不需要平面方程式。'
+    ptPlaneAxes: '這是「牆角型的點到平面距離」：三條稜互相垂直時體積很好算，底面積用外積，最後用體積反解高。本章走體積法，不需要平面方程式。'
   };
 
   var L1_SOL = {};
@@ -1028,7 +1028,7 @@
               + '。在 ' + T('A') + ' 點立一根垂直於地面的木桿，桿頂 ' + T('P') + ' 到 ' + T('B') + ' 的距離為 ' + T(String(SL)) + ' 公尺。';
     var hb = '$\\overline{PA}\\perp$ 地面 ⟹ $\\overline{PA}\\perp\\overline{AB}$，桿高 $\\overline{PA}=\\sqrt{' + SL + '^2-' + D + '^2}$。'
            + '$\\overline{AB}$ 是直徑 ⟹ $\\angle ACB=90°$（直徑上的圓周角）⟹ $\\overline{AC}=' + D + fn + th + '°$。'
-           + '$\\overline{PA}$ 垂直地面 ⟹ $\\overline{PA}\\perp\\overline{AC}$，再用一次畢氏：$\\overline{PC}=\\sqrt{\\overline{PA}^2+\\overline{AC}^2}$——兩次畢氏接力，不要去算 $\\overline{BC}$。';
+           + '$\\overline{PA}$ 垂直地面 ⟹ $\\overline{PA}\\perp\\overline{AC}$，再用一次畢氏：$\\overline{PC}=\\sqrt{\\overline{PA}^2+\\overline{AC}^2}$。兩次畢氏接力，不要去算 $\\overline{BC}$。';
     if (v === 0)
       return { q: setup + '求桿頂 ' + T('P') + ' 到 ' + T('C') + ' 的繩索長。',
                a: T(sqrtTex(PC2)) + ' 公尺',
@@ -1055,7 +1055,7 @@
     var hb = '把「側面＋頂面」攤平成同一個平面，爬行路徑就變成平面上的線段。'
            + '經 $' + a + '\\times' + H + '$ 的側面攤平：水平位移 $' + (a / 2) + '$、鉛直位移 $' + H + '+' + (b / 2) + '$；'
            + '經 $' + b + '\\times' + H + '$ 的側面攤平：水平位移 $' + (b / 2) + '$、鉛直位移 $' + H + '+' + (a / 2) + '$。'
-           + '兩種都用 $\\sqrt{\\text{水平}^2+\\text{鉛直}^2}$ 算一次再取小的——只算一種是最常見的失分點。';
+           + '兩種都用 $\\sqrt{\\text{水平}^2+\\text{鉛直}^2}$ 算一次再取小的；只算一種是最常見的失分點。';
     if (v === 0)
       return { q: setup + '求最短路徑長。', a: T(sqrtTex(mn)), h: hb,
                p: { a: a, b: b, H: H, v: 0, ans: mn } };
@@ -1151,7 +1151,7 @@
     var setup0 = '直線 ' + T('AB') + ' 垂直平面 ' + T('E') + ' 於 ' + T('B') + '，' + T('L') + ' 是平面 ' + T('E') + ' 上的一條直線，' + T('D') + ' 在 ' + T('L') + ' 上，且 ' + T('\\overline{BC}\\perp L') + ' 於 ' + T('C') + '。';
     var hb = '$\\overline{AB}\\perp$ 平面 $E$ 且 $\\overline{BC}\\perp L$ ⟹ 三垂線定理給出 $\\overline{AC}\\perp L$。'
            + '於是三個直角三角形接力：$\\overline{BD}^2=\\overline{BC}^2+\\overline{CD}^2=' + (BC * BC) + '+' + (CD * CD) + '$、'
-           + '$\\overline{AC}^2=\\overline{AB}^2+\\overline{BC}^2$、$\\overline{AD}^2=\\overline{AB}^2+\\overline{BD}^2=\\overline{AC}^2+\\overline{CD}^2$——三條式子選兩條用就夠了。';
+           + '$\\overline{AC}^2=\\overline{AB}^2+\\overline{BC}^2$、$\\overline{AD}^2=\\overline{AB}^2+\\overline{BD}^2=\\overline{AC}^2+\\overline{CD}^2$，三條式子選兩條用就夠了。';
     if (v === 2) {
       var AB = AB2;
       return { q: setup0 + '若 ' + T('\\overline{AB}=' + AB) + '、' + T('\\overline{BC}=' + BC) + '、' + T('\\overline{CD}=' + CD) + '，求 (1) ' + T('\\overline{AC}') + '　(2) ' + T('\\overline{AD}') + '。',
@@ -1213,7 +1213,7 @@
     var hb = '分點公式的權重要交叉：離 $B$ 近就給 $B$ 大的權重 ⟹ $E=\\dfrac{' + l3cf(nn, 'A') + '+' + l3cf(m, 'B') + '}{' + (m + nn) + '}$、'
            + '$F=\\dfrac{' + l3cf(q, 'C') + '+' + l3cf(p, 'D') + '}{' + (p + q) + '}$。'
            + '也可以走向量版：$\\overrightarrow{AB}=' + vt(sub(B, A)) + '$、$\\overrightarrow{CD}=' + vt(sub(Dp, C)) + '$ ⟹ $E=A+\\dfrac{' + m + '}{' + (m + nn) + '}\\overrightarrow{AB}$、$F=C+\\dfrac{' + p + '}{' + (p + q) + '}\\overrightarrow{CD}$。'
-           + '兩個分點都化成坐標之後，$\\overline{EF}$ 就只是普通的兩點距離——把比例寫反是這一題唯一的陷阱。';
+           + '兩個分點都化成坐標之後，$\\overline{EF}$ 就只是普通的兩點距離；這一題最容易錯的地方是把比例寫反。';
     if (v === 0)
       return { q: setup + '求 ' + T('\\overline{EF}') + '。', a: T(sqrtTex(n2(dv))), h: hb,
                p: { A: A, B: B, C: C, D: Dp, m: m, n: nn, p: p, q: q, v: 0, ans: n2(dv) } };
@@ -1307,7 +1307,7 @@
     var setup = '第' + CN[oc] + '卦限的點 ' + T('P') + ' 到 ' + T('x') + ' 軸、' + T('y') + ' 軸、' + T('z') + ' 軸的距離分別為 '
               + T(sqrtTex(s1)) + '、' + T(sqrtTex(s2)) + '、' + T(sqrtTex(s3)) + '。';
     var hb = '設 $P(x,y,z)$，到 $x$ 軸的距離「把 $x$ 丟掉」⟹ $y^2+z^2=' + s1 + '$、$x^2+z^2=' + s2 + '$、$x^2+y^2=' + s3 + '$。'
-           + '三式相加得 $2(x^2+y^2+z^2)=' + s1 + '+' + s2 + '+' + s3 + '$——先求出 $x^2+y^2+z^2$，再拿它逐一減掉每一式就得到 $x^2$、$y^2$、$z^2$。'
+           + '三式相加得 $2(x^2+y^2+z^2)=' + s1 + '+' + s2 + '+' + s3 + '$，先求出 $x^2+y^2+z^2$，再拿它逐一減掉每一式就得到 $x^2$、$y^2$、$z^2$。'
            + '最後由「第' + CN[oc] + '卦限」決定三個坐標的正負。';
     if (v === 2)
       return { q: setup + '求 (1) ' + T('\\overline{OP}') + '（' + T('O') + ' 為原點）　(2) ' + T('P') + '。',
@@ -1396,7 +1396,7 @@
     var setup = T('P' + vt(P)) + '、' + T('Q' + vt(Q)) + '、' + T('R' + vt(R)) + '。';
     var hb = '一個外積兩題用：$\\overrightarrow{QP}=' + vt(w) + '$、$\\overrightarrow{QR}=' + vt(u) + '$ ⟹ $\\overrightarrow{QP}\\times\\overrightarrow{QR}=' + vt(cr) + '$。'
            + '$\\triangle PQR$ 的面積 $=\\dfrac12|\\overrightarrow{QP}\\times\\overrightarrow{QR}|$；'
-           + '而「面積 $=\\dfrac12\\times$ 底 $\\times$ 高」⟹ 點到直線的距離 $=\\dfrac{|\\overrightarrow{QP}\\times\\overrightarrow{QR}|}{\\text{那條底邊的長}}$——分母換成哪一條底邊，就是哪一個頂點的距離。';
+           + '而「面積 $=\\dfrac12\\times$ 底 $\\times$ 高」⟹ 點到直線的距離 $=\\dfrac{|\\overrightarrow{QP}\\times\\overrightarrow{QR}|}{\\text{那條底邊的長}}$。分母換成哪一條底邊，就是哪一個頂點的距離。';
     if (v === 0)
       return { q: setup + '求 (1) ' + T('\\triangle PQR') + ' 的面積　(2) ' + T('P') + ' 到直線 ' + T('QR') + ' 的距離。',
                a: '(1) ' + T(area) + '　(2) ' + T(dP), h: hb,
@@ -1494,7 +1494,7 @@
     var M = [F(A[0] + B[0], 2), F(A[1] + B[1], 2)];
     return { q: '平面上兩點 ' + T('A' + l0pt(A)) + '、' + T('B' + l0pt(B)) + '。求 ' + T('\\overline{AB}') + ' 的長與 ' + T('\\overline{AB}') + ' 的中點坐標。',
              a: T('\\overline{AB}=' + sqrtTex(d2)) + '、中點 ' + T(l0ptF(M[0], M[1])),
-             h: '距離：$\\sqrt{' + l0sn(dx) + '^2+' + l0sn(dy) + '^2}=\\sqrt{' + d2 + '}$（兩個坐標差的平方和，開根號後要化簡）；中點：兩個坐標各自取平均。這一章只是多一個 $z$：$\\sqrt{(x_2-x_1)^2+(y_2-y_1)^2+(z_2-z_1)^2}$。',
+             h: '距離：$\\sqrt{' + l0sn(dx) + '^2+' + l0sn(dy) + '^2}=\\sqrt{' + d2 + '}' + (sqrtTex(d2) === '\\sqrt{' + d2 + '}' ? '' : '=' + sqrtTex(d2)) + '$（兩個坐標差的平方和，開根號後要化簡）；中點：兩個坐標各自取平均。這一章只是多一個 $z$：$\\sqrt{(x_2-x_1)^2+(y_2-y_1)^2+(z_2-z_1)^2}$。',
              p: { A: A, B: B, ans: { d2: d2, M: [fr2(M[0]), fr2(M[1])] } } };
   };
   L0.dot2 = function (r) {
@@ -1535,17 +1535,17 @@
     var P = [F(n * A[0] + m * B[0], m + n), F(n * A[1] + m * B[1], m + n)];
     return { q: '平面上兩點 ' + T('A' + l0pt(A)) + '、' + T('B' + l0pt(B)) + '，點 ' + T('P') + ' 在線段 ' + T('\\overline{AB}') + ' 上且 ' + T('\\overline{AP}:\\overline{PB}=' + m + ':' + n) + '。求 ' + T('P') + ' 的坐標。',
              a: T('P' + l0ptF(P[0], P[1])),
-             h: '分點公式：$\\overrightarrow{OP}=\\dfrac{' + n + '\\,\\overrightarrow{OA}+' + m + '\\,\\overrightarrow{OB}}{' + (m + n) + '}$——<b>交叉乘</b>：靠近 $A$ 的那段 $' + m + '$ 乘在 $B$ 上。$x$ 坐標 $=\\dfrac{' + l0kx(n, A[0]) + '+' + l0kx(m, B[0]) + '}{' + (m + n) + '}$，$y$ 坐標同理；空間的分點公式一模一樣，只是多算一個 $z$。',
+             h: '分點公式：$\\overrightarrow{OP}=\\dfrac{' + n + '\\,\\overrightarrow{OA}+' + m + '\\,\\overrightarrow{OB}}{' + (m + n) + '}$。<b>交叉乘</b>：靠近 $A$ 的那段 $' + m + '$ 乘在 $B$ 上。$x$ 坐標 $=\\dfrac{' + l0kx(n, A[0]) + '+' + l0kx(m, B[0]) + '}{' + (m + n) + '}$，$y$ 坐標同理；空間的分點公式也一樣，只是多算一個 $z$。',
              p: { A: A, B: B, m: m, n: n, ans: [fr2(P[0]), fr2(P[1])] } };
   };
   var META_L0 = [['dist2', '兩點距離與中點'], ['dot2', '平面向量的內積與夾角'], ['perpPar2', '平行與垂直：待定係數'], ['det2area', '二階行列式與三角形面積'], ['divPoint2', '分點公式']];
   /* 先備題型 → 該去哪裡複習 */
   var PREREQ = {
-    dist2: { txt: '兩點距離與中點（高一上第二章 直線與圓）——空間的距離與中點只是多一個 z', link: '../g10a-ch02/practice.html#L1' },
-    dot2: { txt: '平面向量的內積與夾角（高二上第三章 平面向量）——空間的內積、夾角、正射影是同一套', link: '../g11a-ch03/practice.html#L1' },
+    dist2: { txt: '兩點距離與中點（高一上第二章 直線與圓）；空間的距離與中點只是多一個 z', link: '../g10a-ch02/practice.html#L1' },
+    dot2: { txt: '平面向量的內積與夾角（高二上第三章 平面向量）；空間的內積、夾角、正射影是同一套', link: '../g11a-ch03/practice.html#L1' },
     perpPar2: { txt: '平行（分量成比例）與垂直（內積為 0）的待定係數（高二上第三章 平面向量）', link: '../g11a-ch03/practice.html#L1' },
-    det2area: { txt: '二階行列式與三角形面積（高二上第三章 平面向量）——這一章升級成外積與三階行列式', link: '../g11a-ch03/practice.html#L1' },
-    divPoint2: { txt: '分點公式（高二上第三章 平面向量）——空間的分點、重心、係數和判別法都從這裡來', link: '../g11a-ch03/practice.html#L1' }
+    det2area: { txt: '二階行列式與三角形面積（高二上第三章 平面向量）；這一章會把它推廣成外積與三階行列式', link: '../g11a-ch03/practice.html#L1' },
+    divPoint2: { txt: '分點公式（高二上第三章 平面向量）；空間的分點、重心、係數和判別法都從這裡來', link: '../g11a-ch03/practice.html#L1' }
   };
   /* ══════════════════════════════════════════════════════════
      對照題：同一型抽兩題，只差一個關鍵特徵（f 由 p 算出；keep 的欄位要相同）
@@ -1553,9 +1553,9 @@
   var CONTRAST = {
     'L1.octantDist': { f: function (p) { return p.ans.oct <= 4 ? 'up' : 'down'; }, why: '卦限先看 $z$ 的正負分上下：$z\\gt0$ 是第一到第四卦限、$z\\lt0$ 是第五到第八卦限，編號恰好差 $4$；再用 $(x,y)$ 的象限決定是哪一個。距離的算法（到軸「把那個坐標丟掉」、到坐標平面「就是缺的那個坐標的絕對值」）不受正負號影響。' },
     'L1.symProj': { f: function (p) { return p.i < 3 ? 'plane' : p.i < 6 ? 'axis' : 'origin'; }, why: '對<b>坐標平面</b>對稱：只有「名字裡沒出現」的那一個坐標變號（對 $xy$ 平面 ⟹ $z$ 變號）；對<b>坐標軸</b>對稱：軸名以外的兩個坐標變號（對 $x$ 軸 ⟹ $y,z$ 變號）；對<b>原點</b>：三個全部變號。變號的坐標個數依序是 $1,2,3$ 個。' },
-    'L1.equidistAxis': { f: function (p) { return p.ax; }, why: '「在哪一個軸上」決定未知點長什麼樣子：$x$ 軸上設 $(t,0,0)$、$y$ 軸上設 $(0,t,0)$、$z$ 軸上設 $(0,0,t)$。列出「到兩點距離的平方相等」後，$t^2$ 會消掉，剩下 $t$ 的一次方程式——兩題的流程一樣，只是 $t$ 放的位置不同。' },
+    'L1.equidistAxis': { f: function (p) { return p.ax; }, why: '「在哪一個軸上」決定未知點長什麼樣子：$x$ 軸上設 $(t,0,0)$、$y$ 軸上設 $(0,t,0)$、$z$ 軸上設 $(0,0,t)$。列出「到兩點距離的平方相等」後，$t^2$ 會消掉，剩下 $t$ 的一次方程式。兩題的流程一樣，只是 $t$ 放的位置不同。' },
     'L1.divCoef': { f: function (p) { return p.ans.ext; }, why: '$\\overrightarrow{OP}=x\\,\\overrightarrow{OA}+y\\,\\overrightarrow{OB}$ 且 $x+y=1$ ⟹ $P$ 在直線 $AB$ 上。兩個係數<b>都為正</b> ⟹ $P$ 在線段 $\\overline{AB}$ 上（內分）；<b>有一個為負</b> ⟹ $P$ 在延長線上（外分），而且靠近係數為正、絕對值較大的那一端。' },
-    'L1.sumLen': { f: function (p) { return p.degs.indexOf(120) >= 0; }, why: '$|\\vec a+\\vec b+\\vec c|^2$ 展開後有三個內積。夾角 $60°$ 的內積為正、$90°$ 為 $0$、$120°$ 為<b>負</b>——只要出現 $120°$，那一項就會把和的長度往下拉。同樣的三個長度，夾角換了，答案可以差很多。' },
+    'L1.sumLen': { f: function (p) { return p.degs.indexOf(120) >= 0; }, why: '$|\\vec a+\\vec b+\\vec c|^2$ 展開後有三個內積。夾角 $60°$ 的內積為正、$90°$ 為 $0$、$120°$ 為<b>負</b>，只要出現 $120°$，那一項就會把和的長度往下拉。同樣的三個長度，夾角換了，答案可以差很多。' },
     'L1.dotAngle3': { f: function (p) { return p.ans.dot > 0 ? 1 : p.ans.dot < 0 ? -1 : 0; }, why: '夾角是銳角、直角還是鈍角，<b>只看內積的正負</b>就知道（分母 $|\\vec a||\\vec b|$ 恆正）：內積為正 ⟹ $\\cos\\theta\\gt0$ ⟹ 銳角；為 $0$ ⟹ 垂直；為負 ⟹ 鈍角。$\\cos\\theta$ 的值要帶著正負號寫，不要自己取絕對值。' },
     'L1.proj3': { f: function (p) { return p.ans.neg; }, why: '$\\vec a$ 在 $\\vec b$ 上的正射影 $=\\dfrac{\\vec a\\cdot\\vec b}{|\\vec b|^2}\\,\\vec b$。內積為正 ⟹ 係數為正，正射影與 $\\vec b$ <b>同向</b>；內積為負 ⟹ 係數為負，正射影與 $\\vec b$ <b>反向</b>（夾角是鈍角，影子落在 $\\vec b$ 的反向延長線上）。正射影的<b>長度</b>則一律取絕對值。' },
     'L1.dihedralBox': { f: function (p) { return p.which; }, why: '兩面角先找<b>稜</b>（兩平面的交線），再在兩個面上各找一條<b>垂直於稜</b>的線，它們的夾角就是兩面角。斜面 $ABGH$ 的稜是 $\\overline{AB}$，平面角是 $\\angle DAH$（$\\overline{AD}$、$\\overline{AH}$ 都垂直 $\\overline{AB}$），用到 $\\overline{AD}$ 與 $\\overline{AE}$；斜面 $ADGF$ 的稜是 $\\overline{AD}$，平面角換成 $\\angle BAF$，用到的邊長跟著換成 $\\overline{AB}$ 與 $\\overline{AE}$。' },

@@ -399,7 +399,7 @@
     var gm = I.g(m), gmF = I.id === 5 ? F(m, m + 1) : F(gm);
     return { q: '要用數學歸納法證明「對所有正整數 ' + T('n') + '，' + T(I.lhs + '=' + I.gT) + '」。(1) 驗證 ' + T('n=' + m) + ' 時等式成立：兩邊的值各為多少？(2) 在遞推步驟中，假設 ' + T('n=k') + ' 時成立，左式要「再加上哪一項」才變成 ' + T('n=k+1') + ' 的左式？此時右式應化簡成什麼？',
              a: '(1) 兩邊皆為 ' + T(Fr.tex(gmF)) + '　(2) 加上 ' + T(I.fT) + '，右式須化成 ' + T(I.gk1),
-             h: '(1) 左式從第一項一路加到第 $' + m + '$ 項，右式把 $n=' + m + '$ 代進 $' + I.gT + '$，兩邊各算一次。(2) 遞推步驟的目標永遠是：$\\big(n=k\\text{ 的右式}\\big)+\\big(\\text{第 }k+1\\text{ 項}\\big)=\\big(n=k+1\\text{ 的右式}\\big)$——「第 $k+1$ 項」就是把左式一般項的 $n$ 換成 $k+1$，右式也把 $' + I.gT + '$ 的 $n$ 換成 $k+1$ 再化簡。',
+             h: '(1) 左式從第一項一路加到第 $' + m + '$ 項，右式把 $n=' + m + '$ 代進 $' + I.gT + '$，兩邊各算一次。(2) 遞推步驟的目標永遠是：$\\big(n=k\\text{ 的右式}\\big)+\\big(\\text{第 }k+1\\text{ 項}\\big)=\\big(n=k+1\\text{ 的右式}\\big)$。「第 $k+1$ 項」就是把左式一般項的 $n$ 換成 $k+1$，右式也把 $' + I.gT + '$ 的 $n$ 換成 $k+1$ 再化簡。',
              p: { id: I.id, m: m, ans: { gm: fr2(gmF) } } };
   };
 
@@ -642,7 +642,7 @@
     var gen = (Fr.eq(a1, F(1)) ? '' : Fr.tex(a1) + '\\cdot') + (ratio.d === 1 ? ratio.n + '^{\\,n-1}' : '\\left(' + Fr.tex(ratio) + '\\right)^{n-1}');
     return { q: '設數列 ' + T(sq(AN)) + ' 的前 ' + T('n') + ' 項和為 ' + T('S_n') + '，且對所有正整數 ' + T('n') + '，' + T(rel) + ' 恆成立。求 ' + T('a_1,a_2,a_3') + ' 與一般項 ' + T(AN) + '。',
              a: T('a_1=' + Fr.tex(a1) + ',\\ a_2=' + Fr.tex(a2) + ',\\ a_3=' + Fr.tex(a3)) + '，' + T(AN + '=' + gen),
-             h: '$n=1$ 時 $S_1=a_1$，代進關係式得 $' + eq1 + '$，先解出 $a_1$；$n\\ge2$ 時把 $n$ 與 $n-1$ 兩式相減，因為 $a_n=S_n-S_{n-1}$，會得到 $a_n=' + alT + '(a_n-a_{n-1})$，整理成 $a_n$ 與 $a_{n-1}$ 的定比——那就是公比。',
+             h: '$n=1$ 時 $S_1=a_1$，代進關係式得 $' + eq1 + '$，先解出 $a_1$；$n\\ge2$ 時把 $n$ 與 $n-1$ 兩式相減，因為 $a_n=S_n-S_{n-1}$，會得到 $a_n=' + alT + '(a_n-a_{n-1})$，整理成 $a_n$ 與 $a_{n-1}$ 的定比，這個比就是公比。',
              p: { al: al, c: c, j: j, ans: { a1: fr2(a1), ratio: fr2(ratio), a3: fr2(a3) } } };
   };
 
@@ -732,7 +732,7 @@
   /* 1-3 三數成等差：對稱設法 */
   L1_SOL.arMiddle = function (p, o) {
     var x = p.ans, m = x[1], dd = x[1] - x[0];
-    return ['三個數成等差就設成 $m-d,\\ m,\\ m+d$——這樣相加時 $d$ 會自己消掉：和 $=3m=' + p.S + '$，所以中間項 $m=' + m + '$。',
+    return ['三個數成等差就設成 $m-d,\\ m,\\ m+d$，這樣相加時 $d$ 會自己消掉：和 $=3m=' + p.S + '$，所以中間項 $m=' + m + '$。',
       (p.useSq ? '再用平方和：$(m-d)^2+m^2+(m+d)^2=3m^2+2d^2$，代 $m=' + m + '$ 得 $3\\times' + hpz(m) + '^2+2d^2=' + p.other + '$'
                : '再用乘積：$(m-d)\\cdot m\\cdot(m+d)=m(m^2-d^2)$，代 $m=' + m + '$ 得 $' + hpz(m) + parT(hpz(m) + '^2-d^2') + '=' + p.other + '$')
         + '，解得 $d^2=' + (dd * dd) + '$、$d=\\pm' + dd + '$。',
@@ -751,7 +751,7 @@
   L1_SOL.gpMiddle = function (p, o) {
     var x = p.ans, a = x[1], rho = x[2] / x[1], V = p.kind === 0 ? p.S : p.E;
     var q0 = F(V, a), cc = p.kind === 0 ? Fr.sub(q0, F(1)) : q0;
-    return ['三個數成等比就設成 $\\dfrac ar,\\ a,\\ ar$——這樣相乘時 $r$ 會自己消掉：乘積 $=\\dfrac ar\\cdot a\\cdot ar=a^3=' + p.P + '$，所以中間項 $a=' + a + '$。',
+    return ['三個數成等比就設成 $\\dfrac ar,\\ a,\\ ar$，這樣相乘時 $r$ 會自己消掉：乘積 $=\\dfrac ar\\cdot a\\cdot ar=a^3=' + p.P + '$，所以中間項 $a=' + a + '$。',
       '再用' + (p.kind === 0 ? '和：$a\\left(\\dfrac1r+1+r\\right)=' + V + '$' : '頭尾之和：$a\\left(\\dfrac1r+r\\right)=' + V + '$') + '，兩邊除以 $a=' + a + '$ 得 $' + (p.kind === 0 ? '\\dfrac1r+1+r' : '\\dfrac1r+r') + '=' + Fr.tex(q0) + '$，也就是 $r+\\dfrac1r=' + Fr.tex(cc) + '$，解得 $r=' + rho + '$ 或 $r=\\dfrac1{' + rho + '}$。',
       '兩個 $r$ 給的是同一組數（只是順序相反）：$' + x.join(',\\ ') + '$。' + fin(o)];
   };
@@ -812,7 +812,7 @@
     var full = Math.floor(p.N / per), rem = p.N % per;
     var part = SUMF(0, rem - 1, function (i) { return cyc[i]; });
     return ['(1) 一項一項代下去：$a_2=' + Fr.tex(seq[1]) + '$、$a_3=' + Fr.tex(seq[2]) + '$、$a_4=' + Fr.tex(seq[3]) + '$'
-        + (per === 3 ? '——$a_4$ 已經回到 $a_1$，所以週期是 $3$。' : '、$a_5=' + Fr.tex(seq[4]) + '$——$a_5$ 才回到 $a_1$，所以週期是 $4$。'),
+        + (per === 3 ? '，$a_4$ 已經回到 $a_1$，所以週期是 $3$。' : '、$a_5=' + Fr.tex(seq[4]) + '$，$a_5$ 才回到 $a_1$，所以週期是 $4$。'),
       '(2) 一個週期是 $' + cyc.map(function (u) { return Fr.tex(u); }).join(',\\ ') + '$。'
         + (rem === 0 ? '$' + p.N + '\\div ' + per + '$ 整除，$a_{' + p.N + '}$ 就是週期的最後一項：$a_{' + p.N + '}=' + Fr.tex(fF(p.ans.aN)) + '$。'
                      : '$' + p.N + '=' + per + '\\times' + full + '+' + rem + '$，$a_{' + p.N + '}$ 就是週期的第 $' + rem + '$ 項：$a_{' + p.N + '}=' + Fr.tex(fF(p.ans.aN)) + '$。'),
@@ -854,7 +854,7 @@
   /* 2-4 S_n 何時最大 */
   L1_SOL.arSumMax = function (p, o) {
     var n = p.ans.n, an = p.a1 + (n - 1) * p.d, bd = F(p.a1 - p.d, -p.d);
-    return ['公差是負的，$S_n$ 一路加到最後一個正項時最大，之後再加只會變小——所以先解 $a_n\\gt 0$。',
+    return ['公差是負的，$S_n$ 一路加到最後一個正項時最大，之後再加只會變小，所以先解 $a_n\\gt 0$。',
       '$a_n=' + lin(p.d, p.a1 - p.d) + '\\gt 0$ ⟹ $n\\lt ' + Fr.tex(bd) + '$，$n$ 取正整數 ⟹ $n=' + n + '$（此時 $a_{' + n + '}=' + an + '\\gt 0$，下一項 $a_{' + (n + 1) + '}=' + (an + p.d) + '\\lt 0$）。',
       '$S_{' + n + '}=\\dfrac{' + n + parT(sumT([p.a1, an])) + '}{2}=' + p.ans.Smax + '$。' + fin(o)];
   };
@@ -916,7 +916,7 @@
     var aj = a1 + (j - 1) * d, P = j * (a1 + aj) / 2;
     var an = a1 + (N - 1) * d, aj1 = a1 + j * d, Q = j >= N ? 0 : (N - j) * (aj1 + an) / 2;
     return ['先找變號位置：$a_n=' + lin(d, a1 - d) + '$，$a_n\\lt 0$ ⟺ $n\\lt ' + Fr.tex(F(-(a1 - d), d)) + '$，所以前 $' + j + '$ 項是負的'
-        + (j >= N ? '——本題 $' + N + '$ 項全部都是負的。' : '、第 $' + (j + 1) + '$ 項起是正的。'),
+        + (j >= N ? '，本題 $' + N + '$ 項全部都是負的。' : '、第 $' + (j + 1) + '$ 項起是正的。'),
       '取絕對值就是把負的那一段整段變號：$|a_1|+\\cdots+|a_{' + N + '}|=-\\left(a_1+\\cdots+a_{' + j + '}\\right)' + (j >= N ? '' : '+\\left(a_{' + (j + 1) + '}+\\cdots+a_{' + N + '}\\right)') + '$。',
       '前段和 $=\\dfrac{' + j + parT(sumT([a1, aj])) + '}{2}=' + P + '$'
         + (j >= N ? '，所以答案 $=-' + hpz(P) + '=' + p.ans + '$。' : '、後段和 $=\\dfrac{' + (N - j) + parT(sumT([aj1, an])) + '}{2}=' + Q + '$，所以答案 $=' + Q + '-' + hpz(P) + '=' + p.ans + '$。') + fin(o)];
@@ -930,14 +930,14 @@
     var I = P * i / 100;
     return ['(1) 複利是「本利和再生利息」，每年乘 $' + rate + '$：' + yr.join('、') + '。也可以直接寫成 $' + P + '\\times' + rate + '^{' + n + '}=' + comp + '$ 元。',
       '(2) 單利只有本金生利息，每年利息固定 $' + P + '\\times' + (i / 100) + '=' + I + '$ 元，$' + n + '$ 年共 $' + n + '\\times' + I + '=' + (n * I) + '$ 元，本利和 $=' + P + '+' + (n * I) + '=' + simple + '$ 元。',
-      '兩者相差 $' + comp + '-' + simple + '=' + (comp - simple) + '$ 元——差的就是「利息也在生利息」的那一部分。' + fin(o)];
+      '兩者相差 $' + comp + '-' + simple + '=' + (comp - simple) + '$ 元，差的就是「利息也在生利息」的那一部分。' + fin(o)];
   };
 
   /* 3-1 歸納法的遞推步驟 */
   L1_SOL.inductionStep = function (p, o) {
     var I = null; for (var i = 0; i < IDENT.length; i++) if (IDENT[i].id === p.id) I = IDENT[i];
     return ['(1) 左式是把第 $1$ 項一路加到第 $' + p.m + '$ 項；右式是把 $n=' + p.m + '$ 代進 $' + I.gT + '$。兩邊都等於 $' + Fr.tex(fF(p.ans.gm)) + '$，$n=' + p.m + '$ 時等式成立。',
-      '(2) 從 $n=k$ 到 $n=k+1$，左式多出來的正好是「第 $k+1$ 項」——把左式一般項的 $n$ 換成 $k+1$ 就得到 $' + I.fT + '$。',
+      '(2) 從 $n=k$ 到 $n=k+1$，左式多出來的正好是「第 $k+1$ 項」：把左式一般項的 $n$ 換成 $k+1$ 就得到 $' + I.fT + '$。',
       '右式也把 $' + I.gT + '$ 的 $n$ 換成 $k+1$ 再化簡，得 $' + I.gk1 + '$。遞推步驟要證的就是：$n=k$ 的右式再加上那一項，會等於這個式子。' + fin(o)];
   };
 
@@ -1256,11 +1256,11 @@
   var META_L0 = [['seqNth', '等差、等比的第 n 項'], ['expLaw', '指數律'], ['linSys2', '二元一次聯立方程式'], ['quadExt', '配方求極值'], ['fracSub', '分數的通分']];
   /* 先備題型 → 該去哪裡複習 */
   var PREREQ = {
-    seqNth: { txt: '等差、等比數列的第 n 項（國中）——本章一般項公式的起點，走幾步、乘幾次都是 n−1', link: null },
-    expLaw: { txt: '指數律（高一上第一章 數與式 §4）——等比數列、等比級數、錯位相減都在算次方', link: '../g10a-ch01/practice.html#L1' },
-    linSys2: { txt: '二元一次聯立方程式（國中）——已知兩項求首項與公差、公比就是解它', link: null },
-    quadExt: { txt: '二次函數配方求極值（高一上第三章 多項式）——等差級數 S_n 是 n 的二次式，最大值靠配方', link: '../g10a-ch03/practice.html#L1' },
-    fracSub: { txt: '分數的通分與約分（國中）——裂項相消就是把「通分」倒過來用', link: null }
+    seqNth: { txt: '等差、等比數列的第 n 項（國中）：本章一般項公式的起點，走幾步、乘幾次都是 n−1', link: null },
+    expLaw: { txt: '指數律（高一上第一章 數與式 §4）：等比數列、等比級數、錯位相減都在算次方', link: '../g10a-ch01/practice.html#L1' },
+    linSys2: { txt: '二元一次聯立方程式（國中）：已知兩項求首項與公差、公比就是解它', link: null },
+    quadExt: { txt: '二次函數配方求極值（高一上第三章 多項式）：等差級數 S_n 是 n 的二次式，最大值靠配方', link: '../g10a-ch03/practice.html#L1' },
+    fracSub: { txt: '分數的通分與約分（國中）：裂項相消就是把「通分」倒過來用', link: null }
   };
   /* ══════════════════════════════════════════════════════════
      對照題：同一型抽兩題，只差一個關鍵特徵（f 由 p 算出；keep 的欄位要相同）
@@ -1276,14 +1276,14 @@
     'L1.telescope': { f: function (p) { return p.a === 1; }, why: '$\\dfrac{1}{(ak+b)(ak+a+b)}=\\dfrac{1}{a}\\left(\\dfrac{1}{ak+b}-\\dfrac{1}{ak+a+b}\\right)$：兩個分母相差 $a$，拆開後要乘 $\\dfrac1a$。相差 $1$ 時係數是 $1$、最容易忘的是相差 $2$ 或 $3$ 時前面那個 $\\dfrac12$、$\\dfrac13$。' },
     'L2.sumFromSn': { f: function (p) { return !!p.ans.isGP; }, why: '$S_n=A\\cdot b^n+C$：$n\\ge2$ 時 $a_n=A(b-1)b^{n-1}$ 是等比；$a_1=Ab+C$ 只有在 $C=-A$ 時才等於 $A(b-1)$、整個數列才是等比，否則第一項要分開寫。' },
     'L2.oddEvenGP': { f: function (p) { return sign3(p.ans.r); }, why: '偶數項的和 $=r\\times$ 奇數項的和，所以 $r=\\dfrac{E}{O}$：兩個和同號則 $r\\gt0$、異號則 $r\\lt0$。公比為負時再由 $O=a_1\\dfrac{r^{2m}-1}{r^2-1}$ 反求 $a_1$，$r^2$ 是正的，不會受符號影響。' },
-    'L2.snRecur': { f: function (p) { return p.al > 0; }, why: '$S_n=\\alpha a_n+\\beta$ 都用 $a_n=S_n-S_{n-1}$ 消掉 $S$，得 $a_n=\\dfrac{\\alpha}{\\alpha-1}a_{n-1}$：$\\alpha\\gt1$ 時公比大於 $1$（數列越來越大），$\\alpha\\lt0$ 時公比在 $0$ 與 $1$ 之間（越來越小）——公比由係數決定，首項一律由 $n=1$ 代回求。' },
+    'L2.snRecur': { f: function (p) { return p.al > 0; }, why: '$S_n=\\alpha a_n+\\beta$ 都用 $a_n=S_n-S_{n-1}$ 消掉 $S$，得 $a_n=\\dfrac{\\alpha}{\\alpha-1}a_{n-1}$：$\\alpha\\gt1$ 時公比大於 $1$（數列越來越大），$\\alpha\\lt0$ 時公比在 $0$ 與 $1$ 之間（越來越小）；公比由係數決定，首項一律由 $n=1$ 代回求。' },
     'L1.gpMiddle': { f: function (p) { return p.kind; }, why: '設三數為 $\\dfrac ar,\\ a,\\ ar$：乘積永遠先給出中間項 $a$。「三數之和」給的是 $a\\left(\\dfrac1r+1+r\\right)$、「頭尾兩數之和」給的是 $a\\left(\\dfrac1r+r\\right)$，差一個 $a$，兩種都化成 $r+\\dfrac1r$ 的二次方程式。' },
     'L2.kOver2k': { f: function (p) { return p.base; }, why: '分母是 $2^k$ 或 $3^k$，錯位相減都是「$S$ 減去 $\\dfrac1{\\text{底}}S$」：底數換了，相減後留下的等比級數公比與最後一項的分母都跟著換，做法完全一樣。' },
     'L2.groupSeq': { f: function (p) { return p.kind; }, why: '分群數列先算「第 $N$ 項在第幾群、群內第幾個」（用 $1+2+\\cdots+K\\ge N$）；問「第 $N$ 項是多少」只要定位，問「前 $N$ 項和」還要把前面完整的群整群加起來再加零頭。' },
     'L2.annuity': { f: function (p) { return !!p.begin; }, why: '每期期末存：最後一筆不生息，本利和 $=D\\dfrac{(1+i)^n-1}{i}$；每期期初存：每一筆都多生一期利息，整個再乘 $(1+i)$。差的就是那一個 $(1+i)$。' },
     'L3.gpEndsSumN': { f: function (p) { return p.r < 0; }, why: '$S=\\dfrac{a_1-a_nr}{1-r}$ 對正負公比都一樣，先解出 $r$，再由 $a_1r^{n-1}=a_n$ 定 $n$；公比為負時 $a_n$ 與 $a_1$ 同號或異號，直接告訴你 $n-1$ 是偶數還是奇數，可以拿來檢查 $n$ 有沒有算錯。' },
     'L3.fiveAP': { f: function (p) { return p.v; }, why: '令 $t=d^2$ 得二次方程式，兩個 $t$ 都是正的：問「$d$ 所有可能值」時每個 $t$ 開根號都給正負兩個；加了「公差為正整數」，就只留下完全平方的那個 $t$ 且取正根。' },
-    'L3.recurGuess': { f: function (p) { return p.fam; }, why: '前幾項猜出 $a_n=An^2$ 或 $a_n=An(n+1)$ 後，都要用遞迴式驗證；差別在一個多了常數項 $+A$、一個沒有——代回時看 $\\dfrac{n+2}{n}a_n$ 差多少就知道是哪一家。' },
+    'L3.recurGuess': { f: function (p) { return p.fam; }, why: '前幾項猜出 $a_n=An^2$ 或 $a_n=An(n+1)$ 後，都要用遞迴式驗證；差別在一個多了常數項 $+A$、一個沒有；代回時看 $\\dfrac{n+2}{n}a_n$ 差多少就知道是哪一家。' },
     'L3.diagonalGrid': { f: function (p) { return p.v; }, why: '斜線編號的格子：第 $k$ 條斜線有 $k$ 格，前 $k$ 條共 $\\dfrac{k(k+1)}{2}$ 格。由編號找位置是「解 $\\dfrac{k(k+1)}{2}\\ge N$」，由位置找編號是「算前 $k-1$ 條的總數再加上斜線內的序號」，兩題互為反問。' },
     'L3.gpRatioSeries': { f: function (p) { return p.v; }, why: '不管分子從 $r^2$、$r$ 還是 $1$ 開始，都是「公比 $r^2$ 的等比級數 ÷ 公比 $r$ 的等比級數」，$r^{2N}-1=(r^N-1)(r^N+1)$ 一約，剩下的只是首項不同造成的一個因子 $r$ 或 $1$。' },
     'L3.sigmaFactorForm': { f: function (p) { return p.v; }, why: '同一條公式，一題要你把它「算出來」（展開、套三個求和公式、因式分解），一題只要你「用它」（代 $n=1$ 驗證、代 $n$ 求值）。段考兩種都考，先會用再會推。' },

@@ -1193,7 +1193,7 @@
     var ar = F(area2, 2);
     return { q: '求聯立不等式 ' + T('\\begin{cases}' + rows.join('\\\\ ') + '\\end{cases}') + ' 所圍成區域的面積。',
       a: T(Fr.tex(ar)),
-      h: '四條線兩兩相交最多 $6$ 個交點，但區域的頂點只有 $4$ 個——每個交點都要代回其餘不等式檢查。先求 $y=0$ 與兩條斜線的交點 $(' + p1 + ',0)$、$(' + p2 + ',0)$，再求 $' + ineqTex(k, -1, 0, '=') + '$ 與兩條斜線的交點；依序排好後用鞋帶公式（或大三角形減小三角形）。',
+      h: '四條線兩兩相交最多 $6$ 個交點，但區域的頂點只有 $4$ 個，每個交點都要代回其餘不等式檢查。先求 $y=0$ 與兩條斜線的交點 $(' + p1 + ',0)$、$(' + p2 + ',0)$，再求 $' + ineqTex(k, -1, 0, '=') + '$ 與兩條斜線的交點；依序排好後用鞋帶公式（或大三角形減小三角形）。',
       p: { ineqs: [I1, I2, kk, [0, 1, 0, 1]], V: V, ans: [ar.n, ar.d] } };
   };
 
@@ -1303,7 +1303,7 @@
   L0.pythag = function (r) {
     var v = r.int(0, 2), tri = r.pick([[3, 4, 5], [5, 12, 13], [6, 8, 10], [8, 15, 17], [9, 12, 15], [7, 24, 25]]), a, b, ans, qtxt, h;
     if (v === 0) { a = r.int(1, 7); b = r.int(1, 7); ans = a * a + b * b; qtxt = '直角三角形的兩股長為 ' + T(String(a)) + ' 與 ' + T(String(b)) + '，求斜邊長。'; h = '斜邊$^2=' + a + '^2+' + b + '^2$；開根號後記得化簡（把完全平方的因數提出來）。'; }
-    else if (v === 1) { a = tri[r.int(0, 1)]; ans = tri[2] * tri[2] - a * a; qtxt = '直角三角形的斜邊長為 ' + T(String(tri[2])) + '、一股長為 ' + T(String(a)) + '，求另一股長。'; h = '另一股$^2=' + tri[2] + '^2-' + a + '^2$——是<b>斜邊平方減</b>，不是加。'; }
+    else if (v === 1) { a = tri[r.int(0, 1)]; ans = tri[2] * tri[2] - a * a; qtxt = '直角三角形的斜邊長為 ' + T(String(tri[2])) + '、一股長為 ' + T(String(a)) + '，求另一股長。'; h = '另一股$^2=' + tri[2] + '^2-' + a + '^2$，是<b>斜邊平方減</b>，不是加。'; }
     else { a = r.int(1, 6); b = r.int(1, 6); ans = a * a + b * b; qtxt = '在方格紙上，從 ' + T('P') + ' 點向右走 ' + T(String(a)) + ' 格、再向上走 ' + T(String(b)) + ' 格到 ' + T('Q') + ' 點，求 ' + T('\\overline{PQ}') + ' 的長。'; h = '水平位移 $' + a + '$、鉛直位移 $' + b + '$ 是直角三角形的兩股，$\\overline{PQ}$ 是斜邊：$\\overline{PQ}^2=' + a + '^2+' + b + '^2$。這就是本章距離公式的來源。'; }
     return { q: qtxt, a: T(sqrtTex(ans)), h: h, p: { v: v, sq: ans } };
   };
@@ -1328,11 +1328,11 @@
   var META_L0 = [['linSys', '二元一次聯立方程式'], ['pythag', '畢氏定理'], ['completeSq', '配方'], ['absEq', '絕對值方程式'], ['rationalize', '分母有理化']];
   /* 先備題型 → 該去哪裡複習 */
   var PREREQ = {
-    linSys: { txt: '二元一次聯立方程式（國中）——求兩直線交點、過三點的圓都在解它', link: null },
-    pythag: { txt: '畢氏定理（國中）——距離公式、弦長、切線長全部是它', link: null },
-    completeSq: { txt: '配方（國中）——圓的一般式化成標準式，要對 x、y 各配一次', link: null },
-    absEq: { txt: '絕對值方程式（高一上第一章 數與式）——點到直線距離的分子是絕對值，反求參數一定有兩解', link: '../g10a-ch01/practice.html#L1' },
-    rationalize: { txt: '根式化簡與分母有理化（高一上第一章 數與式）——距離的答案常是「整數 ÷ 根號」', link: '../g10a-ch01/practice.html#L1' }
+    linSys: { txt: '二元一次聯立方程式（國中）：求兩直線交點、過三點的圓，都是在解它', link: null },
+    pythag: { txt: '畢氏定理（國中）：距離公式、弦長、切線長都從它來', link: null },
+    completeSq: { txt: '配方（國中）：圓的一般式化成標準式，要對 x、y 各配一次', link: null },
+    absEq: { txt: '絕對值方程式（高一上第一章 數與式）：點到直線距離的分子是絕對值，反求參數一定有兩解', link: '../g10a-ch01/practice.html#L1' },
+    rationalize: { txt: '根式化簡與分母有理化（高一上第一章 數與式）：距離的答案常是「整數 ÷ 根號」', link: '../g10a-ch01/practice.html#L1' }
   };
 
   /* ══════════════════════════════════════════════════════════
@@ -1353,11 +1353,11 @@
     'L1.tangentAtPt': { f: function (p) { return p.ans[0] === 0 || p.ans[1] === 0; }, why: '切點在圓的正上下左右時，切線是水平線或鉛直線，直接寫；其他位置才用「切線 $\\perp$ 半徑」求斜率。' },
     'L2.shortestPath': { f: function (p) { return p.t; }, why: '鏡射軸不同，鏡射點的算法就不同：對 $x$ 軸 $y$ 變號、對 $y$ 軸 $x$ 變號、對 $y=x$ 兩坐標對調；之後都是「連線段長 $=$ 最小值」。' },
     'L2.circMinMax': { f: function (p) { return p.t; }, why: '到定點：最遠最近 $=\\overline{QC}\\pm r$；到直線：最遠最近 $=d\\pm r$。共同點是「先算圓心的距離，再加減半徑」。' },
-    'L2.tangentExt': { f: function (p) { return p.ans[0][1] === 0 || p.ans[1][1] === 0; }, why: '設斜率 $m$ 只解出一條時，另一條一定是<b>鉛直線</b>（沒有斜率）——過圓外一點的切線永遠有兩條，少一條就是漏了它。' },
+    'L2.tangentExt': { f: function (p) { return p.ans[0][1] === 0 || p.ans[1][1] === 0; }, why: '設斜率 $m$ 只解出一條時，另一條一定是<b>鉛直線</b>（沒有斜率）。過圓外一點的切線一定有兩條，少一條就是漏了它。' },
     'L3.shiftCoincide': { f: function (p) { return p.p * p.q > 0; }, why: '平移的兩個方向同號（右上／左下）直線斜率為正，異號（右下／左上）斜率為負；斜率決定 $a:b$ 的正負，距離的分子 $|a+b|$ 就跟著不同。' },
     'L3.triAreaSlopes': { f: function (p) { return p.h > 0; }, why: '交點在 $x$ 軸上方或下方，高都是 $|h|$；但 $x$ 截距 $=-\\dfrac hm$ 的正負會跟著換，最後的斜率正負也跟著換。' },
     'L3.maxProjDist': { f: function (p) { return p.Fp[0] === 0 && p.Fp[1] === 0; }, why: '$y=mx$ 恆過原點；$y-q=m(x-p)$ 恆過 $(p,q)$。找到直線繞著轉的那個定點，答案就是「與定點連線垂直」。' },
-    'L3.chordDistCircle': { f: function (p) { return p.quad; }, keep: ['d2'], why: '同樣的弦心距，圓心可以在弦的兩側——象限條件就是用來二選一的，兩個候選圓心對弦的中點對稱。' },
+    'L3.chordDistCircle': { f: function (p) { return p.quad; }, keep: ['d2'], why: '同樣的弦心距，圓心可以在弦的兩側，象限條件就是用來二選一的，兩個候選圓心對弦的中點對稱。' },
     'L3.tangentAtAxisPt': { f: function (p) { return p.v; }, why: '同一個圓，切點換了，半徑的方向就換了；切線永遠垂直「圓心到切點」那條半徑，不是垂直直徑 $\\overline{AB}$。' },
     'L3.pointsAtDist': { f: function (p) { return p.cnt; }, why: '半徑由小變大，圓先碰到近的那條平行線、再碰到遠的那條：交點個數依序是 $0,1,2,3,4$，題目問幾個點就停在哪一段。' },
     'L3.halfCircleOne': { f: function (p) { return p.b < 0; }, why: '斜率正的直線過右端點時另一交點在下半圓（算一點）、過左端點時在上半圓（變兩點）；斜率負的剛好相反。端點一定要單獨驗。' }

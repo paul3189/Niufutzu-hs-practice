@@ -188,7 +188,7 @@
     var p = Fr.add(F(a), Fr.mul(F(b - a), F(m, m + n)));   /* AP:PB = m:n ⟹ P = A + m/(m+n)(B-A) */
     return { q: '數線上 ' + T('A(' + a + ')') + '、' + T('B(' + b + ')') + '，點 ' + T('P') + ' 在線段 ' + T('\\overline{AB}') + ' 上且 ' + T('\\overline{AP}:\\overline{PB}=' + m + ':' + n) + '，求 ' + T('P') + ' 的坐標。',
              a: T('P\\left(' + Fr.tex(p) + '\\right)'),
-             h: '分點公式「交叉配」：$P=\\dfrac{n\\cdot a+m\\cdot b}{m+n}=\\dfrac{' + n + '\\times(' + a + ')+' + m + '\\times(' + b + ')}{' + m + '+' + n + '}$——靠近 $B$ 的比例 $' + m + '$ 反而配給 $B$。', p: { a: a, b: b, m: m, n: n, pn: p.n, pd: p.d } };
+             h: '分點公式「交叉配」：$P=\\dfrac{n\\cdot a+m\\cdot b}{m+n}=\\dfrac{' + n + '\\times(' + a + ')+' + m + '\\times(' + b + ')}{' + m + '+' + n + '}$，靠近 $B$ 的比例 $' + m + '$ 反而配給 $B$。', p: { a: a, b: b, m: m, n: n, pn: p.n, pd: p.d } };
   };
 
   /* 2-1 根式化簡 √n = c√r */
@@ -275,7 +275,7 @@
     if (v === 3) return { q: '已知 ' + T('x<' + c) + '，化簡 ' + T(absLin(1, -c) + '+' + absLin(1, -c - k)) + '。', a: T(linTex(-2, 2 * c + k)), h: '$x<' + c + '$ ⟹ $' + linTex(1, -c) + '<0$，$' + linTex(1, -c - k) + '$ 更小也 $<0$，兩個都要「變號脫」：$(' + linTex(-1, c) + ')+(' + linTex(-1, c + k) + ')$。', p: { v: 3, k: k, c: c } };
     if (v === 4) return { q: '已知 ' + T('x>' + c) + '，化簡 ' + T(absLin(1, -c) + '-|' + linTex(-1, c - k) + '|') + '。', a: T(String(-k)), h: '$x>' + c + '$ ⟹ $' + linTex(1, -c) + '>0$ 直接脫；$' + linTex(-1, c - k) + '=-(' + linTex(1, k - c) + ')<0$，脫掉變成 $' + linTex(1, k - c) + '$。', p: { v: 4, k: k, c: c } };
     if (v === 5) return { q: '已知 ' + T(c + '<x<' + (c + k)) + '，化簡 ' + T(absLin(1, -c) + '+' + absLin(1, -c - k)) + '。', a: T(String(k)), h: '$x$ 在 $' + c + '$ 與 $' + (c + k) + '$ 之間：$' + absLin(1, -c) + '=' + linTex(1, -c) + '$（正）、$' + absLin(1, -c - k) + '=' + linTex(-1, c + k) + '$（負要變號），相加 $x$ 消掉。', p: { v: 5, k: k, c: c } };
-    return { q: '已知 ' + T('a<b') + '，化簡 ' + T('\\sqrt{(a-b)^2}+|b-a|') + '。', a: T('2b-2a'), h: '$\\sqrt{(a-b)^2}=|a-b|$，不是 $a-b$！$a<b$ ⟹ $|a-b|=b-a$，兩項都是 $b-a$。', p: { v: 6, k: k } };
+    return { q: '已知 ' + T('a<b') + '，化簡 ' + T('\\sqrt{(a-b)^2}+|b-a|') + '。', a: T('2b-2a'), h: '$\\sqrt{(a-b)^2}=|a-b|$，不是 $a-b$。$a<b$ ⟹ $|a-b|=b-a$，兩項都是 $b-a$。', p: { v: 6, k: k } };
   };
 
   /* 3-2 絕對值方程式 |x-a|=b */
@@ -621,7 +621,7 @@
   function parT(n) { return n < 0 ? '(' + n + ')' : String(n); }                 /* 負數代入時加括號 */
   function numT(v) { return v.toFixed(4).replace(/\.?0+$/, ''); }               /* 12.0400 → 12.04 */
   var L1_H1 = {
-    rational: '這是「有理數／無理數判別」：問它能不能寫成「整數 ÷ 整數」——整數、有限小數、循環小數、開得盡的根號都可以，開不盡的根號與 $\\pi$ 都不行。',
+    rational: '這是「有理數／無理數判別」：問它能不能寫成「整數 ÷ 整數」。整數、有限小數、循環小數、開得盡的根號都可以，開不盡的根號與 $\\pi$ 都不行。',
     repPure: '這是「純循環小數化分數」：循環節當分子，分母寫幾個 9（循環節幾位就幾個 9），最後約分。',
     repMixed: '這是「混循環小數化分數」：分子＝「全部數字」－「不循環部分」，分母＝幾個 9 後接幾個 0，最後約分。',
     fracKind: '這是「分數化小數判有限或循環」：先把分母質因數分解，只有 2、5 就是有限小數，出現別的質因數就一定循環。',
@@ -646,7 +646,7 @@
   var L1_SOL = {};
   L1_SOL.rational = function (p, it) {
     var why = String(it.a).replace(/<b>[^<]*<\/b>/, '').replace(/^[\s　]*（/, '').replace(/）\s*$/, '');
-    return ['判準：能寫成「整數 ÷ 整數」的就是有理數——整數、有限小數、循環小數、開得盡的根號都可以；開不盡的根號、$\\pi$、無限不循環小數都不行。',
+    return ['判準：能寫成「整數 ÷ 整數」的就是有理數：整數、有限小數、循環小數、開得盡的根號都可以；開不盡的根號、$\\pi$、無限不循環小數都不行。',
       '看 $' + p.tex + '$：' + why + '。',
       '所以 $' + p.tex + '$ 是' + (p.rat ? '有理數' : '無理數') + '。'];
   };
@@ -683,7 +683,7 @@
   };
   L1_SOL.divPoint = function (p) {
     var num = p.n * p.a + p.m * p.b, den = p.m + p.n, fr = F(num, den), g = gcd(num, den);
-    return ['內分點公式（交叉配）：$\\overline{AP}:\\overline{PB}=m:n$ 時，$P=\\dfrac{n\\cdot a+m\\cdot b}{m+n}$——$A$ 的坐標配 $n$、$B$ 的坐標配 $m$。',
+    return ['內分點公式（交叉配）：$\\overline{AP}:\\overline{PB}=m:n$ 時，$P=\\dfrac{n\\cdot a+m\\cdot b}{m+n}$，也就是 $A$ 的坐標配 $n$、$B$ 的坐標配 $m$。',
       '這裡 $a=' + p.a + '$、$b=' + p.b + '$、$m=' + p.m + '$、$n=' + p.n + '$：$P=\\dfrac{' + p.n + '\\times' + parT(p.a) + '+' + p.m + '\\times' + parT(p.b) + '}{' + p.m + '+' + p.n + '}=\\dfrac{' + num + '}{' + den + '}$。',
       (fr.d === 1 ? '$\\dfrac{' + num + '}{' + den + '}=' + fr.n + '$，' : (g > 1 ? '約分（同除以 $' + g + '$）得 $' + Fr.tex(fr) + '$，' : '$\\dfrac{' + num + '}{' + den + '}$ 已是最簡，')) + '所以 $P\\left(' + Fr.tex(fr) + '\\right)$。'];
   };
@@ -1106,7 +1106,7 @@
     var a = r.pick([2, 3, 4, 5, -2, -3, -4]), b = r.int(-9, 9), c = r.int(-9, 9), op = r.pick(['<', '>', '\\le', '\\ge']);
     var x = F(c - b, a), flip = a < 0, ops = { '<': '>', '>': '<', '\\le': '\\ge', '\\ge': '\\le' }, resOp = flip ? ops[op] : op;
     return { q: '解不等式 ' + T(linTex(a, b) + op + c) + '。', a: T('x' + resOp + Fr.tex(x, false)),
-      h: '先移項：$' + coefTex(a, 'x') + op + (c - b) + '$，再除以 $' + a + '$' + (flip ? '——除以負數，不等號要<b>反向</b>' : '（正數，不等號方向不變）') + '。', p: { a: a, b: b, c: c, op: op, xn: x.n, xd: x.d, resOp: resOp } };
+      h: '先移項：$' + coefTex(a, 'x') + op + (c - b) + '$，再除以 $' + a + '$' + (flip ? '，除以負數，不等號要<b>反向</b>' : '（正數，不等號方向不變）') + '。', p: { a: a, b: b, c: c, op: op, xn: x.n, xd: x.d, resOp: resOp } };
   };
   L0.mulFormula = function (r) {
     var kind = r.int(0, 2), a = r.int(1, 9), b = r.int(1, 9), sa = r.sign(), sb = r.sign();
@@ -1117,7 +1117,7 @@
   };
   var META_L0 = [['primeFactor', '質因數分解'], ['fracOps', '分數四則與通分'], ['sqrtBetween', '平方根與完全平方數'], ['linIneq', '一元一次不等式'], ['mulFormula', '乘法公式展開']];
   /* 先備題型 → 該去哪裡複習（全部是國中內容，沒有本系統的前章可連） */
-  var PREREQ = { primeFactor: { txt: '質因數分解（國中）——判斷分母只含 2、5、化簡根號都靠它', link: null }, fracOps: { txt: '分數的四則與通分（國中）——循環小數化分數之後還要會算', link: null }, sqrtBetween: { txt: '平方根的估計與完全平方數（國中）——整數部分、小數部分的基礎', link: null }, linIneq: { txt: '一元一次不等式（國中）——絕對值不等式拆開後就是它，除以負數要反向', link: null }, mulFormula: { txt: '乘法公式（國中）——有理化、雙重根號、對稱式全部用到', link: null } };
+  var PREREQ = { primeFactor: { txt: '質因數分解（國中）：判斷分母只含 2、5、化簡根號都靠它', link: null }, fracOps: { txt: '分數的四則與通分（國中）：循環小數化分數之後還要會算', link: null }, sqrtBetween: { txt: '平方根的估計與完全平方數（國中）：整數部分、小數部分的基礎', link: null }, linIneq: { txt: '一元一次不等式（國中）：絕對值不等式拆開後就是它，除以負數要反向', link: null }, mulFormula: { txt: '乘法公式（國中）：有理化、雙重根號、對稱式全部用到', link: null } };
 
   /* ══════════════════════════════════════════════════════════
      對照題：同一型抽兩題，只差一個關鍵特徵（f 由 p 算出；keep 的欄位要相同）
@@ -1127,13 +1127,13 @@
     'L1.repPure': { f: function (p) { return p.rep.length; }, why: '循環節長度決定分母有幾個 9：一位循環節分母 9、兩位分母 99。' },
     'L1.repMixed': { f: function (p) { return p.rep.length; }, why: '不循環的位數決定 0 的個數、循環節長度決定 9 的個數，兩題差的是 9 的個數。' },
     'L1.fracKind': { f: function (p) { return p.fin; }, why: '分母的質因數只有 2、5 才是有限小數；多了一個別的質因數就一定循環。' },
-    'L1.divPoint': { f: function (p) { return p.m > p.n; }, keep: ['a', 'b'], why: '同一條線段，比例前後對調，分點就從靠近 $A$ 變成靠近 $B$——交叉配時權重要配給「另一端」。' },
+    'L1.divPoint': { f: function (p) { return p.m > p.n; }, keep: ['a', 'b'], why: '同一條線段，比例前後對調，分點就從靠近 $A$ 變成靠近 $B$，交叉配時權重要配給「另一端」。' },
     'L1.ratConj': { f: function (p) { return p.s; }, keep: ['k'], why: '分母是 $b+\\sqrt k$ 就乘 $b-\\sqrt k$，是 $b-\\sqrt k$ 就乘 $b+\\sqrt k$：共軛的符號相反，分母都變成 $b^2-k$。' },
     'L1.doubleRoot': { f: function (p) { return p.s; }, why: '同樣先找「和與積」，中間是加號就是 $\\sqrt q+\\sqrt p$、減號就是 $\\sqrt q-\\sqrt p$（大的在前，結果才是正的）。' },
     'L1.amgm': { f: function (p) { return p.v === 2; }, why: '「$x+\\frac kx$ 的最小值」與「$xy$ 固定求 $x+y$ 最小」是同一條算幾不等式，只是兩個正數換了名字。' },
     'L1.absSimp': { f: function (p) { return p.v; }, why: '脫絕對值前先判正負：條件不同，哪一項要變號就不同。' },
     'L1.absIneq': { f: function (p) { return p.less; }, keep: ['a', 'b'], why: '同樣的中心與距離：小於是「夾在中間」，大於是「兩邊外面」。' },
-    'L1.expLaw': { f: function (p) { return p.v; }, why: '相乘是指數相加、次方的次方是指數相乘、根號是分數指數——三條指數律各管一種形狀。' },
+    'L1.expLaw': { f: function (p) { return p.v; }, why: '相乘是指數相加、次方的次方是指數相乘、根號是分數指數，三條指數律各管一種形狀。' },
     'L1.sciNot': { f: function (p) { return p.e > 0; }, why: '大數的小數點往左移、指數為正；小於 1 的數往右移、指數為負。移動的位數就是指數的絕對值。' },
     'L1.logBasic': { f: function (p) { return p.v; }, why: '$\\log$ 問的永遠是「$10$ 的幾次方」：$10^k$ 直接讀指數、乘積用 $\\log a+\\log b$ 拆開。' },
     'L2.coefCompare': { f: function (p) { return p.s; }, keep: ['k', 'b'], why: '分母的共軛符號相反，有理化後無理部分的正負跟著反，比較係數時 $b$ 的正負就不同。' },
@@ -1141,7 +1141,7 @@
     'L2.doubleRoot2': { f: function (p) { return p.s; }, why: '先把 $\\sqrt{4pq}$ 寫成 $2\\sqrt{pq}$，之後與直接拆的雙重根號一樣：加號和、減號差。' },
     'L2.symm': { f: function (p) { return p.which; }, why: '同一個 $x+\\frac1x$，二次用「平方減 2」、三次用「立方減 3 倍」、四次再套一次平方減 2。' },
     'L2.amgmCond': { f: function (p) { return p.v; }, why: '條件式與目標式的角色互換：和固定求積最大、積固定求和最小，都是同一條算幾不等式。' },
-    'L2.absIneq2': { f: function (p) { return p.v; }, why: '夾層型拆成兩段區間、雙層絕對值由外往內脫、兩邊都有絕對值就平方——三種形狀三種招。' },
+    'L2.absIneq2': { f: function (p) { return p.v; }, why: '夾層型拆成兩段區間、雙層絕對值由外往內脫、兩邊都有絕對值就平方，三種形狀各有做法。' },
     'L2.absParam': { f: function (p) { return p.a > 0; }, why: '$a$ 的正負不影響中心 $-\\frac ba$ 與半寬 $\\frac{c}{|a|}$ 的公式，但反推 $b$ 時符號跟著變。' },
     'L2.expEq': { f: function (p) { return p.form; }, keep: ['base', 'e1', 'e2'], why: '$4^x$ 與 $2^{2x}$ 是同一個數：都令 $t=2^x$，$4^x=t^2$。' },
     'L2.expSymm': { f: function (p) { return p.v; }, why: '已知和求平方和是「平方減 2」，已知差求和要「平方加 4 再開根號」，開根號時要看正負。' },
@@ -1151,7 +1151,7 @@
     'L3.absRatioPoints': { f: function (p) { return p.v; }, keep: ['m'], why: '同一種方程式，一個問所有解、一個問線段上的那一個：內分點在兩點之間，外分點在較近那一端的外側。' },
     'L3.exactIntParam': { f: function (p) { return p.v; }, why: '$\\le$ 與 $<$ 只差端點：閉區間卡 $t$ 時左端含、右端不含；開區間則相反。' },
     'L3.absSumEqCount': { f: function (p) { return p.v; }, keep: ['a', 'b'], why: '同一個碗形圖：問最小 $k$、問幾個整數 $k$ 有解、問某個 $k$ 的解，都從「底部 $=b-a$」出發。' },
-    'L3.chainEqLog': { f: function (p) { return p.fam; }, why: '$q^2=pr$ 給 $\\frac2b=\\frac1a+\\frac1c$；$r=pq$ 給 $\\frac1c=\\frac1a+\\frac1b$——取 $\\log$ 後看三個數的乘法關係。' },
+    'L3.chainEqLog': { f: function (p) { return p.fam; }, why: '$q^2=pr$ 給 $\\frac2b=\\frac1a+\\frac1c$；$r=pq$ 給 $\\frac1c=\\frac1a+\\frac1b$。取 $\\log$ 後看三個數的乘法關係。' },
     'L3.expSymmEq': { f: function (p) { return p.base === 10; }, why: '底數 $10$ 的答案要寫成 $\\log2$ 的組合；底數 $2$、$3$ 時 $u$ 是整數次方，$x$ 直接是整數。' },
     'L3.halfLife': { f: function (p) { return p.base; }, keep: ['P'], why: '每期剩一半用 $\\log2$、剩三分之一用 $\\log3$：分母不同，所需週期數就不同。' },
     'L3.logCalcCount': { f: function (p) { return p.mode; }, why: '按一次 $\\log$ 卡 $10^a<M<10^b$；按兩次要先把「介於」翻成 $\\log N$ 的範圍，再翻成 $N$ 的範圍。' }

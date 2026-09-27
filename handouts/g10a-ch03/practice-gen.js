@@ -255,7 +255,7 @@
 
   /* 1-9 因式分解（有理數係數） */
   L1.factorize = function (r) {
-    var lead = r.pick([1, 1, 2]), p = r.nz(-4, 4), q; do { q = r.nz(-4, 4); } while (q === p);
+    var lead = r.pick([1, 1, 2]), p = r.pick([1, -1]), q; do { q = r.nz(-4, 4); } while (q === p);   /* 保證 ±1 至少一個是根（高一上只先試 f(1)、f(-1)） */
     var lin = lead === 1 ? [1, -r.nz(-4, 4)] : [2, r.pick([-3, -1, 1, 3])];
     var c = polyMul(polyMul([1, -p], [1, -q]), lin);
     var facs = [[1, -p], [1, -q], lin];
@@ -264,7 +264,7 @@
     facs.forEach(function (f) { var s = polyTex(f); if (!cnt[s]) { cnt[s] = 0; ord.push(s); } cnt[s]++; });
     return { q: '將 ' + T(polyTex(c)) + ' 在有理數係數範圍內完全因式分解。',
              a: T(ord.map(function (s) { return '(' + s + ')' + (cnt[s] > 1 ? '^{' + cnt[s] + '}' : ''); }).join('')),
-             h: '先試最好算的兩個：$f(1)=' + v1 + '$、$f(-1)=' + v2 + '$。' + ((v1 === 0 || v2 === 0) ? '其中一個是 $0$，那個 $x$ 值就是根，直接用綜合除法除掉它、降成二次再分解。' : '兩個都不是 $0$，改用牛頓一次因式檢驗法：可能的根是「常數項 $' + c[3] + '$ 的因數」除以「首項係數 $' + c[0] + '$ 的因數」，一個一個試；找到根 $x=s$ 就用綜合除法除以 $x-s$ 降成二次再分解。'),
+             h: '先試最好算的兩個：$f(1)=' + v1 + '$、$f(-1)=' + v2 + '$。其中是 $0$ 的那個 $x$ 值就是根，直接用綜合除法除掉它、降成二次再分解。',
              p: { c: c, ans: facs } };
   };
 
@@ -360,7 +360,7 @@
     var f = polyAdd(polyAdd(polyScale(polyMul(polyMul([1, -h], [1, -h]), [1, -h]), a), polyScale([1, -h], p)), [k]);
     return { q: '求三次函數 ' + T('f(x)=' + polyTex(f)) + ' 圖形的對稱中心。',
              a: T(pt(h, k)),
-             h: '對稱中心的 $x$ 坐標是 $-\\dfrac{b}{3a}$（$a$ 是 $x^{3}$ 的係數、$b$ 是 $x^{2}$ 的係數）：本題 $a=' + f[0] + '$、$b=' + f[1] + '$，先算 $-\\dfrac{' + hpz(f[1]) + '}{3\\times' + hpz(f[0]) + '}$；再把這個 $x$ 代回求 $y$ 坐標——用係數列 $' + hrow(f) + '$ 做綜合除法，餘式就是 $f$ 的值。',
+             h: '對稱中心的 $x$ 坐標是 $-\\dfrac{b}{3a}$（$a$ 是 $x^{3}$ 的係數、$b$ 是 $x^{2}$ 的係數）：本題 $a=' + f[0] + '$、$b=' + f[1] + '$，先算 $-\\dfrac{' + hpz(f[1]) + '}{3\\times' + hpz(f[0]) + '}$；再把這個 $x$ 代回求 $y$ 坐標：用係數列 $' + hrow(f) + '$ 做綜合除法，餘式就是 $f$ 的值。',
              p: { f: f, ans: [h, k] } };
   };
 
@@ -532,7 +532,7 @@
     var q = '(m' + (c ? (c > 0 ? '+' + c : '-' + (-c)) : '') + ')x^{2}+2(m' + (c ? (c > 0 ? '+' + c : '-' + (-c)) : '') + ')x+' + n + '\\gt0';
     return { q: '設對任何實數 ' + T('x') + '，不等式 ' + T(q) + ' 恆成立。求滿足條件的整數 ' + T('m') + ' 共有幾個。',
              a: T(String(n)) + ' 個（' + T(-c + '\\le m\\lt ' + (n - c)) + '）',
-             h: '先看 $m' + (c ? (c > 0 ? '+' + c : '-' + (-c)) : '') + '=0$：式子變成 $' + n + '\\gt0$ 成立！再看 $t\\gt0$ 且 $D\\lt0$：$4t^2-' + (4 * n) + 't\\lt0$ ⟹ $0\\lt t\\lt ' + n + '$（$t$ 為首項係數）。',
+             h: '先看 $m' + (c ? (c > 0 ? '+' + c : '-' + (-c)) : '') + '=0$：式子變成 $' + n + '\\gt0$ 成立。再看 $t\\gt0$ 且 $D\\lt0$：$4t^2-' + (4 * n) + 't\\lt0$ ⟹ $0\\lt t\\lt ' + n + '$（$t$ 為首項係數）。',
              p: { c: c, n: n, ans: { count: n, lo: -c, hi: n - c } } };
   };
 
@@ -779,7 +779,7 @@
     var cnt = {}, ord = [];
     facs.forEach(function (f) { var s = polyTex(f); if (!cnt[s]) { cnt[s] = 0; ord.push(s); } cnt[s]++; });
     var ansTex = ord.map(function (s) { return '(' + s + ')' + (cnt[s] > 1 ? '^{' + cnt[s] + '}' : ''); }).join('');
-    return ['先找一個一次因式：試根（先試 $x=1$、$x=-1$，再用牛頓一次因式檢驗法試常數項的因數除以首項係數的因數）。本題 $f(' + root + ')=' + subT(p.c, root) + '=0$，所以 $(x' + (root > 0 ? '-' + root : '+' + (-root)) + ')$ 是因式。',
+    return ['先找一個一次因式：先試 $x=1$、$x=-1$。本題 $f(' + root + ')=' + subT(p.c, root) + '=0$，所以 $(x' + (root > 0 ? '-' + root : '+' + (-root)) + ')$ 是因式。',
       '用綜合除法除以 $x' + (root > 0 ? '-' + root : '+' + (-root)) + '$（係數列 $' + rowT(p.c) + '$）降次，商式是 $' + polyTex(quo) + '$。',
       '再把這個二次式分解：$' + polyTex(quo) + '=' + (polyTex(facs[1]) === polyTex(facs[2]) ? '(' + polyTex(facs[1]) + ')^{2}' : '(' + polyTex(facs[1]) + ')(' + polyTex(facs[2]) + ')') + '$。',
       '所以 $' + ansTex + '$。'];
@@ -952,7 +952,7 @@
     var quad = polyMul([1, -r1], [1, -r2]), A = r.int(12, 2030), e1 = r.int(21, 60), e2 = r.int(7, 20), Bc = r.int(2, 19), C = r.int(1, 9), pp = r.nz(-9, 9), qq = r.int(-9, 9);
     var big = A + 'x^{' + e1 + '}+' + Bc + 'x^{' + e2 + '}+' + C, ans = pp * r1 + qq;
     return { q: '設 ' + T('f(x)=(' + polyTex(quad) + ')(' + big + ')' + (pp > 0 ? '+' : '') + lin2(pp, qq)) + '，求 ' + T('f(x)') + ' 除以 ' + T('x' + term(-r1, '', false)) + ' 的餘式。', a: T(String(ans)),
-      h: '餘式定理：所求 $=f(' + r1 + ')$。先看 $' + polyTex(quad) + '$ 能不能分解出 $' + factTex(r1) + '$——可以的話，前面那一大塊在 $x=' + r1 + '$ 時整個是 $0$，根本不必管 $x^{' + e1 + '}$，只剩 $' + lin2(pp, qq) + '$ 要代。',
+      h: '餘式定理：所求 $=f(' + r1 + ')$。先看 $' + polyTex(quad) + '$ 能不能分解出 $' + factTex(r1) + '$，可以的話，前面那一大塊在 $x=' + r1 + '$ 時整個是 $0$，根本不必管 $x^{' + e1 + '}$，只剩 $' + lin2(pp, qq) + '$ 要代。',
       p: { r1: r1, r2: r2, ans: ans } };
   };
 
@@ -1029,7 +1029,7 @@
     } while ((S % 2 !== 0 || C === 0 || t0 === lo || Math.abs(mn) > 400) && tries++ < 500);
     var base = [1, -2 * h, 0], q1 = polyTex([1, -2 * h, A]), q2 = polyTex([1, -2 * h, Bc]), tail = polyTex([C, -2 * h * C, 0]);
     return { q: '設 ' + T('x') + ' 為實數，求 ' + T('f(x)=(' + q1 + ')(' + q2 + ')' + (C > 0 ? '+' : '') + tail) + ' 的最小值。', a: T(String(mn)),
-      h: '令 $t=' + polyTex(base) + '=(x' + term(-h, '', false) + ')^2-' + h * h + '$，所以 $t\\ge-' + h * h + '$——<b>範圍要跟著換</b>。$f=(t' + term(A, '', false) + ')(t' + term(Bc, '', false) + ')' + term(C, 't', false) + '$ 是 $t$ 的二次式，頂點在 $t=' + t0 + '$：先看它在不在 $t\\ge-' + h * h + '$ 裡面，不在的話最小值發生在端點。',
+      h: '令 $t=' + polyTex(base) + '=(x' + term(-h, '', false) + ')^2-' + h * h + '$，所以 $t\\ge-' + h * h + '$，<b>範圍要跟著換</b>。$f=(t' + term(A, '', false) + ')(t' + term(Bc, '', false) + ')' + term(C, 't', false) + '$ 是 $t$ 的二次式，頂點在 $t=' + t0 + '$：先看它在不在 $t\\ge-' + h * h + '$ 裡面，不在的話最小值發生在端點。',
       p: { h: h, A: A, B: Bc, C: C, inside: inside ? 1 : 0, ans: mn } };
   };
 
@@ -1040,7 +1040,7 @@
     var U = (m * m - n * n) * w, k = down ? c - n * n * w : c - m * m * w, ratio = down ? n + ':' + m : m + ':' + n;
     return { q: '將二次函數 ' + T('y=ax^2+k') + '（' + T('a\\gt 0') + '）的圖形 ' + T('\\Gamma_1') + ' 向' + (left ? '左' : '右') + '平移 ' + T(String(H)) + ' 單位、再向' + (down ? '下' : '上') + '平移 ' + T(String(U)) + ' 單位得 ' + T('\\Gamma_2') + '。若水平線 ' + T('y=' + c) + ' 與 ' + T('\\Gamma_1') + ' 交於 ' + T('A,B') + '、與 ' + T('\\Gamma_2') + ' 交於 ' + T('C,D') + '，且 ' + T('\\overline{AB}:\\overline{CD}=' + ratio) + '，求 ' + T('k') + '。',
       a: T('k=' + k),
-      h: '$y=a(x-h)^2+k$ 被水平線 $y=c$ 截出的弦長是 $2\\sqrt{\\dfrac{c-k}{a}}$，與 $h$ 無關——左右平移 $' + H + '$ 只是障眼法。$\\Gamma_2$ 的頂點高度是 $k' + (down ? '-' : '+') + U + '$。把弦長比平方：$\\dfrac{' + c + '-k}{' + c + '-(k' + (down ? '-' : '+') + U + ')}=\\dfrac{' + (down ? n * n : m * m) + '}{' + (down ? m * m : n * n) + '}$。',
+      h: '$y=a(x-h)^2+k$ 被水平線 $y=c$ 截出的弦長是 $2\\sqrt{\\dfrac{c-k}{a}}$，與 $h$ 無關，左右平移 $' + H + '$ 只是障眼法。$\\Gamma_2$ 的頂點高度是 $k' + (down ? '-' : '+') + U + '$。把弦長比平方：$\\dfrac{' + c + '-k}{' + c + '-(k' + (down ? '-' : '+') + U + ')}=\\dfrac{' + (down ? n * n : m * m) + '}{' + (down ? m * m : n * n) + '}$。',
       p: { c: c, U: down ? -U : U, ratio: down ? [n, m] : [m, n], ans: k } };
   };
 
@@ -1167,7 +1167,7 @@
     a = r.pick([1, 1, 2, -1]); b = r.int(-6, 6); c = r.int(-6, 9); D = b * b - 4 * a * c;
     var word = D > 0 ? '兩個相異實根' : D === 0 ? '兩個相等實根（重根）' : '沒有實根';
     return { q: '判斷方程式 ' + T(polyTex([a, b, c]) + '=0') + ' 的實根情形（兩相異實根、重根、或沒有實根）。', a: word + '（判別式 ' + T('D=' + D) + '）',
-      h: '只要看判別式 $D=b^2-4ac$ 的正負：這題 $D=' + sg(b) + '^2-4\\cdot ' + sg(a) + '\\cdot ' + sg(c) + '$。$D\\gt 0$ 兩相異實根、$D=0$ 重根、$D\\lt 0$ 沒有實根——本章「恆正」「與 $x$ 軸的交點個數」都靠它。',
+      h: '只要看判別式 $D=b^2-4ac$ 的正負：這題 $D=' + sg(b) + '^2-4\\cdot ' + sg(a) + '\\cdot ' + sg(c) + '$。$D\\gt 0$ 兩相異實根、$D=0$ 重根、$D\\lt 0$ 沒有實根。本章「恆正」「與 $x$ 軸的交點個數」都靠它。',
       p: { v: v, f: [a, b, c], D: D } };
   };
   L0.vertexForm = function (r) {
@@ -1185,11 +1185,11 @@
   var META_L0 = [['expandProd', '多項式乘法展開'], ['factorQuad', '十字交乘因式分解'], ['quadRoots', '公式解與判別式'], ['vertexForm', '配方求頂點'], ['lineTwoPts', '過兩點的直線']];
   /* 先備題型 → 該去哪裡複習 */
   var PREREQ = {
-    expandProd: { txt: '多項式的乘法展開（國中）——長除法、比較係數、換基底全部建立在它上面', link: null },
-    factorQuad: { txt: '十字交乘因式分解（國中）——解二次、三次不等式之前一定要先分解', link: null },
-    quadRoots: { txt: '一元二次方程式的公式解與判別式（國中）——「恆正」「與 x 軸交幾點」都在看判別式', link: null },
-    vertexForm: { txt: '二次函數配方求頂點（國中）——最大最小值、平移、對稱軸都從頂點式出發', link: null },
-    lineTwoPts: { txt: '過兩點的直線方程式（高一上第二章 直線與圓）——除以二次式的餘式就是過兩點的直線', link: '../g10a-ch02/practice.html#L1' }
+    expandProd: { txt: '多項式的乘法展開（國中）：長除法、比較係數、換基底全部建立在它上面', link: null },
+    factorQuad: { txt: '十字交乘因式分解（國中）：解二次、三次不等式之前一定要先分解', link: null },
+    quadRoots: { txt: '一元二次方程式的公式解與判別式（國中）：「恆正」「與 x 軸交幾點」都在看判別式', link: null },
+    vertexForm: { txt: '二次函數配方求頂點（國中）：最大最小值、平移、對稱軸都從頂點式出發', link: null },
+    lineTwoPts: { txt: '過兩點的直線方程式（高一上第二章 直線與圓）：除以二次式的餘式就是過兩點的直線', link: '../g10a-ch02/practice.html#L1' }
   };
 
   /* ══════════════════════════════════════════════════════════
@@ -1203,7 +1203,7 @@
     'L1.intervalMax': { f: function (p) { var h = -p.f[1] / (2 * p.f[0]); return h >= p.lo && h <= p.hi; }, why: '頂點在區間內：一個最值在頂點、另一個在離頂點較遠的端點；頂點在區間外：函數在區間上單調，最大最小都在端點。先畫對稱軸再說。' },
     'L1.alwaysPos': { f: function (p) { return p.rel; }, why: '「$\\gt 0$ 恆成立」圖形不能碰到 $x$ 軸，判別式要 $\\lt 0$，端點不取；「$\\ge 0$ 恆成立」可以剛好碰到，判別式 $\\le 0$，端點要取。' },
     'L2.cubicAP': { f: function (p) { return p.t; }, why: '三根成等差都先設 $d-e,\\ d,\\ d+e$，由三根和定出中間那一根、代回求 $k$；後面問的量不同，只是最後一步用三根去算不同的東西。' },
-    'L1.quadIneq': { f: function (p) { return p.lead; }, why: '首項係數是負的，先兩邊同乘 $-1$ 讓開口向上——<b>不等號要反向</b>；之後「小於 $0$ 取兩根之間、大於 $0$ 取兩根之外」。' },
+    'L1.quadIneq': { f: function (p) { return p.lead; }, why: '首項係數是負的，先兩邊同乘 $-1$ 讓開口向上，<b>不等號要反向</b>；之後「小於 $0$ 取兩根之間、大於 $0$ 取兩根之外」。' },
     'L1.cubicIneq': { f: function (p) { return p.rel.charAt(0); }, why: '同一條數線、同一組正負號：要 $\\lt 0$ 就取負的區間，要 $\\gt 0$ 就取正的區間。從最右邊（一定是正的）往左，每過一個單根就變號。' },
     'L1.fracIneq': { f: function (p) { return p.rel.indexOf('=') >= 0; }, why: '分式不等式可以改看分子乘分母的正負，但<b>分母不能為 $0$</b>：含等號時，分子的根要收、分母的根永遠不能收。' },
     'L2.vieta3': { f: function (p) { return p.type; }, why: '三根的對稱式都從 $\\alpha+\\beta+\\gamma$、$\\alpha\\beta+\\beta\\gamma+\\gamma\\alpha$、$\\alpha\\beta\\gamma$ 三個基本量出發；問法不同，只是組合的方式不同。' },
