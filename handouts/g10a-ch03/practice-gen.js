@@ -621,6 +621,291 @@
              p: { roots: [p, q, s], d: f[3], ans: f.slice(0, 3) } };
   };
 
+  /* ══════════ 2026-09-28 擴充（依段考卷出現頻率補題型）：L1 6 型、L2 5 型 ══════════ */
+  function gtlt(s) { return s > 0 ? '\\gt0' : '\\lt0'; }
+  function zhSg(s) { return s > 0 ? '正' : '負'; }
+  var QUADN = ['一', '二', '三', '四'];
+  function quadOf(x, y) { return x > 0 ? (y > 0 ? 0 : 3) : (y > 0 ? 1 : 2); }
+  function xMinus(h) { return h === 0 ? 'x' : 'x' + (h > 0 ? '-' + h : '+' + (-h)); }          /* x-h 的寫法（不加括號） */
+  function coefX(m) { return m === 1 ? '' : (m === -1 ? '-' : String(m)); }                   /* mx 的係數寫法 */
+  function frCmp(x, y) { return x.n * y.d - y.n * x.d; }
+
+  /* 1-22 一次函數：兩點求值、每增加 1 的變化量、與 x 軸交點 */
+  L1.linFunc = function (r) {
+    var t = r.int(0, 2), m = r.nz(-5, 5), n, x1, x2, x3, y1, y2, q, a, h, ans;
+    do { n = r.int(-9, 9); x1 = r.nz(-4, 3); x2 = x1 + r.int(1, 4); y1 = m * x1 + n; y2 = m * x2 + n; } while (y1 === 0);      /* 斜率式子裡不要出現「−0」 */
+    do { x3 = r.int(-6, 8); } while (x3 === x1 || x3 === x2);
+    var slopeT = '\\dfrac{' + hpz(y2) + '-' + hpz(y1) + '}{' + hpz(x2) + '-' + hpz(x1) + '}';
+    if (t === 0) {
+      ans = m * x3 + n;
+      q = '已知 ' + T('f(x)') + ' 為一次函數，且 ' + T('f(' + x1 + ')=' + y1) + '、' + T('f(' + x2 + ')=' + y2) + '，求 ' + T('f(' + x3 + ')') + '。';
+      a = T('f(' + x3 + ')=' + ans);
+      h = '一次函數的圖形是直線，斜率 $=' + slopeT + '$；從 $f(' + x1 + ')=' + y1 + '$ 出發，$x$ 由 $' + x1 + '$ 變到 $' + x3 + '$，函數值的變化量是「斜率 $\\times$ $x$ 的變化量」。';
+    } else if (t === 1) {
+      ans = [m, n];
+      q = '已知一次函數 ' + T('f(x)') + ' 滿足：' + T('x') + ' 每增加 ' + T('1') + '，' + T('f(x)') + ' 的值就' + (m > 0 ? '增加 ' : '減少 ') + T(String(Math.abs(m))) + '，且 ' + T('f(' + x1 + ')=' + y1) + '。求 ' + T('f(x)') + '。';
+      a = T('f(x)=' + polyTex([m, n]));
+      h = '「$x$ 每增加 $1$，函數值' + (m > 0 ? '增加' : '減少') + ' $' + Math.abs(m) + '$」就是斜率 $' + m + '$。設 $f(x)=' + coefX(m) + 'x+b$，再用 $f(' + x1 + ')=' + y1 + '$ 求 $b$。';
+    } else {
+      var z = F(-n, m);
+      ans = fr2(z);
+      q = '已知一次函數 ' + T('f(x)') + ' 滿足 ' + T('f(' + x1 + ')=' + y1) + '、' + T('f(' + x2 + ')=' + y2) + '，求 ' + T('y=f(x)') + ' 的圖形與 ' + T('x') + ' 軸交點的 ' + T('x') + ' 坐標。';
+      a = T('x=' + Fr.tex(z));
+      h = '先求 $f(x)$：斜率 $=' + slopeT + '$，再代 $f(' + x1 + ')=' + y1 + '$ 求出常數項；與 $x$ 軸的交點就是解 $f(x)=0$。';
+    }
+    return { q: q, a: a, h: h, p: { t: t, x1: x1, y1: y1, x2: x2, y2: y2, x3: x3, m: m, n: n, ans: ans } };
+  };
+
+  /* 1-23 由圖形特徵判斷 a、b、c、b²−4ac 的正負（或反過來判斷頂點與經過的象限） */
+  L1.quadSigns = function (r) {
+    var A, hh, kk, C, t = r.int(0, 1);
+    do { A = r.pick([1, -1, 2, -2, 3, -3]); hh = r.nz(-4, 4); kk = r.nz(-8, 8); C = A * hh * hh + kk; } while (C === 0);
+    var Bq = -2 * A * hh, D = Bq * Bq - 4 * A * C, vq = quadOf(hh, kk);
+    var sgn = { a: A > 0 ? 1 : -1, b: Bq > 0 ? 1 : -1, c: C > 0 ? 1 : -1, D: D > 0 ? 1 : -1 };
+    var pass = [], q, ans, h;
+    if (A > 0) { pass = [0, 1]; } else { pass = [2, 3]; }
+    if (D > 0) {
+      var r1 = (-Bq - Math.sqrt(D)) / (2 * A), r2 = (-Bq + Math.sqrt(D)) / (2 * A), lo = Math.min(r1, r2), hi = Math.max(r1, r2);
+      if (A > 0) { if (lo < 0) pass.push(2); if (hi > 0) pass.push(3); }
+      else { if (lo < 0) pass.push(1); if (hi > 0) pass.push(0); }
+    }
+    pass.sort();
+    var askSet = r.int(0, 2), SETS = [[['a', sgn.a], ['b', sgn.b], ['c', sgn.c], ['b^2-4ac', sgn.D]], [['ab', sgn.a * sgn.b], ['bc', sgn.b * sgn.c], ['ac', sgn.a * sgn.c], ['b^2-4ac', sgn.D]], [['a', sgn.a], ['bc', sgn.b * sgn.c], ['abc', sgn.a * sgn.b * sgn.c], ['b^2-4ac', sgn.D]]][askSet];
+    var signTex = SETS.map(function (e) { return T(e[0] + gtlt(e[1])); }).join('、');
+    if (t === 0) {
+      q = '二次函數 ' + T('y=ax^2+bx+c') + ' 的圖形開口向' + (A > 0 ? '上' : '下') + '、頂點在第' + QUADN[vq] + '象限，且與 ' + T('y') + ' 軸交於' + (C > 0 ? '正' : '負') + '半軸。判斷 ' + SETS.map(function (e) { return T(e[0]); }).join('、') + ' 的正負。';
+      ans = signTex;
+      h = '開口向' + (A > 0 ? '上 ⟹ $a\\gt0$' : '下 ⟹ $a\\lt0$') + '；頂點在第' + QUADN[vq] + '象限 ⟹ 對稱軸 $x=-\\dfrac{b}{2a}$ 在 $y$ 軸' + (hh > 0 ? '右' : '左') + '邊，$-\\dfrac{b}{2a}' + gtlt(hh) + '$，所以 $b$ 與 $a$ ' + (hh > 0 ? '異號' : '同號') + '；$y$ 截距就是 $c$；頂點在 $x$ 軸' + (kk > 0 ? '上' : '下') + '方而開口向' + (A > 0 ? '上' : '下') + '，想想圖形和 $x$ 軸有沒有交點。';
+    } else {
+      q = '二次函數 ' + T('y=ax^2+bx+c') + ' 滿足 ' + T('a' + gtlt(sgn.a) + ',\\ b' + gtlt(sgn.b) + ',\\ c' + gtlt(sgn.c) + ',\\ b^2-4ac' + gtlt(sgn.D)) + '。(1) 頂點在第幾象限？　(2) 圖形經過哪幾個象限？';
+      ans = '(1) 第' + QUADN[vq] + '象限　(2) 第' + pass.map(function (i) { return QUADN[i]; }).join('、') + '象限';
+      h = '頂點 $x$ 坐標 $-\\dfrac{b}{2a}$：$a,b$ ' + (sgn.a * sgn.b > 0 ? '同號 ⟹ 為負' : '異號 ⟹ 為正') + '。頂點 $y$ 坐標 $=-\\dfrac{b^2-4ac}{4a}$：由 $b^2-4ac$ 與 $a$ 的正負判斷。再畫草圖：開口向' + (A > 0 ? '上' : '下') + '、與 $y$ 軸交於' + zhSg(sgn.c) + '半軸，' + (D > 0 ? '與 $x$ 軸有兩個交點' : '與 $x$ 軸沒有交點') + '。';
+    }
+    return { q: q, a: ans, h: h, p: { t: t, A: A, h: hh, k: kk, C: C, B: Bq, vq: vq, pass: pass, sgn: [sgn.a, sgn.b, sgn.c, sgn.D], askSet: askSet } };
+  };
+
+  /* 1-24 判別式：與 x 軸（或一條直線）的交點個數求參數 */
+  L1.discrimParam = function (r) {
+    var t = r.int(0, 2), rel = r.pick(['two', 'one', 'none']), A = 1, Bq = 0, s = 0, pp = 0, qq = 0, K = null, q, ans, h, poly;
+    var relTxt = { two: '相交於兩點', one: '恰有一個交點', none: '沒有交點' }[rel];
+    if (t === 0) {
+      A = r.pick([1, -1, 2, -2, 3]); Bq = r.nz(-8, 8); K = F(Bq * Bq, 4 * A);
+      poly = polyTex([A, Bq, 0]) + '+k';
+      q = '二次函數 ' + T('y=' + poly) + ' 的圖形與 ' + T('x') + ' 軸' + relTxt + '，求 ' + T('k') + (rel === 'one' ? ' 的值。' : ' 的範圍。');
+      var up = (rel === 'two') === (A > 0);           /* D>0 ⟺ 4Ak<B² */
+      ans = rel === 'one' ? T('k=' + Fr.tex(K)) : T('k' + (up ? '\\lt ' : '\\gt ') + Fr.tex(K));
+      h = '與 $x$ 軸的交點個數看判別式 $D=' + hpz(Bq) + '^2-4\\times' + hpz(A) + '\\times k=' + (Bq * Bq) + term(-4 * A, 'k', false) + '$：' + { two: '$D\\gt0$', one: '$D=0$', none: '$D\\lt0$' }[rel] + '，再解 $k$' + (A < 0 ? '（除以負數要變號）' : '') + '。';
+    } else if (t === 1) {
+      s = r.int(1, 5);
+      poly = 'x^2+kx+' + (s * s);
+      q = '二次函數 ' + T('y=' + poly) + ' 的圖形與 ' + T('x') + ' 軸' + relTxt + '，求 ' + T('k') + (rel === 'one' ? ' 的值。' : ' 的範圍。');
+      ans = rel === 'two' ? T('k\\lt ' + (-2 * s) + '\\ \\text{或}\\ k\\gt ' + (2 * s)) : rel === 'one' ? T('k=' + (2 * s) + '\\ \\text{或}\\ k=' + (-2 * s)) : T((-2 * s) + '\\lt k\\lt ' + (2 * s));
+      h = '判別式 $D=k^2-4\\times' + (s * s) + '=k^2-' + (4 * s * s) + '$：' + { two: '$D\\gt0$', one: '$D=0$', none: '$D\\lt0$' }[rel] + '。這是 $k$ 的二次不等式（或方程式），$k^2-' + (4 * s * s) + '=(k-' + (2 * s) + ')(k+' + (2 * s) + ')$。';
+    } else {
+      Bq = r.int(-6, 6); do { pp = r.int(-5, 5); } while (pp === Bq); qq = r.int(-8, 8);
+      var e = Bq - pp; K = Fr.add(F(qq), F(e * e, 4));
+      q = '拋物線 ' + T('y=x^2' + term(Bq, 'x', false) + '+k') + ' 與直線 ' + T('y=' + polyTex([pp, qq])) + ' ' + relTxt + '，求 ' + T('k') + (rel === 'one' ? ' 的值。' : ' 的範圍。');
+      ans = rel === 'one' ? T('k=' + Fr.tex(K)) : T('k' + (rel === 'two' ? '\\lt ' : '\\gt ') + Fr.tex(K));
+      h = '兩式相減得 $x^2' + term(e, 'x', false) + '+(k' + term(-qq, '', false) + ')=0$，交點個數就是它的實根個數：判別式 $D=' + hpz(e) + '^2-4(k' + term(-qq, '', false) + ')$，' + { two: '$D\\gt0$', one: '$D=0$', none: '$D\\lt0$' }[rel] + '。';
+    }
+    return { q: q, a: ans, h: h, p: { t: t, rel: rel, A: A, B: Bq, s: s, pp: pp, qq: qq, K: K ? fr2(K) : null } };
+  };
+
+  /* 1-25 係數和、常數項、奇偶次項係數和（代 x=1、0、−1） */
+  L1.evenOddSum = function (r) {
+    var P, n, v1, vm, ask = r.int(0, 1);
+    do { P = [r.nz(-3, 3), r.nz(-3, 3), r.nz(-3, 3)]; n = r.int(3, 5); v1 = polyEval(P, 1); vm = polyEval(P, -1); } while (Math.abs(v1) > 4 || Math.abs(vm) > 4);
+    var s1 = Math.pow(v1, n), sm = Math.pow(vm, n), s0 = Math.pow(P[2], n), ev = (s1 + sm) / 2, od = (s1 - sm) / 2, N2 = 2 * n;
+    var third = ask === 0 ? 'a_{0}+a_{2}+\\cdots+a_{' + N2 + '}' : 'a_{1}+a_{3}+\\cdots+a_{' + (N2 - 1) + '}';
+    return { q: '設 ' + T('(' + polyTex(P) + ')^{' + n + '}=a_{0}+a_{1}x+a_{2}x^{2}+\\cdots+a_{' + N2 + '}x^{' + N2 + '}') + '，求<br>(1) ' + T('a_{0}+a_{1}+a_{2}+\\cdots+a_{' + N2 + '}') + '　(2) ' + T('a_{0}') + '　(3) ' + T(third),
+             a: '(1) ' + T(String(s1)) + '　(2) ' + T(String(s0)) + '　(3) ' + T(String(ask === 0 ? ev : od)),
+             h: '不要展開。(1) 係數總和就是代 $x=1$：$(' + subT(P, 1) + ')^{' + n + '}=' + hpz(v1) + '^{' + n + '}$。(2) 常數項代 $x=0$：$' + hpz(P[2]) + '^{' + n + '}$。(3) 再代 $x=-1$ 得 $a_{0}-a_{1}+a_{2}-\\cdots=' + hpz(vm) + '^{' + n + '}$，和 (1) 的式子' + (ask === 0 ? '相加再除以 $2$，奇次項就消掉了。' : '相減再除以 $2$，偶次項就消掉了。'),
+             p: { P: P, n: n, ask: ask, ans: [s1, s0, ask === 0 ? ev : od] } };
+  };
+
+  /* 1-26 除以 ax−b：綜合除法除以 x−b/a，商式再除以 a */
+  L1.divAxB = function (r) {
+    var A = r.pick([2, 3, 2, 4]), Bv; do { Bv = r.nz(-7, 7); } while (gcd(A, Bv) !== 1);
+    var Q = [r.nz(-3, 3), r.int(-5, 5), r.int(-6, 6)], R = r.int(-9, 9);
+    var f = polyAdd(polyMul([A, -Bv], Q), [R]), kT = (Bv < 0 ? '-' : '') + '\\dfrac{' + Math.abs(Bv) + '}{' + A + '}';
+    return { q: '用綜合除法求 ' + T(polyTex(f)) + ' 除以 ' + T(polyTex([A, -Bv])) + ' 的商式與餘式。',
+             a: '商式 ' + T(polyTex(Q)) + '，餘式 ' + T(String(R)),
+             h: '$' + polyTex([A, -Bv]) + '=' + A + '\\left(x' + (Bv > 0 ? '-' : '+') + '\\dfrac{' + Math.abs(Bv) + '}{' + A + '}\\right)$。先用綜合除法除以 $x' + (Bv > 0 ? '-' : '+') + '\\dfrac{' + Math.abs(Bv) + '}{' + A + '}$（左邊寫 $' + kT + '$，係數列 $' + hrow(f) + '$），得到的商式再除以 $' + A + '$，餘式不變。',
+             p: { A: A, B: Bv, f: f, ans: { q: Q, r: R } } };
+  };
+
+  /* 1-27 改寫成 (x−h) 的多項式：連續綜合除法 */
+  L1.shiftExpand = function (r) {
+    var hh = r.nz(-3, 3), f = [r.pick([1, 1, 2, -1, -2]), r.int(-6, 6), r.int(-8, 8), r.int(-9, 9)], t = r.int(0, 2);
+    var g = polyShift(f, hh), xh = xMinus(hh), val;
+    var rhs = 'p(' + xh + ')^{3}+q(' + xh + ')^{2}+r(' + xh + ')+s';
+    var ask = ['求 ' + T('(p,q,r,s)') + '。', '求 ' + T('p+q+r+s') + '。', '求 ' + T('-p+q-r+s') + '。'][t];
+    if (t === 0) val = g; else if (t === 1) val = polyEval(f, hh + 1); else val = polyEval(f, hh - 1);
+    return { q: '設 ' + T(polyTex(f) + '=' + rhs) + ' 對所有實數 ' + T('x') + ' 都成立，' + ask,
+             a: t === 0 ? T('(p,q,r,s)=(' + g.join(',') + ')') : T(String(val)),
+             h: t === 0 ? '用綜合除法連續除以 $' + xh + '$（左邊寫 $' + hh + '$，係數列 $' + hrow(f) + '$）：第一次的餘式是 $s$，對商式再除一次，餘式是 $r$，再除一次得 $q$，最後剩下的商就是 $p$。'
+                        : '不必求出 $p,q,r,s$：' + (t === 1 ? '$p+q+r+s$ 是右式在 $' + xh + '=1$ 時的值，也就是代 $x=' + (hh + 1) + '$，也就是左式在 $x=' + (hh + 1) + '$ 的值。' : '$-p+q-r+s$ 是右式在 $' + xh + '=-1$ 時的值，也就是代 $x=' + (hh - 1) + '$，也就是左式在 $x=' + (hh - 1) + '$ 的值。') + '把 $x=' + (t === 1 ? hh + 1 : hh - 1) + '$ 代進左式（係數列 $' + hrow(f) + '$）。',
+             p: { h: hh, f: f, t: t, ans: val } };
+  };
+
+  /* 2-17 除以 (x−a)²(x−b) 的餘式：設 A(x−a)²+（除以 (x−a)² 的餘式） */
+  L2.remCubicDiv = function (r) {
+    var a0 = r.int(-3, 3), b0; do { b0 = r.int(-3, 3); } while (b0 === a0);
+    var m = r.nz(-4, 4), n = r.int(-6, 6), Aq = r.nz(-3, 3), t = r.int(0, 1);
+    var R = Aq * (b0 - a0) * (b0 - a0) + m * b0 + n, sqf = polyMul([1, -a0], [1, -a0]);
+    var ans = polyAdd(polyScale(sqf, Aq), [m, n]);
+    var sq = a0 === 0 ? 'x^{2}' : factTex(a0) + '^{2}', prod = b0 === 0 ? 'x' + sq : sq + factTex(b0);
+    var cond2, u = 0, v = 0;
+    if (t === 0) cond2 = '除以 ' + T(xMinus(b0)) + ' 的餘式為 ' + T(String(R));
+    else { u = Aq * (b0 - a0) + m; v = R - u * b0; cond2 = '除以 ' + T(polyTex(polyMul([1, -a0], [1, -b0]))) + ' 的餘式為 ' + T(polyTex([u, v])); }
+    return { q: '設多項式 ' + T('f(x)') + ' 除以 ' + T(sq) + ' 的餘式為 ' + T(polyTex([m, n])) + '，' + cond2 + '。求 ' + T('f(x)') + ' 除以 ' + T(prod) + ' 的餘式。',
+             a: T(polyTex(ans)),
+             h: '除式是三次，餘式最多二次。因為 $f(x)$ 除以 $' + sq + '$ 餘 $' + polyTex([m, n]) + '$，所求餘式除以 $' + sq + '$ 也一定餘 $' + polyTex([m, n]) + '$，所以設成 $A' + sq + '+(' + polyTex([m, n]) + ')$，只剩一個 $A$。' + (t === 0 ? '再用 $f(' + b0 + ')=' + R + '$ 定 $A$。' : '由第二個條件，$f(' + b0 + ')$ 等於 $' + polyTex([u, v]) + '$ 在 $x=' + b0 + '$ 的值，用它定 $A$。'),
+             p: { a: a0, b: b0, m: m, n: n, t: t, R: R, uv: [u, v], ans: ans } };
+  };
+
+  /* 2-18 由二次不等式的解反推，再解另一個二次不等式 */
+  L2.quadIneqRev = function (r) {
+    var al, be; do { al = r.nz(-5, 4); be = al + r.int(1, 6); } while (be === 0);
+    var inner = r.int(0, 1) === 0, t = r.int(0, 2), rel = r.pick(['<', '<=', '>', '>=']), s = r.pick([1, 2, -1, -2]);
+    var sa = inner ? -1 : 1, r1, r2, lead, expr;
+    if (t === 0) { r1 = F(1, al); r2 = F(1, be); lead = sa * al * be; expr = 'cx^2+bx+a'; }
+    else if (t === 1) { r1 = F(al + s); r2 = F(be + s); lead = sa; expr = 'a' + (s > 0 ? '(x-' + s + ')^2+b(x-' + s + ')' : '(x+' + (-s) + ')^2+b(x+' + (-s) + ')') + '+c'; }
+    else { r1 = F(-al); r2 = F(-be); lead = sa; expr = 'ax^2-bx+c'; }
+    if (frCmp(r1, r2) > 0) { var tmp = r1; r1 = r2; r2 = tmp; }
+    var want = (rel === '<' || rel === '<=') ? -1 : 1, eq = (rel === '<=' || rel === '>='), between = (want * lead < 0);
+    var o = eq ? '\\le ' : '\\lt ', o2 = eq ? '\\ge ' : '\\gt ', ans;
+    if (between) ans = T(Fr.tex(r1) + o + 'x' + o + Fr.tex(r2));
+    else ans = T('x' + o + Fr.tex(r1)) + ' 或 ' + T('x' + o2 + Fr.tex(r2));
+    var given = inner ? al + '\\lt x\\lt ' + be : 'x\\lt ' + al + '\\ \\text{或}\\ x\\gt ' + be;
+    return { q: '已知不等式 ' + T('ax^2+bx+c\\gt0') + ' 的解為 ' + T(given) + '，求不等式 ' + T(expr + REL[rel] + '0') + ' 的解。',
+             a: ans,
+             h: '解在兩根' + (inner ? '之間' : '之外') + '而且不等號是 $\\gt0$ ⟹ 開口向' + (inner ? '下，$a\\lt0$' : '上，$a\\gt0$') + '，且 $ax^2+bx+c=a' + factTex(al) + factTex(be) + '$，所以 $b=' + (al + be === 0 ? '0' : coefX(-(al + be)) + 'a') + '$、$c=' + coefX(al * be) + 'a$。' + (t === 0 ? '代進 $cx^2+bx+a$ 後提出 $a$' : t === 1 ? '$' + expr + '$ 就是把 $ax^2+bx+c$ 的 $x$ 換成 $' + xMinus(s) + '$，兩根各加 $' + s + '$；也可以直接代入後提出 $a$' : '代進 $ax^2-bx+c$ 後提出 $a$') + '，最後別忘了 $a$ 是' + (inner ? '負' : '正') + '的' + (inner ? '，兩邊除以 $a$ 要反向' : '') + '。',
+             p: { al: al, be: be, inner: inner ? 1 : 0, t: t, s: s, rel: rel, ans: [fr2(r1), fr2(r2), between ? 1 : 0] } };
+  };
+
+  /* 2-19 逐步設式：由四個函數值求三次多項式 */
+  L2.stepwisePoly = function (r) {
+    var xs = r.shuffle([-2, -1, 0, 1, 2, 3]).slice(0, 4).sort(function (u, v) { return u - v; });
+    var f = [r.nz(-2, 2), r.int(-4, 4), r.int(-6, 6), r.int(-9, 9)], t = r.int(0, 1), x5;
+    do { x5 = r.int(-3, 5); } while (xs.indexOf(x5) >= 0);
+    var ys = xs.map(function (v) { return polyEval(f, v); }), c1 = F(ys[1] - ys[0], xs[1] - xs[0]);
+    var conds = xs.map(function (v, i) { return T('f(' + v + ')=' + ys[i]); }).join('、');
+    return { q: '已知三次多項式 ' + T('f(x)') + ' 滿足 ' + conds + '，' + (t === 0 ? '求 ' + T('f(x)') + '（降冪排列）。' : '求 ' + T('f(' + x5 + ')') + '。'),
+             a: t === 0 ? T('f(x)=' + polyTex(f)) : T('f(' + x5 + ')=' + polyEval(f, x5)),
+             h: '逐步設式：$f(x)=a' + factTex(xs[0]) + factTex(xs[1]) + factTex(xs[2]) + '+b' + factTex(xs[0]) + factTex(xs[1]) + '+c' + factTex(xs[0]) + '+d$。代 $x=' + xs[0] + '$ 只剩 $d=' + ys[0] + '$；代 $x=' + xs[1] + '$ 只剩 $c$ 與 $d$，得 $c=' + Fr.tex(c1) + '$；再代 $x=' + xs[2] + '$ 求 $b$，最後代 $x=' + xs[3] + '$ 求 $a$。一次只解一個未知數，比解四元聯立快。',
+             p: { xs: xs, ys: ys, t: t, x5: x5, ans: t === 0 ? f : polyEval(f, x5) } };
+  };
+
+  /* 2-20 圍籬面積最大（二次函數應用） */
+  L2.fenceArea = function (r) {
+    var nP = r.int(1, 4), river = r.int(0, 1), per = nP + 1, L, X, Y, S;
+    if (river) { L = 2 * per * r.int(3, 12); Y = L / (2 * per); X = L / 2; }              /* x+(n+1)y=L */
+    else { var lc = 4 * per / gcd(4, 2 * per); L = lc * r.int(2, 8); X = L / 4; Y = L / (2 * per); }   /* 2x+(n+1)y=L */
+    S = X * Y;
+    var pens = nP === 1 ? '一塊長方形場地' : T(String(nP)) + ' 間並排、大小相同的長方形場地（相鄰兩間共用一道圍籬）';
+    var q = river ? '用總長 ' + T(String(L)) + ' 公尺的圍籬，沿著筆直的河岸圍出' + pens + '，靠河的一邊不必圍。求場地總面積的最大值，以及此時沿河岸那一邊的長。'
+                  : '在空地上用總長 ' + T(String(L)) + ' 公尺的圍籬圍出' + pens + '。求場地總面積的最大值，以及此時' + (nP === 1 ? '長方形的長與寬。' : '並排方向的總長。');
+    var ans = '最大面積 ' + T(String(S)) + ' 平方公尺，此時' + (river ? '沿河岸的一邊長 ' + T(String(X)) + ' 公尺（垂直河岸的每道圍籬長 ' + T(String(Y)) + ' 公尺）'
+              : (nP === 1 ? '長、寬都是 ' + T(String(X)) + ' 公尺' : '並排方向的總長 ' + T(String(X)) + ' 公尺（另一個方向的每道圍籬長 ' + T(String(Y)) + ' 公尺）'));
+    var lenEq = river ? 'x+' + per + 'y=' + L : '2x+' + per + 'y=' + L;
+    return { q: q, a: ans,
+             h: (!river && nP === 1 ? '設長方形的兩邊長為 $x$、$y$：$2x+2y=' + L + '$。' : '設' + (river ? '垂直河岸' : '和並排方向垂直') + '的每道圍籬長 $y$（共 $' + per + '$ 道），' + (river ? '沿河岸的一邊長 $x$（只圍一邊）' : '並排方向的邊長 $x$（上下兩邊）') + '：$' + lenEq + '$。') + '總面積 $S=xy$，用這個式子把 $x$ 換成 $y$，得到開口向下的二次函數，頂點在兩根正中間。',
+             p: { L: L, nP: nP, river: river, ans: [S, X, Y] } };
+  };
+
+  /* 2-21 由開口與 x 截距判斷式子的正負（多選） */
+  L2.quadSignExpr = function (r) {
+    var p, q, sa, opts, truth, nT, tries = 0;
+    do {
+      do { p = r.nz(-5, 4); q = p + r.int(1, 6); } while (q === 0 || p + q === 0);
+      sa = r.sign();
+      var A = sa, Bq = -sa * (p + q), C = sa * p * q, fv = function (x) { return sa * (x - p) * (x - q); };
+      var pool = [
+        function () { var c = r.sign(); return ['a' + gtlt(c), c * A > 0]; },
+        function () { var c = r.sign(); return ['b' + gtlt(c), c * Bq > 0]; },
+        function () { var c = r.sign(); return ['c' + gtlt(c), c * C > 0]; },
+        function () { var c = r.sign(); return ['b^2-4ac' + gtlt(c), c > 0]; },
+        function () { var c = r.sign(); return fv(1) === 0 ? null : ['a+b+c' + gtlt(c), c * fv(1) > 0]; },
+        function () { var c = r.sign(); return fv(-1) === 0 ? null : ['a-b+c' + gtlt(c), c * fv(-1) > 0]; },
+        function () { var c = r.sign(); return fv(2) === 0 ? null : ['4a+2b+c' + gtlt(c), c * fv(2) > 0]; },
+        function () { var c = r.sign(); return fv(-2) === 0 ? null : ['4a-2b+c' + gtlt(c), c * fv(-2) > 0]; },
+        function () { var c = r.sign(); return ['abc' + gtlt(c), c * A * Bq * C > 0]; },
+        function () { var u = r.int(-8, 8), ok = r.int(0, 1), v = p + q - u + (ok ? 0 : r.pick([1, -1])); return u === v ? null : ['f(' + u + ')=f(' + v + ')', !!ok]; }
+      ];
+      opts = []; truth = [];
+      r.shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).forEach(function (i) { if (opts.length >= 5) return; var o = pool[i](); if (o) { opts.push(o[0]); truth.push(o[1]); } });
+      nT = truth.filter(Boolean).length;
+    } while ((nT < 1 || nT > 4) && tries++ < 300);
+    return { q: '二次函數 ' + T('y=f(x)=ax^2+bx+c') + ' 的圖形開口向' + (sa > 0 ? '上' : '下') + '，與 ' + T('x') + ' 軸交於 ' + T(pt(p, 0)) + '、' + T(pt(q, 0)) + ' 兩點。下列哪些正確？（可複選）<br>' + opts.map(function (o, i) { return '(' + (i + 1) + ') ' + T(o); }).join('　'),
+             a: truth.map(function (tv, i) { return tv ? '(' + (i + 1) + ')' : ''; }).join(''),
+             h: '設 $f(x)=a' + factTex(p) + factTex(q) + '$，開口向' + (sa > 0 ? '上 ⟹ $a\\gt0$' : '下 ⟹ $a\\lt0$') + '。展開得 $b=' + coefX(-(p + q)) + 'a$、$c=' + coefX(p * q) + 'a$。$a+b+c=f(1)$、$a-b+c=f(-1)$、$4a+2b+c=f(2)$、$4a-2b+c=f(-2)$：看這些 $x$ 落在兩根 $' + p + ',' + q + '$ 之間還是之外。$f(u)=f(v)$ ⟺ $u,v$ 對稱於軸 $x=' + Fr.tex(F(p + q, 2), true) + '$。',
+             p: { p: p, q: q, sa: sa, opts: opts, ans: truth.map(function (tv) { return tv ? 1 : 0; }) } };
+  };
+
+  /* ══════════ 2026-09-29 擴充（含絕對值的二次函數，HANDOUT_SPEC §4 09-29 裁定）：L1 1 型、L2 1 型 ══════════ */
+  function absFacTex(A, p, q) { return (A === 1 ? '' : A === -1 ? '-' : String(A)) + factTex(p) + factTex(q); }
+  function absKTex(v) { return String(v); }
+
+  /* 1-28 畫 y=|f(x)|：x 軸下方那段往上翻，再用水平線數交點（三條水平線） */
+  L1.absQuadCount = function (r) {
+    r();                                   /* 先丟掉一個亂數：種子相近時第一個亂數幾乎相同（檢測組種子相差 37） */
+    var A = r.pick([1, 1, -1, 2]), d, t = r.int(0, 1);
+    do { d = r.int(1, 4); } while (Math.abs(A) * d * d < 3);
+    var hh = r.int(-3, 4), p = hh - d, q = hh + d, M = Math.abs(A) * d * d;
+    var f = [A, -A * (p + q), A * p * q], fx = polyTex(f), fh = -A * d * d;
+    var kinds = r.shuffle(['neg', 'zero', 'mid', 'top', 'above']).slice(0, 3);
+    var ks = kinds.map(function (kd) { return kd === 'neg' ? -r.int(1, 4) : kd === 'zero' ? 0 : kd === 'mid' ? r.int(1, M - 1) : kd === 'top' ? M : M + r.int(1, 6); });
+    var cnt = ks.map(function (k) { return k < 0 ? 0 : k === 0 ? 2 : k < M ? 4 : k === M ? 3 : 2; });
+    var lab = ['(1)', '(2)', '(3)'], qs;
+    if (t === 0) qs = '畫出 ' + T('y=|' + fx + '|') + ' 的圖形，並回答它和下列各水平線各有幾個交點：<br>' + ks.map(function (k, i) { return lab[i] + ' ' + T('y=' + k); }).join('　');
+    else qs = '方程式 ' + T('|' + fx + '|=k') + ' 在下列各情形各有幾個相異實根？<br>' + ks.map(function (k, i) { return lab[i] + ' ' + T('k=' + k); }).join('　');
+    var a = cnt.map(function (c, i) { return lab[i] + ' ' + T(String(c)) + ' 個'; }).join('　');
+    var h = '分解：$' + fx + '=' + absFacTex(A, p, q) + '$，圖形和 $x$ 軸交於 $x=' + p + '$、$x=' + q + '$，頂點 $(' + hh + ',' + fh + ')$。取絕對值後，' +
+      (A > 0 ? '$' + p + '\\lt x\\lt ' + q + '$ 那段（在 $x$ 軸下方）往上翻，頂點變成 $(' + hh + ',' + M + ')$' : '$x\\lt ' + p + '$ 與 $x\\gt ' + q + '$ 兩段（在 $x$ 軸下方）往上翻，中間的頂點 $(' + hh + ',' + M + ')$ 不動') +
+      '，圖形像 W，最低點在 $(' + p + ',0)$、$(' + q + ',0)$。再把每條水平線和 $0$、$' + M + '$ 比高低，數交點。';
+    return { q: qs, a: a, h: h, p: { t: t, A: A, p: p, q: q, h: hh, M: M, ks: ks, cnt: cnt, kinds: kinds } };
+  };
+
+  /* 2-22 含絕對值的二次函數：由交點（實根）個數反求 k 的範圍
+     t=0：|f(x)|=k；t=1：|x²−sx|+mx+c=k（拆絕對值分段畫）；t=2：x²−b|x|+c=k（f(|x|)，對 y 軸對稱） */
+  L2.absQuadParam = function (r) {
+    r();                                   /* 先丟掉一個亂數：種子相近時第一個亂數幾乎相同（檢測組種子相差 37） */
+    var t = r.int(0, 2), ph = r.int(0, 1), N, lhs, ans, h, P;
+    var rng = function (lo, hi) { return T(lo + '\\lt k\\lt ' + hi); }, eq = function (v) { return T('k=' + v); }, gt = function (v) { return T('k\\gt ' + v); };
+    if (t === 0) {
+      var A = r.pick([1, 1, -1, 2]), d; do { d = r.int(1, 5); } while (Math.abs(A) * d * d < 4);
+      var hh = r.int(-4, 4), p = hh - d, q = hh + d, M = Math.abs(A) * d * d, f = [A, -A * (p + q), A * p * q];
+      N = r.pick([2, 3, 4]); lhs = '|' + polyTex(f) + '|';
+      ans = N === 4 ? rng(0, M) : N === 3 ? eq(M) : eq(0) + ' 或 ' + gt(M);
+      h = '$' + polyTex(f) + '=' + absFacTex(A, p, q) + '$：和 $x$ 軸交於 $x=' + p + '$、$x=' + q + '$，頂點 $(' + hh + ',' + (-A * d * d) + ')$。取絕對值後在 $x$ 軸下方的那段往上翻，拱形頂點是 $(' + hh + ',' + M + ')$。水平線 $y=k$ 由下往上掃，分界是 $k=0$ 與 $k=' + M + '$' + (N === 2 ? '；恰好 $2$ 個的情形有兩種，別漏了 $y=0$ 那條（就是 $x$ 軸）。' : '。');
+      P = { t: t, A: A, p: p, q: q, M: M, N: N };
+    } else if (t === 1) {
+      var s = r.pick([4, 6, 8]), m, c;
+      do { m = r.pick([2, 4, 6]); } while (m >= s);
+      c = r.nz(-9, 9);
+      var V0 = c, Vs = m * s + c, Pk = c + (s + m) * (s + m) / 4;
+      N = r.pick([1, 2, 2, 3, 4]);
+      lhs = '|x^{2}-' + s + 'x|' + term(m, 'x', false) + (c < 0 ? '-' + (-c) : '+' + c);
+      ans = N === 1 ? eq(V0) : N === 2 ? rng(V0, Vs) + ' 或 ' + gt(Pk) : N === 3 ? eq(Vs) + ' 或 ' + eq(Pk) : rng(Vs, Pk);
+      var inner = polyTex([-1, s + m, c]), outer = polyTex([1, m - s, c]);
+      h = '令 $g(x)=' + lhs + '$。$x^2-' + s + 'x=x(x-' + s + ')$ 在 $x=0$、$x=' + s + '$ 變號：$x\\le0$ 或 $x\\ge' + s + '$ 時 $g(x)=' + outer + '$；$0\\lt x\\lt ' + s + '$ 時 $g(x)=' + inner + '$。算出接點 $g(0)=' + V0 + '$、$g(' + s + ')=' + Vs + '$ 與中間那段的頂點 $(' + ((s + m) / 2) + ',' + Pk + ')$，畫出圖形後用水平線由下往上掃；接點只算一次。';
+      P = { t: t, s: s, m: m, c: c, V0: V0, Vs: Vs, Pk: Pk, N: N };
+    } else {
+      var b = r.pick([2, 4, 6, 8]), c2 = r.int(-6, 8), vm = c2 - b * b / 4;
+      N = r.pick([2, 3, 4]);
+      lhs = 'x^{2}-' + b + '|x|' + (c2 === 0 ? '' : c2 < 0 ? '-' + (-c2) : '+' + c2);
+      ans = N === 4 ? rng(vm, c2) : N === 3 ? eq(c2) : eq(vm) + ' 或 ' + gt(c2);
+      h = '絕對值套在 $x$ 上：$x\\ge0$ 時 $y=' + polyTex([1, -b, c2]) + '$，頂點 $(' + (b / 2) + ',' + vm + ')$、和 $y$ 軸交於 $(0,' + c2 + ')$；把 $x$ 換成 $-x$ 式子不變，左半邊是右半邊對 $y$ 軸的鏡像。畫出來再用水平線掃，$x=0$ 是兩半共用的點，只算一次。';
+      P = { t: t, b: b, c: c2, vm: vm, N: N };
+    }
+    var onlyEq = !/\\lt|\\gt/.test(ans);
+    var q = ph === 0 ? '若方程式 ' + T(lhs + '=k') + ' 恰有 ' + T(String(N)) + ' 個相異實根，求實數 ' + T('k') + (onlyEq ? ' 的值。' : ' 的範圍。')
+                     : '若 ' + T('y=' + lhs) + ' 的圖形與直線 ' + T('y=k') + ' 恰有 ' + T(String(N)) + ' 個交點，求實數 ' + T('k') + (onlyEq ? ' 的值。' : ' 的範圍。');
+    P.ph = ph;
+    return { q: q, a: ans, h: h, p: P };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -896,19 +1181,123 @@
       '乘積的兩根是 $' + a + '$ 與 $' + b + '$，開口向上：兩根之間為負、兩根之外為正' + (eq ? '；含等號時分子的根 $x=' + a + '$ 可以取，但分母的根 $x=' + b + '$ 一定要挖掉' : '；兩個根都不取') + '。',
       '所以解是 ' + setTex(p.ans) + '。'];
   };
+  /* ── 2026-09-28 擴充：新 L1 六型的第一層提示與解題步驟 ── */
+  L1_H1.linFunc = '這是「一次函數」：圖形是直線，先求斜率（$x$ 每增加 $1$，函數值變多少），再用已知的一點定常數項。';
+  L1_H1.quadSigns = '這是「由圖形判斷正負」：開口定 $a$、對稱軸 $-\\dfrac{b}{2a}$ 的位置定 $b$、$y$ 截距就是 $c$、與 $x$ 軸的交點個數定 $b^2-4ac$。';
+  L1_H1.discrimParam = '這是「判別式與交點個數」：交點個數就是方程式的實根個數，兩個、一個、沒有分別對應判別式 $\\gt0$、$=0$、$\\lt0$。';
+  L1_H1.evenOddSum = '這是「係數和」：不要展開，代 $x=1$ 得所有係數和、代 $x=0$ 得常數項、代 $x=-1$ 再和前者相加減，分出偶次項與奇次項。';
+  L1_H1.divAxB = '這是「除以 $ax-b$」：綜合除法只能除 $x-k$，先除以 $x-\\dfrac{b}{a}$，商式再除以 $a$，餘式不變。';
+  L1_H1.shiftExpand = '這是「改寫成 $(x-h)$ 的多項式」：用綜合除法連續除以 $x-h$，依序得到的餘式就是由低次到高次的係數。';
+
+  L1_SOL.linFunc = function (p) {
+    var m = p.m, n = p.n, st = [];
+    if (p.t === 1) {
+      st.push('「$x$ 每增加 $1$，函數值' + (m > 0 ? '增加' : '減少') + ' $' + Math.abs(m) + '$」表示斜率是 $' + m + '$，設 $f(x)=' + coefX(m) + 'x+b$。');
+      st.push('代 $f(' + p.x1 + ')=' + p.y1 + '$：$' + p.y1 + '=' + m + '\\times ' + pzT(p.x1) + '+b$，所以 $b=' + n + '$。');
+      st.push('所以 $f(x)=' + polyTex([m, n]) + '$。');
+      return st;
+    }
+    st.push('斜率 $=\\dfrac{' + pzT(p.y2) + '-' + pzT(p.y1) + '}{' + pzT(p.x2) + '-' + pzT(p.x1) + '}=\\dfrac{' + (p.y2 - p.y1) + '}{' + (p.x2 - p.x1) + '}=' + m + '$。');
+    st.push('設 $f(x)=' + coefX(m) + 'x+b$，代 $f(' + p.x1 + ')=' + p.y1 + '$ 得 $b=' + n + '$，所以 $f(x)=' + polyTex([m, n]) + '$。');
+    if (p.t === 0) st.push('$f(' + p.x3 + ')=' + m + '\\times ' + pzT(p.x3) + (n === 0 ? '' : (n > 0 ? '+' : '') + n) + '=' + (m * p.x3 + n) + '$。');
+    else st.push('令 $f(x)=0$：$' + polyTex([m, n]) + '=0$，所以 $x=' + Fr.tex(F(p.ans[0], p.ans[1])) + '$。');
+    return st;
+  };
+
+  L1_SOL.quadSigns = function (p) {
+    var A = p.A, sg = p.sgn, st = [];
+    var nm = function (s) { return s > 0 ? '\\gt0' : '\\lt0'; };
+    if (p.t === 0) {
+      st.push('開口向' + (A > 0 ? '上' : '下') + '，所以 $a' + nm(sg[0]) + '$。');
+      st.push('頂點在第' + QUADN[p.vq] + '象限，頂點的 $x$ 坐標 $-\\dfrac{b}{2a}' + nm(p.h) + '$，也就是 $\\dfrac{b}{a}' + nm(-p.h) + '$：$b$ 與 $a$ ' + (sg[0] * sg[1] > 0 ? '同號' : '異號') + '，所以 $b' + nm(sg[1]) + '$。');
+      st.push('圖形與 $y$ 軸交於 $(0,c)$，在' + zhSg(sg[2]) + '半軸，所以 $c' + nm(sg[2]) + '$。');
+      st.push('開口向' + (A > 0 ? '上' : '下') + '而頂點在 $x$ 軸' + (p.k > 0 ? '上' : '下') + '方，' + (sg[3] > 0 ? '圖形一定穿過 $x$ 軸兩次，兩個交點 ⟹ $b^2-4ac\\gt0$。' : '圖形碰不到 $x$ 軸，沒有交點 ⟹ $b^2-4ac\\lt0$。'));
+      if (p.askSet === 1) st.push('相乘看正負：$ab' + nm(sg[0] * sg[1]) + '$、$bc' + nm(sg[1] * sg[2]) + '$、$ac' + nm(sg[0] * sg[2]) + '$、$b^2-4ac' + nm(sg[3]) + '$。');
+      if (p.askSet === 2) st.push('相乘看正負：$a' + nm(sg[0]) + '$、$bc' + nm(sg[1] * sg[2]) + '$、$abc' + nm(sg[0] * sg[1] * sg[2]) + '$、$b^2-4ac' + nm(sg[3]) + '$。');
+      return st;
+    }
+    st.push('頂點的 $x$ 坐標 $-\\dfrac{b}{2a}$：$a,b$ ' + (sg[0] * sg[1] > 0 ? '同號，$\\dfrac{b}{2a}\\gt0$，所以頂點在 $y$ 軸左邊' : '異號，$\\dfrac{b}{2a}\\lt0$，所以頂點在 $y$ 軸右邊') + '。');
+    st.push('頂點的 $y$ 坐標 $=c-\\dfrac{b^2}{4a}=-\\dfrac{b^2-4ac}{4a}$：$b^2-4ac' + nm(sg[3]) + '$、$a' + nm(sg[0]) + '$，所以它' + (p.k > 0 ? '是正的，頂點在 $x$ 軸上方' : '是負的，頂點在 $x$ 軸下方') + '；(1) 頂點在第' + QUADN[p.vq] + '象限。');
+    st.push('畫草圖：開口向' + (A > 0 ? '上' : '下') + '、與 $y$ 軸交於' + zhSg(sg[2]) + '半軸、' + (sg[3] > 0 ? '與 $x$ 軸有兩個交點' : '與 $x$ 軸沒有交點') + '。所以 (2) 圖形經過第' + p.pass.map(function (i) { return QUADN[i]; }).join('、') + '象限。');
+    return st;
+  };
+
+  L1_SOL.discrimParam = function (p) {
+    var cond = { two: '\\gt0', one: '=0', none: '\\lt0' }[p.rel], word = { two: '兩個交點', one: '一個交點', none: '沒有交點' }[p.rel];
+    if (p.t === 1) {
+      var s = p.s, s2 = 4 * s * s;
+      return ['交點個數＝方程式 $x^2+kx+' + (s * s) + '=0$ 的實根個數；' + word + ' ⟺ 判別式 $D' + cond + '$。',
+        '$D=k^2-4\\times ' + (s * s) + '=k^2-' + s2 + '=(k-' + (2 * s) + ')(k+' + (2 * s) + ')$，所以要解 $(k-' + (2 * s) + ')(k+' + (2 * s) + ')' + cond + '$。',
+        p.rel === 'two' ? '兩根之外：$k\\lt ' + (-2 * s) + '$ 或 $k\\gt ' + (2 * s) + '$。' : p.rel === 'one' ? '$k=' + (2 * s) + '$ 或 $k=' + (-2 * s) + '$。' : '兩根之間：$' + (-2 * s) + '\\lt k\\lt ' + (2 * s) + '$。'];
+    }
+    var K = F(p.K[0], p.K[1]);
+    if (p.t === 0) {
+      var A = p.A, B = p.B, dir = { two: A > 0 ? '\\lt ' : '\\gt ', one: '=', none: A > 0 ? '\\gt ' : '\\lt ' }[p.rel];
+      return ['交點個數＝方程式 $' + polyTex([A, B, 0]) + '+k=0$ 的實根個數；' + word + ' ⟺ 判別式 $D' + cond + '$。',
+        '$D=' + pzT(B) + '^2-4\\times ' + pzT(A) + '\\times k=' + (B * B) + term(-4 * A, 'k', false) + '$，要 $' + (B * B) + term(-4 * A, 'k', false) + cond + '$。',
+        '移項後兩邊除以 $' + (4 * A) + '$' + (A < 0 && p.rel !== 'one' ? '（負數，不等號反向）' : '') + '：$k' + dir + Fr.tex(K) + '$。'];
+    }
+    var e = p.B - p.pp;
+    return ['交點個數＝聯立方程式的實根個數。兩式相減：$x^2' + term(e, 'x', false) + '+(k' + term(-p.qq, '', false) + ')=0$，' + word + ' ⟺ 判別式 $D' + cond + '$。',
+      '$D=' + pzT(e) + '^2-4(k' + term(-p.qq, '', false) + ')=' + (e * e + 4 * p.qq) + '-4k$，要 $' + (e * e + 4 * p.qq) + '-4k' + cond + '$。',
+      '所以 $k' + { two: '\\lt ', one: '=', none: '\\gt ' }[p.rel] + Fr.tex(K) + '$。'];
+  };
+
+  L1_SOL.evenOddSum = function (p) {
+    var P = p.P, n = p.n, v1 = polyEval(P, 1), vm = polyEval(P, -1), s1 = p.ans[0], sm = Math.pow(vm, n);
+    return ['代 $x=1$：左邊 $=(' + subT(P, 1) + ')^{' + n + '}=' + pzT(v1) + '^{' + n + '}=' + s1 + '$，右邊正好是所有係數的和，所以 (1) $' + s1 + '$。',
+      '代 $x=0$：右邊只剩 $a_{0}$，左邊 $=' + pzT(P[2]) + '^{' + n + '}=' + p.ans[1] + '$，所以 (2) $' + p.ans[1] + '$。',
+      '代 $x=-1$：$a_{0}-a_{1}+a_{2}-a_{3}+\\cdots=(' + subT(P, -1) + ')^{' + n + '}=' + pzT(vm) + '^{' + n + '}=' + sm + '$。',
+      p.ask === 0 ? '和 (1) 相加，奇次項抵消：$2(a_{0}+a_{2}+\\cdots)=' + s1 + '+' + pzT(sm) + '$，所以 (3) $' + p.ans[2] + '$。'
+                  : '(1) 減去它，偶次項抵消：$2(a_{1}+a_{3}+\\cdots)=' + s1 + '-' + pzT(sm) + '$，所以 (3) $' + p.ans[2] + '$。'];
+  };
+
+  L1_SOL.divAxB = function (p) {
+    var A = p.A, B = p.B, f = p.f, Q = p.ans.q, R = p.ans.r, aQ = polyScale(Q, A);
+    var kT = (B < 0 ? '-' : '') + '\\dfrac{' + Math.abs(B) + '}{' + A + '}', xk = 'x' + (B > 0 ? '-' : '+') + '\\dfrac{' + Math.abs(B) + '}{' + A + '}';
+    return ['$' + polyTex([A, -B]) + '=' + A + '\\left(' + xk + '\\right)$，先用綜合除法除以 $' + xk + '$：左邊寫 $' + kT + '$，係數列 $' + rowT(f) + '$。',
+      '首項 $' + f[0] + '$ 抄下來，一路「乘 $' + kT + '$ 再加」：得 $' + rowT(aQ) + '$，最後一格餘 $' + R + '$。所以 $f(x)=\\left(' + xk + '\\right)(' + polyTex(aQ) + ')' + (R === 0 ? '' : (R > 0 ? '+' : '') + R) + '$。',
+      '把 $' + A + '$ 從商式搬到除式：$f(x)=(' + polyTex([A, -B]) + ')(' + polyTex(Q) + ')' + (R === 0 ? '' : (R > 0 ? '+' : '') + R) + '$，所以商式 $' + polyTex(Q) + '$（商式要除以 $' + A + '$），餘式 $' + R + '$（不變）。'];
+  };
+
+  L1_SOL.shiftExpand = function (p) {
+    var h = p.h, f = p.f, d1 = synth(f, h), d2 = synth(d1.q, h), d3 = synth(d2.q, h), g = [d3.q[0], d3.r, d2.r, d1.r], xh = xMinus(h);
+    if (p.t !== 0) {
+      var xv = p.t === 1 ? h + 1 : h - 1;
+      return ['右式在 $' + xh + '=' + (p.t === 1 ? '1' : '-1') + '$，也就是 $x=' + xv + '$ 時，剛好是 $' + (p.t === 1 ? 'p+q+r+s' : '-p+q-r+s') + '$。',
+        '所以所求就是左式在 $x=' + xv + '$ 的值：$' + subT(f, xv) + '=' + p.ans + '$。',
+        '答案是 $' + p.ans + '$（也可以連除三次求出 $(p,q,r,s)=(' + g.join(',') + ')$ 再算，比較慢）。'];
+    }
+    return ['用綜合除法除以 $' + xh + '$（左邊寫 $' + h + '$），係數列 $' + rowT(f) + '$：商 $' + rowT(d1.q) + '$，餘式 $s=' + d1.r + '$。',
+      '對商式再除一次：商 $' + rowT(d2.q) + '$，餘式 $r=' + d2.r + '$；再除一次：商 $' + rowT(d3.q) + '$，餘式 $q=' + d3.r + '$。',
+      '最後剩下的商就是 $p=' + d3.q[0] + '$，所以 $(p,q,r,s)=(' + g.join(',') + ')$。'];
+  };
+
+  /* ── 2026-09-29 擴充：L1.absQuadCount 的第一層提示與解題步驟 ── */
+  L1_H1.absQuadCount = '這是「含絕對值的二次函數」：先畫 $y=f(x)$，把 $x$ 軸下方那段對 $x$ 軸往上翻，再用水平線去數交點；方程式 $|f(x)|=k$ 的相異實根個數就是交點個數。';
+  L1_SOL.absQuadCount = function (p) {
+    var st = [], M = p.M, fh = p.A > 0 ? -M : M, lab = ['(1)', '(2)', '(3)'], f = [p.A, -p.A * (p.p + p.q), p.A * p.p * p.q];
+    st.push('分解：$' + polyTex(f) + '=' + absFacTex(p.A, p.p, p.q) + '$，圖形和 $x$ 軸交於 $x=' + p.p + '$ 與 $x=' + p.q + '$，對稱軸 $x=' + p.h + '$，頂點 $(' + p.h + ',' + fh + ')$。');
+    if (p.A > 0) st.push('開口向上，$' + p.p + '\\lt x\\lt ' + p.q + '$ 那段在 $x$ 軸下方。取絕對值就把它對 $x$ 軸往上翻，頂點 $(' + p.h + ',' + fh + ')$ 翻成 $(' + p.h + ',' + M + ')$，圖形像 W，最低點是 $(' + p.p + ',0)$、$(' + p.q + ',0)$。');
+    else st.push('開口向下，$x\\lt ' + p.p + '$ 與 $x\\gt ' + p.q + '$ 兩段在 $x$ 軸下方，把它們往上翻；中間的頂點 $(' + p.h + ',' + M + ')$ 本來就在上方，不動。圖形一樣像 W，最低點是 $(' + p.p + ',0)$、$(' + p.q + ',0)$。');
+    var why = { neg: '在 $x$ 軸下方，碰不到圖形', zero: '就是 $x$ 軸，只碰到兩個最低點', mid: '介於 $0$ 與 $' + M + '$ 之間：兩側各交 $1$ 點、翻上來的拱形交 $2$ 點', top: '剛好碰到拱形的頂點，再加兩側各 $1$ 點', above: '比拱形的頂點高，只和兩側各交 $1$ 點' };
+    st.push((p.t === 1 ? '實根個數＝$y=|f(x)|$ 和水平線 $y=k$ 的交點個數。' : '') + p.ks.map(function (k, i) { return lab[i] + ' $y=' + k + '$ ' + why[p.kinds[i]] + '：$' + p.cnt[i] + '$ 個。'; }).join('<br>'));
+    return st;
+  };
+
   var META_L1 = [
-      ['degOps', '§1 次數的運算'], ['identCoef', '§1 恆等式：換基底'], ['prodCoef', '§1 乘積的指定項係數'], ['synthDiv', '§1 綜合除法'], ['hornerVal', '§1 秦九韶求值'],
+      ['degOps', '§1 次數的運算'], ['identCoef', '§1 恆等式：換基底'], ['prodCoef', '§1 乘積的指定項係數'], ['evenOddSum', '§1 係數和與奇偶次項係數和'], ['synthDiv', '§1 綜合除法'], ['divAxB', '§1 除以 ax−b 的商與餘'], ['hornerVal', '§1 秦九韶求值'],
       ['remThm', '§2 餘式定理反求係數'], ['rem2pts', '§2 除以二次式的餘式'], ['factorThm', '§2 因式定理求係數'], ['factorize', '§2 因式分解'], ['rootLoc', '§2 勘根定理'],
-      ['vertex', '§3 配方求頂點'], ['axisCond', '§3 對稱軸的偽裝'], ['shiftQuad', '§3 二次函數的平移'], ['discrimDist', '§3 判別式與交點距離'],
+      ['linFunc', '§3 一次函數'], ['vertex', '§3 配方求頂點'], ['quadSigns', '§3 由圖形特徵判斷正負'], ['axisCond', '§3 對稱軸的偽裝'], ['shiftQuad', '§3 二次函數的平移'], ['discrimDist', '§3 判別式與交點距離'], ['discrimParam', '§3 交點個數求參數'], ['absQuadCount', '§3 畫 |f(x)| 數交點'],
       ['intervalMax', '§4 區間最值'], ['alwaysPos', '§4 恆成立'],
-      ['cubicCenter', '§5 三次函數的對稱中心'], ['linApprox', '§5 一次近似直線'],
+      ['cubicCenter', '§5 三次函數的對稱中心'], ['linApprox', '§5 一次近似直線'], ['shiftExpand', '§5 改寫成 (x−h) 的多項式'],
       ['quadIneq', '§6 二次不等式'], ['cubicIneq', '§6 三次不等式（已分解）'], ['fracIneq', '§6 分式不等式']
   ];
   var META_L2 = [
-      ['remQuadTwo', '§2 兩個二次條件拼第三個'], ['remSqr', '§2 x^n 除以 (x±1)²'], ['congRem', '§2 同餘：(x−k)f(x) 型'], ['vieta3', '§2 三次的根與係數'], ['cubicAP', '§2 三根成等差'],
-      ['quadFromCond', '§3 由條件求二次函數'], ['quadThreePts', '§3 三點求二次函數'], ['intervalParam', '§4 區間最值含參數'], ['alwaysPosCount', '§4 恆成立：首項可為 0'], ['lineBelowParab', '§4 拋物線恆在直線上方'], ['profit', '§4 定價與最大利潤'],
+      ['remQuadTwo', '§2 兩個二次條件拼第三個'], ['remSqr', '§2 x^n 除以 (x±1)²'], ['congRem', '§2 同餘：(x−k)f(x) 型'], ['vieta3', '§2 三次的根與係數'], ['cubicAP', '§2 三根成等差'], ['remCubicDiv', '§2 除以 (x−a)²(x−b) 的餘式'], ['stepwisePoly', '§2 逐步設式求三次式'],
+      ['quadFromCond', '§3 由條件求二次函數'], ['quadThreePts', '§3 三點求二次函數'], ['quadSignExpr', '§3 由開口與 x 截距判斷正負'], ['absQuadParam', '§3 含絕對值：由交點個數求 k'], ['intervalParam', '§4 區間最值含參數'], ['alwaysPosCount', '§4 恆成立：首項可為 0'], ['lineBelowParab', '§4 拋物線恆在直線上方'], ['profit', '§4 定價與最大利潤'], ['fenceArea', '§4 圍籬面積最大'],
       ['cubicCenterPts', '§5 對稱中心＋兩點'], ['cubicShift', '§5 平移後的標準式'], ['linApproxVal', '§5 一次近似求近似值'],
-      ['highIneq', '§6 高次不等式：奇偶重根'], ['ineqFromSol', '§6 由解反推三次不等式']
+      ['highIneq', '§6 高次不等式：奇偶重根'], ['ineqFromSol', '§6 由解反推三次不等式'], ['quadIneqRev', '§6 由解反推再解二次不等式']
   ];
   /* ══════════════════════════════════════════════════════════
      L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
@@ -1131,9 +1520,111 @@
       p: { p0: p0, al: al, be: be, ga: ga, de: de, rel: rel, r1: r1, r2: r2 } };
   };
 
-  var META_L3 = [['hornerParam', '一串 b 的次方：綜合除法求值'], ['remLinCombo', 'αf+βg 的餘式'], ['remFactorTrick', '被除式含除式的因式'], ['remSquares', '除以 (x−a)² 與 (x−b)² 的餘式（多選）'], ['twoBasis', '同一個 f 用兩種基底寫'], ['composeRem', 'f(g(x)) 除以 f(x+s)'], ['diffConst', 'f(x+s)=f(x)+d 的次數論證'], ['substMin', '換元求最小值（範圍要跟著換）'], ['chordRatio', '水平線截拋物線的弦長比'], ['sameValuesCubic', '三個函數值相同求三次式'], ['centerCubic', '對稱中心＋截點求三次式'], ['tripleQuadIneq', '三個二次因式相乘的整數解'], ['ineqToCubic', '由二次不等式的解反推再解三次'], ['chainIneq', '連鎖不等式'], ['noSolParam', '不等式無實數解求參數']];
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  function factI(n) { var v = 1; for (var i = 2; i <= n; i++) v *= i; return v; }
+
+  /* L3-16　f(k)=1/k 型：造 g(x)=x·f(x)−1（或 (x+1)f(x)−x、x²f(x)−1），已知根全部寫出，再用一個特殊點定首項係數 */
+  L3.recipInterp = function (r) {
+    var t = r.int(0, 2), n, x0, val, q, h, ks, c, g0;
+    if (t === 0) {                     /* n 次、f(k)=1/k，k=1..n+1 ⟹ xf(x)-1=c(x-1)…(x-n-1)，g(0)=-1 */
+      n = r.int(2, 5); x0 = r.pick([n + 2, n + 3, -1, -2]);
+      c = F(n % 2 === 0 ? 1 : -1, factI(n + 1));
+      var pr = 1; for (var k = 1; k <= n + 1; k++) pr *= (x0 - k);
+      val = Fr.div(Fr.add(Fr.mul(c, F(pr)), F(1)), F(x0));
+      ks = []; for (k = 1; k <= n + 1; k++) ks.push(k);
+      q = '已知 ' + T('f(x)') + ' 為 ' + T(String(n)) + ' 次多項式，且 ' + T('f(k)=\\dfrac{1}{k}') + '，' + T('k=' + ks.join(',')) + '。求 ' + T('f(' + x0 + ')') + '。';
+      h = '令 $g(x)=xf(x)-1$，它是 $' + (n + 1) + '$ 次式，而且 $g(' + ks.join(')=g(') + ')=0$，所以 $g(x)=c' + ks.map(factTex).join('') + '$。再代 $x=0$：$g(0)=0\\cdot f(0)-1=-1$，定出 $c$；最後 $f(' + x0 + ')=\\dfrac{g(' + x0 + ')+1}{' + x0 + '}$。';
+    } else if (t === 1) {              /* n 次、f(k)=k/(k+1)，k=0..n ⟹ (x+1)f(x)-x=c·x(x-1)…(x-n)，代 x=-1 */
+      n = r.int(2, 4); x0 = r.pick([n + 1, n + 2, n + 3]);
+      c = F(n % 2 === 0 ? -1 : 1, factI(n + 1));
+      var pr1 = 1; for (var k1 = 0; k1 <= n; k1++) pr1 *= (x0 - k1);
+      val = Fr.div(Fr.add(Fr.mul(c, F(pr1)), F(x0)), F(x0 + 1));
+      ks = []; for (k1 = 0; k1 <= n; k1++) ks.push(k1);
+      q = '已知 ' + T('f(x)') + ' 為 ' + T(String(n)) + ' 次多項式，且 ' + T('f(k)=\\dfrac{k}{k+1}') + '，' + T('k=' + ks.join(',')) + '。求 ' + T('f(' + x0 + ')') + '。';
+      h = '令 $g(x)=(x+1)f(x)-x$，它是 $' + (n + 1) + '$ 次式，而且在 $x=' + ks.join(',') + '$ 都等於 $0$，所以 $g(x)=c' + ks.map(factTex).join('') + '$。再代 $x=-1$：$g(-1)=0\\cdot f(-1)-(-1)=1$，定出 $c$；最後 $f(' + x0 + ')=\\dfrac{g(' + x0 + ')+' + x0 + '}{' + (x0 + 1) + '}$。';
+    } else {                           /* 2m-2 次、f(±k)=1/k²，k=1..m ⟹ x²f(x)-1=c∏(x²-k²)，g(0)=-1 */
+      var mm = r.int(2, 3); n = 2 * mm - 2; x0 = r.pick([mm + 1, mm + 2, -(mm + 1)]);
+      c = F(mm % 2 === 0 ? -1 : 1, factI(mm) * factI(mm));
+      var pr2 = 1; for (var k2 = 1; k2 <= mm; k2++) pr2 *= (x0 * x0 - k2 * k2);
+      val = Fr.div(Fr.add(Fr.mul(c, F(pr2)), F(1)), F(x0 * x0));
+      var cs = []; for (k2 = 1; k2 <= mm; k2++) cs.push(T('f(' + k2 + ')=f(-' + k2 + ')=' + (k2 === 1 ? '1' : '\\dfrac{1}{' + (k2 * k2) + '}')));
+      ks = []; for (k2 = 1; k2 <= mm; k2++) ks.push(k2);
+      q = '已知 ' + T('f(x)') + ' 為 ' + T(String(n)) + ' 次多項式，且 ' + cs.join('、') + '。求 ' + T('f(' + x0 + ')') + '。';
+      h = '條件都是 $k^2f(k)=1$：令 $g(x)=x^2f(x)-1$，它是 $' + (n + 2) + '$ 次式，在 $x=\\pm' + ks.join(',\\pm') + '$ 都等於 $0$，所以 $g(x)=c' + ks.map(function (k) { return '(x^2-' + (k * k) + ')'; }).join('') + '$。代 $x=0$：$g(0)=-1$ 定出 $c$；最後 $f(' + x0 + ')=\\dfrac{g(' + x0 + ')+1}{' + (x0 * x0) + '}$。';
+    }
+    return { q: q, a: T('f(' + x0 + ')=' + Fr.tex(val)), h: h, p: { t: t, n: n, x0: x0, ans: fr2(val) } };
+  };
+
+  /* L3-17　三次函數與 x 軸恰交兩點且在其中一點相切：設 a(x−p)²(x−q)，判斷係數正負，再解 f(kx) 的不等式 */
+  L3.cubicSigns = function (r) {
+    var k = r.pick([-1, 2, -2]), p, q, sa = r.sign(), tries = 0;
+    do { p = r.nz(-3, 3) * Math.abs(k); q = r.nz(-3, 3) * Math.abs(k); } while ((q === p || p + 2 * q === 0 || 2 * p + q === 0) && tries++ < 300);
+    var A = sa, Bc = -sa * (2 * p + q), C = sa * p * (p + 2 * q), Dd = -sa * p * p * q, cue = r.int(0, 1), rel = r.pick(['<', '<=', '>', '>=']);
+    var k3 = k * k * k, lead = sa * (k3 > 0 ? 1 : -1);
+    var sol = solveSign([{ r: p / k, m: 2 }, { r: q / k, m: 1 }], lead, rel);
+    var expr = coefT(k3, 'ax^{3}', true) + coefT(k * k, 'bx^{2}', false) + coefT(k, 'cx', false) + '+d';
+    var kx = k === -1 ? '-x' : k + 'x';
+    var sgT = function (nm, v) { return nm + (v > 0 ? '\\gt0' : '\\lt0'); };
+    return { q: '三次函數 ' + T('y=f(x)=ax^3+bx^2+cx+d') + ' 的圖形與 ' + T('x') + ' 軸恰交於 ' + T(pt(p, 0)) + '、' + T(pt(q, 0)) + ' 兩點，在 ' + T(pt(p, 0)) + ' 與 ' + T('x') + ' 軸相切' +
+               (cue === 0 ? '，且與 ' + T('y') + ' 軸交於' + (Dd > 0 ? '正' : '負') + '半軸' : '，且圖形的最右端往' + (sa > 0 ? '上' : '下') + '延伸') + '。<br>(1) 判斷 ' + T('a,b,c,d') + ' 的正負。　(2) 解不等式 ' + T(expr + REL[rel] + '0') + '。',
+             a: '(1) ' + T(sgT('a', A)) + '、' + T(sgT('b', Bc)) + '、' + T(sgT('c', C)) + '、' + T(sgT('d', Dd)) + '　(2) ' + setTex(sol),
+             h: '恰交兩點、在 $' + pt(p, 0) + '$ 相切 ⟹ $x=' + p + '$ 是重根：$f(x)=a' + factTex(p) + '^2' + factTex(q) + '$。' + (cue === 0 ? '$d=f(0)=' + coefX(-p * p * q) + 'a$，由 $y$ 截距的正負定出 $a$ 的正負；' : '最右端往' + (sa > 0 ? '上 ⟹ $a\\gt0$' : '下 ⟹ $a\\lt0$') + '；') + '展開比較係數得 $b,c,d$。(2) 左式就是 $f(' + kx + ')$（把 $x$ 換成 $' + kx + '$），$=a' + factTex(p).replace('x', kx) + '^2' + factTex(q).replace('x', kx) + '$，重根的平方因式不變號，只看另一個因式與 $a$ 的正負' + (rel === '<' || rel === '>' ? '；不含等號時，重根若落在解的區間裡要挖掉' : '；含等號時，重根本身一定是解') + '。',
+             p: { k: k, p: p, q: q, sa: sa, cue: cue, rel: rel, sg: [A, Bc > 0 ? 1 : -1, C > 0 ? 1 : -1, Dd > 0 ? 1 : -1], ans: sol } };
+  };
+
+  /* L3-18　f(x) 除以 ax−b 的商與餘，經過「同乘、除式提係數、把 x 換成 kx」之後的商與餘（多選） */
+  L3.divTransform = function (r) {
+    var A = r.pick([2, 3, 4, 5]), Bv, k, opts, truth, nT, tries = 0;
+    do { Bv = r.nz(-5, 5); } while (gcd(A, Bv) !== 1);
+    var D = polyTex([A, -Bv]);
+    do {
+      k = r.pick([2, 3]);
+      var kD = polyTex([k * A, -k * Bv]), mono = 'x' + (Bv > 0 ? '-' : '+') + '\\dfrac{' + Math.abs(Bv) + '}{' + A + '}', sub = polyTex([A * k, -Bv]);
+      var S = function (dvd, dvs, quo, rem) { return '$' + dvd + '$ 除以 $' + dvs + '$ 的商式為 $' + quo + '$，餘式為 $' + rem + '$'; };
+      var T0 = [[S(k + 'f(x)', D, k + 'Q(x)', k + 'r'), true], [S(k + 'f(x)', D, 'Q(x)', k + 'r'), false], [S(k + 'f(x)', D, k + 'Q(x)', 'r'), false]];
+      var T1 = [[S('f(x)', kD, '\\dfrac{1}{' + k + '}Q(x)', 'r'), true], [S('f(x)', kD, '\\dfrac{1}{' + k + '}Q(x)', k + 'r'), false], [S('f(x)', kD, k + 'Q(x)', 'r'), false]];
+      var T2 = [[S('f(x)', mono, A + 'Q(x)', 'r'), true], [S('f(x)', mono, 'Q(x)', 'r'), false], [S('f(x)', mono, '\\dfrac{1}{' + A + '}Q(x)', 'r'), false]];
+      var T3 = [[S('-f(x)', D, '-Q(x)', '-r'), true], [S('-f(x)', D, '-Q(x)', 'r'), false]];
+      var T4 = [[S('f(' + k + 'x)', sub, 'Q(' + k + 'x)', 'r'), true], [S('f(' + k + 'x)', sub, 'Q(x)', 'r'), false]];
+      opts = []; truth = [];
+      r.shuffle([T0, T1, T2, T3, T4]).forEach(function (tp) { var o = r.int(0, 1) === 0 ? tp[0] : tp[1 + r.int(0, tp.length - 2)]; opts.push(o[0]); truth.push(o[1]); });
+      nT = truth.filter(Boolean).length;
+    } while ((nT < 1 || nT > 4) && tries++ < 300);
+    return { q: '設多項式 ' + T('f(x)') + ' 除以 ' + T(D) + ' 的商式為 ' + T('Q(x)') + '、餘式為 ' + T('r') + '（' + T('r\\ne0') + '）。下列哪些正確？（可複選）<br>' + opts.map(function (o, i) { return '(' + (i + 1) + ') ' + o; }).join('<br>'),
+             a: truth.map(function (tv, i) { return tv ? '(' + (i + 1) + ')' : ''; }).join(''),
+             h: '一律從 $f(x)=(' + D + ')Q(x)+r$ 出發，把每個選項改寫成「除式 $\\times$ 商式 $+$ 餘式」的樣子：兩邊同乘 $' + k + '$ 時商、餘都乘 $' + k + '$；除式寫成 $' + kD + '=' + k + '(' + D + ')$ 時，把 $' + k + '$ 從商式借過去（商式變成 $\\dfrac{1}{' + k + '}$ 倍），餘式不動；$' + D + '=' + A + '\\left(' + mono + '\\right)$ 同理；$f(' + k + 'x)$ 是把 $x$ 全部換成 $' + k + 'x$，商式跟著變成 $Q(' + k + 'x)$。',
+             p: { A: A, B: Bv, k: k, opts: opts, ans: truth.map(function (tv) { return tv ? 1 : 0; }) } };
+  };
+
+  /* ══════════ 2026-09-29 擴充：L3-19 的類似題（含絕對值的二次函數：分段畫圖數交點） ══════════ */
+  /* L3-19　t=0：y=(x−h)(|x−h|−c)（兩段拋物線在 (h,0) 接起來，一峰一谷）；t=1：y=x|x−a| */
+  L3.absPiecewise = function (r) {
+    r();                                   /* 先丟掉一個亂數：種子相近時第一個亂數幾乎相同（檢測組種子相差 37） */
+    var t = r.int(0, 1), N = r.pick([1, 2, 3, 3]), expr, ans, h, P, V;
+    var rng = function (lo, hi) { return T(lo + '\\lt k\\lt ' + hi); }, eq = function (v) { return T('k=' + v); };
+    var lt = function (v) { return T('k\\lt ' + v); }, gt = function (v) { return T('k\\gt ' + v); };
+    if (t === 0) {
+      var hh = r.int(-4, 4), c = r.pick([2, 4, 6, 8]); V = c * c / 4;
+      var u = xMinus(hh);
+      expr = hh === 0 ? 'x(|x|-' + c + ')' : '(' + u + ')(|' + u + '|-' + c + ')';
+      ans = N === 3 ? rng(-V, V) : N === 2 ? eq(-V) + ' 或 ' + eq(V) : lt(-V) + ' 或 ' + gt(V);
+      h = '以 $x=' + hh + '$ 為界拆絕對值：$x\\ge' + hh + '$ 時 $y=' + polyTex(polyMul([1, -hh], [1, -hh - c])) + '$，頂點 $(' + (hh + c / 2) + ',' + (-V) + ')$；$x\\lt ' + hh + '$ 時 $y=' + polyTex(polyMul([-1, hh], [1, -hh + c])) + '$，頂點 $(' + (hh - c / 2) + ',' + V + ')$。兩段在 $(' + hh + ',0)$ 接起來，一個山峰一個山谷；水平線由下往上掃，分界是 $k=\\pm' + V + '$。';
+      P = { t: t, h: hh, c: c, V: V, N: N };
+    } else {
+      var a = r.pick([2, 4, 6, -2, -4, -6]); V = a * a / 4;
+      expr = 'x|x' + (a > 0 ? '-' + a : '+' + (-a)) + '|';
+      if (a > 0) ans = N === 3 ? rng(0, V) : N === 2 ? eq(0) + ' 或 ' + eq(V) : lt(0) + ' 或 ' + gt(V);
+      else ans = N === 3 ? rng(-V, 0) : N === 2 ? eq(-V) + ' 或 ' + eq(0) : lt(-V) + ' 或 ' + gt(0);
+      h = '以 $x=' + a + '$ 為界拆絕對值：$x\\ge' + a + '$ 時 $y=' + polyTex([1, -a, 0]) + '$，$x\\lt ' + a + '$ 時 $y=' + polyTex([-1, a, 0]) + '$。' + (a > 0 ? '左段的頂點 $(' + (a / 2) + ',' + V + ')$ 在 $x\\lt ' + a + '$ 裡，是山峰；右段在 $x\\ge' + a + '$ 上一路升高' : '右段的頂點 $(' + (a / 2) + ',' + (-V) + ')$ 在 $x\\ge' + a + '$ 裡，是山谷；左段在 $x\\lt ' + a + '$ 上一路升高') + '。兩段在 $(' + a + ',0)$ 接起來，水平線由下往上掃，分界是 $k=0$ 與 $k=' + (a > 0 ? V : -V) + '$。';
+      P = { t: t, a: a, V: V, N: N };
+    }
+    var onlyEq = !/\\lt|\\gt/.test(ans);
+    return { q: '函數 ' + T('y=' + expr) + ' 的圖形和直線 ' + T('y=k') + ' 恰有 ' + T(String(N)) + ' 個交點，求實數 ' + T('k') + (onlyEq ? ' 的值。' : ' 的範圍。'), a: ans, h: h, p: P };
+  };
+
+  var META_L3 = [['hornerParam', '一串 b 的次方：綜合除法求值'], ['remLinCombo', 'αf+βg 的餘式'], ['remFactorTrick', '被除式含除式的因式'], ['remSquares', '除以 (x−a)² 與 (x−b)² 的餘式（多選）'], ['twoBasis', '同一個 f 用兩種基底寫'], ['composeRem', 'f(g(x)) 除以 f(x+s)'], ['diffConst', 'f(x+s)=f(x)+d 的次數論證'], ['substMin', '換元求最小值（範圍要跟著換）'], ['chordRatio', '水平線截拋物線的弦長比'], ['sameValuesCubic', '三個函數值相同求三次式'], ['centerCubic', '對稱中心＋截點求三次式'], ['tripleQuadIneq', '三個二次因式相乘的整數解'], ['ineqToCubic', '由二次不等式的解反推再解三次'], ['chainIneq', '連鎖不等式'], ['noSolParam', '不等式無實數解求參數'], ['recipInterp', 'f(k)=1/k：造 g(x) 再定係數'], ['cubicSigns', '相切的三次函數：係數正負與 f(kx) 不等式'], ['divTransform', '除以 ax−b 的商與餘變形（多選）'], ['absPiecewise', '含絕對值的分段拋物線：數交點求 k']];
   /* 固定題 L3-n 對應的類似題型 */
-  var L3_FIX = { 'L3-1': 'hornerParam', 'L3-2': 'remLinCombo', 'L3-3': 'remFactorTrick', 'L3-4': 'remSquares', 'L3-5': 'twoBasis', 'L3-6': 'composeRem', 'L3-7': 'diffConst', 'L3-8': 'substMin', 'L3-9': 'chordRatio', 'L3-10': 'sameValuesCubic', 'L3-11': 'centerCubic', 'L3-12': 'tripleQuadIneq', 'L3-13': 'ineqToCubic', 'L3-14': 'chainIneq', 'L3-15': 'noSolParam' };
+  var L3_FIX = { 'L3-1': 'hornerParam', 'L3-2': 'remLinCombo', 'L3-3': 'remFactorTrick', 'L3-4': 'remSquares', 'L3-5': 'twoBasis', 'L3-6': 'composeRem', 'L3-7': 'diffConst', 'L3-8': 'substMin', 'L3-9': 'chordRatio', 'L3-10': 'sameValuesCubic', 'L3-11': 'centerCubic', 'L3-12': 'tripleQuadIneq', 'L3-13': 'ineqToCubic', 'L3-14': 'chainIneq', 'L3-15': 'noSolParam', 'L3-16': 'recipInterp', 'L3-17': 'cubicSigns', 'L3-18': 'divTransform', 'L3-19': 'absPiecewise' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：多項式乘法展開、十字交乘因式分解、一元二次方程式、配方求頂點（國中）；過兩點的直線（高一上 ch2）
@@ -1218,6 +1709,13 @@
     'L3.chainIneq': { f: function (p) { return p.ans.length; }, why: '取交集時，「兩根之間」的那一段可能被「兩根之外」切成一段或兩段：把四個根畫在同一條數線上就看得出來。' },
     'L3.noSolParam': { f: function (p) { return p.rel; }, why: '「$\\gt 0$ 無解」⟺「$\\le 0$ 恆成立」：開口向下且 $D\\le 0$；「$\\ge 0$ 無解」⟺「$\\lt 0$ 恆成立」：開口向下且 $D\\lt 0$。差一個等號，答案的端點就差在含不含。' }
   };
+  /* 2026-09-28 擴充題型的對照題 */
+  CONTRAST['L1.discrimParam'] = { f: function (p) { return p.rel; }, keep: ['t'], why: '同一個判別式，看題目要幾個交點：兩個交點 $D\gt0$、恰一個（相切）$D=0$、沒有交點 $D\lt0$。不等號的方向（和端點含不含）就差在這裡。' };
+  CONTRAST['L1.evenOddSum'] = { f: function (p) { return p.ask; }, why: '$f(1)$ 是所有係數和、$f(-1)$ 是偶次項減奇次項：兩式相加除以 $2$ 得偶次項係數和，相減除以 $2$ 得奇次項係數和。' };
+  CONTRAST['L1.quadSigns'] = { f: function (p) { return p.sgn[1]; }, keep: ['t'], why: '$b$ 的正負看對稱軸 $-\dfrac{b}{2a}$ 在 $y$ 軸哪一邊：在右邊 $a,b$ 異號、在左邊 $a,b$ 同號。先定 $a$，再由對稱軸定 $b$。' };
+  CONTRAST['L1.shiftExpand'] = { f: function (p) { return p.t; }, why: '要全部的係數就連續綜合除法；只要 $p+q+r+s$ 就代 $x-h=1$，只要 $-p+q-r+s$ 就代 $x-h=-1$，一次代入就好。' };
+  CONTRAST['L2.quadIneqRev'] = { f: function (p) { return p.inner; }, why: '$ax^2+bx+c\gt0$ 的解在兩根之間 ⟹ 開口向下、$a\lt0$；在兩根之外 ⟹ $a\gt0$。之後把 $b,c$ 用 $a$ 表示、提出 $a$，$a$ 是負的就要反向。' };
+  CONTRAST['L2.fenceArea'] = { f: function (p) { return p.river; }, keep: ['nP'], why: '靠河時沿河那一邊不必圍，限制式是 $x+(n+1)y=L$；不靠河時上下兩邊都要圍，變成 $2x+(n+1)y=L$。面積都是 $xy$，頂點位置跟著變。' };
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

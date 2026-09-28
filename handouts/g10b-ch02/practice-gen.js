@@ -800,6 +800,273 @@
              p: { kind: kind, par: par, ans: fr2(F(cnt, 216)) } };
   };
 
+  /* ══════════════════════════════════════════════════════════
+     2026-09-28 擴充（依段考卷出現頻率補題型）：L1 三型、L2 五型
+     題庫 43 份高一段考卷：正因數個數 8 卷、塗色 8 卷、重複組合與整數解 16 卷、取球 24 卷、二項式 21 卷、分配 21 卷
+     既有產生器一個字都沒動（同種子出同一題，錯題本與檢測紀錄仍有效）
+     ══════════════════════════════════════════════════════════ */
+  /* 質因數分解的 LaTeX：指數 1 不寫 */
+  function xpFac(pr, ex) {
+    var o = [], i;
+    for (i = 0; i < pr.length; i++) if (ex[i] > 0) o.push(ex[i] === 1 ? String(pr[i]) : pr[i] + '^{' + ex[i] + '}');
+    return o.join('\\times');
+  }
+  /* 相異物分給 g 人、每人至少一件（取捨）：回傳 [值, LaTeX] */
+  function xpSurj(k, g) {
+    var v = 0, tex = '', i;
+    for (i = 0; i < g; i++) {
+      var sg = i % 2 === 0 ? 1 : -1, co = C(g, i), bs = g - i;
+      v += sg * co * ipow(bs, k);
+      tex += (i === 0 ? '' : (sg > 0 ? '+' : '-')) + (bs === 1 ? String(co) : (co === 1 ? '' : co + '\\cdot') + bs + '^{' + k + '}');
+    }
+    return [v, tex];
+  }
+
+  /* ── L1 §1 正因數的個數 ── */
+  var XP_PR = [[2, 3], [2, 5], [2, 3, 5], [2, 3, 7], [3, 5], [2, 5, 7], [2, 3, 5], [2, 7], [3, 7]];
+  L1.divisorCount = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var kind = r.int(0, 3), pr, ex, N, i, tries = 0, ok;
+    do {
+      pr = r.pick(XP_PR); ex = []; N = 1;
+      for (i = 0; i < pr.length; i++) { ex.push(r.int(1, 5)); N *= ipow(pr[i], ex[i]); }
+      ok = N >= 60 && N <= 300000;
+      if (kind === 0) ok = ok && pr[0] === 2;
+      if (kind === 1) ok = ok && ex.some(function (e) { return e >= 2; });
+      if (kind === 2) ok = ok && ex.some(function (e) { return e >= 3; });
+    } while (!ok && tries++ < 300);
+    var tot = 1, t1 = [];
+    for (i = 0; i < pr.length; i++) { tot *= ex[i] + 1; t1.push('(' + ex[i] + '+1)'); }
+    var cnt = 1, ch = [], m = 0, f = [], cond;
+    if (kind === 0) {
+      for (i = 0; i < pr.length; i++) { var c0 = pr[i] === 2 ? 1 : ex[i] + 1; ch.push(c0); cnt *= c0; }
+      cond = '是奇數';
+    } else if (kind === 1 || kind === 2) {
+      var dv = kind === 1 ? 2 : 3;
+      for (i = 0; i < pr.length; i++) { var c1 = Math.floor(ex[i] / dv) + 1; ch.push(c1); cnt *= c1; }
+      cond = kind === 1 ? '是完全平方數' : '是完全立方數';
+    } else {
+      do {
+        f = []; m = 1;
+        for (i = 0; i < pr.length; i++) { f.push(r.int(0, Math.min(2, ex[i]))); m *= ipow(pr[i], f[i]); }
+      } while ((m < 4 || m === N) && tries++ < 400);
+      if (m < 4 || m === N) { f = pr.map(function (p, j) { return j === 0 ? 1 : 0; }); f[0] = Math.min(2, ex[0]); m = ipow(pr[0], f[0]); }
+      for (i = 0; i < pr.length; i++) { var c3 = ex[i] - f[i] + 1; ch.push(c3); cnt *= c3; }
+      cond = '是 ' + T(String(m)) + ' 的倍數';
+    }
+    var fac = xpFac(pr, ex), vars = ['a', 'b', 'c'].slice(0, pr.length);
+    var form = pr.map(function (p, j) { return p + '^{' + vars[j] + '}'; }).join('');
+    var hh = T(N + '=' + fac) + '，正因數都寫成 ' + T(form) + '，指數各自獨立地選：' + pr.map(function (p, j) { return T(vars[j]) + ' 有 ' + T('0\\sim' + ex[j]) + ' 共 ' + (ex[j] + 1) + ' 種'; }).join('、') + '，(1) 相乘得 ' + T(String(tot)) + ' 個。(2) ';
+    if (kind === 0) hh += '奇數 ⟺ 不含因數 ' + T('2') + '，' + T(vars[0] + '=0') + '，其餘照選：' + T(String(cnt)) + ' 個。';
+    else if (kind === 3) hh += T(String(m)) + ' 的倍數 ⟺ 每個指數至少要有 ' + T(String(m)) + ' 的那一份（' + pr.map(function (p, j) { return T(vars[j] + '\\ge' + f[j]); }).join('、') + '），各有 ' + ch.join('、') + ' 種，相乘得 ' + T(String(cnt)) + ' 個。';
+    else hh += (kind === 1 ? '完全平方數 ⟺ 每個指數都是偶數' : '完全立方數 ⟺ 每個指數都是 ' + T('3') + ' 的倍數') + '，各有 ' + ch.join('、') + ' 種，相乘得 ' + T(String(cnt)) + ' 個。';
+    return { q: '求 ' + T(String(N)) + ' 的正因數：(1) 共有幾個？(2) 其中' + cond + '的有幾個？',
+             a: '(1) ' + T(t1.join('') + '=' + tot) + ' 個　(2) ' + T(String(cnt)) + ' 個',
+             h: hh,
+             p: { N: N, pr: pr, ex: ex, kind: kind, m: m, f: f, ch: ch, ans: { tot: tot, cnt: cnt } } };
+  };
+
+  /* ── L1 §1 塗色：相鄰區不同色 ── */
+  L1.coloring = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var kind = r.int(0, 2), k, n, q, a, h, ans, ans2 = 0, ctx;
+    if (kind === 0) {
+      n = r.int(3, 6); k = r.int(Math.max(n, 3), 7); ctx = r.int(0, 1);
+      ans = k * ipow(k - 1, n - 1); ans2 = P(k, n);
+      q = (ctx === 0 ? '一面旗子由 ' + T(String(n)) + ' 條平行的色帶組成' : '把一個長條形分成 ' + T(String(n)) + ' 格排成一列') + '，用 ' + T(String(k)) + ' 種顏色塗色，每' + (ctx === 0 ? '條' : '格') + '塗一種顏色（顏色可以重複使用）。(1) 若相鄰兩' + (ctx === 0 ? '條' : '格') + '不同色，有幾種塗法？(2) 若每一' + (ctx === 0 ? '條' : '格') + '的顏色都不相同，有幾種塗法？';
+      a = '(1) ' + T(k + '\\times' + (k - 1) + '^{' + (n - 1) + '}=' + ans) + ' 種　(2) ' + T(pT(k, n) + '=' + ans2) + ' 種';
+      h = '(1) 從一端依序塗：第 1 ' + (ctx === 0 ? '條' : '格') + ' ' + k + ' 種，之後每一' + (ctx === 0 ? '條' : '格') + '只要避開前一' + (ctx === 0 ? '條' : '格') + '的顏色，各 ' + (k - 1) + ' 種 ⟹ ' + T(k + '\\times' + (k - 1) + '^{' + (n - 1) + '}=' + ans) + '。(2) 全部不同色就是 ' + k + ' 種顏色取 ' + n + ' 種排成一列 ' + T(pT(k, n) + '=' + ans2) + '。';
+    } else if (kind === 1) {
+      k = r.int(3, 7); n = 4; ctx = r.int(0, 1);
+      var same = k * (k - 1) * (k - 1), diff = k * (k - 1) * (k - 2) * (k - 2);
+      ans = same + diff;
+      q = (ctx === 0 ? '一個正方形用十字分成 ' + T('2\\times2') + ' 的四個小方格' : '一塊田地用兩條互相垂直的小路分成 ' + T('2\\times2') + ' 的四塊') + '（有公共邊的兩塊相鄰；只在一個頂點相接的兩塊不算相鄰）。用 ' + T(String(k)) + ' 種顏色塗色，每塊一色、顏色可以重複使用，相鄰兩塊不同色，有幾種塗法？';
+      a = T(String(ans)) + ' 種';
+      h = '先塗左上 ' + k + ' 種，再依「右下（左上的對角）與左上同不同色」分兩類。同色：右下 1 種，右上、左下都只要避開這個顏色，各 ' + (k - 1) + ' 種，共 ' + T(mulT([k, k - 1, k - 1]) + '=' + same) + '；不同色：右下 ' + (k - 1) + ' 種，右上、左下都要避開兩種顏色，各 ' + (k - 2) + ' 種，共 ' + T(mulT([k, k - 1, k - 2, k - 2]) + '=' + diff) + '。合計 ' + T(same + '+' + diff + '=' + ans) + '。';
+    } else {
+      n = r.int(3, 5); k = r.int(3, 7); ctx = r.int(0, 1);
+      ans = k * ipow(k - 1, n);
+      q = (ctx === 0 ? '一朵花的圖案分成花心一區與 ' + T(String(n)) + ' 片花瓣：每片花瓣都與花心相鄰，花瓣彼此都不相鄰' : '一個圖形分成中央一區與周圍 ' + T(String(n)) + ' 區：中央那一區與周圍每一區都相鄰，周圍的 ' + T(String(n)) + ' 區彼此都不相鄰') + '。用 ' + T(String(k)) + ' 種顏色塗色（顏色可以重複使用），每區一色、相鄰區不同色，有幾種塗法？';
+      a = T(k + '\\times' + (k - 1) + '^{' + n + '}=' + ans) + ' 種';
+      h = '先塗和別人都相鄰的' + (ctx === 0 ? '花心' : '中央') + '（' + k + ' 種），周圍每一區只和它相鄰，各自避開這個顏色就好，各 ' + (k - 1) + ' 種 ⟹ ' + T(k + '\\times' + (k - 1) + '^{' + n + '}=' + ans) + '。';
+    }
+    return { q: q, a: a, h: h, p: { kind: kind, n: n, k: k, ctx: ctx, ans: { a1: ans, a2: ans2 } } };
+  };
+
+  /* ── L1 §3 重複組合：可重複地選 ── */
+  var XP_SHOP = [['飲料店有', '種飲料', '買', '杯', '同一種可以買好幾杯，同種飲料的杯子沒有區別', '每一種都至少買一杯'],
+                 ['冰淇淋店有', '種口味', '挑', '球', '口味可以重複，球裝在同一杯裡、不計順序', '每一種口味都至少挑一球'],
+                 ['文具店有', '種原子筆', '買', '枝', '同一種可以買好幾枝，同種的筆沒有區別', '每一種都至少買一枝']];
+  L1.repChoose = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var kind = r.int(0, 2), n, k, q, a, h, a1, a2;
+    if (kind < 2) {
+      var s = r.pick(XP_SHOP); n = r.int(3, 5); k = r.int(n + 1, 10);
+      a1 = C(n + k - 1, n - 1); a2 = C(k - 1, n - 1);
+      q = s[0] + ' ' + T(String(n)) + ' ' + s[1] + '，某人一次' + s[2] + ' ' + T(String(k)) + ' ' + s[3] + '（' + s[4] + '）。(1) 有幾種' + s[2] + '法？(2) 若' + s[5] + '，有幾種' + s[2] + '法？';
+      a = '(1) ' + T(cT(n + k - 1, n - 1) + '=' + a1) + ' 種　(2) ' + T(cT(k - 1, n - 1) + '=' + a2) + ' 種';
+      h = '只要決定每一種各' + s[2] + '幾' + s[3] + '：設各' + s[2] + ' ' + T('x_1,\\dots,x_{' + n + '}') + ' ' + s[3] + '，就是 ' + T('x_1+\\cdots+x_{' + n + '}=' + k) + ' 的非負整數解。(1) 隔板法（先借 ' + n + ' ' + s[3] + '）' + T(cT(n + k - 1, n - 1) + '=' + a1) + '。(2) 每種至少一' + s[3] + '就是正整數解 ' + T(cT(k - 1, n - 1) + '=' + a2) + '。';
+    } else {
+      n = r.int(3, 4); k = r.int(n, 9);
+      var vs = n === 3 ? ['x', 'y', 'z'] : ['x', 'y', 'z', 'w'];
+      a1 = C(n + k - 1, n - 1); a2 = C(k - 1, n - 1);
+      q = '把 ' + T('(' + vs.join('+') + ')^{' + k + '}') + ' 展開後合併同類項。(1) 共有幾個不同的項？(2) 其中 ' + vs.map(function (v) { return T(v); }).join('、') + ' 都出現（次數都至少 ' + T('1') + '）的項有幾個？';
+      a = '(1) ' + T(cT(n + k - 1, n - 1) + '=' + a1) + ' 項　(2) ' + T(cT(k - 1, n - 1) + '=' + a2) + ' 項';
+      h = '每一項都長成 ' + T(vs.map(function (v, j) { return v + '^{' + 'abcd'.charAt(j) + '}'; }).join('')) + '，其中 ' + T('abcd'.slice(0, n).split('').join('+') + '=' + k) + '，不同的項就是這個方程式的非負整數解：' + T(cT(n + k - 1, n - 1) + '=' + a1) + '。(2) 每個文字都出現就是正整數解 ' + T(cT(k - 1, n - 1) + '=' + a2) + '。';
+    }
+    return { q: q, a: a, h: h, p: { kind: kind, n: n, k: k, ans: { a1: a1, a2: a2 } } };
+  };
+
+  /* ── L2 §3 相同物＋相異物一起分 ── */
+  var XP_MIX = [['本相同的書', '枝不同的筆', '書', '筆', '本', '枝'], ['顆相同的糖果', '個不同的玩具', '糖果', '玩具', '顆', '個'], ['個相同的漢堡', '杯不同的飲料', '漢堡', '飲料', '個', '杯']];
+  L2.mixDistribute = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var s = r.pick(XP_MIX), v = r.int(0, 2), g = 3, m, k, ans, a, h, cond;
+    if (v === 0) { m = r.int(2, 8); k = r.int(3, 5); }
+    else if (v === 1) { m = r.int(4, 9); k = r.int(2, 4); }
+    else { m = r.int(2, 6); k = r.int(2, 4); }
+    var sj = xpSurj(k, g), hb = C(m + g - 1, g - 1);
+    if (v === 0) {
+      ans = hb * sj[0]; cond = '每人至少拿到一' + s[5] + s[3];
+      a = T(cT(m + g - 1, g - 1) + '\\times' + sj[0] + '=' + ans) + ' 種';
+      h = s[2] + '與' + s[3] + '分開算再相乘。' + s[2] + '是相同的、可以有人沒拿到：隔板 ' + T(cT(m + g - 1, g - 1) + '=' + hb) + '；' + s[3] + '是不同的、每人至少一' + s[5] + '：取捨 ' + T(sj[1] + '=' + sj[0]) + '。';
+    } else if (v === 1) {
+      var hb1 = C(m - 1, g - 1); ans = hb1 * ipow(g, k); cond = '每人至少拿到一' + s[4] + s[2];
+      a = T(cT(m - 1, g - 1) + '\\times' + g + '^{' + k + '}=' + ans) + ' 種';
+      h = s[2] + '與' + s[3] + '分開算再相乘。' + s[2] + '每人至少一' + s[4] + '：隔板 ' + T(cT(m - 1, g - 1) + '=' + hb1) + '；' + s[3] + '沒有限制，每' + s[5] + '各選一人 ' + T(g + '^{' + k + '}=' + ipow(g, k)) + '。';
+    } else {
+      var t0 = C(m + 2, 2) * ipow(3, k), t1 = C(m + 1, 1) * ipow(2, k), t2 = 1;
+      ans = t0 - 3 * t1 + 3 * t2; cond = '每人至少拿到一件東西（' + s[2] + '或' + s[3] + '都算）';
+      a = T(String(ans)) + ' 種';
+      h = '取捨：先不管限制 ' + T(cT(m + 2, 2) + '\\times3^{' + k + '}=' + t0) + '；扣掉「某一人什麼都沒拿到」：選那一人 ' + T('3') + ' 種，東西全分給另兩人 ' + T(cT(m + 1, 1) + '\\times2^{' + k + '}=' + t1) + '；再補回「某兩人都沒拿到」：全部給剩下那一人只有 ' + T('1') + ' 種，選法 ' + T('3') + ' 種。' + T(t0 + '-3\\times' + t1 + '+3=' + ans) + '。';
+    }
+    return { q: '將 ' + T(String(m)) + ' ' + s[0] + '與 ' + T(String(k)) + ' ' + s[1] + '全部分給甲、乙、丙 ' + T('3') + ' 人（可以有人沒拿到' + (v === 1 ? s[3] : s[2]) + '）。若' + cond + '，有幾種分法？',
+             a: a, h: h, p: { v: v, m: m, k: k, g: g, ans: ans } };
+  };
+
+  /* ── L2 §3 整數解：有上限（取捨） ── */
+  L2.barsUpper = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var kind = r.int(0, 2), q, h, ans = 0, t, u, n, i, terms = [], parts = [], shift = 0, rr = 0;
+    if (kind === 0) { t = 3; u = r.int(3, 8); n = r.int(u + 1, 3 * u - 1); }
+    else if (kind === 1) { t = r.int(3, 6); u = r.int(2, 4); n = r.int(u + 1, Math.min(t * u - 1, 9)); }
+    else { rr = r.int(3, 4); t = rr; u = 5; shift = rr; n = r.int(rr + 6, 6 * rr - 6) - rr; }
+    for (i = 0; i <= t; i++) {
+      var rem = n - i * (u + 1); if (rem < 0) break;
+      var tv = C(t, i) * C(rem + t - 1, t - 1); ans += (i % 2 === 0 ? 1 : -1) * tv;
+      terms.push((i === 0 ? '' : (i % 2 === 0 ? '+' : '-')) + (i === 0 ? '' : (C(t, i) === 1 ? '' : C(t, i))) + cT(rem + t - 1, t - 1));
+      parts.push(i);
+    }
+    var chainT = terms.join('') + '=' + ans;
+    if (kind === 0) {
+      q = '求方程式 ' + T('x+y+z=' + n) + ' 滿足 ' + T('0\\le x,y,z\\le' + u) + ' 的整數解有幾組？';
+      h = '先不管上限：非負整數解 ' + T(cT(n + 2, 2)) + '；扣掉「某一個 ' + T('\\ge' + (u + 1)) + '」（先分給它 ' + (u + 1) + '，剩下 ' + (n - u - 1) + ' 再隔板），再補回兩個都超過的。' + T(chainT) + '。';
+    } else if (kind === 1) {
+      q = '有 ' + T(String(t)) + ' 種不同的箭，每種各 ' + T(String(u)) + ' 枝（同種的箭沒有區別）。從中任取 ' + T(String(n)) + ' 枝（不計順序），有幾種取法？';
+      h = '設各種取 ' + T('x_1,\\dots,x_{' + t + '}') + ' 枝：' + T('x_1+\\cdots+x_{' + t + '}=' + n) + '、' + T('0\\le x_i\\le' + u) + '。先不管上限 ' + T(cT(n + t - 1, t - 1)) + '，再扣掉某一種取超過 ' + u + ' 枝的（先取走 ' + (u + 1) + ' 枝再隔板），依取捨原理一層一層加減：' + T(chainT) + '。';
+    } else {
+      q = '擲一顆公正骰子 ' + T(String(rr)) + ' 次，依序記錄點數。點數和為 ' + T(String(n + shift)) + ' 的情形有幾種？';
+      h = '設各次點數 ' + T('x_i') + '，令 ' + T('y_i=x_i-1') + '：' + T('y_1+\\cdots+y_{' + rr + '}=' + n) + '、' + T('0\\le y_i\\le5') + '。先不管上限 ' + T(cT(n + t - 1, t - 1)) + '，再扣掉某一個 ' + T('y_i\\ge6') + ' 的，依取捨原理加減：' + T(chainT) + '。';
+    }
+    return { q: q, a: T(String(ans)) + (kind === 0 ? ' 組' : ' 種'), h: h, p: { kind: kind, t: t, u: u, n: n, rr: rr, ans: ans } };
+  };
+
+  /* ── L2 §4 三色球：各色都有／恰兩色／同色 ── */
+  var XP_EV = { all3: '三種顏色都有', two: '恰有兩種顏色', same: '全部同色', atl2: '至少有兩種顏色' };
+  L2.draw3Colors = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var k = r.int(3, 4), a, b, c, v = r.int(0, 2), tries = 0;
+    do { a = r.int(2, 6); b = r.int(2, 6); c = r.int(2, 6); } while ((a + b + c > 15 || Math.max(a, b, c) < k) && tries++ < 100);
+    if (Math.max(a, b, c) < k) a = k;
+    var N = a + b + c, tot = C(N, k), cols = [a, b, c], i, j;
+    var all3 = 0, same = 0;
+    for (i = 0; i < 3; i++) same += C(cols[i], k);
+    if (k === 3) all3 = a * b * c;
+    else for (i = 0; i < 3; i++) { var pr2 = C(cols[i], 2); for (j = 0; j < 3; j++) if (j !== i) pr2 *= cols[j]; all3 += pr2; }
+    var two = tot - all3 - same;
+    var PAIRS = [['all3', 'same'], ['two', 'atl2'], ['all3', 'two']], ask = PAIRS[v];
+    var val = { all3: all3, same: same, two: two, atl2: tot - same };
+    var ans = ask.map(function (x) { return F(val[x], tot); });
+    var hint = { all3: '三色都有：' + (k === 3 ? '紅白黑各一 ' + T(mulT([a, b, c]) + '=' + all3) : '某一色 ' + T('2') + ' 顆、另兩色各 ' + T('1') + ' 顆，依「哪一色取兩顆」分三類相加 ' + T(C(a, 2) * b * c + '+' + a * C(b, 2) * c + '+' + a * b * C(c, 2) + '=' + all3)),
+      same: '同色：' + T(cT(a, k) + '+' + cT(b, k) + '+' + cT(c, k) + '=' + same),
+      two: '恰兩色：全部扣掉「三色都有」與「同色」，' + T(tot + '-' + all3 + '-' + same + '=' + two),
+      atl2: '至少兩色：用餘事件，全部扣掉同色 ' + T(tot + '-' + same + '=' + (tot - same)) };
+    var need = ask.slice(); if (ask.indexOf('two') >= 0 && ask.indexOf('all3') < 0) need.unshift('all3'); if (ask.indexOf('two') >= 0 && ask.indexOf('same') < 0) need.unshift('same');
+    if (ask.indexOf('atl2') >= 0 && need.indexOf('same') < 0) need.unshift('same');
+    var seenH = {}, hs = [];
+    need.forEach(function (x) { if (!seenH[x]) { seenH[x] = 1; hs.push(hint[x]); } });
+    return { q: '袋中有 ' + T(String(a)) + ' 顆紅球、' + T(String(b)) + ' 顆白球、' + T(String(c)) + ' 顆黑球（每顆被取到的機會相等）。同時取出 ' + T(String(k)) + ' 顆，求 (1) ' + XP_EV[ask[0]] + '的機率　(2) ' + XP_EV[ask[1]] + '的機率。',
+             a: '(1) ' + T(Fr.tex(ans[0])) + '　(2) ' + T(Fr.tex(ans[1])),
+             h: T('n(S)=' + cT(N, k) + '=' + tot) + '（同色球也視為不同的球）。' + hs.join('；') + '。',
+             p: { a: a, b: b, c: c, k: k, v: v, ans: [fr2(ans[0]), fr2(ans[1])] } };
+  };
+
+  /* ── L2 §3 二項式定理的應用：近似值、餘數、餘式 ── */
+  function xpDec(fr, dig) {                                  /* 分數四捨五入到小數點後 dig 位的字串（fr>0） */
+    var sc = ipow(10, dig), x = Math.floor((fr.n * sc * 2 + fr.d) / (2 * fr.d)), s = String(x);
+    while (s.length <= dig) s = '0' + s;
+    return s.slice(0, s.length - dig) + '.' + s.slice(s.length - dig);
+  }
+  L2.binomApprox = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var kind = r.int(0, 2), q, a, h, p, tries = 0;
+    if (kind === 0) {
+      var d, sg, n, x, bad;
+      do {
+        d = r.pick([1, 2, 3, 4, 5]); sg = r.sign(); n = r.int(5, 12);
+        x = Math.pow(1 + sg * d / 100, n) * 1000;              /* 浮點誤差約 1e-12，遠小於下面留的 0.06 */
+        bad = Math.abs(x - Math.floor(x) - 0.5) < 0.06;        /* 第 4 位以後太接近 5：四捨五入會卡在邊界，重抽 */
+      } while (bad && tries++ < 100);
+      var base = (sg > 0 ? '1.0' + d : '0.' + (100 - d));
+      var dd = '0.0' + d, ans = xpDec(F(Math.round(x), 1000), 3), tl = [], j;
+      for (j = 1; j <= n; j++) {                               /* 列出到「小於 0.00001」為止的各項，取到小數點後第 5 位（誤差合計 < 0.00004，重抽時留了 0.00006） */
+        var tv = C(n, j) * ipow(d, j) / ipow(100, j);
+        if (tv < 0.00001) break;
+        var ts = xpDec(F(C(n, j) * ipow(d, j), ipow(100, j)), Math.min(2 * j, 5)).replace(/0+$/, '').replace(/\.$/, '');
+        tl.push(T((sg < 0 && j % 2 === 1 ? '-' : '') + ts));
+      }
+      q = '利用二項式定理，求 ' + T('(' + base + ')^{' + n + '}') + ' 的近似值到小數點後第 ' + T('3') + ' 位（第 ' + T('4') + ' 位四捨五入）。';
+      a = T(ans);
+      h = '把 ' + T(base) + ' 寫成 ' + T('1' + (sg > 0 ? '+' : '-') + dd) + '：' + T('(1' + (sg > 0 ? '+' : '-') + dd + ')^{' + n + '}=1' + (sg > 0 ? '+' : '-') + cT(n, 1) + '(' + dd + ')+' + cT(n, 2) + '(' + dd + ')^{2}' + (sg > 0 ? '+' : '-') + cT(n, 3) + '(' + dd + ')^{3}+\\cdots') + '。各項（取到小數點後第 ' + T('5') + ' 位）依序是 ' + T('1') + '、' + tl.join('、') + '，再後面的項都小於 ' + T('0.00001') + '，不影響四捨五入；把這幾項加起來再四捨五入到小數點後第 ' + T('3') + ' 位。';
+      p = { kind: 0, d: d, sg: sg, n: n, ans: ans };
+    } else if (kind === 1) {
+      var tt = r.int(1, 3), s2 = r.sign(), b = 10 * tt + s2, e = r.int(10, 99);
+      var rem = 1, i;
+      for (i = 0; i < e; i++) rem = rem * b % 100;
+      var lin = e * 10 * tt;
+      q = '求 ' + T(b + '^{' + e + '}') + ' 除以 ' + T('100') + ' 的餘數。';
+      a = T(String(rem));
+      var last2 = s2 > 0 ? lin + 1 : (e % 2 === 0 ? 1 - lin : lin - 1);
+      h = T(b + '^{' + e + '}=(' + (10 * tt) + (s2 > 0 ? '+' : '-') + '1)^{' + e + '}') + ' 展開後，含 ' + T((10 * tt) + '^{2}') + ' 以上的項都是 ' + T('100') + ' 的倍數，只剩最後兩項：'
+        + T(cT(e, 1) + '\\times' + (10 * tt) + (s2 > 0 ? '+1' : '\\times(-1)^{' + (e - 1) + '}+(-1)^{' + e + '}') + '=' + last2) + '。再加減 ' + T('100') + ' 的倍數換成 ' + T('0\\sim99') + ' 之間的數，就是餘數。';
+      p = { kind: 1, b: b, e: e, ans: rem };
+    } else {
+      var aa = r.pick([1, 2, -1, -2, 3]), n2 = r.int(5, 12), c1 = n2 * ipow(aa, n2 - 1), c0 = ipow(aa, n2);
+      var rTex = (c1 === 1 ? '' : c1 === -1 ? '-' : String(c1)) + 'x' + (c0 < 0 ? '-' + Math.abs(c0) : '+' + c0);
+      q = '求 ' + T('(x' + (aa < 0 ? '-' + Math.abs(aa) : '+' + aa) + ')^{' + n2 + '}') + ' 除以 ' + T('x^{2}') + ' 的餘式。';
+      a = T(rTex);
+      h = '展開 ' + T('(x' + (aa < 0 ? '-' + Math.abs(aa) : '+' + aa) + ')^{' + n2 + '}') + '，含 ' + T('x^{2}') + ' 以上的項都能被 ' + T('x^{2}') + ' 整除，餘式就是最後兩項：常數項 ' + T((aa < 0 ? '(' + aa + ')' : String(aa)) + '^{' + n2 + '}=' + c0) + '、一次項係數 ' + T(cT(n2, 1) + (aa === 1 ? '' : '\\times' + (aa < 0 ? '(' + aa + ')' : String(aa)) + '^{' + (n2 - 1) + '}') + '=' + c1) + '。';
+      p = { kind: 2, a: aa, n: n2, ans: [c1, c0] };
+    }
+    return { q: q, a: a, h: h, p: p };
+  };
+
+  /* ── L2 §2 球放進箱子的四種模型 ── */
+  L2.ballsModels = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var n = r.int(3, 4), k = r.int(n + 1, 8), ctx = r.int(0, 1), order = r.shuffle([0, 1, 2, 3]);
+    var sj = xpSurj(k, n);
+    var V = [ipow(n, k), C(k + n - 1, n - 1), C(k - 1, n - 1), sj[0]];
+    var TX = [n + '^{' + k + '}=' + V[0], cT(k + n - 1, n - 1) + '=' + V[1], cT(k - 1, n - 1) + '=' + V[2], sj[1] + '=' + V[3]];
+    var DS = ctx === 0 ? ['球都不同、箱子可以空', '球都相同、箱子可以空', '球都相同、每箱至少一球', '球都不同、每箱至少一球']
+                       : ['物品都不同、可以有人沒分到', '物品都相同、可以有人沒分到', '物品都相同、每人至少一個', '物品都不同、每人至少一個'];
+    var HS = ['不同的東西「各自選一個去處」：' + T(TX[0]), '相同的東西只看「各幾個」：非負整數解（隔板）' + T(TX[1]), '相同、每份至少一個：正整數解（隔板）' + T(TX[2]), '不同、每份至少一個：取捨 ' + T(TX[3])];
+    return { q: (ctx === 0 ? '把 ' + T(String(k)) + ' 顆球全部放進 ' + T(String(n)) + ' 個不同的箱子。' : '把 ' + T(String(k)) + ' 個物品全部分給 ' + T(String(n)) + ' 個人。') + '依下列條件各有幾種' + (ctx === 0 ? '放法' : '分法') + '？' + order.map(function (m, i) { return '(' + (i + 1) + ') ' + DS[m]; }).join('　'),
+             a: order.map(function (m, i) { return '(' + (i + 1) + ') ' + T(TX[m]) + ' 種'; }).join('　'),
+             h: order.map(function (m, i) { return '(' + (i + 1) + ') ' + HS[m]; }).join('。') + '。',
+             p: { k: k, n: n, ctx: ctx, order: order, ans: order.map(function (m) { return V[m]; }) } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -1173,21 +1440,70 @@
       word + '號碼剛好是 ' + T('m') + ' 的取法有幾種？另一顆必須' + (p.big ? '比 ' + T('m') + ' 小' : '比 ' + T('m') + ' 大') + '，所以有 ' + T(p.big ? 'm-1' : n + '-m') + ' 種。',
       '把「號碼 × 種數」全部加起來 ' + T(terms.join('+') + '=' + s) + '，再除以 ' + tot + '：' + T(solFrac(s, tot)) + '。' + solFin(o)];
   };
+  /* ── 2026-09-28 擴充：新 L1 三型的第一層提示與解題步驟 ── */
+  L1_H1.divisorCount = '這是「正因數的個數」：先做質因數分解，每個正因數就是「每個質因數各取幾次」，指數各自獨立地選，用乘法原理相乘。';
+  L1_H1.coloring = '這是「塗色」：從限制最多（相鄰最多）的區域開始依序塗，每一區只要避開已經塗好、又和它相鄰的區域；不相鄰的兩區可能同色時，依「同色／不同色」分類。';
+  L1_H1.repChoose = '這是「重複組合」：可以重複地選、又不計順序，只要決定每一種各選幾個，就變成「非負整數解」，用隔板法。';
+
+  L1_SOL.divisorCount = function (p, o) {
+    var vars = ['a', 'b', 'c'].slice(0, p.pr.length), fac = xpFac(p.pr, p.ex);
+    var form = p.pr.map(function (q, j) { return q + '^{' + vars[j] + '}'; }).join('');
+    var t1 = p.ex.map(function (e) { return '(' + e + '+1)'; }).join('');
+    var how;
+    if (p.kind === 0) how = '奇數不能有因數 ' + T('2') + '，所以 ' + T(vars[0] + '=0') + ' 只有 1 種；其餘指數照原來的範圍選';
+    else if (p.kind === 1) how = '完全平方數的每個指數都是偶數：' + p.pr.map(function (q, j) { return T(vars[j]) + ' 只能取 ' + T('0\\sim' + p.ex[j]) + ' 中的偶數，' + p.ch[j] + ' 種'; }).join('、');
+    else if (p.kind === 2) how = '完全立方數的每個指數都是 ' + T('3') + ' 的倍數：' + p.pr.map(function (q, j) { return T(vars[j]) + ' 只能取 ' + T('0\\sim' + p.ex[j]) + ' 中 3 的倍數，' + p.ch[j] + ' 種'; }).join('、');
+    else how = T(p.m + '=' + xpFac(p.pr, p.f)) + '，要是它的倍數，每個指數至少要到它的那一份：' + p.pr.map(function (q, j) { return T(vars[j]) + ' 取 ' + T(p.f[j] + '\\sim' + p.ex[j]) + '，' + p.ch[j] + ' 種'; }).join('、');
+    return ['先做質因數分解：' + T(p.N + '=' + fac) + '。每個正因數都寫成 ' + T(form) + '，而且寫法唯一。',
+      '(1) 指數各自獨立地選：' + p.pr.map(function (q, j) { return T(vars[j]) + ' 可取 ' + T('0\\sim' + p.ex[j]) + ' 共 ' + (p.ex[j] + 1) + ' 種'; }).join('、') + '，乘法原理 ' + T(t1 + '=' + p.ans.tot) + ' 個。',
+      '(2) ' + how + '。',
+      '相乘得 ' + T(String(p.ans.cnt)) + ' 個。' + solFin(o)];
+  };
+
+  L1_SOL.coloring = function (p, o) {
+    var k = p.k, n = p.n;
+    if (p.kind === 0) {
+      var u = p.ctx === 0 ? '條' : '格';
+      return ['(1) 從一端開始依序塗：第 1 ' + u + '沒有限制，' + k + ' 種。',
+        '之後每一' + u + '只和前一' + u + '相鄰，避開前一' + u + '的顏色，各 ' + (k - 1) + ' 種；乘法原理 ' + T(k + '\\times' + (k - 1) + '^{' + (n - 1) + '}=' + p.ans.a1) + ' 種。',
+        '(2) 每一' + u + '都不同色：就是從 ' + k + ' 種顏色取 ' + n + ' 種排成一列，' + T(pT(k, n) + '=' + p.ans.a2) + ' 種。' + solFin(o)];
+    }
+    if (p.kind === 1) {
+      var same = k * (k - 1) * (k - 1), diff = k * (k - 1) * (k - 2) * (k - 2);
+      return ['左上和右下只在一個頂點相接，不算相鄰，可能同色也可能不同色，所以先塗左上（' + k + ' 種），再依右下的顏色分兩類。',
+        '右下與左上同色（1 種）：右上、左下都只和這一個顏色相鄰，各 ' + (k - 1) + ' 種，共 ' + T(mulT([k, k - 1, k - 1]) + '=' + same) + ' 種。',
+        '右下與左上不同色（' + (k - 1) + ' 種）：右上、左下都要避開兩種顏色，各 ' + (k - 2) + ' 種，共 ' + T(mulT([k, k - 1, k - 2, k - 2]) + '=' + diff) + ' 種。',
+        '兩類相加 ' + T(same + '+' + diff + '=' + p.ans.a1) + ' 種。' + solFin(o)];
+    }
+    var cen = p.ctx === 0 ? '花心' : '中央那一區';
+    return ['先塗和別的區域都相鄰的' + cen + '：' + k + ' 種。',
+      '周圍的每一區只和' + cen + '相鄰（彼此不相鄰），各自避開' + cen + '的顏色就好，各 ' + (k - 1) + ' 種。',
+      '乘法原理 ' + T(k + '\\times' + (k - 1) + '^{' + n + '}=' + p.ans.a1) + ' 種。' + solFin(o)];
+  };
+
+  L1_SOL.repChoose = function (p, o) {
+    var n = p.n, k = p.k;
+    var what = p.kind < 2 ? '每一種各選幾個' : '每一個文字的次數';
+    return ['可以重複、不計順序，所以只要決定' + what + '：設為 ' + T('x_1,\\dots,x_{' + n + '}') + '，就是 ' + T('x_1+\\cdots+x_{' + n + '}=' + k) + ' 的非負整數解。',
+      '(1) 先借 ' + n + ' 個讓每一份都至少一個（共 ' + (n + k) + ' 個），在 ' + (n + k - 1) + ' 個空隙插 ' + (n - 1) + ' 塊隔板：' + T(cT(n + k - 1, n - 1) + '=' + p.ans.a1) + '。',
+      '(2) 每一份都至少一個就是正整數解，直接在 ' + (k - 1) + ' 個空隙插 ' + (n - 1) + ' 塊隔板：' + T(cT(k - 1, n - 1) + '=' + p.ans.a2) + '。' + solFin(o)];
+  };
+
   var META_L1 = [
-      ['routes', '§1 加法原理 vs 乘法原理'], ['passcode', '§1 乘法原理的三種變化'], ['digitsEven', '§1 分類討論：含 0 的三位數'], ['multiples', '§1 倍數計數（取捨）'], ['venn3', '§1 三集合取捨'], ['complement', '§1 補集法：「至少」'],
+      ['routes', '§1 加法原理 vs 乘法原理'], ['passcode', '§1 乘法原理的三種變化'], ['digitsEven', '§1 分類討論：含 0 的三位數'], ['multiples', '§1 倍數計數（取捨）'], ['venn3', '§1 三集合取捨'], ['complement', '§1 補集法：「至少」'], ['divisorCount', '§1 正因數的個數'], ['coloring', '§1 塗色：相鄰不同色'],
       ['permBasic', '§2 排列數的基本運算'], ['bundle', '§2 捆綁法：相鄰'], ['gaps', '§2 插空法：不相鄰'], ['fixedOrder', '§2 固定順序：除法'], ['multisetPerm', '§2 不盡相異物排列'], ['gridPath', '§2 格子路徑'], ['repPerm', '§2 重複排列：球放箱'],
-      ['combVsPerm', '§3 組合與排列的分辨'], ['atLeastComb', '§3 「至少」型組合'], ['groups', '§3 分組 vs 分堆'], ['bars', '§3 隔板法'], ['geomLines', '§3 幾何計數：共線修正'], ['rectCount', '§3 矩形與正方形計數'], ['binomTerm', '§3 二項式的特定項'], ['coefSum', '§3 代值法求係數和'], ['hockey', '§3 曲棍棒恆等式'],
+      ['combVsPerm', '§3 組合與排列的分辨'], ['atLeastComb', '§3 「至少」型組合'], ['groups', '§3 分組 vs 分堆'], ['bars', '§3 隔板法'], ['geomLines', '§3 幾何計數：共線修正'], ['rectCount', '§3 矩形與正方形計數'], ['binomTerm', '§3 二項式的特定項'], ['coefSum', '§3 代值法求係數和'], ['hockey', '§3 曲棍棒恆等式'], ['repChoose', '§3 重複組合：可重複地選'],
       ['dice2', '§4 兩顆骰子'], ['coins', '§4 硬幣：恰 k 次正面'], ['eventOps', '§4 事件的運算'], ['drawBalls', '§4 取球：同色與至少'], ['lottery', '§4 抽籤的公平性'],
       ['expBasic', '§5 期望值的定義'], ['expShift', '§5 平移與伸縮'], ['fairGame', '§5 公平遊戲'], ['expLinear', '§5 期望值的線性'], ['expMax', '§5 較大號碼的期望值']
   ];
   var META_L2 = [
-      ['adjNotAdj', '§2 相鄰＋不相鄰並存'], ['distributeAll', '§2 分配：每人至少一件'], ['multisetGap', '§2 不盡相異物＋不相鄰'], ['digitsMult3', '§2 3 的倍數：先選後排'], ['gridAvoid', '§2 路徑：必經與迴避'], ['lettersSelect', '§2 重複字母的選與排'],
-      ['barsBound', '§3 整數解：下限與不等式'], ['groupsEqual', '§3 平分成堆與同堆'], ['binomGeneral', '§3 二項式：x² 與 1/x'], ['combIdentityVal', '§3 組合恆等式求值'], ['nonAdjSelect', '§3 不相連的選法'],
-      ['probAtLeast2', '§4 機率：至少 2 個'], ['probRange', '§4 機率的可能範圍'], ['drawOrder', '§4 取完全部球的位置'], ['dice3', '§4 三顆骰子的結構'],
+      ['adjNotAdj', '§2 相鄰＋不相鄰並存'], ['distributeAll', '§2 分配：每人至少一件'], ['multisetGap', '§2 不盡相異物＋不相鄰'], ['digitsMult3', '§2 3 的倍數：先選後排'], ['gridAvoid', '§2 路徑：必經與迴避'], ['lettersSelect', '§2 重複字母的選與排'], ['ballsModels', '§2 球放進箱子的四種模型'],
+      ['barsBound', '§3 整數解：下限與不等式'], ['groupsEqual', '§3 平分成堆與同堆'], ['binomGeneral', '§3 二項式：x² 與 1/x'], ['combIdentityVal', '§3 組合恆等式求值'], ['nonAdjSelect', '§3 不相連的選法'], ['mixDistribute', '§3 相同物與相異物一起分'], ['barsUpper', '§3 整數解：有上限'], ['binomApprox', '§3 二項式：近似值與餘數'],
+      ['probAtLeast2', '§4 機率：至少 2 個'], ['probRange', '§4 機率的可能範圍'], ['drawOrder', '§4 取完全部球的位置'], ['dice3', '§4 三顆骰子的結構'], ['draw3Colors', '§4 三色球：各色都有與恰兩色'],
       ['expectPairs', '§5 號碼差的期望值'], ['fairMulti', '§5 三骰公平遊戲'], ['expectUpdated', '§5 摸彩進行到一半']
   ];
   /* ══════════════════════════════════════════════════════════
-     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
+     L3　中上（18 型）：每型對應固定題 L3-1～L3-18 的「類似題」
      計數與機率一律用「可用 itertools 窮舉」的定義；小規模直接列舉、
      大規模才用公式。p 只放輸入參數與旗標，驗算器一律從題幹重算。
      ══════════════════════════════════════════════════════════ */
@@ -1608,9 +1924,91 @@
              p: { N: N, m: m, k: k, v: v, ans: [fr2(p1), fr2(E)] } };
   };
 
-  var META_L3 = [['multiples3', '三集合取捨：三個數的倍數'], ['oddCount', '含奇數個某數字的 k 位數'], ['distinctMult', '相異數字排成的倍數'], ['orderedPick', '各自遞增：只剩「選」'], ['seatBlock', '座位不相鄰＋禁用座位'], ['prodMultiple', '乘積為 M 的倍數'], ['shareItems', '一人 a 個另兩人各 b 個'], ['sumCoefC', 'Σ(j−c)C(n,j) 求值'], ['digitExtreme', '各位互異且某位最小／最大'], ['nonAdjProb', '編號都不相連的機率'], ['sameGroup', '至少兩人同一組的機率'], ['drawUntilEmpty', '某色先取完的機率'], ['gapPrize', '兩黑球之間白球數的期望值'], ['fairPenalty', '公平遊戲反求賠額'], ['drawExpect', '取 k 個中特定品項的期望值']];
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* L3-16　圍成一圈的塗色（可含中央一區）：把圈剪開成一列，再扣掉首尾同色 */
+  function xpRing(m, c) { return ipow(c - 1, m) + (m % 2 === 0 ? 1 : -1) * (c - 1); }
+  L3.coloringRing = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var m = r.int(3, 5), cen = r() < 0.6, k = cen ? r.int(4, 8) : r.int(3, 7), ctx = r.int(0, 1);
+    var c = cen ? k - 1 : k, ring = xpRing(m, c), ans = cen ? k * ring : ring, a3 = c * (c - 1) * (c - 2), seq = [a3], j;
+    for (j = 4; j <= m; j++) seq.push(c * ipow(c - 1, j - 1) - seq[seq.length - 1]);
+    var shape = ctx === 0 ? '一個圓盤' : '一個正方形花圃';
+    var q = cen
+      ? shape + '分成中央一區與外圈 ' + T(String(m)) + ' 區：外圈的 ' + T(String(m)) + ' 區圍成一圈，每區只與左右兩區相鄰；中央那一區與外圈每一區都相鄰。用 ' + T(String(k)) + ' 種顏色塗色，每區一色、顏色可以重複使用，相鄰區不同色，共有幾種塗法？'
+      : shape + '的外圈分成 ' + T(String(m)) + ' 區圍成一圈（中間不塗），每區只與左右兩區相鄰。用 ' + T(String(k)) + ' 種顏色塗色，每區一色、顏色可以重複使用，相鄰區不同色，共有幾種塗法？';
+    var hh = (cen ? '先塗中央（' + k + ' 種），外圈每一區都要避開中央的顏色，只剩 ' + T(String(c)) + ' 種顏色可用。' : '') + '外圈 ' + m + ' 區、' + c + ' 種顏色圍成一圈：從第 1 區剪開當成一列，有 ' + T(c + '\\times' + (c - 1) + '^{' + (m - 1) + '}') + ' 種，其中首尾同色的，把首尾黏成一區就是「少一區的一圈」，要扣掉。'
+      + '所以 ' + T('a_m=' + c + '\\times' + (c - 1) + '^{m-1}-a_{m-1}') + '，從 ' + T('a_3=' + mulT([c, c - 1, c - 2]) + '=' + a3) + ' 算起' + (m > 3 ? '：' + seq.map(function (v, i) { return T('a_' + (i + 3) + '=' + v); }).join('、') : '') + '。'
+      + (m === 4 ? '（也可以依第 1、3 區同色與否分兩類。）' : '') + (cen ? '最後乘上中央的 ' + k + ' 種。' : '');
+    return { q: q, a: T(String(ans)) + ' 種', h: hh, p: { m: m, cen: cen, k: k, ctx: ctx, ans: ans } };
+  };
+
+  /* L3-17　錯排：指定幾個人都不回到自己的位置（取捨） */
+  var XP_DER = [['一間教室有 ', ' 個門，', ' 人分別從不同的門進入教室。下課時 ', ' 人各從一個門離開，每個門恰好一人離開。', '從自己進來的門離開', '離開的方法'],
+                ['', ' 位同學各把自己的帽子交給老師，老師把這 ', ' 頂帽子隨意發回，', ' 人各拿到一頂。', '拿到自己的帽子', '發帽子的方法'],
+                ['班上 ', ' 位同學重新抽座位（共 ', ' 個座位，', ' 人各坐一個）。', '坐回自己原來的座位', '坐法']];
+  var XP_D = [1, 0, 1, 2, 9, 44, 265, 1854];
+  L3.derangeDoor = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var n = r.int(4, 7), v = r.int(0, 2), s = r.pick(XP_DER), m = 0, rr = 0, ans, q, hh, i, terms = [], ev;
+    if (v === 0) { m = r.int(2, Math.min(4, n - 1)); }
+    else if (v === 1) { rr = r.int(1, n - 2); }
+    var who = NAMES.slice(0, m).join('、'), head = s[0] + T(String(n)) + s[1] + T(String(n)) + s[2] + T(String(n)) + s[3];
+    if (v === 0) {
+      ans = 0;
+      for (i = 0; i <= m; i++) { ans += (i % 2 === 0 ? 1 : -1) * C(m, i) * fact(n - i); terms.push((i === 0 ? '' : (i % 2 === 0 ? '+' : '-')) + (i === 0 ? '' : (C(m, i) === 1 ? '' : C(m, i) + '\\times')) + (n - i) + '!'); }
+      q = head + '若' + who + ' ' + T(String(m)) + ' 人都沒有' + s[4] + '（其他人不限），共有幾種' + s[5] + '？';
+      hh = '取捨：全部 ' + T(n + '!') + '，扣掉「某 1 人' + s[4] + '」（選那人 ' + T(cT(m, 1)) + '，其餘任意 ' + T((n - 1) + '!') + '），補回「某 2 人」（' + T(cT(m, 2) + '\\times' + (n - 2) + '!') + '），依此類推，只對' + who + '這 ' + m + ' 人做：' + T(terms.join('') + '=' + ans) + '。';
+    } else if (v === 1) {
+      ans = C(n, rr) * XP_D[n - rr];
+      q = head + '若恰有 ' + T(String(rr)) + ' 人' + s[4] + '，共有幾種' + s[5] + '？';
+      hh = '先選哪 ' + rr + ' 人' + s[4] + '：' + T(cT(n, rr)) + '；其餘 ' + (n - rr) + ' 人要全部都沒有' + s[4] + '，是 ' + (n - rr) + ' 人的錯排 ' + T('D_{' + (n - rr) + '}=' + XP_D[n - rr]) + (n - rr === 2 ? '（剩下兩人互換，只有 1 種）。' : '（用取捨：' + T((n - rr) + '!-' + cT(n - rr, 1) + '\\times' + (n - rr - 1) + '!+\\cdots') + '）。') + T(cT(n, rr) + (XP_D[n - rr] === 1 ? '' : '\\times' + XP_D[n - rr]) + '=' + ans) + '。';
+    } else {
+      ans = fact(n) - XP_D[n];
+      q = head + '若至少有一人' + s[4] + '，共有幾種' + s[5] + '？';
+      hh = '用補集：全部 ' + T(n + '!=' + fact(n)) + ' 扣掉「每個人都沒有' + s[4] + '」的錯排 ' + T('D_{' + n + '}=' + XP_D[n]) + '（取捨 ' + T(n + '!-' + cT(n, 1) + '\\times' + (n - 1) + '!+' + cT(n, 2) + '\\times' + (n - 2) + '!-\\cdots') + '），得 ' + T(fact(n) + '-' + XP_D[n] + '=' + ans) + '。';
+    }
+    return { q: q, a: T(String(ans)) + ' 種', h: hh, p: { n: n, v: v, m: m, r: rr, ctx: XP_DER.indexOf(s), ans: ans } };
+  };
+
+  /* L3-18　正因數＋取捨：是 A 的倍數但不是 B、也不是 C 的倍數 */
+  function xpNmul(pr, ex, M) {                    /* N=Πp^e 的正因數中，M 的倍數有幾個（M∤N 則 0） */
+    var cnt = 1, i;
+    for (i = 0; i < pr.length; i++) { var f = 0; while (M % pr[i] === 0) { M /= pr[i]; f++; } if (f > ex[i]) return 0; cnt *= ex[i] - f + 1; }
+    return M === 1 ? cnt : 0;
+  }
+  function xpLcm(a, b) { return a / gcd(a, b) * b; }
+  L3.divisorIE = function (r) {
+    r();                                                     /* 連號種子的第一個亂數幾乎一樣（檢測組種子相差 37），先丟掉一個 */
+    var pr = [2, 3, 5], ex, N, tries = 0, A, B, Cm, v, ans, ok;
+    do {
+      ex = [r.int(3, 6), r.int(2, 4), r.int(1, 4)]; N = ipow(2, ex[0]) * ipow(3, ex[1]) * ipow(5, ex[2]);
+      v = r.int(0, 2);
+      A = r.pick([4, 8, 6, 12, 9, 10]); B = r.pick([9, 27, 15, 25, 6, 10, 18]); Cm = r.pick([5, 3, 2, 25]);
+      ok = N <= 1000000 && A !== B && A % B !== 0 && B % A !== 0 && xpNmul(pr, ex, xpLcm(A, B)) > 0;
+      if (v === 2) ok = ok && A % Cm !== 0 && B % Cm !== 0 && xpNmul(pr, ex, xpLcm(Cm, xpLcm(A, B))) > 0;
+    } while (!ok && tries++ < 400);
+    var nA = xpNmul(pr, ex, A), nB = xpNmul(pr, ex, B), lab = xpLcm(A, B), nAB = xpNmul(pr, ex, lab), tot = (ex[0] + 1) * (ex[1] + 1) * (ex[2] + 1), q, hh;
+    var fac = xpFac(pr, ex);
+    if (v === 0) {
+      ans = nA + nB - nAB;
+      q = '在 ' + T(String(N)) + ' 的正因數中，是 ' + T(String(A)) + ' 的倍數或是 ' + T(String(B)) + ' 的倍數的有幾個？';
+      hh = T(N + '=' + fac) + '。' + T(String(A)) + ' 的倍數 ' + nA + ' 個、' + T(String(B)) + ' 的倍數 ' + nB + ' 個（每個指數至少要到它的那一份，再相乘），兩者都是 ⟺ 是 ' + T(String(lab)) + '（最小公倍數）的倍數，' + nAB + ' 個。' + T(nA + '+' + nB + '-' + nAB + '=' + ans) + '。';
+    } else if (v === 1) {
+      ans = tot - nA - nB + nAB;
+      q = '在 ' + T(String(N)) + ' 的正因數中，既不是 ' + T(String(A)) + ' 的倍數也不是 ' + T(String(B)) + ' 的倍數的有幾個？';
+      hh = T(N + '=' + fac) + '，正因數共 ' + T(String(tot)) + ' 個。' + T(String(A)) + ' 的倍數 ' + nA + ' 個、' + T(String(B)) + ' 的倍數 ' + nB + ' 個、' + T(String(lab)) + ' 的倍數 ' + nAB + ' 個。用補集＋取捨：' + T(tot + '-' + nA + '-' + nB + '+' + nAB + '=' + ans) + '。';
+    } else {
+      var lcA = xpLcm(Cm, A), lcB = xpLcm(Cm, B), lcAB = xpLcm(Cm, lab), nC = xpNmul(pr, ex, Cm), n1 = xpNmul(pr, ex, lcA), n2 = xpNmul(pr, ex, lcB), n3 = xpNmul(pr, ex, lcAB);
+      ans = nC - n1 - n2 + n3;
+      q = '在 ' + T(String(N)) + ' 的正因數中，是 ' + T(String(Cm)) + ' 的倍數，但不是 ' + T(String(A)) + ' 的倍數也不是 ' + T(String(B)) + ' 的倍數的有幾個？';
+      hh = T(N + '=' + fac) + '。先只看 ' + T(String(Cm)) + ' 的倍數（' + nC + ' 個），再扣掉其中是 ' + T(String(A)) + ' 的倍數的（' + T(String(lcA)) + ' 的倍數，' + n1 + ' 個）與是 ' + T(String(B)) + ' 的倍數的（' + T(String(lcB)) + ' 的倍數，' + n2 + ' 個），補回兩者都是的（' + T(String(lcAB)) + ' 的倍數，' + n3 + ' 個）：' + T(nC + '-' + n1 + '-' + n2 + '+' + n3 + '=' + ans) + '。';
+    }
+    return { q: q, a: T(String(ans)) + ' 個', h: hh, p: { N: N, v: v, A: A, B: B, C: Cm, ans: ans } };
+  };
+
+  var META_L3 = [['multiples3', '三集合取捨：三個數的倍數'], ['oddCount', '含奇數個某數字的 k 位數'], ['distinctMult', '相異數字排成的倍數'], ['orderedPick', '各自遞增：只剩「選」'], ['seatBlock', '座位不相鄰＋禁用座位'], ['prodMultiple', '乘積為 M 的倍數'], ['shareItems', '一人 a 個另兩人各 b 個'], ['sumCoefC', 'Σ(j−c)C(n,j) 求值'], ['digitExtreme', '各位互異且某位最小／最大'], ['nonAdjProb', '編號都不相連的機率'], ['sameGroup', '至少兩人同一組的機率'], ['drawUntilEmpty', '某色先取完的機率'], ['gapPrize', '兩黑球之間白球數的期望值'], ['fairPenalty', '公平遊戲反求賠額'], ['drawExpect', '取 k 個中特定品項的期望值'], ['coloringRing', '圍成一圈的塗色'], ['derangeDoor', '錯排：指定的人都不回原位'], ['divisorIE', '正因數的取捨']];
   /* 固定題 L3-n 對應的類似題型 */
-  var L3_FIX = { 'L3-1': 'multiples3', 'L3-2': 'oddCount', 'L3-3': 'distinctMult', 'L3-4': 'orderedPick', 'L3-5': 'seatBlock', 'L3-6': 'prodMultiple', 'L3-7': 'shareItems', 'L3-8': 'sumCoefC', 'L3-9': 'digitExtreme', 'L3-10': 'nonAdjProb', 'L3-11': 'sameGroup', 'L3-12': 'drawUntilEmpty', 'L3-13': 'gapPrize', 'L3-14': 'fairPenalty', 'L3-15': 'drawExpect' };
+  var L3_FIX = { 'L3-1': 'multiples3', 'L3-2': 'oddCount', 'L3-3': 'distinctMult', 'L3-4': 'orderedPick', 'L3-5': 'seatBlock', 'L3-6': 'prodMultiple', 'L3-7': 'shareItems', 'L3-8': 'sumCoefC', 'L3-9': 'digitExtreme', 'L3-10': 'nonAdjProb', 'L3-11': 'sameGroup', 'L3-12': 'drawUntilEmpty', 'L3-13': 'gapPrize', 'L3-14': 'fairPenalty', 'L3-15': 'drawExpect', 'L3-16': 'coloringRing', 'L3-17': 'derangeDoor', 'L3-18': 'divisorIE' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：因數與倍數的個數（國中）、分數的約分與四則（國中）、集合的聯集與交集個數（國中）、階乘與連乘的化簡（國中）、加權平均（國中）
@@ -1713,6 +2111,17 @@
     'L3.gapPrize': { f: function (p) { return p.v; }, why: '只看兩顆黑球的位置：$C^{w+2}_2$ 種等可能，間隔 $k$ 的有 $w+1-k$ 種。獎金是 $ck+d$ 時，$E=cE(k)+d$，先算 $E(k)$ 再平移伸縮就好。' },
     'L3.drawExpect': { f: function (p) { return p.v; }, why: '取 $k$ 個中特定品項個數的期望值 $=k\\cdot\\dfrac{m}{N}$（每一個被取到的機會都是 $\\frac mN$，線性相加）；乘上單價就是金額的期望值；問「恰取到 $1$ 個的機率」才需要真的算 $\\dfrac{C^m_1C^{N-m}_{k-1}}{C^N_k}$。' }
   };
+  /* 2026-09-28 擴充題型的對照題 */
+  CONTRAST['L1.divisorCount'] = { f: function (p) { return p.kind; }, why: '(1) 都是「每個質因數的指數 $+1$ 再相乘」；(2) 差在指數能取哪些值：奇數只能讓 $2$ 的指數為 $0$、完全平方數的指數都要偶數、完全立方數要 $3$ 的倍數、是 $m$ 的倍數則每個指數都要至少到 $m$ 的那一份。' };
+  CONTRAST['L1.coloring'] = { f: function (p) { return p.kind; }, why: '塗色都是依序塗、每區避開「已塗好又相鄰」的顏色。排成一列或中央加一圈不相鄰的區，每一步能用的顏色數固定，直接相乘；田字格的對角兩格不相鄰、可能同色，後面能用幾色會跟著變，要先分「同色／不同色」兩類。' };
+  CONTRAST['L1.repChoose'] = { f: function (p) { return p.kind < 2; }, why: '買飲料與展開式的項數是同一件事：都是「$n$ 種東西各選幾個、總共 $k$ 個」，也就是 $x_1+\\cdots+x_n=k$ 的非負整數解 $C^{n+k-1}_{n-1}$；每種都要出現就改成正整數解 $C^{k-1}_{n-1}$。' };
+  CONTRAST['L2.mixDistribute'] = { f: function (p) { return p.v; }, why: '相同物用隔板、相異物各自選人，兩者分開算再相乘。「至少一」的條件加在哪一種東西上，就只有那一種要處理：加在相同物上改成正整數解，加在相異物上用取捨；若是「至少拿到一件東西」，兩種東西綁在一起，只能整體用取捨。' };
+  CONTRAST['L2.barsUpper'] = { f: function (p) { return p.kind; }, why: '三題都是「有上限的整數解」：先不管上限用隔板，再扣掉「某一個超過上限」的（先分給它上限 $+1$ 個再隔板），依取捨原理一層一層補回。骰子題要先令 $y_i=x_i-1$，把下限 $1$ 換成 $0$、上限 $6$ 換成 $5$。' };
+  CONTRAST['L2.binomApprox'] = { f: function (p) { return p.kind; }, why: '三題都是把底數拆成「好算的數 $+$ 小的數」再用二項式展開：近似值要留到影響四捨五入的那一項；除以 $100$ 的餘數只留最後兩項（其餘都是 $100$ 的倍數）；除以 $x^2$ 的餘式也只留最後兩項（其餘都能被 $x^2$ 整除）。' };
+  CONTRAST['L3.coloringRing'] = { f: function (p) { return !!p.cen; }, why: '外圈圍成一圈時，第一區與最後一區也相鄰，不能直接連乘；要把圈剪開成一列再扣掉首尾同色的。有中央一區時先塗中央，外圈可用的顏色少一種，其餘做法相同。' };
+  CONTRAST['L3.derangeDoor'] = { f: function (p) { return p.v; }, why: '「指定幾個人都不回原位」只對那幾個人做取捨；「恰有 $r$ 人回原位」先選那 $r$ 人，其餘做錯排；「至少一人回原位」用全部扣掉錯排。三題都靠同一個取捨式。' };
+  CONTRAST['L3.divisorIE'] = { f: function (p) { return p.v; }, why: '正因數裡「是 $M$ 的倍數」的個數，就是每個指數至少到 $M$ 的那一份再相乘。「$A$ 或 $B$」要扣兩者的最小公倍數；「都不是」用全部去扣；「是 $C$ 的倍數但都不是」則在 $C$ 的倍數裡面做同樣的取捨。' };
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

@@ -660,6 +660,229 @@
              p: { u: u, v: fr2(vv), N: N, ans: fr2(S) } };
   };
 
+  /* ══════════ 2026-09-28 擴充（依段考卷出現頻率補題型）：L1 4 型、L2 5 型 ══════════ */
+  function decF(f) {                                   /* 分母是 10 的次方的因數：寫成有限小數（1.44、0.8、-0.2） */
+    var s = f.n < 0 ? '-' : '', n = Math.abs(f.n), d = f.d, ip = Math.floor(n / d), rem = n % d, digs = '', c = 0;
+    if (!rem) return s + ip;
+    while (rem && c < 12) { rem *= 10; digs += Math.floor(rem / d); rem %= d; c++; }
+    return s + ip + '.' + digs;
+  }
+  function rateF(x) { return F(100 + x, 100); }        /* 成長率 x% → 倍率 1+x/100 */
+  function pctTex(x) { return x + '\\%'; }
+
+  /* 1-1 平均成長率：反求某一年的成長率 */
+  L1.growthNeed = function (r) {
+    var g, tries = 0;
+    do { g = r.pick(GPAIR); } while (g[0] === 0 && tries++ < 50);
+    var R = g[0], a = g[1], b = g[2], kind = r.int(0, 2), sw = r() < 0.5, x = sw ? b : a, y = sw ? a : b;
+    var rates, miss;                                    /* rates：各年成長率，miss：未知的是第幾年（從 0 算） */
+    if (kind === 0) { rates = [x, y]; miss = 1; }
+    else if (kind === 1) { rates = r() < 0.5 ? [x, R, y] : [R, x, y]; miss = 2; }
+    else { rates = [x, y, R]; miss = 1; }
+    var N = rates.length, known = [];
+    for (var i = 0; i < N; i++) if (i !== miss) known.push('第 ' + T(String(i + 1)) + ' 年為 ' + T(pctTex(rates[i])));
+    var tgt = fpow(rateF(R), N), kp = F(1); for (var j = 0; j < N; j++) if (j !== miss) kp = Fr.mul(kp, rateF(rates[j]));
+    var need = Fr.div(tgt, kp);
+    var mulT = []; for (var j2 = 0; j2 < N; j2++) if (j2 !== miss) mulT.push(decF(rateF(rates[j2])));
+    return { q: '某公司連續 ' + T(String(N)) + ' 年的營收成長率中，' + known.join('、') + '。若希望這 ' + T(String(N)) + ' 年的平均成長率恰好是 ' + T(pctTex(R)) + '，第 ' + T(String(miss + 1)) + ' 年的成長率應該是多少？',
+             a: T(pctTex(y)),
+             h: '平均成長率是幾何平均：$' + N + '$ 年的倍率相乘要等於 $' + decF(rateF(R)) + '^{' + N + '}=' + decF(tgt) + '$。已知年份的倍率相乘是 $' + mulT.join('\\times') + (mulT.length > 1 ? '=' + decF(kp) : '') + '$，所以第 $' + (miss + 1) + '$ 年的倍率是 $' + decF(tgt) + '\\div' + decF(kp) + '$，再減 $1$ 換回百分比。',
+             p: { rates: rates, miss: miss, R: R, ans: y, need: fr2(need), tgt: fr2(tgt), kp: fr2(kp) } };
+  };
+
+  /* 2-12 平方和、立方和：不從 1 開始、只加奇數或偶數 */
+  function sq6(n) { return n * (n + 1) * (2 * n + 1) / 6; }
+  function cu4(n) { var t = n * (n + 1) / 2; return t * t; }
+  L1.powerSumRange = function (r) {
+    var t = r.int(0, 4), a, b, m, val, q, h;
+    if (t === 0) {
+      a = r.int(5, 15); b = a + r.int(8, 22); val = sq6(b) - sq6(a - 1);
+      q = a + '^2+' + (a + 1) + '^2+' + (a + 2) + '^2+\\cdots+' + b + '^2';
+      h = '不從 $1$ 開始，就用「大的減小的」：$\\displaystyle\\sum_{k=1}^{' + b + '}k^2-\\sum_{k=1}^{' + (a - 1) + '}k^2=\\dfrac{' + b + '\\times' + (b + 1) + '\\times' + (2 * b + 1) + '}{6}-\\dfrac{' + (a - 1) + '\\times' + a + '\\times' + (2 * a - 1) + '}{6}$。';
+    } else if (t === 1) {
+      a = r.int(4, 12); b = a + r.int(6, 14); val = cu4(b) - cu4(a - 1);
+      q = a + '^3+' + (a + 1) + '^3+' + (a + 2) + '^3+\\cdots+' + b + '^3';
+      h = '不從 $1$ 開始，就用「大的減小的」：$\\displaystyle\\sum_{k=1}^{' + b + '}k^3-\\sum_{k=1}^{' + (a - 1) + '}k^3=\\left(\\dfrac{' + b + '\\times' + (b + 1) + '}{2}\\right)^2-\\left(\\dfrac{' + (a - 1) + '\\times' + a + '}{2}\\right)^2$。';
+    } else if (t === 2) {
+      m = r.int(6, 20); val = sq6(2 * m) - 4 * sq6(m);
+      q = '1^2+3^2+5^2+\\cdots+' + (2 * m - 1) + '^2';
+      h = '奇數的平方和 ＝ 全部的平方和 － 偶數的平方和：$(1^2+2^2+\\cdots+' + (2 * m) + '^2)-(2^2+4^2+\\cdots+' + (2 * m) + '^2)$，偶數那一串提出 $2^2$ 變成 $4(1^2+2^2+\\cdots+' + m + '^2)$。';
+    } else if (t === 3) {
+      m = r.int(5, 15); val = 8 * cu4(m);
+      q = '2^3+4^3+6^3+\\cdots+' + (2 * m) + '^3';
+      h = '每一項都提出 $2^3$：$2^3(1^3+2^3+\\cdots+' + m + '^3)=8\\times\\left(\\dfrac{' + m + '\\times' + (m + 1) + '}{2}\\right)^2$。';
+    } else {
+      m = r.int(5, 15); val = cu4(2 * m) - 8 * cu4(m);
+      q = '1^3+3^3+5^3+\\cdots+' + (2 * m - 1) + '^3';
+      h = '奇數的立方和 ＝ 全部的立方和 － 偶數的立方和：$(1^3+2^3+\\cdots+' + (2 * m) + '^3)-2^3(1^3+2^3+\\cdots+' + m + '^3)$。';
+    }
+    return { q: '求 ' + T(q) + '。', a: T(String(val)), h: h, p: { t: t, a: a, b: b, m: m, ans: val } };
+  };
+
+  /* 2-13 Σ 的性質：由已知的 Σaₖ、Σaₖ² 算新的和 */
+  L1.sigmaLinear = function (r) {
+    var N = r.int(5, 10), seq = [], t = r.int(0, 3), i;
+    var A, Bq, C;
+    do {
+      seq = []; for (i = 0; i < N; i++) seq.push(r.int(-4, 6));
+      A = 0; Bq = 0; C = 0; for (i = 0; i < N; i++) { A += seq[i]; Bq += seq[i] * seq[i]; C += (i + 1) * seq[i]; }
+    } while (seq.every(function (v) { return v === seq[0]; }) || A === 0 || C === 0);
+    var p = r.nz(-3, 3), q = r.nz(-5, 5), s = r.sign(), body, val, parts;
+    if (t === 0) { if (p === 1) p = 2; body = '(' + term(p, 'a_k', true) + term(q, '', false) + ')'; val = p * A + q * N; parts = [['a_k', p], ['1', q]]; }
+    else if (t === 1) { if (p === 1) p = 2; body = '(' + term(p, 'a_k', true) + term(q, '', false) + ')^2'; val = p * p * Bq + 2 * p * q * A + q * q * N; parts = [['a_k^2', p * p], ['a_k', 2 * p * q], ['1', q * q]]; }
+    else if (t === 2) { body = '(a_k' + (s > 0 ? '+' : '-') + 'k)^2'; val = Bq + 2 * s * C + sq6(N); parts = [['a_k^2', 1], ['ka_k', 2 * s], ['k^2', 1]]; }
+    else { if (p === q) q = p + 1; if (q === 0) q = (p === 2 ? 3 : 2); body = '(a_k' + term(p, '', false) + ')(a_k' + term(q, '', false) + ')'; val = Bq + (p + q) * A + p * q * N; parts = [['a_k^2', 1], ['a_k', p + q], ['1', p * q]]; }
+    var SG = function (b) { return '\\displaystyle\\sum_{k=1}^{' + N + '}' + b; };
+    var given = T(SG('a_k') + '=' + A) + '、' + T(SG('a_k^2') + '=' + Bq) + (t === 2 ? '、' + T(SG('ka_k') + '=' + C) : '');
+    var exp = ''; parts.forEach(function (pr) { if (pr[1] !== 0) exp += term(pr[1], pr[0] === '1' ? '' : pr[0], exp === ''); });
+    return { q: '已知 ' + given + '，求 ' + T(SG(body)) + '。', a: T(String(val)),
+             h: '先把括號乘開：$' + body + '=' + exp + '$，再逐項求和：$\\sum a_k^2=' + Bq + '$、$\\sum a_k=' + A + '$' + (t === 2 ? '、$\\sum ka_k=' + C + '$、$\\sum k^2=' + sq6(N) + '$' : '') + '；常數 $c$ 從 $k=1$ 加到 $' + N + '$ 是 $' + N + 'c$，不是 $c$。',
+             p: { t: t, N: N, A: A, B: Bq, C: C, pp: p, qq: q, s: s, ans: val } };
+  };
+
+  /* 2-14 圖形裡的等比：取中點、每次塗掉一部分 */
+  L1.shapeGP = function (r) {
+    var t = r.int(0, 2), n = r.int(4, 7), q, a1, rr, an, Sn, ask1, ask2, h, m = 0, A0 = 0, side = 0, P = 0;
+    if (t === 0) {
+      side = r.pick([4, 6, 8, 10, 12, 16]); a1 = F(side * side); rr = F(1, 2);
+      q = '邊長 ' + T(String(side)) + ' 的正方形，連接四邊的中點得到第 ' + T('2') + ' 個正方形，再連接第 ' + T('2') + ' 個正方形四邊的中點得到第 ' + T('3') + ' 個正方形，依此類推。';
+      ask1 = '第 ' + T(String(n)) + ' 個正方形的面積'; ask2 = '前 ' + T(String(n)) + ' 個正方形的面積總和';
+      h = '新正方形的邊長是原來的 $\\dfrac{\\sqrt2}{2}$ 倍，面積就是原來的 $\\dfrac12$：面積成等比，首項 $' + side + '^2=' + (side * side) + '$、公比 $\\dfrac12$。第 $' + n + '$ 個是 $' + (side * side) + '\\times\\left(\\dfrac12\\right)^{' + (n - 1) + '}$，總和套 $S_n=\\dfrac{a_1(1-r^n)}{1-r}$。';
+    } else if (t === 1) {
+      P = r.pick([12, 24, 36, 48, 60, 96]); a1 = F(P); rr = F(1, 2);
+      q = '周長 ' + T(String(P)) + ' 的正三角形，連接三邊的中點得到第 ' + T('2') + ' 個正三角形，再連接第 ' + T('2') + ' 個三角形三邊的中點得到第 ' + T('3') + ' 個，依此類推。';
+      ask1 = '第 ' + T(String(n)) + ' 個正三角形的周長'; ask2 = '前 ' + T(String(n)) + ' 個正三角形的周長總和';
+      h = '中點連線是對邊的一半，所以新三角形的周長是原來的 $\\dfrac12$：周長成等比，首項 $' + P + '$、公比 $\\dfrac12$。第 $' + n + '$ 個是 $' + P + '\\times\\left(\\dfrac12\\right)^{' + (n - 1) + '}$，總和套 $S_n=\\dfrac{a_1(1-r^n)}{1-r}$。';
+    } else {
+      m = r.pick([2, 3, 4]); n = m === 4 ? r.int(3, 5) : r.int(4, 6); A0 = ipow(m, n); rr = F(m - 1, m); a1 = F(A0, m);
+      q = '一個面積 ' + T(String(A0)) + ' 的正方形。第 ' + T('1') + ' 次把它分成面積相等的 ' + T(String(m)) + ' 塊，塗色其中 ' + T('1') + ' 塊；之後每一次都把「還沒塗色的部分」分成面積相等的 ' + T(String(m)) + ' 塊，再塗色其中 ' + T('1') + ' 塊。';
+      ask1 = '第 ' + T(String(n)) + ' 次塗色的那一塊面積'; ask2 = '做完 ' + T(String(n)) + ' 次後，塗色部分的總面積';
+      h = '每一次塗掉的是「剩下的」$\\dfrac1{' + m + '}$，所以塗完後還沒塗的部分變成原來的 $\\dfrac{' + (m - 1) + '}{' + m + '}$。各次塗的那一塊成等比：首項 $' + A0 + '\\times\\dfrac1{' + m + '}=' + Fr.tex(a1) + '$、公比 $\\dfrac{' + (m - 1) + '}{' + m + '}$。總面積也可以用「全部 $-$ 最後還沒塗的 $' + A0 + '\\times\\left(\\dfrac{' + (m - 1) + '}{' + m + '}\\right)^{' + n + '}$」。';
+    }
+    an = Fr.mul(a1, fpow(rr, n - 1)); Sn = SUMF(0, n - 1, function (k) { return Fr.mul(a1, fpow(rr, k)); });
+    return { q: q + '(1) 求' + ask1 + '。(2) 求' + ask2 + '。', a: '(1) ' + T(Fr.tex(an)) + '　(2) ' + T(Fr.tex(Sn)), h: h,
+             p: { t: t, n: n, side: side, P: P, m: m, A0: A0, ans: [fr2(an), fr2(Sn)] } };
+  };
+
+  /* ═══ L2 ═══ */
+  /* 1-a 衍生數列是否一定是等差、等比（多選） */
+  var DERIV = [   /* [LaTeX, 一定是等差, 一定是等比]；a 等差（d≠0），b 等比（r≠1、各項皆正） */
+    ['LIN', 1, 0], ['\\langle a_{2n}\\rangle', 1, 0], ['\\langle a_n+a_{n+1}\\rangle', 1, 0], ['\\langle a_n^{\\,2}\\rangle', 0, 0],
+    ['\\langle a_na_{n+1}\\rangle', 0, 0], ['POW', 0, 1], ['\\langle b_n^{\\,2}\\rangle', 0, 1], ['\\left\\langle \\dfrac{1}{b_n}\\right\\rangle', 0, 1],
+    ['\\langle b_{2n}\\rangle', 0, 1], ['\\langle b_n+b_{n+1}\\rangle', 0, 1], ['\\langle b_{n+1}-b_n\\rangle', 0, 1], ['\\langle \\log b_n\\rangle', 1, 0],
+    ['\\left\\langle \\dfrac{b_{n+1}}{b_n}\\right\\rangle', 1, 1], ['\\langle a_n+b_n\\rangle', 0, 0], ['\\langle a_nb_n\\rangle', 0, 0], ['\\langle 2^nb_n\\rangle', 0, 1],
+    ['\\langle a_{n+1}-a_n\\rangle', 1, 1], ['\\langle nb_n\\rangle', 0, 0], ['\\langle \\sqrt{b_n}\\rangle', 0, 1]
+  ];
+  L2.derivedSeq = function (r) {
+    var ask = r.int(0, 1), ids, flags, cnt, tries = 0, pL = r.pick([2, 3, -2, -3, 5]), qL = r.nz(-5, 5), cP = r.pick([2, 3]);
+    do { ids = r.shuffle(DERIV.map(function (x, i) { return i; })).slice(0, 5); flags = ids.map(function (i) { return DERIV[i][ask + 1]; }); cnt = flags.reduce(function (s, v) { return s + v; }, 0); }
+    while ((cnt < 1 || cnt > 4) && tries++ < 100);
+    var texOf = function (i) { var s = DERIV[i][0]; return s === 'LIN' ? '\\langle ' + term(pL, 'a_n', true) + term(qL, '', false) + '\\rangle' : s === 'POW' ? '\\langle ' + cP + '^{a_n}\\rangle' : s; };
+    var opts = ids.map(function (i, k) { return '(' + (k + 1) + ') ' + T(texOf(i)); }).join('　');
+    var ans = []; flags.forEach(function (f, k) { if (f) ans.push('(' + (k + 1) + ')'); });
+    var word = ask === 0 ? '等差' : '等比';
+    var extra = [], cst = [];
+    ids.forEach(function (i, k) { if (i === 12 || i === 16) cst.push('(' + (k + 1) + ')'); });
+    if (cst.length) extra.push(cst.join('') + ' 是常數數列：常數數列算等差（公差 $0$），各項不是 $0$ 的常數數列也算等比（公比 $1$）');
+    ids.forEach(function (i, k) {
+      if (i === 11) extra.push('(' + (k + 1) + ') 用 $\\log b_{n+1}-\\log b_n=\\log r$');
+      if (i === 5) extra.push('(' + (k + 1) + ') 用 $\\dfrac{' + cP + '^{a_{n+1}}}{' + cP + '^{a_n}}=' + cP + '^{d}$');
+    });
+    return { q: '設 ' + T('\\langle a_n\\rangle') + ' 是公差 ' + T('d\\ne0') + ' 的等差數列，' + T('\\langle b_n\\rangle') + ' 是公比 ' + T('r\\ne1') + ' 且各項都是正數的等比數列。下列哪些數列<b>一定是' + word + '數列</b>？（多選）' + opts,
+             a: ans.join(''),
+             h: (ask === 0 ? '等差看相鄰兩項的差 $c_{n+1}-c_n$' : '等比看相鄰兩項的比 $\\dfrac{c_{n+1}}{c_n}$') + '，把 $a_n=a_1+(n-1)d$、$b_n=b_1r^{n-1}$ 代進去，化簡後與 $n$ 無關才是。' + (extra.length ? extra.join('；') + '。' : '') + '覺得不是的，舉一組數字當反例（例如 $a_n=n$、$b_n=2^{n}$）。',
+             p: { ask: ask, ids: ids, pL: pL, qL: qL, cP: cP, ans: flags } };
+  };
+
+  /* 2-a 由 S_m 的正負判斷 S_n 何時最大（最小） */
+  L2.arSignSn = function (r) {
+    var kind = r.int(0, 2), p, k, w, u, v, q, a1, a2, h;
+    if (kind < 2) {
+      p = r.int(9, 41); k = Math.ceil(p / 2);
+      var gt = kind === 0 ? '\\gt0' : '\\lt0', lt = kind === 0 ? '\\lt0' : '\\gt0', word = kind === 0 ? '最大' : '最小', sg = kind === 0 ? '\\gt0' : '\\lt0';
+      q = '等差數列 ' + T('\\langle a_n\\rangle') + ' 的前 ' + T('n') + ' 項和為 ' + T('S_n') + '，已知 ' + T('S_{' + p + '}' + gt) + '、' + T('S_{' + (p + 1) + '}' + lt) + '。(1) ' + T('n') + ' 為多少時 ' + T('S_n') + ' ' + word + '？(2) 使 ' + T('S_n' + sg) + ' 的最大正整數 ' + T('n') + ' 是多少？';
+      a1 = k; a2 = p;
+      if (p % 2) h = '奇數項的和＝項數 $\\times$ 中間項：$S_{' + p + '}=' + p + 'a_{' + k + '}' + gt + '$ ⟹ $a_{' + k + '}' + gt + '$；偶數項的和＝項數的一半 $\\times$ 中間兩項的和：$S_{' + (p + 1) + '}=' + k + '(a_{' + k + '}+a_{' + (k + 1) + '})' + lt + '$ ⟹ $a_{' + (k + 1) + '}' + lt + '$，而且 $|a_{' + (k + 1) + '}|\\gt|a_{' + k + '}|$。';
+      else h = '偶數項的和＝項數的一半 $\\times$ 中間兩項的和：$S_{' + p + '}=' + k + '(a_{' + k + '}+a_{' + (k + 1) + '})' + gt + '$；奇數項的和＝項數 $\\times$ 中間項：$S_{' + (p + 1) + '}=' + (p + 1) + 'a_{' + (k + 1) + '}' + lt + '$ ⟹ $a_{' + (k + 1) + '}' + lt + '$，再由第一式得 $a_{' + k + '}' + gt + '$。';
+      h += '於是 $a_{' + k + '}$ 與 $a_{' + (k + 1) + '}$ 異號，$S_n$ 加到第 $' + k + '$ 項為止最' + (kind === 0 ? '大' : '小') + '；$S_n$ 是 $n$ 的二次式、$S_0=0$，由 $S_{' + p + '}$ 與 $S_{' + (p + 1) + '}$ 異號看出第 (2) 小題。';
+    } else {
+      w = r.int(6, 21); k = w - 1; u = r.int(1, k - 1); v = 2 * w - 1 - u;
+      q = '等差數列 ' + T('\\langle a_n\\rangle') + ' 的前 ' + T('n') + ' 項和為 ' + T('S_n') + '，已知 ' + T('a_{' + u + '}+a_{' + v + '}\\gt0') + '、' + T('a_{' + w + '}\\lt0') + '。(1) ' + T('n') + ' 為多少時 ' + T('S_n') + ' 最大？(2) 使 ' + T('S_n\\gt0') + ' 的最大正整數 ' + T('n') + ' 是多少？';
+      a1 = k; a2 = 2 * k;
+      h = '足標相加相同的兩項和相等：$' + u + '+' + v + '=' + k + '+' + w + '$，所以 $a_{' + k + '}+a_{' + w + '}=a_{' + u + '}+a_{' + v + '}\\gt0$，配上 $a_{' + w + '}\\lt0$ 得 $a_{' + k + '}\\gt0$、公差為負，$S_n$ 加到第 $' + k + '$ 項最大。再看 $S_{' + (2 * k) + '}=' + k + '(a_{' + k + '}+a_{' + w + '})$ 與 $S_{' + (2 * k + 1) + '}=' + (2 * k + 1) + 'a_{' + w + '}$ 的正負。';
+    }
+    return { q: q, a: '(1) ' + T('n=' + a1) + '　(2) ' + T('n=' + a2), h: h, p: { kind: kind, p: p, w: w, u: u, v: v, ans: [a1, a2] } };
+  };
+
+  /* 1-b 等差三數調整後成等比 */
+  L2.apToGp = function (r) {
+    var RAT = [[2, 1], [3, 1], [4, 1], [3, 2], [4, 3], [5, 3], [5, 4], [5, 2]];
+    var m, d, pq, tt, V, u, v, w, d2, ok = false, tries = 0, down;
+    do {
+      m = r.int(4, 20); d = r.int(1, m - 1); pq = r.pick(RAT); down = r() < 0.3;
+      var pp = down ? pq[1] : pq[0], qq = down ? pq[0] : pq[1];
+      tt = r.int(1, 6); V = pp * qq * tt;
+      var first = qq * qq * tt, third = pp * pp * tt;
+      u = first - (m - d); v = V - m; w = third - (m + d);
+      d2 = (u - w) - d;
+      var bad2 = d2 === d || Math.abs(d2) >= m || (m + u - d2) === 0 || (m + w + d2) === 0;
+      ok = u >= 1 && v >= 1 && w >= 1 && u <= 60 && v <= 60 && w <= 80 && bad2;
+    } while (!ok && tries++ < 3000);
+    var S = 3 * m, xs = [m - d, m, m + d];
+    return { q: '三個正數成等差數列，其和為 ' + T(String(S)) + '。若這三個數依序加上 ' + T(u + ',\\ ' + v + ',\\ ' + w) + ' 後成為等比數列，求這三個數。',
+             a: T(xs.join(',\\ ')),
+             h: '設三數為 $m-d,\\ m,\\ m+d$：和 $3m=' + S + '$ ⟹ $m=' + m + '$。加上之後是 $' + (m + u) + '-d,\\ ' + (m + v) + ',\\ ' + (m + w) + '+d$，成等比 ⟹ 中間項的平方等於兩端相乘：$' + (m + v) + '^2=(' + (m + u) + '-d)(' + (m + w) + '+d)$，解出 $d$ 的兩個值，再用「三數都是正數」取捨。',
+             p: { m: m, d: d, u: u, v: v, w: w, d2: d2, ans: xs } };
+  };
+
+  /* 2-b 分期付款：每期還多少 */
+  L2.loanPay = function (r) {
+    var mon, P, iP, n, rate, g, xe, xg, xr, tries = 0, ok = false;
+    do {
+      mon = r() < 0.6;
+      if (mon) { P = r.pick([60000, 120000, 240000, 360000, 600000]); iP = r.pick([0.5, 1, 1.5]); n = r.pick([6, 10, 12, 18, 24]); }
+      else { P = r.pick([1000000, 2000000, 3000000, 5000000]); iP = r.pick([2, 3, 4, 5]); n = r.pick([5, 8, 10, 15, 20]); }
+      rate = (100 + iP) / 100; var pw = Math.pow(rate, n);
+      g = Math.round(pw * 1e6) / 1e6;
+      xe = P * pw * (iP / 100) / (pw - 1); xg = P * g * (iP / 100) / (g - 1);
+      var fr = xe - Math.floor(xe);
+      ok = Math.round(xe) === Math.round(xg) && Math.abs(fr - 0.5) > 0.05;
+    } while (!ok && tries++ < 200);
+    xr = Math.round(xe);
+    var unit = mon ? '月' : '年', gT = g.toFixed(6);
+    return { q: '小明向銀行借款 ' + T(String(P)) + ' 元，' + (mon ? '月' : '年') + '利率 ' + T(iP + '\\%') + '、每' + unit + '複利一次。借款後滿一' + (mon ? '個月' : '年') + '開始，每' + unit + '底還給銀行相同的金額 ' + T('x') + ' 元，共還 ' + T(String(n)) + ' 期剛好還清。(1) 求 ' + T('x') + '（四捨五入到整數元）。(2) 用 (1) 的金額計算，這 ' + T(String(n)) + ' 期共還了多少元？（已知 ' + T('(' + rate + ')^{' + n + '}\\approx' + gT) + '）',
+             a: '(1) 約 ' + T(String(xr)) + ' 元　(2) ' + T(String(xr * n)) + ' 元',
+             h: '把所有的錢都搬到最後一期期末比較：借款滾 $' + n + '$ 期變成 $' + P + '\\times' + rate + '^{' + n + '}$；第 $1$ 期還的 $x$ 滾 $' + (n - 1) + '$ 期、第 $2$ 期滾 $' + (n - 2) + '$ 期……最後一期不滾，加起來是等比級數 $x\\cdot\\dfrac{' + rate + '^{' + n + '}-1}{' + (iP / 100) + '}$。兩者相等，代 $' + rate + '^{' + n + '}\\approx' + gT + '$ 解出 $x$。',
+             p: { P: P, i: iP, n: n, mon: mon, g: gT, ans: [xr, xr * n] } };
+  };
+
+  /* 2-c 圖形規律：堆疊與排列的總數 */
+  L2.figStack = function (r) {
+    var t = r.int(0, 3), N, q, a, h, p1, p2, pp = 0, qq = 0, uu = 0, vv = 0, k;
+    if (t === 0) {
+      N = r.int(6, 20); p1 = N * (N + 1) / 2; p2 = SUM(1, N, function (k) { return k * (k + 1) / 2; });
+      q = '把同樣大小的球堆成三角錐：由上往下，第 ' + T('1') + ' 層 ' + T('1') + ' 個、第 ' + T('2') + ' 層 ' + T('3') + ' 個、第 ' + T('3') + ' 層 ' + T('6') + ' 個，第 ' + T('k') + ' 層是每邊 ' + T('k') + ' 個球排成的正三角形。堆到第 ' + T(String(N)) + ' 層。(1) 第 ' + T(String(N)) + ' 層有幾個球？(2) 全部共有幾個球？';
+      h = '第 $k$ 層有 $1+2+\\cdots+k=\\dfrac{k(k+1)}{2}$ 個。總數 $\\displaystyle\\sum_{k=1}^{' + N + '}\\dfrac{k(k+1)}{2}=\\dfrac12\\left(\\sum k^2+\\sum k\\right)$，代 $n=' + N + '$。';
+    } else if (t === 1) {
+      pp = r.int(1, 4); qq = r.int(1, 3); uu = r.int(1, 3); vv = r.int(1, 2); N = r.int(8, 25);
+      var L = function (k) { return (pp + uu * (k - 1)) * (qq + vv * (k - 1)); };
+      p1 = L(N); p2 = SUM(1, N, L);
+      q = '用方塊積木往下堆：最上層排成長 ' + T(String(pp)) + ' 塊、寬 ' + T(String(qq)) + ' 塊的長方形，每往下一層，長增加 ' + T(String(uu)) + ' 塊、寬增加 ' + T(String(vv)) + ' 塊。共堆 ' + T(String(N)) + ' 層。(1) 最下層有幾塊？(2) 全部共需幾塊積木？';
+      h = '第 $k$ 層（由上往下）的長是 $' + lin(uu, pp - uu, 'k') + '$、寬是 $' + lin(vv, qq - vv, 'k') + '$，塊數 $' + hpar(lin(uu, pp - uu, 'k')) + hpar(lin(vv, qq - vv, 'k')) + '$ 是 $k$ 的二次式；乘開後套 $\\sum k^2$、$\\sum k$、$\\sum1$，$n=' + N + '$。';
+    } else if (t === 2) {
+      N = r.int(6, 20); p1 = 2 * N * (N + 1); p2 = SUM(1, N, function (k) { return 2 * k * (k + 1); });
+      q = '用火柴棒排方格：第 ' + T('k') + ' 個圖形是 ' + T('k\\times k') + ' 的正方形方格，每個小正方形的一邊用一根火柴（相鄰的小正方形共用火柴）。(1) 第 ' + T(String(N)) + ' 個圖形要用幾根火柴？(2) 從第 ' + T('1') + ' 個到第 ' + T(String(N)) + ' 個圖形，一共要用幾根火柴？';
+      h = '$k\\times k$ 方格有 $k+1$ 條橫線、每條 $k$ 根，直線也一樣，共 $2k(k+1)$ 根。總數 $\\displaystyle\\sum_{k=1}^{' + N + '}2k(k+1)=2\\left(\\sum k^2+\\sum k\\right)$，代 $n=' + N + '$。';
+    } else {
+      N = r.int(6, 25); var an = function (n) { return n * (3 * n + 1) / 2; };
+      p1 = '3n+2'; p2 = an(N);
+      q = '用撲克牌疊金字塔：兩張牌斜靠成一個「人」字，由上往下第 ' + T('k') + ' 層有 ' + T('k') + ' 個人字；每一層下面，在相鄰兩個人字的頂上各橫放一張牌，當作上一層的地板。設疊 ' + T('n') + ' 層共用 ' + T('a_n') + ' 張牌，則 ' + T('a_1=2') + '、' + T('a_2=7') + '、' + T('a_3=15') + '。(1) 以 ' + T('n') + ' 表示 ' + T('a_{n+1}-a_n') + '。(2) 求 ' + T('a_{' + N + '}') + '。';
+      h = '從 $n$ 層加到 $n+1$ 層，多出來的是最底下新的一層：$n+1$ 個人字 $2(n+1)$ 張，加上它頂上 $n$ 張橫放的牌，所以 $a_{n+1}-a_n=2(n+1)+n$。再疊縮相加：$a_{' + N + '}=a_1+\\displaystyle\\sum_{k=1}^{' + (N - 1) + '}(3k+2)$。';
+    }
+    a = t === 3 ? '(1) ' + T('a_{n+1}-a_n=3n+2') + '　(2) ' + T('a_{' + N + '}=' + p2) : '(1) ' + T(String(p1)) + '　(2) ' + T(String(p2));
+    return { q: q, a: a, h: h, p: { t: t, N: N, pp: pp, qq: qq, uu: uu, vv: vv, ans: [p1, p2] } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -951,17 +1174,80 @@
       '(2) 先把兩個式子並排：$f(k+1)=' + ab + '^{\\,k+1}' + term(c, '(k+1)', false) + term(d, '', false) + '$、$' + b + '\\,f(k)=' + ab + '^{\\,k+1}' + term(b * c, 'k', false) + term(b * d, '', false) + '$，指數部分完全一樣，相減得 $f(k+1)=' + b + '\\,f(k)' + diff + '$。',
       '把假設 $f(k)=' + m + 't$（$t$ 為整數）代進去：$f(k+1)=' + b + '\\times' + m + 't' + diff + '=' + m + '\\left(' + inner + '\\right)$，括號內是整數，所以 $f(k+1)$ 也是 $' + m + '$ 的倍數。' + fin(o)];
   };
+  /* ── 2026-09-28 擴充：新 L1 四型的第一層提示與解題步驟 ── */
+  L1_H1.growthNeed = '這是「平均成長率反求某一年」：先把平均成長率換成這幾年的總倍率，再除掉已知年份的倍率。';
+  L1_H1.powerSumRange = '這是「平方和、立方和的變形」：不從 $1$ 開始就用「大的減小的」；只加奇數或偶數，就用「全部減偶數」或「每項提出 $2$ 的次方」。';
+  L1_H1.sigmaLinear = '這是「$\\sum$ 的性質」：把括號乘開，拆成幾個已知的和；常數從 $k=1$ 加到 $N$ 要乘 $N$。';
+  L1_H1.shapeGP = '這是「圖形裡的等比」：先算每做一次，面積或周長變成原來的幾倍，那就是公比；第 $n$ 個用一般項，總和用等比級數公式。';
+
+  L1_SOL.growthNeed = function (p, o) {
+    var N = p.rates.length, R = p.R, tgt = fF(p.tgt), kp = fF(p.kp), need = fF(p.need), mul = [];
+    for (var j = 0; j < N; j++) if (j !== p.miss) mul.push(decF(rateF(p.rates[j])));
+    return ['平均成長率 $' + R + '\\%$ 的意思是：$' + N + '$ 年的倍率相乘，等於每年都成長 $' + R + '\\%$ 的 $' + decF(rateF(R)) + '^{' + N + '}=' + decF(tgt) + '$。',
+      '已知年份的倍率相乘：$' + mul.join('\\times') + (mul.length > 1 ? '=' + decF(kp) : '') + '$。',
+      '第 $' + (p.miss + 1) + '$ 年的倍率 $=' + decF(tgt) + '\\div' + decF(kp) + '=' + decF(need) + '$，成長率 $=(' + decF(need) + '-1)\\times100\\%=' + p.ans + '\\%$。' + fin(o)];
+  };
+
+  L1_SOL.powerSumRange = function (p, o) {
+    var t = p.t, a = p.a, b = p.b, m = p.m;
+    if (t === 0) return ['不從 $1$ 開始：$' + a + '^2+\\cdots+' + b + '^2=\\displaystyle\\sum_{k=1}^{' + b + '}k^2-\\sum_{k=1}^{' + (a - 1) + '}k^2$。',
+      '套 $\\displaystyle\\sum_{k=1}^{n}k^2=\\dfrac{n(n+1)(2n+1)}{6}$：$\\dfrac{' + b + '\\times' + (b + 1) + '\\times' + (2 * b + 1) + '}{6}=' + sq6(b) + '$、$\\dfrac{' + (a - 1) + '\\times' + a + '\\times' + (2 * a - 1) + '}{6}=' + sq6(a - 1) + '$。',
+      '相減：$' + sq6(b) + '-' + sq6(a - 1) + '=' + p.ans + '$。' + fin(o)];
+    if (t === 1) return ['不從 $1$ 開始：$' + a + '^3+\\cdots+' + b + '^3=\\displaystyle\\sum_{k=1}^{' + b + '}k^3-\\sum_{k=1}^{' + (a - 1) + '}k^3$。',
+      '套 $\\displaystyle\\sum_{k=1}^{n}k^3=\\left[\\dfrac{n(n+1)}{2}\\right]^2$：$' + (b * (b + 1) / 2) + '^2=' + cu4(b) + '$、$' + ((a - 1) * a / 2) + '^2=' + cu4(a - 1) + '$。',
+      '相減：$' + cu4(b) + '-' + cu4(a - 1) + '=' + p.ans + '$。' + fin(o)];
+    if (t === 2) return ['奇數的平方和 ＝ $1^2$ 到 $' + (2 * m) + '^2$ 的平方和 － 偶數的平方和；偶數那一串 $2^2+4^2+\\cdots+' + (2 * m) + '^2=4(1^2+2^2+\\cdots+' + m + '^2)$。',
+      '$\\dfrac{' + (2 * m) + '\\times' + (2 * m + 1) + '\\times' + (4 * m + 1) + '}{6}=' + sq6(2 * m) + '$，$4\\times\\dfrac{' + m + '\\times' + (m + 1) + '\\times' + (2 * m + 1) + '}{6}=4\\times' + sq6(m) + '=' + (4 * sq6(m)) + '$。',
+      '相減：$' + sq6(2 * m) + '-' + (4 * sq6(m)) + '=' + p.ans + '$。' + fin(o)];
+    if (t === 3) return ['每一項都是 $2^3$ 乘上一個立方數：$2^3+4^3+\\cdots+' + (2 * m) + '^3=2^3(1^3+2^3+\\cdots+' + m + '^3)$。',
+      '$1^3+\\cdots+' + m + '^3=\\left(\\dfrac{' + m + '\\times' + (m + 1) + '}{2}\\right)^2=' + cu4(m) + '$，所以答案 $=8\\times' + cu4(m) + '=' + p.ans + '$。' + fin(o)];
+    return ['奇數的立方和 ＝ $1^3$ 到 $' + (2 * m) + '^3$ 的立方和 － 偶數的立方和；偶數那一串 $=2^3(1^3+\\cdots+' + m + '^3)$。',
+      '$\\left(\\dfrac{' + (2 * m) + '\\times' + (2 * m + 1) + '}{2}\\right)^2=' + cu4(2 * m) + '$，$8\\times\\left(\\dfrac{' + m + '\\times' + (m + 1) + '}{2}\\right)^2=8\\times' + cu4(m) + '=' + (8 * cu4(m)) + '$。',
+      '相減：$' + cu4(2 * m) + '-' + (8 * cu4(m)) + '=' + p.ans + '$。' + fin(o)];
+  };
+
+  L1_SOL.sigmaLinear = function (p, o) {
+    var N = p.N, A = p.A, Bq = p.B, C = p.C, pp = p.pp, qq = p.qq, s = p.s, t = p.t, st;
+    if (t === 0) st = ['拆開：$\\displaystyle\\sum_{k=1}^{' + N + '}(' + term(pp, 'a_k', true) + term(qq, '', false) + ')=' + (pp === -1 ? '-' : pp) + '\\sum a_k' + (qq > 0 ? '+' : '-') + '\\sum' + Math.abs(qq) + '$，常數 $' + Math.abs(qq) + '$ 加 $' + N + '$ 次是 $' + Math.abs(qq) * N + '$。',
+      '代入：$' + pp + '\\times' + hpz(A) + (qq > 0 ? '+' : '-') + Math.abs(qq * N) + '=' + p.ans + '$。' + fin(o)];
+    else if (t === 1) st = ['乘開：$(' + term(pp, 'a_k', true) + term(qq, '', false) + ')^2=' + term(pp * pp, 'a_k^2', true) + term(2 * pp * qq, 'a_k', false) + term(qq * qq, '', false) + '$。',
+      '逐項求和：$' + (pp * pp) + '\\sum a_k^2' + (2 * pp * qq > 0 ? '+' : '-') + Math.abs(2 * pp * qq) + '\\sum a_k+' + (qq * qq) + '\\times' + N + '$。',
+      '代入：$' + (pp * pp) + '\\times' + Bq + (2 * pp * qq > 0 ? '+' : '-') + Math.abs(2 * pp * qq) + '\\times' + hpz(A) + '+' + (qq * qq * N) + '=' + p.ans + '$。' + fin(o)];
+    else if (t === 2) st = ['乘開：$(a_k' + (s > 0 ? '+' : '-') + 'k)^2=a_k^2' + (s > 0 ? '+' : '-') + '2ka_k+k^2$，所以要用到 $\\sum a_k^2$、$\\sum ka_k$、$\\sum k^2$ 三個和。',
+      '$\\displaystyle\\sum_{k=1}^{' + N + '}k^2=\\dfrac{' + N + '\\times' + (N + 1) + '\\times' + (2 * N + 1) + '}{6}=' + sq6(N) + '$。',
+      '代入：$' + Bq + (s > 0 ? '+' : '-') + '2\\times' + hpz(C) + '+' + sq6(N) + '=' + p.ans + '$。' + fin(o)];
+    else st = ['乘開：$(a_k' + term(pp, '', false) + ')(a_k' + term(qq, '', false) + ')=a_k^2' + term(pp + qq, 'a_k', false) + term(pp * qq, '', false) + '$。',
+      '逐項求和：$\\sum a_k^2' + term(pp + qq, '\\sum a_k', false) + term(pp * qq, '', false) + '\\times' + N + '$（常數加 $' + N + '$ 次）。',
+      '代入：$' + Bq + (pp + qq === 0 ? '' : (pp + qq > 0 ? '+' : '-') + Math.abs(pp + qq) + '\\times' + hpz(A)) + (pp * qq > 0 ? '+' : '-') + Math.abs(pp * qq * N) + '=' + p.ans + '$。' + fin(o)];
+    return st;
+  };
+
+  L1_SOL.shapeGP = function (p, o) {
+    var n = p.n, an = fF(p.ans[0]), Sn = fF(p.ans[1]);
+    if (p.t === 0) return ['新正方形的邊是原正方形兩邊中點的連線，長度是原邊長的 $\\dfrac{\\sqrt2}{2}$ 倍，所以面積變成原來的 $\\dfrac12$。',
+      '面積成等比：首項 $' + p.side + '^2=' + (p.side * p.side) + '$、公比 $\\dfrac12$。第 $' + n + '$ 個 $=' + (p.side * p.side) + '\\times\\left(\\dfrac12\\right)^{' + (n - 1) + '}=' + Fr.tex(an) + '$。',
+      '總和 $=\\dfrac{' + (p.side * p.side) + '\\left[1-\\left(\\dfrac12\\right)^{' + n + '}\\right]}{1-\\dfrac12}=' + Fr.tex(Sn) + '$。' + fin(o)];
+    if (p.t === 1) return ['中點連線的長度是第三邊的一半，所以新三角形三邊都是原來的一半，周長變成原來的 $\\dfrac12$。',
+      '周長成等比：首項 $' + p.P + '$、公比 $\\dfrac12$。第 $' + n + '$ 個 $=' + p.P + '\\times\\left(\\dfrac12\\right)^{' + (n - 1) + '}=' + Fr.tex(an) + '$。',
+      '總和 $=\\dfrac{' + p.P + '\\left[1-\\left(\\dfrac12\\right)^{' + n + '}\\right]}{1-\\dfrac12}=' + Fr.tex(Sn) + '$。' + fin(o)];
+    var m = p.m, A0 = p.A0, rest = Fr.mul(F(A0), fpow(F(m - 1, m), n));
+    return ['第 $1$ 次塗 $' + A0 + '\\times\\dfrac1{' + m + '}=' + Fr.tex(F(A0, m)) + '$，剩下 $' + A0 + '\\times\\dfrac{' + (m - 1) + '}{' + m + '}$；之後每次塗「剩下的」$\\dfrac1{' + m + '}$，所以每次塗的面積是上一次的 $\\dfrac{' + (m - 1) + '}{' + m + '}$ 倍。',
+      '第 $' + n + '$ 次塗的面積 $=' + Fr.tex(F(A0, m)) + '\\times\\left(\\dfrac{' + (m - 1) + '}{' + m + '}\\right)^{' + (n - 1) + '}=' + Fr.tex(an) + '$。',
+      '做完 $' + n + '$ 次還沒塗的是 $' + A0 + '\\times\\left(\\dfrac{' + (m - 1) + '}{' + m + '}\\right)^{' + n + '}=' + Fr.tex(rest) + '$，塗色總面積 $=' + A0 + '-' + Fr.tex(rest) + '=' + Fr.tex(Sn) + '$。' + fin(o)];
+  };
+
   var META_L1 = [
-      ['arTerm', '§1 等差：由兩項定數列'], ['arSign', '§1 等差的變號位置'], ['arMiddle', '§1 三數等差：對稱設法'], ['gpTerm', '§1 等比：由兩項求公比'], ['gpMiddle', '§1 三數等比：對稱設法'], ['growth', '§1 平均成長率'],
+      ['arTerm', '§1 等差：由兩項定數列'], ['arSign', '§1 等差的變號位置'], ['arMiddle', '§1 三數等差：對稱設法'], ['gpTerm', '§1 等比：由兩項求公比'], ['gpMiddle', '§1 三數等比：對稱設法'], ['growth', '§1 平均成長率'], ['growthNeed', '§1 平均成長率：反求某一年'],
       ['recurLinear', '§1 一階線性遞迴：不動點'], ['recurSum', '§1 連加型遞迴'], ['recurProd', '§1 連乘型遞迴'], ['recurRecip', '§1 分式遞迴：取倒數'], ['periodic', '§1 週期數列'],
-      ['sigmaCalc', '§2 Σ 的計算'], ['sigmaFormula', '§2 Σ 公式：以 n 表示'], ['arSum', '§2 等差級數與中段和'], ['arSumMax', '§2 S_n 何時最大'], ['gpSum', '§2 等比級數'], ['gpBlocks', '§2 等比級數的分段和'],
+      ['sigmaCalc', '§2 Σ 的計算'], ['sigmaFormula', '§2 Σ 公式：以 n 表示'], ['powerSumRange', '§2 平方和、立方和：中段與奇偶'], ['sigmaLinear', '§2 Σ 的性質：由已知的和求新的和'], ['arSum', '§2 等差級數與中段和'], ['arSumMax', '§2 S_n 何時最大'], ['gpSum', '§2 等比級數'], ['gpBlocks', '§2 等比級數的分段和'], ['shapeGP', '§2 圖形裡的等比：中點與塗色'],
       ['telescope', '§2 裂項相消'], ['staggered', '§2 錯位相減'], ['sumToTerm', '§2 由 S_n 反求 a_n'], ['absSum', '§2 等差的絕對值和'], ['compound', '§2 複利與單利'],
       ['inductionStep', '§3 歸納法：遞推步驟'], ['divisible', '§3 歸納法證整除']
   ];
   var META_L2 = [
       ['arSymm', '§2 S_m=S_n 的對稱性'], ['sumRatio', '§2 前 n 項和之比'], ['oddEvenGP', '§2 奇數項和與偶數項和'], ['gpSquares', '§2 平方後仍是等比'], ['sumFromSn', '§2 S_n 含指數：脫隊'],
       ['weightedRecur', '§2 由 Σ k·a_k 反求單項'], ['prodAP', '§2 等差×等差級數'], ['absQuad', '§2 二次數列的絕對值和'], ['floorSum', '§2 高斯符號分群'], ['groupSeq', '§2 分群數列'],
-      ['kOver2k', '§2 等差÷等比'], ['telescopeN', '§2 裂項反求項數'], ['recurMixed', '§1 混合型遞迴'], ['annuity', '§2 零存整付'], ['snRecur', '§2 S_n 與 a_n 的關係式'], ['logGP', '§2 等比取 log 變等差']
+      ['kOver2k', '§2 等差÷等比'], ['telescopeN', '§2 裂項反求項數'], ['recurMixed', '§1 混合型遞迴'], ['annuity', '§2 零存整付'], ['snRecur', '§2 S_n 與 a_n 的關係式'], ['logGP', '§2 等比取 log 變等差'],
+      ['derivedSeq', '§1 衍生數列是否等差、等比'], ['apToGp', '§1 等差三數調整成等比'], ['arSignSn', '§2 由 Sₙ 的正負找最大和'], ['loanPay', '§2 分期付款'], ['figStack', '§2 圖形規律：堆疊與排列']
   ];
   /* ══════════════════════════════════════════════════════════
      L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
@@ -1184,9 +1470,85 @@
       p: { r: rr, a1: a1, N: N, i: i, j: j, s: s, u: u, v: v, ans: [fr2(xF), fr2(yF)] } };
   };
 
-  var META_L3 = [['recurDivide', '先除成 a_{n+1}=pa_n+q 再解不動點'], ['gpEndsSum', '首末項與總和求 r（求 a₂+aₙ₋₁）'], ['fiveAP', '五數等差給和與積'], ['gpEndsSumN', '首末項與總和求項數'], ['removeTerm', '刪去一項後的平均'], ['recurExpLin', '疊縮相加：指數＋一次'], ['recurGuess', '往前推再猜一般項（歸納）'], ['fracRecurGuess', '分式遞迴猜一般項'], ['diagonalGrid', '方格斜線編號'], ['mixedSeries', '兩數列交錯相加'], ['gpRatioSeries', '兩等比級數相除'], ['sigmaFactorForm', 'Σk(k+a)(k+b) 的因式分解形'], ['snRelationProd', 'c·Sₙ=(n+c−1)aₙ 疊縮相乘'], ['altStaggered', '交錯錯位相減'], ['gpSystemXY', '兩方程相除得 rˢ']];
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* L3-16　等長分段和：等比每 L 項一段，各段的和成等比（公比 r^L）；等差則成等差 */
+  L3.blockSums = function (r) {
+    var kind = r.int(0, 2), L, q, T0, m, X, Y, ans, qs, h, x, y;
+    if (kind === 0) {
+      L = r.pick([5, 8, 10, 12, 20]); q = r.pick([2, 3]); T0 = r.int(1, 6); m = r.int(4, q === 2 ? 9 : 7);
+      X = T0 * (q + q * q); Y = T0 * (ipow(q, 3) + ipow(q, 4)); ans = T0 * (ipow(q, m) - 1) / (q - 1);
+      qs = '已知各項都是正數的等比數列 ' + T('\\langle a_n\\rangle') + ' 滿足 ' + T('a_{' + (L + 1) + '}+a_{' + (L + 2) + '}+\\cdots+a_{' + (3 * L) + '}=' + X) + '、' + T('a_{' + (3 * L + 1) + '}+a_{' + (3 * L + 2) + '}+\\cdots+a_{' + (5 * L) + '}=' + Y) + '。求 ' + T('a_1+a_2+\\cdots+a_{' + (m * L) + '}') + '。';
+      h = '每 $' + L + '$ 項切成一段，令第一段的和 $T=a_1+\\cdots+a_{' + L + '}$、$q=r^{' + L + '}$，則各段的和依序是 $T,\\ Tq,\\ Tq^2,\\dots$。題目給的兩個和各含兩段：$Tq+Tq^2=' + X + '$、$Tq^3+Tq^4=' + Y + '$，相除得 $q^2$；正項所以 $q\\gt0$。所求是前 $' + m + '$ 段的和。';
+      return { q: qs, a: T(String(ans)), h: h, p: { kind: 0, L: L, q: q, T: T0, m: m, ans: ans } };
+    }
+    if (kind === 1) {
+      do { x = r.int(-30, 60); y = r.int(-20, 60); } while (x === 0 || y === 0 || x === y || 2 * y - x === 0);
+      var A = x + y, Bv = 3 * y - x;
+      qs = '等差數列 ' + T('\\langle a_n\\rangle') + ' 的前 ' + T('n') + ' 項和為 ' + T('S_n') + '。若對某個正整數 ' + T('n') + '，' + T('S_{2n}=' + A) + ' 且 ' + T('S_{3n}=S_n' + term(Bv, '', false)) + '，求 ' + T('S_n') + ' 與 ' + T('S_{3n}') + '。';
+      h = '等差數列每 $n$ 項一段，各段的和 $S_n,\\ S_{2n}-S_n,\\ S_{3n}-S_{2n}$ 成等差（公差 $n^2d$）。令三段依序是 $x,\\ y,\\ 2y-x$：$x+y=' + A + '$，$S_{3n}-S_n=y+(2y-x)=3y-x=' + Bv + '$，解聯立。';
+      return { q: qs, a: T('S_n=' + x) + '、' + T('S_{3n}=' + (x + Bv)), h: h, p: { kind: 1, x: x, y: y, ans: [x, x + Bv] } };
+    }
+    L = r.pick([4, 5, 6, 10]); q = r.pick([2, 3, 4]); T0 = r.int(1, 9);
+    X = T0; Y = T0 * (q + q * q); ans = T0 * ipow(q, 3);
+    qs = '已知各項都是正數的等比數列 ' + T('\\langle a_n\\rangle') + ' 滿足 ' + T('a_1+a_2+\\cdots+a_{' + L + '}=' + X) + '、' + T('a_{' + (L + 1) + '}+a_{' + (L + 2) + '}+\\cdots+a_{' + (3 * L) + '}=' + Y) + '。求 ' + T('a_{' + (3 * L + 1) + '}+a_{' + (3 * L + 2) + '}+\\cdots+a_{' + (4 * L) + '}') + '。';
+    h = '每 $' + L + '$ 項一段，令 $q=r^{' + L + '}\\gt0$，各段的和是 $' + X + ',\\ ' + X + 'q,\\ ' + X + 'q^2,\\ ' + X + 'q^3,\\dots$。第二個條件含兩段：$' + X + 'q+' + X + 'q^2=' + Y + '$，解出正的 $q$，所求是第四段 $' + X + 'q^3$。';
+    return { q: qs, a: T(String(ans)), h: h, p: { kind: 2, L: L, q: q, T: T0, ans: ans } };
+  };
+
+  /* L3-17　分數排成的數列：某個分數是第幾項、第幾項是哪個分數 */
+  function fracSeqTerm(kind, N) {   /* 回傳第 N 項 [分子, 分母] */
+    var k = 1, cnt = 0;
+    while (true) {
+      var len = kind === 0 ? k : kind === 1 ? 2 * k - 1 : k;
+      if (cnt + len >= N) { var j = N - cnt; return kind === 0 ? [k - j + 1, j] : kind === 1 ? [j, 2 * k - 1] : [2 * j - 1, 2 * k - 1]; }
+      cnt += len; k++;
+    }
+  }
+  L3.fracPosition = function (r) {
+    var kind = r.int(0, 2), g, pn, pd, pos, N, tN, shown, h;
+    if (kind === 0) {
+      g = r.int(8, 24); pd = r.int(2, g - 1); pn = g - pd + 1; pos = (g - 1) * g / 2 + pd;
+      shown = '\\dfrac11,\\ \\dfrac21,\\dfrac12,\\ \\dfrac31,\\dfrac22,\\dfrac13,\\ \\dfrac41,\\dfrac32,\\dfrac23,\\dfrac14,\\ \\dots';
+      h = '依「分子＋分母」分群：第 $k$ 群的分子＋分母 $=k+1$、有 $k$ 項，分子由大到小。$\\dfrac{' + pn + '}{' + pd + '}$ 的分子＋分母 $=' + (pn + pd) + '$，在第 $' + g + '$ 群、群內第 $' + pd + '$ 個；前 $' + (g - 1) + '$ 群共 $\\dfrac{' + (g - 1) + '\\times' + g + '}{2}$ 項。第 (2) 小題反過來：找 $\\dfrac{k(k+1)}{2}$ 剛好夠用的 $k$。';
+    } else if (kind === 1) {
+      g = r.int(6, 15); pd = 2 * g - 1; pn = r.int(1, pd); pos = (g - 1) * (g - 1) + pn;
+      shown = '\\dfrac11,\\ \\dfrac13,\\dfrac23,\\dfrac33,\\ \\dfrac15,\\dfrac25,\\dfrac35,\\dfrac45,\\dfrac55,\\ \\dfrac17,\\dots';
+      h = '依分母分群：第 $k$ 群的分母是 $2k-1$，分子 $1,2,\\dots,2k-1$ 共 $2k-1$ 項，前 $k$ 群共 $1+3+\\cdots+(2k-1)=k^2$ 項。$\\dfrac{' + pn + '}{' + pd + '}$ 在第 $' + g + '$ 群、群內第 $' + pn + '$ 個，前面 $' + (g - 1) + '^2$ 項。第 (2) 小題反過來：找 $k^2$ 剛好夠用的 $k$。';
+    } else {
+      g = r.int(6, 15); pd = 2 * g - 1; var jj = r.int(1, g); pn = 2 * jj - 1; pos = (g - 1) * g / 2 + jj;
+      shown = '\\dfrac11,\\ \\dfrac13,\\dfrac33,\\ \\dfrac15,\\dfrac35,\\dfrac55,\\ \\dfrac17,\\dfrac37,\\dfrac57,\\dfrac77,\\ \\dots';
+      h = '依分母分群：第 $k$ 群的分母是 $2k-1$，分子是奇數 $1,3,\\dots,2k-1$ 共 $k$ 項，前 $k$ 群共 $\\dfrac{k(k+1)}{2}$ 項。$\\dfrac{' + pn + '}{' + pd + '}$ 在第 $' + g + '$ 群，分子 $' + pn + '$ 是群內第 $\\dfrac{' + pn + '+1}{2}=' + jj + '$ 個。第 (2) 小題反過來：找 $\\dfrac{k(k+1)}{2}$ 剛好夠用的 $k$。';
+    }
+    do { N = r.int(40, 260); } while (N === pos);
+    tN = fracSeqTerm(kind, N);
+    return { q: '將分數依規則排成數列 ' + T(shown) + '（分數不約分）。(1) ' + T('\\dfrac{' + pn + '}{' + pd + '}') + ' 是第幾項？(2) 第 ' + T(String(N)) + ' 項是哪一個分數？',
+             a: '(1) 第 ' + T(String(pos)) + ' 項　(2) ' + T('\\dfrac{' + tN[0] + '}{' + tN[1] + '}'), h: h,
+             p: { kind: kind, pn: pn, pd: pd, N: N, ans: [pos, tN] } };
+  };
+
+  /* L3-18　1+2+…+n（或奇數和）多加或漏加一項：用「和夾在兩個公式值之間」定 n */
+  L3.wrongAddTerm = function (r) {
+    var kind = r.int(0, 2), n, k, S, W, q, h, word;
+    if (kind === 0) { n = r.int(12, 60); k = r.int(1, n); S = n * (n + 1) / 2; W = S + k; word = '多加的那一項'; }
+    else if (kind === 1) { n = r.int(12, 60); k = r.int(1, n - 1); S = n * (n + 1) / 2; W = S - k; word = '漏加的那一項'; }
+    else { n = r.int(10, 40); var j = r.int(1, n); k = 2 * j - 1; S = n * n; W = S + k; word = '多加的那一項'; }
+    if (kind === 0) {
+      q = '計算 ' + T('1+2+3+\\cdots+n') + ' 時，不小心把其中某一項多加了一次，得到 ' + T(String(W)) + '。求 ' + T('n') + '、' + word + '，以及正確的和。';
+      h = '正確的和 $S=\\dfrac{n(n+1)}{2}$，多加的那一項在 $1$ 到 $n$ 之間，所以 $S\\lt' + W + '\\le S+n$。試 $n=' + (n - 1) + '$：$S=' + ((n - 1) * n / 2) + '$，加上最大的 $' + (n - 1) + '$ 也不到 $' + W + '$；$n=' + n + '$：$S=' + S + '$；$n=' + (n + 1) + '$：$S=' + ((n + 1) * (n + 2) / 2) + '$ 已經超過。';
+    } else if (kind === 1) {
+      q = '計算 ' + T('1+2+3+\\cdots+n') + ' 時，不小心漏加了其中一項（不是最後一項），得到 ' + T(String(W)) + '。求 ' + T('n') + '、' + word + '，以及正確的和。';
+      h = '正確的和 $S=\\dfrac{n(n+1)}{2}$，漏加的那一項在 $1$ 到 $n-1$ 之間，所以 $S-(n-1)\\le' + W + '\\lt S$。試 $n=' + (n - 1) + '$：$S=' + ((n - 1) * n / 2) + '$ 不到 $' + W + '$；$n=' + n + '$：$S=' + S + '$；$n=' + (n + 1) + '$：$S=' + ((n + 1) * (n + 2) / 2) + '$，扣掉最多 $' + n + '$ 還是比 $' + W + '$ 大。';
+    } else {
+      q = '計算 ' + T('1+3+5+\\cdots+(2n-1)') + ' 時，不小心把其中某一項多加了一次，得到 ' + T(String(W)) + '。求 ' + T('n') + '、' + word + '，以及正確的和。';
+      h = '正確的和是 $n^2$，多加的那一項是 $1$ 到 $2n-1$ 之間的奇數，所以 $n^2\\lt' + W + '\\le n^2+2n-1$。找平方數：$' + n + '^2=' + S + '$、$' + (n + 1) + '^2=' + ((n + 1) * (n + 1)) + '$，' + T(String(W)) + ' 夾在中間；多加的項 $=' + W + '-' + S + '$，而且要是奇數。';
+    }
+    return { q: q, a: T('n=' + n) + '，' + word + '是 ' + T(String(k)) + '，正確的和是 ' + T(String(S)), h: h,
+             p: { kind: kind, n: n, k: k, W: W, ans: [n, k, S] } };
+  };
+
+  var META_L3 = [['recurDivide', '先除成 a_{n+1}=pa_n+q 再解不動點'], ['gpEndsSum', '首末項與總和求 r（求 a₂+aₙ₋₁）'], ['fiveAP', '五數等差給和與積'], ['gpEndsSumN', '首末項與總和求項數'], ['removeTerm', '刪去一項後的平均'], ['recurExpLin', '疊縮相加：指數＋一次'], ['recurGuess', '往前推再猜一般項（歸納）'], ['fracRecurGuess', '分式遞迴猜一般項'], ['diagonalGrid', '方格斜線編號'], ['mixedSeries', '兩數列交錯相加'], ['gpRatioSeries', '兩等比級數相除'], ['sigmaFactorForm', 'Σk(k+a)(k+b) 的因式分解形'], ['snRelationProd', 'c·Sₙ=(n+c−1)aₙ 疊縮相乘'], ['altStaggered', '交錯錯位相減'], ['gpSystemXY', '兩方程相除得 rˢ'], ['blockSums', '等長分段和（等比、等差）'], ['fracPosition', '分數數列：第幾項、第幾項是誰'], ['wrongAddTerm', '連續整數和多加或漏加一項']];
   /* 固定題 L3-n 對應的類似題型 */
-  var L3_FIX = { 'L3-1': 'recurDivide', 'L3-2': 'gpEndsSum', 'L3-3': 'fiveAP', 'L3-4': 'gpEndsSumN', 'L3-5': 'removeTerm', 'L3-6': 'recurExpLin', 'L3-7': 'recurGuess', 'L3-8': 'fracRecurGuess', 'L3-9': 'diagonalGrid', 'L3-10': 'mixedSeries', 'L3-11': 'gpRatioSeries', 'L3-12': 'sigmaFactorForm', 'L3-13': 'snRelationProd', 'L3-14': 'altStaggered', 'L3-15': 'gpSystemXY' };
+  var L3_FIX = { 'L3-1': 'recurDivide', 'L3-2': 'gpEndsSum', 'L3-3': 'fiveAP', 'L3-4': 'gpEndsSumN', 'L3-5': 'removeTerm', 'L3-6': 'recurExpLin', 'L3-7': 'recurGuess', 'L3-8': 'fracRecurGuess', 'L3-9': 'diagonalGrid', 'L3-10': 'mixedSeries', 'L3-11': 'gpRatioSeries', 'L3-12': 'sigmaFactorForm', 'L3-13': 'snRelationProd', 'L3-14': 'altStaggered', 'L3-15': 'gpSystemXY', 'L3-16': 'blockSums', 'L3-17': 'fracPosition', 'L3-18': 'wrongAddTerm' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：等差／等比的第 n 項（國中）、指數律（高一上 ch1）、二元一次聯立（國中）、配方求極值（高一上 ch3）、分數的通分（國中）
@@ -1290,6 +1652,14 @@
     'L3.snRelationProd': { f: function (p) { return p.c; }, why: '$cS_n=(n+c-1)a_n$ 相減得 $\\dfrac{a_n}{a_{n-1}}=\\dfrac{n+c-2}{n-1}$：$c=2$ 疊縮成 $n$、$c=3$ 成 $\\dfrac{n(n+1)}{2}$、$c=4$ 成 $\\dfrac{n(n+1)(n+2)}{6}$，係數 $c$ 每大 $1$，一般項就多一個因子。' },
     'L3.altStaggered': { f: function (p) { return p.v; }, why: '錯位相減後中間那串等比級數的係數是「相鄰係數的差」：係數 $k$ 差 $1$、係數 $2k-1$ 差 $2$，所以第二型要多乘一個 $2$；最後一項與首項的處理完全一樣。' }
   };
+  /* 2026-09-28 擴充題型的對照題 */
+  CONTRAST['L1.growthNeed'] = { f: function (p) { return p.rates.length; }, why: '兩年或三年都一樣：平均成長率 $R\\%$ 代表總倍率是 $(1+R\\%)$ 的「年數」次方。年數不同，總倍率的次方跟著變，再除掉已知年份的倍率。' };
+  CONTRAST['L1.powerSumRange'] = { f: function (p) { return p.t; }, why: '不從 $1$ 開始是「大的減小的」；只加奇數是「全部減偶數」；只加偶數是每項提出 $2^2$ 或 $2^3$。先看題目是哪一種缺法，再決定怎麼湊回公式。' };
+  CONTRAST['L1.shapeGP'] = { f: function (p) { return p.t; }, why: '中點正方形的面積每次變 $\\dfrac12$；中點三角形的周長每次變 $\\dfrac12$（面積則是 $\\dfrac14$）；塗色題每次塗「剩下的」幾分之一，塗的那一塊成等比。三題都是先找公比。' };
+  CONTRAST['L2.derivedSeq'] = { f: function (p) { return p.ask; }, why: '問等差就算相鄰兩項的差，問等比就算相鄰兩項的比；同一個選項兩種問法的答案可能不同，例如 $\\langle\\log b_n\\rangle$ 是等差不是等比，$\\langle b_n^{\\,2}\\rangle$ 是等比不是等差。' };
+  CONTRAST['L2.arSignSn'] = { f: function (p) { return p.kind === 1; }, why: '$S_p$ 由正變負時公差為負，$S_n$ 先增後減、有最大值；由負變正時公差為正，$S_n$ 先減後增、有最小值。兩種都用「奇數項和＝項數 $\\times$ 中間項」找出變號的那一項。' };
+  CONTRAST['L2.loanPay'] = { f: function (p) { return !!p.mon; }, why: '按月或按年只差在「一期」有多長：利率、期數都要用同一個單位。做法一樣是把借款和每一期的還款都滾到最後一期再比較。' };
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

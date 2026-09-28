@@ -679,6 +679,368 @@
              p: { type: 1, d1: d1, d2: d2, ans: Math.pow(10, (d2 - d1) / 10) } };
   };
 
+  /* ══════════════════════════════════════════════════════════
+     2026-09-28 擴充（依段考卷出現頻率補題型）：L1 六型、L2 七型
+     題型的 key 是學生紀錄的鍵：既有 key 不改名、不刪；新 key 只接在後面。
+     頻率：question_bank 高二上段考 29 份卷（_scripts/round2/g11a-ch02-expand/freq.py）
+     ══════════════════════════════════════════════════════════ */
+  function xLin(cs, vs) { var s = ''; for (var i = 0; i < cs.length; i++) if (cs[i]) s += term(cs[i], vs[i], s === ''); return s || '0'; }
+  function xLinP(cs, vs) {        /* 同 xLin，但正的項排前面（2-2a 而不是 -2a+2） */
+    var t = []; for (var i = 0; i < cs.length; i++) if (cs[i]) t.push([cs[i], vs[i]]);
+    t = t.filter(function (x) { return x[0] > 0; }).concat(t.filter(function (x) { return x[0] < 0; }));
+    var s = ''; t.forEach(function (x) { s += term(x[0], x[1], s === ''); }); return s || '0';
+  }
+  function xLogB(b, arg) { return '\\log_{' + b + '}' + (arg.length > 1 ? '{' + arg + '}' : arg); }   /* 底數一律寫出來（連乘裡 10 也寫 log_{10}，才看得出前後相接） */
+  function xCoefLog(m, n) { return (m === 1 ? '' : m === -1 ? '-' : String(m)) + '\\log' + n; }      /* m·log n：係數 1、−1 不寫 */
+  function xFac(n) { var e = { 2: 0, 3: 0, 5: 0, 7: 0 }; [2, 3, 5, 7].forEach(function (q) { while (n % q === 0) { e[q]++; n /= q; } }); if (n !== 1) throw new Error('xFac'); return e; }
+  function xPw(b, e) { return e >= 0 ? String(Math.pow(b, e)) : '\\dfrac{1}{' + Math.pow(b, -e) + '}'; }      /* b^e（e 為整數）的 tex */
+  function xGcdAll(arr) { return arr.reduce(function (g, v) { return gcd(g, v); }, 0) || 1; }
+  function xIsPow(n, b) { if (n < b) return false; while (n % b === 0) n /= b; return n === 1; }
+  function xFacT(n) { var e = xFac(n), s = []; [2, 3, 5, 7].forEach(function (q) { if (e[q]) s.push(q + (e[q] > 1 ? '^{' + e[q] + '}' : '')); }); return s.join('\\cdot '); }
+
+  /* 1-9 對稱式：已知 a^x+a^{-x}（或差、或 a^{2x}）求平方、立方 */
+  L1.symmPower = function (r) {
+    var v = r.int(0, 4), B = r.pick(['a', 'a', '2', '3', '5']), P = function (e) { return B + '^{' + e + '}'; };
+    var pre = B === 'a' ? '設 ' + T('a\\gt0') + '，且 ' : '設 ', k = 0, m = 0, s = 0, sg = 1, giv, ask, ans, hh;
+    if (v === 0 || v === 1) {
+      k = v === 0 ? r.int(3, 9) : r.int(3, 6);
+      giv = P('x') + '+' + P('-x') + '=' + k;
+      if (v === 0) { ask = P('2x') + '+' + P('-2x'); ans = F(k * k - 2);
+        hh = '兩邊平方：$\\left(' + P('x') + '+' + P('-x') + '\\right)^{2}=' + P('2x') + '+2+' + P('-2x') + '=' + (k * k) + '$（中間項 $2\\cdot ' + P('x') + '\\cdot ' + P('-x') + '=2$），所以答案是 $' + (k * k) + '-2$。'; }
+      else { ask = P('3x') + '+' + P('-3x'); ans = F(k * k * k - 3 * k);
+        hh = '立方和：$u^{3}+v^{3}=(u+v)^{3}-3uv(u+v)$，這裡 $u=' + P('x') + '$、$v=' + P('-x') + '$、$uv=1$，所以是 $' + k + '^{3}-3\\times' + k + '$。'; }
+    } else if (v === 2) {
+      k = r.int(1, 7); giv = P('x') + '-' + P('-x') + '=' + k; ask = P('2x') + '+' + P('-2x'); ans = F(k * k + 2);
+      hh = '兩邊平方：$\\left(' + P('x') + '-' + P('-x') + '\\right)^{2}=' + P('2x') + '-2+' + P('-2x') + '=' + (k * k) + '$（差的平方，中間項是 $-2$），所以答案是 $' + (k * k) + '+2$。';
+    } else if (v === 3) {
+      k = r.int(3, 6); pre = '設 ' + T('x\\gt0') + '，且 '; giv = 'x^{\\frac{1}{2}}+x^{-\\frac{1}{2}}=' + k;
+      if (k > 4 || r() < 0.6) { s = 1; ask = 'x+x^{-1}'; ans = F(k * k - 2);
+        hh = '兩邊平方：$\\left(x^{\\frac12}+x^{-\\frac12}\\right)^{2}=x+2+x^{-1}=' + (k * k) + '$，所以 $x+x^{-1}=' + (k * k) + '-2$。'; }
+      else { s = 2; ask = 'x^{2}+x^{-2}'; var w = k * k - 2; ans = F(w * w - 2);
+        hh = '平方兩次：先得 $x+x^{-1}=' + k + '^{2}-2=' + w + '$，再平方得 $x^{2}+x^{-2}=' + w + '^{2}-2$。'; }
+    } else {
+      sg = r() < 0.6 ? 1 : -1; var S = sg > 0 ? '+' : '-';
+      ask = '\\dfrac{' + P('3x') + S + P('-3x') + '}{' + P('x') + S + P('-x') + '}';
+      if (B !== 'a' && r() < 0.5) { s = r.int(2, 5); m = s * s; giv = 'x=\\log_{' + B + '}' + s; pre = '設 '; }
+      else { m = r.int(2, 7); giv = P('2x') + '=' + m; }
+      ans = Fr.add(F(m - sg), F(1, m));
+      hh = '分子是立方' + (sg > 0 ? '和' : '差') + '：$u^{3}' + S + 'v^{3}=(u' + S + 'v)(u^{2}' + (sg > 0 ? '-' : '+') + 'uv+v^{2})$，$uv=' + P('x') + '\\cdot ' + P('-x') + '=1$，約分後剩 $' + P('2x') + (sg > 0 ? '-1' : '+1') + '+' + P('-2x') + '$'
+        + (s ? '；由 $x=\\log_{' + B + '}' + s + '$ 得 $' + P('2x') + '=' + s + '^{2}=' + m + '$。' : '，而 $' + P('-2x') + '=\\dfrac{1}{' + m + '}$。');
+    }
+    return { q: pre + T(giv) + '，求 ' + T(ask) + ' 的值。',
+             a: T(ask + '=' + Fr.tex(ans)),
+             h: hh,
+             p: { v: v, B: B, k: k, m: m, s: s, sg: sg, ans: [ans.n, ans.d] } };
+  };
+
+  /* 2-10 換底連乘、a^{log_a M} 型 */
+  var XCHAIN = [[2, 4, 2, 1, 2], [2, 8, 2, 1, 3], [2, 16, 2, 1, 4], [3, 9, 3, 1, 2], [4, 16, 2, 2, 4], [4, 8, 2, 2, 3], [8, 16, 2, 3, 4], [9, 27, 3, 2, 3], [3, 27, 3, 1, 3], [5, 25, 5, 1, 2], [4, 64, 2, 2, 6], [2, 32, 2, 1, 5]];   /* s, t, 共同底, s 的次方, t 的次方 */
+  L1.logChain = function (r) {
+    var v = r.int(0, 2), expr, ans, hh, pp;
+    if (v === 0) {
+      var rt = r.pick([2, 3, 5]), i = r.int(1, rt === 2 ? 3 : 2), j = r.int(1, rt === 2 ? 5 : 3);
+      if (rt === 5) j = Math.min(j, 2);
+      if (j === i) j = i === 1 ? 2 : i - 1;
+      var b1 = Math.pow(rt, i), bn = Math.pow(rt, j), nm = r.int(1, 2);
+      var pool = r.shuffle([3, 5, 6, 7, 10, 11, 12, 13, 15].filter(function (n) { return !xIsPow(n, rt); })), mids = pool.slice(0, nm);
+      var bs = [b1].concat(mids), as = mids.concat([bn]), fac = bs.map(function (b, t) { return xLogB(b, String(as[t])); });
+      var ord = r.shuffle(fac.map(function (x, t) { return t; }));
+      expr = ord.map(function (t) { return fac[t]; }).join('\\cdot ');
+      ans = F(j, i);
+      hh = '換底後前一個的真數會和下一個的底約掉：按順序排好是 $' + fac.join('\\cdot ') + '=' + logT(b1, String(bn)) + '$，再把 $' + b1 + '$、$' + bn + '$ 都寫成 $' + rt + '$ 的次方。';
+      pp = { v: 0, rt: rt, i: i, j: j, bs: bs, as: as, ord: ord };
+    } else if (v === 1) {
+      var C = r.pick(XCHAIN), s0 = C[0], t0 = C[1], n = t0 - s0, outer = t0 <= 27 && r() < 0.4;
+      var f = function (kk) { return xLogB(kk, String(kk + 1)); };
+      var ch = n <= 3 ? [s0, s0 + 1, s0 + 2].slice(0, n).map(f).join('\\cdot ') : f(s0) + '\\cdot ' + f(s0 + 1) + '\\cdot\\cdots\\cdot ' + f(t0 - 1);
+      expr = outer ? (s0 * s0) + '^{' + ch + '}' : ch;
+      ans = outer ? F(t0 * t0) : F(C[4], C[3]);
+      hh = '每一項換成常用對數 $\\log_{k}(k+1)=\\dfrac{\\log(k+1)}{\\log k}$，連乘時分子分母一路對消，只剩 $\\log_{' + s0 + '}' + t0 + '$'
+        + (outer ? '；外面的底 $' + (s0 * s0) + '=' + s0 + '^{2}$，用 $' + s0 + '^{\\log_{' + s0 + '}' + t0 + '}=' + t0 + '$。' : '，再把 $' + s0 + '$、$' + t0 + '$ 寫成 $' + C[2] + '$ 的次方。');
+      pp = { v: 1, s: s0, t: t0, outer: outer ? 1 : 0 };
+    } else {
+      var rt2 = r.pick([2, 3, 5, 10]), p1, q1, tt, c, tries = 0, Bv, Lv, Mv, val;
+      do {
+        p1 = rt2 === 10 ? 1 : r.int(1, 3); q1 = rt2 === 10 ? 1 : r.int(1, 3); tt = r.int(2, 9); c = rt2 === 10 ? r.pick([1, 2, 3, -1]) : r.pick([0, 0, 0, 1]);
+        Bv = Math.pow(rt2, p1); Lv = Math.pow(rt2, q1); Mv = Math.pow(tt, q1); val = Math.pow(tt, p1) * Math.pow(Bv, Math.max(c, 0));
+        tries++;
+      } while ((Bv > 125 || Lv > 125 || Mv > 400 || val > 3000 || xIsPow(tt, rt2) || (rt2 !== 10 && p1 === q1 && r() < 0.6)) && tries < 200);
+      expr = Bv + '^{' + (c ? c + '+' : '') + logT(Lv, String(Mv)) + '}';
+      ans = c < 0 ? F(tt, Math.pow(Bv, -c)) : F(val);
+      hh = rt2 === 10 ? '指數律拆開：$10^{' + c + '+\\log ' + tt + '}=10^{' + c + '}\\cdot10^{\\log ' + tt + '}$，而 $10^{\\log ' + tt + '}=' + tt + '$（$\\log$ 就是「$10$ 的幾次方」）。'
+        : '底數與對數的底都寫成 $' + rt2 + '$ 的次方：$' + Bv + '=' + rt2 + '^{' + p1 + '}$、$\\log_{' + Lv + '}' + Mv + '=\\dfrac{\\log_{' + rt2 + '}' + Mv + '}{' + q1 + '}$，所以 $' + Bv + '^{\\log_{' + Lv + '}' + Mv + '}=' + Mv + '^{\\frac{' + p1 + '}{' + q1 + '}}$' + (c ? '，再乘上 $' + Bv + '^{' + c + '}$。' : '。');
+      pp = { v: 2, rt: rt2, p: p1, q: q1, t: tt, c: c };
+    }
+    pp.ans = [ans.n, ans.d];
+    return { q: '求 ' + T(expr) + ' 的值。', a: T(Fr.tex(ans)), h: hh, p: pp };
+  };
+
+  /* 2-11 不同底的指數方程式：兩邊取 log，用 a=log2、b=log3 表示 */
+  function xLogVec(n) { var e = xFac(n); return [e[2] - e[5], e[3], e[5]]; }         /* log n = ca·a + cb·b + c0（log5 = 1 − a） */
+  L1.expEqDiffBase = function (r) {
+    var p, k, tries = 0;
+    do { p = r.pick([2, 3, 5]); k = r.pick([2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 25]); tries++; }
+    while ((p * k > 60 || k === p || xIsPow(k, p)) && tries < 200);
+    var m = r.pick([-3, -2, -1, 1, 2, 3, 4]), q = p * k, sw = r() < 0.5;
+    var N = xLogVec(p).map(function (x) { return x * m; }), D = xLogVec(k), g = xGcdAll(N.concat(D));
+    N = N.map(function (x) { return x / g; }); D = D.map(function (x) { return x / g; });
+    var neg = N.every(function (x) { return x <= 0; });
+    if (neg) N = N.map(function (x) { return -x; });
+    var V = ['a', 'b', ''], nT = xLinP(N, V), dT = xLinP(D, V), has5 = (p % 5 === 0) || (k % 5 === 0);
+    var lhs = p + '^{x' + term(m, '', false) + '}', rhs = q + '^{x}';
+    return { q: '解方程式 ' + T(sw ? rhs + '=' + lhs : lhs + '=' + rhs) + '，並以 ' + T('\\log2=a') + '、' + T('\\log3=b') + ' 表示 ' + T('x') + '。',
+             a: T('x=' + (neg ? '-' : '') + (dT === '1' ? nT : '\\dfrac{' + nT + '}{' + dT + '}')),
+             h: '兩邊取 $\\log$：$(x' + term(m, '', false) + ')\\log' + p + '=x\\log' + q + '$，含 $x$ 的移到同一邊：$' + xCoefLog(m, p) + '=x(\\log' + q + '-\\log' + p + ')=x\\log' + k + '$，所以 $x=\\dfrac{' + xCoefLog(m, p) + '}{\\log' + k + '}$，再把 $\\log' + p + '$、$\\log' + k + '$ 用 $a,b$ 寫出來' + (has5 ? '（$\\log5=1-\\log2=1-a$）' : '') + '。',
+             p: { p: p, k: k, m: m, sw: sw ? 1 : 0, N: N, D: D, neg: neg ? 1 : 0 } };
+  };
+
+  /* 2-12 尾數不變：科學記號與 log 值 */
+  function xDec(M10, e) {          /* M10（兩位數）×10^{e−1} 的十進位字串 */
+    var n = 1 - e;
+    if (n <= 0) { var s = String(M10); for (var i = 0; i < -n; i++) s += '0'; return s; }
+    if (n === 1) return String(M10).charAt(0) + '.' + String(M10).charAt(1);
+    var z = ''; for (var t = 0; t < n - 2; t++) z += '0';
+    return '0.' + z + M10;
+  }
+  L1.mantissaShift = function (r) {
+    var v = r.int(0, 1);
+    if (v === 0) {
+      var M10 = r.pick([12, 14, 15, 18, 21, 24, 27, 28, 32, 35, 36, 42, 45, 48, 54, 56, 63, 72, 75, 84]);
+      var mant = Math.round(Math.log10(M10 / 10) * 10000) / 10000, e1, e2;
+      e1 = r.int(2, 5) * (r() < 0.5 ? 1 : -1);
+      do { e2 = r.int(-6, 6); } while (e2 === 0 || e2 === e1);
+      var s0 = xDec(M10, 0), s1 = xDec(M10, e1), s2 = xDec(M10, e2), v1 = (e1 + mant).toFixed(4), v2 = (e2 + mant).toFixed(4);
+      return { q: '已知 ' + T('\\log ' + s0 + '\\approx' + mant.toFixed(4)) + '。(1) 求 ' + T('\\log ' + s1) + ' 的近似值　(2) 若 ' + T('\\log x\\approx' + v2) + '，求 ' + T('x') + '。',
+               a: '(1) ' + T('\\log ' + s1 + '\\approx' + v1) + '　(2) ' + T('x\\approx' + s2),
+               h: '(1) $' + s1 + '=' + s0 + '\\times10^{' + e1 + '}$，所以 $\\log ' + s1 + '=' + e1 + '+\\log ' + s0 + '$：只有首數變，尾數 $' + mant.toFixed(4) + '$ 不變。(2) $' + v2 + '=' + e2 + '+' + mant.toFixed(4) + '$，尾數是 $\\log ' + s0 + '$，所以 $x\\approx' + s0 + '\\times10^{' + e2 + '}$。',
+               p: { v: 0, M10: M10, mant: mant, e1: e1, e2: e2 } };
+    }
+    var D = r.pick([2, 3, 4, 5, 6, 7, 8, 9]), c, val;
+    do { c = r.int(-6, 7); } while (c === 0);
+    val = round4(c + lg(D));
+    var dec = { 2: '\\log2', 3: '\\log3', 4: '2\\log2', 5: '1-\\log2', 6: '\\log2+\\log3', 7: '\\log7', 8: '3\\log2', 9: '2\\log3' }[D];
+    return { q: '已知 ' + T('\\log2\\approx0.3010') + '、' + T('\\log3\\approx0.4771') + '、' + T('\\log7\\approx0.8451') + '。若 ' + T('\\log x\\approx' + val.toFixed(4)) + '，將 ' + T('x') + ' 寫成科學記號 ' + T('a\\times10^{n}') + '（' + T('1\\le a\\lt10') + '，' + T('a') + ' 取整數）。',
+             a: T('x\\approx' + D + '\\times10^{' + c + '}'),
+             h: '寫成「整數＋$0$ 到 $1$ 之間的小數」：$' + val.toFixed(4) + '=' + c + '+' + lg(D).toFixed(4) + '$；尾數 $' + lg(D).toFixed(4) + '$ 就是 $\\log' + D + '=' + dec + '$，首數 $' + c + '$ 是 $10$ 的次方。',
+             p: { v: 1, D: D, c: c, val: val } };
+  };
+
+  /* 3-6 伸縮化成平移：log_a(Ax+B) 的係數拆出來是上下平移；A·a^x 是左右平移 */
+  L1.scaleShift = function (r) {
+    var v = r.int(0, 1), a = r.pick([2, 3]), j = r.nz(-3, 3), h, k, fT, gT, base, A, hh;
+    if (a === 3 && Math.abs(j) > 2) j = j > 0 ? 2 : -2;
+    A = Math.pow(a, Math.abs(j));
+    if (v === 0) {
+      var inner, sfac;
+      if (j > 0) { h = r.nz(-5, 5); inner = A + 'x' + term(-A * h, '', false); sfac = A + '(x' + term(-h, '', false) + ')'; }
+      else { var s = r.nz(-3, 3); h = s * A; inner = '\\dfrac{x}{' + A + '}' + term(-s, '', false); sfac = '\\dfrac{x' + term(-h, '', false) + '}{' + A + '}'; }
+      k = j; base = logT(a, 'x');
+      fT = logT(a, '\\left(' + inner + '\\right)');
+      gT = logT(a, '(x' + term(-h, '', false) + ')') + term(k, '', false);
+      hh = '真數的係數先提出來：$' + inner + '=' + sfac + '$，再用運算律拆開：$' + logT(a, '\\left(' + sfac + '\\right)') + '=' + logT(a, '(x' + term(-h, '', false) + ')') + (j > 0 ? '+' : '-') + logT(a, String(A)) + '=' + gT + '$。';
+    } else {
+      var c = r.nz(-5, 5);
+      fT = (j > 0 ? A + '\\cdot ' : '\\dfrac{1}{' + A + '}\\cdot ') + a + '^{x}' + term(c, '', false);
+      h = -j; k = c; base = a + '^{x}';
+      gT = a + '^{x' + term(j, '', false) + '}' + term(c, '', false);
+      hh = '$' + (j > 0 ? A : '\\dfrac{1}{' + A + '}') + '=' + a + '^{' + j + '}$，同底相乘指數相加：$' + a + '^{' + j + '}\\cdot' + a + '^{x}=' + a + '^{x' + term(j, '', false) + '}$，所以 $y=' + gT + '$：前面乘的數變成左右平移。';
+    }
+    return { q: '函數 ' + T('y=' + fT) + ' 的圖形可由 ' + T('y=' + base) + ' 的圖形先左右平移、再上下平移得到。求左右與上下各平移多少單位。',
+             a: '向' + (h > 0 ? '右' : '左') + '平移 ' + T(String(Math.abs(h))) + ' 單位、再向' + (k > 0 ? '上' : '下') + '平移 ' + T(String(Math.abs(k))) + ' 單位（' + T('y=' + gT) + '）',
+             h: hh,
+             p: { v: v, a: a, j: j, h: h, k: k, A: A } };
+  };
+
+  /* 3-7 中點的函數值 vs 函數值的平均（凹口方向） */
+  L1.midpointConcave = function (r) {
+    var up = r() < 0.6, b = up ? r.pick([2, 3, 10]) : r.pick([F(1, 2), F(1, 3)]), p = r.int(1, 15), q = p + r.int(3, 20);
+    var bv = typeof b === 'number' ? b : b.n / b.d, lv = function (x) { return Math.log(x) / Math.log(bv); };
+    var mid = F(p + q, 2);
+    var items = [[logT(b, String(q)), lv(q)], [logT(b, Fr.tex(mid, true)), lv((p + q) / 2)], ['\\dfrac{' + logT(b, String(p)) + '+' + logT(b, String(q)) + '}{2}', (lv(p) + lv(q)) / 2]];
+    var ord = r.shuffle([0, 1, 2]), names = ['a', 'b', 'c'];
+    var vals = ord.map(function (t) { return items[t][1]; });
+    var idx = [0, 1, 2].sort(function (i, j) { return vals[j] - vals[i]; });
+    return { q: '設 ' + T('a=' + items[ord[0]][0]) + '、' + T('b=' + items[ord[1]][0]) + '、' + T('c=' + items[ord[2]][0]) + '，由大到小排列三數。',
+             a: T(idx.map(function (i) { return names[i]; }).join('\\gt ')),
+             h: '三個數都寫成 $' + logT(b, '(\\text{真數})') + '$：兩個對數的平均 $=' + logT(b, '\\sqrt{' + (p * q) + '}') + '$，真數依序是 $' + q + '$、$' + Fr.tex(mid, true) + '$、$\\sqrt{' + (p * q) + '}$（算幾：$\\sqrt{' + (p * q) + '}\\lt' + Fr.tex(mid, true) + '$）。'
+                + (up ? '底數大於 $1$，$\\log$ 遞增：真數大的就大。' : '底數介於 $0$ 與 $1$，$\\log$ 遞減：真數大的反而小。'),
+             p: { up: up ? 1 : 0, b: typeof b === 'number' ? [b, 1] : [b.n, b.d], p: p, q: q, ord: ord, ans: idx } };
+  };
+
+  /* ── L2 ── */
+  /* 1-7 a^x=b^y=N 型：取 log 後 1/x=log_N a */
+  var XPAIR = [[2, 3, 1, 1], [2, 5, 1, 1], [2, 3, 2, 1], [2, 3, 1, 2], [3, 5, 1, 1], [2, 7, 1, 1], [2, 5, 2, 1], [2, 5, 1, 2], [2, 3, 3, 1], [3, 7, 1, 1]];   /* p, q, e1, e2：R = p^e1·q^e2 */
+  L2.expEqualChain = function (r) {
+    var v = r.int(0, 2), pr, p, q, e1, e2, R, j, k, N, tries = 0;
+    var fx = function (m, x) { return '\\dfrac{' + m + '}{' + x + '}'; };
+    if (v === 0) {
+      do { pr = r.pick(XPAIR); p = pr[0]; q = pr[1]; e1 = pr[2]; e2 = pr[3]; R = Math.pow(p, e1) * Math.pow(q, e2); j = r.int(1, 2); k = r.int(1, 3); N = Math.pow(R, k); tries++; }
+      while ((R > 45 || N > 100000 || (j === k && r() < 0.7)) && tries < 200);
+      var m = e1 * j, n = e2 * j, Q = Math.pow(p, m) * Math.pow(q, n), ans = F(j, k);
+      return { q: '設 ' + T(p + '^{x}=' + q + '^{y}=' + N) + '，求 ' + T(fx(m, 'x') + '+' + fx(n, 'y')) + ' 的值。',
+               a: T(fx(m, 'x') + '+' + fx(n, 'y') + '=' + Fr.tex(ans)),
+               h: '取 $\\log$：$x=\\dfrac{\\log ' + N + '}{\\log ' + p + '}$、$y=\\dfrac{\\log ' + N + '}{\\log ' + q + '}$，所以 $\\dfrac{' + m + '}{x}+\\dfrac{' + n + '}{y}=\\dfrac{' + m + '\\log ' + p + '+' + n + '\\log ' + q + '}{\\log ' + N + '}=\\log_{' + N + '}' + Q + '$；而 $' + Q + '=' + R + '^{' + j + '}$、$' + N + '=' + R + '^{' + k + '}$。',
+               p: { v: 0, p: p, q: q, m: m, n: n, N: N, R: R, j: j, k: k, ans: [ans.n, ans.d] } };
+    }
+    if (v === 1) {
+      do { pr = r.pick(XPAIR); p = pr[0]; q = pr[1]; e1 = pr[2]; e2 = pr[3]; R = Math.pow(p, e1) * Math.pow(q, e2); tries++; } while (R > 45 && tries < 100);
+      var den = xLin([e2, e1], ['x', 'y']);
+      return { q: '設 ' + T(p + '^{x}=' + q + '^{y}=' + R + '^{z}\\ne1') + '，以 ' + T('x,y') + ' 表示 ' + T('z') + '。',
+               a: T('z=\\dfrac{xy}{' + den + '}'),
+               h: '設三者都等於 $N$（$N\\ne1$），取 $\\log$：$\\dfrac1x=\\log_{N}' + p + '$、$\\dfrac1y=\\log_{N}' + q + '$、$\\dfrac1z=\\log_{N}' + R + '$；而 $' + R + '=' + xFacT(R) + '$，所以 $\\dfrac1z=\\dfrac{' + e1 + '}{x}+\\dfrac{' + e2 + '}{y}$，通分後取倒數。',
+               p: { v: 1, p: p, q: q, R: R, e1: e1, e2: e2 } };
+    }
+    do { pr = r.pick(XPAIR.slice(0, 2).concat([[3, 5, 1, 1], [2, 7, 1, 1], [3, 7, 1, 1]])); p = pr[0]; q = pr[1]; tries++; } while (p === q && tries < 10);
+    var PQ = p * q, cc = r.pick([F(1), F(1, 2), F(1, 3), F(2), F(1, 2)]), NT;
+    if (cc.n === 2) NT = '\\sqrt{' + PQ + '}'; else NT = String(Math.pow(PQ, cc.d));
+    return { q: '若 ' + T(p + '^{x}=' + q + '^{y}=N') + '，且 ' + T('\\dfrac{1}{x}+\\dfrac{1}{y}=' + Fr.tex(cc)) + '，求 ' + T('N') + '。',
+             a: T('N=' + NT),
+             h: '取 $\\log$：$\\dfrac1x=\\dfrac{\\log ' + p + '}{\\log N}$、$\\dfrac1y=\\dfrac{\\log ' + q + '}{\\log N}$，相加得 $\\dfrac{\\log ' + PQ + '}{\\log N}=\\log_{N}' + PQ + '=' + Fr.tex(cc, true) + '$，再用定義寫回指數：$N^{' + Fr.tex(cc, true) + '}=' + PQ + '$。',
+             p: { v: 2, p: p, q: q, c: [cc.n, cc.d] } };
+  };
+
+  /* 2-8 真數相乘的對數不等式（合併後是二次不等式，定義域要交集） */
+  L2.logIneqProduct = function (r) {
+    var up = r() < 0.6, bi, c, N, pairs, tries = 0;
+    do { bi = up ? r.pick([2, 3, 5, 10]) : r.pick([2, 3, 5]); c = r.int(1, bi >= 5 ? 2 : 3); N = Math.pow(bi, c); pairs = [];
+         for (var n0 = 1; n0 * n0 < N; n0++) if (N % n0 === 0) pairs.push([N / n0, n0]); tries++; } while (!pairs.length && tries < 50);
+    var pr = r.pick(pairs), m = pr[0], n = pr[1], p = r.int(-4, 3), qq = p + m - n, root = p + m;
+    var base = up ? bi : F(1, bi), rc = up ? c : -c, op = r.pick(['\\lt ', '\\le ', '\\gt ', '\\ge ']), form = r.int(0, 1);
+    var arg = function (s) { return s === 0 ? 'x' : '(x' + term(-s, '', false) + ')'; };
+    var L1t = logT(base, arg(p)), L2t = logT(base, arg(qq));
+    var ineq = form === 0 ? L1t + '+' + L2t + op + rc : L1t + op + rc + '-' + L2t;
+    var FL = { '\\lt ': '\\gt ', '\\le ': '\\ge ', '\\gt ': '\\lt ', '\\ge ': '\\le ' }, rel = up ? op : FL[op];
+    var small = rel === '\\lt ' || rel === '\\le ', ansT = small ? qq + '\\lt x' + rel + root : 'x' + rel + root;
+    var prodT = arg(p) + arg(qq);
+    return { q: '解不等式 ' + T(ineq) + '。',
+             a: T(ansT),
+             h: '定義域：兩個真數都 $\\gt0$ ⟹ $x\\gt' + qq + '$。' + (form ? '先把右邊的對數移過來，' : '') + '合併成 $' + logT(base, prodT) + op + rc + '$，' + (up ? '底數大於 $1$，方向不變' : '底數小於 $1$，方向<b>相反</b>') + '：$' + prodT + rel + (up ? bi + '^{' + c + '}' : '\\left(' + Fr.tex(base, true) + '\\right)^{' + rc + '}') + '=' + N + '$，解二次不等式後和定義域取交集。',
+             p: { up: up ? 1 : 0, bi: bi, c: c, p: p, q: qq, op: op.trim(), form: form, root: root } };
+  };
+
+  /* 2-9 log_a x 與 log_x a 的方程式：令 t=log_a x，乘 t 化二次 */
+  L2.logRecipEq = function (r) {
+    var a = r.pick([2, 3, 5]), lim = a === 5 ? 2 : 3, form = r.int(0, 1), t1, t2, tries = 0, maxK = { 2: 6, 3: 4, 5: 2 }[a];
+    do { t1 = r.nz(-lim, lim); t2 = r.nz(-lim, lim); tries++; }
+    while ((t1 === t2 || (form === 0 ? t1 * t2 < 0 : t1 * t2 > 0) || Math.abs(t1 * t2) > maxK) && tries < 300);
+    var K = form === 0 ? t1 * t2 : -t1 * t2, M = Math.pow(a, K), eq, cond = 0, roots = [t1, t2].sort(function (u, w) { return u - w; }), hh;
+    var LX = '\\log_{x}' + M, LA = logT(a, 'x');
+    if (form === 0) { eq = LA + '+' + LX + '=' + (t1 + t2);
+      hh = '令 $t=' + LA + '$（$x\\ne1$，所以 $t\\ne0$），$' + LX + '=\\dfrac{\\log_{' + a + '}' + M + '}{\\log_{' + a + '}x}=\\dfrac{' + K + '}{t}$：$t+\\dfrac{' + K + '}{t}=' + (t1 + t2) + '$，乘 $t$ 得 $t^{2}' + term(-(t1 + t2), 't', false) + '+' + K + '=0$。'; }
+    else { eq = LX + '-' + LA + '=' + (-(t1 + t2));
+      hh = '令 $t=' + LA + '$（$t\\ne0$），$' + LX + '=\\dfrac{' + K + '}{t}$：$\\dfrac{' + K + '}{t}-t=' + (-(t1 + t2)) + '$，乘 $t$ 整理得 $t^{2}' + term(-(t1 + t2), 't', false) + '-' + K + '=0$。';
+      if (r() < 0.5) { cond = r() < 0.5 ? 1 : 2; roots = [cond === 1 ? Math.min(t1, t2) : Math.max(t1, t2)]; } }
+    var condT = cond === 1 ? '0\\lt x\\lt1' : cond === 2 ? 'x\\gt1' : '';
+    return { q: '解方程式 ' + T(eq) + (cond ? '，其中 ' + T(condT) : '') + '。',
+             a: T('x=' + roots.map(function (t) { return xPw(a, t); }).join('\\ \\text{或}\\ ')),
+             h: hh + '解出 $t$ 後換回 $x=' + a + '^{t}$' + (cond ? '，最後用 $' + condT + '$（$t' + (cond === 1 ? '\\lt' : '\\gt') + '0$）挑一個。' : '。'),
+             p: { a: a, form: form, t1: t1, t2: t2, K: K, cond: cond, ans: roots } };
+  };
+
+  /* 2-10 換底後用代號表示：log2=a、log3=b、log7=c，或 log_2 3=a、log_3 7=b */
+  L2.changeBaseExpress = function (r) {
+    var v = r.int(0, 1), M, N, vm, vn, tries = 0;
+    var P0 = [6, 12, 14, 15, 18, 20, 21, 24, 28, 30, 35, 36, 42, 45, 48, 56, 63, 72, 75, 84], P1 = [6, 12, 14, 18, 21, 24, 28, 36, 42, 48, 54, 56, 63, 72, 84];
+    var vv = function (n) { var e = xFac(n); return v === 0 ? [e[2] - e[5], e[3], e[7], e[5]] : [e[2], e[3], e[7]]; };
+    var prop = function (x, y) { for (var i = 0; i < x.length; i++) for (var j = i + 1; j < x.length; j++) if (x[i] * y[j] !== x[j] * y[i]) return false; return true; };
+    do { var P = v === 0 ? P0 : P1; M = r.pick(P); N = r.pick(P.concat(v === 0 ? [2, 3, 5, 7] : [2, 3, 7])); vm = vv(M); vn = vv(N); tries++; }
+    while ((M === N || prop(vm, vn)) && tries < 200);
+    var g = xGcdAll(vm.concat(vn)); vm = vm.map(function (x) { return x / g; }); vn = vn.map(function (x) { return x / g; });
+    var V = v === 0 ? ['a', 'b', 'c', ''] : ['', 'a', 'ab'], has7 = v === 0 && (vm[2] || vn[2]);
+    var giv = v === 0 ? T('\\log2=a') + '、' + T('\\log3=b') + (has7 ? '、' + T('\\log7=c') : '') : T('\\log_{2}3=a') + '、' + T('\\log_{3}7=b');
+    var res = '\\dfrac{' + xLinP(vn, V) + '}{' + xLinP(vm, V) + '}';
+    var facs = [N, M].filter(function (n) { return xFacT(n) !== String(n); }).map(function (n) { return '$' + n + '=' + xFacT(n) + '$'; }).join('、');
+    return { q: '設 ' + giv + '，試以 ' + T(v === 0 ? (has7 ? 'a,b,c' : 'a,b') : 'a,b') + ' 表示 ' + T('\\log_{' + M + '}' + N) + '。',
+             a: T('\\log_{' + M + '}' + N + '=' + res),
+             h: v === 0 ? '換成常用對數：$\\log_{' + M + '}' + N + '=\\dfrac{\\log ' + N + '}{\\log ' + M + '}$；' + (facs ? facs + '，' : '') + '拆開後把 $\\log2,\\log3' + (has7 ? ',\\log7' : '') + '$ 換成代號' + ((M % 5 === 0 || N % 5 === 0) ? '（$\\log5=1-\\log2=1-a$）' : '') + '。'
+                        : '全部換成以 $2$ 為底：$\\log_{2}3=a$、$\\log_{2}7=\\log_{2}3\\cdot\\log_{3}7=ab$；$\\log_{' + M + '}' + N + '=\\dfrac{\\log_{2}' + N + '}{\\log_{2}' + M + '}$' + (facs ? '，' + facs + ' 各自拆開。' : '。'),
+             p: { v: v, M: M, N: N } };
+  };
+
+  /* 2-11 對數倒數的和：1/log_b N = log_N b */
+  function xFactorSets(Q) {
+    var out = [];
+    for (var a = 2; a * a < Q; a++) if (Q % a === 0) {
+      var b = Q / a; if (b <= 40 && b !== a) out.push([a, b]);
+      for (var c = a + 1; c * c < b; c++) if (b % c === 0 && b / c !== c && b / c <= 40 && c <= 40) out.push([a, c, b / c]);
+    }
+    return out;
+  }
+  L2.recipLogSum = function (r) {
+    var RS = [6, 10, 12, 15, 18, 20, 24, 30, 36], R, j, k, Q, sets, tries = 0;
+    do { R = r.pick(RS); j = r.int(1, 2); Q = Math.pow(R, j); sets = xFactorSets(Q); k = r.int(1, 3); tries++; }
+    while ((!sets.length || Math.pow(R, k) > 50000 || (j === k && r() < 0.7)) && tries < 200);
+    var bs = r.shuffle(r.pick(sets)), N = Math.pow(R, k), ans = F(j, k);
+    var expr = bs.map(function (b) { return '\\dfrac{1}{' + logT(b, String(N)) + '}'; }).join('+');
+    return { q: '求 ' + T(expr) + ' 的值。',
+             a: T(Fr.tex(ans)),
+             h: '$\\dfrac{1}{\\log_{b}N}=\\dfrac{\\log b}{\\log N}=\\log_{N}b$：原式 $=' + bs.map(function (b) { return '\\log_{' + N + '}' + b; }).join('+') + '=\\log_{' + N + '}' + Q + '$；而 $' + Q + '=' + R + '^{' + j + '}$、$' + N + '=' + R + '^{' + k + '}$。',
+             p: { R: R, j: j, k: k, bs: bs, N: N, ans: [ans.n, ans.d] } };
+  };
+
+  /* 2-12 x 的次方含 log x：兩邊取對數化成二次 */
+  L2.xPowLog = function (r) {
+    var v = r.int(0, 1), b = r.pick([10, 10, 2, 3]);
+    var xT = function (t) { return t.d === 1 ? (Math.abs(Math.pow(b, t.n)) <= 1000000 ? xPw(b, t.n) : b + '^{' + t.n + '}') : b + '^{' + Fr.tex(t, true) + '}'; };
+    var yT = function (g) { return g.d === 1 && g.n === 0 ? '1' : g.d === 1 && g.n === 1 ? String(b) : b + '^{' + Fr.tex(g, true) + '}'; };
+    if (v === 0) {
+      var sg, k, l, rr, tries = 0, g, pts, best, worst, ok;
+      do {
+        sg = r() < 0.5 ? 1 : -1; k = r.int(-3, 6); l = r.int(-2, 2); rr = l + r.int(2, 4); if (b === 10 && rr > 4) rr = 4; if (rr <= l) rr = l + 2;
+        g = function (t) { return sg > 0 ? Fr.sub(Fr.mul(F(k), t), Fr.mul(t, t)) : Fr.add(Fr.mul(t, t), Fr.mul(F(k), t)); };
+        pts = [F(l), F(rr)]; var vt = F(sg > 0 ? k : -k, 2); if (!Fr.lt(vt, F(l)) && !Fr.lt(F(rr), vt)) pts.push(vt);
+        best = pts[0]; worst = pts[0];
+        pts.forEach(function (t) { if (Fr.lt(g(best), g(t))) best = t; if (Fr.lt(g(t), g(worst))) worst = t; });
+        ok = pts.filter(function (t) { return Fr.eq(g(t), g(best)); }).length === 1 && pts.filter(function (t) { return Fr.eq(g(t), g(worst)); }).length === 1;
+        tries++;
+      } while ((!ok || Math.pow(b, rr) > 1000000) && tries < 200);
+      var ex = sg > 0 ? (k === 0 ? '-' : k) + '-' + logT(b, 'x') : logT(b, 'x') + term(k, '', false);
+      if (sg > 0 && k === 0) ex = '-' + logT(b, 'x');
+      var gT = sg > 0 ? 't(' + k + '-t)' : 't(t' + term(k, '', false) + ')';
+      return { q: '設 ' + T(xPw(b, l) + '\\le x\\le ' + xPw(b, rr)) + '，求 ' + T('y=x^{' + ex + '}') + ' 的最大值與最小值，以及此時的 ' + T('x') + '。',
+               a: '最大值 ' + T(yT(g(best))) + '（' + T('x=' + xT(best)) + '），最小值 ' + T(yT(g(worst))) + '（' + T('x=' + xT(worst)) + '）',
+               h: '兩邊取 $' + (b === 10 ? '\\log' : '\\log_{' + b + '}') + '$，令 $t=' + logT(b, 'x') + '$（$' + l + '\\le t\\le' + rr + '$）：$' + (b === 10 ? '\\log y' : '\\log_{' + b + '}y') + '=' + gT + '$ 是 $t$ 的二次函數，看頂點在不在區間內、再比兩端；底數大於 $1$，$\\log y$ 最大時 $y$ 也最大。',
+               p: { v: 0, b: b, sg: sg, k: k, l: l, r: rr, best: [best.n, best.d], worst: [worst.n, worst.d], gmax: [g(best).n, g(best).d], gmin: [g(worst).n, g(worst).d] } };
+    }
+    var lim = b === 10 ? 3 : 4, t1, t2, d, tries2 = 0, mm;
+    do { t1 = r.int(-3, lim); t2 = r.int(-3, lim); d = r.int(1, 3); mm = -t1 * t2; tries2++; }
+    while ((t1 >= t2 || Math.abs(mm) > (b === 10 ? 4 : b === 3 ? 5 : 8) || (d - (t1 + t2)) === 0 && r() < 0.5) && tries2 < 300);
+    var cc = d - (t1 + t2), expo = logT(b, 'x') + term(cc, '', false), Mt = mm === 0 ? '' : xPw(b, mm), xd = d === 1 ? 'x' : 'x^{' + d + '}';
+    return { q: '解方程式 ' + T('x^{' + expo + '}=' + Mt + xd) + '。',
+             a: T('x=' + [t1, t2].map(function (t) { return xPw(b, t); }).join('\\ \\text{或}\\ ')),
+             h: '兩邊取 $' + (b === 10 ? '\\log' : '\\log_{' + b + '}') + '$，令 $t=' + logT(b, 'x') + '$：左邊 $=(t' + term(cc, '', false) + ')t$、右邊 $=' + (mm ? mm + '+' : '') + d + 't$，整理成 $t^{2}' + term(-(t1 + t2), 't', false) + term(t1 * t2, '', false) + '=0$，解出 $t$ 再換回 $x=' + b + '^{t}$。',
+             p: { v: 1, b: b, t1: t1, t2: t2, d: d, m: mm, c: cc } };
+  };
+
+  /* 3-4 兩層對數：不等式與定義域（由外往內拆，每層都看底數） */
+  L2.nestedLog = function (r) {
+    var v = r.int(0, 1), bv = function (B) { return typeof B === 'number' ? B : B.n / B.d; };
+    var ET = function (B, u) { return typeof B === 'number' ? String(Math.pow(B, u)) : '\\dfrac{1}{' + Math.pow(B.d, u) + '}'; };
+    if (v === 0) {
+      var A, Bn, c, U, tries = 0;
+      do { A = r.pick([2, 3, F(1, 2), F(1, 3)]); Bn = r.pick([2, 3, 10, F(1, 2), F(1, 3)]); c = r.int(-2, 2); U = Math.round(Math.pow(bv(A), c) * 1e9) / 1e9; tries++; }
+      while (!(U === Math.round(U) && U >= 1 && U <= (Bn === 10 ? 3 : 4)) && tries < 300);
+      var op = r.pick(['\\le ', '\\lt ', '\\ge ', '\\gt ']), FL = { '\\lt ': '\\gt ', '\\le ': '\\ge ', '\\gt ': '\\lt ', '\\ge ': '\\le ' };
+      var ru = bv(A) > 1 ? op : FL[op], low = ru === '\\lt ' || ru === '\\le ', incl = ru === '\\le ' || ru === '\\ge ';
+      var E = ET(Bn, U), ansT, inc = bv(Bn) > 1;
+      if (inc) ansT = low ? '1\\lt x' + (incl ? '\\le ' : '\\lt ') + E : 'x' + (incl ? '\\ge ' : '\\gt ') + E;
+      else ansT = low ? E + (incl ? '\\le ' : '\\lt ') + 'x\\lt 1' : '0\\lt x' + (incl ? '\\le ' : '\\lt ') + E;
+      var inner = logT(Bn, 'x');
+      return { q: '解不等式 ' + T(logT(A, '\\left(' + inner + '\\right)') + op + c) + '。',
+               a: T(ansT),
+               h: '令 $u=' + inner + '$，先要真數 $u\\gt0$。外層底數 $' + baseTex(A) + (bv(A) > 1 ? '\\gt1' : '\\lt1') + '$' + (bv(A) > 1 ? '，方向不變' : '，方向相反') + '：$u' + ru + (typeof A === 'number' ? A : '\\left(' + Fr.tex(A, true) + '\\right)') + '^{' + c + '}=' + U + '$，連同 $u\\gt0$ 得 $u$ 的範圍；再換回 $x$，底數 $' + baseTex(Bn) + '$ ' + (inc ? '大於 $1$，方向不變。' : '小於 $1$，方向再反一次（$u\\gt0$ 變成 $x\\lt1$）。'),
+               p: { v: 0, A: typeof A === 'number' ? [A, 1] : [A.n, A.d], B: typeof Bn === 'number' ? [Bn, 1] : [Bn.n, Bn.d], c: c, U: U, op: op.trim() } };
+    }
+    var A2 = r.pick([2, 3, F(1, 2)]), Bm = r.pick([2, 3, F(1, 2), F(1, 3)]), Cc = r.pick([2, 3, 5, F(1, 2), F(1, 3)]), ans2, Ct = typeof Cc === 'number' ? String(Cc) : Fr.tex(Cc);
+    if (bv(Bm) > 1) ans2 = bv(Cc) > 1 ? 'x\\gt ' + Ct : '0\\lt x\\lt ' + Ct;
+    else ans2 = bv(Cc) > 1 ? '1\\lt x\\lt ' + Ct : Ct + '\\lt x\\lt 1';
+    var f3 = logT(A2, '\\left(' + logT(Bm, '\\left(' + logT(Cc, 'x') + '\\right)') + '\\right)');
+    return { q: '求 ' + T('f(x)=' + f3) + ' 的定義域（使 ' + T('f(x)') + ' 有意義的 ' + T('x') + ' 範圍）。',
+             a: T(ans2),
+             h: '由外往內：最外層要 $' + logT(Bm, '(' + logT(Cc, 'x') + ')') + '\\gt0$；底數 $' + baseTex(Bm) + (bv(Bm) > 1 ? '\\gt1' : '\\lt1') + '$，所以 $' + logT(Cc, 'x') + (bv(Bm) > 1 ? '\\gt1' : '$ 介於 $0$ 與 $1$ 之間') + (bv(Bm) > 1 ? '$' : '') + '（這一層也順便保證了中間的真數 $\\gt0$）；最後由底數 $' + baseTex(Cc) + '$ 換回 $x$。',
+             p: { v: 1, A: typeof A2 === 'number' ? [A2, 1] : [A2.n, A2.d], B: typeof Bm === 'number' ? [Bm, 1] : [Bm.n, Bm.d], C: typeof Cc === 'number' ? [Cc, 1] : [Cc.n, Cc.d] } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -950,22 +1312,125 @@
       '相除時指數相減：$\\dfrac{10^{-' + p.p1 + '}}{10^{-' + (p.p1 + p.dd) + '}}=10^{' + (p.p1 + p.dd) + '-' + p.p1 + '}=10^{' + p.dd + '}=' + Math.pow(10, p.dd) + '$，所以甲是乙的 $' + Math.pow(10, p.dd) + '$ 倍。'];
   };
 
+  /* ── 2026-09-28 擴充：新 L1 六型的第一層提示與解題步驟 ── */
+  L1_H1.symmPower = '這是「對稱式 $a^{x}+a^{-x}$」：把已知的式子平方或立方，展開時 $a^{x}\\cdot a^{-x}=1$ 是常數，就能湊出要求的式子。';
+  L1_H1.logChain = '這是「換底連乘、底數的次方是對數」：換底之後前一個的真數會和下一個的底約掉；$a^{\\log_{a}M}=M$，底數不同時先把兩個底寫成同一個數的次方。';
+  L1_H1.expEqDiffBase = '這是「不同底的指數方程式」：底數化不成同一個，就兩邊取 $\\log$，把指數拉下來變成一次方程式。';
+  L1_H1.mantissaShift = '這是「尾數不變」：一個數乘上 $10$ 的次方，$\\log$ 只有整數部分（首數）改變，小數部分（尾數）不變。';
+  L1_H1.scaleShift = '這是「伸縮化成平移」：對數的真數乘常數，用運算律拆出來變成上下平移；指數函數前面乘底數的次方，併進指數變成左右平移。';
+  L1_H1.midpointConcave = '這是「中點的函數值 vs 函數值的平均」：三個數都寫成 $\\log_{b}(\\text{真數})$，先比真數，再看底數決定遞增或遞減。';
+
+  L1_SOL.symmPower = function (p, o) {
+    var B = p.B, P = function (e) { return B + '^{' + e + '}'; }, A = Fr.tex(F(p.ans[0], p.ans[1]));
+    if (p.v === 0) return ['令 $u=' + P('x') + '$，則 $' + P('-x') + '=\\dfrac1u$，已知 $u+\\dfrac1u=' + p.k + '$。',
+      '兩邊平方：$u^{2}+2\\cdot u\\cdot\\dfrac1u+\\dfrac{1}{u^{2}}=' + p.k + '^{2}$，中間項 $2\\cdot u\\cdot\\dfrac1u=2$ 是常數。',
+      '所以 $' + P('2x') + '+' + P('-2x') + '=u^{2}+\\dfrac{1}{u^{2}}=' + (p.k * p.k) + '-2=' + A + '$。'];
+    if (p.v === 1) return ['令 $u=' + P('x') + '$、$v=' + P('-x') + '$，則 $uv=1$，已知 $u+v=' + p.k + '$。',
+      '立方和公式：$u^{3}+v^{3}=(u+v)^{3}-3uv(u+v)=(u+v)^{3}-3(u+v)$。',
+      '代入：$' + p.k + '^{3}-3\\times' + p.k + '=' + (p.k * p.k * p.k) + '-' + (3 * p.k) + '=' + A + '$。'];
+    if (p.v === 2) return ['令 $u=' + P('x') + '$，則 $' + P('-x') + '=\\dfrac1u$，已知 $u-\\dfrac1u=' + p.k + '$。',
+      '兩邊平方：$u^{2}-2+\\dfrac{1}{u^{2}}=' + (p.k * p.k) + '$（差的平方，中間項是 $-2$）。',
+      '所以 $' + P('2x') + '+' + P('-2x') + '=' + (p.k * p.k) + '+2=' + A + '$。'];
+    if (p.v === 3) {
+      var st = ['令 $u=x^{\\frac12}$，則 $x^{-\\frac12}=\\dfrac1u$、$x=u^{2}$、$x^{-1}=\\dfrac{1}{u^{2}}$。',
+        '兩邊平方：$\\left(u+\\dfrac1u\\right)^{2}=u^{2}+2+\\dfrac{1}{u^{2}}=' + (p.k * p.k) + '$，所以 $x+x^{-1}=' + (p.k * p.k) + '-2=' + (p.k * p.k - 2) + '$。'];
+      if (p.s === 2) st.push('再平方一次：$x^{2}+x^{-2}=\\left(x+x^{-1}\\right)^{2}-2=' + (p.k * p.k - 2) + '^{2}-2=' + A + '$。');
+      else st.push('答案：$x+x^{-1}=' + A + '$。');
+      return st;
+    }
+    var S = p.sg > 0 ? '+' : '-', mS = p.sg > 0 ? '-' : '+';
+    return ['分子是立方' + (p.sg > 0 ? '和' : '差') + '：$u^{3}' + S + 'v^{3}=(u' + S + 'v)(u^{2}' + mS + 'uv+v^{2})$，這裡 $u=' + P('x') + '$、$v=' + P('-x') + '$、$uv=1$。',
+      '分子分母約掉 $u' + S + 'v$，剩 $u^{2}' + mS + '1+v^{2}=' + P('2x') + mS + '1+' + P('-2x') + '$。',
+      (p.s ? '由 $x=\\log_{' + B + '}' + p.s + '$：$' + P('2x') + '=\\left(' + B + '^{\\log_{' + B + '}' + p.s + '}\\right)^{2}=' + p.s + '^{2}=' + p.m + '$' : '已知 $' + P('2x') + '=' + p.m + '$')
+        + '，$' + P('-2x') + '=\\dfrac{1}{' + p.m + '}$，所以答案 $=' + p.m + mS + '1+\\dfrac{1}{' + p.m + '}=' + A + '$。'];
+  };
+
+  L1_SOL.logChain = function (p, o) {
+    var A = Fr.tex(F(p.ans[0], p.ans[1]));
+    if (p.v === 0) {
+      var fac = p.bs.map(function (b, t) { return xLogB(b, String(p.as[t])); }), b1 = p.bs[0], bn = p.as[p.as.length - 1];
+      return ['換底公式：每一個都寫成常用對數的分式，$\\log_{m}n=\\dfrac{\\log n}{\\log m}$。',
+        '依「前一個的真數＝下一個的底」排好：$' + fac.join('\\cdot ') + '$，相乘時中間的 $\\log$ 全部約掉，只剩 $\\dfrac{\\log ' + bn + '}{\\log ' + b1 + '}=' + logT(b1, String(bn)) + '$。',
+        '$' + b1 + '=' + p.rt + '^{' + p.i + '}$、$' + bn + '=' + p.rt + '^{' + p.j + '}$，所以 $' + logT(b1, String(bn)) + '=\\dfrac{' + p.j + '\\log ' + p.rt + '}{' + p.i + '\\log ' + p.rt + '}=' + A + '$。'];
+    }
+    if (p.v === 1) {
+      var C = XCHAIN.filter(function (c) { return c[0] === p.s && c[1] === p.t; })[0];
+      return ['每一項換成常用對數：$\\log_{k}(k+1)=\\dfrac{\\log(k+1)}{\\log k}$。',
+        '連乘時分子分母一路對消：$\\dfrac{\\log ' + (p.s + 1) + '}{\\log ' + p.s + '}\\cdot\\dfrac{\\log ' + (p.s + 2) + '}{\\log ' + (p.s + 1) + '}\\cdots\\dfrac{\\log ' + p.t + '}{\\log ' + (p.t - 1) + '}=\\dfrac{\\log ' + p.t + '}{\\log ' + p.s + '}=\\log_{' + p.s + '}' + p.t + '$。',
+        p.outer ? '外面的底 $' + (p.s * p.s) + '=' + p.s + '^{2}$：$' + (p.s * p.s) + '^{\\log_{' + p.s + '}' + p.t + '}=\\left(' + p.s + '^{\\log_{' + p.s + '}' + p.t + '}\\right)^{2}=' + p.t + '^{2}=' + A + '$。'
+          : '$' + p.s + '=' + C[2] + '^{' + C[3] + '}$、$' + p.t + '=' + C[2] + '^{' + C[4] + '}$，所以 $\\log_{' + p.s + '}' + p.t + '=\\dfrac{' + C[4] + '}{' + C[3] + '}' + (A === '\\dfrac{' + C[4] + '}{' + C[3] + '}' ? '' : '=' + A) + '$。'];
+    }
+    var Bv = Math.pow(p.rt, p.p), Lv = Math.pow(p.rt, p.q), Mv = Math.pow(p.t, p.q), core = Math.pow(p.t, p.p);
+    if (p.rt === 10) return ['指數律把指數的「加」拆成「乘」：$10^{' + p.c + '+\\log ' + p.t + '}=10^{' + p.c + '}\\cdot10^{\\log ' + p.t + '}$。',
+      '$\\log ' + p.t + '$ 就是「$10$ 的幾次方等於 $' + p.t + '$」，所以 $10^{\\log ' + p.t + '}=' + p.t + '$。',
+      '答案 $=10^{' + p.c + '}\\times' + p.t + '=' + A + '$。'];
+    return ['把底數與對數的底都寫成 $' + p.rt + '$ 的次方：$' + Bv + '=' + p.rt + '^{' + p.p + '}$、$' + Lv + '=' + p.rt + '^{' + p.q + '}$，所以 $\\log_{' + Lv + '}' + Mv + '=\\dfrac{\\log_{' + p.rt + '}' + Mv + '}{' + p.q + '}$。',
+      '$' + Bv + '^{\\log_{' + Lv + '}' + Mv + '}=' + p.rt + '^{' + p.p + '\\cdot\\frac{\\log_{' + p.rt + '}' + Mv + '}{' + p.q + '}}=\\left(' + p.rt + '^{\\log_{' + p.rt + '}' + Mv + '}\\right)^{\\frac{' + p.p + '}{' + p.q + '}}=' + Mv + '^{\\frac{' + p.p + '}{' + p.q + '}}$。',
+      '$' + Mv + '=' + p.t + '^{' + p.q + '}$，所以 $' + Mv + '^{\\frac{' + p.p + '}{' + p.q + '}}=' + p.t + '^{' + p.p + '}=' + core + '$' + (p.c ? '；再乘上 $' + Bv + '^{' + p.c + '}=' + Math.pow(Bv, p.c) + '$，答案 $=' + A + '$。' : '。')];
+  };
+
+  L1_SOL.expEqDiffBase = function (p, o) {
+    var q = p.p * p.k, m = p.m, V = ['a', 'b', ''];
+    var lp = xLinP(xLogVec(p.p), V), lk = xLinP(xLogVec(p.k), V);
+    return ['兩個底 $' + p.p + '$、$' + q + '$ 化不成同一個數的次方，兩邊取常用對數：$(x' + term(m, '', false) + ')\\log' + p.p + '=x\\log' + q + '$。',
+      '展開後把含 $x$ 的移到同一邊：$' + xCoefLog(m, p.p) + '=x\\log' + q + '-x\\log' + p.p + '=x\\log\\dfrac{' + q + '}{' + p.p + '}=x\\log' + p.k + '$，所以 $x=\\dfrac{' + xCoefLog(m, p.p) + '}{\\log' + p.k + '}$。',
+      '用代號寫：$\\log' + p.p + '=' + lp + '$、$\\log' + p.k + '=' + lk + '$' + ((p.p % 5 === 0 || p.k % 5 === 0) ? '（$\\log5=1-\\log2=1-a$）' : '') + '，代入化簡得 ' + o.a + '。'];
+  };
+
+  L1_SOL.mantissaShift = function (p, o) {
+    if (p.v === 0) {
+      var s0 = xDec(p.M10, 0), s1 = xDec(p.M10, p.e1), s2 = xDec(p.M10, p.e2), mt = p.mant.toFixed(4);
+      return ['寫成科學記號：$' + s1 + '=' + s0 + '\\times10^{' + p.e1 + '}$，取 $\\log$：$\\log ' + s1 + '=' + p.e1 + '+\\log ' + s0 + '$。',
+        '(1) $\\log ' + s1 + '\\approx' + p.e1 + '+' + mt + '=' + (p.e1 + p.mant).toFixed(4) + '$：乘 $10$ 的次方只改首數，尾數 $' + mt + '$ 不變。',
+        '(2) 把 $' + (p.e2 + p.mant).toFixed(4) + '$ 寫成「整數＋$0$ 到 $1$ 之間的小數」：$' + p.e2 + '+' + mt + '$。尾數 $' + mt + '=\\log ' + s0 + '$，所以 $x\\approx' + s0 + '\\times10^{' + p.e2 + '}=' + s2 + '$。'];
+    }
+    var dec = { 2: '\\log2', 3: '\\log3', 4: '2\\log2', 5: '1-\\log2', 6: '\\log2+\\log3', 7: '\\log7', 8: '3\\log2', 9: '2\\log3' }[p.D];
+    return ['把 $\\log x$ 寫成「整數＋$0$ 到 $1$ 之間的小數」：$' + p.val.toFixed(4) + '=' + p.c + '+' + lg(p.D).toFixed(4) + '$（負數要先借位，小數部分一定是正的）。',
+      '小數部分（尾數）$' + lg(p.D).toFixed(4) + '$ 對到哪個數：$\\log' + p.D + '=' + dec + '\\approx' + lg(p.D).toFixed(4) + '$。',
+      '所以 $\\log x\\approx\\log\\left(' + p.D + '\\times10^{' + p.c + '}\\right)$，$x\\approx' + p.D + '\\times10^{' + p.c + '}$。'];
+  };
+
+  L1_SOL.scaleShift = function (p, o) {
+    var a = p.a, A = p.A, h = p.h, k = p.k;
+    var dir = '向' + (h > 0 ? '右' : '左') + '平移 $' + Math.abs(h) + '$ 單位、再向' + (k > 0 ? '上' : '下') + '平移 $' + Math.abs(k) + '$ 單位';
+    if (p.v === 0) {
+      var sf = p.j > 0 ? A + '(x' + term(-h, '', false) + ')' : '\\dfrac{x' + term(-h, '', false) + '}{' + A + '}';
+      return ['真數的係數提出來：真數 $=' + sf + '$。',
+        '用運算律拆開：$' + logT(a, '\\left(' + sf + '\\right)') + '=' + logT(a, '(x' + term(-h, '', false) + ')') + (p.j > 0 ? '+' : '-') + logT(a, String(A)) + '=' + logT(a, '(x' + term(-h, '', false) + ')') + term(k, '', false) + '$（$' + A + '=' + a + '^{' + Math.abs(p.j) + '}$）。',
+        '$x$ 換成 $x' + term(-h, '', false) + '$ 是' + (h > 0 ? '向右' : '向左') + '移 $' + Math.abs(h) + '$，整個式子' + (k > 0 ? '加' : '減') + ' $' + Math.abs(k) + '$ 是' + (k > 0 ? '向上' : '向下') + '移：答案是' + dir + '。'];
+    }
+    return ['$' + (p.j > 0 ? A : '\\dfrac{1}{' + A + '}') + '=' + a + '^{' + p.j + '}$，同底相乘指數相加：$' + a + '^{' + p.j + '}\\cdot' + a + '^{x}=' + a + '^{x' + term(p.j, '', false) + '}$。',
+      '所以 $y=' + a + '^{x' + term(p.j, '', false) + '}' + term(k, '', false) + '$：$x$ 換成 $x' + term(p.j, '', false) + '$ 是' + (h > 0 ? '向右' : '向左') + '移 $' + Math.abs(h) + '$。',
+      '最後的 $' + term(k, '', false) + '$ 是' + (k > 0 ? '向上' : '向下') + '移 $' + Math.abs(k) + '$：答案是' + dir + '。'];
+  };
+
+  L1_SOL.midpointConcave = function (p, o) {
+    var b = p.b[1] === 1 ? p.b[0] : F(p.b[0], p.b[1]), mid = Fr.tex(F(p.p + p.q, 2), true), up = p.up === 1;
+    return ['兩個對數的平均用運算律合併：$\\dfrac{' + logT(b, String(p.p)) + '+' + logT(b, String(p.q)) + '}{2}=\\dfrac12' + logT(b, String(p.p * p.q)) + '=' + logT(b, '\\sqrt{' + (p.p * p.q) + '}') + '$。',
+      '三個數的真數：$' + p.q + '$、$' + mid + '$、$\\sqrt{' + (p.p * p.q) + '}$。算幾不等式 $\\sqrt{' + (p.p * p.q) + '}\\lt' + mid + '$，而 $' + mid + '\\lt' + p.q + '$，所以真數由大到小是 $' + p.q + '\\gt' + mid + '\\gt\\sqrt{' + (p.p * p.q) + '}$。',
+      (up ? '底數 $' + baseTex(b) + '\\gt1$，$\\log$ 遞增：真數大的值就大（這也是「凹口向下」：兩點函數值的平均比中點的函數值小）。'
+          : '底數介於 $0$ 與 $1$，$\\log$ 遞減：真數大的值反而小（凹口向上，兩點函數值的平均比中點的函數值大）。') + '對回題目的名字：' + o.a + '。'];
+  };
+
   var META_L1 = [
       ['expLaw', '§1 指數律化簡'], ['radicalVal', '§1 根式與分數指數求值'], ['expOrder', '§1 同底指數比大小'], ['expEqSame', '§1 同底指數方程式'],
-      ['expIneqSame', '§1 同底指數不等式'], ['expShift', '§1 指數函數的平移'], ['expQuadEq', '§1 換元二次的指數方程式'], ['growthTimes', '§1 每期成長 k 倍'],
+      ['expIneqSame', '§1 同底指數不等式'], ['expShift', '§1 指數函數的平移'], ['expQuadEq', '§1 換元二次的指數方程式'], ['growthTimes', '§1 每期成長 k 倍'], ['symmPower', '§1 對稱式 aˣ+a⁻ˣ 的平方與立方'],
       ['logDef', '§2 對數的定義求值'], ['logLaw', '§2 運算律化簡'], ['logExpress', '§2 用 log2、log3 表示'], ['changeBase', '§2 換底公式'],
       ['digits', '§2 位數'], ['charMant', '§2 首數與尾數的意義'], ['leadDigit', '§2 最高位數字'], ['logEqSimple', '§2 對數方程式（定義）'], ['logIneqSimple', '§2 對數不等式（定義域）'],
-      ['logShift', '§3 對數函數的平移與對稱'], ['logOrder', '§3 對數值比大小'], ['logDomain', '§3 對數的定義域'], ['logQuadMin', '§3 換元二次的最小值'], ['logScale', '§3 對數刻度：地震與分貝']
+      ['logChain', '§2 換底連乘、底數的次方是對數'], ['expEqDiffBase', '§2 不同底的指數方程式（兩邊取 log）'], ['mantissaShift', '§2 尾數不變：科學記號與 log 值'],
+      ['logShift', '§3 對數函數的平移與對稱'], ['logOrder', '§3 對數值比大小'], ['logDomain', '§3 對數的定義域'], ['logQuadMin', '§3 換元二次的最小值'], ['logScale', '§3 對數刻度：地震與分貝'],
+      ['scaleShift', '§3 伸縮化成平移'], ['midpointConcave', '§3 中點的函數值與函數值的平均']
   ];
   var META_L2 = [
       ['expSymmMin', '§1 對稱式換元的最值'], ['expIneqQuad', '§1 換元二次的指數不等式'], ['expAMGM', '§1 乘積定值的算幾'], ['expIntervalMax', '§1 指數在區間上的最值'],
-      ['halfLife', '§1 半衰期'], ['compoundYears', '§1 成長率：至少幾年'],
+      ['halfLife', '§1 半衰期'], ['compoundYears', '§1 成長率：至少幾年'], ['expEqualChain', '§1 aˣ=bʸ=N 型：取 log'],
       ['logQuadRange', '§2 對數換元的區間最值'], ['logEqQuad', '§2 對數換元的二次方程式'], ['logEqProduct', '§2 真數相乘的對數方程式'], ['logIneqBase', '§2 底數決定方向的對數不等式'],
       ['logSumTele', '§2 對數連加（望遠鏡）'], ['digitsLead', '§2 位數與最高位數字'], ['decimalFirst', '§2 小數點後第幾位非零'],
-      ['logPointSym', '§3 對數函數上的點（多選）'], ['decayRatio', '§3 兩種半衰期的比'], ['dbMulti', '§3 分貝的疊加與倍數']
+      ['logIneqProduct', '§2 真數相乘的對數不等式'], ['logRecipEq', '§2 logₐx 與 logₓa 的方程式'], ['changeBaseExpress', '§2 換底後用代號表示'], ['recipLogSum', '§2 對數倒數的和'], ['xPowLog', '§2 x 的次方含 log x：取對數化二次'],
+      ['logPointSym', '§3 對數函數上的點（多選）'], ['decayRatio', '§3 兩種半衰期的比'], ['dbMulti', '§3 分貝的疊加與倍數'], ['nestedLog', '§3 兩層對數的不等式與定義域']
   ];
   /* ══════════════════════════════════════════════════════════
-     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
+     L3　中上（18 型）：每型對應固定題 L3-1～L3-18 的「類似題」
      答案全部精確；p 給 Python 獨立驗算。
      ══════════════════════════════════════════════════════════ */
   var L3 = {};
@@ -1172,9 +1637,63 @@
       p: { a: a, e: e, b: b, v: v, N: N } };
   };
 
-  var META_L3 = [['expSystem', '兩個指數的聯立'], ['expIneqHalf', '4^{x+½} 型換元二次不等式'], ['expRangeSum', '換元後的區間最值'], ['expTower', '指數塔：取兩次對數'], ['vertGap', '鉛直線截兩條指數曲線'], ['logEqSolveX', 'x 藏在對數等式裡'], ['logTripleProduct', '三種底的對數相乘'], ['digitsAB', '位數與小數位翻成 log 不等式'], ['logLinearCombo', '用兩個 log 表示 log t'], ['logProductRoots', '(log px)(log qx)=c 的兩根之積'], ['bigNumMulti', '大數的個位、位數、最高位'], ['logShiftMatch', '平移後與已知圖形重合'], ['logQuadInterval', 'log(二次式) 的區間最值'], ['logReflectShiftMeet', '對稱與平移後求交點'], ['inverseThroughPoint', '反函數圖形過定點']];
+  /* ── 2026-09-28 擴充：L3-16～18 的類似題 ── */
+  /* L3-16　直線 x+y=k 與互為反函數的兩圖形：交點對 y=x 對稱 */
+  L3.inverseLineSum = function (r) {
+    var v = r.int(0, 1);
+    if (v === 0) {
+      var a = r.pick([2, 2, 3, 4, 5]), m = r.int(1, { 2: 5, 3: 3, 4: 3, 5: 2 }[a]), P = Math.pow(a, m), k = m + P, w = r.int(0, 2);
+      var ask = [T('(k,a)'), T('k+a^{2}'), T('p\\cdot q')][w], ans = [T('(k,a)=(' + k + ',' + a + ')'), T('k+a^{2}=' + (k + a * a)), T('p\\cdot q=' + (P * m))][w];
+      return { q: '已知 ' + T('a\\gt1') + '。直線 ' + T('x+y=k') + ' 與 ' + T('y=a^{x}') + ' 的圖形交於 ' + T('A(' + m + ',p)') + '，與 ' + T('y=\\log_{a}x') + ' 的圖形交於 ' + T('B(' + P + ',q)') + '。求 ' + ask + '。',
+        a: ans,
+        h: '$y=a^{x}$ 與 $y=\\log_{a}x$ 對稱於直線 $y=x$，直線 $x+y=k$ 也對稱於 $y=x$：$A$ 的對稱點 $(p,' + m + ')$ 同時在 $y=\\log_{a}x$ 與直線上，就是 $B$（交點只有一個），所以 $p=' + P + '$、$q=' + m + '$、$k=' + m + '+' + P + '$；再由 $a^{' + m + '}=' + P + '$ 求 $a$。',
+        p: { v: 0, a: a, m: m, P: P, k: k, w: w } };
+    }
+    var b = r.pick([2, 3, 5]), kk = r.int(3, 12), hs = r.int(-2, 2);
+    var eq1 = b + '^{x}+x=' + kk, eq2 = logT(b, hs ? '(x' + term(-hs, '', false) + ')' : 'x') + '+x=' + (kk + hs);
+    return { q: '設 ' + T('\\alpha') + ' 滿足 ' + T(eq1) + '、' + T('\\beta') + ' 滿足 ' + T(eq2) + '，求 ' + T('\\alpha+\\beta') + '。',
+      a: T('\\alpha+\\beta=' + (kk + hs)),
+      h: (hs ? '令 $u=x' + term(-hs, '', false) + '$，第二式變成 $\\log_{' + b + '}u+u=' + kk + '$。' : '') + '$\\alpha$ 是 $y=' + b + '^{x}$ 與直線 $y=' + kk + '-x$ 交點的 $x$ 坐標，' + (hs ? '$u$' : '$\\beta$') + ' 是 $y=\\log_{' + b + '}x$ 與同一條直線交點的 $x$ 坐標；兩個交點對 $y=x$ 對稱，所以 $\\alpha+' + (hs ? 'u' : '\\beta') + '=' + kk + '$' + (hs ? '，而 $\\beta=u' + term(hs, '', false) + '$。' : '。'),
+      p: { v: 1, b: b, k: kk, h: hs } };
+  };
+
+  /* L3-17　真數含指數的對數方程式：右邊併成一個對數，令 t=a^{x/2} */
+  L3.logOfExpEq = function (r) {
+    var a = r.pick([2, 3, 5]), t1, t2, tries = 0, C, D;
+    do {
+      t1 = Math.pow(a, r.int(0, a === 2 ? 4 : 2));
+      t2 = r() < 0.3 ? r.pick([2, 3, 5, 6, 7].filter(function (n) { return !xIsPow(n, a); })) : Math.pow(a, r.int(0, a === 2 ? 5 : 3));
+      C = t1 * t2; D = t1 + t2; tries++;
+    } while ((t1 === t2 || C > 3000 || C < 2) && tries < 200);
+    var ea = 0, Dr = D; while (Dr % a === 0) { Dr /= a; ea++; }
+    var c0 = r.int(0, ea), rem = D / Math.pow(a, c0);
+    var rhs = '\\dfrac{x}{2}' + (c0 ? '+' + c0 : '') + (rem > 1 ? '+' + logT(a, String(rem)) : '');
+    var xs = [t1, t2].sort(function (u, w) { return u - w; }).map(function (t) { var e = 0, s = t; while (s % a === 0 && s > 1) { s /= a; e++; } return s === 1 ? String(2 * e) : '2' + logT(a, String(t)); });
+    return { q: '解方程式 ' + T(logT(a, '\\left(' + a + '^{x}+' + C + '\\right)') + '=' + rhs) + '。',
+      a: T('x=' + xs.join('\\ \\text{或}\\ ')),
+      h: '右邊併成一個對數：$' + rhs + '=' + logT(a, '\\left(' + D + '\\cdot ' + a + '^{\\frac{x}{2}}\\right)') + '$，真數相等：$' + a + '^{x}+' + C + '=' + D + '\\cdot ' + a + '^{\\frac{x}{2}}$。令 $t=' + a + '^{\\frac{x}{2}}\\gt0$（$' + a + '^{x}=t^{2}$）：$t^{2}-' + D + 't+' + C + '=0$，解出 $t$ 後 $x=2\\log_{' + a + '}t$。',
+      p: { a: a, t1: t1, t2: t2, C: C, D: D, c0: c0 } };
+  };
+
+  /* L3-18　log_b x 與 log_x b 的不等式：不能直接乘 t，通分後分段看正負 */
+  L3.logRecipIneq = function (r) {
+    var b = r.pick([2, 3, 5]), lim = b === 2 ? 4 : 2, t2 = r.int(1, lim), t1 = -r.int(1, lim), K = -t1 * t2, m = t1 + t2, op = r.pick(['\\le ', '\\lt ', '\\ge ', '\\gt ']);
+    var form = Math.pow(b, K) <= 1000 && r() < 0.4 ? 1 : 0;
+    var lhs = logT(b, 'x') + '-' + (form ? '\\log_{x}' + Math.pow(b, K) : (K === 1 ? '' : K) + '\\log_{x}' + b);
+    var X1 = xPw(b, t1), X2 = xPw(b, t2), ans;
+    if (op === '\\le ') ans = '0\\lt x\\le ' + X1 + '\\ \\text{或}\\ 1\\lt x\\le ' + X2;
+    else if (op === '\\lt ') ans = '0\\lt x\\lt ' + X1 + '\\ \\text{或}\\ 1\\lt x\\lt ' + X2;
+    else if (op === '\\ge ') ans = X1 + '\\le x\\lt 1\\ \\text{或}\\ x\\ge ' + X2;
+    else ans = X1 + '\\lt x\\lt 1\\ \\text{或}\\ x\\gt ' + X2;
+    return { q: '解不等式 ' + T(lhs + op + m) + '。',
+      a: T(ans),
+      h: '令 $t=' + logT(b, 'x') + '$（$x\\ne1$ ⟹ $t\\ne0$），' + (form ? '$\\log_{x}' + Math.pow(b, K) + '=\\dfrac{' + K + '}{t}$' : '$\\log_{x}' + b + '=\\dfrac{1}{t}$') + '。<b>不能直接乘 $t$</b>（$t$ 的正負未知）：移項通分成 $\\dfrac{t^{2}' + term(-m, 't', false) + '-' + K + '}{t}' + op + '0$，即 $\\dfrac{(t' + term(-t1, '', false) + ')(t' + term(-t2, '', false) + ')}{t}' + op + '0$，用 $' + t1 + '$、$0$、$' + t2 + '$ 三個點在數線上分段看正負，最後換回 $x=' + b + '^{t}$。',
+      p: { b: b, t1: t1, t2: t2, K: K, m: m, op: op.trim(), form: form } };
+  };
+
+  var META_L3 = [['expSystem', '兩個指數的聯立'], ['expIneqHalf', '4^{x+½} 型換元二次不等式'], ['expRangeSum', '換元後的區間最值'], ['expTower', '指數塔：取兩次對數'], ['vertGap', '鉛直線截兩條指數曲線'], ['logEqSolveX', 'x 藏在對數等式裡'], ['logTripleProduct', '三種底的對數相乘'], ['digitsAB', '位數與小數位翻成 log 不等式'], ['logLinearCombo', '用兩個 log 表示 log t'], ['logProductRoots', '(log px)(log qx)=c 的兩根之積'], ['bigNumMulti', '大數的個位、位數、最高位'], ['logShiftMatch', '平移後與已知圖形重合'], ['logQuadInterval', 'log(二次式) 的區間最值'], ['logReflectShiftMeet', '對稱與平移後求交點'], ['inverseThroughPoint', '反函數圖形過定點'], ['inverseLineSum', '直線 x+y=k 與互為反函數的兩圖形'], ['logOfExpEq', '真數含指數的對數方程式'], ['logRecipIneq', 'logₐx 與 logₓa 的不等式：分正負']];
   /* 固定題 L3-n 對應的類似題型 */
-  var L3_FIX = { 'L3-1': 'expSystem', 'L3-2': 'expIneqHalf', 'L3-3': 'expRangeSum', 'L3-4': 'expTower', 'L3-5': 'vertGap', 'L3-6': 'logEqSolveX', 'L3-7': 'logTripleProduct', 'L3-8': 'digitsAB', 'L3-9': 'logLinearCombo', 'L3-10': 'logProductRoots', 'L3-11': 'bigNumMulti', 'L3-12': 'logShiftMatch', 'L3-13': 'logQuadInterval', 'L3-14': 'logReflectShiftMeet', 'L3-15': 'inverseThroughPoint' };
+  var L3_FIX = { 'L3-1': 'expSystem', 'L3-2': 'expIneqHalf', 'L3-3': 'expRangeSum', 'L3-4': 'expTower', 'L3-5': 'vertGap', 'L3-6': 'logEqSolveX', 'L3-7': 'logTripleProduct', 'L3-8': 'digitsAB', 'L3-9': 'logLinearCombo', 'L3-10': 'logProductRoots', 'L3-11': 'bigNumMulti', 'L3-12': 'logShiftMatch', 'L3-13': 'logQuadInterval', 'L3-14': 'logReflectShiftMeet', 'L3-15': 'inverseThroughPoint', 'L3-16': 'inverseLineSum', 'L3-17': 'logOfExpEq', 'L3-18': 'logRecipIneq' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：整數指數律、常用對數基本值（高一上 ch1）、二次不等式與配方極值（高一上 ch3）、等比數列（高一下 ch1）
@@ -1277,6 +1796,13 @@
     'L3.logQuadInterval': { f: function (p) { return p.v; }, keep: ['a'], why: '底數大於 $1$ 時外層的 $\\log$ 遞增：最小值在二次式的頂點，最大值在離頂點較遠的端點。' },
     'L3.logReflectShiftMeet': { f: function (p) { return p.k > 0; }, why: '向上平移 $k$ 是把真數乘 $a^{k}$、向下是除以 $a^{k}$：令真數相等時，係數一個大於 $1$、一個小於 $1$。' }
   };
+  /* 2026-09-28 擴充題型的對照題 */
+  CONTRAST['L1.scaleShift'] = { f: function (p) { return p.v; }, why: '同樣是「乘上底數的次方」：對數是乘在真數裡，$\\log_{a}(a^{j}x)=\\log_{a}x+j$，變成<b>上下</b>平移；指數是乘在前面，$a^{j}\\cdot a^{x}=a^{x+j}$，變成<b>左右</b>平移。' };
+  CONTRAST['L1.midpointConcave'] = { f: function (p) { return p.up; }, why: '三個數的真數大小一樣，差別只在底數：底數大於 $1$ 時 $\\log$ 遞增（凹口向下），底數介於 $0$ 與 $1$ 時遞減（凹口向上），大小順序整個反過來。' };
+  CONTRAST['L1.mantissaShift'] = { f: function (p) { return p.v; }, why: '兩題都在用「尾數決定數字、首數決定 $10$ 的次方」：一題給尾數去算不同位置的 $\\log$，一題給 $\\log$ 值反推這個數；負的 $\\log$ 都要先寫成「負整數＋正的尾數」。' };
+  CONTRAST['L2.logIneqProduct'] = { f: function (p) { return p.up; }, why: '合併真數後，底數大於 $1$ 方向不變、介於 $0$ 與 $1$ 方向相反；兩題都要先寫定義域（兩個真數都 $\\gt0$），再和二次不等式的解取交集。' };
+  CONTRAST['L2.logRecipEq'] = { f: function (p) { return p.form; }, why: '兩題都是令 $t=\\log_{a}x$、$\\log_{x}N=\\dfrac{k}{t}$，乘 $t$ 化成二次方程式：一題兩個 $t$ 同號，兩個 $x$ 在 $1$ 的同一側；一題一正一負，一個 $x\\gt1$、一個 $0\\lt x\\lt1$，題目若再給範圍就只能留一個。' };
+  CONTRAST['L3.logRecipIneq'] = { f: function (p) { return p.op === '\\le' || p.op === '\\lt'; }, why: '通分後看 $\\dfrac{(t-t_1)(t-t_2)}{t}$ 的正負：「小於」取 $t\\lt t_1$ 或 $0\\lt t\\lt t_2$，「大於」剛好是另外兩段；$t=0$（$x=1$）永遠不能取。' };
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

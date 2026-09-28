@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -239,7 +239,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（11,750 題抽樣，全部用分數與根式精確重算一次）；固定題全數人工＋電腦重算。角度一律用「度」；<b>弧度、和差角、倍角、半角、疊合都是高二上的內容</b>，本書全部不用。需要 $\sin75°$、$\tan15°$ 的地方，一律改用餘弦定理或 $15°$-$75°$-$90°$ 直角三角形的邊長比。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（14,500 題抽樣，全部用分數與根式精確重算一次）；固定題全數人工＋電腦重算。角度一律用「度」；<b>弧度、和差角、倍角、半角、疊合都是高二上的內容</b>，本書全部不用。需要 $\sin75°$、$\tan15°$ 的地方，一律改用餘弦定理或 $15°$-$75°$-$90°$ 直角三角形的邊長比。</li>
   </ol>
 </div>
 
@@ -266,21 +266,21 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>三個比值會搞混、看到 $210°$ 不知道往哪個象限畫、餘弦定理三個平方項不知道哪個要減的同學。</div>
-  <div><b>目標</b>30 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>35 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
 <h3 class="sec">1 銳角三角比</h3>
-<div class="must">先要會：<b>對／斜、鄰／斜、對／鄰</b>：先問清楚「是哪個角、哪條邊對著它」，再寫比值；<b>$30°$、$45°$、$60°$ 的值是畫出來的</b>（$1:\sqrt3:2$、$1:1:\sqrt2$ 兩個直角三角形）；<b>同角關係 $\sin^2\theta+\cos^2\theta=1$、$\tan\theta=\dfrac{\sin\theta}{\cos\theta}$</b>，知道一個就知道全部（畫直角三角形最快）；<b>$\sin\theta\pm\cos\theta$ 看到就平方</b>；<b>餘角 $\sin(90°-\theta)=\cos\theta$</b> 把長串頭尾配對；<b>仰角測高：已知鄰邊求對邊用 $\tan$ 乘、已知對邊求鄰邊用 $\tan$ 除</b>，兩次測量就列兩條式子相減。</div>
-<div class="gen-grid" data-tier="L1" data-keys="triDef,specialEval,sinToCos,sumProdAcute,coAngleSum,elevOne,elevTwo"></div>
-<div class="fadeset" data-tier="L1" data-keys="triDef,specialEval,sinToCos,sumProdAcute,coAngleSum,elevOne,elevTwo" data-seed="7101"></div>
-<div class="fixset" data-tier="L1" data-keys="triDef,specialEval,sinToCos,sumProdAcute,coAngleSum,elevOne,elevTwo" data-seed="9101"></div>
+<div class="must">先要會：<b>對／斜、鄰／斜、對／鄰</b>：先問清楚「是哪個角、哪條邊對著它」，再寫比值；<b>$30°$、$45°$、$60°$ 的值是畫出來的</b>（$1:\sqrt3:2$、$1:1:\sqrt2$ 兩個直角三角形）；<b>同角關係 $\sin^2\theta+\cos^2\theta=1$、$\tan\theta=\dfrac{\sin\theta}{\cos\theta}$</b>，知道一個就知道全部（畫直角三角形最快）；<b>$\sin\theta\pm\cos\theta$ 看到就平方</b>；<b>餘角 $\sin(90°-\theta)=\cos\theta$</b> 把長串頭尾配對；<b>仰角測高：已知鄰邊求對邊用 $\tan$ 乘、已知對邊求鄰邊用 $\tan$ 除</b>，兩次測量就列兩條式子相減；<b>直角三角形給一個三角比和一邊：先把比值寫成三邊的比，再看已知的邊是比例的幾倍</b>；<b>已知 $\tan\theta$ 求 $\sin\theta$、$\cos\theta$ 的齊次式：分子分母同除以 $\cos\theta$</b>（二次式先除以 $\sin^2\theta+\cos^2\theta=1$）。</div>
+<div class="gen-grid" data-tier="L1" data-keys="triDef,specialEval,sinToCos,sumProdAcute,coAngleSum,elevOne,elevTwo,rightSolve,tanHomog"></div>
+<div class="fadeset" data-tier="L1" data-keys="triDef,specialEval,sinToCos,sumProdAcute,coAngleSum,elevOne,elevTwo,rightSolve,tanHomog" data-seed="7101"></div>
+<div class="fixset" data-tier="L1" data-keys="triDef,specialEval,sinToCos,sumProdAcute,coAngleSum,elevOne,elevTwo,rightSolve,tanHomog" data-seed="9101"></div>
 
 <h3 class="sec">2 廣義角與極坐標</h3>
-<div class="must">先要會：<b>同界角加減 $360°$</b>，落在 $0°\sim360°$ 再看象限；<b>終邊上一點 $(x,y)$：$r=\sqrt{x^2+y^2}$ 永遠為正</b>，$\sin=\dfrac yr$、$\cos=\dfrac xr$、$\tan=\dfrac yx$；<b>「一全正、二正弦、三正切、四餘弦」</b>；<b>廣義角特殊值 $=$ 象限定號 $\times$ 參考角的值</b>；<b>$[r,\theta]\to(r\cos\theta,r\sin\theta)$、$(x,y)\to$ 先鎖象限再由 $|\tan|$ 找參考角</b>；<b>極坐標兩點：極角的差就是夾角</b>，距離用餘弦定理、面積用 $\dfrac12r_1r_2\sin$；<b>斜角 $\alpha$：$\tan\alpha=$ 斜率，$-90°\lt\alpha\le90°$</b>，兩直線夾角就是斜角的差（差超過 $90°$ 就用 $180°$ 減）。</div>
-<div class="gen-grid" data-tier="L1" data-keys="coterminal,pointTrig,quadFind,reduceEval,polarConv,polarDist,slopeAngle"></div>
-<div class="fadeset" data-tier="L1" data-keys="coterminal,pointTrig,quadFind,reduceEval,polarConv,polarDist,slopeAngle" data-seed="7201"></div>
-<div class="fixset" data-tier="L1" data-keys="coterminal,pointTrig,quadFind,reduceEval,polarConv,polarDist,slopeAngle" data-seed="9201"></div>
+<div class="must">先要會：<b>同界角加減 $360°$</b>，落在 $0°\sim360°$ 再看象限；<b>終邊上一點 $(x,y)$：$r=\sqrt{x^2+y^2}$ 永遠為正</b>，$\sin=\dfrac yr$、$\cos=\dfrac xr$、$\tan=\dfrac yx$；<b>「一全正、二正弦、三正切、四餘弦」</b>；<b>廣義角特殊值 $=$ 象限定號 $\times$ 參考角的值</b>；<b>$[r,\theta]\to(r\cos\theta,r\sin\theta)$、$(x,y)\to$ 先鎖象限再由 $|\tan|$ 找參考角</b>；<b>極坐標兩點：極角的差就是夾角</b>，距離用餘弦定理、面積用 $\dfrac12r_1r_2\sin$；<b>斜角 $\alpha$：$\tan\alpha=$ 斜率，$-90°\lt\alpha\le90°$</b>，兩直線夾角就是斜角的差（差超過 $90°$ 就用 $180°$ 減）；<b>三角比比大小：先看正負，同號的換成參考角再比</b>；<b>對稱點的極坐標：對 $y$ 軸是 $180°-\theta$、對 $x$ 軸是 $-\theta$、對原點是 $180°+\theta$、對 $y=x$ 是 $90°-\theta$</b>，半徑不變。</div>
+<div class="gen-grid" data-tier="L1" data-keys="coterminal,pointTrig,quadFind,reduceEval,polarConv,polarDist,slopeAngle,trigCompare,polarSym"></div>
+<div class="fadeset" data-tier="L1" data-keys="coterminal,pointTrig,quadFind,reduceEval,polarConv,polarDist,slopeAngle,trigCompare,polarSym" data-seed="7201"></div>
+<div class="fixset" data-tier="L1" data-keys="coterminal,pointTrig,quadFind,reduceEval,polarConv,polarDist,slopeAngle,trigCompare,polarSym" data-seed="9201"></div>
 
 <h3 class="sec">3 正弦定理與餘弦定理</h3>
 <div class="must">先要會：<b>正弦定理 $\dfrac a{\sin A}=\dfrac b{\sin B}=\dfrac c{\sin C}=2R$</b>：只要知道「一邊與它的對角」，就求得出 $2R$；<b>餘弦定理 $a^2=b^2+c^2-2bc\cos A$：被減的那個平方項是「對邊」</b>；<b>SSS 求角：最大角對最大邊</b>，餘弦正／零／負 ⟹ 銳／直／鈍；<b>三角形存在：兩邊差 $\lt$ 第三邊 $\lt$ 兩邊和</b>，鈍角範圍分「誰是最大邊」兩段討論；<b>SSA 先算高 $h=b\sin A$</b>：$a\lt h$ 無解、$a=h$ 一解、$h\lt a\lt b$ 兩解、$a\ge b$ 一解。</div>
@@ -289,10 +289,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fixset" data-tier="L1" data-keys="sineLaw,circumR,cosLawSide,cosLawAngle,sideRange,ssaCount" data-seed="9301"></div>
 
 <h3 class="sec">4 三角形的面積</h3>
-<div class="must">先要會：<b>面積 $=\dfrac12ab\sin C$（兩邊夾角）</b>，已知面積反求角要想「銳角、鈍角各一」；<b>海龍 $\sqrt{s(s-a)(s-b)(s-c)}$，$s$ 是半周長</b>；<b>面積是橋：$r=\dfrac Ks$、$R=\dfrac{abc}{4K}$</b>；<b>中線長 $\overline{AM}^2=\dfrac{2b^2+2c^2-a^2}{4}$</b>；<b>角平分線：分對邊成兩邊之比，長度用「面積切兩半」</b>；<b>圓內接四邊形：對角互補 ⟹ $\cos D=-\cos B$</b>，同一條對角線寫兩次餘弦定理。</div>
-<div class="gen-grid" data-tier="L1" data-keys="areaSAS,heronArea,inOutRadius,medianLen,bisectorLen,cyclicQuad"></div>
-<div class="fadeset" data-tier="L1" data-keys="areaSAS,heronArea,inOutRadius,medianLen,bisectorLen,cyclicQuad" data-seed="7401"></div>
-<div class="fixset" data-tier="L1" data-keys="areaSAS,heronArea,inOutRadius,medianLen,bisectorLen,cyclicQuad" data-seed="9401"></div>
+<div class="must">先要會：<b>面積 $=\dfrac12ab\sin C$（兩邊夾角）</b>，已知面積反求角要想「銳角、鈍角各一」；<b>海龍 $\sqrt{s(s-a)(s-b)(s-c)}$，$s$ 是半周長</b>；<b>面積是橋：$r=\dfrac Ks$、$R=\dfrac{abc}{4K}$</b>；<b>中線長 $\overline{AM}^2=\dfrac{2b^2+2c^2-a^2}{4}$</b>；<b>角平分線：分對邊成兩邊之比，長度用「面積切兩半」</b>；<b>圓內接四邊形：對角互補 ⟹ $\cos D=-\cos B$</b>，同一條對角線寫兩次餘弦定理；<b>四邊形面積 $=\dfrac12\times$ 兩條對角線的乘積 $\times\sin$（夾角）</b>，夾角是銳角或鈍角都一樣。</div>
+<div class="gen-grid" data-tier="L1" data-keys="areaSAS,heronArea,inOutRadius,medianLen,bisectorLen,cyclicQuad,quadDiagArea"></div>
+<div class="fadeset" data-tier="L1" data-keys="areaSAS,heronArea,inOutRadius,medianLen,bisectorLen,cyclicQuad,quadDiagArea" data-seed="7401"></div>
+<div class="fixset" data-tier="L1" data-keys="areaSAS,heronArea,inOutRadius,medianLen,bisectorLen,cyclicQuad,quadDiagArea" data-seed="9401"></div>
 
 <h3 class="sec">5 正射影與三角測量</h3>
 <div class="must">先要會：<b>正射影長 $=$ 長度 $\times|\cos\theta|$</b>（夾角超過 $90°$ 用補角）；<b>投影定理 $a=b\cos C+c\cos B$</b>：一條邊等於另外兩邊投影的和；<b>長方體：先算底面對角線，再算體對角線</b>，「線與面的夾角」在含高的直角三角形裡；<b>正四角錐兩個高：體高（到底面中心）與斜高（到底邊中點）</b>，側面與底面的夾角看斜高、側稜與底面的夾角看側稜。</div>
@@ -300,7 +300,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fadeset" data-tier="L1" data-keys="projLen,projTheorem,cuboid,pyramid" data-seed="7501"></div>
 <div class="fixset" data-tier="L1" data-keys="projLen,projTheorem,cuboid,pyramid" data-seed="9501"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 30 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">L1 混合檢測 12 題（全章 35 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -309,27 +309,27 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
-  <div><b>目標</b>17 個段考主力型，依 25 份段考卷的出現率排序（餘弦定理 21 卷、正弦定理 21、極坐標 18、廣義角 17、三角形面積 15、同界角 13、外接圓 13、誘導公式 12、仰角 11、平方關係 10、海龍 10、解三角形 9、圓內接四邊形 9、三角測量 8、方位角 7、角平分線 7、面積比 7）。</div>
+  <div><b>目標</b>23 個段考主力型，依段考卷的出現率選出。2026-09-28 用題庫 14 份高一段考卷（另參考 12 份舊課綱高二上的三角卷）重新統計，補了 6 型：三角形的唯一性（7 卷）、弦長 $=2R\sin$ 的外接圓題（6 卷）、餘弦定理配最值（5 卷）、面積拆兩塊（4 卷）、以 $k$ 表示廣義角的三角比（4 卷）、平方關係化成二次方程（4 卷）。原本的統計依 25 份段考卷（餘弦定理 21 卷、正弦定理 21、極坐標 18、廣義角 17、三角形面積 15、同界角 13、外接圓 13、誘導公式 12、仰角 11、平方關係 10、海龍 10、解三角形 9、圓內接四邊形 9、三角測量 8、方位角 7、角平分線 7、面積比 7）。</div>
   <div><b>通過標準</b>固定 12 題限時 40 分鐘做完，對 10 題以上。</div>
 </div>
 
-<h3 class="sec">廣義角與極坐標：定號、化簡、極坐標三角形、斜角</h3>
-<div class="must">段考 25 卷中<b>極坐標 18 卷、廣義角 17 卷、同界角 13 卷、誘導公式 12 卷、平方關係 10 卷</b>。解題要點：<b>象限＋和 ⟹ 平方得積，差的正負用象限定</b>；<b>誘導公式「奇變偶不變、符號看象限」</b>，四個因子逐項化成 $\pm\sin\theta$、$\pm\cos\theta$、$\pm\dfrac1{\tan\theta}$；<b>三個極坐標點 ⟹ 極點在內部時面積 $=$ 三塊 $\dfrac12r_ir_j\sin$ 相加</b>；<b>與已知直線夾 $\varphi$ ⟹ 所求斜角是「已知斜角 $\pm\varphi$」（不在 $-90°\lt\alpha\le90°$ 裡就加減 $180°$），斜角 $90°$ 是鉛直線</b>；<b>「範圍內有幾個解」⟹ 單位圓上每圈數終邊，範圍不是整圈時逐個列</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="quadSumProd,reduceSimplify,polarTriangle,lineAngle,sinCount"></div>
+<h3 class="sec">廣義角與極坐標：定號、化簡、以 k 表示、二次方程、極坐標三角形、斜角</h3>
+<div class="must">段考 25 卷中<b>極坐標 18 卷、廣義角 17 卷、同界角 13 卷、誘導公式 12 卷、平方關係 10 卷</b>。解題要點：<b>象限＋和 ⟹ 平方得積，差的正負用象限定</b>；<b>誘導公式「奇變偶不變、符號看象限」</b>，四個因子逐項化成 $\pm\sin\theta$、$\pm\cos\theta$、$\pm\dfrac1{\tan\theta}$；<b>三個極坐標點 ⟹ 極點在內部時面積 $=$ 三塊 $\dfrac12r_ir_j\sin$ 相加</b>；<b>與已知直線夾 $\varphi$ ⟹ 所求斜角是「已知斜角 $\pm\varphi$」（不在 $-90°\lt\alpha\le90°$ 裡就加減 $180°$），斜角 $90°$ 是鉛直線</b>；<b>「範圍內有幾個解」⟹ 單位圓上每圈數終邊，範圍不是整圈時逐個列</b>；<b>已知某個角的三角比 $=k$，求別的角 ⟹ 全部化成同一個參考角，畫直角三角形用 $k$ 表示三邊</b>（注意 $k$ 的正負）；<b>方程式同時有 $\sin\theta$ 與 $\cos^2\theta$ ⟹ 把 $\cos^2\theta$ 換成 $1-\sin^2\theta$ 變成二次方程，解要在 $-1$ 到 $1$ 之間</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="quadSumProd,reduceSimplify,polarTriangle,lineAngle,sinCount,reduceK,trigQuadEq"></div>
 
-<h3 class="sec">解三角形：sin 比、補角餘弦、SSA 兩解、判形狀</h3>
-<div class="must">段考 25 卷中<b>餘弦定理 21 卷、正弦定理 21 卷、解三角形 9 卷</b>。解題要點：<b>$\sin$ 比 $=$ 邊比，設 $pk,qk,rk$</b>，最大角對最大邊；<b>$D$ 在 $\overline{BC}$ 上 ⟹ $\cos\angle ADB=-\cos\angle ADC$，兩個三角形各寫一次餘弦定理</b>；<b>SSA 求第三邊 ⟹ 把它當未知數放進餘弦定理解二次方程，兩個正根就是兩解</b>；<b>判形狀一律「化成邊」</b>：$\sin A\to\dfrac a{2R}$、$\cos A\to\dfrac{b^2+c^2-a^2}{2bc}$，整理成因式相乘。</div>
-<div class="gen-grid" data-tier="L2" data-keys="sineRatio,cevianLen,ssaSolve,shapeJudge"></div>
+<h3 class="sec">解三角形：sin 比、補角餘弦、SSA 兩解、判形狀、唯一性、弦與外接圓</h3>
+<div class="must">段考 25 卷中<b>餘弦定理 21 卷、正弦定理 21 卷、解三角形 9 卷</b>。解題要點：<b>$\sin$ 比 $=$ 邊比，設 $pk,qk,rk$</b>，最大角對最大邊；<b>$D$ 在 $\overline{BC}$ 上 ⟹ $\cos\angle ADB=-\cos\angle ADC$，兩個三角形各寫一次餘弦定理</b>；<b>SSA 求第三邊 ⟹ 把它當未知數放進餘弦定理解二次方程，兩個正根就是兩解</b>；<b>判形狀一律「化成邊」</b>：$\sin A\to\dfrac a{2R}$、$\cos A\to\dfrac{b^2+c^2-a^2}{2bc}$，整理成因式相乘；<b>「哪些條件決定唯一的三角形」⟹ 逐項數畫得出幾個：只給 $\sin$（或面積）有銳角、鈍角兩個，SSA 比對邊與高，只給三個角有無限多個</b>；<b>同一條弦 $=2R\sin$（它所對的圓周角）</b>：共弦的兩個圓，半徑比就是圓周角的正弦反比。</div>
+<div class="gen-grid" data-tier="L2" data-keys="sineRatio,cevianLen,ssaSolve,shapeJudge,uniqueTri,chordSineRatio"></div>
 
-<h3 class="sec">面積與圓：海龍全套、三高、圓內接四邊形、角平分線、最短線段</h3>
-<div class="must">段考 25 卷中<b>三角形面積 15 卷、外接圓 13 卷、海龍 10 卷、圓內接四邊形 9 卷、角平分線 7 卷、面積比 7 卷</b>。解題要點：<b>海龍算出 $K$ 後 $r=\dfrac Ks$、$R=\dfrac{abc}{4K}$、高 $=\dfrac{2K}{\text{邊}}$ 一次全出</b>；<b>只給三高 ⟹ 邊與高成反比，設 $pk,qk,rk$，兩種面積算法相等解 $k$</b>；<b>$\sin$ 比＋內切圓半徑 ⟹ $r=\dfrac Ks$ 是 $k$ 的一次式</b>；<b>圓內接四邊形：對角互補解 $\cos B$、面積 $=\dfrac12(ab+cd)\sin B$、$R=\dfrac{\overline{AC}}{2\sin B}$</b>；<b>角平分線：分比 $=$ 兩邊比、長度用面積切兩半、$\triangle ABD$ 面積 $=$ 底邊比</b>；<b>面積條件 ⟹ $xy$ 定值，$\overline{PQ}^2\ge2xy(1-\cos A)$ 算幾取等，等號要檢查落在邊上</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="heronFull,heightsHeron,cyclicQuadFull,bisector,areaMinPQ"></div>
+<h3 class="sec">面積與圓：海龍全套、三高、圓內接四邊形、角平分線、最短線段、面積拆兩塊、最值</h3>
+<div class="must">段考 25 卷中<b>三角形面積 15 卷、外接圓 13 卷、海龍 10 卷、圓內接四邊形 9 卷、角平分線 7 卷、面積比 7 卷</b>。解題要點：<b>海龍算出 $K$ 後 $r=\dfrac Ks$、$R=\dfrac{abc}{4K}$、高 $=\dfrac{2K}{\text{邊}}$ 一次全出</b>；<b>只給三高 ⟹ 邊與高成反比，設 $pk,qk,rk$，兩種面積算法相等解 $k$</b>；<b>$\sin$ 比＋內切圓半徑 ⟹ $r=\dfrac Ks$ 是 $k$ 的一次式</b>；<b>圓內接四邊形：對角互補解 $\cos B$、面積 $=\dfrac12(ab+cd)\sin B$、$R=\dfrac{\overline{AC}}{2\sin B}$</b>；<b>角平分線：分比 $=$ 兩邊比、長度用面積切兩半、$\triangle ABD$ 面積 $=$ 底邊比</b>；<b>面積條件 ⟹ $xy$ 定值，$\overline{PQ}^2\ge2xy(1-\cos A)$ 算幾取等，等號要檢查落在邊上</b>；<b>$D$ 在 $\overline{BC}$ 上、$\angle A$ 被 $\overline{AD}$ 分成兩個已知角 ⟹ $[ABC]=[ABD]+[ADC]$，三塊都用兩邊夾角</b>；<b>兩人同時出發求最近距離 ⟹ 用時間 $x$ 寫出兩段長，餘弦定理得 $x$ 的二次式再配方</b>；<b>兩邊和固定求最大面積 ⟹ 算幾不等式，兩邊相等時最大</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="heronFull,heightsHeron,cyclicQuadFull,bisector,areaMinPQ,areaSplitCevian,triOptimize"></div>
 
 <h3 class="sec">三角測量：三點仰角、方位角、正四角錐</h3>
 <div class="must">段考 25 卷中<b>仰角 11 卷、三角測量 8 卷、方位角 7 卷、直角三角形 7 卷</b>。解題要點：<b>三點共線＋中點 ⟹ 塔底到三點的距離 $\dfrac h{\tan}$，用中線長公式接起來</b>；<b>方位角 ⟹ 先畫俯視圖，把「北 $\theta$ 東」翻成三角形內角，正弦定理求水平距離，再乘 $\tan$（仰角）得高</b>；<b>正四角錐 ⟹ 兩個直角三角形：（體高、半邊長、斜高）與（體高、半對角線、側稜）</b>。</div>
 <div class="gen-grid" data-tier="L2" data-keys="elevMedian,bearingHeight,pyramidSolve"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 17 型打亂・可列印・可換組）</h3>
+<h3 class="sec">L2 混合檢測 12 題（全 23 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -338,10 +338,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過。</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字或問法。答案與詳解皆用程式重新驗算過。</div>
 
 <div class="fx" id="L3-1" data-gen="rightCoQuad"><div class="fxh"><span class="no">L3-1</span><span class="kw">直角三角形＋2sinA+sinB=2：sinB=cosA（互餘），化成同一個角再用平方關係解二次方程</span><span class="src">成功高中 113下 填 7</span></div>
 <div class="fxq">$\triangle ABC$ 中 $\angle C=90°$，$a,b,c$ 分別為 $\angle A,\angle B,\angle C$ 的對邊，且 $2\sin A+\sin B=2$。求 $a:b:c$。</div>
@@ -450,7 +450,37 @@ $\tan B=\dfrac34$ ⟹ $\sin B=\dfrac35$、$\cos B=\dfrac45$ ⟹ $\overline{AD}=2
 <div class="fxs"><div class="move">做法：$\dfrac12\cdot4\cdot5\sin C=6$ ⟹ $\sin C=\dfrac35$ ⟹ $\cos C=\pm\dfrac45$。「面積」只給 $\sin$，所以一定要想到兩解。</div>
 $\overline{AB}^2=16+25-40\cos C=41\mp32$ ⟹ $9$ 或 $73$ ⟹ $\overline{AB}=3$（$\angle C$ 為銳角，恰是 $3,4,5$ 直角三角形）或 $\sqrt{73}$（$\angle C$ 為鈍角）。</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fx" id="L3-16" data-gen="quadDiagAngle"><div class="fxh"><span class="no">L3-16</span><span class="kw">四邊形只給四邊與對角線的夾角：四個小三角形各寫一次餘弦定理，AB²＋CD²−BC²−DA² 算出兩條對角線的乘積</span><span class="src">改編自 高雄中學 112下 填 11</span></div>
+<div class="fxq">凸四邊形 $ABCD$ 中 $\overline{AB}=5$、$\overline{BC}=7$、$\overline{CD}=3$、$\overline{DA}=7$，兩條對角線所夾的銳角為 $60°$。求四邊形 $ABCD$ 的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$16\sqrt3$</div>
+<div class="fxs"><div class="move">做法：面積 $=\dfrac12\overline{AC}\cdot\overline{BD}\sin60°$，缺的是兩條對角線的乘積。設對角線交於 $O$，$\overline{OA}=p$、$\overline{OB}=q$、$\overline{OC}=r$、$\overline{OD}=s$、$\angle AOB=\alpha$，四個小三角形各寫一次餘弦定理。</div>
+$\overline{AB}^2=p^2+q^2-2pq\cos\alpha$、$\overline{CD}^2=r^2+s^2-2rs\cos\alpha$（對頂角相等）；$\overline{BC}^2=q^2+r^2+2qr\cos\alpha$、$\overline{DA}^2=s^2+p^2+2sp\cos\alpha$（鄰角互補，$\cos(180°-\alpha)=-\cos\alpha$）。<br>
+前兩式相加、減去後兩式，平方項全部消掉：$\overline{AB}^2+\overline{CD}^2-\overline{BC}^2-\overline{DA}^2=-2\cos\alpha\,(pq+rs+qr+sp)=-2\cos\alpha\,(p+r)(q+s)=-2\cos\alpha\cdot\overline{AC}\cdot\overline{BD}$。<br>
+代入：$25+9-49-49=-64$，所以 $\cos\alpha\gt0$，$\alpha=60°$，$\overline{AC}\cdot\overline{BD}=\dfrac{64}{2\cos60°}=64$。面積 $=\dfrac12\cdot64\cdot\dfrac{\sqrt3}2=16\sqrt3$。<br>
+<span class="note-sm">原題給四邊 $7,7,5,3$ 與夾角 $45°$，那組數字畫不出四邊形（官方送分）；這裡換成一組做得出來的數字。本題的數字來自 $\overline{OA}=\overline{OB}=5$、$\overline{OC}=\overline{OD}=3$，對角線都是 $8$。</span></div></div>
+
+<div class="fx" id="L3-17" data-gen="bisectorIsos"><div class="fxh"><span class="no">L3-17</span><span class="kw">角平分線＋AB＝AD：分比設 2k、5k，兩個小三角形對同一個半角各寫一次餘弦定理，消去 cos 解 k²</span><span class="src">改編自 北一女中 110下 填 6</span></div>
+<div class="fxq">$\triangle ABC$ 中，$\overline{AD}$ 是 $\angle BAC$ 的角平分線（$D$ 在 $\overline{BC}$ 上），$\overline{BD}=2$、$\overline{DC}=5$，且 $\overline{AB}=\overline{AD}$。求 $\cos\angle BAD$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac7{10}$</div>
+<div class="fxs"><div class="move">做法：角平分線分對邊成兩鄰邊之比，$\overline{AB}:\overline{AC}=2:5$。設 $\overline{AB}=\overline{AD}=2k$、$\overline{AC}=5k$，$\angle BAD=\angle DAC=\beta$。</div>
+$\triangle ABD$：$2^2=(2k)^2+(2k)^2-2\cdot2k\cdot2k\cos\beta$ ⟹ $4=8k^2(1-\cos\beta)$ ⟹ $\cos\beta=1-\dfrac1{2k^2}$。<br>
+$\triangle ADC$：$5^2=(2k)^2+(5k)^2-2\cdot2k\cdot5k\cos\beta=29k^2-20k^2\cos\beta$。<br>
+代入：$25=29k^2-20k^2+10$ ⟹ $9k^2=15$ ⟹ $k^2=\dfrac53$，所以 $\cos\beta=1-\dfrac3{10}=\dfrac7{10}$。<br>
+<span class="note-sm">另一條路是角平分線長 $\overline{AD}^2=\overline{AB}\cdot\overline{AC}-\overline{BD}\cdot\overline{DC}$，但這條公式要另外證明；用兩次餘弦定理只需要這一章的工具。</span></div></div>
+
+<div class="fx" id="L3-18" data-gen="depressTwoDir"><div class="fxh"><span class="no">L3-18</span><span class="kw">樹頂看兩點的俯角＋兩個方位：側視圖算出兩點到樹根的水平距離，俯視圖裡兩個方位的差就是夾角，再用餘弦定理</span><span class="src">改編自 北一女中 110下 填 5</span></div>
+<div class="fxq">一棵樹高 $18$ 公尺，從樹頂看地面上 $P$ 點的俯角為 $60°$、$Q$ 點的俯角為 $45°$；$P$ 在樹的正西方、$Q$ 在樹的南 $60°$ 西方（樹根與 $P$、$Q$ 在同一水平面上）。求 $P$、$Q$ 兩點的距離。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$6\sqrt3$ 公尺</div>
+<div class="fxs"><div class="move">做法：側視圖（含樹的鉛直平面）求水平距離，俯視圖（地面）求兩點距離。</div>
+樹根 $T$。俯角 $60°$：$\overline{TP}=\dfrac{18}{\tan60°}=6\sqrt3$；俯角 $45°$：$\overline{TQ}=\dfrac{18}{\tan45°}=18$。<br>
+俯視圖：正西方與南 $60°$ 西方相差 $30°$，所以 $\angle PTQ=30°$。<br>
+$\overline{PQ}^2=(6\sqrt3)^2+18^2-2\cdot6\sqrt3\cdot18\cos30°=108+324-324=108$ ⟹ $\overline{PQ}=6\sqrt3$。<br>
+<span class="note-sm">原題寫「西 $30°$ 南」，意思是從正西往南轉 $30°$，和這裡的「南 $60°$ 西」是同一個方向。</span></div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>

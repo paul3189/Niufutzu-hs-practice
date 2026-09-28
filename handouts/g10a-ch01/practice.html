@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -241,7 +241,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（14,500 題抽樣）；固定題全數人工＋電腦重算。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（18,000 題抽樣）；固定題全數人工＋電腦重算。</li>
   </ol>
 </div>
 
@@ -268,35 +268,35 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>國中根式、分數還不穩，看到根號或絕對值會慌的同學。</div>
-  <div><b>目標</b>21 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>26 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
 <h3 class="sec">1-1 數與數線</h3>
-<div class="must">先要會：<b>判斷有理／無理</b>、<b>循環小數 ⇄ 分數</b>（純循環分母 9…、混循環分母 9…0…）、<b>分母只含 2、5 才是有限小數</b>、<b>數線上的分點座標</b>（$P=\dfrac{nA+mB}{m+n}$，靠近哪點該點權重大）。</div>
-<div class="gen-grid" data-tier="L1" data-keys="rational,repPure,repMixed,fracKind,divPoint"></div>
-<div class="fadeset" data-tier="L1" data-keys="rational,repPure,repMixed,fracKind,divPoint" data-seed="7101"></div>
-<div class="fixset" data-tier="L1" data-keys="rational,repPure,repMixed,fracKind,divPoint" data-seed="1101"></div>
+<div class="must">先要會：<b>判斷有理／無理</b>、<b>循環小數 ⇄ 分數</b>（純循環分母 9…、混循環分母 9…0…）、<b>分母只含 2、5 才是有限小數</b>、<b>數線上的分點座標</b>（$P=\dfrac{nA+mB}{m+n}$，靠近哪點該點權重大）、<b>有理數與無理數的四則：整理成「有理數＋有理數 $\times\sqrt k$」，$\sqrt k$ 的係數是 $0$ 才是有理數</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="rational,repPure,repMixed,fracKind,divPoint,ratIrrMix"></div>
+<div class="fadeset" data-tier="L1" data-keys="rational,repPure,repMixed,fracKind,divPoint,ratIrrMix" data-seed="7101"></div>
+<div class="fixset" data-tier="L1" data-keys="rational,repPure,repMixed,fracKind,divPoint,ratIrrMix" data-seed="1101"></div>
 
 <h3 class="sec">1-2 根式運算與算幾不等式</h3>
-<div class="must">先要會：<b>化簡 $\sqrt{a^2b}=a\sqrt b$</b>、<b>同類根式合併</b>、<b>有理化</b>（單根號乘自己；$a+\sqrt b$ 乘共軛 $a-\sqrt b$）、<b>雙重根號 $\sqrt{(a+b)\pm2\sqrt{ab}}=\sqrt a\pm\sqrt b$</b>、<b>整數部分＝夾在哪兩個平方數之間</b>、<b>算幾：$x+\dfrac{k}{x}\ge2\sqrt k$，等號在 $x=\sqrt k$</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="simpRoot,addRoots,ratSingle,ratConj,doubleRoot,intFrac,amgm"></div>
-<div class="fadeset" data-tier="L1" data-keys="simpRoot,addRoots,ratSingle,ratConj,doubleRoot,intFrac,amgm" data-seed="7201"></div>
-<div class="fixset" data-tier="L1" data-keys="simpRoot,addRoots,ratSingle,ratConj,doubleRoot,intFrac,amgm" data-seed="1201"></div>
+<div class="must">先要會：<b>化簡 $\sqrt{a^2b}=a\sqrt b$</b>、<b>同類根式合併</b>、<b>有理化</b>（單根號乘自己；$a+\sqrt b$ 乘共軛 $a-\sqrt b$）、<b>雙重根號 $\sqrt{(a+b)\pm2\sqrt{ab}}=\sqrt a\pm\sqrt b$</b>、<b>整數部分＝夾在哪兩個平方數之間</b>、<b>算幾：$x+\dfrac{k}{x}\ge2\sqrt k$，等號在 $x=\sqrt k$</b>、<b>根式比大小：根號外的係數平方後放進根號再比</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="simpRoot,addRoots,ratSingle,ratConj,doubleRoot,intFrac,amgm,surdCompare"></div>
+<div class="fadeset" data-tier="L1" data-keys="simpRoot,addRoots,ratSingle,ratConj,doubleRoot,intFrac,amgm,surdCompare" data-seed="7201"></div>
+<div class="fixset" data-tier="L1" data-keys="simpRoot,addRoots,ratSingle,ratConj,doubleRoot,intFrac,amgm,surdCompare" data-seed="1201"></div>
 
 <h3 class="sec">1-3 絕對值</h3>
-<div class="must">先要會：<b>$|a|$ 的化簡看正負</b>、<b>$|ax+b|=c$ 拆成兩個方程式</b>、<b>$|ax+b|\lt c\iff -c\lt ax+b\lt c$、$\gt c$ 則向外</b>、<b>$|x-a|+|x-b|$ 的最小值是 $|a-b|$（$x$ 在兩點之間）</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="absSimp,absEq,absIneq,absSum2"></div>
-<div class="fadeset" data-tier="L1" data-keys="absSimp,absEq,absIneq,absSum2" data-seed="7301"></div>
-<div class="fixset" data-tier="L1" data-keys="absSimp,absEq,absIneq,absSum2" data-seed="1301"></div>
+<div class="must">先要會：<b>$|a|$ 的化簡看正負</b>、<b>$|ax+b|=c$ 拆成兩個方程式</b>、<b>$|ax+b|\lt c\iff -c\lt ax+b\lt c$、$\gt c$ 則向外</b>、<b>$|x-a|+|x-b|$ 的最小值是 $|a-b|$（$x$ 在兩點之間）</b>、<b>已知 $|x-a|\le b$ 求 $cx+d$ 的範圍：先拆成 $a-b\le x\le a+b$，再乘、再加（乘負數要反向）</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="absSimp,absEq,absIneq,absSum2,absRange"></div>
+<div class="fadeset" data-tier="L1" data-keys="absSimp,absEq,absIneq,absSum2,absRange" data-seed="7301"></div>
+<div class="fixset" data-tier="L1" data-keys="absSimp,absEq,absIneq,absSum2,absRange" data-seed="1301"></div>
 
 <h3 class="sec">1-4 指數與對數</h3>
-<div class="must">先要會：<b>指數律三條</b>（同底相乘指數加、次方相乘、分數指數＝根號）、<b>同底比大小看底數是否大於 1</b>、<b>科學記號 $a\times10^n$（$1\le a\lt10$）</b>、<b>$\log$ 三種基本值：$\log10^k=k$、$\log_a a^k=k$、$\log 1=0$</b>、<b>位數＝$[\log N]+1$</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="expLaw,expCompare,sciNot,logBasic,digits"></div>
-<div class="fadeset" data-tier="L1" data-keys="expLaw,expCompare,sciNot,logBasic,digits" data-seed="7401"></div>
-<div class="fixset" data-tier="L1" data-keys="expLaw,expCompare,sciNot,logBasic,digits" data-seed="1401"></div>
+<div class="must">先要會：<b>指數律三條</b>（同底相乘指數加、次方相乘、分數指數＝根號）、<b>同底比大小看底數是否大於 1</b>、<b>科學記號 $a\times10^n$（$1\le a\lt10$）</b>、<b>$\log$ 三種基本值：$\log10^k=k$、$\log_a a^k=k$、$\log 1=0$</b>、<b>位數＝$[\log N]+1$</b>、<b>同底的指數方程式：化成同底後指數相等</b>、<b>$\log(ab)=\log a+\log b$（由 $a=10^{\log a}$ 與指數律推出），$\log5=1-\log2$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="expLaw,expCompare,sciNot,logBasic,digits,expEqSame,logCombo"></div>
+<div class="fadeset" data-tier="L1" data-keys="expLaw,expCompare,sciNot,logBasic,digits,expEqSame,logCombo" data-seed="7401"></div>
+<div class="fixset" data-tier="L1" data-keys="expLaw,expCompare,sciNot,logBasic,digits,expEqSame,logCombo" data-seed="1401"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 21 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">L1 混合檢測 12 題（全章 26 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -305,27 +305,27 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>17 個段考最常見題型（依 30 份段考卷出現率排序），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>23 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 116 份高一段考卷重新統計，補了 6 型），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
 <h3 class="sec">1-1 循環小數的運算與指定位數</h3>
-<div class="must">段考 30 卷中 <b>循環小數出現 63 卷次</b>、指定位數 25 卷次。解題要點：<b>先全部化成分數再運算</b>；指定位數則「先數幾位不循環，再用餘數對週期」。</div>
+<div class="must">116 份高一段考卷中<b>循環小數 79 卷</b>、指定位數 39 卷。解題要點：<b>先全部化成分數再運算</b>；指定位數則「先數幾位不循環，再用餘數對週期」。</div>
 <div class="gen-grid" data-tier="L2" data-keys="repArith,nthDigit"></div>
 
-<h3 class="sec">1-2 根式：係數比較、整數／小數部分、對稱式、算幾條件極值</h3>
-<div class="must">解題要點：<b>$a+b\sqrt p=c+d\sqrt p$（有理）⟹ $a=c,\ b=d$</b>；<b>小數部分＝原數 − 整數部分</b>，再拿去做四則；<b>對稱式：先算 $x+\dfrac1x$ 再平方、立方</b>；<b>條件極值：把目標拆成「乘積為定值」的兩項再用算幾</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="coefCompare,intFracOp,doubleRoot2,symm,amgmCond"></div>
+<h3 class="sec">1-2 根式：係數比較、整數／小數部分、對稱式、算幾條件極值、裂項、比大小</h3>
+<div class="must">116 份高一段考卷中<b>根式化簡與運算 111 卷、雙重根號 86 卷、根式比大小 74 卷、算幾 64 卷、整數與小數部分 61 卷、有理化 55 卷</b>。解題要點：<b>$a+b\sqrt p=c+d\sqrt p$（有理）⟹ $a=c,\ b=d$</b>；<b>小數部分＝原數 − 整數部分</b>，再拿去做四則；<b>對稱式：先算 $x+\dfrac1x$ 再平方、立方</b>；<b>條件極值：把目標拆成「乘積為定值」的兩項再用算幾</b>；<b>裂項：每一項有理化成 $\dfrac{\sqrt{k+d}-\sqrt k}{d}$，中間全部消掉</b>；<b>$\sqrt a+\sqrt b$ 比大小：平方後比，$a+b$ 相同就比 $ab$</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="coefCompare,intFracOp,doubleRoot2,symm,amgmCond,ratTelescope,surdSumCompare"></div>
 
-<h3 class="sec">1-3 絕對值：複合不等式、參數、整數解</h3>
-<div class="must">段考 30 卷中<b>絕對值不等式出現 76 卷次（本章最高）</b>、分段討論 30 卷次、整數解 20 卷次。解題要點：<b>夾層 $c\le|ax+b|\le d$ 拆成兩段區間</b>；<b>$|x-a|+|x-b|$ 圖形是「碗」，$\ge k$ 向外、$\le k$ 向內</b>；<b>奇數個絕對值和的最小值在中位點</b>；<b>整數解個數 ⟹ 先解出區間，再數格點，注意端點含不含</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="absIneq2,absSumIneq,absMedian,absParam,absIntCount"></div>
+<h3 class="sec">1-3 絕對值：複合不等式、參數、整數解、驗根、已知範圍求最值</h3>
+<div class="must">116 份高一段考卷中<b>絕對值不等式 89 卷</b>、反推參數 74 卷、距離和最小值 65 卷、已知範圍求範圍 60 卷、絕對值方程式 44 卷、整數解 32 卷。解題要點：<b>夾層 $c\le|ax+b|\le d$ 拆成兩段區間</b>；<b>$|x-a|+|x-b|$ 圖形是「碗」，$\ge k$ 向外、$\le k$ 向內</b>；<b>奇數個絕對值和的最小值在中位點</b>；<b>整數解個數 ⟹ 先解出區間，再數格點，注意端點含不含</b>；<b>$|ax+b|=cx+d$：右邊要 $\ge0$，拆開解完一定要代回檢查</b>；<b>已知 $x$ 的範圍求 $|cx+d|$ 的最值：先求 $cx+d$ 的範圍，跨過 $0$ 時最小值是 $0$</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="absIneq2,absSumIneq,absMedian,absParam,absIntCount,absLinEq,absBound"></div>
 
-<h3 class="sec">1-4 指對數：指數方程、位數與首位、小數首位、複利</h3>
-<div class="must">解題要點：<b>換元 $t=a^x$ 變二次方程</b>；<b>$x+\dfrac1x$ 型指數對稱式先平方</b>；<b>位數＝首數 $+1$、最高位數字看尾數落在 $\log1\sim\log9$ 哪一格</b>；<b>小數點後第 $k$ 位開始不為 0 ⟺ $\log N=-k+(\text{尾數})$</b>；<b>複利：$(1+r)^n\ge k$ 取 $\log$，$n\ge\dfrac{\log k}{\log(1+r)}$，向上取整</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="expEq,expSymm,digitsLead,decimalFirst,compound"></div>
+<h3 class="sec">1-4 指對數：指數方程、位數與首位、小數首位、複利、分數指數、對數尺度</h3>
+<div class="must">116 份高一段考卷中<b>指數律與分數指數 83 卷、常用對數 57 卷、位數 52 卷、指數方程 47 卷、成長與衰減 42 卷、地震規模／分貝／pH 26 卷</b>。解題要點：<b>換元 $t=a^x$ 變二次方程</b>；<b>$x+\dfrac1x$ 型指數對稱式先平方</b>；<b>位數＝首數 $+1$、最高位數字看尾數落在 $\log1\sim\log9$ 哪一格</b>；<b>小數點後第 $k$ 位開始不為 0 ⟺ $\log N=-k+(\text{尾數})$</b>；<b>複利：$(1+r)^n\ge k$ 取 $\log$，$n\ge\dfrac{\log k}{\log(1+r)}$，向上取整</b>；<b>分數指數：底數先寫成某數的 $n$ 次方，$(b^n)^{\frac mn}=b^m$</b>；<b>對數尺度（地震規模、分貝、pH）：兩式相減得到 $\log$ 的比值，再還原成 $10$ 的次方</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="expEq,expSymm,digitsLead,decimalFirst,compound,expValue,logScale"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 17 型打亂・可列印・可換組）</h3>
+<h3 class="sec">L2 混合檢測 12 題（全 23 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2001" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -334,10 +334,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過（部分官方答案有誤已修正）。</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字或問法。答案與詳解皆重新驗算過（部分官方答案有誤已修正）。</div>
 
 <div class="fx" id="L3-1" data-gen="farDigit"><div class="fxh"><span class="no">L3-1</span><span class="kw">指定位數：分開處理有限與循環</span><span class="src">台中女中 111 上</span></div>
 <div class="fxq">將 $\dfrac{17}{40}+\dfrac{2}{271}$ 化為小數，求小數點後第 $2024$ 位的數字。</div>
@@ -420,7 +420,7 @@ $\dfrac{100}{n}+n\ge2\sqrt{100}=20$，等號在 $n=\dfrac{100}{n}$，即 $n=10$�
 <div class="fxs"><div class="move">做法：$|x+4|+|x-8|$ 的最小值是 $8-(-4)=12$，在 $-4\le x\le8$ 整段都取到；$k\gt12$ 時恰兩解，$k\lt12$ 無解。</div>
 (1) $3\pi\approx9.42\lt12$，無解，正確。(2) $4\pi\approx12.57\gt12$，兩解，正確。(3) $k=12$：整段 $[-4,8]$ 都是解，正確。(4) 最小 $k=12$，錯。(5) $12\sim100$ 共 $89$ 個整數，全部有解，正確。</div></div>
 
-<div class="fx" id="L3-12" data-gen="chainEqLog"><div class="fxh"><span class="no">L3-12</span><span class="kw">連等式 9^a=15^b=25^c：設 =k 取 log，比較 1/a、1/b、1/c</span><span class="src">段考常見題</span></div>
+<div class="fx" id="L3-12" data-gen="chainEqLog"><div class="fxh"><span class="no">L3-12</span><span class="kw">連等式 $9^a=15^b=25^c$：設 $=k$ 取 log，比較 $1/a$、$1/b$、$1/c$</span><span class="src">段考常見題</span></div>
 <div class="fxq">設 $a,b,c$ 為正數且 $9^a=15^b=25^c$，選出正確的選項：<br>
 (1) $ab+bc=2ac$　(2) $ab+bc=ac$　(3) $\dfrac2c=\dfrac2a+\dfrac1b$　(4) $\dfrac1c=\dfrac2b-\dfrac1a$　(5) $b^2=ac$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
@@ -428,14 +428,14 @@ $\dfrac{100}{n}+n\ge2\sqrt{100}=20$，等號在 $n=\dfrac{100}{n}$，即 $n=10$�
 <div class="fxs"><div class="move">做法：令共同值為 $k$，則 $\dfrac1a=\dfrac{\log9}{\log k}=\dfrac{2\log3}{\log k}$，$\dfrac1b=\dfrac{\log3+\log5}{\log k}$，$\dfrac1c=\dfrac{2\log5}{\log k}$。</div>
 於是 $\dfrac1a+\dfrac1c=\dfrac{2(\log3+\log5)}{\log k}=\dfrac2b$。同乘 $abc$：$bc+ab=2ac$，(1) 正確、(2) 錯。移項得 $\dfrac1c=\dfrac2b-\dfrac1a$，(4) 正確。(3) 相當於 $4\log5=5\log3+\log5$，錯。(5) $b^2=ac\iff(\log3+\log5)^2=4\log3\log5$，需 $\log3=\log5$，錯。</div></div>
 
-<div class="fx" id="L3-13" data-gen="expSymmEq"><div class="fxh"><span class="no">L3-13</span><span class="kw">100^x＋100^{−x} 與 10^x＋10^{−x} 同時出現：設 t=10^x+10^{−x}</span><span class="src">台南一中 段考</span></div>
+<div class="fx" id="L3-13" data-gen="expSymmEq"><div class="fxh"><span class="no">L3-13</span><span class="kw">$100^x+100^{-x}$ 與 $10^x+10^{-x}$ 同時出現：設 $t=10^x+10^{-x}$</span><span class="src">台南一中 段考</span></div>
 <div class="fxq">解方程式 $4\left(100^x+100^{-x}\right)-10\left(10^x+10^{-x}\right)+8=0$。（$\log2\approx0.3010$）</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$x=\log2$ 或 $x=-\log2$（約 $\pm0.3010$）</div>
 <div class="fxs"><div class="move">做法：令 $t=10^x+10^{-x}$（$t\ge2$），則 $100^x+100^{-x}=t^2-2$。</div>
 $4(t^2-2)-10t+8=0\Rightarrow4t^2-10t=0\Rightarrow t=\dfrac52$（$t=0$ 不合）。$10^x+10^{-x}=\dfrac52$，令 $u=10^x\gt0$：$2u^2-5u+2=0$，$u=2$ 或 $\dfrac12$，故 $x=\log2$ 或 $-\log2$。</div></div>
 
-<div class="fx" id="L3-14" data-gen="halfLife"><div class="fxh"><span class="no">L3-14</span><span class="kw">半衰期／剩不到 p%：設 n 個半衰期，(1/2)^n 與 p% 比較</span><span class="src">段考常見題型（自編）</span></div>
+<div class="fx" id="L3-14" data-gen="halfLife"><div class="fxh"><span class="no">L3-14</span><span class="kw">半衰期／剩不到 p%：設 $n$ 個半衰期，$(1/2)^n$ 與 p% 比較</span><span class="src">段考常見題型（自編）</span></div>
 <div class="fxq">某放射性物質每 $30$ 年衰變為原來的一半。至少經過幾年，剩餘量會少於原來的 $1\%$？（$\log2\approx0.3010$）</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$7$ 個半衰期，即 $210$ 年</div>
@@ -450,7 +450,35 @@ $-n\log2\lt-2\Rightarrow n\gt\dfrac{2}{0.3010}\approx6.64$，故 $n=7$，$7\time
 <div class="fxs"><div class="move">做法：$0\lt\log y\lt1\iff1\lt y\lt10$；按兩次就把 $y$ 換成 $\log x$ 再套一次。</div>
 (1) 正確。(2) $\log400\approx2.6$，$\log2.6\approx0.41$，整數部分 $0$，正確。(3) $1\lt M\lt10$，$M=2,\dots,9$ 共 $8$ 個，錯。(4) $1\lt\log N\lt10\iff10\lt N\lt10^{10}$，$N=11,\dots,10^{10}-1$，共 $10^{10}-11$ 個，正確。(5) $-1\lt\log(\log K)\lt0\iff0.1\lt\log K\lt1\iff10^{0.1}\lt K\lt10$，$10^{0.1}\approx1.26$，$K=2,\dots,9$ 共 $8$ 個，正確。</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fx" id="L3-16" data-gen="intFracDbl"><div class="fxh"><span class="no">L3-16</span><span class="kw">雙重根號先化簡，再取整數、小數部分，最後有理化</span><span class="src">改編自 新竹實中 113上</span></div>
+<div class="fxq">設 $\sqrt{17-4\sqrt{13}}$ 的整數部分為 $a$、小數部分為 $b$，求 $\dfrac{1}{a+b+5}-\dfrac1b$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-\dfrac32$</div>
+<div class="fxs"><div class="move">做法：$4\sqrt{13}=2\sqrt{52}$，找和 $17$、積 $52$ 的兩數：$13$ 與 $4$，雙重根號就拆得開。</div>
+$\sqrt{17-4\sqrt{13}}=\sqrt{\left(\sqrt{13}\right)^2+2^2-2\cdot2\sqrt{13}}=\sqrt{13}-2$（大的在前，結果才是正的）。因為 $3\lt\sqrt{13}\lt4$，所以 $1\lt\sqrt{13}-2\lt2$：$a=1$，$b=\left(\sqrt{13}-2\right)-1=\sqrt{13}-3$。<br>
+$a+b+5=\sqrt{13}+3$，所以 $\dfrac{1}{a+b+5}=\dfrac{\sqrt{13}-3}{13-9}=\dfrac{\sqrt{13}-3}{4}$；$\dfrac1b=\dfrac{1}{\sqrt{13}-3}=\dfrac{\sqrt{13}+3}{4}$。<br>
+相減：$\dfrac{\left(\sqrt{13}-3\right)-\left(\sqrt{13}+3\right)}{4}=-\dfrac64=-\dfrac32$。</div></div>
+
+<div class="fx" id="L3-17" data-gen="halfExpSymm"><div class="fxh"><span class="no">L3-17</span><span class="kw">已知 $a^{\frac12}-a^{-\frac12}$：平方得 $a+a^{-1}$，立方得 $a^{\frac32}-a^{-\frac32}$</span><span class="src">改編自 景美女高 100上</span></div>
+<div class="fxq">設 $a\gt0$，且 $a^{\frac12}-a^{-\frac12}=4$，求 $\dfrac{a^{\frac32}-a^{-\frac32}}{a+a^{-1}}$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{38}{9}$</div>
+<div class="fxs"><div class="move">做法：令 $x=a^{\frac12}$，則 $a^{-\frac12}=\dfrac1x$，$a+a^{-1}=x^2+\dfrac1{x^2}$，$a^{\frac32}-a^{-\frac32}=x^3-\dfrac1{x^3}$，全部用 $x-\dfrac1x=4$ 表示。</div>
+平方：$x^2+\dfrac1{x^2}=\left(x-\dfrac1x\right)^2+2=16+2=18$。<br>
+立方：$x^3-\dfrac1{x^3}=\left(x-\dfrac1x\right)^3+3\left(x-\dfrac1x\right)=64+12=76$（也可以用立方差：$\left(x-\dfrac1x\right)\left(x^2+1+\dfrac1{x^2}\right)=4\times19=76$）。<br>
+所求 $=\dfrac{76}{18}=\dfrac{38}{9}$。</div></div>
+
+<div class="fx" id="L3-18" data-gen="absRangeCombo"><div class="fxh"><span class="no">L3-18</span><span class="kw">由 $a$、$b$ 的範圍求 $a+b$、$a-b$、$ab$：差要先變號，積要比四個端點乘積</span><span class="src">改編自 板橋高中 110上</span></div>
+<div class="fxq">設實數 $a,b$ 滿足 $|a-2|\lt1$、$|b-1|\lt2$，求 $a+b$、$a-b$、$ab$ 的範圍。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$0\lt a+b\lt6$；$-2\lt a-b\lt4$；$-3\lt ab\lt9$</div>
+<div class="fxs"><div class="move">做法：先拆成 $1\lt a\lt3$、$-1\lt b\lt3$。和直接相加；差寫成 $a+(-b)$；積不能把兩個不等式直接相乘（$b$ 可能是負的），要比四個端點的乘積。</div>
+和：兩式相加，$0\lt a+b\lt6$。<br>
+差：$-3\lt-b\lt1$，再加上 $1\lt a\lt3$，得 $-2\lt a-b\lt4$。<br>
+積：固定 $a$ 時，$ab$ 隨 $b$ 一直變大或一直變小，所以最大、最小都出現在四個角落。四個端點乘積是 $1\times(-1)=-1$、$1\times3=3$、$3\times(-1)=-3$、$3\times3=9$，而端點取不到，所以 $-3\lt ab\lt9$。<br>
+<span class="note-sm">常見錯誤：左邊乘左邊、右邊乘右邊，寫成 $-1\lt ab\lt9$，漏掉 $a$ 接近 $3$、$b$ 接近 $-1$ 時 $ab$ 接近 $-3$。</span></div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3001" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -642,7 +670,7 @@ $y^2-(z-x)^2\lt0$ ⟹ $(y-z+x)(y+z-x)\lt0$；<br>
 $z^2-(x-y)^2\lt0$ ⟹ $(z-x+y)(z+x-y)\lt0$。<br>
 令 $p=x-y+z$、$q=x+y-z$、$r=-x+y+z$，三式就是 $pq\lt0$、$qr\lt0$、$rp\lt0$。三式相乘：$(pqr)^2\lt0$，但平方不可能為負，矛盾。故三個不等式不可能同時成立。</div></div>
 
-<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">24、27、16、18 都是 2 與 3 的積：設 s=2^x、t=3^x，化成二元齊次式分解</span><span class="src">112 全國教甄聯招 填 4</span></div>
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">24、27、16、18 都是 2 與 3 的積：設 $s=2^x$、$t=3^x$，化成二元齊次式分解</span><span class="src">112 全國教甄聯招 填 4</span></div>
 <div class="fxq">若實數 $x$ 滿足 $6\times24^x-2\times27^x+3\times16^x-18^x=0$，求 $\dfrac{2x-1}{3x}$ 之值。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac{2x-1}{3x}=\dfrac{\log2}{\log3}$</div>

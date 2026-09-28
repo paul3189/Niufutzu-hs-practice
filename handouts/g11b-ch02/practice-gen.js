@@ -815,6 +815,268 @@
              p: { a: a, b: b, c: c, nm: pn, xn: xn } };
   };
 
+  /* ══════════════════════════════════════════════════════════
+     2026-09-29 擴充（依段考卷出現頻率補題型）：L1 五型、L2 六型
+     只新增、不改任何既有產生器（既有題型同種子出同一題，錯題本與檢測紀錄的 t.k#seed 仍有效）。
+     ══════════════════════════════════════════════════════════ */
+  /* 一次式左邊，其中第 u 個坐標的係數是字母 sym */
+  function xpSymLhs(n, u, sym) {
+    var s = '';
+    for (var i = 0; i < 3; i++) {
+      if (i === u) { s += (s === '' ? '' : '+') + sym + AXES[i]; continue; }
+      s += term(n[i], AXES[i], s === '');
+    }
+    return s;
+  }
+  /* 兩個變數的一次方程式：c1·v1 + c2·v2 = rhs */
+  function xpEq2(c1, v1, c2, v2, rhs) { var s = term(c1, v1, true); s += term(c2, v2, s === ''); return (s === '' ? '0' : s) + '=' + rhs; }
+  /* 比例式，但某一個分子或分母換成字母：P[j] 換成 ps（ps 為 null 就照常）、d[i] 換成 ds */
+  function xpRatioSym(P, d, j, ps, i, ds, i2, ds2) {
+    var out = [];
+    for (var k = 0; k < 3; k++) {
+      var num = AXES[k] + (k === j && ps ? '-' + ps : (P[k] === 0 ? '' : (P[k] < 0 ? '+' + (-P[k]) : '-' + P[k])));
+      var den = k === i && ds ? ds : (k === i2 && ds2 ? ds2 : String(d[k]));
+      out.push('\\dfrac{' + num + '}{' + den + '}');
+    }
+    return out.join('=');
+  }
+  function xpSq(v, p) { return p === 0 ? v + '^2' : '(' + v + (p < 0 ? '+' + (-p) : '-' + p) + ')^2'; }
+  function xpAllNz(v) { return v[0] !== 0 && v[1] !== 0 && v[2] !== 0; }
+
+  /* ── §1 過兩點（或一點）且垂直已知平面的平面 ── */
+  L1.planeTwoPtsPerp = function (r) {
+    var mode = r.int(0, 1), t = 0, nF, nr, pl;
+    if (mode === 0) {
+      var nE, A, AB;
+      do { nE = genN(r).v; A = rp(r, -5, 5); AB = rnv(r, -4, 4, 2); nF = cross(AB, nE); t++; } while (isZero(nF) && t < 200);
+      var Bp = add(A, AB), dE = r.int(-9, 9);
+      nr = redPos(nF); pl = planeOf(nr, A);
+      return { q: '求通過 ' + T('A' + vt(A)) + '、' + T('B' + vt(Bp)) + ' 兩點，且與平面 ' + T('E:' + planeTex([nE[0], nE[1], nE[2], dE])) + ' 垂直的平面 ' + T('F') + ' 的方程式。',
+               a: T('F:' + planeTex(pl)),
+               h: T('F\\perp E') + ' ⟹ ' + T(vec('n_F') + '\\perp' + vec('n_E') + '=' + vt(nE)) + '；' + T('F') + ' 通過 ' + T('A,B') + ' ⟹ ' + T(vec('n_F') + '\\perp' + ov('AB') + '=' + vt(AB)) + '。取 ' + T(vec('n_F') + '=' + ov('AB') + '\\times' + vec('n_E') + '=' + vt(nF)) + '，再代 ' + T('A') + ' 定常數。',
+               p: { mode: 0, A: A, B: Bp, nE: nE, dE: dE } };
+    }
+    var n1, n2, P;
+    do { n1 = genN(r).v; n2 = genN(r).v; nF = cross(n1, n2); t++; } while (isZero(nF) && t < 200);
+    P = rp(r, -5, 5);
+    var d1 = r.int(-9, 9), d2 = r.int(-9, 9);
+    nr = redPos(nF); pl = planeOf(nr, P);
+    return { q: '求通過點 ' + T('P' + vt(P)) + '，而且與兩平面 ' + T('E_1:' + planeTex([n1[0], n1[1], n1[2], d1])) + '、' + T('E_2:' + planeTex([n2[0], n2[1], n2[2], d2])) + ' 都垂直的平面 ' + T('F') + ' 的方程式。',
+             a: T('F:' + planeTex(pl)),
+             h: T('F') + ' 同時垂直 ' + T('E_1') + '、' + T('E_2') + ' ⟹ ' + T(vec('n_F')) + ' 同時垂直 ' + T(vec('n_1') + '=' + vt(n1)) + ' 與 ' + T(vec('n_2') + '=' + vt(n2)) + '，取 ' + T(vec('n_1') + '\\times' + vec('n_2') + '=' + vt(nF)) + '，再代 ' + T('P') + ' 定常數。',
+             p: { mode: 1, P: P, n1: n1, n2: n2, d1: d1, d2: d2 } };
+  };
+
+  /* ── §1 由兩面角求平面的係數（與兩軸的交點已知、第三個係數未知） ── */
+  var XP45 = [[3, 4, 5], [4, 3, 5], [5, 12, 13], [12, 5, 13], [8, 15, 17], [15, 8, 17], [6, 8, 10], [8, 6, 10]];
+  L1.planeAngleCoef = function (r) {
+    var u = r.int(0, 2), oth = [0, 1, 2].filter(function (i) { return i !== u; }), m, n = [0, 0, 0], deg45 = r() < 0.3, L = 0, e, g0;
+    if (deg45) {
+      e = r.pick(XP45); m = r.pick(oth); var jj = oth[0] === m ? oth[1] : oth[0];
+      n[u] = e[0] * r.sign(); n[jj] = e[1] * r.sign(); n[m] = e[2] * r.sign();
+      g0 = gcd3(n); n = [n[0] / g0, n[1] / g0, n[2] / g0];
+    } else {
+      e = r.pick(PYN); var b = r.shuffle(e[0]); L = e[1];
+      n = [b[0] * r.sign(), b[1] * r.sign(), b[2] * r.sign()]; m = r.pick(oth);
+    }
+    var j = oth[0], k = oth[1], lc = Math.abs(n[j] * n[k]) / gcd(n[j], n[k]), D = lc * r.pick([1, -1, 2, -2]);
+    var Pj = [0, 0, 0], Pk = [0, 0, 0]; Pj[j] = D / n[j]; Pk[k] = D / n[k];
+    var plName = PLANES[PLMISS.indexOf(m)];
+    var nPos = n.slice(), nNeg = n.slice(); nPos[u] = Math.abs(n[u]); nNeg[u] = -Math.abs(n[u]);
+    var E1 = normPlane([nPos[0], nPos[1], nPos[2], D]), E2 = normPlane([nNeg[0], nNeg[1], nNeg[2], D]);
+    var cosT = deg45 ? '' : Fr.tex(F(Math.abs(n[m]), L));
+    var cond = deg45 ? '的兩面角為 ' + T('45^\\circ') : '的兩面角 ' + T('\\theta') + '（取銳角）滿足 ' + T('\\cos\\theta=' + cosT);
+    return { q: '平面 ' + T('E') + ' 與 ' + T(AXES[j]) + ' 軸、' + T(AXES[k]) + ' 軸分別交於 ' + T(vt(Pj)) + '、' + T(vt(Pk)) + '，而且 ' + T('E') + ' 與 ' + T(plName) + ' 平面' + cond + '。求 ' + T('E') + ' 的方程式（有兩解）。',
+             a: T('E:' + planeTex(E1)) + ' 或 ' + T('E:' + planeTex(E2)),
+             h: '把兩個交點代進去，可設 ' + T('E:' + xpSymLhs(n, u, 'k') + '=' + D) + '；' + T(plName) + ' 平面的法向量是 ' + T(vt([m === 0 ? 1 : 0, m === 1 ? 1 : 0, m === 2 ? 1 : 0])) + '，所以 ' + T('\\cos\\theta=\\dfrac{' + Math.abs(n[m]) + '}{\\sqrt{k^2+' + (n[j] * n[j] + n[k] * n[k]) + '}}') + '，解出 ' + T('k') + ' 會有正負兩個值。',
+             p: { u: u, m: m, n: n, D: D, deg45: deg45 ? 1 : 0 } };
+  };
+
+  /* ── §2 兩點在平面的同側或異側；異側時求交點與分比 ── */
+  L1.planeSideRatio = function (r) {
+    var n = genN(r).v, P = rp(r, -4, 4), D = dot(n, P), w, t = 0;
+    do { w = rnv(r, -3, 3, 2); t++; } while (dot(n, w) === 0 && t < 100);
+    if (dot(n, w) === 0) w = n.slice();
+    var opp = r() < 0.6, mm, kk;
+    do { mm = r.int(1, 4); kk = r.int(1, 4); } while (gcd(mm, kk) !== 1 || (!opp && mm === kk));
+    var A = opp ? sub(P, sc(mm, w)) : add(P, sc(mm, w)), Bp = add(P, sc(kk, w));
+    var fA = dot(n, A) - D, fB = dot(n, Bp) - D;
+    return { q: '設平面 ' + T('E:' + planeTex([n[0], n[1], n[2], D])) + '，點 ' + T('A' + vt(A)) + '、' + T('B' + vt(Bp)) + '。(1) ' + T('A') + '、' + T('B') + ' 在 ' + T('E') + ' 的同側還是異側？(2) 若在異側，求線段 ' + T('\\overline{AB}') + ' 與 ' + T('E') + ' 的交點 ' + T('P') + ' 及 ' + T('\\overline{AP}:\\overline{PB}') + '；若在同側，求 ' + T('A') + '、' + T('B') + ' 到 ' + T('E') + ' 的距離比。',
+             a: opp ? '(1) 異側　(2) ' + T('P' + vt(P)) + '，' + T('\\overline{AP}:\\overline{PB}=' + mm + ':' + kk) : '(1) 同側　(2) ' + T('d(A,E):d(B,E)=' + mm + ':' + kk),
+             h: '把兩點代入 ' + T(lhsTex(n[0], n[1], n[2]) + '-' + (D < 0 ? '(' + D + ')' : D)) + '：' + T('A') + ' 得 ' + T(String(fA)) + '、' + T('B') + ' 得 ' + T(String(fB)) + '。同號在同側、異號在異側；兩點到 ' + T('E') + ' 的距離比就是這兩個值的絕對值比（分母都是 ' + T('\\left|' + vec('n') + '\\right|') + '）。',
+             p: { n: n, D: D, A: A, B: Bp, opp: opp ? 1 : 0 } };
+  };
+
+  /* ── §3 兩平面的交線化成參數式 ── */
+  L1.interLineParam = function (r) {
+    var g = lineTwoPlanes(r), dd = red(g.dd), X = g.X, i = -1, k;
+    for (k = 0; k < 3; k++) if (Math.abs(dd[k]) === 1) { i = k; break; }
+    if (i >= 0) X = sub(X, sc(X[i] * dd[i], dd)); else { for (k = 0; k < 3; k++) if (dd[k] !== 0) { i = k; break; } }
+    var d1 = dot(g.n1, X), d2 = dot(g.n2, X), cr = cross(g.n1, g.n2);
+    return { q: '求兩平面 ' + T('E_1:' + planeTex([g.n1[0], g.n1[1], g.n1[2], d1])) + '、' + T('E_2:' + planeTex([g.n2[0], g.n2[1], g.n2[2], d2])) + ' 的交線 ' + T('L') + '：(1) 寫出 ' + T('L') + ' 的一個方向向量。(2) 寫出 ' + T('L') + ' 的參數式。',
+             a: '(1) ' + T(vec('d') + '=' + vt(dd)) + '（或其非零倍數）　(2) ' + T('L:' + paramTex(X, dd)) + '（點的取法不唯一）',
+             h: '方向取 ' + T(vec('n_1') + '\\times' + vec('n_2') + '=' + vt(g.n1) + '\\times' + vt(g.n2) + '=' + vt(cr)) + '；再找一點：令 ' + T(AXES[i] + '=' + X[i]) + ' 代入兩式解二元一次。',
+             p: { n1: g.n1, n2: g.n2, X: X, dd: dd, i: i } };
+  };
+
+  /* ── §3 含一直線且過線外一點（或含兩平行線）的平面 ── */
+  L1.planeLinePt = function (r) {
+    var mode = r.int(0, 1), dd = rnv(r, -4, 4, 2), P0 = rp(r, -5, 5), Q, nv, t = 0, form = r.int(0, 1);
+    do { Q = rp(r, -5, 5); nv = cross(dd, sub(Q, P0)); t++; } while (isZero(nv) && t < 100);
+    var nr = redPos(nv), pl = planeOf(nr, P0);
+    var Ltex = function (P, nm) { return T(nm + ':' + (form ? paramTex(P, dd, nm === 'L_2' ? 's' : 't') : ratioTex(P, dd))); };
+    if (mode === 0) {
+      return { q: '求包含直線 ' + Ltex(P0, 'L') + '，而且通過點 ' + T('P' + vt(Q)) + ' 的平面 ' + T('E') + ' 的方程式。',
+               a: T('E:' + planeTex(pl)),
+               h: T('L') + ' 上有點 ' + T('P_0' + vt(P0)) + '、方向 ' + T(vec('d') + '=' + vt(dd)) + '；' + T('E') + ' 的法向量要同時垂直 ' + T(vec('d')) + ' 與 ' + T(ov('P_0P') + '=' + vt(sub(Q, P0))) + '，取兩者的外積 ' + T(vt(nv)) + '。',
+               p: { mode: 0, P0: P0, dd: dd, Q: Q, form: form } };
+    }
+    return { q: '兩直線 ' + Ltex(P0, 'L_1') + '、' + Ltex(Q, 'L_2') + ' 互相平行。求包含 ' + T('L_1') + '、' + T('L_2') + ' 的平面 ' + T('E') + ' 的方程式。',
+             a: T('E:' + planeTex(pl)),
+             h: '兩平行線方向相同 ' + T(vec('d') + '=' + vt(dd)) + '，只給一個方向；另一個方向取兩線上各一點的連線 ' + T(ov('P_1P_2') + '=' + vt(sub(Q, P0))) + '，法向量是兩者的外積 ' + T(vt(nv)) + '。',
+             p: { mode: 1, P0: P0, dd: dd, Q: Q, form: form } };
+  };
+
+  /* ── L2 §4 含一直線且平行另一直線的平面，兩歪斜線的距離 ── */
+  L2.planeParLine = function (r) {
+    var d1, d2, P1, P2, n, t = 0, mode = r.int(0, 1);
+    do { d1 = rnv(r, -3, 3, 2); d2 = rnv(r, -3, 3, 2); P1 = rp(r, -4, 4); P2 = rp(r, -4, 4); n = cross(d1, d2); t++; } while ((isZero(n) || dot(n, sub(P2, P1)) === 0) && t < 300);
+    var nr = redPos(n), pl = planeOf(nr, P1), num = Math.abs(dot(nr, sub(P2, P1))), dist = sqrtFracTex(num * num, n2(nr));
+    if (mode === 0) {
+      return { q: '設兩直線 ' + T('L_1:' + ratioTex(P1, d1)) + '、' + T('L_2:' + paramTex(P2, d2, 's')) + '。(1) 求包含 ' + T('L_1') + ' 且與 ' + T('L_2') + ' 平行的平面 ' + T('E') + '。(2) 求 ' + T('L_1') + ' 與 ' + T('L_2') + ' 的距離。',
+               a: '(1) ' + T('E:' + planeTex(pl)) + '　(2) ' + T(dist),
+               h: T('E') + ' 含 ' + T('L_1') + ' 又平行 ' + T('L_2') + ' ⟹ 法向量同時垂直 ' + T(vec('d_1') + '=' + vt(d1)) + '、' + T(vec('d_2') + '=' + vt(d2)) + '，取 ' + T(vec('d_1') + '\\times' + vec('d_2') + '=' + vt(n)) + '，代 ' + T('L_1') + ' 上的點 ' + T(vt(P1)) + ' 定常數。' + T('L_2') + ' 整條與 ' + T('E') + ' 平行，所以兩線距離＝' + T('L_2') + ' 上的點 ' + T(vt(P2)) + ' 到 ' + T('E') + ' 的距離。',
+               p: { mode: 0, P1: P1, d1: d1, P2: P2, d2: d2 } };
+    }
+    var k1 = r.pick([1, 1, 2, -1]), k2 = r.pick([1, 1, 2, -1]);
+    var A = P1, Bq = add(P1, sc(k1, d1)), C = P2, Dq = add(P2, sc(k2, d2));
+    return { q: '空間中有 ' + T('A' + vt(A)) + '、' + T('B' + vt(Bq)) + '、' + T('C' + vt(C)) + '、' + T('D' + vt(Dq)) + ' 四點。(1) 求包含直線 ' + T('AB') + ' 且與直線 ' + T('CD') + ' 平行的平面 ' + T('E') + '。(2) 求直線 ' + T('AB') + ' 與直線 ' + T('CD') + ' 的距離。',
+             a: '(1) ' + T('E:' + planeTex(pl)) + '　(2) ' + T(dist),
+             h: T(ov('AB') + '=' + vt(sc(k1, d1))) + '、' + T(ov('CD') + '=' + vt(sc(k2, d2))) + '；法向量取兩者的外積（化簡為 ' + T(vt(nr)) + '），代 ' + T('A') + ' 定常數。' + T('CD') + ' 與 ' + T('E') + ' 平行，所以兩線距離＝' + T('C') + ' 到 ' + T('E') + ' 的距離。',
+             p: { mode: 1, A: A, B: Bq, C: C, D: Dq } };
+  };
+
+  /* ── L2 §4 兩直線相交求未知數、交點與含兩線的平面 ── */
+  L2.linesCoplanarK = function (r) {
+    var d1, d2, cr, X, t = 0, j;
+    do { d1 = rnv(r, -3, 3, 2); d2 = dirZeros(r, 3); cr = cross(d1, d2); t++; } while ((isZero(cr) || !xpAllNz(d2)) && t < 300);
+    X = rp(r, -4, 4);
+    var a = r.nz(-2, 2), b = r.nz(-2, 2), P1 = add(X, sc(a, d1)), P2 = add(X, sc(b, d2));
+    var cand = [0, 1, 2].filter(function (i) { return cr[i] !== 0; });
+    j = r.pick(cand);
+    var form = r.int(0, 1), nr = redPos(cr), pl = planeOf(nr, X);
+    var L1t = form ? paramTex(P1, d1) : lineShort(P1, d1, 't');
+    return { q: '設兩直線 ' + T('L_1:' + L1t) + '、' + T('L_2:' + xpRatioSym(P2, d2, j, 'k', -1, null)) + '。若 ' + T('L_1') + ' 與 ' + T('L_2') + ' 相交，(1) 求 ' + T('k') + '。(2) 求交點坐標。(3) 求包含 ' + T('L_1') + '、' + T('L_2') + ' 的平面方程式。',
+             a: '(1) ' + T('k=' + P2[j]) + '　(2) ' + T(vt(X)) + '　(3) ' + T('E:' + planeTex(pl)),
+             h: '兩直線方向 ' + T(vt(d1)) + '、' + T(vt(d2)) + ' 不平行，相交 ⟺ 共平面 ⟺ ' + T('\\left(' + vec('d_1') + '\\times' + vec('d_2') + '\\right)\\cdot' + ov('P_1P_2') + '=0') + '，其中 ' + T(vec('d_1') + '\\times' + vec('d_2') + '=' + vt(cr)) + '，' + T('P_2') + ' 的 ' + T(AXES[j]) + ' 坐標是 ' + T('k') + '，得到 ' + T('k') + ' 的一次方程式。含兩線的平面，法向量就用這個外積。',
+             p: { P1: P1, d1: d1, P2: P2, d2: d2, j: j, form: form } };
+  };
+
+  /* ── L2 §1 空間中直線與平面的敘述判斷（多選） ── */
+  var XPFACT = [
+    ['垂直於同一個平面的兩相異直線互相平行。', 1, '兩條線的方向都平行於那個平面的法向量，所以互相平行'],
+    ['垂直於同一條直線的兩相異平面互相平行。', 1, '兩個平面的法向量都平行於那條直線的方向，所以兩平面平行'],
+    ['與同一個平面平行的兩相異平面互相平行。', 1, '三個平面的法向量都平行'],
+    ['兩平行線中的一條垂直於平面 $E$，另一條也垂直於 $E$。', 1, '兩條線方向相同，都平行於 $E$ 的法向量'],
+    ['過平面外一點，恰有一條直線與該平面垂直。', 1, '方向只能是法向量，過定點的直線就唯一'],
+    ['過直線外一點，恰有一個平面與該直線垂直。', 1, '法向量只能是直線的方向，過定點的平面就唯一'],
+    ['過平面外一點，恰有一個平面與該平面平行。', 1, '法向量相同、又過定點，所以唯一'],
+    ['兩相交平面的交線，與兩個平面的法向量都垂直。', 1, '交線在兩個平面上，所以與兩個法向量都垂直，方向可取 $\\vec n_1\\times\\vec n_2$'],
+    ['兩歪斜線恰有一條公垂線（與兩線都垂直且都相交的直線）。', 1, '公垂線方向只能是 $\\vec d_1\\times\\vec d_2$，兩個垂足由兩條垂直條件唯一決定'],
+    ['若直線 $L$ 與平面 $E$ 上兩條相交直線都垂直，則 $L$ 垂直於 $E$。', 1, '兩條相交直線的方向張出整個 $E$，$L$ 的方向與它們都垂直，就平行於 $E$ 的法向量'],
+    ['不共線的相異三點恰決定一個平面。', 1, '兩個邊向量不平行，外積不為零向量，法向量就定了'],
+    ['若直線 $L$ 與兩個相交平面都平行（$L$ 不在兩平面上），則 $L$ 與這兩個平面的交線平行。', 1, '$L$ 的方向與兩個法向量都垂直，所以平行於 $\\vec n_1\\times\\vec n_2$，也就是交線的方向'],
+    ['相異三點恰決定一個平面。', 0, '三點共線時，含這三點的平面有無限多個'],
+    ['垂直於同一條直線的兩相異直線互相平行。', 0, '例如 $x$ 軸與 $y$ 軸都垂直於 $z$ 軸，但兩者相交'],
+    ['與同一個平面平行的兩相異直線互相平行。', 0, '例如 $x$ 軸與 $y$ 軸都與平面 $z=1$ 平行，但兩者相交'],
+    ['垂直於同一個平面的兩相異平面互相平行。', 0, '例如 $yz$ 平面與 $zx$ 平面都垂直於 $xy$ 平面，但兩者相交於 $z$ 軸'],
+    ['沒有交點的兩相異直線一定互相平行。', 0, '也可能是歪斜線，例如 $x$ 軸與過 $(0,0,1)$ 平行 $y$ 軸的直線'],
+    ['兩直線的方向向量不平行，則兩直線必相交。', 0, '方向不平行也可能歪斜，要再看 $\\det(\\vec d_1,\\vec d_2,\\overrightarrow{P_1P_2})$ 是否為 $0$'],
+    ['過直線外一點，恰有一條直線與該直線垂直。', 0, '過該點且與直線垂直的直線有無限多條（都在過該點、以直線方向為法向量的平面上）；與它垂直且相交的才只有一條'],
+    ['過平面外一點，恰有一條直線與該平面平行。', 0, '過該點且與平面平行的直線有無限多條（都在過該點的平行平面上）'],
+    ['若直線 $L$ 與平面 $E$ 上的一條直線垂直，則 $L$ 垂直於 $E$。', 0, '只垂直一條不夠，例如 $x$ 軸垂直於 $xy$ 平面上的 $y$ 軸，但 $x$ 軸落在 $xy$ 平面上'],
+    ['若平面 $E_1\\perp E_2$、$E_2\\perp E_3$，則 $E_1$ 與 $E_3$ 平行。', 0, '例如 $E_1$ 取 $yz$ 平面、$E_2$ 取 $xy$ 平面、$E_3$ 取 $zx$ 平面，$E_1$ 與 $E_3$ 相交'],
+    ['與同一條直線平行的兩相異平面互相平行。', 0, '例如平面 $x=1$ 與平面 $y=1$ 都與 $z$ 軸平行，但兩者相交'],
+    ['過直線外一點，恰有一個平面與該直線平行。', 0, '過該點且與直線平行的平面有無限多個（繞著過該點、平行該直線的那條線轉）'],
+    ['若直線 $L$ 與平面 $E$ 沒有交點，則 $L$ 與 $E$ 上的每一條直線都平行。', 0, '$L$ 與 $E$ 上的直線也可能歪斜'],
+    ['兩相異直線都與第三條直線歪斜，則這兩條直線互相歪斜。', 0, '例如 $x$ 軸與 $y$ 軸都與過 $(0,0,1)$、方向 $(1,1,0)$ 的直線歪斜，但 $x$ 軸與 $y$ 軸相交']
+  ];
+  L2.spaceFacts = function (r) {
+    var idx, nt, t = 0;
+    do { idx = r.shuffle(XPFACT.map(function (x, i) { return i; })).slice(0, 5); nt = idx.filter(function (i) { return XPFACT[i][1]; }).length; t++; } while ((nt === 0 || nt === 5) && t < 50);
+    var q = '下列有關空間中直線與平面的敘述，哪些正確？', ans = '', wrong = [];
+    idx.forEach(function (i, k) { q += '<br>(' + (k + 1) + ') ' + XPFACT[i][0]; if (XPFACT[i][1]) ans += '(' + (k + 1) + ')'; else wrong.push('(' + (k + 1) + ') ' + XPFACT[i][2]); });
+    return { q: q, a: ans,
+             h: '每一項都想成「方向向量、法向量」的關係，錯的找一個坐標軸、坐標平面當反例。本題錯的有：' + wrong.join('；') + '。',
+             p: { idx: idx } };
+  };
+
+  /* ── L2 §3 直線在平面上、與平面平行或垂直：求直線方程式裡的未知數 ── */
+  L2.linePlaneParam = function (r) {
+    var mode = r.int(0, 2), t = 0, d, n, P0 = rp(r, -5, 5), i, j, pl, q, a, h, p;
+    if (mode < 2) {
+      do { d = dirZeros(r, 3); n = redPos(perpRand(r, d, -2, 2)); t++; } while ((!xpAllNz(d) || nzc(n) < 2) && t < 200);
+      var ci = [0, 1, 2].filter(function (x) { return n[x] !== 0; });
+      i = r.pick(ci); j = r.pick(ci);
+      pl = [n[0], n[1], n[2], dot(n, P0)];
+      var Lt = xpRatioSym(P0, d, j, 'b', i, 'a');
+      var sumK = 0; for (var k = 0; k < 3; k++) if (k !== i) sumK += n[k] * d[k];
+      if (mode === 0) {
+        q = '直線 ' + T('L:' + Lt) + ' 落在平面 ' + T('E:' + planeTex(pl)) + ' 上，求 ' + T('a') + '、' + T('b') + '。';
+        a = T('a=' + d[i]) + '，' + T('b=' + P0[j]);
+        h = T('L') + ' 在 ' + T('E') + ' 上要兩個條件：方向 ' + T('\\perp') + ' 法向量 ' + T(vt(n)) + '（內積為 ' + T('0') + '，得 ' + T(term(n[i], 'a', true) + (sumK === 0 ? '' : (sumK > 0 ? '+' : '') + sumK) + '=0') + '），而且 ' + T('L') + ' 上的點 ' + T('P_0') + '（' + T(AXES[j]) + ' 坐標是 ' + T('b') + '）也在 ' + T('E') + ' 上。';
+      } else {
+        q = '直線 ' + T('L:' + Lt) + ' 與平面 ' + T('E:' + planeTex(pl)) + ' 平行（' + T('L') + ' 不在 ' + T('E') + ' 上）。求 ' + T('a') + '，並說明 ' + T('b') + ' 不可以是多少。';
+        a = T('a=' + d[i]) + '，' + T('b\\ne ' + P0[j]);
+        h = '平行只要方向 ' + T('\\perp') + ' 法向量 ' + T(vt(n)) + '：' + T(term(n[i], 'a', true) + (sumK === 0 ? '' : (sumK > 0 ? '+' : '') + sumK) + '=0') + '。再來 ' + T('L') + ' 上的點 ' + T('P_0') + ' 不能在 ' + T('E') + ' 上，否則整條線落在平面上；把 ' + T('P_0') + ' 代入 ' + T('E') + ' 解出會讓它落在平面上的 ' + T('b') + '，那就是不行的值。';
+      }
+      p = { mode: mode, P0: P0, d: d, n: n, i: i, j: j };
+    } else {
+      do { n = genN(r).v; t++; } while (!xpAllNz(n) && t < 100);
+      if (!xpAllNz(n)) n = [1, 2, 2];
+      var kk = r.pick([1, -1, 2, -2]); d = sc(kk, n);
+      var ord = r.shuffle([0, 1, 2]); i = Math.min(ord[0], ord[1]); j = Math.max(ord[0], ord[1]);
+      var c3 = ord[2], dE = r.int(-9, 9);
+      pl = [n[0], n[1], n[2], dE];
+      q = '直線 ' + T('L:' + xpRatioSym(P0, d, -1, null, i, 'a', j, 'b')) + ' 與平面 ' + T('E:' + planeTex(pl)) + ' 垂直，求 ' + T('a') + '、' + T('b') + '。';
+      a = T('a=' + d[i]) + '，' + T('b=' + d[j]);
+      h = T('L\\perp E') + ' ⟹ 方向向量與法向量 ' + T(vt(n)) + ' 平行：' + T('(' + [0, 1, 2].map(function (x) { return x === i ? 'a' : x === j ? 'b' : String(d[x]); }).join(',') + ')') + ' 是 ' + T(vt(n)) + ' 的倍數，由已知的 ' + T(AXES[c3]) + ' 分量 ' + T(String(d[c3])) + ' 定出倍數是 ' + T(String(kk)) + '。';
+      p = { mode: 2, P0: P0, d: d, n: n, i: i, j: j };
+    }
+    return { q: q, a: a, h: h, p: p };
+  };
+
+  /* ── L2 §2 平面上的點：距離平方和最小（點到平面的距離、投影點） ── */
+  L2.planeMinDist = function (r) {
+    var mode = r.int(0, 2), n = genN(r).v, A = mode === 0 ? [0, 0, 0] : rp(r, -5, 5), N = n2(n), D, tt;
+    if (r() < 0.5) { var ti = r.pick([1, -1, 2, -2]); D = dot(n, A) + ti * N; }
+    else { do { D = dot(n, A) + r.nz(-12, 12); } while (D === dot(n, A)); }
+    tt = F(D - dot(n, A), N);
+    var H = [0, 1, 2].map(function (k) { return Fr.add(F(A[k]), Fr.mul(tt, F(n[k]))); });
+    var num = Math.abs(D - dot(n, A));
+    var expr = xpSq('x', A[0]) + '+' + xpSq('y', A[1]) + '+' + xpSq('z', A[2]);
+    var obj = mode === 2 ? '\\sqrt{' + expr + '}' : expr;
+    var minT = mode === 2 ? sqrtFracTex(num * num, N) : Fr.tex(F(num * num, N));
+    return { q: '實數 ' + T('x,y,z') + ' 滿足 ' + T(planeTex([n[0], n[1], n[2], D])) + '。求 ' + T(obj) + ' 的最小值，以及此時的 ' + T('(x,y,z)') + '。',
+             a: '最小值 ' + T(minT) + '，此時 ' + T('(x,y,z)=' + vtF(H)),
+             h: T(mode === 2 ? obj : '\\sqrt{' + expr + '}') + ' 是點 ' + T('(x,y,z)') + ' 到 ' + T(vt(A)) + ' 的距離，而 ' + T('(x,y,z)') + ' 在平面上，所以最小值就是 ' + T(vt(A)) + ' 到平面的距離' + (mode === 2 ? '' : '的平方') + '（距離 ' + T('=\\dfrac{' + num + '}{\\sqrt{' + N + '}}') + '）；取到最小的點是投影點，令 ' + T(vt(A) + '+t' + vt(n)) + ' 代入平面解 ' + T('t') + '。',
+             p: { mode: mode, n: n, D: D, A: A } };
+  };
+
+  /* ── L2 §5 正四角錐坐標化：側面方程式、兩面角 ── */
+  L2.pyramidCoord = function (r) {
+    var a = r.int(1, 4), h = r.int(1, 6), f = r.int(0, 3);
+    var V = [0, 0, h], P = { A: [a, a, 0], B: [-a, a, 0], C: [-a, -a, 0], D: [a, -a, 0] }, nm = ['A', 'B', 'C', 'D'];
+    var f1 = 'V' + nm[f] + nm[(f + 1) % 4], f2 = 'V' + nm[(f + 1) % 4] + nm[(f + 2) % 4];
+    var P1 = P[nm[f]], P2 = P[nm[(f + 1) % 4]], nv = cross(sub(P2, P1), sub(V, P1)), pl = planeOf(redPos(nv), V);
+    var Q3 = P[nm[(f + 2) % 4]], nv2 = cross(sub(Q3, P2), sub(V, P2));
+    var S = a * a + h * h;
+    return { q: '正四角錐 ' + T('V\\text{-}ABCD') + ' 的底面 ' + T('ABCD') + ' 是邊長 ' + T(String(2 * a)) + ' 的正方形、高為 ' + T(String(h)) + '。以底面中心為原點建立坐標：' + T('A' + vt(P.A)) + '、' + T('B' + vt(P.B)) + '、' + T('C' + vt(P.C)) + '、' + T('D' + vt(P.D)) + '、' + T('V' + vt(V)) + '。(1) 求平面 ' + T(f1) + ' 的方程式。(2) 求側面 ' + T(f1) + ' 與底面 ' + T('ABCD') + ' 所成兩面角 ' + T('\\alpha') + ' 的 ' + T('\\cos\\alpha') + '。(3) 求平面 ' + T(f1) + ' 與平面 ' + T(f2) + ' 夾角 ' + T('\\beta') + '（取銳角）的 ' + T('\\cos\\beta') + '。',
+             a: '(1) ' + T(planeTex(pl)) + '　(2) ' + T(sqrtFracTex(a * a, S)) + '　(3) ' + T(Fr.tex(F(a * a, S))),
+             h: T(f1) + ' 的法向量取 ' + T(ov(nm[f] + nm[(f + 1) % 4]) + '\\times' + ov(nm[f] + 'V') + '=' + vt(nv)) + '（約簡為 ' + T(vt(redPos(nv))) + '），底面的法向量是 ' + T('(0,0,1)') + '；' + T(f2) + ' 的法向量同理約簡為 ' + T(vt(redPos(nv2))) + '。兩面角的餘弦都用 ' + T('\\dfrac{\\left|' + vec('n_1') + '\\cdot' + vec('n_2') + '\\right|}{\\left|' + vec('n_1') + '\\right|\\left|' + vec('n_2') + '\\right|}') + '。',
+             p: { a: a, h: h, f: f } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -1154,10 +1416,195 @@
       '(3) 把 ' + T('G') + ' 代入左式得 ' + T(subTex(nr, G) + '=' + vg) + '，距離 ' + T('=' + solDistT(vg + '-' + d, N) + '=' + sqrtFracTex((vg - d) * (vg - d), N)) + '。' + solFin(o)];
   };
 
+  /* ── 2026-09-29 擴充：新 L1 五型的第一層提示與解題步驟 ── */
+  L1_H1.planeTwoPtsPerp = '這是「過兩點（或一點）且垂直已知平面」：所求平面的法向量要同時垂直兩個已知的向量，取它們的外積，再代點定常數。';
+  L1_H1.planeAngleCoef = '這是「由兩面角求平面的係數」：先用與坐標軸的交點把平面設成只剩一個未知係數，再用兩個法向量的夾角餘弦列方程式。';
+  L1_H1.planeSideRatio = '這是「兩點在平面的同側或異側」：把兩點代入「左式減常數」，同號在同側、異號在異側；兩個值的絕對值比就是到平面的距離比。';
+  L1_H1.interLineParam = '這是「兩平面的交線化成參數式」：方向取兩個法向量的外積，再令其中一個坐標為定值，解二元一次找出交線上的一點。';
+  L1_H1.planeLinePt = '這是「含一直線且過一點（或含兩平行線）的平面」：直線給一個方向，再用兩點連線給第二個方向，法向量取兩者的外積。';
+
+  function xpNf(nv, nr) { return (nv[0] === nr[0] && nv[1] === nr[1] && nv[2] === nr[2]) ? '' : '，化成最簡整數、首項為正得 ' + T(vt(nr)); }
+
+  L1_SOL.planeTwoPtsPerp = function (p, o) {
+    if (p.mode === 0) {
+      var AB = sub(p.B, p.A), nF = cross(AB, p.nE), nr = redPos(nF), pl = planeOf(nr, p.A);
+      return [T('F\\perp E') + ' ⟹ ' + T(vec('n_F') + '\\perp' + vec('n_E') + '=' + vt(p.nE)) + '；' + T('F') + ' 通過 ' + T('A,B') + ' ⟹ ' + T(vec('n_F') + '\\perp' + ov('AB') + '=' + vt(AB)) + '。',
+        '法向量取 ' + T(ov('AB') + '\\times' + vec('n_E') + '=' + vt(nF)) + xpNf(nF, nr) + '。',
+        '代入 ' + T('A' + vt(p.A)) + ' 定常數：' + T(subTex(nr, p.A) + '=' + pl[3]) + '，所以 ' + T('F:' + planeTex(pl)) + '。' + solFin(o)];
+    }
+    var nF2 = cross(p.n1, p.n2), nr2 = redPos(nF2), pl2 = planeOf(nr2, p.P);
+    return [T('F') + ' 同時垂直 ' + T('E_1') + '、' + T('E_2') + ' ⟹ ' + T(vec('n_F')) + ' 同時垂直 ' + T(vec('n_1') + '=' + vt(p.n1)) + '、' + T(vec('n_2') + '=' + vt(p.n2)) + '。',
+      '法向量取 ' + T(vec('n_1') + '\\times' + vec('n_2') + '=' + vt(nF2)) + xpNf(nF2, nr2) + '。',
+      '代入 ' + T('P' + vt(p.P)) + ' 定常數：' + T(subTex(nr2, p.P) + '=' + pl2[3]) + '，所以 ' + T('F:' + planeTex(pl2)) + '。' + solFin(o)];
+  };
+
+  L1_SOL.planeAngleCoef = function (p, o) {
+    var n = p.n, u = p.u, m = p.m, oth = [0, 1, 2].filter(function (i) { return i !== u; }), j = oth[0], k = oth[1];
+    var S = n[j] * n[j] + n[k] * n[k], Q = p.deg45 ? 2 * n[m] * n[m] : n2(n), plName = PLANES[PLMISS.indexOf(m)];
+    var nPos = n.slice(), nNeg = n.slice(); nPos[u] = Math.abs(n[u]); nNeg[u] = -Math.abs(n[u]);
+    var E1 = normPlane([nPos[0], nPos[1], nPos[2], p.D]), E2 = normPlane([nNeg[0], nNeg[1], nNeg[2], p.D]);
+    var Pj = [0, 0, 0], Pk = [0, 0, 0]; Pj[j] = p.D / n[j]; Pk[k] = p.D / n[k];
+    var cosT = p.deg45 ? '\\cos45^\\circ=\\dfrac{1}{\\sqrt2}' : '\\cos\\theta=' + Fr.tex(F(Math.abs(n[m]), Math.sqrt(n2(n))));
+    return ['平面過 ' + T(vt(Pj)) + '、' + T(vt(Pk)) + '，可設 ' + T('E:' + xpSymLhs(n, u, 'k') + '=' + p.D) + '（兩點代入左式都得 ' + T(String(p.D)) + '）。',
+      T(plName) + ' 平面的法向量是 ' + T(vt([m === 0 ? 1 : 0, m === 1 ? 1 : 0, m === 2 ? 1 : 0])) + '，所以 ' + T('\\dfrac{' + Math.abs(n[m]) + '}{\\sqrt{k^2+' + S + '}}') + ' 要等於 ' + T(cosT) + '；平方後 ' + T('k^2+' + S + '=' + Q) + '，' + T('k^2=' + (Q - S)) + '，' + T('k=\\pm' + Math.abs(n[u])) + '。',
+      '所以 ' + T('E:' + planeTex(E1)) + ' 或 ' + T('E:' + planeTex(E2)) + '。' + solFin(o)];
+  };
+
+  L1_SOL.planeSideRatio = function (p, o) {
+    var n = p.n, D = p.D, fA = dot(n, p.A) - D, fB = dot(n, p.B) - D, g = gcd(fA, fB), m = Math.abs(fA) / g, k = Math.abs(fB) / g;
+    var s1 = '把兩點代入「左式減常數」：' + T('A') + '：' + T(subTex(n, p.A) + '-' + solNeg(D) + '=' + fA) + '；' + T('B') + '：' + T(subTex(n, p.B) + '-' + solNeg(D) + '=' + fB) + '。';
+    if (!p.opp) return [s1, T(String(fA)) + ' 與 ' + T(String(fB)) + ' 同號 ⟹ 同側；兩點到 ' + T('E') + ' 的距離分母相同，比值 ' + T('d(A,E):d(B,E)=' + Math.abs(fA) + ':' + Math.abs(fB) + '=' + m + ':' + k) + '。' + solFin(o)];
+    var AB = sub(p.B, p.A), tt = F(m, m + k), P = [0, 1, 2].map(function (i) { return Fr.add(F(p.A[i]), Fr.mul(tt, F(AB[i]))); });
+    return [s1,
+      T(String(fA)) + ' 與 ' + T(String(fB)) + ' 異號 ⟹ 異側；交點把 ' + T('\\overline{AB}') + ' 分成距離的比：' + T('\\overline{AP}:\\overline{PB}=' + Math.abs(fA) + ':' + Math.abs(fB) + '=' + m + ':' + k) + '。',
+      T(ov('AB') + '=' + vt(AB)) + '，' + T('P=A+' + Fr.tex(tt) + ov('AB')) + '，得交點 ' + T('P' + vtF(P).replace(/\\left|\\right|\\ /g, '')) + '。' + solFin(o)];
+  };
+
+  L1_SOL.interLineParam = function (p, o) {
+    var n1 = p.n1, n2_ = p.n2, X = p.X, dd = p.dd, i = p.i, cr = cross(n1, n2_), oth = [0, 1, 2].filter(function (k) { return k !== i; }), j = oth[0], k = oth[1];
+    var d1 = dot(n1, X), d2 = dot(n2_, X);
+    return ['方向：' + T(vec('n_1') + '\\times' + vec('n_2') + '=' + vt(n1) + '\\times' + vt(n2_) + '=' + vt(cr)) + ((cr[0] === dd[0] && cr[1] === dd[1] && cr[2] === dd[2]) ? '，取 ' + T(vec('d') + '=' + vt(dd)) : '，約成最簡得 ' + T(vec('d') + '=' + vt(dd))) + '。',
+      '找一點：令 ' + T(AXES[i] + '=' + X[i]) + '，代入兩式得 ' + T(xpEq2(n1[j], AXES[j], n1[k], AXES[k], d1 - n1[i] * X[i])) + '、' + T(xpEq2(n2_[j], AXES[j], n2_[k], AXES[k], d2 - n2_[i] * X[i])) + '，解得 ' + T(AXES[j] + '=' + X[j]) + '、' + T(AXES[k] + '=' + X[k]) + '，交線過 ' + T(vt(X)) + '。',
+      '參數式 ' + T('L:' + paramTex(X, dd)) + '。' + solFin(o)];
+  };
+
+  L1_SOL.planeLinePt = function (p, o) {
+    var dd = p.dd, P0 = p.P0, Q = p.Q, w = sub(Q, P0), nv = cross(dd, w), nr = redPos(nv), pl = planeOf(nr, P0);
+    var s1 = p.mode === 0 ? T('L') + ' 上取點 ' + T('P_0' + vt(P0)) + '、方向 ' + T(vec('d') + '=' + vt(dd)) + '；再取 ' + T(ov('P_0P') + '=' + vt(w)) + '，兩者都在 ' + T('E') + ' 上。'
+      : T('L_1') + ' 上取 ' + T('P_1' + vt(P0)) + '、' + T('L_2') + ' 上取 ' + T('P_2' + vt(Q)) + '；共同方向 ' + T(vec('d') + '=' + vt(dd)) + '，另一個方向取 ' + T(ov('P_1P_2') + '=' + vt(w)) + '。';
+    return [s1,
+      '法向量取外積 ' + T(vec('d') + '\\times' + (p.mode === 0 ? ov('P_0P') : ov('P_1P_2')) + '=' + vt(nv)) + xpNf(nv, nr) + '。',
+      '代入 ' + T(vt(P0)) + ' 定常數：' + T(subTex(nr, P0) + '=' + pl[3]) + '，所以 ' + T('E:' + planeTex(pl)) + '。' + solFin(o)];
+  };
+
+  /* ══════════════════════════════════════════════════════════
+     2026-09-29 新增小節 3-5「直線與平面的夾角」：L1 一型（linePlaneAngleDeg）、L2 一型（linePlaneAngleParam）
+     只新增、不改任何既有產生器（既有題型同種子出同一題，錯題本與檢測紀錄的 t.k#seed 仍有效）。
+     ══════════════════════════════════════════════════════════ */
+  /* 特別角的 sin²：[分子, 分母] */
+  var LPA_S2 = { 0: [0, 1], 30: [1, 4], 45: [1, 2], 60: [3, 4], 90: [1, 1] };
+  var lpaCache = null;
+  /* 所有「小整數法向量 n、小整數方向 d」使夾角恰為 30°、45°、60° 的組合（第一次用到時才列舉） */
+  function lpaPairs() {
+    if (lpaCache) return lpaCache;
+    var ns = [], ds = [], i, j, k;
+    for (i = -2; i <= 2; i++) for (j = -2; j <= 2; j++) for (k = -2; k <= 2; k++) {
+      var v = [i, j, k]; if (nzc(v) < 2 || gcd3(v) !== 1) continue;
+      var w = redPos(v); if (w[0] === v[0] && w[1] === v[1] && w[2] === v[2]) ns.push(v);
+    }
+    for (i = -3; i <= 3; i++) for (j = -3; j <= 3; j++) for (k = -3; k <= 3; k++) {
+      var u = [i, j, k]; if (nzc(u) >= 2 && gcd3(u) === 1) ds.push(u);
+    }
+    lpaCache = { 30: [], 45: [], 60: [] };
+    ns.forEach(function (n) {
+      ds.forEach(function (d) {
+        var dv = dot(n, d), P = n2(n) * n2(d);
+        [30, 45, 60].forEach(function (g) { var s2 = LPA_S2[g]; if (dv * dv * s2[1] === s2[0] * P) lpaCache[g].push([n, d]); });
+      });
+    });
+    return lpaCache;
+  }
+  function lpaDegTex(g) { return g + '^\\circ'; }
+  /* 帶一個字母的向量：(2,k,-1) */
+  function lpaSymVec(v, i, sym) { return '(' + [0, 1, 2].map(function (m) { return m === i ? sym : String(v[m]); }).join(',') + ')'; }
+  /* 一元二次式 c2·k²+c1·k+c0（首項為正、約去公因數） */
+  function lpaQuad(c2, c1, c0) {
+    var g = gcd(gcd(Math.abs(c2), Math.abs(c1)), Math.abs(c0)) || 1;
+    if (c2 < 0) g = -g;
+    c2 /= g; c1 /= g; c0 /= g;
+    var s = term(c2, 'k^2', true) + term(c1, 'k', false) + (c0 === 0 ? '' : (c0 > 0 ? '+' : '') + c0);
+    return { tex: s + '=0', c: [c2, c1, c0] };
+  }
+  /* 有理根（兩相異）：回傳 [F, F] 由小到大，否則 null */
+  function lpaRoots(c2, c1, c0) {
+    if (c2 === 0) return null;
+    var D = c1 * c1 - 4 * c2 * c0; if (D <= 0) return null;
+    var q = Math.round(Math.sqrt(D)); if (q * q !== D) return null;
+    var r1 = F(-c1 - q, 2 * c2), r2 = F(-c1 + q, 2 * c2);
+    if (r1.n * r2.d > r2.n * r1.d) { var tt = r1; r1 = r2; r2 = tt; }
+    return [r1, r2];
+  }
+
+  /* ── §3-5 線面夾角：求角度（特別角）與 0°、90° 的特例 ── */
+  L1.linePlaneAngleDeg = function (r) {
+    var g = r.pick([30, 45, 60, 0, 30, 45, 60, 90]), n, dd, P0 = rp(r, -4, 4), dE, onE = false;
+    if (g === 0 || g === 90) {
+      n = redPos(rnv(r, -3, 3, 2));
+      if (g === 90) dd = sc(r.pick([1, -1]), n);
+      else { var t0 = 0; do { dd = red(perpRand(r, n, -2, 2)); t0++; } while ((isZero(dd) || nzc(dd) < 1) && t0 < 60); }
+      onE = g === 0 && r() < 0.5;
+      dE = dot(n, P0) + (onE ? 0 : r.pick([1, -1, 2, -2, 3, -3]));
+    } else {
+      var pr = r.pick(lpaPairs()[g]); n = pr[0]; dd = pr[1];
+      dE = r.int(-9, 9);
+    }
+    var form = r.int(0, 1), Lt = form === 0 ? lineShort(P0, dd, 't') : ratioTex(P0, dd);
+    var dv = dot(n, dd), prod = n2(n) * n2(dd);
+    var tail = g === 0 ? '（' + (onE ? T('L') + ' 在 ' + T('E') + ' 上' : T('L') + ' 與 ' + T('E') + ' 平行') + '）' : (g === 90 ? '（' + T('L\\perp E') + '）' : '');
+    return { q: '求直線 ' + T('L:' + Lt) + ' 與平面 ' + T('E:' + planeTex([n[0], n[1], n[2], dE])) + ' 的夾角 ' + T('\\theta') + '（' + T('0^\\circ\\le\\theta\\le90^\\circ') + '）；若 ' + T('\\theta=0^\\circ') + '，再判斷 ' + T('L') + ' 與 ' + T('E') + ' 平行，還是 ' + T('L') + ' 在 ' + T('E') + ' 上。',
+             a: T('\\theta=' + lpaDegTex(g)) + tail,
+             h: '用 ' + T('\\sin\\theta=\\dfrac{\\left|' + vec('d') + '\\cdot' + vec('n') + '\\right|}{\\left|' + vec('d') + '\\right|\\left|' + vec('n') + '\\right|}') + '：本題 ' + T(vec('d') + '=' + vt(dd)) + '、' + T(vec('n') + '=' + vt(n)) + '，' + T(vec('d') + '\\cdot' + vec('n') + '=' + dv) + '，' + T('\\sin^2\\theta=\\dfrac{' + (dv * dv) + '}{' + n2(dd) + '\\times' + n2(n) + '}') + '。再對照 ' + T('\\sin30^\\circ=\\dfrac12') + '、' + T('\\sin45^\\circ=\\dfrac{\\sqrt2}{2}') + '、' + T('\\sin60^\\circ=\\dfrac{\\sqrt3}{2}') + (dv === 0 ? '；內積是 ' + T('0') + '，還要把 ' + T('P_0' + vt(P0)) + ' 代進 ' + T('E') + ' 看看在不在平面上。' : '。'),
+             p: { n: n, dd: dd, P0: P0, dE: dE, deg: g, onE: onE } };
+  };
+
+  /* ── §3-5 由線面夾角求未知數（方向向量或平面係數裡有一個 k） ── */
+  L2.linePlaneAngleParam = function (r) {
+    var mode = r.int(0, 1), t = 0, g, n, dd, i, rts, c2, c1, c0, A, Bc, S, fix, s2;
+    do {
+      g = r.pick([30, 45, 60]); s2 = LPA_S2[g];
+      i = r.int(0, 2);
+      if (mode === 0) {                 /* 方向向量 dd 的第 i 個分量是 k，平面固定 */
+        n = redPos(rnv(r, -2, 2, 2)); dd = rp(r, -3, 3); dd[i] = 0;
+        if (nzc(dd) < 1) { t++; continue; }
+        fix = n; A = n[i]; Bc = dot(n, dd); S = n2(dd);
+        c2 = s2[1] * A * A - s2[0] * n2(n); c1 = 2 * s2[1] * A * Bc; c0 = s2[1] * Bc * Bc - s2[0] * n2(n) * S;
+      } else {                          /* 平面法向量的第 i 個係數是 k，直線固定 */
+        dd = rnv(r, -3, 3, 2); n = rp(r, -3, 3); n[i] = 0;
+        if (nzc(n) < 1) { t++; continue; }
+        fix = dd; A = dd[i]; Bc = dot(n, dd); S = n2(n);
+        c2 = s2[1] * A * A - s2[0] * n2(dd); c1 = 2 * s2[1] * A * Bc; c0 = s2[1] * Bc * Bc - s2[0] * n2(dd) * S;
+      }
+      rts = lpaRoots(c2, c1, c0);
+      if (rts && rts.every(function (x) { return x.d <= 4 && Math.abs(x.n) <= 12 * x.d; })) break;
+      rts = null; t++;
+    } while (t < 3000);
+    if (!rts) { mode = 0; g = 60; i = 2; n = [1, 0, 1]; dd = [2, 1, 0]; A = 1; Bc = 2; S = 5; s2 = LPA_S2[60]; c2 = 4 - 6; c1 = 16; c0 = 16 - 30; rts = lpaRoots(c2, c1, c0); }
+    var P0 = rp(r, -4, 4), qd = lpaQuad(c2, c1, c0), Lt, Et, dvT, dT, nT;
+    if (mode === 0) {
+      var dE = r.int(-9, 9);
+      Lt = '(x,y,z)=' + vt(P0) + '+t' + lpaSymVec(dd, i, 'k'); Et = planeTex([n[0], n[1], n[2], dE]);
+      dvT = lin(Bc, A, 'k'); dT = 'k^2+' + S; nT = String(n2(n));
+    } else {
+      var dE2 = r.nz(-9, 9);
+      Lt = r() < 0.5 ? lineShort(P0, dd, 't') : ratioTex(P0, dd); Et = xpSymLhs(n, i, 'k') + '=' + dE2;
+      dvT = lin(Bc, A, 'k'); dT = String(n2(dd)); nT = 'k^2+' + S;
+    }
+    var ans = T('k=' + Fr.tex(rts[0])) + ' 或 ' + T('k=' + Fr.tex(rts[1]));
+    return { q: '直線 ' + T('L:' + Lt) + ' 與平面 ' + T('E:' + Et) + ' 的夾角為 ' + T(lpaDegTex(g)) + '，求 ' + T('k') + ' 的所有可能值。',
+             a: ans,
+             h: '把 ' + T('\\sin\\theta=\\dfrac{\\left|' + vec('d') + '\\cdot' + vec('n') + '\\right|}{\\left|' + vec('d') + '\\right|\\left|' + vec('n') + '\\right|}') + ' 兩邊平方：' + T('\\left(' + vec('d') + '\\cdot' + vec('n') + '\\right)^2=\\sin^2' + lpaDegTex(g) + '\\cdot\\left|' + vec('d') + '\\right|^2\\left|' + vec('n') + '\\right|^2') + '。本題 ' + T(vec('d') + '\\cdot' + vec('n') + '=' + dvT) + '、' + T('\\left|' + vec('d') + '\\right|^2=' + dT) + '、' + T('\\left|' + vec('n') + '\\right|^2=' + nT) + '、' + T('\\sin^2' + lpaDegTex(g) + '=' + Fr.tex(F(s2[0], s2[1]))) + '，整理得 ' + T(qd.tex) + '，平方後兩個解都要代回檢查。',
+             p: { mode: mode, n: n, dd: dd, i: i, deg: g, P0: P0 } };
+  };
+
+  /* ── L1 新型的第一層提示與解題步驟 ── */
+  L1_H1.linePlaneAngleDeg = '這是「線面夾角的角度與特例」：用正弦公式算出夾角的正弦值，再對照特別角；正弦值是 0 時，還要代點分辨直線與平面平行或直線在平面上。';
+  L1_SOL.linePlaneAngleDeg = function (p, o) {
+    var n = p.n, dd = p.dd, dv = dot(n, dd), prod = n2(n) * n2(dd), g = p.deg, b = dot(n, p.P0);
+    var s1 = '讀出 ' + T(vec('d') + '=' + vt(dd)) + '、' + T(vec('n') + '=' + vt(n)) + '，' + T(vec('d') + '\\cdot' + vec('n') + '=' + subTex(dd, n) + '=' + dv) + '，' + T(solAbsT(vec('d')) + '^2=' + n2(dd)) + '、' + T(solAbsT(vec('n')) + '^2=' + n2(n)) + '。';
+    if (g === 0) return [s1,
+      '內積為 ' + T('0') + ' ⟹ ' + T('\\sin\\theta=0') + '，' + T('\\theta=0^\\circ') + '。',
+      '再看 ' + T('P_0' + vt(p.P0)) + '：代入 ' + T('E') + ' 的左式得 ' + T(subTex(n, p.P0) + '=' + b) + '，常數項是 ' + T(String(p.dE)) + '，' + (p.onE ? '相等 ⟹ ' + T('L') + ' 在 ' + T('E') + ' 上。' : '不相等 ⟹ ' + T('L') + ' 與 ' + T('E') + ' 平行。') + solFin(o)];
+    if (g === 90) return [s1,
+      T(vec('d') + '=' + (dv > 0 ? '' : '-') + vec('n')) + '，方向與法向量平行 ⟹ ' + T('L\\perp E') + '；公式也給 ' + T('\\sin\\theta=\\dfrac{' + Math.abs(dv) + '}{' + Math.abs(dv) + '}=1') + '，' + T('\\theta=90^\\circ') + '。' + solFin(o)];
+    var sv = { 30: '\\dfrac12', 45: '\\dfrac{\\sqrt2}{2}', 60: '\\dfrac{\\sqrt3}{2}' }[g];
+    return [s1,
+      T('\\sin^2\\theta=\\dfrac{' + (dv * dv) + '}{' + prod + '}' + (F(dv * dv, prod).d === prod ? '' : '=' + Fr.tex(F(dv * dv, prod)))) + '，所以 ' + T('\\sin\\theta=' + sv) + '。',
+      '夾角在 ' + T('0^\\circ') + ' 到 ' + T('90^\\circ') + ' 之間，正弦是 ' + T(sv) + ' 的角是 ' + T(lpaDegTex(g)) + '。' + solFin(o)];
+  };
   var META_L1 = [
-      ['planePointNormal', '§1 由點與法向量寫平面'], ['planeThreePts', '§1 三點決定平面'], ['planeIntercepts', '§1 讀係數與坐標軸交點'], ['planeSpecial', '§1 特殊位置的平面'], ['twoPlanesRel', '§1 兩平面的位置關係與夾角'], ['coplanarK', '§1 四點共平面求未知數'],
-      ['ptPlaneDist', '§2 點到平面的距離'], ['parallelPlaneDist', '§2 平行平面與兩平面距離'], ['planeProjSym', '§2 投影點與對稱點'], ['planeDistUnknown', '§2 已知距離求未知數'], ['tetraPlaneDist', '§2 三點的平面與體積法'],
-      ['lineParamRatio', '§3 參數式與比例式'], ['lineReadBack', '§3 讀回點與方向向量'], ['lineTwoPts', '§3 兩點決定直線'], ['linePlaneInt', '§3 直線與平面的交點'], ['linePlaneRel', '§3 直線與平面的位置關係'], ['linePlaneAngle', '§3 直線與平面的夾角'],
+      ['planePointNormal', '§1 由點與法向量寫平面'], ['planeThreePts', '§1 三點決定平面'], ['planeIntercepts', '§1 讀係數與坐標軸交點'], ['planeSpecial', '§1 特殊位置的平面'], ['twoPlanesRel', '§1 兩平面的位置關係與夾角'], ['coplanarK', '§1 四點共平面求未知數'], ['planeTwoPtsPerp', '§1 過兩點（或一點）且垂直已知平面'], ['planeAngleCoef', '§1 由兩面角求平面的係數'],
+      ['ptPlaneDist', '§2 點到平面的距離'], ['parallelPlaneDist', '§2 平行平面與兩平面距離'], ['planeProjSym', '§2 投影點與對稱點'], ['planeDistUnknown', '§2 已知距離求未知數'], ['tetraPlaneDist', '§2 三點的平面與體積法'], ['planeSideRatio', '§2 兩點在平面的同側或異側'],
+      ['lineParamRatio', '§3 參數式與比例式'], ['lineReadBack', '§3 讀回點與方向向量'], ['lineTwoPts', '§3 兩點決定直線'], ['linePlaneInt', '§3 直線與平面的交點'], ['linePlaneRel', '§3 直線與平面的位置關係'], ['linePlaneAngle', '§3 直線與平面的夾角'], ['interLineParam', '§3 兩平面的交線化成參數式'], ['planeLinePt', '§3 含直線且過一點的平面'], ['linePlaneAngleDeg', '§3 線面夾角的角度與特例'],
       ['ptLineDist', '§4 點到直線的距離'], ['footPerp', '§4 垂足與最近點'], ['parallelLineDist', '§4 兩平行線的距離'], ['twoLinesRel', '§4 兩直線的位置關係'], ['skewLineDist', '§4 兩歪斜線的距離'],
       ['symPtLine', '§5 點對直線的對稱點'], ['mirrorReflect', '§5 對坐標平面的鏡面反射'], ['boxCoord', '§5 長方體的坐標化']
   ];
@@ -1166,10 +1613,12 @@
       ['bisectPlanes', '§2 兩平面的角平分面'], ['chordTwoPlanes', '§2 兩平行平面截出的線段'], ['tetraVolHeight', '§2 四面體的體積與高'], ['maxDistPlaneLine', '§2 過定直線的平面：最大距離'],
       ['planeContainLinePerp', '§3 含直線且垂直已知平面的平面'], ['interLineAxis', '§3 兩平面交線與坐標軸'],
       ['commonPerpSeg', '§4 公垂線段的兩端點'], ['lineBisector', '§4 兩直線的角平分線'], ['boxSkewDist', '§4 長方體中的歪斜線'],
-      ['lineProjPlane', '§5 直線在平面上的投影'], ['segProjPlane', '§5 線段的正射影長'], ['rayReflectPlane', '§5 光線的反射'], ['shortestPath', '§5 平面上動點的最短路徑'], ['boxPlaneDist', '§5 長方體中點到截面的距離']
+      ['lineProjPlane', '§5 直線在平面上的投影'], ['segProjPlane', '§5 線段的正射影長'], ['rayReflectPlane', '§5 光線的反射'], ['shortestPath', '§5 平面上動點的最短路徑'], ['boxPlaneDist', '§5 長方體中點到截面的距離'],
+      ['planeParLine', '§4 含一直線且平行另一直線的平面'], ['linesCoplanarK', '§4 兩直線相交求未知數'], ['spaceFacts', '§1 直線與平面的敘述判斷'], ['linePlaneParam', '§3 直線在平面上、平行或垂直求未知數'], ['planeMinDist', '§2 平面上的點：距離平方和最小'], ['pyramidCoord', '§5 正四角錐的坐標化與兩面角'],
+      ['linePlaneAngleParam', '§3 由線面夾角求未知數']
   ];
   /* ══════════════════════════════════════════════════════════
-     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
+     L3　中上（19 型；2026-09-29 擴充 3 型＋新小節 3-5 一型）：每型對應固定題 L3-1～L3-15 的「類似題」
      答案一律整數／Fraction／根式；p 只放輸入參數與旗標（另附 ans 方便對照），
      驗算器一律從題幹重算。自己新增的工具一律 l3 開頭，避免與產生器撞名。
      ══════════════════════════════════════════════════════════ */
@@ -1643,13 +2092,89 @@
              p: { P: P, Q: Q, ai: ai, fixv: [X[oi[0]], X[oi[1]]], v: v, ans: X } };
   };
 
+  /* ══════════ 2026-09-29 擴充：L3-16～L3-18 的類似題 ══════════ */
+  function l3xAllNz(v) { return v[0] !== 0 && v[1] !== 0 && v[2] !== 0; }
+  /* 坐標裡有兩個換成字母：idx 是字母的位置、names 是字母 */
+  function l3symPt(P, idx, names) { return '(' + [0, 1, 2].map(function (k) { var w = idx.indexOf(k); return w >= 0 ? names[w] : String(P[k]); }).join(',') + ')'; }
+
+  /* L3-16　與兩歪斜線都垂直且都相交的直線（公垂線）上的點 */
+  L3.commonPerpPoint = function (r) {
+    var d1, d2, c, t = 0;
+    do { d1 = rnv(r, -3, 3, 3); d2 = rnv(r, -3, 3, 3); c = cross(d1, d2); t++; } while ((isZero(c) || l3mx(red(c)) > 6) && t < 300);
+    c = red(c);
+    var F1 = rp(r, -4, 4), mm = r.pick([1, -1, 2, -2]), F2 = add(F1, sc(mm, c));
+    var a = r.pick([1, -1, 2, -2]), b = r.pick([1, -1, 2, -2]), P1 = add(F1, sc(a, d1)), P2 = add(F2, sc(b, d2));
+    var ws = [0, 1, 2].filter(function (k) { return c[k] !== 0; }), w = r.pick(ws), tau = r.pick([2, -2, 3, -3]), A = add(F1, sc(tau, c));
+    var hid = [0, 1, 2].filter(function (k) { return k !== w; }), v = r.int(0, 1);
+    var head = '兩歪斜線 ' + T('L_1:' + ratioTex(P1, d1)) + '、' + T('L_2:' + ratioTex(P2, d2)) + '。直線 ' + T('L_3') + ' 與 ' + T('L_1') + '、' + T('L_2') + ' 都垂直而且都相交，點 ' + T('A' + l3symPt(A, hid, ['p', 'q'])) + ' 在 ' + T('L_3') + ' 上。';
+    var h = T('L_3') + ' 就是公垂線，方向取 ' + T(vec('d_1') + '\\times' + vec('d_2') + '=' + vt(cross(d1, d2))) + '（約簡為 ' + T(vt(c)) + '）。再求公垂線段的一個端點：令 ' + T('M=' + vt(P1) + '+t' + vt(d1)) + '、' + T('N=' + vt(P2) + '+s' + vt(d2)) + '，由 ' + T(ov('MN') + '\\cdot' + vec('d_1') + '=0') + '、' + T(ov('MN') + '\\cdot' + vec('d_2') + '=0') + ' 解 ' + T('t,s') + '；' + T('L_3:M+u' + vt(c)) + '，用 ' + T('A') + ' 的 ' + T(AXES[w]) + ' 坐標 ' + T(String(A[w])) + ' 定出 ' + T('u') + '。';
+    if (v === 0) return { q: head + '求 ' + T('(p,q)') + '。', a: T('(p,q)=(' + A[hid[0]] + ',' + A[hid[1]] + ')'), h: h, p: { v: 0, P1: P1, d1: d1, P2: P2, d2: d2, w: w, ans: A } };
+    return { q: head + '(1) 求公垂線段的兩端點 ' + T('M\\in L_1') + '、' + T('N\\in L_2') + '。(2) 求 ' + T('(p,q)') + '。',
+             a: '(1) ' + T('M' + vt(F1)) + '、' + T('N' + vt(F2)) + '　(2) ' + T('(p,q)=(' + A[hid[0]] + ',' + A[hid[1]] + ')'), h: h, p: { v: 1, P1: P1, d1: d1, P2: P2, d2: d2, w: w, ans: A } };
+  };
+
+  /* L3-17　兩平面交線上、到兩點等距的點：中垂面與直線的交點 */
+  L3.equidistOnLine = function (r) {
+    var g = lineTwoPlanes(r), Q = add(g.X, sc(r.int(-2, 2), g.dd)), w, t = 0;
+    do { w = rnv(r, -3, 3, 2); t++; } while (dot(w, g.dd) === 0 && t < 100);
+    if (dot(w, g.dd) === 0) w = g.dd.slice();
+    var u = perpRand(r, w, -2, 2), M = add(Q, u), A = sub(M, w), Bp = add(M, w);
+    var d1 = dot(g.n1, g.X), d2 = dot(g.n2, g.X), v = r.int(0, 1), wr = redPos(w);
+    var Ltex = l3cases([planeTex([g.n1[0], g.n1[1], g.n1[2], d1]), planeTex([g.n2[0], g.n2[1], g.n2[2], d2])]);
+    var h = T('\\overline{QA}=\\overline{QB}') + ' ⟹ ' + T('Q') + ' 在 ' + T('\\overline{AB}') + ' 的中垂面上：過中點 ' + T(vt(M)) + '、法向量 ' + T(ov('AB') + '=' + vt(sc(2, w))) + '（約簡為 ' + T(vt(wr)) + '），中垂面 ' + T(planeTex([wr[0], wr[1], wr[2], dot(wr, M)])) + '。把它和 ' + T('L') + ' 的兩個平面方程式聯立（三元一次），解出來的點就是 ' + T('Q') + '。';
+    var q = '空間中有 ' + T('A' + vt(A)) + '、' + T('B' + vt(Bp)) + ' 兩點，點 ' + T('Q') + ' 在直線 ' + T('L:' + Ltex) + ' 上，而且 ' + T('Q') + ' 到 ' + T('A') + '、' + T('B') + ' 的距離相等。';
+    if (v === 0) return { q: q + '求 ' + T('Q') + ' 的坐標。', a: T('Q' + vt(Q)), h: h, p: { v: 0, n1: g.n1, n2: g.n2, X: g.X, A: A, B: Bp, ans: Q } };
+    return { q: q + '(1) 求 ' + T('Q') + ' 的坐標。(2) 求 ' + T('\\overline{QA}') + '。', a: '(1) ' + T('Q' + vt(Q)) + '　(2) ' + T(sqrtTex(n2(sub(Q, A)))), h: h, p: { v: 1, n1: g.n1, n2: g.n2, X: g.X, A: A, B: Bp, ans: Q } };
+  };
+
+  /* L3-18　第三頂點在坐標平面上、周長最小：對稱點連線，再算面積 */
+  L3.perimMinArea = function (r) {
+    var pli = r.int(0, 2), mi = PLMISS[pli], C = rp(r, -4, 4), w, t = 0;
+    C[mi] = 0;
+    do { w = rp(r, -3, 3); w[mi] = r.int(1, 2); t++; } while (((w[(mi + 1) % 3] === 0 && w[(mi + 2) % 3] === 0) || gcd3(w) !== 1) && t < 100);
+    var mu = r.int(1, 3), nu = r.int(1, 3), Ap = sub(C, sc(mu, w)), A = Ap.slice(), Bp = add(C, sc(nu, w));
+    A[mi] = -Ap[mi];
+    var cr = cross(sub(Bp, A), sub(C, A)), area = sqrtFracTex(n2(cr), 4), v = r.int(0, 2);
+    var Cq = '(' + [0, 1, 2].map(function (k) { return k === mi ? '0' : AXES[k]; }).join(',') + ')';
+    var head = T('\\triangle ABC') + ' 中，' + T('A' + vt(A)) + '、' + T('B' + vt(Bp)) + '，頂點 ' + T('C' + Cq) + ' 在 ' + T(PLANES[pli]) + ' 平面上移動。';
+    var h = T('\\overline{AB}') + ' 固定，周長最小 ⟺ ' + T('\\overline{AC}+\\overline{CB}') + ' 最小。' + T('A') + '、' + T('B') + ' 的 ' + T(AXES[mi]) + ' 坐標同號（同側），把 ' + T('A') + ' 對 ' + T(PLANES[pli]) + ' 平面作對稱點 ' + T("A'" + vt(Ap)) + '，' + T('C') + ' 取 ' + T("\\overline{A'B}") + ' 與平面的交點；面積用 ' + T('\\dfrac12\\left|' + ov('AB') + '\\times' + ov('AC') + '\\right|') + '。';
+    if (v === 0) return { q: head + '當 ' + T('\\triangle ABC') + ' 的周長最小時，求 ' + T('C') + ' 的坐標與 ' + T('\\triangle ABC') + ' 的面積。', a: T('C' + vt(C)) + '，面積 ' + T(area), h: h, p: { v: 0, A: A, B: Bp, pli: pli, ans: C } };
+    if (v === 1) return { q: head + '(1) 求 ' + T('\\overline{AC}+\\overline{CB}') + ' 的最小值。(2) 此時 ' + T('C') + ' 的坐標為何？', a: '(1) ' + T(sqrtTex((mu + nu) * (mu + nu) * n2(w))) + '　(2) ' + T('C' + vt(C)), h: h, p: { v: 1, A: A, B: Bp, pli: pli, ans: C } };
+    return { q: head + '當 ' + T('\\triangle ABC') + ' 的周長最小時，求 ' + T('\\triangle ABC') + ' 的面積。', a: T(area), h: h, p: { v: 2, A: A, B: Bp, pli: pli, ans: C } };
+  };
+
+  /* ══════════ 2026-09-29 新增小節 3-5：L3-19 的類似題 ══════════ */
+  /* L3-19　坐標軸（或直線）與平面的夾角：問餘弦或正切，先求正弦再用 sin²θ+cos²θ=1 */
+  L3.linePlaneTrig = function (r) {
+    var v = r.int(0, 1), ask = r.int(0, 2), n, dd, t = 0, dv, P, Q, ax = 0;
+    var L3N = [[1, 2, 2], [2, 3, 6], [1, 4, 8], [4, 4, 7]];
+    function l3pv(lst) { var v0 = r.shuffle(r.pick(lst)); return redPos([v0[0] * r.sign(), v0[1] * r.sign(), v0[2] * r.sign()]); }
+    do {
+      n = l3pv(L3N);
+      if (v === 0) { ax = r.int(0, 2); dd = [0, 0, 0]; dd[ax] = 1; }
+      else dd = l3pv([[1, 2, 2], [2, 3, 6]]);
+      dv = dot(n, dd); P = n2(n) * n2(dd); Q = dv * dv; t++;
+    } while ((Q === 0 || Q === P) && t < 200);
+    if (Q === 0 || Q === P) { v = 0; ax = 1; n = [6, 2, 3]; dd = [0, 1, 0]; dv = 2; P = 49; Q = 4; }
+    var dE = r.int(-9, 9), P0 = rp(r, -4, 4);
+    var obj = v === 0 ? T(AXES[ax]) + ' 軸' : '直線 ' + T('L:' + lineShort(P0, dd, 't'));
+    var Ft = 'F:' + planeTex([n[0], n[1], n[2], dE]);
+    var cosT = sqrtFracTex(P - Q, P), tanT = sqrtFracTex(Q, P - Q), sinT = sqrtFracTex(Q, P);
+    var askT = ask === 0 ? T('\\cos\\theta') : (ask === 1 ? T('\\tan\\theta') : '(1) ' + T('\\cos\\theta') + '　(2) ' + T('\\tan\\theta'));
+    var a = ask === 0 ? T('\\cos\\theta=' + cosT) : (ask === 1 ? T('\\tan\\theta=' + tanT) : '(1) ' + T('\\cos\\theta=' + cosT) + '　(2) ' + T('\\tan\\theta=' + tanT));
+    var h = '先用線面夾角的公式求正弦：' + (v === 0 ? T(AXES[ax]) + ' 軸的方向 ' + T(vt(dd)) : T(vec('d') + '=' + vt(dd))) + '、' + T(vec('n') + '=' + vt(n)) + '，' + T('\\sin\\theta=\\dfrac{' + Math.abs(dv) + '}{\\sqrt{' + n2(dd) + '}\\sqrt{' + n2(n) + '}}=' + sinT) + '。' + T('\\theta') + ' 在 ' + T('0^\\circ') + ' 到 ' + T('90^\\circ') + ' 之間，' + T('\\cos\\theta=\\sqrt{1-\\sin^2\\theta}') + ' 取正的，' + T('\\tan\\theta=\\dfrac{\\sin\\theta}{\\cos\\theta}') + '。';
+    return { q: obj + (v === 0 ? '與平面 ' : ' 與平面 ') + T(Ft) + ' 的夾角為 ' + T('\\theta') + '，求 ' + askT + '。', a: a, h: h,
+             p: { v: v, ax: ax, n: n, dd: dd, ask: ask } };
+  };
   var META_L3 = [
     ['axisTriDist', '三點在坐標軸上求點到平面距離'], ['parallelLineChoice', '直線與平面沒有交點的判別'], ['lineTwoEqLen', '兩方程式的直線＋長度條件'], ['maxDistThroughPt', '過定點的平面：最大距離'], ['parPlanesScaled', '係數要先對齊的兩平行平面距離'],
     ['interLineDirComp', '兩平面交線方向指定分量'], ['uniformMotion', '等速直線運動的位置'], ['ptLineDistCross', '點到直線的距離（外積）'], ['projOnLine', '點在直線上的投影點'], ['symPtLineMin', '點對直線的對稱點與最短距離'],
-    ['axisSkewDist', '各自平行坐標軸的兩歪斜線'], ['chainLineDist', 'ax=by=cz 與平行線距離'], ['twoLineSysK', '兩交線型直線相交求參數'], ['lineCoordPlaneInt', '直線與坐標平面的交點'], ['rayMeet', '兩束光線的交點']
+    ['axisSkewDist', '各自平行坐標軸的兩歪斜線'], ['chainLineDist', 'ax=by=cz 與平行線距離'], ['twoLineSysK', '兩交線型直線相交求參數'], ['lineCoordPlaneInt', '直線與坐標平面的交點'], ['rayMeet', '兩束光線的交點'],
+    ['commonPerpPoint', '公垂線上的點'], ['equidistOnLine', '直線上到兩點等距的點'], ['perimMinArea', '周長最小的三角形面積'],
+    ['linePlaneTrig', '線面夾角的餘弦與正切']
   ];
   /* 固定題 L3-n 對應的類似題型 */
-  var L3_FIX = { 'L3-1': 'axisTriDist', 'L3-2': 'parallelLineChoice', 'L3-3': 'lineTwoEqLen', 'L3-4': 'maxDistThroughPt', 'L3-5': 'parPlanesScaled', 'L3-6': 'interLineDirComp', 'L3-7': 'uniformMotion', 'L3-8': 'ptLineDistCross', 'L3-9': 'projOnLine', 'L3-10': 'symPtLineMin', 'L3-11': 'axisSkewDist', 'L3-12': 'chainLineDist', 'L3-13': 'twoLineSysK', 'L3-14': 'lineCoordPlaneInt', 'L3-15': 'rayMeet' };
+  var L3_FIX = { 'L3-1': 'axisTriDist', 'L3-2': 'parallelLineChoice', 'L3-3': 'lineTwoEqLen', 'L3-4': 'maxDistThroughPt', 'L3-5': 'parPlanesScaled', 'L3-6': 'interLineDirComp', 'L3-7': 'uniformMotion', 'L3-8': 'ptLineDistCross', 'L3-9': 'projOnLine', 'L3-10': 'symPtLineMin', 'L3-11': 'axisSkewDist', 'L3-12': 'chainLineDist', 'L3-13': 'twoLineSysK', 'L3-14': 'lineCoordPlaneInt', 'L3-15': 'rayMeet', 'L3-16': 'commonPerpPoint', 'L3-17': 'equidistOnLine', 'L3-18': 'perimMinArea', 'L3-19': 'linePlaneTrig' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：空間向量的內積與外積（高二下 ch1）、三階行列式與體積（高二下 ch1）、三元一次聯立的消去法（國中／本冊）、平面上點到直線的距離（高一上 ch2）、根式化簡（高一上 ch1）
@@ -1754,6 +2279,19 @@
     'L3.lineCoordPlaneInt': { f: function (p) { return p.pl; }, why: '直線與 $xy$、$yz$、$zx$ 平面的交點，就是令「缺席」的那個坐標為 $0$：與 $xy$ 平面交 ⟹ $z=0$、與 $yz$ 平面交 ⟹ $x=0$、與 $zx$ 平面交 ⟹ $y=0$，剩下的二元一次聯立直接解。' },
     'L3.rayMeet': { f: function (p) { return p.v; }, why: '平行某坐標軸的直線，另外兩個坐標是固定的：把它們代進另一條直線的參數式解出 $t$，再用第三個坐標驗算才算真的相交；情境題與純幾何題只是包裝不同。' }
   };
+  /* 2026-09-29 擴充題型的對照題 */
+  CONTRAST['L1.planeTwoPtsPerp'] = { f: function (p) { return p.mode; }, why: '兩題都是「法向量要同時垂直兩個向量，取外積」：過兩點且垂直一個平面，兩個向量是 $\\overrightarrow{AB}$ 與 $\\vec n_E$；過一點且垂直兩個平面，兩個向量是 $\\vec n_1$ 與 $\\vec n_2$。先認出是哪兩個向量，再代點定常數。' };
+  CONTRAST['L1.planeSideRatio'] = { f: function (p) { return p.opp; }, why: '代入「左式減常數」得到的兩個值，同號是同側、異號是異側。異側時線段 $\\overline{AB}$ 穿過平面，交點分 $\\overline{AB}$ 的比就是兩個值的絕對值比；同側時沒有交點，這個比是兩點到平面的距離比。' };
+  CONTRAST['L1.planeLinePt'] = { f: function (p) { return p.mode; }, why: '平面的法向量要兩個不平行的方向：含一直線過一點，用直線的方向與「線上一點到那個點」的連線；含兩平行線，兩條線只提供同一個方向，第二個方向一定要取兩線上各一點的連線。' };
+  CONTRAST['L2.linePlaneParam'] = { f: function (p) { return p.mode; }, why: '直線在平面上：方向垂直法向量，而且線上的點在平面上（兩個條件）；直線與平面平行：只要方向垂直法向量，線上的點不能在平面上（所以是「不等於」）；直線與平面垂直：方向與法向量平行（成比例）。' };
+  CONTRAST['L2.planeMinDist'] = { f: function (p) { return p.mode; }, why: '平面上的點 $(x,y,z)$ 到定點的距離最小值就是定點到平面的距離：問平方和就答距離的平方，問根號就答距離本身；取到最小值的點都是定點在平面上的投影點。' };
+  CONTRAST['L3.commonPerpPoint'] = { f: function (p) { return p.v; }, why: '「與兩歪斜線都垂直且都相交」的直線只有一條，就是公垂線：方向 $\\vec d_1\\times\\vec d_2$，還要一個端點才寫得出來；問線上的點只要再用已知的那個坐標定參數。' };
+  CONTRAST['L3.perimMinArea'] = { f: function (p) { return p.v; }, why: '周長最小只看 $\\overline{AC}+\\overline{CB}$：同側兩點先把 $A$ 對平面作對稱點，最小值是 $\\overline{A\'B}$，取到最小的 $C$ 是 $\\overline{A\'B}$ 與平面的交點；問面積就再用外積。' };
+
+  /* 2026-09-29 新增小節 3-5 的對照題 */
+  CONTRAST['L1.linePlaneAngleDeg'] = { f: function (p) { return p.deg === 0 ? 0 : (p.deg === 90 ? 2 : 1); }, why: '三種情形都先算 $\\vec d\\cdot\\vec n$：等於 $0$ 是 $0^\\circ$（平行或在平面上，要代點分辨）；$\\vec d$ 與 $\\vec n$ 平行是 $90^\\circ$；其他就算出 $\\sin\\theta$，再對照 $\\frac12$、$\\frac{\\sqrt2}{2}$、$\\frac{\\sqrt3}{2}$。' };
+  CONTRAST['L2.linePlaneAngleParam'] = { f: function (p) { return p.mode; }, why: '未知數在方向向量裡，它會出現在 $\\vec d\\cdot\\vec n$ 與 $\\left|\\vec d\\right|^2$；未知數在平面的係數裡，它會出現在 $\\vec d\\cdot\\vec n$ 與 $\\left|\\vec n\\right|^2$。兩種都是把正弦公式平方，得到一元二次方程式。' };
+  CONTRAST['L3.linePlaneTrig'] = { f: function (p) { return p.ask; }, why: '公式算出來的永遠是 $\\sin\\theta$：問 $\\cos\\theta$ 就用 $\\sqrt{1-\\sin^2\\theta}$，問 $\\tan\\theta$ 就再除一次，$\\tan\\theta=\\dfrac{\\sin\\theta}{\\cos\\theta}$。' };
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

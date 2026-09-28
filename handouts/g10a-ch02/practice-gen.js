@@ -773,6 +773,230 @@
              p: { a: a, b: b, h: h, k: k, r: rad, ans: [lo, hi] } };
   };
 
+  /* ══════════ 2026-09-28 擴充（依段考卷出現頻率補題型）：L1 4 型、L2 5 型 ══════════ */
+  var QN = ['一', '二', '三', '四'];
+  function quadMiss(ms, ks) { return ms > 0 ? (ks > 0 ? 3 : 1) : (ks > 0 ? 2 : 0); }      /* 斜率、y 截距的正負 → 不經過的象限（0～3） */
+  function quadPass(miss) { var o = []; for (var i = 0; i < 4; i++) if (i !== miss) o.push(QN[i]); return '第' + o.join('、') + '象限'; }
+  function sgnTex(v, s) { return v + (s > 0 ? '\\gt0' : '\\lt0'); }
+  function sgnWord(s) { return s > 0 ? '正' : '負'; }
+  function kPlus(v) { return v === 0 ? 'k' : v + '+k'; }                                   /* 「v+k」的寫法，v=0 時只寫 k */
+
+  /* 1-9 由係數正負判斷直線經過的象限 */
+  L1.lineQuadrant = function (r) {
+    var t = r.int(0, 2), sa = r.sign(), sb = r.sign(), sc = r.sign(), ask = r.int(0, 1), drop = -1;
+    var ms = -sa * sb, ks = -sc * sb, miss = quadMiss(ms, ks), q, a, h;
+    var askTxt = ask === 0 ? '不經過第幾象限？' : '經過哪幾個象限？';
+    var slopeWhy = '$a$、$b$ ' + (sa * sb > 0 ? '同號' : '異號') + ' ⟹ 斜率 $-\\dfrac{a}{b}' + (ms > 0 ? '\\gt0' : '\\lt0') + '$';
+    var icptWhy = '$b$、$c$ ' + (sb * sc > 0 ? '同號' : '異號') + ' ⟹ $y$ 截距 $-\\dfrac{c}{b}' + (ks > 0 ? '\\gt0' : '\\lt0') + '$';
+    if (t === 0) {
+      q = '若 ' + T(sgnTex('a', sa) + ',\\ ' + sgnTex('b', sb) + ',\\ ' + sgnTex('c', sc)) + '，則直線 ' + T('ax+by+c=0') + ' ' + askTxt;
+      h = '寫成 $y=-\\dfrac{a}{b}x-\\dfrac{c}{b}$，只看正負：' + slopeWhy + '；' + icptWhy + '。再想斜率' + sgnWord(ms) + '、截距' + sgnWord(ks) + '的直線長什麼樣子。';
+    } else if (t === 1) {
+      var pr = [['ab', sa * sb], ['bc', sb * sc], ['ac', sa * sc]];
+      drop = r.int(0, 2);
+      var use = pr.filter(function (x, i) { return i !== drop; });
+      q = '若 ' + T(sgnTex(use[0][0], use[0][1]) + ',\\ ' + sgnTex(use[1][0], use[1][1])) + '，則直線 ' + T('ax+by+c=0') + ' ' + askTxt;
+      var miss2 = drop === 0 ? '題目沒給 $ab$：$(bc)(ac)=c^2\\cdot ab$，所以 $ab$ 與 $(bc)(ac)$ 同號，$ab' + (sa * sb > 0 ? '\\gt0' : '\\lt0') + '$。'
+        : drop === 1 ? '題目沒給 $bc$：$(ab)(ac)=a^2\\cdot bc$，所以 $bc$ 與 $(ab)(ac)$ 同號，$bc' + (sb * sc > 0 ? '\\gt0' : '\\lt0') + '$。' : '';
+      h = '斜率 $-\\dfrac{a}{b}$ 的正負看 $ab$，$y$ 截距 $-\\dfrac{c}{b}$ 的正負看 $bc$（分子分母同乘 $b$ 不改變正負）。' + miss2 + '所以斜率' + sgnWord(ms) + '、$y$ 截距' + sgnWord(ks) + '。';
+    } else {
+      q = '已知直線 ' + T('ax+by+c=0') + '（' + T('a,b,c') + ' 都不是 ' + T('0') + '）不經過第' + QN[miss] + '象限，且 ' + T(sgnTex('b', sb)) + '，判斷 ' + T('a') + '、' + T('c') + ' 的正負。';
+      h = '不經過第' + QN[miss] + '象限的斜直線：斜率' + sgnWord(ms) + '、$y$ 截距' + sgnWord(ks) + '（畫草圖確認）。斜率 $-\\dfrac{a}{b}$、$y$ 截距 $-\\dfrac{c}{b}$，而 ' + T(sgnTex('b', sb)) + '，反推 $a$、$c$ 的正負。';
+    }
+    a = t === 2 ? T(sgnTex('a', sa) + ',\\ ' + sgnTex('c', sc)) : '經過' + quadPass(miss) + '，不經過第' + QN[miss] + '象限';
+    return { q: q, a: a, h: h, p: { t: t, sa: sa, sb: sb, sc: sc, ask: ask, drop: drop, miss: miss, ans: t === 2 ? [sa, sc] : miss } };
+  };
+
+  /* 2-7 直線對兩軸、原點、y=x 的對稱直線 */
+  L1.symLineEq = function (r) {
+    var t = r.int(0, 3), a, b, c;
+    do { a = r.nz(-5, 5); b = r.nz(-5, 5); c = r.nz(-9, 9); } while (gcd3(a, b, c) !== 1 || (t === 3 && a === b));
+    var n0 = normLine(a, b, c); a = n0[0]; b = n0[1]; c = n0[2];
+    var img = [[a, -b, c], [-a, b, c], [-a, -b, c], [b, a, c]][t], L = normLine(img[0], img[1], img[2]);
+    var names = ['$x$ 軸', '$y$ 軸', '原點', '直線 $y=x$'];
+    var how = ['對 $x$ 軸對稱：點 $(x,y)$ 變成 $(x,-y)$，所以把方程式裡的 $y$ 換成 $-y$', '對 $y$ 軸對稱：點 $(x,y)$ 變成 $(-x,y)$，所以把方程式裡的 $x$ 換成 $-x$',
+      '對原點對稱：點 $(x,y)$ 變成 $(-x,-y)$，所以 $x$、$y$ 都換成相反數', '對 $y=x$ 對稱：點 $(x,y)$ 變成 $(y,x)$，所以把方程式裡的 $x$、$y$ 互換'][t];
+    var sub = [lhsTex(a, 0, 0) + term(-b, 'y', false), term(-a, 'x', true) + term(b, 'y', false), term(-a, 'x', true) + term(-b, 'y', false), term(b, 'x', true) + term(a, 'y', false)][t] + term(c, '', false) + '=0';
+    return { q: '求直線 ' + T('L:' + lineTex(a, b, c)) + ' 對' + (t < 2 ? ' ' : '') + names[t] + (t === 2 ? '' : ' ') + '的對稱直線方程式。',
+             a: T(lineTex(L[0], L[1], L[2])),
+             h: how + '：得 $' + sub + '$，最後整理成首項係數為正。也可以在 $L$ 上取兩點，各自求對稱點再連線驗算。',
+             p: { t: t, a: a, b: b, c: c, ans: L } };
+  };
+  function lhsTex(A, B, C) { var s = term(A, 'x', true); s += term(B, 'y', s === ''); s += term(C, '', s === ''); return s === '' ? '0' : s; }
+
+  /* 3-2 兩點在直線的同側或異側；直線與線段相交 */
+  L1.sameSide = function (r) {
+    var t = r.int(0, 2), a, b, A, B, vA, vB;
+    do { a = r.int(-4, 4); b = r.int(-4, 4); } while ((a === 0 && b === 0) || gcd(a, b) !== 1);
+    if (a < 0 || (a === 0 && b < 0)) { a = -a; b = -b; }
+    do { A = [r.int(-5, 5), r.int(-5, 5)]; B = [r.int(-5, 5), r.int(-5, 5)]; vA = a * A[0] + b * A[1]; vB = a * B[0] + b * B[1]; } while (vA === vB);
+    var lhs = term(a, 'x', true) + term(b, 'y', false), pts = T('A' + ptTex(A[0], A[1])) + '、' + T('B' + ptTex(B[0], B[1]));
+    if (t === 0) {
+      var c; do { c = r.int(-9, 9); } while (vA + c === 0 || vB + c === 0);
+      var fA = vA + c, fB = vB + c, same = fA * fB > 0, Ln = normLine(a, b, c);
+      return { q: '判斷 ' + pts + ' 兩點在直線 ' + T('L:' + lineTex(a, b, c)) + ' 的同側還是異側。',
+               a: (same ? '同側' : '異側') + '（代入值 ' + T(String(fA)) + ' 與 ' + T(String(fB)) + (same ? ' 同號' : ' 異號') + '）',
+               h: '把兩點分別代入 $' + lhsTex(Ln[0], Ln[1], Ln[2]) + '$：$A$ 得 $' + hsub(Ln[0], Ln[1], Ln[2], A[0], A[1]) + '$、$B$ 得 $' + hsub(Ln[0], Ln[1], Ln[2], B[0], B[1]) + '$。兩個值同號在同側、異號在異側。',
+               p: { t: 0, a: a, b: b, c: c, A: A, B: B, ans: same ? 1 : 0 } };
+    }
+    var lo = -Math.max(vA, vB), hi = -Math.min(vA, vB);
+    var sub = '$A$ 代入 $' + lhs + '+k$ 得 $' + kPlus(vA) + '$，$B$ 代入得 $' + kPlus(vB) + '$';
+    if (t === 1) {
+      return { q: '若直線 ' + T(lhs + '+k=0') + ' 與線段 ' + T('\\overline{AB}') + ' 相交（含端點），其中 ' + pts + '，求 ' + T('k') + ' 的範圍。',
+               a: T(lo + '\\le k\\le ' + hi),
+               h: '直線與線段相交（含端點）⟺ 兩端點的代入值異號、或其中一個是 $0$。' + sub + '，所以 $\\left(' + kPlus(vA) + '\\right)\\left(' + kPlus(vB) + '\\right)\\le0$，$-k$ 要夾在 $' + vA + '$ 與 $' + vB + '$ 之間。',
+               p: { t: 1, a: a, b: b, A: A, B: B, ans: [lo, hi] } };
+    }
+    return { q: '若 ' + pts + ' 兩點在直線 ' + T(lhs + '+k=0') + ' 的同側（兩點都不在直線上），求 ' + T('k') + ' 的範圍。',
+             a: T('k\\lt ' + lo + '\\ \\text{或}\\ k\\gt ' + hi),
+             h: '同側 ⟺ 兩點的代入值同號。' + sub + '，所以 $\\left(' + kPlus(vA) + '\\right)\\left(' + kPlus(vB) + '\\right)\\gt0$：$-k$ 要在 $' + vA + '$ 與 $' + vB + '$ 這兩個數的外面（比兩個都大或比兩個都小）。',
+             p: { t: 2, a: a, b: b, A: A, B: B, ans: [lo, hi] } };
+  };
+
+  /* 4-5 直徑兩端點、與軸相切、圓心與圓上一點 → 圓方程式 */
+  L1.circDiam = function (r) {
+    var t = r.int(0, 3), h = r.int(-5, 5), k = r.int(-5, 5), r2, q, hh, pp;
+    if (t === 0) {
+      var u, v; do { u = r.int(-4, 4); v = r.int(-4, 4); } while (u === 0 && v === 0);
+      var A = [h - u, k - v], B = [h + u, k + v]; r2 = u * u + v * v;
+      q = '求以 ' + T('A' + ptTex(A[0], A[1])) + '、' + T('B' + ptTex(B[0], B[1])) + ' 為直徑兩端點的圓方程式（標準式）。';
+      hh = '直徑的中點是圓心：$\\left(\\dfrac{' + hpz(A[0]) + '+' + hpz(B[0]) + '}{2},\\ \\dfrac{' + hpz(A[1]) + '+' + hpz(B[1]) + '}{2}\\right)$；半徑是直徑的一半，$r^2=\\dfrac{\\overline{AB}^2}{4}$，而 $\\overline{AB}^2=\\left(' + hdif(B[0], A[0]) + '\\right)^2+\\left(' + hdif(B[1], A[1]) + '\\right)^2$。';
+      pp = { t: 0, A: A, B: B };
+    } else if (t === 1 || t === 2) {
+      if (t === 1 && k === 0) k = r.nz(-5, 5);
+      if (t === 2 && h === 0) h = r.nz(-5, 5);
+      r2 = t === 1 ? k * k : h * h;
+      q = '求圓心為 ' + T(ptTex(h, k)) + ' 且與 ' + (t === 1 ? '$x$' : '$y$') + ' 軸相切的圓方程式（標準式）。';
+      hh = '與 ' + (t === 1 ? '$x$' : '$y$') + ' 軸相切 ⟹ 半徑＝圓心到 ' + (t === 1 ? '$x$' : '$y$') + ' 軸的距離＝圓心' + (t === 1 ? '縱' : '橫') + '坐標的絕對值，這題 $r=\\left|' + (t === 1 ? k : h) + '\\right|$。注意不是看另一個坐標。';
+      pp = { t: t };
+    } else {
+      var dx, dy; do { dx = r.int(-6, 6); dy = r.int(-6, 6); } while (dx === 0 && dy === 0);
+      var P = [h + dx, k + dy]; r2 = dx * dx + dy * dy;
+      q = '求圓心為 ' + T('C' + ptTex(h, k)) + ' 且通過點 ' + T('P' + ptTex(P[0], P[1])) + ' 的圓方程式（標準式）。';
+      hh = '半徑就是 $\\overline{CP}$：$r^2=\\left(' + hdif(P[0], h) + '\\right)^2+\\left(' + hdif(P[1], k) + '\\right)^2$，標準式右邊直接放 $r^2$，不必開根號。';
+      pp = { t: 3, P: P };
+    }
+    pp.h = h; pp.k = k; pp.ans = [h, k, r2];
+    return { q: q, a: T(stdTex(h, k, r2)), h: hh, p: pp };
+  };
+
+  /* L2 2-1　過定點的直線與線段相交：斜率範圍（線段在定點的同一側） */
+  L2.slopeRangeSeg = function (r) {
+    var px = r.int(-4, 4), py = r.int(-4, 4), s = r.sign(), t = r.int(0, 1), A, B, mA, mB;
+    do {
+      A = [px + s * r.int(1, 6), py + r.int(-6, 6)]; B = [px + s * r.int(1, 6), py + r.int(-6, 6)];
+      mA = F(A[1] - py, A[0] - px); mB = F(B[1] - py, B[0] - px);
+    } while (Fr.eq(mA, mB));
+    var lo = Fr.lt(mA, mB) ? mA : mB, hi = Fr.lt(mA, mB) ? mB : mA;
+    var pts = T('A' + ptTex(A[0], A[1])) + '、' + T('B' + ptTex(B[0], B[1]));
+    var fam = 'mx-y' + term(-px, 'm', false) + term(py, '', false) + '=0';
+    var q = t === 0 ? '已知 ' + pts + '。若過點 ' + T('P' + ptTex(px, py)) + ' 且斜率為 ' + T('m') + ' 的直線與線段 ' + T('\\overline{AB}') + ' 相交（含端點），求 ' + T('m') + ' 的範圍。'
+      : '已知 ' + pts + '。若直線 ' + T('L:' + fam) + ' 與線段 ' + T('\\overline{AB}') + ' 相交（含端點），求 ' + T('m') + ' 的範圍。';
+    var pre = t === 1 ? '先找定點：$L$ 寫成 $m\\left(' + hmn('x', px) + '\\right)-\\left(' + hmn('y', py) + '\\right)=0$，不管 $m$ 是多少都過 $P' + ptTex(px, py) + '$。' : '';
+    return { q: q, a: T(Fr.tex(lo) + '\\le m\\le ' + Fr.tex(hi)),
+             h: pre + '$A$、$B$ 都在 $P$ 的' + (s > 0 ? '右' : '左') + '邊，過 $P$ 的直線從 $PA$ 轉到 $PB$ 不會經過鉛直的位置，所以 $m$ 夾在 $m_{PA}=\\dfrac{' + hdif(A[1], py) + '}{' + hdif(A[0], px) + '}$ 與 $m_{PB}=\\dfrac{' + hdif(B[1], py) + '}{' + hdif(B[0], px) + '}$ 之間（含端點）。',
+             p: { t: t, P: [px, py], A: A, B: B, ans: [lo.n, lo.d, hi.n, hi.d] } };
+  };
+
+  /* L2 2-1　與兩軸圍成已知面積的直線 */
+  L2.interceptArea = function (r) {
+    var t = r.int(0, 1);
+    if (t === 0) {
+      var n = r.nz(-4, 4), d = r.pick([1, 1, 2, 3]), b0 = r.int(1, 8);
+      while (gcd(n, d) !== 1) n = r.nz(-4, 4);
+      var S = F(b0 * b0 * d, 2 * Math.abs(n)), m = F(n, d);
+      var l1 = normLine(n, -d, d * b0), l2 = normLine(n, -d, -d * b0), b2 = Fr.mul(F(2 * Math.abs(n), d), S);
+      return { q: '求斜率為 ' + T(Fr.tex(m)) + '，且與兩坐標軸圍成的三角形面積為 ' + T(Fr.tex(S)) + ' 的直線方程式（兩條都要）。',
+               a: T(lineTex(l1[0], l1[1], l1[2])) + ' 與 ' + T(lineTex(l2[0], l2[1], l2[2])),
+               h: '設 $y=' + Fr.tex(m, true) + 'x+b$：$y$ 截距 $b$，$x$ 截距 $' + Fr.tex(F(-d, n), true) + 'b$。面積 $=\\dfrac12|b|\\cdot\\left|' + Fr.tex(F(-d, n), true) + 'b\\right|=' + Fr.tex(S, true) + '$，得 $b^2=' + Fr.tex(b2, true) + '$，$b$ 有正負兩個值。',
+               p: { t: 0, n: n, d: d, S: [S.n, S.d], ans: [l1, l2] } };
+    }
+    var p, q2; do { p = r.int(1, 9); q2 = r.int(1, 9); } while (p === q2);
+    var s = p + q2, l3 = normLine(q2, p, -p * q2), l4 = normLine(p, q2, -p * q2), SS = F(p * q2, 2);
+    return { q: '一直線的 ' + T('x') + ' 截距與 ' + T('y') + ' 截距都是正數，兩截距的和為 ' + T(String(s)) + '，且與兩坐標軸圍成的三角形面積為 ' + T(Fr.tex(SS)) + '，求此直線的方程式（有兩解）。',
+             a: T(lineTex(l3[0], l3[1], l3[2])) + ' 或 ' + T(lineTex(l4[0], l4[1], l4[2])),
+             h: '設 $x$ 截距 $a$、$y$ 截距 $b$（都 $\\gt0$）：$a+b=' + s + '$，$\\dfrac{ab}{2}=' + Fr.tex(SS, true) + '$ 即 $ab=' + (p * q2) + '$。$a$、$b$ 是 $t^2-' + s + 't+' + (p * q2) + '=0$ 的兩根（十字交乘），兩種排法各給一條截距式 $\\dfrac{x}{a}+\\dfrac{y}{b}=1$。',
+             p: { t: 1, s: s, S: [SS.n, SS.d], ans: [l3, l4] } };
+  };
+
+  /* L2 2-2　三角形的外心與垂心 */
+  L2.triCenters = function (r) {
+    var h = r.int(-3, 3), k = r.int(-3, 3), sc = r.pick([1, 1, 2]), t = r.int(0, 1), offs, ok;
+    var R5 = [[3, 4], [4, 3], [-3, 4], [-4, 3], [3, -4], [4, -3], [-3, -4], [-4, -3], [5, 0], [-5, 0], [0, 5], [0, -5]];
+    do {
+      offs = r.shuffle(R5).slice(0, 3); ok = true;
+      for (var i = 0; i < 3; i++) for (var j = i + 1; j < 3; j++) if (offs[i][0] === -offs[j][0] && offs[i][1] === -offs[j][1]) ok = false;   /* 對徑 ⟹ 直角三角形，不出 */
+    } while (!ok);
+    var P = offs.map(function (o) { return [h + o[0] * sc, k + o[1] * sc]; }), A = P[0], B = P[1], C = P[2];
+    var H = [A[0] + B[0] + C[0] - 2 * h, A[1] + B[1] + C[1] - 2 * k];
+    var tri = T('A' + ptTex(A[0], A[1])) + '、' + T('B' + ptTex(B[0], B[1])) + '、' + T('C' + ptTex(C[0], C[1]));
+    function slopeT(U, V) { return V[0] === U[0] ? '不存在（鉛直）' : '$' + Fr.tex(F(V[1] - U[1], V[0] - U[0]), true) + '$'; }
+    if (t === 0) {
+      return { q: '已知 ' + tri + '，求 ' + T('\\triangle ABC') + ' 的外心坐標。',
+               a: T(ptTex(h, k)),
+               h: '外心到三頂點等距，是兩邊中垂線的交點。$\\overline{AB}$ 中點 $\\left(\\dfrac{' + hpz(A[0]) + '+' + hpz(B[0]) + '}{2},\\ \\dfrac{' + hpz(A[1]) + '+' + hpz(B[1]) + '}{2}\\right)$、斜率 ' + slopeT(A, B) + '；$\\overline{BC}$ 中點 $\\left(\\dfrac{' + hpz(B[0]) + '+' + hpz(C[0]) + '}{2},\\ \\dfrac{' + hpz(B[1]) + '+' + hpz(C[1]) + '}{2}\\right)$、斜率 ' + slopeT(B, C) + '。寫出兩條中垂線再聯立。',
+               p: { t: 0, P: P, ans: [h, k] } };
+    }
+    return { q: '已知 ' + tri + '，求 ' + T('\\triangle ABC') + ' 的垂心坐標。',
+             a: T(ptTex(H[0], H[1])),
+             h: '垂心是兩條高的交點。過 $A$ 的高垂直 $\\overline{BC}$（$\\overline{BC}$ 斜率 ' + slopeT(B, C) + '），過 $B$ 的高垂直 $\\overline{CA}$（$\\overline{CA}$ 斜率 ' + slopeT(C, A) + '），各用點斜式寫出來再聯立；第三條高可以拿來驗算。',
+             p: { t: 1, P: P, ans: H } };
+  };
+
+  /* L2 2-4　兩圓的位置關係（延伸）：判斷、外切內切求半徑、公弦 */
+  L2.twoCircPos = function (r) {
+    var t = r.int(0, 2), h1 = r.int(-4, 4), k1 = r.int(-4, 4);
+    var off = r.pick([[3, 4], [4, 3], [-3, 4], [4, -3], [-4, -3], [0, 5], [5, 0], [6, 8], [-8, 6], [5, 12], [0, 3], [4, 0], [-6, 0], [0, -4]]);
+    var D = Math.round(Math.sqrt(off[0] * off[0] + off[1] * off[1])), h2 = h1 + off[0], k2 = k1 + off[1], r1, r2, rel;
+    var names = ['外離', '外切', '相交於兩點', '內切', '內含'];
+    if (t === 0) {
+      rel = r.int(0, 4);
+      if (rel === 0) { r1 = r.int(1, D - 2); r2 = r.int(1, D - r1 - 1); }
+      else if (rel === 1) { r1 = r.int(1, D - 1); r2 = D - r1; }
+      else if (rel === 2) { r1 = r.int(1, D + 2); r2 = r.int(Math.abs(D - r1) + 1, D + r1 - 1); }
+      else if (rel === 3) { r1 = r.int(1, 5); r2 = r1 + D; if (r() < 0.5) { var tt = r1; r1 = r2; r2 = tt; } }
+      else { r1 = r.int(1, 4); r2 = r1 + D + r.int(1, 4); if (r() < 0.5) { var t2 = r1; r1 = r2; r2 = t2; } }
+      var sum = r1 + r2, dif = Math.abs(r1 - r2), cmp = rel === 0 ? 'd\\gt r_1+r_2' : rel === 1 ? 'd=r_1+r_2' : rel === 2 ? '|r_1-r_2|\\lt d\\lt r_1+r_2' : rel === 3 ? 'd=|r_1-r_2|' : 'd\\lt|r_1-r_2|';
+      return { q: '判斷兩圓 ' + T('C_1:' + stdTex(h1, k1, r1 * r1)) + ' 與 ' + T('C_2:' + genTex(-2 * h2, -2 * k2, h2 * h2 + k2 * k2 - r2 * r2)) + ' 的位置關係（外離、外切、相交於兩點、內切、內含）。',
+               a: names[rel] + '（' + T('d=' + D + ',\\ r_1+r_2=' + sum + ',\\ |r_1-r_2|=' + dif) + '，' + T(cmp) + '）',
+               h: '先把 $C_2$ 配方找圓心與半徑，再算圓心距 $d=\\sqrt{\\left(' + hdif(h2, h1) + '\\right)^2+\\left(' + hdif(k2, k1) + '\\right)^2}$，拿 $d$ 和 $r_1+r_2$、$|r_1-r_2|$ 比：$d\\gt r_1+r_2$ 外離、$d=r_1+r_2$ 外切、夾在中間相交、$d=|r_1-r_2|$ 內切、$d\\lt|r_1-r_2|$ 內含。',
+               p: { t: 0, C1: [h1, k1, r1], C2: [h2, k2, r2], ans: rel } };
+    }
+    if (t === 1) {
+      var ext = r() < 0.5;
+      r1 = ext ? r.int(1, D - 1) : r.int(1, 6);
+      var ans = ext ? D - r1 : D + r1;
+      return { q: '圓 ' + T('C_1:' + genTex(-2 * h1, -2 * k1, h1 * h1 + k1 * k1 - r1 * r1)) + ' 與圓心為 ' + T(ptTex(h2, k2)) + '、半徑為 ' + T('r') + ' 的圓 ' + T('C_2') + (ext ? ' 外切' : ' 內切，且 ' + T('C_2') + ' 比 ' + T('C_1') + ' 大') + '，求 ' + T('r') + '。',
+               a: T('r=' + ans),
+               h: '先配方找 $C_1$ 的圓心 $' + ptTex(h1, k1) + '$ 與半徑，圓心距 $d=\\sqrt{\\left(' + hdif(h2, h1) + '\\right)^2+\\left(' + hdif(k2, k1) + '\\right)^2}$。' + (ext ? '外切 ⟹ $d=r_1+r$。' : '內切 ⟹ $d=|r-r_1|$，$C_2$ 較大所以 $d=r-r_1$。'),
+               p: { t: 1, ext: ext ? 1 : 0, C1: [h1, k1, r1], C2c: [h2, k2], ans: ans } };
+    }
+    r1 = r.int(1, D + 2); r2 = r.int(Math.abs(D - r1) + 1, D + r1 - 1);
+    var g1 = [-2 * h1, -2 * k1, h1 * h1 + k1 * k1 - r1 * r1], g2 = [-2 * h2, -2 * k2, h2 * h2 + k2 * k2 - r2 * r2];
+    var L = normLine(g1[0] - g2[0], g1[1] - g2[1], g1[2] - g2[2]);
+    return { q: '兩圓 ' + T('C_1:' + genTex(g1[0], g1[1], g1[2])) + ' 與 ' + T('C_2:' + genTex(g2[0], g2[1], g2[2])) + ' 相交於兩點，求公弦所在的直線方程式。',
+             a: T(lineTex(L[0], L[1], L[2])),
+             h: '兩個交點同時滿足兩個方程式，所以也滿足兩式相減：$x^2$、$y^2$ 消掉，剩下 $' + lhsTex(g1[0] - g2[0], g1[1] - g2[1], g1[2] - g2[2]) + '=0$，這條直線就是公弦所在的直線（最後約分）。',
+             p: { t: 2, C1: [h1, k1, r1], C2: [h2, k2, r2], ans: L } };
+  };
+
+  /* L2 2-5　已知斜率（或平行、垂直於某直線）的切線 */
+  L2.tangentSlope = function (r) {
+    var nv = r.pick([[3, 4], [4, 3], [3, -4], [4, -3], [5, 12], [12, 5], [5, -12], [12, -5]]), a = nv[0], b = nv[1], s = Math.round(Math.sqrt(a * a + b * b));
+    var h = r.int(-4, 4), k = r.int(-4, 4), rad = r.int(1, 4), t = r.int(0, 2), useGen = r() < 0.5;
+    var base = -(a * h + b * k), c1 = base + rad * s, c2 = base - rad * s;
+    var circ = useGen ? genTex(-2 * h, -2 * k, h * h + k * k - rad * rad) : stdTex(h, k, rad * rad), cond, c0;
+    if (t === 0) cond = '斜率為 ' + T(Fr.tex(F(-a, b))) + ' ';
+    else if (t === 1) { do { c0 = r.int(-12, 12); } while (c0 === c1 || c0 === c2); cond = '與直線 ' + T(lineTex(a, b, c0)) + ' 平行'; }
+    else { c0 = r.int(-9, 9); cond = '與直線 ' + T(lineTex(b, -a, c0)) + ' 垂直'; }
+    var setup = t === 0 ? '斜率 $' + Fr.tex(F(-a, b), true) + '$ ⟹ 設切線 $' + term(a, 'x', true) + term(b, 'y', false) + '+c=0$'
+      : t === 1 ? '平行 ⟹ $x,y$ 的係數照抄，設切線 $' + term(a, 'x', true) + term(b, 'y', false) + '+c=0$' : '垂直 ⟹ 係數對調、一個變號，設切線 $' + term(a, 'x', true) + term(b, 'y', false) + '+c=0$';
+    return { q: '求' + cond + '且與圓 ' + T(circ) + ' 相切的直線方程式（兩條都要）。',
+             a: T(lineTex(a, b, c1)) + ' 與 ' + T(lineTex(a, b, c2)),
+             h: setup + '。相切 ⟺ 圓心 $' + ptTex(h, k) + '$ 到它的距離等於 $r=' + rad + '$：$\\dfrac{\\left|' + hsub(a, b, 0, h, k) + '+c\\right|}{\\sqrt{' + a + '^2+' + hpz(b) + '^2}}=' + rad + '$，絕對值拆成兩種情形，所以有兩條。',
+             p: { t: t, a: a, b: b, h: h, k: k, r: rad, ans: [c1, c2] } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -1049,21 +1273,96 @@
       '相減：$' + pc2 + '-' + (p.r * p.r) + '=' + s + '$，' + (qq.r === 1 ? '剛好是完全平方數' : '把平方因數 $' + (qq.c * qq.c) + '$ 提出根號') + '，所以 $\\overline{PT}=' + sqrtTex(s) + '$。'];
   };
 
+  /* ── 2026-09-28 擴充：新 L1 四型的第一層提示與解題步驟 ── */
+  L1_H1.lineQuadrant = '這是「由係數正負判斷象限」：把直線寫成 $y=-\\dfrac{a}{b}x-\\dfrac{c}{b}$，只看斜率與 $y$ 截距的正負。';
+  L1_H1.symLineEq = '這是「對稱直線」：對哪一條軸或哪一點對稱，就把方程式裡的 $x$、$y$ 做對應的代換（變號或互換）。';
+  L1_H1.sameSide = '這是「同側、異側」：把點代進直線的左式看正負，兩個代入值同號在同側、異號在異側。';
+  L1_H1.circDiam = '這是「求圓方程式」：標準式只要圓心與半徑，先想題目給的條件怎麼換成圓心和半徑。';
+
+  L1_SOL.lineQuadrant = function (p) {
+    var ms = -p.sa * p.sb, ks = -p.sc * p.sb, st = ['$b\\ne0$，把 $ax+by+c=0$ 解出 $y$：$y=-\\dfrac{a}{b}x-\\dfrac{c}{b}$，斜率 $-\\dfrac{a}{b}$，$y$ 截距 $-\\dfrac{c}{b}$。'];
+    var shape = '斜率' + sgnWord(ms) + '（往' + (ms > 0 ? '右上' : '右下') + '）、$y$ 截距' + sgnWord(ks) + '（交 $y$ 軸的' + (ks > 0 ? '正' : '負') + '半軸）的直線經過' + quadPass(p.miss) + '，不經過第' + QN[p.miss] + '象限。';
+    if (p.t === 0) {
+      st.push('$a$、$b$ ' + (p.sa * p.sb > 0 ? '同號' : '異號') + '，所以 $-\\dfrac{a}{b}' + (ms > 0 ? '\\gt0' : '\\lt0') + '$；$b$、$c$ ' + (p.sb * p.sc > 0 ? '同號' : '異號') + '，所以 $-\\dfrac{c}{b}' + (ks > 0 ? '\\gt0' : '\\lt0') + '$。');
+      st.push(shape);
+    } else if (p.t === 1) {
+      var ab = p.sa * p.sb, bc = p.sb * p.sc;
+      st.push('$-\\dfrac{a}{b}$ 與 $-ab$ 同號、$-\\dfrac{c}{b}$ 與 $-bc$ 同號（分子分母同乘 $b$，$b^2\\gt0$ 不改變正負）。' +
+        (p.drop === 0 ? '題目沒給 $ab$：$(bc)(ac)=c^2\\cdot ab$，所以 $ab' + (ab > 0 ? '\\gt0' : '\\lt0') + '$。' : p.drop === 1 ? '題目沒給 $bc$：$(ab)(ac)=a^2\\cdot bc$，所以 $bc' + (bc > 0 ? '\\gt0' : '\\lt0') + '$。' : ''));
+      st.push('$ab' + (ab > 0 ? '\\gt0' : '\\lt0') + '$ ⟹ 斜率' + sgnWord(ms) + '；$bc' + (bc > 0 ? '\\gt0' : '\\lt0') + '$ ⟹ $y$ 截距' + sgnWord(ks) + '。');
+      st.push(shape);
+    } else {
+      st.push('斜直線一定剛好經過三個象限。不經過第' + QN[p.miss] + '象限，畫草圖可知斜率' + sgnWord(ms) + '、$y$ 截距' + sgnWord(ks) + '。');
+      st.push('$-\\dfrac{a}{b}$ 是' + sgnWord(ms) + '的且 $b' + (p.sb > 0 ? '\\gt0' : '\\lt0') + '$ ⟹ $a' + (p.sa > 0 ? '\\gt0' : '\\lt0') + '$；$-\\dfrac{c}{b}$ 是' + sgnWord(ks) + '的 ⟹ $c' + (p.sc > 0 ? '\\gt0' : '\\lt0') + '$。');
+    }
+    return st;
+  };
+
+  L1_SOL.symLineEq = function (p) {
+    var names = ['$x$ 軸', '$y$ 軸', '原點', '直線 $y=x$'];
+    var rule = ['點 $(x,y)$ 對 $x$ 軸的對稱點是 $(x,-y)$，所以把 $L$ 裡的 $y$ 換成 $-y$。', '點 $(x,y)$ 對 $y$ 軸的對稱點是 $(-x,y)$，所以把 $L$ 裡的 $x$ 換成 $-x$。',
+      '點 $(x,y)$ 對原點的對稱點是 $(-x,-y)$，所以 $x$、$y$ 都換成相反數。', '點 $(x,y)$ 對 $y=x$ 的對稱點是 $(y,x)$，所以把 $L$ 裡的 $x$、$y$ 互換。'][p.t];
+    var img = [[p.a, -p.b, p.c], [-p.a, p.b, p.c], [-p.a, -p.b, p.c], [p.b, p.a, p.c]][p.t];
+    var L = p.ans;
+    var same = img[0] === L[0] && img[1] === L[1] && img[2] === L[2];
+    return ['對' + (p.t < 2 ? ' ' : '') + names[p.t] + (p.t === 2 ? '' : ' ') + '的對稱：' + rule,
+      '代換後得 $' + lhsTex(img[0], img[1], img[2]) + '=0$。',
+      same ? '首項係數已經是正的，所以對稱直線是 $' + lineTex(L[0], L[1], L[2]) + '$。' : '兩邊同乘 $-1$（或約分）讓首項係數為正：$' + lineTex(L[0], L[1], L[2]) + '$。'];
+  };
+
+  L1_SOL.sameSide = function (p) {
+    var A = p.A, B = p.B, vA = p.a * A[0] + p.b * A[1], vB = p.a * B[0] + p.b * B[1];
+    if (p.t === 0) {
+      var fA = vA + p.c, fB = vB + p.c;
+      return ['兩點在直線的哪一側，看它們代入 $' + lhsTex(p.a, p.b, p.c) + '$ 之後的正負。',
+        '$A$：$' + subT(p.a, p.b, p.c, A[0], A[1]) + '=' + fA + '$；$B$：$' + subT(p.a, p.b, p.c, B[0], B[1]) + '=' + fB + '$。',
+        '兩個值' + (fA * fB > 0 ? '同號，所以 $A$、$B$ 在同側' : '異號，所以 $A$、$B$ 在異側') + '。'];
+    }
+    var lhs = term(p.a, 'x', true) + term(p.b, 'y', false), lo = p.ans[0], hi = p.ans[1];
+    var st = ['$A$ 代入 $' + lhs + '+k$ 得 $' + kPlus(vA) + '$，$B$ 代入得 $' + kPlus(vB) + '$。'];
+    if (p.t === 1) {
+      st.push('直線與線段相交（含端點）⟺ 兩個代入值異號或其中一個是 $0$：$\\left(' + kPlus(vA) + '\\right)\\left(' + kPlus(vB) + '\\right)\\le0$。');
+      st.push('兩個因式在 $k=' + (-vA) + '$ 與 $k=' + (-vB) + '$ 變號，相乘 $\\le0$ 要 $k$ 夾在這兩個數之間：$' + lo + '\\le k\\le ' + hi + '$。');
+    } else {
+      st.push('同側（不在線上）⟺ 兩個代入值同號：$\\left(' + kPlus(vA) + '\\right)\\left(' + kPlus(vB) + '\\right)\\gt0$。');
+      st.push('兩個因式在 $k=' + (-vA) + '$ 與 $k=' + (-vB) + '$ 變號，相乘 $\\gt0$ 要 $k$ 在這兩個數的外面：$k\\lt ' + lo + '$ 或 $k\\gt ' + hi + '$。');
+    }
+    return st;
+  };
+
+  L1_SOL.circDiam = function (p) {
+    var h = p.h, k = p.k, r2 = p.ans[2], st;
+    if (p.t === 0) {
+      var A = p.A, B = p.B;
+      st = ['直徑的中點就是圓心：$\\left(\\dfrac{' + hpz(A[0]) + '+' + hpz(B[0]) + '}{2},\\ \\dfrac{' + hpz(A[1]) + '+' + hpz(B[1]) + '}{2}\\right)=' + ptTex(h, k) + '$。',
+        '半徑是直徑的一半：$\\overline{AB}^2=\\left(' + hdif(B[0], A[0]) + '\\right)^2+\\left(' + hdif(B[1], A[1]) + '\\right)^2=' + (4 * r2) + '$，所以 $r^2=\\dfrac{' + (4 * r2) + '}{4}=' + r2 + '$。'];
+    } else if (p.t === 1 || p.t === 2) {
+      st = ['與 ' + (p.t === 1 ? '$x$' : '$y$') + ' 軸相切，半徑就是圓心到 ' + (p.t === 1 ? '$x$' : '$y$') + ' 軸的距離，也就是圓心' + (p.t === 1 ? '縱' : '橫') + '坐標的絕對值。',
+        '圓心 $' + ptTex(h, k) + '$，所以 $r=\\left|' + (p.t === 1 ? k : h) + '\\right|$，$r^2=' + r2 + '$。'];
+    } else {
+      var P = p.P;
+      st = ['圓心到圓上任一點的距離都是半徑，所以 $r=\\overline{CP}$。',
+        '$r^2=\\left(' + hdif(P[0], h) + '\\right)^2+\\left(' + hdif(P[1], k) + '\\right)^2=' + r2 + '$。'];
+    }
+    st.push('代入標準式 $(x-h)^2+(y-k)^2=r^2$：$' + stdTex(h, k, r2) + '$。');
+    return st;
+  };
+
   var META_L1 = [
       ['slope2pt', '§1 兩點求斜率'], ['dist2pt', '§1 兩點距離'], ['midDiv', '§1 中點與內分點'], ['lineEq', '§1 點斜式→一般式'],
-      ['line2pt', '§1 兩點式'], ['interceptForm', '§1 截距'], ['parPerp', '§1 平行線與垂直線'], ['intersect', '§1 兩直線交點'],
+      ['line2pt', '§1 兩點式'], ['interceptForm', '§1 截距'], ['parPerp', '§1 平行線與垂直線'], ['intersect', '§1 兩直線交點'], ['lineQuadrant', '§1 由係數正負判斷象限'],
       ['ptLineDist', '§2 點到直線的距離'], ['parDist', '§2 兩平行線的距離'], ['triArea', '§2 三角形面積'], ['symAxis', '§2 對稱點（軸、原點、y=x）'],
-      ['translate', '§2 平移直線'], ['perpBisector', '§2 中垂線'],
-      ['halfPlane', '§3 半平面判定'],
-      ['circStd', '§4 圓心半徑→方程式'], ['circGen', '§4 一般式→圓心半徑'], ['circKind', '§4 圓、一點或無圖形'], ['ptCircle', '§4 點與圓的位置'],
+      ['translate', '§2 平移直線'], ['perpBisector', '§2 中垂線'], ['symLineEq', '§2 對稱直線（軸、原點、y=x）'],
+      ['halfPlane', '§3 半平面判定'], ['sameSide', '§3 同側異側與線段相交'],
+      ['circStd', '§4 圓心半徑→方程式'], ['circGen', '§4 一般式→圓心半徑'], ['circKind', '§4 圓、一點或無圖形'], ['ptCircle', '§4 點與圓的位置'], ['circDiam', '§4 直徑、切於軸、過一點求圓'],
       ['lineCircPos', '§5 直線與圓的位置關係'], ['chordLen', '§5 弦長'], ['tangentAtPt', '§5 過圓上一點的切線'], ['tangentLen', '§5 切線長']
   ];
   var META_L2 = [
-      ['lineFamily', '§1 直線族恆過定點'], ['threeLines', '§1 三直線圍不成三角形'], ['minArea', '§1 截距式＋算幾：最小面積'],
-      ['reflectPt', '§2 點對直線的對稱點'], ['shortestPath', '§2 反射最短路徑'], ['eqDistOnLine', '§2 直線上與兩點等距的點'],
+      ['lineFamily', '§1 直線族恆過定點'], ['threeLines', '§1 三直線圍不成三角形'], ['minArea', '§1 截距式＋算幾：最小面積'], ['slopeRangeSeg', '§1 過定點與線段相交的斜率範圍'], ['interceptArea', '§1 與兩軸圍成已知面積的直線'],
+      ['reflectPt', '§2 點對直線的對稱點'], ['shortestPath', '§2 反射最短路徑'], ['eqDistOnLine', '§2 直線上與兩點等距的點'], ['triCenters', '§2 三角形的外心與垂心'],
       ['regionArea', '§3 不等式區域面積'], ['latticeCount', '§3 格子點計數'],
-      ['circParam', '§4 含參數的圓'], ['circ3pt', '§4 過三點的圓'], ['circCenterOnLine', '§4 圓心在直線上'], ['circTangentLine', '§4 與直線相切的圓'],
-      ['tangentExt', '§5 過圓外一點的切線'], ['chordParam', '§5 弦長反求參數'], ['circMinMax', '§5 圓上動點的最遠最近'], ['circLinePosParam', '§5 相交／相切的參數範圍']
+      ['circParam', '§4 含參數的圓'], ['circ3pt', '§4 過三點的圓'], ['circCenterOnLine', '§4 圓心在直線上'], ['circTangentLine', '§4 與直線相切的圓'], ['twoCircPos', '§4 兩圓的位置關係（延伸）'],
+      ['tangentExt', '§5 過圓外一點的切線'], ['tangentSlope', '§5 已知斜率的切線'], ['chordParam', '§5 弦長反求參數'], ['circMinMax', '§5 圓上動點的最遠最近'], ['circLinePosParam', '§5 相交／相切的參數範圍']
   ];
   /* ══════════════════════════════════════════════════════════
      L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
@@ -1283,9 +1582,72 @@
       p: { P: [px, py], C: [h, k], r: rad, ans: [f.n, f.d, sq.r] } };
   };
 
-  var META_L3 = [['shiftCoincide', '平移後與自己重合'], ['parTwoPts', '兩平行線各過一點、距離已知'], ['triAreaSlopes', '兩線與 x 軸圍三角形'], ['doubleReflectCircle', '連續兩次鏡射的三點共圓'], ['maxProjDist', '投影距離最大'], ['equidistLines', '到三頂點等距的直線'], ['paramRegionArea', '含參數的區域面積'], ['quadRegionArea', '四條不等式圍區域的面積'], ['chordDistCircle', '過兩點＋弦心距求圓'], ['circumThreeLines', '三直線圍三角形的外接圓'], ['tangentAtAxisPt', '圓過原點與兩軸交點的切線'], ['tangentPointParams', '切於指定點求參數'], ['pointsAtDist', '圓上恰 n 點到直線等距'], ['halfCircleOne', '直線與半圓恰交一點'], ['chordOfContact', '切點弦長']];
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* L3-16　只給係數的正負：兩條直線各不經過哪一個象限 */
+  L3.quadrantSigns = function (r) {
+    var sa = r.sign(), sb = r.sign(), sc = r.sign(), drop = r.int(0, 2), perm, sg2;
+    var pr = [['ab', sa * sb], ['bc', sb * sc], ['ac', sa * sc]], use = pr.filter(function (x, i) { return i !== drop; });
+    do { perm = r.shuffle([0, 1, 2]); sg2 = [r.sign(), r.sign(), r.sign()]; }
+    while (perm[0] === 0 && perm[1] === 1 && perm[2] === 2 && sg2[0] === sg2[1] && sg2[1] === sg2[2]);
+    var nm = ['a', 'b', 'c'], sv = [sa, sb, sc];
+    var L2t = (sg2[0] < 0 ? '-' : '') + nm[perm[0]] + 'x' + (sg2[1] < 0 ? '-' : '+') + nm[perm[1]] + 'y' + (sg2[2] < 0 ? '-' : '+') + nm[perm[2]] + '=0';
+    var A2 = sg2[0] * sv[perm[0]], B2 = sg2[1] * sv[perm[1]], C2 = sg2[2] * sv[perm[2]];
+    var m1 = quadMiss(-sa * sb, -sc * sb), m2 = quadMiss(-A2 * B2, -C2 * B2);
+    var fr2 = function (sgn, top, bot) { return (sgn < 0 ? '-' : '') + '\\dfrac{' + top + '}{' + bot + '}'; };
+    var slope2 = fr2(-sg2[0] * sg2[1], nm[perm[0]], nm[perm[1]]), icpt2 = fr2(-sg2[2] * sg2[1], nm[perm[2]], nm[perm[1]]);
+    return { q: '已知直線 ' + T('L_1:ax+by+c=0') + '、' + T('L_2:' + L2t) + '（' + T('a,b,c') + ' 都不是 ' + T('0') + '）。若 ' + T(sgnTex(use[0][0], use[0][1]) + ',\\ ' + sgnTex(use[1][0], use[1][1])) + '，則 ' + T('L_1') + ' 不經過第幾象限？' + T('L_2') + ' 不經過第幾象限？',
+             a: T('L_1') + ' 不經過第' + QN[m1] + '象限，' + T('L_2') + ' 不經過第' + QN[m2] + '象限',
+             h: '先由兩個條件定出 $a,b,c$ 的正負（可以先假設 $a\\gt0$，因為三個一起變號是同一條線）：$a' + (sa > 0 ? '\\gt0' : '\\lt0') + ',\\ b' + (sb > 0 ? '\\gt0' : '\\lt0') + ',\\ c' + (sc > 0 ? '\\gt0' : '\\lt0') + '$ 是其中一組。$L_1$ 的斜率 $-\\dfrac{a}{b}$、$y$ 截距 $-\\dfrac{c}{b}$；$L_2$ 的斜率 $' + slope2 + '$、$y$ 截距 $' + icpt2 + '$，逐一判斷正負。',
+             p: { sa: sa, sb: sb, sc: sc, drop: drop, perm: perm, sg2: sg2, ans: [m1, m2] } };
+  };
+
+  /* L3-17　過定點的直線與「跨過鉛直線」的線段相交：斜率範圍分成兩段 */
+  L3.slopeRangeCross = function (r) {
+    var t = r.int(0, 2), px = t === 1 ? 0 : r.int(-3, 3), py = r.int(-3, 3), A, B, mA, mB, ys;
+    do {
+      A = [px - r.int(1, 8), py + r.nz(-8, 8)]; B = [px + r.int(1, 8), py + r.nz(-8, 8)];
+      mA = F(A[1] - py, A[0] - px); mB = F(B[1] - py, B[0] - px);
+      ys = F(A[1] * (B[0] - px) + B[1] * (px - A[0]), B[0] - A[0]);              /* 鉛直線 x=px 與 AB 的交點縱坐標 */
+    } while (Fr.eq(ys, F(py, 1)) || Fr.eq(mA, mB));
+    if (r() < 0.5) { var tmp = A; A = B; B = tmp; tmp = mA; mA = mB; mB = tmp; }
+    var lo = Fr.lt(mA, mB) ? mA : mB, hi = Fr.lt(mA, mB) ? mB : mA;
+    var pts = T('A' + ptTex(A[0], A[1])) + '、' + T('B' + ptTex(B[0], B[1]));
+    var who = t === 1 ? '直線 ' + T('y=mx' + term(py, '', false)) + ' ' : '過點 ' + T('P' + ptTex(px, py)) + ' 且斜率為 ' + T('m') + ' 的直線';
+    var q = '已知 ' + pts + '。若' + who + '與線段 ' + T('\\overline{AB}') + (t === 2 ? ' 不相交' : ' 相交（含端點）') + '，求 ' + T('m') + ' 的範圍。';
+    var a = t === 2 ? T(Fr.tex(lo) + '\\lt m\\lt ' + Fr.tex(hi)) : T('m\\le ' + Fr.tex(lo) + '\\ \\text{或}\\ m\\ge ' + Fr.tex(hi));
+    return { q: q, a: a,
+             h: (t === 1 ? '直線恆過 $P' + ptTex(px, py) + '$。' : '') + '$A$、$B$ 一個在 $P$ 的左邊、一個在右邊，線段跨過鉛直線 $x=' + px + '$（交點縱坐標 $' + Fr.tex(ys, true) + '$）：直線從 $PA$ 轉到 $PB$ 要經過鉛直的位置，斜率會經過 $\\pm\\infty$，範圍分成兩段。$m_{PA}=\\dfrac{' + hdif(A[1], py) + '}{' + hdif(A[0], px) + '}$、$m_{PB}=\\dfrac{' + hdif(B[1], py) + '}{' + hdif(B[0], px) + '}$，相交的是「比小的更小、比大的更大」那兩段' + (t === 2 ? '，不相交就是中間那段（不含端點）' : '') + '。',
+             p: { t: t, P: [px, py], A: A, B: B, ans: [lo.n, lo.d, hi.n, hi.d] } };
+  };
+
+  /* L3-18　圓上動點 Q(a,b)：a²+b²+pa+qb+s 或 √((a−u)²+(b−v)²) 的最大最小值 ⟹ 到定點的距離 */
+  L3.circExprMax = function (r) {
+    var h = r.int(-5, 5), k = r.int(-5, 5), rad = r.int(1, 6), t = r.int(0, 1), off, D;
+    do {
+      off = r.pick([[3, 4], [4, 3], [-3, 4], [-4, 3], [3, -4], [4, -3], [-3, -4], [-4, -3], [6, 8], [-8, 6], [5, 12], [-12, 5], [0, 5], [5, 0], [0, -10], [8, -6]]);
+      D = Math.round(Math.sqrt(off[0] * off[0] + off[1] * off[1]));
+    } while (D === rad);
+    var u = h + off[0], v = k + off[1], circ = genTex(-2 * h, -2 * k, h * h + k * k - rad * rad), expr, mx, mn, c0 = 0;
+    var sq = function (w, s) { return w === 0 ? s + '^2' : '(' + s + term(-w, '', false) + ')^2'; };
+    if (t === 0) {
+      c0 = r.int(-9, 9);
+      expr = 'a^2+b^2' + term(-2 * u, 'a', false) + term(-2 * v, 'b', false) + term(u * u + v * v + c0, '', false);
+      mx = (D + rad) * (D + rad) + c0; mn = (D - rad) * (D - rad) + c0;
+    } else {
+      expr = '\\sqrt{' + sq(u, 'a') + '+' + sq(v, 'b') + '}';
+      mx = D + rad; mn = Math.abs(D - rad);
+    }
+    var R = T('R' + ptTex(u, v));
+    return { q: '已知 ' + T('Q(a,b)') + ' 為圓 ' + T('C:' + circ) + ' 上的動點，求 ' + T(expr) + ' 的最大值與最小值。',
+             a: '最大值 ' + T(String(mx)) + '，最小值 ' + T(String(mn)),
+             h: (t === 0 ? '配方：$' + expr + '=' + sq(u, 'a') + '+' + sq(v, 'b') + term(c0, '', false) + '$，就是 $Q$ 到 ' + R + ' 距離的平方' + (c0 === 0 ? '' : '再加 $' + c0 + '$') + '。' : '根號裡是 $Q$ 到 ' + R + ' 距離的平方，所以就是求 $\\overline{QR}$。') +
+               '圓配方得圓心 $' + ptTex(h, k) + '$、半徑 $' + rad + '$；$R$ 到圓心的距離是 $\\sqrt{' + hpz(off[0]) + '^2+' + hpz(off[1]) + '^2}$，$R$ 在圓' + (D > rad ? '外' : '內') + '，$\\overline{QR}$ 的範圍是 $\\left|d-r\\right|$ 到 $d+r$。',
+             p: { t: t, C: [h, k, rad], R: [u, v], c0: c0, ans: [mx, mn] } };
+  };
+
+  var META_L3 = [['shiftCoincide', '平移後與自己重合'], ['parTwoPts', '兩平行線各過一點、距離已知'], ['triAreaSlopes', '兩線與 x 軸圍三角形'], ['doubleReflectCircle', '連續兩次鏡射的三點共圓'], ['maxProjDist', '投影距離最大'], ['equidistLines', '到三頂點等距的直線'], ['paramRegionArea', '含參數的區域面積'], ['quadRegionArea', '四條不等式圍區域的面積'], ['chordDistCircle', '過兩點＋弦心距求圓'], ['circumThreeLines', '三直線圍三角形的外接圓'], ['tangentAtAxisPt', '圓過原點與兩軸交點的切線'], ['tangentPointParams', '切於指定點求參數'], ['pointsAtDist', '圓上恰 n 點到直線等距'], ['halfCircleOne', '直線與半圓恰交一點'], ['chordOfContact', '切點弦長'], ['quadrantSigns', '係數正負與兩直線的象限'], ['slopeRangeCross', '線段跨過鉛直線的斜率範圍'], ['circExprMax', '圓上動點代數式的最值']];
   /* 固定題 L3-n 對應的類似題型 */
-  var L3_FIX = { 'L3-1': 'shiftCoincide', 'L3-2': 'parTwoPts', 'L3-3': 'triAreaSlopes', 'L3-4': 'doubleReflectCircle', 'L3-5': 'maxProjDist', 'L3-6': 'equidistLines', 'L3-7': 'paramRegionArea', 'L3-8': 'quadRegionArea', 'L3-9': 'chordDistCircle', 'L3-10': 'circumThreeLines', 'L3-11': 'tangentAtAxisPt', 'L3-12': 'tangentPointParams', 'L3-13': 'pointsAtDist', 'L3-14': 'halfCircleOne', 'L3-15': 'chordOfContact' };
+  var L3_FIX = { 'L3-1': 'shiftCoincide', 'L3-2': 'parTwoPts', 'L3-3': 'triAreaSlopes', 'L3-4': 'doubleReflectCircle', 'L3-5': 'maxProjDist', 'L3-6': 'equidistLines', 'L3-7': 'paramRegionArea', 'L3-8': 'quadRegionArea', 'L3-9': 'chordDistCircle', 'L3-10': 'circumThreeLines', 'L3-11': 'tangentAtAxisPt', 'L3-12': 'tangentPointParams', 'L3-13': 'pointsAtDist', 'L3-14': 'halfCircleOne', 'L3-15': 'chordOfContact', 'L3-16': 'quadrantSigns', 'L3-17': 'slopeRangeCross', 'L3-18': 'circExprMax' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：二元一次聯立、畢氏定理、配方（國中）；絕對值方程式、分母有理化（高一上 ch1）
@@ -1362,6 +1724,15 @@
     'L3.pointsAtDist': { f: function (p) { return p.cnt; }, why: '半徑由小變大，圓先碰到近的那條平行線、再碰到遠的那條：交點個數依序是 $0,1,2,3,4$，題目問幾個點就停在哪一段。' },
     'L3.halfCircleOne': { f: function (p) { return p.b < 0; }, why: '斜率正的直線過右端點時另一交點在下半圓（算一點）、過左端點時在上半圓（變兩點）；斜率負的剛好相反。端點一定要單獨驗。' }
   };
+  /* 2026-09-28 擴充題型的對照題 */
+  CONTRAST['L1.lineQuadrant'] = { f: function (p) { return p.miss; }, keep: ['t'], why: '斜率的正負決定直線往右上還是右下，$y$ 截距的正負決定它交在 $y$ 軸的上半還是下半；兩個正負一組合，不經過的象限就確定了。' };
+  CONTRAST['L1.sameSide'] = { f: function (p) { return p.t; }, why: '同側看兩個代入值同號、異側看異號；「與線段相交（含端點）」是異號或有一個是 $0$，所以 $-k$ 夾在兩個代入值中間、含端點；「同側」則是 $-k$ 在兩個值外面、不含端點。' };
+  CONTRAST['L1.circDiam'] = { f: function (p) { return p.t; }, why: '四種條件都是在找圓心與半徑：直徑給中點和一半的長、切 $x$ 軸半徑是縱坐標的絕對值、切 $y$ 軸半徑是橫坐標的絕對值、過一點半徑是兩點距離。最常搞混的是切 $x$ 軸要看縱坐標。' };
+  CONTRAST['L1.symLineEq'] = { f: function (p) { return p.t; }, why: '對 $x$ 軸把 $y$ 換成 $-y$、對 $y$ 軸把 $x$ 換成 $-x$、對原點兩個都換、對 $y=x$ 把 $x,y$ 互換。換的是方程式裡的變數。' };
+  CONTRAST['L2.tangentSlope'] = { f: function (p) { return p.t; }, why: '給斜率、給平行線、給垂直線，都是先把切線設成 $ax+by+c=0$（$a,b$ 已知），再用「圓心到切線的距離等於半徑」求 $c$；差別只在 $a,b$ 怎麼來：平行照抄、垂直對調變號。' };
+  CONTRAST['L2.triCenters'] = { f: function (p) { return p.t; }, why: '外心用中垂線（到三頂點等距），垂心用高（過頂點、垂直對邊）；兩種都是兩條直線聯立，差在直線怎麼寫。' };
+  CONTRAST['L3.slopeRangeCross'] = { f: function (p) { return p.t === 2 ? 1 : 0; }, why: '線段跨過鉛直線時，相交（含端點）是 $m\\le$ 小的、$m\\ge$ 大的兩段；不相交是中間那一段，而且不含端點。' };
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

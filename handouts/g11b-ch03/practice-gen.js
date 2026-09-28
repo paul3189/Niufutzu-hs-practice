@@ -1115,6 +1115,307 @@
              p: { kk: kk, jj: jj, m: m, ans: [fp(P1), fp(A2), fp(A3)] } };
   };
 
+  /* ══════════════════════════════════════════════════════════
+     2026-09-29 擴充（依段考卷出現頻率補題型）：L1 四型、L2 五型
+     依據：題庫 19 份高二段考卷（CPB，127 題）——由貝氏的結果反求比率 7 卷、號碼球事件獨立 4 卷、開關電路 2 卷、說實話的證人 2 卷；
+           比賽積分 6 卷、三次擲骰的條件機率 5 卷、前一次影響下一次 4 卷、連續檢驗 4 卷、輪流取球與先取完 4 卷。
+     只新增、不改任何既有產生器（既有題型同種子出同一題，錯題本與檢測紀錄的 t.k#seed 仍有效）。
+     小工具一律加前綴 xp。答案一律是機率值（最簡分數）；「恰 k 次」一律寫成組合乘機率。
+     ══════════════════════════════════════════════════════════ */
+  function xpPrime(n) { if (n < 2) return false; for (var i = 2; i * i <= n; i++) if (n % i === 0) return false; return true; }
+  function xpNum(a, b) { return a - b; }
+  function xpRange(n) { var o = [], i; for (i = 1; i <= n; i++) o.push(i); return o; }
+  function xpSet(arr) { if (!arr.length) return '\\varnothing'; return arr.length <= 10 ? '\\{' + arr.join(',') + '\\}' : '\\{' + arr.slice(0, 3).join(',') + ',\\ldots,' + arr[arr.length - 1] + '\\}'; }
+  function xpSetFull(arr) { return arr.length ? '\\{' + arr.join(',') + '\\}' : '\\varnothing'; }
+
+  /* ── §3 號碼球：判斷兩事件是否獨立 ── */
+  function xpBallEv(r, N) {
+    var k, m;
+    switch (r.int(0, 6)) {
+      case 0: k = r.int(2, 6); return { t: '號碼是 ' + T(k) + ' 的倍數', f: function (n) { return n % k === 0; } };
+      case 1: return { t: '號碼是奇數', f: function (n) { return n % 2 === 1; } };
+      case 2: return { t: '號碼是偶數', f: function (n) { return n % 2 === 0; } };
+      case 3: m = r.int(2, N - 2); return { t: '號碼不超過 ' + T(m), f: function (n) { return n <= m; } };
+      case 4: m = r.int(2, N - 2); return { t: '號碼大於 ' + T(m), f: function (n) { return n > m; } };
+      case 5: k = r.pick([3, 4, 5]); m = r.int(1, k - 1); return { t: '號碼除以 ' + T(k) + ' 餘 ' + T(m), f: function (n) { return n % k === m; } };
+      default: return { t: '號碼是質數', f: xpPrime };
+    }
+  }
+  L1.ballIndep = function (r) {
+    var kind = r() < 0.35 ? 1 : 0, want = r() < 0.5;
+    var N = kind ? r.pick([10, 12, 15, 16, 20]) : r.pick([10, 12, 15, 18, 20, 24, 30]);
+    var As = [], Bs = [], tA = '', tB = '', t = 0, ok = false, i, eA, eB;
+    while (t++ < 500 && !ok) {
+      As = []; Bs = [];
+      if (kind === 1) {
+        var a = r.int(3, N - 3), b = r.int(3, N - 3), x;
+        if (want) { if ((a * b) % N) continue; x = a * b / N; }
+        else { x = Math.round(a * b / N) + r.pick([-1, 1]); if (x * N === a * b) continue; }
+        if (x < 1 || x > Math.min(a, b) || a + b - x > N) continue;
+        var perm = r.shuffle(xpRange(N)), inA = perm.slice(0, a), outA = perm.slice(a);
+        As = inA.slice().sort(xpNum);
+        Bs = r.shuffle(inA).slice(0, x).concat(r.shuffle(outA).slice(0, b - x)).sort(xpNum);
+        tA = T('A=' + xpSetFull(As)); tB = T('B=' + xpSetFull(Bs));
+      } else {
+        eA = xpBallEv(r, N); eB = xpBallEv(r, N);
+        if (eA.t === eB.t) continue;
+        for (i = 1; i <= N; i++) { if (eA.f(i)) As.push(i); if (eB.f(i)) Bs.push(i); }
+        if (As.length < 2 || As.length > N - 2 || Bs.length < 2 || Bs.length > N - 2) continue;
+        if (As.join() === Bs.join()) continue;
+        tA = '「' + eA.t + '」'; tB = '「' + eB.t + '」';
+      }
+      var nAB0 = As.filter(function (v) { return Bs.indexOf(v) >= 0; }).length;
+      if ((N * nAB0 === As.length * Bs.length) !== want) continue;
+      ok = true;
+    }
+    if (!ok) { kind = 0; N = 12; As = [2, 4, 6, 8, 10, 12]; Bs = [3, 6, 9, 12]; tA = '「號碼是偶數」'; tB = '「號碼是 ' + T(3) + ' 的倍數」'; }
+    var ABs = As.filter(function (v) { return Bs.indexOf(v) >= 0; }), nA = As.length, nB = Bs.length, nAB = ABs.length;
+    var pA = F(nA, N), pB = F(nB, N), pAB = F(nAB, N), pp = Fr.mul(pA, pB), indep = Fr.eq(pAB, pp), cAB = F(nAB, nB);
+    var head = '袋中有編號 ' + T(1) + ' 到 ' + T(N) + ' 的球各一顆，從中任取一球。';
+    head += kind ? '設事件 ' + tA + '、' + tB + '（取到的號碼在集合裡就算發生）。' : '設 ' + T('A') + ' 表' + tA + '、' + T('B') + ' 表' + tB + '。';
+    return { q: head + no(1) + '判斷 ' + T('A') + '、' + T('B') + ' 是否獨立，並寫出比較用的 ' + T(PTx('A')) + '、' + T(PTx('B')) + '、' + T(PTx('A\\cap B')) + ' 與 ' + T(PTx('A') + PTx('B')) + '　' + no(2) + '求 ' + T(PTx('A\\mid B')) + '。',
+             a: no(1) + (indep ? '獨立' : '不獨立') + '，' + ansEq(PTx('A'), pA) + '、' + ansEq(PTx('B'), pB) + '、' + ansEq(PTx('A\\cap B'), pAB) + '、' + ansEq(PTx('A') + PTx('B'), pp) + '　' + no(2) + ansEq(PTx('A\\mid B'), cAB),
+             h: T('A') + ' 有 ' + T(nA) + ' 個號碼、' + T('B') + ' 有 ' + T(nB) + ' 個，兩者都有的是 ' + T((kind ? xpSetFull : xpSet)(ABs)) + '，共 ' + T(nAB) + ' 個。比較 ' + T(PTx('A\\cap B') + '=' + sxFr(nAB, N)) + ' 與 ' + T(PTx('A') + PTx('B') + '=' + prodF([pA, pB]) + '=' + Fr.tex(pp)) + '：相等才獨立。' + no(2) + '分母換成 ' + T('B') + ' 的 ' + T(nB) + ' 個：' + T(sxFr(nAB, nB)) + (indep ? '，正好等於 ' + T(PTx('A')) + '。' : '，和 ' + T(PTx('A') + '=' + Fr.tex(pA)) + ' 不同。'),
+             p: { kind: kind, N: N, A: As, B: Bs, AB: ABs, indep: indep ? 1 : 0, ans: [fp(pA), fp(pB), fp(pAB), fp(pp), fp(cAB)] } };
+  };
+
+  /* ── §3 開關電路：串聯相乘、並聯走反面 ── */
+  var XP_CIR = [
+    { t: '開關 $A$ 與 $B$ 串聯後，再與開關 $C$ 並聯', k: 3, n: { o: 'P', c: [{ o: 'S', c: [0, 1] }, 2] } },
+    { t: '開關 $A$ 與 $B$ 並聯後，再與開關 $C$ 串聯', k: 3, n: { o: 'S', c: [{ o: 'P', c: [0, 1] }, 2] } },
+    { t: '開關 $A$ 與 $B$ 串聯成一條線路、$C$ 與 $D$ 串聯成另一條線路，兩條線路再並聯', k: 4, n: { o: 'P', c: [{ o: 'S', c: [0, 1] }, { o: 'S', c: [2, 3] }] } },
+    { t: '開關 $A$ 與 $B$ 並聯成一組、$C$ 與 $D$ 並聯成另一組，兩組再串聯', k: 4, n: { o: 'S', c: [{ o: 'P', c: [0, 1] }, { o: 'P', c: [2, 3] }] } },
+    { t: '開關 $A$ 與 $B$ 串聯成一條線路，$C$、$D$ 各自成一條線路，三條線路再並聯', k: 4, n: { o: 'P', c: [{ o: 'S', c: [0, 1] }, 2, 3] } },
+    { t: '開關 $B$ 與 $C$ 串聯成一條線路，再與開關 $A$ 並聯，最後整組與開關 $D$ 串聯', k: 4, n: { o: 'S', c: [{ o: 'P', c: [0, { o: 'S', c: [1, 2] }] }, 3] } }
+  ];
+  var XPL = 'ABCD';
+  function xpCv(n, ps) {
+    if (typeof n === 'number') return ps[n];
+    var v = F(1), i;
+    if (n.o === 'S') { for (i = 0; i < n.c.length; i++) v = Fr.mul(v, xpCv(n.c[i], ps)); return v; }
+    for (i = 0; i < n.c.length; i++) v = Fr.mul(v, Fr.cp(xpCv(n.c[i], ps)));
+    return Fr.cp(v);
+  }
+  function xpCname(n) {
+    if (typeof n === 'number') return T(XPL.charAt(n));
+    return n.c.map(function (c) { return typeof c === 'number' ? T(XPL.charAt(c)) : '（' + xpCname(c) + '）'; }).join('、') + (n.o === 'S' ? ' 串聯' : ' 並聯');
+  }
+  /* 由下往上，每個串聯／並聯節點寫一行（帶本題數字） */
+  function xpClines(n, ps, root, out) {
+    if (typeof n === 'number') return out;
+    n.c.forEach(function (c) { xpClines(c, ps, false, out); });
+    var vs = n.c.map(function (c) { return xpCv(c, ps); }), v = xpCv(n, ps);
+    var ex = (n.o === 'S') ? prodF(vs) + '=' + Fr.tex(v) : '1-' + prodF(vs.map(Fr.cp)) + '=' + Fr.tex(v);
+    out.push((root ? '整個電路' : xpCname(n) + (n.o === 'S' ? '的那一條' : '的那一組')) + '（' + (n.o === 'S' ? '串聯：各段都要通，相乘' : '並聯：全部不通的反面') + '）' + T(ex));
+    return out;
+  }
+  L1.circuitSwitch = function (r) {
+    var st = r.pick(XP_CIR), cand = [F(1, 2), F(1, 3), F(2, 3), F(1, 4), F(3, 4), F(2, 5), F(3, 5), F(4, 5), F(1, 5), F(5, 6)];
+    var ps = [], i, X = r.int(0, st.k - 1);
+    for (i = 0; i < st.k; i++) ps.push(r.pick(cand));
+    var P = xpCv(st.n, ps), ps1 = ps.slice(); ps1[X] = F(1);
+    var P1 = xpCv(st.n, ps1), num = Fr.mul(ps[X], P1), A2 = Fr.div(num, P);
+    var lines = xpClines(st.n, ps, true, []);
+    return { q: '某電路由開關組成：' + st.t + '。開關 ' + ps.map(function (f, j) { return T(XPL.charAt(j)); }).join('、') + ' 閉合（可以通電）的機率依序為 ' + ps.map(function (f) { return T(Fr.tex(f)); }).join('、') + '，且各開關互相獨立。求' + no(1) + '電流可以從左端流到右端的機率　' + no(2) + '已知電流可以流通，開關 ' + T(XPL.charAt(X)) + ' 是閉合的機率。',
+             a: jo([no(1) + T(Fr.tex(P)), no(2) + T(Fr.tex(A2))]),
+             h: '由內往外算：' + lines.join('；') + '。' + no(2) + '分子是「' + T(XPL.charAt(X)) + ' 閉合且電流通」：把 ' + T(XPL.charAt(X)) + ' 的機率當成 ' + T(1) + ' 重算整個電路得 ' + T(Fr.tex(P1)) + '，再乘上 ' + T(Fr.tex(ps[X])) + '，得 ' + T(Fr.tex(num)) + '，最後除以 ' + T(Fr.tex(P)) + '。',
+             p: { st: XP_CIR.indexOf(st), ps: ps.map(fp), X: X, P1: fp(P1), ans: [fp(P), fp(A2)] } };
+  };
+
+  function xpWho(sc) { return sc.pop === '零件' ? '的零件' : '的人'; }
+  /* ── §4 由貝氏的結果反求一開始的比例 ── */
+  L1.findPrev = function (r) {
+    var v = r() < 0.6 ? 0 : 1, s, u, x, k, sc, t = 0;
+    var XS0 = [1, 2, 3, 4, 5, 8, 10, 12, 15, 20, 25, 30, 40], XS1 = [F(1, 5), F(1, 4), F(1, 3), F(2, 5), F(1, 2), F(3, 5), F(2, 3), F(3, 4), F(4, 5), F(3, 10), F(7, 10)];
+    do {
+      if (v === 0) { s = F(r.pick([80, 85, 90, 95, 96, 98]), 100); u = F(r.pick([1, 2, 3, 4, 5, 10, 15, 20]), 100); x = F(r.pick(XS0), 100); }
+      else { s = F(r.pick([2, 3, 4, 5, 6, 8, 10]), 100); u = F(r.pick([1, 2, 3, 4, 5, 6, 8]), 100); x = r.pick(XS1); }
+      k = Fr.div(Fr.mul(s, x), Fr.add(Fr.mul(s, x), Fr.mul(u, Fr.cp(x))));
+      t++;
+    } while ((Fr.eq(s, u) || k.d > 1200 || k.n < 1) && t < 200);
+    var Py = Fr.add(Fr.mul(s, x), Fr.mul(u, Fr.cp(x)));
+    var q, nm, y, one;
+    if (v === 0) {
+      sc = r.pick(SCR);
+      q = '某種檢驗：' + sc.d + xpWho(sc) + '「' + sc.y + '」的機率為 ' + T(pc(s)) + '；' + sc.nd + xpWho(sc) + '「' + sc.y + '」的機率為 ' + T(pc(u)) + '。在某地區普查，發現「' + sc.y + '」的' + sc.pop + '之中，確實' + sc.d + '的佔 ' + T(Fr.tex(k)) + '。求' + no(1) + '該地區' + sc.d + '的比例　' + no(2) + '在該地區' + sc.one + '，「' + sc.y + '」的機率。';
+      nm = sc.d; y = sc.y; one = sc.one;
+    } else {
+      sc = r.pick(CS2);
+      q = '某公司的' + sc.o + '只來自' + sc.a + '與' + sc.b + '，' + sc.a + '產出「' + sc.y + '」的比率為 ' + T(pc(s)) + '、' + sc.b + '為 ' + T(pc(u)) + '。已知所有的「' + sc.y + '」之中，來自' + sc.a + '的佔 ' + T(Fr.tex(k)) + '。求' + no(1) + sc.a + '的' + sc.w + '佔總' + sc.w + '的比例　' + no(2) + sc.pick + '為「' + sc.y + '」的機率。';
+      nm = sc.a; y = sc.y; one = sc.pick;
+    }
+    return { q: q, a: jo([no(1) + T(Fr.tex(x)), no(2) + T(Fr.tex(Py))]),
+             h: '設所求比例為 ' + T('x') + '。通往「' + y + '」的兩條路徑是 ' + T(Fr.tex(s) + 'x') + ' 與 ' + T(Fr.tex(u) + '(1-x)') + '，已知前者佔兩者之和的 ' + T(Fr.tex(k)) + ' ⟹ 兩條路徑的比 ' + T(Fr.tex(s) + 'x:' + Fr.tex(u) + '(1-x)=' + k.n + ':' + (k.d - k.n)) + '，交叉相乘解一次方程式得 ' + T('x=' + Fr.tex(x)) + '。' + no(2) + '兩條路徑加起來：' + T(prodF([s, x]) + '+' + prodF([u, Fr.cp(x)]) + '=' + Fr.tex(Py)) + '。',
+             p: { v: v, s: fp(s), u: fp(u), k: fp(k), nm: nm, ans: [fp(x), fp(Py)] } };
+  };
+
+  /* ── §4 說實話的人：先分真相，再分說法 ── */
+  L1.witnessOne = function (r) {
+    var bg = r.pick(BAG), a = r.int(1, 7), b = r.int(1, 7), t = r.pick([F(2, 3), F(3, 4), F(4, 5), F(3, 5), F(7, 10), F(5, 6), F(9, 10), F(4, 7)]);
+    var who = r.pick(['甲', '小文', '阿遠', '小美']), c0 = bg.c[0], c1 = bg.c[1], n = a + b;
+    var pr = F(a, n), pw = F(b, n), f = Fr.cp(t);
+    var say0 = Fr.add(Fr.mul(pr, t), Fr.mul(pw, f));
+    var A2 = Fr.div(Fr.mul(pr, t), say0), say1 = Fr.cp(say0), A3 = Fr.div(Fr.mul(pw, t), say1);
+    return { q: bg.b + '中有 ' + T(a) + ' 顆' + c0 + bg.o + '與 ' + T(b) + ' 顆' + c1 + bg.o + '，從中任取一顆，只讓' + who + '看。' + who + '說實話的機率為 ' + T(Fr.tex(t)) + '（說謊時就說成另一種顏色）。求' + no(1) + who + '說「' + c0 + bg.o + '」的機率　' + no(2) + '已知' + who + '說「' + c0 + bg.o + '」，這顆確實是' + c0 + bg.o + '的機率　' + no(3) + '已知' + who + '說「' + c1 + bg.o + '」，這顆確實是' + c1 + bg.o + '的機率。',
+             a: jo([no(1) + T(Fr.tex(say0)), no(2) + T(Fr.tex(A2)), no(3) + T(Fr.tex(A3))]),
+             h: '第一層是真相（' + c0 + bg.o + ' ' + T(Fr.tex(pr)) + '、' + c1 + bg.o + ' ' + T(Fr.tex(pw)) + '），第二層是說法（說實話 ' + T(Fr.tex(t)) + '、說謊 ' + T(Fr.tex(f)) + '）。' + no(1) + '說「' + c0 + '」有兩條路：' + T(prodF([pr, t]) + '+' + prodF([pw, f]) + '=' + Fr.tex(say0)) + '；' + no(2) + '要的是「真的是' + c0 + '且說實話」那一條：' + T('\\dfrac{' + Fr.tex(Fr.mul(pr, t)) + '}{' + Fr.tex(say0) + '}') + '。' + no(3) + '分母換成 ' + T('1-' + Fr.tex(say0) + '=' + Fr.tex(say1)) + '。',
+             p: { a: a, b: b, t: fp(t), ans: [fp(say0), fp(A2), fp(A3)] } };
+  };
+
+  /* ═══════════ L2 擴充 ═══════════ */
+
+  /* ── §2 擲三次骰子的條件機率 ── */
+  function xpD3B(r) {
+    var k;
+    switch (r.int(0, 6)) {
+      case 0: k = r.int(5, 12); return { t: '三次的點數和為 ' + T(k), f: function (w) { return w[0] + w[1] + w[2] === k; }, how: '先列出和為 ' + T(k) + ' 的不計順序三數組，再各乘上排列數（三數全異乘 ' + T(6) + '、兩數相同乘 ' + T(3) + '）' };
+      case 1: return { t: '三次的點數和為偶數', f: function (w) { return (w[0] + w[1] + w[2]) % 2 === 0; }, how: '和為偶數 ⟺ 奇數點出現 ' + T(0) + ' 次或 ' + T(2) + ' 次，恰好是全部的一半' };
+      case 2: k = r.int(1, 6); return { t: '至少出現一次 ' + T(k) + ' 點', f: function (w) { return w[0] === k || w[1] === k || w[2] === k; }, how: '走反面：三次都不是 ' + T(k) + ' 點有 ' + T('5^3') + ' 種，' + T('6^3-5^3=91') };
+      case 3: return { t: '三次的點數都不相同', f: function (w) { return w[0] !== w[1] && w[1] !== w[2] && w[0] !== w[2]; }, how: T('6\\times5\\times4=120') };
+      case 4: k = r.int(3, 6); return { t: '三次之中最大的點數為 ' + T(k), f: function (w) { return Math.max(w[0], w[1], w[2]) === k; }, how: '「都不超過 ' + T(k) + '」減掉「都不超過 ' + T(k - 1) + '」：' + T(k + '^3-' + (k - 1) + '^3=' + (k * k * k - (k - 1) * (k - 1) * (k - 1))) };
+      case 5: return { t: '三次的點數乘積為偶數', f: function (w) { return (w[0] * w[1] * w[2]) % 2 === 0; }, how: '走反面：三次都是奇數有 ' + T('3^3=27') + ' 種，' + T('216-27=189') };
+      default: k = r.int(2, 5); return { t: '三次的點數都不超過 ' + T(k), f: function (w) { return w[0] <= k && w[1] <= k && w[2] <= k; }, how: '每次都有 ' + T(k) + ' 種選擇：' + T(k + '^3=' + k * k * k) };
+    }
+  }
+  function xpD3A(r) {
+    var k;
+    switch (r.int(0, 6)) {
+      case 0: k = r.int(1, 6); return { t: '恰好出現一次 ' + T(k) + ' 點', f: function (w) { return (w[0] === k) + (w[1] === k) + (w[2] === k) === 1; } };
+      case 1: return { t: '三次的點數都相同', f: function (w) { return w[0] === w[1] && w[1] === w[2]; } };
+      case 2: return { t: '三次的點數都不相同', f: function (w) { return w[0] !== w[1] && w[1] !== w[2] && w[0] !== w[2]; } };
+      case 3: return { t: '三次的點數和為奇數', f: function (w) { return (w[0] + w[1] + w[2]) % 2 === 1; } };
+      case 4: k = r.int(2, 5); return { t: '三個點數的中位數為 ' + T(k), f: function (w) { return w.slice().sort(xpNum)[1] === k; } };
+      case 5: k = r.int(1, 6); return { t: '第一次擲出 ' + T(k) + ' 點', f: function (w) { return w[0] === k; } };
+      default: k = r.int(1, 6); return { t: '至少出現一次 ' + T(k) + ' 點', f: function (w) { return w[0] === k || w[1] === k || w[2] === k; } };
+    }
+  }
+  L2.condDice3 = function (r) {
+    var eA, eB, nA, nB, nAB, t = 0, a, b, c, w;
+    do {
+      eA = xpD3A(r); eB = xpD3B(r); nA = 0; nB = 0; nAB = 0;
+      for (a = 1; a <= 6; a++) for (b = 1; b <= 6; b++) for (c = 1; c <= 6; c++) {
+        w = [a, b, c];
+        if (eA.f(w)) nA++; if (eB.f(w)) nB++; if (eA.f(w) && eB.f(w)) nAB++;
+      }
+      t++;
+    } while ((eA.t === eB.t || nB < 4 || nB > 150 || nAB === 0 || nAB === nB) && t < 400);
+    var pB = F(nB, 216), cAB = F(nAB, nB), pA = F(nA, 216);
+    return { q: '擲一顆公正骰子三次，依序記錄三次的點數（共 ' + T('6^3=216') + ' 種等可能的結果）。求' + no(1) + '「' + eB.t + '」的機率　' + no(2) + '已知「' + eB.t + '」，「' + eA.t + '」的機率　' + no(3) + '不加任何條件時，「' + eA.t + '」的機率。',
+             a: jo([no(1) + T(Fr.tex(pB)), no(2) + T(Fr.tex(cAB)), no(3) + T(Fr.tex(pA))]),
+             h: '已知的事件就是新的樣本空間：' + eB.how + '，得 ' + T('n(B)=' + nB) + '。在這 ' + T(nB) + ' 種裡再數「' + eA.t + '」的，有 ' + T(nAB) + ' 種 ⟹ ' + no(2) + T(sxFr(nAB, nB)) + '。' + no(3) + '的分母回到 ' + T(216) + '：「' + eA.t + '」共 ' + T(nA) + ' 種，和 ' + no(2) + '比一比，就知道條件有沒有改變機率。',
+             p: { eA: eA.t, eB: eB.t, nA: nA, nB: nB, nAB: nAB, ans: [fp(pB), fp(cAB), fp(pA)] } };
+  };
+
+  /* ── §2 輪流取球先取到、某色先取完：把球排成一列來看 ── */
+  L2.firstTo = function (r) {
+    var bg = r.pick(BAG);
+    if (r() < 0.55) {
+      var w = r.int(1, 3), k = r.int(2, 6), n = w + k, pos = [], j, P1 = F(0), who = r.pick([['甲', '乙'], ['小文', '阿遠'], ['哥哥', '弟弟']]);
+      for (j = 1; j <= k + 1; j++) pos.push(F(nCr(n - j, w - 1), nCr(n, w)));   /* 第一顆白球落在第 j 個位置 */
+      for (j = 0; j < pos.length; j += 2) P1 = Fr.add(P1, pos[j]);
+      var c0 = bg.c[0], c1 = bg.c[1], A2 = Fr.div(pos[0], P1), A3 = pos[2] || F(0);
+      return { q: bg.b + '中有 ' + T(w) + ' 顆' + c0 + bg.o + '與 ' + T(k) + ' 顆' + c1 + bg.o + '。' + who[0] + '、' + who[1] + '兩人輪流從' + bg.b + '中取球，每次取一顆且不放回，由' + who[0] + '先取，先取到' + c0 + bg.o + '的人獲勝。求' + no(1) + who[0] + '獲勝的機率　' + no(2) + '已知' + who[0] + '獲勝，' + who[0] + '是在第 ' + T(1) + ' 次就取到' + c0 + bg.o + '的機率　' + no(3) + '第 ' + T(3) + ' 次才取到第一顆' + c0 + bg.o + '的機率。',
+               a: jo([no(1) + T(Fr.tex(P1)), no(2) + T(Fr.tex(A2)), no(3) + T(Fr.tex(A3))]),
+               h: '把 ' + T(n) + ' 顆球隨機排成一列，第一顆' + c0 + bg.o + '落在第 ' + T('j') + ' 個位置的機率是 ' + T('\\dfrac{C^{' + n + '-j}_{' + (w - 1) + '}}{' + CT(n, w) + '}') + '（後面 ' + T(n + '-j') + ' 個位置要放剩下的 ' + T(w - 1) + ' 顆）：依序為 ' + pos.slice(0, Math.min(pos.length, 4)).map(function (f) { return T(Fr.tex(f)); }).join('、') + (pos.length > 4 ? '…' : '') + '。' + no(1) + who[0] + '取第 ' + T('1,3,5,\\ldots') + ' 次，把奇數位置加起來得 ' + T(Fr.tex(P1)) + '；' + no(2) + T('\\dfrac{' + Fr.tex(pos[0]) + '}{' + Fr.tex(P1) + '}') + '。',
+               p: { v: 0, w: w, k: k, ans: [fp(P1), fp(A2), fp(A3)] } };
+    }
+    var cs = r.pick([['紅', '白', '黑'], ['紅', '藍', '綠'], ['黃', '白', '黑'], ['紅', '白', '藍']]);
+    var R = r.int(1, 3), W = r.int(1, 3), K = r.int(1, 3), N = R + W + K;
+    var B1 = F(W, R + W), B2 = F(K, N), B3 = Fr.add(Fr.mul(F(W, N), F(K, R + K)), Fr.mul(F(K, N), F(W, R + W)));
+    return { q: bg.b + '中有 ' + T(R) + ' 顆' + cs[0] + bg.o + '、' + T(W) + ' 顆' + cs[1] + bg.o + '、' + T(K) + ' 顆' + cs[2] + bg.o + '，每次取一顆且不放回，直到全部取完。求' + no(1) + cs[0] + bg.o + '比' + cs[1] + bg.o + '先被取完的機率　' + no(2) + '最後一顆是' + cs[2] + bg.o + '的機率　' + no(3) + cs[0] + bg.o + '最先被取完（比另外兩色都早）的機率。',
+             a: jo([no(1) + T(Fr.tex(B1)), no(2) + T(Fr.tex(B2)), no(3) + T(Fr.tex(B3))]),
+             h: '「誰先被取完」改看「誰最後出現」：' + cs[0] + '比' + cs[1] + '先取完 ⟺ 這 ' + T(R + W) + ' 顆' + cs[0] + '、' + cs[1] + '球裡最後一顆是' + cs[1] + '，每顆機會均等 ⟹ ' + no(1) + T(sxFr(W, R + W)) + '；' + no(2) + T(sxFr(K, N)) + '。' + no(3) + '看最後一顆：若是' + cs[1] + '（' + T(Fr.tex(F(W, N))) + '），還要' + cs[0] + '比' + cs[2] + '先取完（' + T(Fr.tex(F(K, R + K))) + '）；若是' + cs[2] + '（' + T(Fr.tex(F(K, N))) + '），還要' + cs[0] + '比' + cs[1] + '先取完（' + T(Fr.tex(B1)) + '），兩條路徑加起來 ' + T(Fr.tex(B3)) + '。',
+             p: { v: 1, R: R, W: W, K: K, ans: [fp(B1), fp(B2), fp(B3)] } };
+  };
+
+  /* ── §3 比賽積分：和局兩隊各加一分，只比勝場與敗場 ── */
+  var XP_GP = [[F(1, 2), F(1, 6), F(1, 3)], [F(1, 2), F(1, 10), F(2, 5)], [F(2, 5), F(1, 5), F(2, 5)], [F(1, 3), F(1, 6), F(1, 2)], [F(3, 10), F(1, 5), F(1, 2)],
+               [F(1, 2), F(1, 4), F(1, 4)], [F(2, 5), F(1, 10), F(1, 2)], [F(3, 5), F(1, 10), F(3, 10)], [F(1, 3), F(1, 3), F(1, 3)], [F(1, 4), F(1, 4), F(1, 2)],
+               [F(5, 12), F(1, 6), F(5, 12)], [F(1, 2), F(1, 5), F(3, 10)], [F(1, 2), F(1, 3), F(1, 6)], [F(3, 8), F(1, 4), F(3, 8)]];
+  function xpFact(n) { var t = 1, i; for (i = 2; i <= n; i++) t *= i; return t; }
+  L2.gamePoints = function (r) {
+    var pr = r.pick(XP_GP), n = r.pick([2, 2, 3, 3, 3, 4]), W = r.pick([3, 3, 2]), tm = r.pick([['甲隊', '乙隊'], ['藍隊', '紅隊'], ['主隊', '客隊']]);
+    if (r() < 0.5) pr = [pr[2], pr[1], pr[0]];
+    var P1 = F(0), P0 = F(0), P2 = F(0), grp = [], w, d, l, c, pv;
+    for (w = 0; w <= n; w++) for (d = 0; d <= n - w; d++) {
+      l = n - w - d; c = xpFact(n) / (xpFact(w) * xpFact(d) * xpFact(l));
+      pv = Fr.mul(F(c), Fr.mul(Fr.pow(pr[0], w), Fr.mul(Fr.pow(pr[1], d), Fr.pow(pr[2], l))));
+      if (w > l) { P1 = Fr.add(P1, pv); grp.push([w, d, l, c, pv]); } else if (w === l) P0 = Fr.add(P0, pv); else P2 = Fr.add(P2, pv);
+    }
+    var A3 = Fr.div(P1, Fr.add(P1, P0));
+    var gtx = grp.map(function (g) { return g[0] + ' 勝 ' + g[1] + ' 和 ' + g[2] + ' 敗'; });
+    return { q: tm[0] + '與' + tm[1] + '比賽 ' + T(n) + ' 場，每場勝隊得 ' + T(W) + ' 分、敗隊得 ' + T(0) + ' 分，和局時兩隊各得 ' + T(1) + ' 分。每一場' + tm[0] + '勝、和、敗的機率依序為 ' + pr.map(function (f) { return T(Fr.tex(f)); }).join('、') + '，且各場結果互相獨立。' + T(n) + ' 場賽完後積分較高的隊伍獨得獎金，積分相同則平分。求' + no(1) + tm[0] + '總積分高於' + tm[1] + '的機率　' + no(2) + '兩隊積分相同的機率　' + no(3) + '已知' + tm[0] + '可以分到獎金（積分不低於' + tm[1] + '），' + tm[0] + '獨得獎金的機率。',
+             a: jo([no(1) + T(Fr.tex(P1)), no(2) + T(Fr.tex(P0)), no(3) + T(Fr.tex(A3))]),
+             h: '和局時兩隊各加 ' + T(1) + ' 分，互相抵銷 ⟹ 積分高低只比勝場數與敗場數：' + tm[0] + '勝場多於敗場就是積分較高。' + no(1) + '列出這些情形（' + gtx.join('、') + '），各乘上排列數，例如「' + gtx[0] + '」是 ' + T((grp[0][3] === 1 ? '' : grp[0][3] + '\\times') + prodF([Fr.pow(pr[0], grp[0][0]), Fr.pow(pr[1], grp[0][1]), Fr.pow(pr[2], grp[0][2])].filter(function (f) { return f.n !== f.d; })) + '=' + Fr.tex(grp[0][4])) + '，全部加起來 ' + T(Fr.tex(P1)) + '。' + no(2) + '勝場數等於敗場數，得 ' + T(Fr.tex(P0)) + '。' + no(3) + T('\\dfrac{' + Fr.tex(P1) + '}{' + Fr.tex(P1) + '+' + Fr.tex(P0) + '}') + '。',
+             p: { n: n, W: W, pr: pr.map(fp), ans: [fp(P1), fp(P0), fp(A3)] } };
+  };
+
+  /* ── §3 前一次的結果影響下一次：每一步都是條件機率，沿路徑相乘 ── */
+  var XP_SQ = [
+    { s: '某人練習罰球', u: '球', y: '罰進', n: '沒罰進' },
+    { s: '某人連續投籃', u: '球', y: '投進', n: '沒投進' },
+    { s: '小明每天上學', u: '天', y: '準時到校', n: '遲到' },
+    { s: '某地區的天氣', u: '天', y: '放晴', n: '下雨' },
+    { s: '某射手連續射擊', u: '發', y: '命中', n: '沒命中' },
+    { s: '阿遠每天搭公車', u: '天', y: '搭上首班車', n: '沒搭上首班車' }
+  ];
+  L2.seqDepend = function (r) {
+    var sc = r.pick(XP_SQ), cand = [F(1, 2), F(1, 3), F(2, 3), F(1, 4), F(3, 4), F(2, 5), F(3, 5), F(4, 5), F(1, 5), F(7, 10), F(3, 10), F(5, 6)];
+    var p1 = r.pick(cand), a = r.pick(cand), b = r.pick(cand), t = 0, v = r.int(0, 2);
+    while (Fr.eq(a, b) && t++ < 50) b = r.pick(cand);
+    if (Fr.eq(a, b)) b = Fr.eq(a, F(1, 2)) ? F(1, 3) : F(1, 2);
+    var nx = function (prev) { return prev ? a : b; };
+    var paths = [], i, j, k;                        /* 前三次的 8 條路徑 */
+    for (i = 0; i < 2; i++) for (j = 0; j < 2; j++) for (k = 0; k < 2; k++) {
+      var w = Fr.mul(i ? p1 : Fr.cp(p1), Fr.mul(i ? (j ? a : Fr.cp(a)) : (j ? b : Fr.cp(b)), j ? (k ? a : Fr.cp(a)) : (k ? b : Fr.cp(b))));
+      paths.push({ s: [i, j, k], w: w });
+    }
+    var P2 = Fr.add(Fr.mul(p1, a), Fr.mul(Fr.cp(p1), b)), P3 = Fr.add(Fr.mul(P2, a), Fr.mul(Fr.cp(P2), b));
+    var sum = function (f) { var s = F(0); paths.forEach(function (pt) { if (f(pt.s)) s = Fr.add(s, pt.w); }); return s; };
+    var U = function (m) { return '第 ' + T(m) + ' ' + sc.u; }, ask3, A3, h3;
+    if (v === 0) {
+      var n13 = sum(function (s) { return s[0] && s[2]; }); A3 = Fr.div(n13, P3);
+      ask3 = '已知' + U(3) + sc.y + '，' + U(1) + '也' + sc.y + '的機率';
+      h3 = no(3) + '分子是「' + U(1) + '與' + U(3) + '都' + sc.y + '」的兩條路徑之和 ' + T(Fr.tex(n13)) + '，分母是 ' + no(2) + '的 ' + T(Fr.tex(P3)) + '。';
+    } else if (v === 1) {
+      A3 = sum(function (s) { return s[0] + s[1] + s[2] === 1; });
+      ask3 = '前 ' + T(3) + ' ' + sc.u + '之中恰有 ' + T(1) + ' ' + sc.u + sc.y + '的機率';
+      h3 = no(3) + '三條路徑（' + sc.y + '的是第 ' + T(1) + '、' + T(2) + '、' + T(3) + ' ' + sc.u + '）機率各不相同，不能用 ' + T('C^3_1') + ' 乘同一個數，要一條一條乘出來再加：' + T(Fr.tex(A3)) + '。';
+    } else {
+      var one2 = sum(function (s) { return s[0] + s[1] === 1; }), one2y = sum(function (s) { return s[0] + s[1] === 1 && s[2]; });
+      A3 = Fr.div(one2y, one2);
+      ask3 = '已知前 ' + T(2) + ' ' + sc.u + '恰有 ' + T(1) + ' ' + sc.u + sc.y + '，' + U(3) + sc.y + '的機率';
+      h3 = no(3) + '條件的兩條路徑合計 ' + T(Fr.tex(one2)) + '；第 ' + T(3) + ' ' + sc.u + '只看第 ' + T(2) + ' ' + sc.u + '的結果（' + sc.y + '接 ' + T(Fr.tex(a)) + '、' + sc.n + '接 ' + T(Fr.tex(b)) + '），分子 ' + T(Fr.tex(one2y)) + '。';
+    }
+    return { q: sc.s + '：' + U(1) + sc.y + '的機率為 ' + T(Fr.tex(p1)) + '；之後每一' + sc.u + '，若前一' + sc.u + sc.y + '，這一' + sc.u + sc.y + '的機率為 ' + T(Fr.tex(a)) + '；若前一' + sc.u + sc.n + '，這一' + sc.u + sc.y + '的機率為 ' + T(Fr.tex(b)) + '。求' + no(1) + U(2) + sc.y + '的機率　' + no(2) + U(3) + sc.y + '的機率　' + no(3) + ask3 + '。',
+             a: jo([no(1) + T(Fr.tex(P2)), no(2) + T(Fr.tex(P3)), no(3) + T(Fr.tex(A3))]),
+             h: '每一步都要先知道前一' + sc.u + '的結果，所以按前一' + sc.u + '分兩條路：' + no(1) + T(prodF([p1, a]) + '+' + prodF([Fr.cp(p1), b]) + '=' + Fr.tex(P2)) + '；' + no(2) + '把 ' + no(1) + '當成新的起點再做一次：' + T(prodF([P2, a]) + '+' + prodF([Fr.cp(P2), b]) + '=' + Fr.tex(P3)) + '。' + h3,
+             p: { v: v, p1: fp(p1), a: fp(a), b: fp(b), ans: [fp(P2), fp(P3), fp(A3)] } };
+  };
+
+  /* ── §4 連續檢驗都是陰性：沿同一條路徑把比率次方 ── */
+  L2.negRetest = function (r) {
+    var sc = r.pick(SCR), m = r.pick([2, 2, 3]), v = r() < 0.6 ? 0 : 1, t0 = 0, pv, s, tn, d1, n1, d2, n2, p, p2;
+    do {
+      pv = F(r.pick([5, 10, 15, 20, 25, 30, 40]), 100); s = F(r.pick([70, 75, 80, 85, 90]), 100); tn = F(r.pick([80, 85, 90, 95]), 100);
+      d1 = Fr.mul(pv, Fr.cp(s)); n1 = Fr.mul(Fr.cp(pv), tn); p = Fr.div(d1, Fr.add(d1, n1));
+      d2 = Fr.mul(pv, Fr.pow(Fr.cp(s), m)); n2 = Fr.mul(Fr.cp(pv), Fr.pow(tn, m)); p2 = Fr.div(d2, Fr.add(d2, n2));
+      t0++;
+    } while ((p2.d > 5000) && t0 < 100);
+    var ratio = Fr.div(p, p2), mt = T(m) + ' 次';
+    var head = '某種檢驗：' + sc.d + xpWho(sc) + '「' + sc.y + '」的機率為 ' + T(pc(s)) + '，' + sc.nd + xpWho(sc) + '「' + sc.n + '」的機率為 ' + T(pc(tn)) + '；對同一人重複檢驗時，在「是否' + sc.d + '」已知的條件下，各次結果互相獨立。';
+    var hb = '結果為「' + sc.n + '」的兩條路徑：' + sc.d + '卻「' + sc.n + '」的比率是 ' + T(Fr.tex(Fr.cp(s))) + '、' + sc.nd + '且「' + sc.n + '」的比率是 ' + T(Fr.tex(tn)) + '。連續 ' + T(m) + ' 次都是「' + sc.n + '」，就是同一條路徑的比率連乘 ' + T(m) + ' 次：分子 ' + T(Fr.tex(pv) + pw(Fr.tex(Fr.cp(s)), m) + '=' + Fr.tex(d2)) + '、另一條 ' + T(Fr.tex(Fr.cp(pv)) + pw(Fr.tex(tn), m) + '=' + Fr.tex(n2)) + '。';
+    if (v === 0)
+      return { q: '某地區' + sc.d + '的比例為 ' + T(pc(pv)) + '。' + head + '設檢驗一次結果為「' + sc.n + '」' + xpWho(sc) + '之中，真的' + sc.d + '的機率為 ' + T('p') + '；連續 ' + mt + '結果都是「' + sc.n + '」' + xpWho(sc) + '之中，真的' + sc.d + '的機率為 ' + T("p'") + '。求' + no(1) + T('p') + '　' + no(2) + T("p'") + '　' + no(3) + T("\\dfrac{p}{p'}") + '。',
+               a: jo([no(1) + ansEq('p', p), no(2) + ansEq("p'", p2), no(3) + T(Fr.tex(ratio))]),
+               h: no(1) + T('p=\\dfrac{' + Fr.tex(d1) + '}{' + Fr.tex(d1) + '+' + Fr.tex(n1) + '}') + '。' + hb + '連續越多次都是「' + sc.n + '」，真的' + sc.d + '的機率就越小。',
+               p: { v: 0, m: m, pv: fp(pv), s: fp(s), tn: fp(tn), ans: [fp(p), fp(p2), fp(ratio)] } };
+    return { q: head + '在某地區普查，發現連續 ' + mt + '都是「' + sc.n + '」' + xpWho(sc) + '之中，真的' + sc.d + '的佔 ' + T(Fr.tex(p2)) + '。求' + no(1) + '該地區' + sc.d + '的比例　' + no(2) + '只檢驗一次、結果為「' + sc.n + '」' + xpWho(sc) + '真的' + sc.d + '的機率。',
+             a: jo([no(1) + T(Fr.tex(pv)), no(2) + T(Fr.tex(p))]),
+             h: '設比例為 ' + T('x') + '。連續 ' + T(m) + ' 次都是「' + sc.n + '」的兩條路徑：' + T('x' + pw(Fr.tex(Fr.cp(s)), m) + '=' + Fr.tex(Fr.pow(Fr.cp(s), m)) + 'x') + ' 與 ' + T('(1-x)' + pw(Fr.tex(tn), m) + '=' + Fr.tex(Fr.pow(tn, m)) + '(1-x)') + '，前者佔 ' + T(Fr.tex(p2)) + ' ⟹ 兩者的比是 ' + T(p2.n + ':' + (p2.d - p2.n)) + '，解得 ' + T('x=' + Fr.tex(pv)) + '。' + no(2) + T('\\dfrac{' + Fr.tex(d1) + '}{' + Fr.tex(d1) + '+' + Fr.tex(n1) + '}') + '。',
+             p: { v: 1, m: m, pv: fp(pv), s: fp(s), tn: fp(tn), ans: [fp(pv), fp(p)] } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -1634,18 +1935,60 @@
       no(3) + '方向相反，分母換成「' + lb.c[ci] + '」的合計：' + T(sxFr(cell, C)) + '（分子都是同一格的 ' + T(String(cell)) + '，但分母不同）。',
       no(4) + '每次記錄後放回 ⟹ 每次都獨立、機率都是' + no(1) + '的 ' + T(Fr.tex(A[0])) + '，連乘 ' + T(String(k)) + ' 次：' + T(pw(Fr.tex(A[0]), k) + '=' + Fr.tex(A[3])) + '；' + no(5) + '「至少一次」走餘事件：' + T('1-' + Fr.tex(A[3]) + '=' + Fr.tex(A[4])) + '。' + sxFin(o)];
   };
+  /* ── 2026-09-29 擴充：新 L1 四型的第一層提示與解題步驟 ── */
+  L1_H1.ballIndep = '這是「號碼球的獨立判定」：先把兩個事件的號碼列出來數個數，再比較兩者都發生的機率與兩個機率的乘積，相等才叫獨立。';
+  L1_H1.circuitSwitch = '這是「開關電路」：串聯的每一段都要通，機率相乘；並聯只要有一段通，用一減去全部都不通；由最裡面那一層往外算。';
+  L1_H1.findPrev = '這是「由貝氏的結果反求一開始的比例」：把所求的比例設成未知數，寫出通往同一個結果的兩條路徑，已知的比例就是其中一條佔兩條之和的比，列成一次方程式。';
+  L1_H1.witnessOne = '這是「說實話的人」：第一層是真相、第二層是說法；說某種顏色有兩條路徑（真的是它且說實話、不是它卻說謊），要的那一條除以兩條之和。';
+
+  function xpMulT(e, m) { return m === 1 ? e : e + '\\times' + m; }
+
+  L1_SOL.ballIndep = function (p, o) {
+    var N = p.N, nA = p.A.length, nB = p.B.length, nAB = p.AB.length, pA = F(nA, N), pB = F(nB, N), pp = Fr.mul(pA, pB), S = p.kind ? xpSetFull : xpSet;
+    return ['把兩個事件的號碼列出來：' + T('A=' + S(p.A)) + '，共 ' + T(nA) + ' 個 ⟹ ' + T(PTx('A') + '=' + sxFr(nA, N)) + '；' + T('B=' + S(p.B)) + '，共 ' + T(nB) + ' 個 ⟹ ' + T(PTx('B') + '=' + sxFr(nB, N)) + '。',
+      '兩者都有的號碼：' + T('A\\cap B=' + S(p.AB)) + '，共 ' + T(nAB) + ' 個 ⟹ ' + T(PTx('A\\cap B') + '=' + sxFr(nAB, N)) + '；而 ' + T(PTx('A') + PTx('B') + '=' + prodF([pA, pB]) + '=' + Fr.tex(pp)) + '，' + (p.indep ? '兩者相等 ⟹ 獨立' : '兩者不相等 ⟹ 不獨立') + '。',
+      no(2) + '已知 ' + T('B') + ' ⟹ 分母換成 ' + T('B') + ' 的 ' + T(nB) + ' 個：' + T(PTx('A\\mid B') + '=' + sxFr(nAB, nB)) + (p.indep ? '，正好等於 ' + T(PTx('A')) + '（知道 ' + T('B') + ' 發生不會改變 ' + T('A') + ' 的機率，這就是獨立）' : '，和 ' + T(PTx('A')) + ' 不同') + '。' + sxFin(o)];
+  };
+
+  L1_SOL.circuitSwitch = function (p, o) {
+    var st = XP_CIR[p.st], ps = p.ps.map(sxF), X = p.X, lines = xpClines(st.n, ps, true, []), P = xpCv(st.n, ps);
+    var ps1 = ps.slice(); ps1[X] = F(1);
+    var P1 = xpCv(st.n, ps1), num = Fr.mul(ps[X], P1), nm = T(XPL.charAt(X));
+    return ['由最裡面那一層往外算：' + lines.slice(0, -1).join('；') + '。',
+      no(1) + lines[lines.length - 1] + '。',
+      no(2) + '分子是「' + nm + ' 閉合且電流通」：把 ' + nm + ' 當成一定閉合（機率改成 ' + T(1) + '）重算整個電路得 ' + T(Fr.tex(P1)) + '，再乘上 ' + nm + ' 閉合的機率：' + T(prodF([ps[X], P1]) + '=' + Fr.tex(num)) + ' ⟹ ' + T(sxDiv(num, P, Fr.div(num, P))) + '。' + sxFin(o)];
+  };
+
+  L1_SOL.findPrev = function (p, o) {
+    var s = sxF(p.s), u = sxF(p.u), k = sxF(p.k), x = sxF(p.ans[0]), Py = sxF(p.ans[1]);
+    var c1 = Fr.mul(s, F(k.d - k.n)), c2 = Fr.mul(u, F(k.n)), cs = Fr.add(c1, c2);
+    return ['設所求比例為 ' + T('x') + '。畫兩層樹狀圖，通往這個結果的兩條路徑是 ' + T(Fr.tex(s) + 'x') + ' 與 ' + T(Fr.tex(u) + '(1-x)') + '。',
+      '已知前者佔兩者之和的 ' + T(Fr.tex(k)) + '，也就是兩條路徑的比為 ' + T(k.n + ':' + (k.d - k.n)) + ' ⟹ ' + T(xpMulT(Fr.tex(s) + 'x', k.d - k.n) + '=' + xpMulT(Fr.tex(u) + '(1-x)', k.n)) + ' ⟹ ' + (cs.n === cs.d ? T('x=' + Fr.tex(c2)) : T(Fr.tex(cs) + 'x=' + Fr.tex(c2)) + ' ⟹ ' + T('x=' + sxDiv(c2, cs, x))) + '。',
+      no(2) + '兩條路徑加起來：' + T(prodF([s, x]) + '+' + prodF([u, Fr.cp(x)]) + '=' + Fr.tex(Py)) + '。' + sxFin(o)];
+  };
+
+  L1_SOL.witnessOne = function (p, o) {
+    var a = p.a, b = p.b, n = a + b, t = sxF(p.t), f = Fr.cp(t), pr = F(a, n), pw2 = F(b, n), A = p.ans.map(sxF);
+    var qs = sxQ(o.q), c0 = qs[0] || '第一種', c1 = qs[qs.length - 1] || '第二種';
+    var l1 = Fr.mul(pr, t), l2 = Fr.mul(pw2, f), say1 = Fr.cp(A[0]), l3 = Fr.mul(pw2, t);
+    return ['第一層是真相：「' + c0 + '」' + T(sxFr(a, n)) + '、「' + c1 + '」' + T(sxFr(b, n)) + '；第二層是說法：說實話 ' + T(Fr.tex(t)) + '、說謊 ' + T(Fr.tex(f)) + '。',
+      no(1) + '說「' + c0 + '」有兩條路徑：真的是且說實話 ' + T(prodF([pr, t]) + '=' + Fr.tex(l1)) + '、不是卻說謊 ' + T(prodF([pw2, f]) + '=' + Fr.tex(l2)) + '，相加 ' + T(sxAddF([l1, l2])) + '；' + no(2) + '只留「說實話」那一條：' + T(sxDiv(l1, A[0], A[1])) + '。',
+      no(3) + '說「' + c1 + '」的機率是 ' + T('1-' + Fr.tex(A[0]) + '=' + Fr.tex(say1)) + '，要的是「真的是且說實話」' + T(prodF([pw2, t]) + '=' + Fr.tex(l3)) + ' ⟹ ' + T(sxDiv(l3, say1, A[2])) + '。' + sxFin(o)];
+  };
+
   var META_L1 = [
       ['freqTable', '§1 從次數表得到客觀機率'], ['subjCheck', '§1 檢視主觀機率的合理性'], ['tableThree', '§1 列聯表：三種機率'], ['probRules', '§1 機率的基本性質'],
       ['condDice', '§2 條件機率：骰子'], ['condFormula', '§2 用公式算條件機率'], ['condTable', '§2 從列聯表讀條件機率'], ['multRule', '§2 乘法公式'], ['condInverse', '§2 已知條件機率反求'], ['drawBalls', '§2 放回與不放回'], ['treeThree', '§2 三層樹狀圖'], ['cardKids', '§2 直接數縮小後的樣本空間'],
-      ['indepCheck', '§3 判斷兩事件是否獨立'], ['indepVsExcl', '§3 獨立與互斥的辨析'], ['indepTable', '§3 從列聯表判斷獨立'], ['repeatTrial', '§3 重複試驗：恰有幾次成功'], ['atLeastOne', '§3 至少一次'], ['threeIndep', '§3 三個獨立事件'], ['needTrials', '§3 要試幾次才夠'],
-      ['totalPath', '§4 把所有路徑加起來'], ['bayesTwo', '§4 兩分支的貝氏'], ['bayesScreen', '§4 篩檢問題'], ['bayesThree', '§4 三分支的貝氏'], ['bayesTable', '§4 貝氏與列聯表'],
+      ['indepCheck', '§3 判斷兩事件是否獨立'], ['indepVsExcl', '§3 獨立與互斥的辨析'], ['indepTable', '§3 從列聯表判斷獨立'], ['repeatTrial', '§3 重複試驗：恰有幾次成功'], ['atLeastOne', '§3 至少一次'], ['threeIndep', '§3 三個獨立事件'], ['needTrials', '§3 要試幾次才夠'], ['ballIndep', '§3 號碼球：判斷兩事件是否獨立'], ['circuitSwitch', '§3 開關電路：串聯與並聯'],
+      ['totalPath', '§4 把所有路徑加起來'], ['bayesTwo', '§4 兩分支的貝氏'], ['bayesScreen', '§4 篩檢問題'], ['bayesThree', '§4 三分支的貝氏'], ['bayesTable', '§4 貝氏與列聯表'], ['findPrev', '§4 由貝氏的結果反求比例'], ['witnessOne', '§4 說實話的人'],
       ['condCombo', '§5 條件機率與排列組合'], ['typeIdent', '§5 題型辨識']
   ];
   var META_L2 = [
       ['condUnknown', '§2 條件機率：反求未知'], ['condDice2', '§2 兩顆骰子的條件機率與獨立'], ['condComb2', '§5 條件機率與組合'], ['drawThree', '§2 不放回連抽三次'], ['symDraw', '§2 抽籤的公平性'],
       ['tableFill', '§1 列聯表補完'], ['tableIndepFix', '§3 列聯表：要多少才獨立'],
       ['indepThreePeople', '§3 三人獨立的綜合'], ['solveP', '§3 由至少一次反求機率'], ['repeatCond', '§3 重複試驗與條件機率'], ['needTrialsAdv', '§3 要試幾次才夠（進階）'],
-      ['totalPath2', '§4 多分支：反推未知比率'], ['bayesTransfer', '§4 兩階段的貝氏'], ['bayesRetest', '§4 複檢兩次'], ['bayesParamP', '§4 盛行率改變的影響'], ['bayesCoin', '§4 硬幣與貝氏']
+      ['totalPath2', '§4 多分支：反推未知比率'], ['bayesTransfer', '§4 兩階段的貝氏'], ['bayesRetest', '§4 複檢兩次'], ['bayesParamP', '§4 盛行率改變的影響'], ['bayesCoin', '§4 硬幣與貝氏'],
+      ['condDice3', '§2 擲三次骰子的條件機率'], ['firstTo', '§2 輪流取球先取到、某色先取完'], ['gamePoints', '§3 比賽積分與獎金'], ['seqDepend', '§3 前一次的結果影響下一次'], ['negRetest', '§4 連續檢驗都沒驗出來']
   ];
   /* ══════════════════════════════════════════════════════════
      L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
@@ -2314,15 +2657,88 @@
              p: { p1: l3fp(p1), p2: l3fp(p2), v: 0, ans: l3fp(A2) } };
   };
 
+  /* ══ 2026-09-29 擴充：L3-16～18 的類似題產生器 ══ */
+
+  /* ══ L3-16　獎品抽完為止：「第 m 位可以抽」就是「前 m−1 位中獎不到 K 次」 ══ */
+  var XP_PZ = [{ t: '擲出偶數點', p: F(1, 2) }, { t: '擲出 $1$ 點或 $2$ 點', p: F(1, 3) }, { t: '擲出 $5$ 點或 $6$ 點', p: F(1, 3) },
+               { t: '擲出的點數不超過 $4$', p: F(2, 3) }, { t: '擲出 $3$ 點以上', p: F(2, 3) }, { t: '擲出奇數點', p: F(1, 2) }];
+  function xpBelow(n, K, p) { var s = F(0), j; for (j = 0; j < K && j <= n; j++) s = Fr.add(s, l3binP(n, j, p)); return s; }
+  L3.prizeStop = function (r) {
+    r();
+    var K = r.int(2, 4), ev = r.pick(XP_PZ), m = r.int(K + 1, K + 3), g = r.pick([1, 1, 2]), v = r.int(0, 1);
+    var Pm = xpBelow(m - 1, K, ev.p), Pn = xpBelow(m + g - 1, K, ev.p), A = Fr.div(Pn, Pm), n2 = m + g;
+    var head = '抽獎活動依序進行：每人擲一顆公正骰子一次，' + ev.t + '就中獎並拿走一份獎品，否則沒中。獎品共 ' + T(K) + ' 份，抽完就停止，後面的人不能再抽。';
+    var hb = '「第 ' + T(m) + ' 位可以抽」⟺ 前 ' + T(m - 1) + ' 位中獎不到 ' + T(K) + ' 次；「第 ' + T(n2) + ' 位可以抽」⟺ 前 ' + T(n2 - 1) + ' 位中獎不到 ' + T(K) + ' 次，而且後者成立時前者一定成立，所以兩件事的交集就是後者。'
+           + '「恰 ' + T('j') + ' 次中獎」是 ' + T('C^n_j\\,p^j(1-p)^{n-j}') + '，其中 ' + T('C^n_j') + ' 是「哪 ' + T('j') + ' 位中獎」的選法；把 ' + T('j=0') + ' 到 ' + T(K - 1) + ' 加起來：'
+           + T('P(\\text{前 }' + (m - 1) + '\\text{ 位不到 }' + K + '\\text{ 次})=' + Fr.tex(Pm)) + '、' + T('P(\\text{前 }' + (n2 - 1) + '\\text{ 位不到 }' + K + '\\text{ 次})=' + Fr.tex(Pn)) + '，相除即得。';
+    if (v === 1)
+      return { q: head + '求 ' + l3no(1) + '第 ' + T(m) + ' 位可以抽獎的機率　' + l3no(2) + '在「第 ' + T(m) + ' 位可以抽獎」的條件下，第 ' + T(n2) + ' 位也可以抽獎的機率。',
+               a: l3jo([l3no(1) + T(Fr.tex(Pm)), l3no(2) + T(Fr.tex(A))]), h: hb,
+               p: { K: K, p: l3fp(ev.p), m: m, g: g, v: 1, ans: [l3fp(Pm), l3fp(A)] } };
+    return { q: head + '在「第 ' + T(m) + ' 位可以抽獎」的條件下，求第 ' + T(n2) + ' 位也可以抽獎的機率。', a: T(Fr.tex(A)), h: hb,
+             p: { K: K, p: l3fp(ev.p), m: m, g: g, v: 0, ans: l3fp(A) } };
+  };
+
+
+  /* ══ L3-17　開關電路反求：每個開關只出現一次，通電機率是未知數 p 的一次式 ══ */
+  L3.circuitSolveP = function (r) {
+    r();
+    var cand = [F(1, 2), F(1, 3), F(2, 3), F(1, 4), F(3, 4), F(2, 5), F(3, 5), F(4, 5), F(1, 5)], t = 0, st, X, ps, P, i, v = r.int(0, 1);
+    do {
+      st = r.pick(XP_CIR); X = r.int(0, st.k - 1); ps = [];
+      for (i = 0; i < st.k; i++) ps.push(r.pick(cand));
+      P = xpCv(st.n, ps); t++;
+    } while (P.d > 200 && t < 100);
+    var p = ps[X], ps0 = ps.slice(), ps1 = ps.slice(); ps0[X] = F(0); ps1[X] = F(1);
+    var al = xpCv(st.n, ps0), be = Fr.sub(xpCv(st.n, ps1), al), Y = X;
+    if (v === 1) { do { Y = r.int(0, st.k - 1); } while (Y === X); }
+    var pY = ps.slice(); pY[Y] = F(1);
+    var PY1 = xpCv(st.n, pY), nY = Fr.mul(ps[Y], PY1), A2 = Fr.div(nY, P);
+    var P100 = Fr.mul(P, F(100)), Ptex = P100.d === 1 ? l3pct(P100.n) : Fr.tex(P), yl = T(XPL.charAt(Y));
+    var lab = ps.map(function (f, j) { return T(j === X ? 'p' : Fr.tex(f)); });
+    var hb = '每個開關只在電路裡出現一次，所以通電機率是 ' + T('p') + ' 的一次式：把 ' + T('p') + ' 換成 ' + T(0) + ' 得 ' + T(Fr.tex(al)) + '、換成 ' + T(1) + ' 得 ' + T(Fr.tex(Fr.add(al, be))) + ' ⟹ 通電機率 ' + T((al.n === 0 ? '' : Fr.tex(al) + '+') + Fr.tex(be) + 'p') + '（也可以由內往外、串聯相乘並聯走反面，直接把式子寫出來）。'
+           + '令它等於 ' + T(Ptex) + ' ⟹ ' + T('p=' + Fr.tex(p)) + '。' + l3no(2) + '把 ' + yl + ' 當成一定閉合重算整個電路得 ' + T(Fr.tex(PY1)) + '，乘上 ' + yl + ' 閉合的機率 ' + T(Fr.tex(ps[Y])) + '，再除以 ' + T(Ptex) + '。';
+    return { q: '某電路由開關組成：' + st.t + '。開關 ' + ps.map(function (f, j) { return T(XPL.charAt(j)); }).join('、') + ' 閉合（可以通電）的機率依序為 ' + lab.join('、') + '，且各開關互相獨立。已知電流可以從左端流到右端的機率為 ' + T(Ptex) + '。求 ' + l3no(1) + T('p') + ' 的值　' + l3no(2) + '已知電流可以流通，開關 ' + yl + ' 是閉合的機率。',
+             a: l3jo([l3no(1) + T('p=' + Fr.tex(p)), l3no(2) + T(Fr.tex(A2))]), h: hb,
+             p: { st: XP_CIR.indexOf(st), X: X, Y: Y, ps: ps.map(l3fp), v: v, ans: [l3fp(p), l3fp(A2)] } };
+  };
+
+  /* ══ L3-18　隨機回答（敏感問題）：「回答是」有三條路徑，由回答是的比例反推敏感問題的比例 ══ */
+  var XP_RR = [{ s: '你曾經在考試中作弊嗎？', w: '曾經在考試中作弊' }, { s: '你曾經不正常進出校園嗎？', w: '曾經不正常進出校園' },
+               { s: '你曾經在上課時玩手機遊戲嗎？', w: '曾經在上課時玩手機遊戲' }, { s: '你曾經抄襲同學的作業嗎？', w: '曾經抄襲同學的作業' }];
+  var XP_RK = [{ s: '你通常騎腳踏車上學嗎？', k: '已知全校通常騎腳踏車上學的比例為 $\\dfrac{1}{5}$', q: F(1, 5) },
+               { s: '你通常穿制服到校嗎？', k: '已知全校通常穿制服到校的比例為 $\\dfrac{3}{10}$', q: F(3, 10) },
+               { s: '你的學號是奇數嗎？', k: '已知受訪者的學號奇數、偶數各佔一半', q: F(1, 2) },
+               { s: '你今天有吃早餐嗎？', k: '已知全校吃早餐的比例為 $\\dfrac{4}{5}$', q: F(4, 5) }];
+  L3.randomResp = function (r) {
+    r();
+    var sn = r.pick(XP_RR), kn = r.pick(XP_RK), Rr, W, K, N, x, n, P, t = 0, v = r.int(0, 1);
+    do {
+      Rr = r.int(3, 6); W = r.int(1, 3); K = r.int(1, 3); N = Rr + W + K;
+      x = r.pick([F(1, 20), F(1, 10), F(1, 8), F(3, 20), F(1, 5), F(1, 4), F(3, 10), F(2, 5)]); n = r.pick([100, 200, 300, 400, 500, 600, 800, 1000]);
+      P = Fr.add(Fr.add(Fr.mul(F(Rr, N), x), Fr.mul(F(W, N), kn.q)), F(K, N)); t++;
+    } while (Fr.mul(P, F(n)).d !== 1 && t < 400);
+    if (Fr.mul(P, F(n)).d !== 1) { Rr = 5; W = 3; K = 2; N = 10; kn = XP_RK[0]; x = F(1, 8); n = 400; P = F(129, 400); }
+    var y = Fr.mul(P, F(n)).n, red = Fr.mul(F(Rr, N), x), wh = Fr.mul(F(W, N), kn.q), bk = F(K, N);
+    var A2 = v === 0 ? Fr.div(red, P) : Fr.div(Fr.mul(F(Rr, N), Fr.cp(x)), Fr.cp(P));
+    var head = '為了調查「' + sn.s + '」，老師準備一個袋子，裡面有 ' + T(Rr) + ' 顆紅球、' + T(W) + ' 顆白球、' + T(K) + ' 顆黑球。每位受訪者私下抽一球（看完放回）：抽到紅球就誠實回答「' + sn.s + '」；抽到白球就誠實回答「' + kn.s + '」（' + kn.k + '）；抽到黑球就直接回答「是」。老師只看得到「是」或「否」。結果 ' + T(n) + ' 位受訪者中有 ' + T(y) + ' 位回答「是」（以這個比例當作回答「是」的機率）。';
+    var hb = '回答「是」有三條路徑：紅球 ' + T(Fr.tex(F(Rr, N)) + 'x') + '、白球 ' + T(prodF([F(W, N), kn.q]) + '=' + Fr.tex(wh)) + '、黑球 ' + T(Fr.tex(bk)) + '。三條加起來等於 ' + T('\\dfrac{' + y + '}{' + n + '}') + ' ⟹ ' + T(Fr.tex(F(Rr, N)) + 'x=' + Fr.tex(P) + '-' + Fr.tex(wh) + '-' + Fr.tex(bk) + '=' + Fr.tex(red)) + ' ⟹ ' + T('x=' + Fr.tex(x)) + '。'
+           + l3no(2) + (v === 0 ? '分子只留紅球那一條 ' + T(Fr.tex(red)) + '，分母是回答「是」的機率 ' + T(Fr.tex(P)) + '。' : '回答「否」只可能來自紅球或白球：紅球那一條是 ' + T(Fr.tex(F(Rr, N)) + '(1-x)') + '，分母是 ' + T('1-' + Fr.tex(P)) + '。');
+    return { q: head + '求 ' + l3no(1) + '受訪者中「' + sn.w + '」的比例 ' + T('x') + '　' + l3no(2) + '已知某位受訪者回答「' + (v === 0 ? '是' : '否') + '」，他抽到紅球的機率。',
+             a: l3jo([l3no(1) + T('x=' + Fr.tex(x)), l3no(2) + T(Fr.tex(A2))]), h: hb,
+             p: { R: Rr, W: W, K: K, q: l3fp(kn.q), n: n, y: y, v: v, ans: [l3fp(x), l3fp(A2)] } };
+  };
+
   var META_L3 = [['diceBothWays', '§2 骰子兩事件的雙向條件機率'], ['compCellCond', '§2 由 P(A′∩B′) 補格求條件機率'], ['indepEquation', '§3 獨立＋加法定理解方程'],
                  ['condRange', '§2 條件機率的最大最小'], ['condOneZero', '§2 條件機率等於 1 的判讀'], ['tableIndepPick', '§3 列聯表判獨立'],
                  ['kthDrawColor', '§2 不放回：第 k 次取到某色'], ['atLeastTwoTrials', '§3 重複試驗：至少兩次成功'], ['exactlyOneHit', '§3 獨立＋恰一人成功'],
                  ['bayesTwoBranch', '§4 兩分支的貝氏'], ['bayesUnknownRate', '§4 貝氏反求未知的不良率'], ['bayesThreeBags', '§4 三袋（先選容器再取球）'],
-                 ['permMultiCond', '§5 不盡相異物排列的條件機率'], ['matchRemain', '§3 比賽剩餘局數'], ['twoStageFail', '§4 兩階段關卡']];
+                 ['permMultiCond', '§5 不盡相異物排列的條件機率'], ['matchRemain', '§3 比賽剩餘局數'], ['twoStageFail', '§4 兩階段關卡'],
+                 ['prizeStop', '§3 獎品抽完為止'], ['circuitSolveP', '§3 開關電路：由通電機率反求'], ['randomResp', '§4 隨機回答：由回答是的比例反推']];
   /* 固定題 L3-n 對應的類似題型 */
   var L3_FIX = { 'L3-1': 'diceBothWays', 'L3-2': 'compCellCond', 'L3-3': 'indepEquation', 'L3-4': 'condRange', 'L3-5': 'condOneZero',
                  'L3-6': 'tableIndepPick', 'L3-7': 'kthDrawColor', 'L3-8': 'atLeastTwoTrials', 'L3-9': 'exactlyOneHit', 'L3-10': 'bayesTwoBranch',
-                 'L3-11': 'bayesUnknownRate', 'L3-12': 'bayesThreeBags', 'L3-13': 'permMultiCond', 'L3-14': 'matchRemain', 'L3-15': 'twoStageFail' };
+                 'L3-11': 'bayesUnknownRate', 'L3-12': 'bayesThreeBags', 'L3-13': 'permMultiCond', 'L3-14': 'matchRemain', 'L3-15': 'twoStageFail', 'L3-16': 'prizeStop', 'L3-17': 'circuitSolveP', 'L3-18': 'randomResp' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：古典機率（兩顆骰子）、組合數取球、餘事件「至少一個」、和事件的加法（以上高一下 ch2）、從兩類人數讀比例（國中）
@@ -2411,6 +2827,9 @@
     'L2.symDraw': { f: function (p) { return p.k; }, keep: ['w', 'l'], why: '同一袋球，<b>不論排第幾位抽，抽到的機率都一樣</b>（第 (1) 小題兩題答案相同）：把所有球隨機排成一列，每個位置是某色的機率都是那個顏色所佔的比例。順序只有在「已經知道前面的人抽到什麼」之後才有影響。' },
     'L2.repeatCond': { f: function (p) { return p.m; }, keep: ['n', 'p'], why: '「已知前 $m$ 次都成功」之後，前 $m$ 次就不再是隨機的了：問題變成<b>剩下的 $n-m$ 次裡要恰好再成功 $k-m$ 次</b>（因為各次獨立，前面的結果不影響後面）。已知的次數不同，剩下要算的重複試驗就不同。' }
   };
+  /* 2026-09-29 擴充題型的對照題 */
+  CONTRAST['L1.circuitSwitch'] = { f: function (p) { return XP_CIR[p.st].n.o; }, why: '最外層是<b>串聯</b>時，每一段都要通，機率一路相乘，只會越乘越小；最外層是<b>並聯</b>時，只要有一段通就好，改算「全部都不通」再用 $1$ 減，機率會比每一段都大。先看清楚最外層是哪一種，再由內往外算。' };
+  CONTRAST['L2.gamePoints'] = { f: function (p) { return p.n; }, keep: ['pr'], why: '每一場的勝、和、敗機率完全一樣，只有<b>場數</b>不同。和局兩隊各加一分會互相抵銷，所以不論幾場，都只比「勝場數」與「敗場數」；場數一多，要列的情形變多，但每一種情形都是「排列數 $\\times$ 機率連乘」。' };
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

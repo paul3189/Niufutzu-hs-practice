@@ -588,6 +588,188 @@
              p: { d1: d1, d2: d2, d3: d3, turn: turn, turn2: turn2, ans: { Q: fr2(Q), R: fr2(Rt) } } };
   };
 
+  /* ══════════ 2026-09-28 擴充（依段考卷出現頻率補題型）：L1 5 型、L2 6 型 ══════════ */
+  function vmat(a, b, c, d) { return '\\begin{vmatrix}' + a + '&' + b + '\\\\' + c + '&' + d + '\\end{vmatrix}'; }
+  function lin2(x, y, cx, cy) { var s = term(cx, x, true); s += term(cy, y, s === ''); return s === '' ? '0' : s; }   /* cx·x+cy·y */
+  var HEX = { A: [0, 0], B: [1, 0], C: [2, 1], D: [2, 2], E: [1, 2], F: [0, 1], O: [1, 1] };                  /* 正六邊形：以 AB、AF 為單位的坐標 */
+  function hexComb(u) { var s = comb(u[0], ov('AB'), true); s += comb(u[1], ov('AF'), s === ''); return s === '' ? '\\vec 0' : s; }
+
+  /* 1-21 二階行列式：大數字用列（行）運算、已知值求變形後的值 */
+  L1.detCalc = function (r) {
+    var t = r.int(0, 1);
+    if (t === 0) {
+      var q = r.pick([49, 51, 98, 99, 101, 199, 201, 999, 1001, 1999, 2014, 2025, 2026]), d = r.nz(-12, 12), p = q + d, u = r.nz(-3, 3), flip = r.int(0, 1), tr = r.int(0, 1);
+      var M = flip ? [p + u, q + u, p, q] : [p, q, p + u, q + u], R = flip ? [u, u, p, q] : [p, q, u, u];
+      if (tr) { M = [M[0], M[2], M[1], M[3]]; R = [R[0], R[2], R[1], R[3]]; }
+      var ans = M[0] * M[3] - M[1] * M[2], ln = tr ? '行' : '列';
+      return { q: '求 ' + T(vmat(M[0], M[1], M[2], M[3])) + ' 的值。',
+               a: T(String(ans)),
+               h: '數字很大時不要硬乘：把第' + (flip ? '一' : '二') + ln + '減去第' + (flip ? '二' : '一') + ln + '（行列式的值不變），變成 ' + T(vmat(R[0], R[1], R[2], R[3])) + '，再交叉相乘相減。',
+               p: { t: 0, M: M, R: R, tr: tr, flip: flip, ans: ans } };
+    }
+    var k = r.nz(-9, 9), op = r.int(0, 5), m = r.pick([2, 3, -2, -3, 4]), row = r.int(0, 1), N, ans2, hh;
+    if (op === 0) { N = ['c', 'd', 'a', 'b']; ans2 = -k; hh = '兩列互換，行列式變號。'; }
+    else if (op === 1) { N = ['b', 'a', 'd', 'c']; ans2 = -k; hh = '兩行互換，行列式變號。'; }
+    else if (op === 2) { N = ['a', 'c', 'b', 'd']; ans2 = k; hh = '行列互換（第一列變成第一行），行列式的值不變。'; }
+    else if (op === 3) { N = row ? ['a', 'b', term(m, 'c', true), term(m, 'd', true)] : [term(m, 'a', true), term(m, 'b', true), 'c', 'd']; ans2 = m * k; hh = '只有一列乘了 ' + T(String(m)) + '，這個 ' + T(String(m)) + ' 可以整個提出來（只提一次）。'; }
+    else if (op === 4) { N = [term(m, 'a', true), term(m, 'b', true), term(m, 'c', true), term(m, 'd', true)]; ans2 = m * m * k; hh = '兩列都乘了 ' + T(String(m)) + '，每一列各提出一個 ' + T(String(m)) + '，一共提出 ' + T(hpz(m) + '^{2}') + '。'; }
+    else { N = row ? ['a', 'b', 'c' + term(m, 'a', false), 'd' + term(m, 'b', false)] : ['a', 'b' + term(m, 'a', false), 'c', 'd' + term(m, 'c', false)]; ans2 = k; hh = row ? '第二列是「原來的第二列加上第一列的 ' + T(String(m)) + ' 倍」，這種運算行列式的值不變。' : '第二行是「原來的第二行加上第一行的 ' + T(String(m)) + ' 倍」，這種運算行列式的值不變。'; }
+    return { q: '已知 ' + T(vmat('a', 'b', 'c', 'd') + '=' + k) + '，求 ' + T(vmat(N[0], N[1], N[2], N[3])) + '。',
+             a: T(String(ans2)),
+             h: '看新行列式是由原來的經過哪一種運算變來的：' + hh + '把 ' + T(vmat('a', 'b', 'c', 'd') + '=' + k) + ' 代進去。',
+             p: { t: 1, k: k, op: op, m: m, row: row, ans: ans2 } };
+  };
+
+  /* 2-7 正六邊形：用兩個向量表示其他向量 */
+  L1.hexagonLC = function (r) {
+    var BASES = [['AB', 'AF'], ['AB', 'AC'], ['AB', 'AE'], ['AC', 'AE'], ['AB', 'AD'], ['AF', 'BC'], ['AB', 'BC'], ['AC', 'AD']];
+    var bs = r.pick(BASES), vv = function (s) { return sub(HEX[s.charAt(1)], HEX[s.charAt(0)]); }, u = vv(bs[0]), v = vv(bs[1]), X, Y, w, useO;
+    do {
+      useO = r() < 0.2;
+      X = r.pick(useO ? ['A', 'B', 'C', 'D', 'E', 'F', 'O'] : ['A', 'B', 'C', 'D', 'E', 'F']); Y = r.pick(useO ? ['O'] : ['A', 'B', 'C', 'D', 'E', 'F']);
+      if (useO && r() < 0.5) { var tmp = X; X = Y; Y = tmp; }
+      w = sub(HEX[Y], HEX[X]);
+    } while (X === Y || (w[0] === u[0] && w[1] === u[1]) || (w[0] === v[0] && w[1] === v[1]) || (w[0] === -u[0] && w[1] === -u[1]) || (w[0] === -v[0] && w[1] === -v[1]));
+    var D = cross(u, v), x = F(cross(w, v), D), y = F(cross(u, w), D);
+    var hasO = X === 'O' || Y === 'O';
+    return { q: '正六邊形 ' + T('ABCDEF') + ' 中' + (hasO ? '，' + T('O') + ' 為中心' : '') + '，設 ' + T(ov(bs[0]) + '=' + vec('a')) + '、' + T(ov(bs[1]) + '=' + vec('b')) + '。若 ' + T(ov(X + Y) + '=x' + vec('a') + '+y' + vec('b')) + '，求 ' + T('(x,y)') + '。',
+             a: T('(x,y)=\\left(' + Fr.tex(x) + ',\\ ' + Fr.tex(y) + '\\right)'),
+             h: '先把每個頂點都用 ' + T(ov('AB')) + '、' + T(ov('AF')) + ' 表示：中心 ' + T('O') + ' 滿足 ' + T(ov('AO') + '=' + ov('AB') + '+' + ov('AF')) + '，而且 ' + T(ov('BC') + '=' + ov('AO')) + '、' + T(ov('AD') + '=2' + ov('AO')) + '。本題 ' + T(ov(X + Y) + '=' + hexComb(w)) + '、' + T(vec('a') + '=' + hexComb(u)) + '、' + T(vec('b') + '=' + hexComb(v)) + '，比較 ' + T(ov('AB')) + '、' + T(ov('AF')) + ' 的係數列兩條方程式解 ' + T('x,y') + '。',
+             p: { base: bs, X: X, Y: Y, ans: [fr2(x), fr2(y)] } };
+  };
+
+  /* 1-5 三角不等式：|mu+nv| 的範圍 */
+  L1.triIneqRange = function (r) {
+    var p1 = r.int(1, 6), p2 = r.int(1, 6), m = r.nz(-4, 4), n = r.nz(-4, 4);
+    var e1 = Math.abs(m) * p1, e2 = Math.abs(n) * p2, lo = Math.abs(e1 - e2), hi = e1 + e2, ex = comb(m, vec('u'), true) + comb(n, vec('v'), false);
+    return { q: '設 ' + T('|' + vec('u') + '|=' + p1) + '、' + T('|' + vec('v') + '|=' + p2) + '（' + T(vec('u') + ',' + vec('v')) + ' 的方向可以任意變動），求 ' + T('\\left|' + ex + '\\right|') + ' 的範圍。',
+             a: T(lo + '\\le\\left|' + ex + '\\right|\\le ' + hi),
+             h: '三角不等式：' + T('\\left||\\vec x|-|\\vec y|\\right|\\le|\\vec x+\\vec y|\\le|\\vec x|+|\\vec y|') + '，同向時取最大、反向時取最小。把 ' + T(comb(m, vec('u'), true)) + ' 與 ' + T(comb(n, vec('v'), true)) + ' 看成兩支向量，本題它們的長度是 ' + T(Math.abs(m) + '\\times ' + p1 + '=' + e1) + ' 與 ' + T(Math.abs(n) + '\\times ' + p2 + '=' + e2) + '。',
+             p: { p1: p1, p2: p2, m: m, n: n, ans: [lo, hi] } };
+  };
+
+  /* 1-22 柯西：一次式條件下 x²+y² 的最小值 */
+  L1.cauchyLinear = function (r) {
+    var p, q; do { p = r.nz(-5, 5); q = r.nz(-5, 5); } while (gcd(p, q) !== 1);
+    var c = r.nz(-20, 20), N = p * p + q * q, mn = F(c * c, N), P = [F(c * p, N), F(c * q, N)];
+    return { q: '設實數 ' + T('x,y') + ' 滿足 ' + T(term(p, 'x', true) + term(q, 'y', false) + '=' + c) + '，求 ' + T('x^{2}+y^{2}') + ' 的最小值，以及此時的 ' + T('(x,y)') + '。',
+             a: '最小值 ' + T(Fr.tex(mn)) + '，' + T('(x,y)=' + vtF(P)),
+             h: '柯西：$(px+qy)^{2}\\le(p^{2}+q^{2})(x^{2}+y^{2})$。本題代進去是 ' + T(hpz(c) + '^{2}\\le\\left(' + (p * p) + '+' + (q * q) + '\\right)\\left(x^{2}+y^{2}\\right)') + '，兩邊同除以 ' + T(String(N)) + '；等號在 ' + T('(x,y)=t' + vt([p, q])) + ' 時成立，代回條件解出 ' + T('t') + '。',
+             p: { p: p, q: q, c: c, ans: { min: fr2(mn), P: [fr2(P[0]), fr2(P[1])] } } };
+  };
+
+  /* 1-23 把向量分解成平行與垂直兩個分量 */
+  L1.orthDecomp = function (r) {
+    var b = r.pick([[1, 2], [2, 1], [1, -2], [-1, 2], [3, 1], [1, 3], [-1, 4], [4, 1], [2, -3], [3, 4], [1, 1], [1, -1], [-3, 2]]);
+    var k = r.nz(-4, 4), m = r.nz(-3, 3), w = [-b[1], b[0]], P = sc(k, b), Q = sc(m, w), a = add(P, Q);
+    return { q: '把 ' + T(vec('a') + '=' + vt(a)) + ' 分解成 ' + T('\\vec a=\\vec p+\\vec q') + '，其中 ' + T('\\vec p\\parallel\\vec b') + '、' + T('\\vec q\\perp\\vec b') + '，' + T(vec('b') + '=' + vt(b)) + '。求 ' + T('\\vec p') + ' 與 ' + T('\\vec q') + '。',
+             a: T('\\vec p=' + vt(P)) + '，' + T('\\vec q=' + vt(Q)),
+             h: T('\\vec p') + ' 就是 ' + T('\\vec a') + ' 在 ' + T('\\vec b') + ' 上的正射影：$\\vec p=\\dfrac{\\vec a\\cdot\\vec b}{|\\vec b|^{2}}\\vec b$。本題 ' + T('\\vec a\\cdot\\vec b=' + hdot(a, b)) + '、' + T('|\\vec b|^{2}=' + (b[0] * b[0]) + '+' + (b[1] * b[1])) + '；求出 ' + T('\\vec p') + ' 之後，' + T('\\vec q=\\vec a-\\vec p') + '。',
+             p: { a: a, b: b, ans: { p: P, q: Q } } };
+  };
+
+  /* L2 3-3　行列式的列（行）運算：新行列式 = 係數行列式 × 原行列式 */
+  L2.detRowOp = function (r) {
+    var t = r.int(0, 2), al, be, ga, de, D;
+    do { al = r.nz(-3, 3); be = r.nz(-3, 3); ga = r.nz(-3, 3); de = r.nz(-3, 3); D = al * de - be * ga; } while (D === 0);
+    var rev = r() < 0.4, k = r.nz(-6, 6), K = D * k, M;
+    if (t === 0) M = [lin2('a', 'b', al, be), lin2('a', 'b', ga, de), lin2('c', 'd', al, be), lin2('c', 'd', ga, de)];
+    else if (t === 1) M = [lin2('a', 'c', al, be), lin2('b', 'd', al, be), lin2('a', 'c', ga, de), lin2('b', 'd', ga, de)];
+    else M = [lin2('a', 'c', al, be), lin2('a', 'c', ga, de), lin2('b', 'd', al, be), lin2('b', 'd', ga, de)];
+    var big = vmat(M[0], M[1], M[2], M[3]), orig = vmat('a', 'b', 'c', 'd');
+    var ln = t === 1 ? '列' : '行', mix = function (x, y) { return '原第一' + ln + '的 ' + T(String(x)) + ' 倍加上原第二' + ln + '的 ' + T(String(y)) + ' 倍'; };
+    var how = (t === 2 ? '先轉置（行列互換，值不變），把原行列式看成 ' + T(vmat('a', 'c', 'b', 'd')) + '；' : '') +
+      '新行列式的第一' + ln + '是' + mix(al, be) + '，第二' + ln + '是' + mix(ga, de);
+    return { q: rev ? '已知 ' + T(big + '=' + K) + '，求 ' + T(orig) + '。' : '已知 ' + T(orig + '=' + k) + '，求 ' + T(big) + '。',
+             a: T(String(rev ? k : K)),
+             h: how + '。每一行（列）拆成兩個行列式相加、係數提出來，兩行相同的行列式是 $0$，最後剩「係數行列式 × 原行列式」：本題係數行列式 ' + T('\\left|\\begin{smallmatrix}' + al + '&' + be + '\\\\' + ga + '&' + de + '\\end{smallmatrix}\\right|=' + D) + '。',
+             p: { t: t, al: al, be: be, ga: ga, de: de, rev: rev, ans: rev ? k : K } };
+  };
+
+  /* L2 3-3　三角形內一點到頂點的距離：分點公式＋平方展開 */
+  L2.cevianLen = function (r) {
+    var t = r.int(0, 1), c, b, a = null, deg = null, dotF, m, n;
+    do { m = r.int(1, 4); n = r.int(1, 4); } while (m === n || gcd(m, n) !== 1);
+    if (t === 0) { c = r.int(2, 8); b = r.int(2, 8); deg = r.pick([60, 120, 90, 60, 120]); dotF = F(b * c * (deg === 60 ? 1 : deg === 120 ? -1 : 0), deg === 90 ? 1 : 2); }
+    else { c = r.int(3, 9); b = r.int(3, 9); a = r.int(Math.abs(b - c) + 1, b + c - 1); dotF = F(b * b + c * c - a * a, 2); }
+    var s = m + n, AD2 = Fr.div(Fr.add(F(n * n * c * c + m * m * b * b), Fr.mul(F(2 * m * n), dotF)), F(s * s));
+    var cond = t === 0 ? T('\\overline{AB}=' + c) + '、' + T('\\overline{AC}=' + b) + '、' + T('\\angle BAC=' + deg + '^\\circ')
+                       : T('\\overline{AB}=' + c) + '、' + T('\\overline{BC}=' + a) + '、' + T('\\overline{CA}=' + b);
+    return { q: T('\\triangle ABC') + ' 中 ' + cond + '，' + T('D') + ' 在 ' + T('\\overline{BC}') + ' 上且 ' + T('\\overline{BD}:\\overline{DC}=' + m + ':' + n) + '，求 ' + T('\\overline{AD}') + '。',
+             a: T(rootTexF(AD2)),
+             h: '分點公式（交叉配）：' + T(ov('AD') + '=' + combD(F(n, s), ov('AB'), true) + combD(F(m, s), ov('AC'), false)) + '，兩邊平方展開需要 ' + T(ov('AB') + '\\cdot' + ov('AC')) + '：' +
+                (t === 0 ? T(c + '\\times ' + b + '\\times\\cos' + deg + '^\\circ=' + Fr.tex(dotF)) : T('\\dfrac{' + c + '^{2}+' + b + '^{2}-' + a + '^{2}}{2}=' + Fr.tex(dotF)) + '（餘弦定理的變形）') + '，最後開根號。',
+             p: { t: t, c: c, b: b, a: a, deg: deg, m: m, n: n, ans: fr2(AD2) } };
+  };
+
+  /* L2 3-1／3-2　三角形兩條線的交點：各設一個參數，係數比對（或共線係數和為 1） */
+  L2.cevianIntersect = function (r) {
+    var pq = coprimePair(r, 4), rs = coprimePair(r, 4), ask = r.int(0, 1);
+    var d = F(pq[0], pq[0] + pq[1]), e = F(rs[0], rs[0] + rs[1]);
+    var t = Fr.div(Fr.sub(F(1), d), Fr.sub(F(1), Fr.mul(d, e))), x = Fr.sub(F(1), t), y = Fr.mul(t, e), u = Fr.sub(F(1), y);
+    var R = ask === 0 ? Fr.div(t, Fr.sub(F(1), t)) : Fr.div(u, Fr.sub(F(1), u));
+    return { q: T('\\triangle ABC') + ' 中，' + T('D') + ' 在 ' + T('\\overline{AB}') + ' 上、' + T('E') + ' 在 ' + T('\\overline{AC}') + ' 上，' + ratioTxt('AD', 'DB', pq[0], pq[1]) + '、' + ratioTxt('AE', 'EC', rs[0], rs[1]) + '，' + T('\\overline{BE}') + ' 與 ' + T('\\overline{CD}') + ' 交於 ' + T('P') + '。<br>(1) 若 ' + T(ov('AP') + '=x' + ov('AB') + '+y' + ov('AC')) + '，求 ' + T('(x,y)') + '　(2) 求 ' + T(ask === 0 ? '\\overline{BP}:\\overline{PE}' : '\\overline{CP}:\\overline{PD}') + '。',
+             a: '(1) ' + T('(x,y)=\\left(' + Fr.tex(x) + ',\\ ' + Fr.tex(y) + '\\right)') + '　(2) ' + T(R.n + ':' + R.d),
+             h: '本題 ' + T(ov('AD') + '=' + Fr.tex(d) + ov('AB')) + '、' + T(ov('AE') + '=' + Fr.tex(e) + ov('AC')) + '。設 ' + T(ov('BP') + '=t' + ov('BE')) + '，則 ' + T(ov('AP') + '=(1-t)' + ov('AB') + '+' + Fr.tex(e) + 't' + ov('AC')) + '；' + T('P') + ' 也在 ' + T('\\overline{CD}') + ' 上，把 ' + T(ov('AB')) + ' 換成 ' + T(Fr.tex(Fr.div(F(1), d)) + ov('AD')) + '，' + T('D,P,C') + ' 共線 ⟹ 兩係數和為 $1$，解出 ' + T('t') + '。',
+             p: { pq: pq, rs: rs, ask: ask, ans: { x: fr2(x), y: fr2(y), R: fr2(R) } } };
+  };
+
+  /* L2 3-3　由垂直條件求夾角（或長度比） */
+  L2.perpToAngle = function (r) {
+    var t = r() < 0.35 ? 1 : 0, deg, k, p, qq = null, cs, tries = 0, w = 0;
+    var PS = [F(1), F(2), F(3), F(-1), F(-2), F(-3), F(1, 2), F(-1, 2), F(2, 3), F(-2, 3), F(3, 2), F(-3, 2), F(2, 5), F(-2, 5)];
+    var cosOf = function (dg) { return dg === 60 ? F(1, 2) : dg === 120 ? F(-1, 2) : F(0); };
+    if (t === 0) {
+      var bad = true;
+      while (bad && tries++ < 500) {
+        deg = r.pick([60, 120, 60, 120, 90]); k = r.pick([1, 2, 3, 2]); cs = cosOf(deg); p = r.pick(PS);
+        var den = Fr.add(Fr.mul(F(k), cs), Fr.mul(p, F(k * k)));
+        if (den.n === 0) continue;
+        qq = Fr.div(Fr.sub(F(0), Fr.add(F(1), Fr.mul(Fr.mul(p, F(k)), cs))), den);
+        bad = qq.n === 0 || Fr.eq(qq, p) || qq.d > 6 || Math.abs(qq.n) > 12 || Fr.eq(Fr.add(p, qq), F(0));
+      }
+      if (bad) { deg = 60; k = 2; p = F(1); qq = F(-2, 5); cs = cosOf(60); }
+      var lenTxt = k === 1 ? '|\\vec a|=|\\vec b|' : '|\\vec b|=' + k + '|\\vec a|';
+      return { q: '非零向量 ' + T('\\vec a,\\vec b') + ' 滿足 ' + T(lenTxt) + '，且 ' + T('\\vec a' + combF(p, '\\vec b', false)) + ' 與 ' + T('\\vec a' + combF(qq, '\\vec b', false)) + ' 互相垂直。求 ' + T('\\vec a') + ' 與 ' + T('\\vec b') + ' 的夾角。',
+               a: T(deg + '^\\circ'),
+               h: '垂直 ⟹ 內積為 $0$：' + T('|\\vec a|^{2}+(p+q)\\,\\vec a\\cdot\\vec b+pq|\\vec b|^{2}=0') + '，本題 ' + T('p=' + Fr.tex(p) + ',\\ q=' + Fr.tex(qq)) + '。設 ' + T('|\\vec a|=s') + '、' + T('|\\vec b|=' + (k === 1 ? '' : k) + 's') + '，則 ' + T('\\vec a\\cdot\\vec b=' + (k === 1 ? '' : k) + 's^{2}\\cos\\theta') + '，代進去 ' + T('s^{2}') + ' 全部約掉，解出 ' + T('\\cos\\theta') + ' 再查特殊角。',
+               p: { t: 0, deg: deg, k: k, p: fr2(p), q: fr2(qq), ans: deg } };
+    }
+    deg = r.pick([60, 120]); cs = cosOf(deg); w = r.int(0, 1);
+    var mag = r.pick([F(1), F(2), F(3), F(4), F(1, 2), F(2, 3), F(3, 2), F(4, 3)]);
+    p = deg === 60 ? Fr.sub(F(0), mag) : mag;                                   /* 要 p·cosθ<0 才有正的長度比 */
+    k = w === 0 ? Fr.div(F(-1), Fr.mul(p, cs)) : Fr.div(Fr.sub(F(0), cs), p);    /* a⊥(a+pb)：1+pkc=0；b⊥(a+pb)：kc+pk²=0 */
+    return { q: '非零向量 ' + T('\\vec a,\\vec b') + ' 的夾角為 ' + T(deg + '^\\circ') + '，且 ' + T((w === 0 ? '\\vec a' : '\\vec b') + '\\perp\\left(\\vec a' + combF(p, '\\vec b', false) + '\\right)') + '，求 ' + T('\\dfrac{|\\vec b|}{|\\vec a|}') + '。',
+             a: T('\\dfrac{|\\vec b|}{|\\vec a|}=' + Fr.tex(k)),
+             h: '垂直 ⟹ 內積為 $0$：' + (w === 0 ? T('\\vec a\\cdot\\left(\\vec a' + combF(p, '\\vec b', false) + '\\right)=|\\vec a|^{2}' + combF(p, '\\,\\vec a\\cdot\\vec b', false) + '=0') : T('\\vec b\\cdot\\left(\\vec a' + combF(p, '\\vec b', false) + '\\right)=\\vec a\\cdot\\vec b' + combF(p, '|\\vec b|^{2}', false) + '=0')) + '。設 ' + T('|\\vec a|=s') + '、' + T('|\\vec b|=ks') + '，' + T('\\vec a\\cdot\\vec b=ks^{2}\\cos' + deg + '^\\circ') + '，代進去約掉 ' + T('s^{2}') + ' 解 ' + T('k') + '。',
+             p: { t: 1, deg: deg, w: w, p: fr2(p), ans: fr2(k) } };
+  };
+
+  /* L2 3-1／3-2　中點與分點：由 PA、PQ 反求 BC */
+  L2.midVecBC = function (r) {
+    var mn = coprimePair(r, 4), m = mn[0], n = mn[1], s = m + n, PA, PC, num;
+    do { PA = [r.nz(-6, 6), r.nz(-6, 6)]; PC = [r.nz(-6, 6), r.nz(-6, 6)]; num = [n * PA[0] + m * PC[0], n * PA[1] + m * PC[1]]; }
+    while (cross(PA, PC) === 0 || num[0] % s !== 0 || num[1] % s !== 0);
+    var PQ = [num[0] / s + 0, num[1] / s + 0], BC = sc(2, PC);
+    return { q: T('\\triangle ABC') + ' 中，' + T('P') + ' 為 ' + T('\\overline{BC}') + ' 的中點，' + T('Q') + ' 在 ' + T('\\overline{AC}') + ' 上且 ' + ratioTxt('AQ', 'QC', m, n) + '。已知 ' + T(ov('PA') + '=' + vt(PA)) + '、' + T(ov('PQ') + '=' + vt(PQ)) + '，求 ' + T(ov('BC')) + '。',
+             a: T(ov('BC') + '=' + vt(BC)),
+             h: '全部以 ' + T('P') + ' 為起點：' + T('Q') + ' 分 ' + T('\\overline{AC}') + (m === n ? ' 成兩半' : ' 成 ' + T(m + ':' + n)) + '，所以 ' + T(ov('PQ') + '=' + combD(F(n, s), ov('PA'), true) + combD(F(m, s), ov('PC'), false)) + '（交叉配），移項得 ' + T(ov('PC') + '=' + (m === 1 ? s + ov('PQ') + comb(-n, ov('PA'), false) : '\\dfrac{' + s + ov('PQ') + comb(-n, ov('PA'), false) + '}{' + m + '}')) + '，把 ' + T(vt(PQ)) + '、' + T(vt(PA)) + ' 代進去；' + T('P') + ' 是中點，' + T(ov('BC') + '=2' + ov('PC')) + '。',
+             p: { m: m, n: n, PA: PA, PQ: PQ, ans: BC } };
+  };
+
+  /* L2 3-3　外心與內積：AO·AB = AB²/2 */
+  L2.circumDot = function (r) {
+    var a, b, c; do { a = r.int(3, 9); b = r.int(3, 9); c = r.int(3, 9); } while (a >= b + c || b >= a + c || c >= a + b || (a === b && b === c));
+    var v = r.int(0, 2), L = [['A', 'B', 'C'], ['B', 'C', 'A'], ['C', 'A', 'B']][v];
+    var side = { AB: c, BC: a, CA: b }, len = function (P, Q) { return side[P + Q] || side[Q + P]; };
+    var X = L[0], Y = L[1], Z = L[2], s1 = len(X, Y), s2 = len(X, Z);
+    var v1 = F(s1 * s1, 2), v2 = F(s2 * s2 - s1 * s1, 2);
+    return { q: T('\\triangle ABC') + ' 中 ' + T('\\overline{AB}=' + c) + '、' + T('\\overline{BC}=' + a) + '、' + T('\\overline{CA}=' + b) + '，' + T('O') + ' 為外心。求 (1) ' + T(ov(X + 'O') + '\\cdot' + ov(X + Y)) + '　(2) ' + T(ov(X + 'O') + '\\cdot' + ov(Y + Z)) + '。',
+             a: '(1) ' + T(Fr.tex(v1)) + '　(2) ' + T(Fr.tex(v2)),
+             h: '外心在 ' + T('\\overline{' + X + Y + '}') + ' 的中垂線上，所以 ' + T(ov(X + 'O')) + ' 在 ' + T(ov(X + Y)) + ' 上的正射影剛好是 ' + T(ov(X + Y)) + ' 的一半：' + T(ov(X + 'O') + '\\cdot' + ov(X + Y) + '=\\dfrac12\\overline{' + X + Y + '}^{2}=\\dfrac12\\times ' + s1 + '^{2}') + '；(2) 把 ' + T(ov(Y + Z) + '=' + ov(X + Z) + '-' + ov(X + Y)) + ' 代進去，兩項都用 (1) 的結論（' + T('\\overline{' + X + Z + '}=' + s2) + '）。',
+             p: { a: a, b: b, c: c, v: v, ans: [fr2(v1), fr2(v2)] } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -820,19 +1002,227 @@
       '把 $|' + vec('a') + '|^{2}=' + na + '$、$' + vec('a') + '\\cdot' + vec('b') + '=' + ab + '$、$|' + vec('b') + '|^{2}=' + nb + '$ 代進去：$=' + term(na, 't^{2}', true) + term(2 * ab, 't', false) + term(nb, '', false) + '$。',
       '配方：$=' + na + '\\left(t' + (t0 < 0 ? '+' + (-t0) : '-' + t0) + '\\right)^{2}+' + m2 + '$，在 $t=' + t0 + '$ 時最小，最小的平方是 $' + m2 + '$，開根號得 $' + sqrtTex(m2) + '$。答案：' + o.a + '。'];
   };
+  /* ── 2026-09-28 擴充：新 L1 五型的第一層提示與解題步驟 ── */
+  L1_H1.detCalc = '這是「二階行列式的計算與性質」：先看能不能用列（行）運算讓數字變小，或看新行列式是由原來的經過哪一種運算變來的。';
+  L1_H1.hexagonLC = '這是「正六邊形的線性組合」：先把每個頂點都用 $\\overrightarrow{AB}$、$\\overrightarrow{AF}$ 表示，再換成題目指定的兩個向量。';
+  L1_H1.triIneqRange = '這是「三角不等式」：兩支向量同向時和最長、反向時最短，先算出兩支向量各自的長度。';
+  L1_H1.cauchyLinear = '這是「柯西不等式」：一次式的條件配上平方和，用 $(px+qy)^{2}\\le(p^{2}+q^{2})(x^{2}+y^{2})$ 把平方和壓在下面。';
+  L1_H1.orthDecomp = '這是「分解成平行與垂直兩個分量」：平行的那一個就是正射影，垂直的那一個用相減得到。';
+
+  L1_SOL.detCalc = function (p, o) {
+    if (p.t === 0) {
+      var M = p.M, R = p.R, ln = p.tr ? '行' : '列';
+      return ['二階行列式的性質：把某一' + ln + '減去另一' + ln + '，值不變。這題兩' + ln + '的數字只差一點點，先相減讓數字變小。',
+        '第' + (p.flip ? '一' : '二') + ln + '減去第' + (p.flip ? '二' : '一') + ln + '：$' + vmat(M[0], M[1], M[2], M[3]) + '=' + vmat(R[0], R[1], R[2], R[3]) + '$。',
+        '交叉相乘相減：$' + hpz(R[0]) + '\\times ' + hpz(R[3]) + '-' + hpz(R[1]) + '\\times ' + hpz(R[2]) + '=' + p.ans + '$。答案：' + o.a + '。'];
+    }
+    var why = ['兩列互換：行列式變號。', '兩行互換：行列式變號。', '行列互換（轉置）：值不變。', '某一列乘 $' + p.m + '$：整個行列式乘 $' + p.m + '$。',
+      '四個數都乘 $' + p.m + '$＝兩列各乘 $' + p.m + '$：整個行列式乘 $' + hpz(p.m) + '^{2}=' + (p.m * p.m) + '$。', '把某一列（行）的倍數加到另一列（行）：值不變。'][p.op];
+    return ['比較新舊兩個行列式，找出做了哪一種運算。',
+      '這題是' + why,
+      '所以答案是 $' + p.k + '$ 經過這個運算後的值：' + o.a + '。'];
+  };
+
+  L1_SOL.hexagonLC = function (p, o) {
+    var vv = function (s) { return sub(HEX[s.charAt(1)], HEX[s.charAt(0)]); }, u = vv(p.base[0]), v = vv(p.base[1]), w = sub(HEX[p.Y], HEX[p.X]);
+    return ['以 $A$ 為起點、用 $\\overrightarrow{AB}$、$\\overrightarrow{AF}$ 表示各點：$\\overrightarrow{AO}=\\overrightarrow{AB}+\\overrightarrow{AF}$，$\\overrightarrow{AC}=2\\overrightarrow{AB}+\\overrightarrow{AF}$，$\\overrightarrow{AD}=2\\overrightarrow{AB}+2\\overrightarrow{AF}$，$\\overrightarrow{AE}=\\overrightarrow{AB}+2\\overrightarrow{AF}$。',
+      '所以 $\\vec a=' + hexComb(u) + '$、$\\vec b=' + hexComb(v) + '$，而 $' + ov(p.X + p.Y) + '=' + hexComb(w) + '$。',
+      '把 $x\\vec a+y\\vec b$ 展開後比較係數：$\\overrightarrow{AB}$ 的係數 $' + lin2('x', 'y', u[0], v[0]) + '=' + w[0] + '$、$\\overrightarrow{AF}$ 的係數 $' + lin2('x', 'y', u[1], v[1]) + '=' + w[1] + '$，解得 ' + o.a + '。'];
+  };
+
+  L1_SOL.triIneqRange = function (p, o) {
+    var e1 = Math.abs(p.m) * p.p1, e2 = Math.abs(p.n) * p.p2;
+    return ['兩支向量 $' + comb(p.m, vec('u'), true) + '$、$' + comb(p.n, vec('v'), true) + '$ 的長度分別是 $' + Math.abs(p.m) + '\\times ' + p.p1 + '=' + e1 + '$ 與 $' + Math.abs(p.n) + '\\times ' + p.p2 + '=' + e2 + '$。',
+      '三角不等式：兩支同向時和的長度最大，是 $' + e1 + '+' + e2 + '=' + p.ans[1] + '$；反向時最小，是 $\\left|' + e1 + '-' + e2 + '\\right|=' + p.ans[0] + '$。',
+      '方向可以任意轉，中間的值都取得到，答案：' + o.a + '。'];
+  };
+
+  L1_SOL.cauchyLinear = function (p, o) {
+    var N = p.p * p.p + p.q * p.q, mn = fF(p.ans.min), tt = F(p.c, N);
+    return ['柯西：$\\left(' + term(p.p, 'x', true) + term(p.q, 'y', false) + '\\right)^{2}\\le\\left(' + (p.p * p.p) + '+' + (p.q * p.q) + '\\right)\\left(x^{2}+y^{2}\\right)$，左邊是 $' + hpz(p.c) + '^{2}=' + (p.c * p.c) + '$。',
+      '所以 $x^{2}+y^{2}\\ge\\dfrac{' + (p.c * p.c) + '}{' + N + '}' + (mn.d === N ? '' : '=' + Fr.tex(mn)) + '$。',
+      '等號在 $(x,y)=t' + vt([p.p, p.q]) + '$ 時成立：代回 $' + term(p.p, 'x', true) + term(p.q, 'y', false) + '=' + p.c + '$ 得 $' + N + 't=' + p.c + '$，$t=' + Fr.tex(tt) + '$。答案：' + o.a + '。'];
+  };
+
+  L1_SOL.orthDecomp = function (p, o) {
+    var a = p.a, b = p.b, d = dot(a, b), nb = n2(b);
+    return ['平行於 $\\vec b$ 的分量就是正射影：$\\vec p=\\dfrac{\\vec a\\cdot\\vec b}{|\\vec b|^{2}}\\vec b$。',
+      '$\\vec a\\cdot\\vec b=' + hdot(a, b) + '=' + d + '$、$|\\vec b|^{2}=' + nb + '$，所以 $\\vec p=\\dfrac{' + d + '}{' + nb + '}' + vt(b) + '=' + vt(p.ans.p) + '$。',
+      '$\\vec q=\\vec a-\\vec p=' + vt(a) + '-' + vt(p.ans.p) + '=' + vt(p.ans.q) + '$（可驗算 $\\vec q\\cdot\\vec b=0$）。答案：' + o.a + '。'];
+  };
+
+  /* ══════════ 2026-09-29 補充：平面上直線的參數式（HANDOUT_SPEC §4 裁定收入 g11a-ch03）：L1 2 型、L2 2 型 ══════════ */
+  function linT(c, k, v) { return c === 0 ? term(k, v, true) : String(c) + term(k, v, false); }          /* c+k·v，如 3-2t（k≠0） */
+  function psys(x0, p, y0, q, v) { return '\\begin{cases}x=' + linT(x0, p, v) + '\\\\y=' + linT(y0, q, v) + '\\end{cases}'; }
+  function eqTex(a, b, c) { var s = term(a, 'x', true); s += term(b, 'y', s === ''); return s + '=' + c; }   /* ax+by=c */
+  function normEq(a, b, c) { var g = gcd(gcd(a, b), c) || 1; if (a < 0 || (a === 0 && b < 0)) g = -g; return [a / g, b / g, c / g]; }
+  function lineOf(P, d) { return normEq(d[1], -d[0], d[1] * P[0] - d[0] * P[1]); }                       /* 過 P、方向 d 的一般式 */
+  function plusC(c, s) { return c === 0 ? s : String(c) + '+' + s; }                                      /* 常數＋未知係數項，如 3+ht */
+
+  /* 2-8 直線的參數式與一般式互換（方向向量 (p,q) ⟷ 法向量 (q,-p)） */
+  L1.lineParamEq = function (r) {
+    var t = r.int(0, 2), d, P, E;
+    do { d = [r.nz(-5, 5), r.nz(-5, 5)]; } while (gcd(d[0], d[1]) > 2);
+    P = [r.int(-5, 5), r.int(-5, 5)]; E = lineOf(P, d);
+    var w = [-E[1], E[0]];                                                                               /* 與 L 平行的最簡方向 */
+    if (t === 0) {
+      return { q: '直線 ' + T('L:\\ ' + psys(P[0], d[0], P[1], d[1], 't')) + '（' + T('t') + ' 為實數）。把 ' + T('L') + ' 寫成 ' + T('ax+by=c') + ' 的形式（' + T('a,b,c') + ' 為整數、沒有 $1$ 以外的公因數，且 ' + T('a\\gt 0') + '）。',
+               a: T(eqTex(E[0], E[1], E[2])),
+               h: '方向向量是 ' + T(vt(d)) + '，兩個分量對調、其中一個變號就得到法向量 ' + T(vt([d[1], -d[0]])) + '；再把 ' + T('t=0') + ' 的點 ' + T(vt(P)) + ' 代進去定出常數，最後約分、調整正負號。',
+               p: { t: 0, P: P, d: d, ans: E } };
+    }
+    if (t === 1) {
+      var m = r.nz(-2, 2), j = r.int(-2, 2), h = m * w[0], q = m * w[1], S = add(P, sc(j, w));
+      return { q: '直線 ' + T('L:\\ ' + eqTex(E[0], E[1], E[2])) + ' 的參數式可以寫成 ' + T('\\begin{cases}x=' + plusC(S[0], 'ht') + '\\\\y=k' + term(q, 't', false) + '\\end{cases}') + '（' + T('t') + ' 為實數），求 ' + T('h') + ' 與 ' + T('k') + '。',
+               a: T('h=' + h) + '、' + T('k=' + S[1]),
+               h: T(eqTex(E[0], E[1], E[2])) + ' 的法向量是 ' + T(vt([E[0], E[1]])) + '，方向向量可取 ' + T(vt(w)) + '（對調再變號）。方向 ' + T('(h,' + q + ')') + ' 要和它平行；' + T('t=0') + ' 的點 ' + T('(' + S[0] + ',k)') + ' 要在 ' + T('L') + ' 上。',
+               p: { t: 1, E: E, S: S, h: h, q: q } };
+    }
+    var m1 = r.nz(-3, 3), m2 = r.nz(-3, 3), dir = sc(m1, w), nor = sc(m2, [E[0], E[1]]), hd = r.int(0, 1), hn = r.int(0, 1);
+    var dv = hd ? '(' + dir[0] + ',h)' : '(h,' + dir[1] + ')', nv = hn ? '(' + nor[0] + ',k)' : '(k,' + nor[1] + ')';
+    return { q: '已知 ' + T(vec('v') + '=' + dv) + ' 是直線 ' + T(eqTex(E[0], E[1], E[2])) + ' 的一個方向向量，' + T(vec('n') + '=' + nv) + ' 是它的一個法向量，求 ' + T('h') + ' 與 ' + T('k') + '。',
+             a: T('h=' + dir[hd]) + '、' + T('k=' + nor[hn]),
+             h: T('ax+by=c') + ' 的法向量是係數 ' + T('(a,b)') + '，本題是 ' + T(vt([E[0], E[1]])) + '；方向向量是它對調再變號的 ' + T(vt(w)) + '。' + T(vec('v')) + ' 要和 ' + T(vt(w)) + ' 平行、' + T(vec('n')) + ' 要和 ' + T(vt([E[0], E[1]])) + ' 平行，用交叉相乘相等列式。',
+             p: { t: 2, E: E, dir: dir, nor: nor, hd: hd, hn: hn } };
+  };
+
+  /* 2-9 參數式找點：已知 x 坐標、與坐標軸的交點、判斷點在不在直線上 */
+  L1.lineParamPt = function (r) {
+    var t = r.int(0, 2), d = [r.nz(-4, 4), r.nz(-4, 4)], P = [r.int(-5, 5), r.int(-5, 5)], t0 = r.nz(-4, 4);
+    if (t === 1) {                                                                                       /* 先定交點再反推起點 */
+      var ax = r.int(0, 1), X1 = ax ? [0, r.int(-6, 6)] : [r.int(-6, 6), 0];
+      P = sub(X1, sc(t0, d));
+      return { q: '求直線 ' + T('L:\\ ' + psys(P[0], d[0], P[1], d[1], 't')) + '（' + T('t') + ' 為實數）與 ' + T(ax ? 'y' : 'x') + ' 軸的交點坐標，以及交點對應的 ' + T('t') + ' 值。',
+               a: '交點 ' + T(vt(X1)) + '，' + T('t=' + t0),
+               h: T(ax ? 'y' : 'x') + ' 軸上的點 ' + T(ax ? 'x' : 'y') + ' 坐標是 $0$：令 ' + T(ax ? linT(P[0], d[0], 't') + '=0' : linT(P[1], d[1], 't') + '=0') + ' 解出 ' + T('t') + '，再代回另一個坐標。',
+               p: { t: 1, P: P, d: d, ax: ax, X: X1, t0: t0 } };
+    }
+    var X = add(P, sc(t0, d)), L = T('L:\\ ' + psys(P[0], d[0], P[1], d[1], 't'));
+    if (t === 0) {
+      return { q: '點 ' + T('Q(' + X[0] + ',k)') + ' 在直線 ' + L + '（' + T('t') + ' 為實數）上，求 ' + T('Q') + ' 對應的參數 ' + T('t') + ' 與 ' + T('k') + '。',
+               a: T('t=' + t0) + '、' + T('k=' + X[1]),
+               h: '用 ' + T('x') + ' 坐標列式：' + T(linT(P[0], d[0], 't') + '=' + X[0]) + '，解出 ' + T('t') + ' 後代入 ' + T('y=' + linT(P[1], d[1], 't')) + '。',
+               p: { t: 0, P: P, d: d, X: X, t0: t0 } };
+    }
+    var on = r() < 0.5, off; do { off = r.pick([[1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [1, -1]]); } while (cross(off, d) === 0);   /* 偏移不能與方向平行，否則還在線上 */
+    var R = on ? X : add(X, off);
+    return { q: '點 ' + T('R' + vt(R)) + ' 在不在直線 ' + L + '（' + T('t') + ' 為實數）上？若在，求它對應的 ' + T('t') + '。',
+             a: on ? '在 ' + T('L') + ' 上，' + T('t=' + t0) : '不在 ' + T('L') + ' 上',
+             h: '由 ' + T('x') + ' 坐標 ' + T(linT(P[0], d[0], 't') + '=' + R[0]) + ' 解出 ' + T('t') + '，再代進 ' + T('y=' + linT(P[1], d[1], 't')) + ' 看是不是 ' + T(String(R[1])) + '：兩個坐標要用<b>同一個</b> ' + T('t') + ' 才算在線上。',
+             p: { t: 2, P: P, d: d, R: R, on: on, t0: t0 } };
+  };
+
+  /* 2-10 參數範圍：線段與直線相交的條件、交點的參數與位置 */
+  L2.paramSegment = function (r) {
+    var t = r.int(0, 1), A = [r.int(-5, 5), r.int(-5, 5)], w, a, b, B;
+    if (t === 0) {
+      do { w = [r.nz(-4, 4), r.nz(-4, 4)]; a = r.int(1, 3); b = r.nz(-3, 3); } while (a * w[0] + b * w[1] === 0);
+      B = add(A, sc(r.int(1, 2), w));
+      var kA = a * A[0] + b * A[1], kB = a * B[0] + b * B[1];
+      return { q: '設 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '。若直線 ' + T(eqTex(a, b, 'k')) + ' 與線段 ' + T('\\overline{AB}') + ' 有交點，求 ' + T('k') + ' 的範圍。',
+               a: T(Math.min(kA, kB) + '\\le k\\le ' + Math.max(kA, kB)),
+               h: '線段上的點寫成 ' + T(ov('OP') + '=' + ov('OA') + '+t\\,' + ov('AB')) + '、' + T('0\\le t\\le 1') + '。本題 ' + T(ov('AB') + '=' + vt(sub(B, A))) + '，代入得 ' + T(lin2('x', 'y', a, b) + '=' + linT(kA, kB - kA, 't')) + '，看 ' + T('t') + ' 從 $0$ 到 $1$ 時它的範圍。',
+               p: { t: 0, A: A, B: B, a: a, b: b } };
+    }
+    var den, num, P, c, tries = 0;
+    do {                                                                                                 /* 坐標與常數都控制在小範圍 */
+      den = r.pick([1, 2, 3, 4, 5]);
+      do { num = den === 1 ? r.pick([-2, -1, 2, 3]) : r.int(-den, 2 * den); } while (num === 0 || num === den || gcd(num, den) !== 1);
+      do { w = [r.nz(-3, 3), r.nz(-3, 3)]; a = r.int(1, 3); b = r.nz(-3, 3); } while (a * w[0] + b * w[1] === 0);
+      A = [r.int(-5, 5), r.int(-5, 5)]; B = add(A, sc(den, w)); P = add(A, sc(num, w)); c = a * P[0] + b * P[1];
+    } while (++tries < 60 && (Math.max(Math.abs(B[0]), Math.abs(B[1]), Math.abs(P[0]), Math.abs(P[1])) > 12 || Math.abs(c) > 40));
+    var tt = F(num, den);
+    var where = num < 0 ? '在 ' + T('A') + ' 的外側（' + T('t\\lt 0') + '）' : num > den ? '在 ' + T('B') + ' 的外側（' + T('t\\gt 1') + '）' : '在線段 ' + T('\\overline{AB}') + ' 上，' + T('\\overline{AP}:\\overline{PB}=' + num + ':' + (den - num));
+    return { q: '設 ' + T('A' + vt(A)) + '、' + T('B' + vt(B)) + '，點 ' + T('P') + ' 滿足 ' + T(ov('OP') + '=' + ov('OA') + '+t\\,' + ov('AB')) + '，且 ' + T('P') + ' 在直線 ' + T(eqTex(a, b, c)) + ' 上。<br>(1) 求 ' + T('t') + '　(2) 求 ' + T('P') + ' 的坐標　(3) ' + T('P') + ' 在線段 ' + T('\\overline{AB}') + ' 上，還是在 ' + T('A') + '、' + T('B') + ' 哪一側的延長線上？（在線段上時再求 ' + T('\\overline{AP}:\\overline{PB}') + '）',
+             a: '(1) ' + T('t=' + Fr.tex(tt)) + '　(2) ' + T('P' + vt(P)) + '　(3) ' + where,
+             h: '本題 ' + T(ov('AB') + '=' + vt(sub(B, A))) + '，' + T('P=\\left(' + linT(A[0], B[0] - A[0], 't') + ',\\ ' + linT(A[1], B[1] - A[1], 't') + '\\right)') + '，代入直線解出 ' + T('t') + '。' + T('0\\le t\\le 1') + ' 在線段上（' + T('\\overline{AP}:\\overline{PB}=t:(1-t)') + '）、' + T('t\\gt 1') + ' 超過 ' + T('B') + '、' + T('t\\lt 0') + ' 在 ' + T('A') + ' 的另一側。',
+             p: { t: 1, A: A, B: B, a: a, b: b, c: c, tt: fr2(tt) } };
+  };
+
+  /* 2-11 兩直線的參數式：交點、重合、垂直 */
+  L2.paramTwoLines = function (r) {
+    var t = r.int(0, 2), X = [r.int(-4, 4), r.int(-4, 4)], t0 = r.nz(-3, 3), s0 = r.nz(-3, 3), u, v, A, B;
+    var L1s = function () { return T('L_1:\\ ' + psys(A[0], u[0], A[1], u[1], 't')); };
+    if (t === 0) {
+      do { u = [r.nz(-3, 3), r.nz(-3, 3)]; v = [r.nz(-3, 3), r.nz(-3, 3)]; } while (cross(u, v) === 0);
+      A = sub(X, sc(t0, u)); B = sub(X, sc(s0, v));
+      return { q: '兩直線 ' + L1s() + '、' + T('L_2:\\ ' + psys(B[0], v[0], B[1], v[1], 's')) + '（' + T('t,s') + ' 為實數），求兩直線的交點坐標。',
+               a: '交點 ' + T(vt(X)),
+               h: '方向 ' + T(vt(u)) + '、' + T(vt(v)) + ' 交叉相乘不相等，兩直線恰交於一點。令兩式的 ' + T('x') + '、' + T('y') + ' 分別相等：' + T(linT(A[0], u[0], 't') + '=' + linT(B[0], v[0], 's')) + '、' + T(linT(A[1], u[1], 't') + '=' + linT(B[1], v[1], 's')) + '，解 ' + T('t,s') + '；或把 ' + T('L_2') + ' 化成一般式，再代入 ' + T('L_1') + ' 只解一個 ' + T('t') + '。',
+               p: { t: 0, A: A, u: u, B: B, v: v, X: X } };
+    }
+    if (t === 1) {
+      u = [r.nz(-3, 3), r.nz(-3, 3)]; A = [r.int(-4, 4), r.int(-4, 4)];
+      v = sc(r.pick([2, -2, 3, -1, -3]), u); B = add(A, sc(r.nz(-3, 3), u));
+      var hid = r.int(0, 1), L2x = hid === 0 ? plusC(0, 'k') + term(v[0], 's', false) : linT(B[0], v[0], 's'), L2y = hid === 1 ? 'k' + term(v[1], 's', false) : linT(B[1], v[1], 's');
+      return { q: '兩直線 ' + L1s() + '、' + T('L_2:\\ \\begin{cases}x=' + L2x + '\\\\y=' + L2y + '\\end{cases}') + '（' + T('t,s') + ' 為實數）。若 ' + T('L_1') + ' 與 ' + T('L_2') + ' 是同一條直線，求 ' + T('k') + '。',
+               a: T('k=' + B[hid]),
+               h: '方向 ' + T(vt(u)) + ' 與 ' + T(vt(v)) + ' 已經平行，所以兩線不是平行就是重合；重合 ⟺ ' + T('L_2') + ' 的點 ' + T(hid === 0 ? '(k,' + B[1] + ')' : '(' + B[0] + ',k)') + ' 在 ' + T('L_1') + ' 上。用 ' + (hid === 0 ? T('y') : T('x')) + ' 坐標先解出 ' + T('t') + '，再代另一個坐標。',
+               p: { t: 1, A: A, u: u, B: B, v: v, hid: hid } };
+    }
+    u = [r.nz(-3, 3), r.nz(-3, 3)]; var mm = r.nz(-2, 2); v = [-mm * u[1], mm * u[0]];
+    A = sub(X, sc(t0, u)); B = sub(X, sc(s0, v));
+    return { q: '兩直線 ' + L1s() + '、' + T('L_2:\\ \\begin{cases}x=' + plusC(B[0], 'ks') + '\\\\y=' + linT(B[1], v[1], 's') + '\\end{cases}') + '（' + T('t,s') + ' 為實數）。若 ' + T('L_1\\perp L_2') + '，求 ' + T('k') + ' 與兩直線的交點。',
+             a: T('k=' + v[0]) + '，交點 ' + T(vt(X)),
+             h: '兩直線垂直 ⟺ 方向向量垂直：' + T(vt(u)) + ' 與 ' + T('(k,' + v[1] + ')') + ' 對應分量相乘再相加為 $0$（也就是斜率相乘為 $-1$），得 ' + T(term(u[0], 'k', true) + term(u[1] * v[1], '', false) + '=0') + '。求出 ' + T('k') + ' 後，令兩式的 ' + T('x') + '、' + T('y') + ' 分別相等解 ' + T('t,s') + '。',
+             p: { t: 2, A: A, u: u, B: B, v: v, X: X } };
+  };
+
+  /* ── 2026-09-29 補充：新 L1 兩型的第一層提示與解題步驟 ── */
+  L1_H1.lineParamEq = '這是「直線的參數式與一般式互換」：方向向量 $(p,q)$ 對調再變號就是法向量 $(q,-p)$；$ax+by=c$ 的法向量是 $(a,b)$、方向向量是 $(b,-a)$，再用線上一點定常數。';
+  L1_H1.lineParamPt = '這是「參數式找點」：直線上每一點都是某一個 $t$ 代進去的結果，先用一個坐標解出 $t$，再用同一個 $t$ 算另一個坐標。';
+
+  L1_SOL.lineParamEq = function (p, o) {
+    if (p.t === 0) {
+      var P = p.P, d = p.d, n = [d[1], -d[0]], c0 = n[0] * P[0] + n[1] * P[1];
+      return ['參數式 $' + psys(P[0], d[0], P[1], d[1], 't') + '$ 的 $t$ 的係數就是方向向量 $' + vt(d) + '$，$t=0$ 時的點是 $' + vt(P) + '$。',
+        '方向 $(p,q)$ 的法向量取 $(q,-p)$：本題是 $' + vt(n) + '$，所以直線是 $' + eqTex(n[0], n[1], 'c') + '$；代入 $' + vt(P) + '$：$c=' + hpz(n[0]) + '\\times ' + hpz(P[0]) + '+' + hpz(n[1]) + '\\times ' + hpz(P[1]) + '=' + c0 + '$。',
+        '約掉公因數、讓 $x$ 的係數為正：' + o.a + '。'];
+    }
+    if (p.t === 1) {
+      var E = p.E, w = [-E[1], E[0]], S = p.S;
+      return ['$' + eqTex(E[0], E[1], E[2]) + '$ 的法向量是 $' + vt([E[0], E[1]]) + '$，對調再變號得方向向量 $' + vt(w) + '$。',
+        '參數式的方向是 $(h,' + p.q + ')$，要與 $' + vt(w) + '$ 平行：$y$ 分量 $' + p.q + '$ 是 $' + w[1] + '$ 的 $' + (p.q / w[1]) + '$ 倍，所以 $h=' + w[0] + '\\times ' + hpz(p.q / w[1]) + '=' + p.h + '$。',
+        '$t=0$ 的點 $(' + S[0] + ',k)$ 在直線上：$' + hpz(E[0]) + '\\times ' + hpz(S[0]) + term(E[1], 'k', false) + '=' + E[2] + '$，解得 $k=' + S[1] + '$。答案：' + o.a + '。'];
+    }
+    var E2 = p.E, w2 = [-E2[1], E2[0]];
+    return ['$ax+by=c$ 的係數 $(a,b)$ 是法向量，對調再變號的 $(b,-a)$（或 $(-b,a)$）是方向向量。本題法向量 $' + vt([E2[0], E2[1]]) + '$、方向向量 $' + vt(w2) + '$。',
+      '$' + vec('v') + '$ 與 $' + vt(w2) + '$ 平行（交叉相乘相等）：得 $h=' + p.dir[p.hd] + '$（$' + vec('v') + '=' + vt(p.dir) + '$ 是 $' + vt(w2) + '$ 的 $' + (p.dir[0] / w2[0]) + '$ 倍）。',
+      '$' + vec('n') + '$ 與 $' + vt([E2[0], E2[1]]) + '$ 平行：得 $k=' + p.nor[p.hn] + '$（$' + vec('n') + '=' + vt(p.nor) + '$ 是 $' + vt([E2[0], E2[1]]) + '$ 的 $' + (p.nor[0] / E2[0]) + '$ 倍）。答案：' + o.a + '。'];
+  };
+
+  L1_SOL.lineParamPt = function (p, o) {
+    var P = p.P, d = p.d;
+    if (p.t === 1) {
+      var i = p.ax ? 0 : 1, j = 1 - i;
+      return ['$' + (p.ax ? 'y' : 'x') + '$ 軸上的點，$' + (p.ax ? 'x' : 'y') + '$ 坐標是 $0$。',
+        '令 $' + linT(P[i], d[i], 't') + '=0$，得 $t=' + p.t0 + '$。',
+        '代回 $' + (j === 0 ? 'x' : 'y') + '=' + linT(P[j], d[j], 't') + '$：$' + (j === 0 ? 'x' : 'y') + '=' + P[j] + '+' + hpz(d[j]) + '\\times ' + hpz(p.t0) + '=' + p.X[j] + '$。答案：' + o.a + '。'];
+    }
+    var R = p.t === 0 ? p.X : p.R, tx = F(R[0] - P[0], d[0]);
+    var s1 = '直線上的點都是 $\\left(' + linT(P[0], d[0], 't') + ',\\ ' + linT(P[1], d[1], 't') + '\\right)$ 的樣子，先用 $x$ 坐標解出 $t$。';
+    var s2 = '$' + linT(P[0], d[0], 't') + '=' + R[0] + '$ ⟹ $t=' + Fr.tex(tx) + '$。';
+    if (p.t === 0) return [s1, s2, '用同一個 $t$ 算 $y$：$k=' + P[1] + '+' + hpz(d[1]) + '\\times ' + hpz(p.t0) + '=' + p.X[1] + '$。答案：' + o.a + '。'];
+    var yv = Fr.add(F(P[1]), Fr.mul(F(d[1]), tx));
+    return [s1, s2, '代入 $y$：$' + P[1] + '+' + hpz(d[1]) + '\\times ' + (tx.n < 0 ? parT(Fr.tex(tx)) : Fr.tex(tx)) + '=' + Fr.tex(yv) + '$，' + (p.on ? '等於 $' + R[1] + '$，所以 $R$ 在 $L$ 上' : '不等於 $' + R[1] + '$，所以 $R$ 不在 $L$ 上') + '。答案：' + o.a + '。'];
+  };
+
   var META_L1 = [
-      ['vecOps', '§1 坐標運算與長度'], ['chain', '§1 首尾相接化簡'], ['divPoint', '§1 分點坐標'], ['centroid', '§1 重心與面積'],
-      ['parallelCond', '§2 平行條件'], ['collinear', '§2 三點共線'], ['linComb', '§2 線性組合解係數'], ['segCoef', '§2 線段上的點：係數判準'], ['coefRegion', '§2 係數與位置'], ['weightArea', '§2 砝碼：面積比'],
+      ['vecOps', '§1 坐標運算與長度'], ['chain', '§1 首尾相接化簡'], ['divPoint', '§1 分點坐標'], ['centroid', '§1 重心與面積'], ['triIneqRange', '§1 三角不等式：長度的範圍'],
+      ['parallelCond', '§2 平行條件'], ['collinear', '§2 三點共線'], ['linComb', '§2 線性組合解係數'], ['segCoef', '§2 線段上的點：係數判準'], ['coefRegion', '§2 係數與位置'], ['weightArea', '§2 砝碼：面積比'], ['hexagonLC', '§2 正六邊形的線性組合'],
       ['dotCoord', '§3 坐標內積與夾角'], ['dotLenAngle', '§3 長度夾角求內積'], ['perpCond', '§3 垂直條件'], ['projVec', '§3 正射影'], ['angleFromDot', '§3 由內積求夾角'],
-      ['areaDet', '§3 三角形面積'], ['paraArea', '§3 平行四邊形面積'], ['triDot', '§3 三邊長求內積'], ['cauchyCircle', '§3 柯西不等式'], ['minLen', '§3 |ta+b| 的最小值']
+      ['areaDet', '§3 三角形面積'], ['paraArea', '§3 平行四邊形面積'], ['triDot', '§3 三邊長求內積'], ['cauchyCircle', '§3 柯西不等式'], ['minLen', '§3 |ta+b| 的最小值'],
+      ['detCalc', '§3 二階行列式的計算與性質'], ['orthDecomp', '§3 分解成平行與垂直分量'], ['cauchyLinear', '§3 柯西：一次式條件下 x²+y² 的最小值'],
+      ['lineParamEq', '§2 直線的參數式與一般式互換'], ['lineParamPt', '§2 參數式找點與 t 值']
   ];
   var META_L2 = [
-      ['paraIntersect', '§2 平行四邊形內的交點'], ['coefArea', '§2 係數與三個小三角形'], ['lineThroughPoint', '§2 過定點直線的截距恆等式'], ['regionArea', '§2 向量區域的面積'],
+      ['paraIntersect', '§2 平行四邊形內的交點'], ['coefArea', '§2 係數與三個小三角形'], ['lineThroughPoint', '§2 過定點直線的截距恆等式'], ['regionArea', '§2 向量區域的面積'], ['cevianIntersect', '§2 三角形兩線的交點'], ['midVecBC', '§2 中點與分點：反求 BC'],
       ['cosFromLen', '§3 由長度關係求 cosθ'], ['projLen', '§3 由長度求正射影長'], ['cauchyEllipse', '§3 柯西：橢圓型'], ['detScale', '§3 行列式伸縮率'], ['circleDot', '§3 圓上動點的內積'],
-      ['dotParabola', '§3 拋物線上的內積最小'], ['orthocenter', '§3 外心→重心與垂心'], ['sumRange', '§3 三向量和的範圍'], ['tripleT', '§3 平行／垂直／最短三連問'], ['bisector', '§2 角平分線分解'], ['walk', '§1 折線行走']
+      ['dotParabola', '§3 拋物線上的內積最小'], ['orthocenter', '§3 外心→重心與垂心'], ['sumRange', '§3 三向量和的範圍'], ['tripleT', '§3 平行／垂直／最短三連問'], ['detRowOp', '§3 行列式的列運算'], ['cevianLen', '§3 分點到頂點的距離'], ['perpToAngle', '§3 由垂直條件求夾角或長度比'], ['circumDot', '§3 外心與內積'], ['bisector', '§2 角平分線分解'], ['walk', '§1 折線行走'],
+      ['paramSegment', '§2 參數範圍：線段與交點位置'], ['paramTwoLines', '§2 兩直線的參數式：交點、重合、垂直']
   ];
   /* ══════════════════════════════════════════════════════════
-     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
+     L3　中上（18 型）：每型對應固定題 L3-1～L3-18 的「類似題」
      坐標全部是整數、係數用 Fraction；p 只放旗標，驗算器一律從題幹重算。
      ══════════════════════════════════════════════════════════ */
   var L3 = {};
@@ -1034,9 +1424,46 @@
       p: { A: A, B: B, line: [a, b, c], v: v, ans: v === 0 ? [fr2(proj[0]), fr2(proj[1])] : [dp * dp, N] } };
   };
 
-  var META_L3 = [['threeDivPts', '三個分點用 AB、AC 表示'], ['isoRightVertex', '等腰直角三角形求頂點'], ['cauchyProduct', '兩括號相乘的柯西'], ['lineAngle', '兩直線的交角'], ['paraFourth', '平行四邊形第四點與面積'], ['tripleTInt', 'a+tb 的平行、垂直、最短'], ['detScaleArea', '線性組合後的面積倍率'], ['hypotenusePts', '斜邊等分點（建坐標）'], ['areaToVertex', '由面積反推頂點'], ['dotPropsMC', '內積性質判斷（多選）'], ['lenFromAngle', '由長度與夾角求 |PQ|'], ['perpPoint', 'AD⊥BC 且長度已知求 D'], ['forceBalance', '三力平衡'], ['projOnLine', '向量在直線上的正射影'], ['paraPoint', 'AD∥BC 且長度已知求 D']];
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* L3-16　c=a+tb：|c| 最小、與 a、b 夾角相等（角平分線方向） */
+  L3.equalAngle = function (r) {
+    var a, b;
+    do { a = [r.nz(-6, 6), r.nz(-6, 6)]; b = [r.nz(-4, 4), r.nz(-4, 4)]; }
+    while (cross(a, b) === 0 || gcd(b[0], b[1]) !== 1 || dot(a, b) === 0 || dot(a, b) % n2(b) !== 0);
+    var t0 = -dot(a, b) / n2(b), cm = add(a, sc(t0, b)), tq = rootTexF(F(n2(a), n2(b)));
+    return { q: '已知 ' + T(vec('a') + '=' + vt(a)) + '、' + T(vec('b') + '=' + vt(b)) + '，' + T('\\vec c=\\vec a+t\\vec b') + '（' + T('t') + ' 為實數）。<br>(1) 當 ' + T('|\\vec c|') + ' 最小時，求 ' + T('\\vec c') + '　(2) 若 ' + T('\\vec c') + ' 與 ' + T('\\vec a') + ' 的夾角等於 ' + T('\\vec c') + ' 與 ' + T('\\vec b') + ' 的夾角，求 ' + T('t') + '。',
+             a: '(1) ' + T('\\vec c=' + vt(cm)) + '　(2) ' + T('t=' + tq),
+             h: '(1) 最短時 ' + T('\\vec c\\perp\\vec b') + '：' + T('t=-\\dfrac{\\vec a\\cdot\\vec b}{|\\vec b|^{2}}') + '，本題 ' + T('\\vec a\\cdot\\vec b=' + hdot(a, b)) + '、' + T('|\\vec b|^{2}=' + n2(b)) + '。(2) 夾角相等 ⟺ ' + T('\\vec c') + ' 在 ' + T('\\vec a') + '、' + T('\\vec b') + ' 的角平分線方向上，也就是與 ' + T('\\dfrac{\\vec a}{|\\vec a|}+\\dfrac{\\vec b}{|\\vec b|}') + ' 平行；把 ' + T('\\vec a+t\\vec b') + ' 提出 ' + T('|\\vec a|') + ' 比較，得 ' + T('t=\\dfrac{|\\vec a|}{|\\vec b|}') + '，本題 ' + T('|\\vec a|=' + sqrtTex(n2(a))) + '、' + T('|\\vec b|=' + sqrtTex(n2(b))) + '。',
+             p: { a: a, b: b, ans: { c: cm, t2: [n2(a), n2(b)] } } };
+  };
+
+  /* L3-17　AP=xAB+yAC 延長交 BC 於 D：係數和化成 1、分點比、AP:PD */
+  L3.extendToBC = function (r) {
+    var d = r.int(5, 21), xn, yn;
+    do { xn = r.int(1, d - 2); yn = r.int(1, d - 1 - xn); } while (xn === yn && r() < 0.7);
+    var x = F(xn, d), y = F(yn, d), s = Fr.add(x, y), X = Fr.div(x, s), Y = Fr.div(y, s), bd = Fr.div(y, x), ap = Fr.div(s, Fr.sub(F(1), s));
+    return { q: T('P') + ' 在 ' + T('\\triangle ABC') + ' 內部，' + T(ov('AP') + '=' + combF(x, ov('AB'), true) + combF(y, ov('AC'), false)) + '，直線 ' + T('AP') + ' 交 ' + T('\\overline{BC}') + ' 於 ' + T('D') + '。<br>(1) 若 ' + T(ov('AD') + '=m' + ov('AB') + '+n' + ov('AC')) + '，求 ' + T('(m,n)') + '　(2) 求 ' + T('\\overline{BD}:\\overline{DC}') + '　(3) 求 ' + T('\\overline{AP}:\\overline{PD}') + '。',
+             a: '(1) ' + T('(m,n)=\\left(' + Fr.tex(X) + ',\\ ' + Fr.tex(Y) + '\\right)') + '　(2) ' + T(bd.n + ':' + bd.d) + '　(3) ' + T(ap.n + ':' + ap.d),
+             h: T('D') + ' 在直線 ' + T('AP') + ' 上 ⟹ ' + T(ov('AD') + '=k' + ov('AP')) + '；' + T('D') + ' 在 ' + T('\\overline{BC}') + ' 上 ⟹ 係數和為 $1$，所以 ' + T('k') + ' 是「係數和」的倒數，本題係數和 ' + T(Fr.tex(x) + '+' + Fr.tex(y) + '=' + Fr.tex(s)) + '。(2) ' + T(ov('AD') + '=m' + ov('AB') + '+n' + ov('AC')) + ' 的係數交叉就是分點：' + T('\\overline{BD}:\\overline{DC}=n:m') + '。(3) ' + T('\\overline{AP}:\\overline{AD}=1:k') + '。',
+             p: { x: fr2(x), y: fr2(y), ans: { X: fr2(X), Y: fr2(Y), bd: fr2(bd), ap: fr2(ap) } } };
+  };
+
+  /* L3-18　OA⊥OB、OP⊥OQ：設 |OB|=1、|OA|=s，內積展開解 s */
+  L3.perpRatio = function (r) {
+    var d = r.pick([3, 4, 5, 6]), an = r.int(1, d - 1), al = F(an, d), be = F(d - an, d), kl;
+    do { kl = coprimePair(r, 9); } while (kl[0] === kl[1]);
+    var k = kl[0], l = kl[1], s2 = Fr.div(Fr.mul(be, F(l)), Fr.mul(al, F(k)));
+    var qa = F(k, k - l), qb = F(-l, k - l);
+    var eqT = (k === 1 ? '' : k) + ov('AQ') + '=' + (l === 1 ? '' : l) + ov('BQ');
+    return { q: T('O,A,B') + ' 不共線且 ' + T(ov('OA') + '\\perp' + ov('OB')) + '。' + T(ov('OP') + '=' + combF(al, ov('OA'), true) + combF(be, ov('OB'), false)) + '，點 ' + T('Q') + ' 滿足 ' + T(eqT) + '。若 ' + T(ov('OP') + '\\perp' + ov('OQ')) + '，求 ' + T('\\dfrac{\\overline{OA}}{\\overline{OB}}') + '。',
+             a: T('\\dfrac{\\overline{OA}}{\\overline{OB}}=' + rootTexF(s2)),
+             h: '先把 ' + T('Q') + ' 用 ' + T(ov('OA')) + '、' + T(ov('OB')) + ' 表示：' + T(ov('AQ') + '=' + ov('OQ') + '-' + ov('OA')) + '、' + T(ov('BQ') + '=' + ov('OQ') + '-' + ov('OB')) + ' 代進 ' + T(eqT) + '，整理得 ' + T(ov('OQ') + '=' + combD(qa, ov('OA'), true) + combD(qb, ov('OB'), false)) + '。再展開 ' + T(ov('OP') + '\\cdot' + ov('OQ') + '=0') + '，因為 ' + T(ov('OA') + '\\cdot' + ov('OB') + '=0') + '，只剩 ' + T('\\overline{OA}^{2}') + ' 與 ' + T('\\overline{OB}^{2}') + ' 兩項，解出兩者的比。',
+             p: { al: fr2(al), be: fr2(be), k: k, l: l, ans: fr2(s2) } };
+  };
+
+  var META_L3 = [['threeDivPts', '三個分點用 AB、AC 表示'], ['isoRightVertex', '等腰直角三角形求頂點'], ['cauchyProduct', '兩括號相乘的柯西'], ['lineAngle', '兩直線的交角'], ['paraFourth', '平行四邊形第四點與面積'], ['tripleTInt', 'a+tb 的平行、垂直、最短'], ['detScaleArea', '線性組合後的面積倍率'], ['hypotenusePts', '斜邊等分點（建坐標）'], ['areaToVertex', '由面積反推頂點'], ['dotPropsMC', '內積性質判斷（多選）'], ['lenFromAngle', '由長度與夾角求 |PQ|'], ['perpPoint', 'AD⊥BC 且長度已知求 D'], ['forceBalance', '三力平衡'], ['projOnLine', '向量在直線上的正射影'], ['paraPoint', 'AD∥BC 且長度已知求 D'], ['equalAngle', 'c=a+tb：最短與等夾角'], ['extendToBC', 'AP 延長交 BC：係數和化成 1'], ['perpRatio', '兩組垂直求邊長比']];
   /* 固定題 L3-n 對應的類似題型 */
-  var L3_FIX = { 'L3-1': 'threeDivPts', 'L3-2': 'isoRightVertex', 'L3-3': 'cauchyProduct', 'L3-4': 'lineAngle', 'L3-5': 'paraFourth', 'L3-6': 'tripleTInt', 'L3-7': 'detScaleArea', 'L3-8': 'hypotenusePts', 'L3-9': 'areaToVertex', 'L3-10': 'dotPropsMC', 'L3-11': 'lenFromAngle', 'L3-12': 'perpPoint', 'L3-13': 'forceBalance', 'L3-14': 'projOnLine', 'L3-15': 'paraPoint' };
+  var L3_FIX = { 'L3-1': 'threeDivPts', 'L3-2': 'isoRightVertex', 'L3-3': 'cauchyProduct', 'L3-4': 'lineAngle', 'L3-5': 'paraFourth', 'L3-6': 'tripleTInt', 'L3-7': 'detScaleArea', 'L3-8': 'hypotenusePts', 'L3-9': 'areaToVertex', 'L3-10': 'dotPropsMC', 'L3-11': 'lenFromAngle', 'L3-12': 'perpPoint', 'L3-13': 'forceBalance', 'L3-14': 'projOnLine', 'L3-15': 'paraPoint', 'L3-16': 'equalAngle', 'L3-17': 'extendToBC', 'L3-18': 'perpRatio' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：兩點距離與中點（高一上 ch2）、特殊角的 sin／cos、餘弦定理（高一下 ch4）、二元一次聯立（國中）、配方求最小值（高一上 ch3）
@@ -1121,6 +1548,12 @@
     'L3.forceBalance': { f: function (p) { return p.v; }, why: '平衡就是 $\\vec a+\\vec b+\\vec c=\\vec 0$，所以 $|\\vec c|=|\\vec a+\\vec b|$：一題由夾角求 $|\\vec c|$，一題由 $|\\vec c|$ 反求夾角，用的是同一條平方展開式。' },
     'L3.projOnLine': { f: function (p) { return p.v; }, why: '正射影「向量」有方向、要乘回方向向量；正射影「長」只是 $\\dfrac{|\\overrightarrow{AB}\\cdot\\vec d|}{|\\vec d|}$ 一個非負的數。' }
   };
+  /* 2026-09-28 擴充題型的對照題 */
+  CONTRAST['L1.detCalc'] = { f: function (p) { return p.t; }, why: '同樣是二階行列式：一題數字很大，先用「某列減另一列，值不變」讓數字變小再交叉相乘；一題只給原來的值，要看出新行列式是經過哪一種運算（互換變號、一列乘 $k$ 就乘 $k$、加倍數不變）。' };
+  CONTRAST['L1.hexagonLC'] = { f: function (p) { return p.base.join(''); }, keep: ['X', 'Y'], why: '同一支向量換一組表示用的向量，係數就跟著變：先一律用 $\\overrightarrow{AB}$、$\\overrightarrow{AF}$ 寫出來，再解一次聯立換成指定的兩個向量。' };
+  CONTRAST['L2.detRowOp'] = { f: function (p) { return !!p.rev; }, why: '新行列式 $=$ 係數行列式 $\\times$ 原行列式：由原求新用乘的，由新反求原用除的。' };
+  CONTRAST['L2.cevianLen'] = { f: function (p) { return p.t; }, why: '兩題都是 $\\overrightarrow{AD}$ 用分點公式寫開再平方；差別只在 $\\overrightarrow{AB}\\cdot\\overrightarrow{AC}$ 怎麼來：給夾角用 $bc\\cos A$，給三邊用 $\\dfrac{b^2+c^2-a^2}{2}$。' };
+  CONTRAST['L2.perpToAngle'] = { f: function (p) { return p.t; }, why: '同一條「垂直 ⟹ 內積為 $0$」展開：知道長度比就解出 $\\cos\\theta$；知道夾角就解出長度比。未知數不同，式子一樣。' };
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

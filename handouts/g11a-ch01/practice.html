@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -234,7 +234,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（5,550 題抽樣）；固定題全數人工＋電腦重算。角度一律用能精確求值的角（$15^\circ$ 的倍數、$\dfrac{\pi}{12}$ 的倍數）。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（8,800 題抽樣）；固定題全數人工＋電腦重算。角度一律用能精確求值的角（$15^\circ$ 的倍數、$\dfrac{\pi}{12}$ 的倍數）。</li>
   </ol>
 </div>
 
@@ -261,7 +261,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>特殊角的值背不熟、看到弧度就想換回度、公式記得但不敢用的同學。</div>
-  <div><b>目標</b>21 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>25 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
@@ -272,18 +272,18 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fixset" data-tier="L1" data-keys="degToRad,radToDeg,arcArea,sectorFromArc,signQuad,specialValue,pointDef,fromSinQuad,coterminal,reduceFormula" data-seed="1101"></div>
 
 <h3 class="sec">1-2 和差角、倍角與半角</h3>
-<div class="must">先要會：<b>$\sin(\alpha\pm\beta)=\sin\alpha\cos\beta\pm\cos\alpha\sin\beta$、$\cos(\alpha\pm\beta)=\cos\alpha\cos\beta\mp\sin\alpha\sin\beta$</b>（cos 的符號相反）、<b>$\tan(\alpha\pm\beta)=\dfrac{\tan\alpha\pm\tan\beta}{1\mp\tan\alpha\tan\beta}$</b>、<b>倍角是和角令 $\beta=\alpha$</b>、<b>半角公式的正負看 $\dfrac{\theta}{2}$ 的象限</b>、<b>$15^\circ$ 的倍數都能用 $45^\circ\pm30^\circ$ 拆</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="sumExact,cosDiffQuad,tanSum,doubleFromSin,halfFromCos"></div>
-<div class="fadeset" data-tier="L1" data-keys="sumExact,cosDiffQuad,tanSum,doubleFromSin,halfFromCos" data-seed="7201"></div>
-<div class="fixset" data-tier="L1" data-keys="sumExact,cosDiffQuad,tanSum,doubleFromSin,halfFromCos" data-seed="1201"></div>
+<div class="must">先要會：<b>$\sin(\alpha\pm\beta)=\sin\alpha\cos\beta\pm\cos\alpha\sin\beta$、$\cos(\alpha\pm\beta)=\cos\alpha\cos\beta\mp\sin\alpha\sin\beta$</b>（cos 的符號相反）、<b>$\tan(\alpha\pm\beta)=\dfrac{\tan\alpha\pm\tan\beta}{1\mp\tan\alpha\tan\beta}$</b>、<b>倍角是和角令 $\beta=\alpha$</b>、<b>半角公式的正負看 $\dfrac{\theta}{2}$ 的象限</b>、<b>$15^\circ$ 的倍數都能用 $45^\circ\pm30^\circ$ 拆</b>、<b>倒過來用：看到 $\sin A\cos B\pm\cos A\sin B$、$2\sin\theta\cos\theta$、$\cos^2\theta-\sin^2\theta$ 這種「展開後的樣子」，就合回一個角</b>（35 份高二段考卷中，和差角、二倍角各有 33 卷考過）。</div>
+<div class="gen-grid" data-tier="L1" data-keys="sumExact,cosDiffQuad,tanSum,doubleFromSin,halfFromCos,sumReverse,doubleReverse"></div>
+<div class="fadeset" data-tier="L1" data-keys="sumExact,cosDiffQuad,tanSum,doubleFromSin,halfFromCos,sumReverse,doubleReverse" data-seed="7201"></div>
+<div class="fixset" data-tier="L1" data-keys="sumExact,cosDiffQuad,tanSum,doubleFromSin,halfFromCos,sumReverse,doubleReverse" data-seed="1201"></div>
 
 <h3 class="sec">1-3 圖形、平移伸縮與正餘弦疊合</h3>
-<div class="must">先要會：<b>$y=a\sin(bx+c)+d$ 四個字母各管什麼</b>（振幅 $|a|$、週期 $\dfrac{2\pi}{|b|}$、中線 $y=d$）、<b>右移是 $x\to x-k$</b>、<b>$a\sin x+b\cos x=\sqrt{a^2+b^2}\sin(x+\theta)$</b>、<b>基本方程 $\sin x=\dfrac12$ 在 $[0,2\pi)$ 有兩解，用對稱找第二個</b>、<b>週期：$\sin$、$\cos$ 取絕對值或平方，週期減半；$\tan$ 取絕對值或平方，週期不變（仍是 $\pi$）</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="ampPeriod,shiftFunc,combineStd,maxMin,basicEq,periodOf"></div>
-<div class="fadeset" data-tier="L1" data-keys="ampPeriod,shiftFunc,combineStd,maxMin,basicEq,periodOf" data-seed="7301"></div>
-<div class="fixset" data-tier="L1" data-keys="ampPeriod,shiftFunc,combineStd,maxMin,basicEq,periodOf" data-seed="1301"></div>
+<div class="must">先要會：<b>$y=a\sin(bx+c)+d$ 四個字母各管什麼</b>（振幅 $|a|$、週期 $\dfrac{2\pi}{|b|}$、中線 $y=d$）、<b>右移是 $x\to x-k$</b>、<b>$a\sin x+b\cos x=\sqrt{a^2+b^2}\sin(x+\theta)$</b>、<b>基本方程 $\sin x=\dfrac12$ 在 $[0,2\pi)$ 有兩解，用對稱找第二個</b>、<b>週期：$\sin$、$\cos$ 取絕對值或平方，週期減半；$\tan$ 取絕對值或平方，週期不變（仍是 $\pi$）</b>、<b>對稱軸通過最高最低點（$\sin$ 型令括號 $=\dfrac{\pi}{2}+k\pi$），對稱中心在中線上（$\sin$ 型令括號 $=k\pi$；$\cos$ 型兩者對調）</b>、<b>比大小：先用誘導公式把角搬到函數單調的同一段</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="ampPeriod,shiftFunc,combineStd,maxMin,basicEq,periodOf,symAxis,trigCompare"></div>
+<div class="fadeset" data-tier="L1" data-keys="ampPeriod,shiftFunc,combineStd,maxMin,basicEq,periodOf,symAxis,trigCompare" data-seed="7301"></div>
+<div class="fixset" data-tier="L1" data-keys="ampPeriod,shiftFunc,combineStd,maxMin,basicEq,periodOf,symAxis,trigCompare" data-seed="1301"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 21 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">L1 混合檢測 12 題（全章 25 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -292,23 +292,23 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>16 個段考最常見題型（依題庫 53 份高二第一次段考卷的出現率排序），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>22 個段考最常見題型（依題庫高二段考卷的出現率選出；2026-09-28 用 35 份高二段考卷重新統計，補了 6 型），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
-<h3 class="sec">1-1 扇形：反求、最佳化與圓錐展開</h3>
-<div class="must">題庫 53 卷中 <b>扇形出現 22 卷次</b>、扇形面積 9 卷次、弧長 6 卷次。解題要點：<b>周長與面積給定 ⟹ 消去弧長得 $r$ 的二次方程，兩根通常都合法</b>；<b>周長固定 ⟹ 面積是 $r$ 的二次函數，$\theta=2$ 時最大</b>；<b>圓錐側面展開成扇形，圓心角 $=\dfrac{2\pi r}{l}$，最短路徑是展開圖上的直線</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="sectorSys,sectorMax,coneShortest"></div>
+<h3 class="sec">1-1 扇形：反求、最佳化、圓錐展開與弓形</h3>
+<div class="must">35 份高二段考卷中<b>扇形、弧長與弓形 21 卷</b>。解題要點：<b>周長與面積給定 ⟹ 消去弧長得 $r$ 的二次方程，兩根通常都合法</b>；<b>周長固定 ⟹ 面積是 $r$ 的二次函數，$\theta=2$ 時最大</b>；<b>圓錐側面展開成扇形，圓心角 $=\dfrac{2\pi r}{l}$，最短路徑是展開圖上的直線</b>；<b>弓形 $=$ 扇形 $-$ 三角形 $=\dfrac12r^2(\theta-\sin\theta)$，優弧那一塊用整個圓去減</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="sectorSys,sectorMax,coneShortest,segmentArea"></div>
 
-<h3 class="sec">1-2 恆等式與和差倍半角的連鎖求值</h3>
-<div class="must">53 卷中<b>和差角 23 卷次、二倍角 19、半角 15、廣義角 14、象限 12</b>。解題要點：<b>$\sin\theta+\cos\theta=k$ ⟹ 平方得 $\sin\theta\cos\theta$，差用 $1-2\sin\theta\cos\theta$ 開根號、正負看範圍</b>；<b>方程式的根 ⟹ 先篩掉 $|$值$|\gt1$ 的根</b>；<b>兩根為 $\tan\alpha,\tan\beta$ ⟹ 根與係數直接代 $\tan(\alpha+\beta)$</b>；<b>兩式含 $\cos A,\cos B,\sin A,\sin B$ ⟹ 平方相加</b>；<b>$\cos2x$ 已知 ⟹ 先求 $\sin x$，半角組合再平方</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="sumProd,quadRootCos2,tanQuad,systemSquare,halfFromCos2x"></div>
+<h3 class="sec">1-2 恆等式、和差倍半角的連鎖求值、角的拆分與三角形</h3>
+<div class="must">35 份高二段考卷中<b>二倍角 33 卷、和差角 33 卷、半角 24 卷、廣義角與象限 24 卷、三角形中的三角函數 22 卷、正切和差角 18 卷、三倍角 16 卷</b>。解題要點：<b>$\sin\theta+\cos\theta=k$ ⟹ 平方得 $\sin\theta\cos\theta$，差用 $1-2\sin\theta\cos\theta$ 開根號、正負看範圍</b>；<b>方程式的根 ⟹ 先篩掉 $|$值$|\gt1$ 的根</b>；<b>兩根為 $\tan\alpha,\tan\beta$ ⟹ 根與係數直接代 $\tan(\alpha+\beta)$</b>；<b>兩式含 $\cos A,\cos B,\sin A,\sin B$ ⟹ 平方相加</b>；<b>$\cos2x$ 已知 ⟹ 先求 $\sin x$，半角組合再平方</b>；<b>角的拆分：$\alpha=(\alpha+\beta)-\beta$，先補齊 $\alpha+\beta$ 的另一個函數值（正負看範圍）</b>；<b>三角形中 $C=\pi-(A+B)$，給 $\sin$ 的角要檢查能不能是鈍角</b>；<b>三倍角（進階：課綱沒列，段考常考）$\sin3\theta=3\sin\theta-4\sin^3\theta$、$\cos3\theta=4\cos^3\theta-3\cos\theta$</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="sumProd,quadRootCos2,tanQuad,systemSquare,halfFromCos2x,angleSplit,triCosC,tripleEval"></div>
 
-<h3 class="sec">1-3 圖形參數、變換順序、週期與方程</h3>
-<div class="must">53 卷中<b>週期 21 卷次、疊合 17、平移 14、三角方程 13、振幅 11、區間最值 10、圖形交點 8、解的個數 7</b>。解題要點：<b>由最高最低點反推：$a,d$ 看高低，$b$ 看水平距離（半週期），$c$ 最後代點定</b>；<b>先伸縮再平移 vs 先平移再伸縮，平移量差 $k$ 倍</b>；<b>解的個數 ⟹ 把方程式拆成「三角函數 vs 直線」數交點，直線只在 $|y|\le1$ 有效</b>；<b>不等式 ⟹ 化成單一函數的二次式再翻回單位圓，根為 $\pm1$ 時有孤立解</b>；<b>區間最值 ⟹ 疊合後看 $x+\theta$ 跑過哪一段</b>；<b>$\sin x\pm\cos x$ 出現就換元 $t$，$|t|\le\sqrt2$</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="paramFit,transformOrder,periodJudge,rootCount,trigIneq,combineInterval,squareSub,eqSumCount"></div>
+<h3 class="sec">1-3 圖形參數、變換順序、週期、方程與值域</h3>
+<div class="must">35 份高二段考卷中<b>最大最小值 23 卷、週期 21 卷、三角方程 21 卷、疊合 19 卷、平移伸縮 19 卷、交點與解的個數 19 卷、三角不等式 14 卷</b>。解題要點：<b>由最高最低點反推：$a,d$ 看高低，$b$ 看水平距離（半週期），$c$ 最後代點定</b>；<b>先伸縮再平移 vs 先平移再伸縮，平移量差 $k$ 倍</b>；<b>解的個數 ⟹ 把方程式拆成「三角函數 vs 直線」數交點，直線只在 $|y|\le1$ 有效</b>；<b>不等式 ⟹ 化成單一函數的二次式再翻回單位圓，根為 $\pm1$ 時有孤立解</b>；<b>區間最值 ⟹ 疊合後看 $x+\theta$ 跑過哪一段</b>；<b>$\sin x\pm\cos x$ 出現就換元 $t$，$|t|\le\sqrt2$</b>；<b>$\cos^2x$ 與 $\sin x$ 混合 ⟹ 換成同一個函數 $t$ 的二次式，$t$ 的範圍由 $x$ 的範圍決定</b>；<b>二次型方程 ⟹ 因式分解，$|$根$|\gt1$ 的不合</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="paramFit,transformOrder,periodJudge,rootCount,trigIneq,combineInterval,squareSub,eqSumCount,quadTrigRange,quadTrigEq"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<h3 class="sec">L2 混合檢測 12 題（全 22 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2001" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -317,10 +317,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考與模考的中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題用的是什麼方法；本級檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>18 題各校段考與模考的中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度（都不與主講義三本重複）；答案與詳解皆重新驗算過。</div>
+<div class="note">題目來源標示為出題學校與年度（都不與主講義三本重複）；標「改編自」的題目改過數字或問法。答案與詳解皆重新驗算過。</div>
 
 <div class="fx" id="L3-1" data-gen="radEstimate"><div class="fxh"><span class="no">L3-1</span><span class="kw">弧度值估大小：換成度數，落在哪一象限、離哪個特殊角近</span><span class="src">建國中學 110 上 多選 1</span></div>
 <div class="fxq">選出正確的選項：<br>(1) $\dfrac{\sqrt3}{2}\lt\cos3\lt1$　(2) $\dfrac12\lt\sin2\lt\dfrac{\sqrt3}{2}$　(3) $\dfrac{1}{\sqrt3}\lt\tan1\lt\sqrt3$　(4) $\dfrac{\sqrt3}{2}\lt\cos(\pi^\circ)\lt1$　(5) $0\lt\sin(\pi^2)\lt1$</div>
@@ -437,7 +437,40 @@ $\tan\theta=\dfrac13\gt0$ 且 $\theta\in\left(\dfrac{\pi}{2},\dfrac{3\pi}{2}\rig
 <div class="fxs"><div class="move">做法：把 $x=8,12,20$ 代進去，括號裡分別是 $\dfrac{\pi}{2}$、$\dfrac{2\pi}{3}$、$\pi$，都是特殊角。</div>
 $x=8$：$a\cos\dfrac{\pi}{2}+b=b=14$。$x=12$：$a\cos\dfrac{2\pi}{3}+14=-\dfrac a2+14=11$ ⟹ $a=6$。$x=20$：$6\cos\pi+14=8$。</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fx" id="L3-16" data-gen="tanPairProd"><div class="fxh"><span class="no">L3-16</span><span class="kw">α＋β＝π/4 或 3π/4：tan 和角公式交叉相乘，(1±tanα)(1±tanβ)＝2</span><span class="src">改編自 華江高中 102 上 單選 5</span></div>
+<div class="fxq">(1) 若 $\alpha+\beta=\dfrac{3\pi}{4}$（$\tan\alpha$、$\tan\beta$ 都有意義），求 $(1-\tan\alpha)(1-\tan\beta)$ 的值。<br>(2) 求 $(1+\tan5^\circ)(1+\tan10^\circ)(1+\tan15^\circ)\cdots(1+\tan40^\circ)$ 的值（角每次加 $5^\circ$）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $2$　(2) $2^4=16$</div>
+<div class="fxs"><div class="move">做法：兩角的和是 $\dfrac{\pi}{4}$ 型（$\tan$ 值是 $1$）或 $\dfrac{3\pi}{4}$ 型（$\tan$ 值是 $-1$）時，把 $\tan(\alpha+\beta)$ 的公式交叉相乘，得到「兩個 $\tan$ 的和」與「兩個 $\tan$ 的積」的關係，再把要求的式子乘開代進去。</div>
+(1) $\tan(\alpha+\beta)=\tan\dfrac{3\pi}{4}=-1$，即 $\dfrac{\tan\alpha+\tan\beta}{1-\tan\alpha\tan\beta}=-1$，交叉相乘得 $\tan\alpha+\tan\beta=-1+\tan\alpha\tan\beta$。<br>
+$(1-\tan\alpha)(1-\tan\beta)=1-(\tan\alpha+\tan\beta)+\tan\alpha\tan\beta=1-(-1+\tan\alpha\tan\beta)+\tan\alpha\tan\beta=2$。<br>
+(2) 若 $a+b=45^\circ$，同樣交叉相乘得 $\tan a+\tan b=1-\tan a\tan b$，所以 $(1+\tan a)(1+\tan b)=1+(1-\tan a\tan b)+\tan a\tan b=2$。<br>
+角是 $5^\circ,10^\circ,\cdots,40^\circ$，共 $8$ 個因式，頭尾配對：$(5^\circ,40^\circ)$、$(10^\circ,35^\circ)$、$(15^\circ,30^\circ)$、$(20^\circ,25^\circ)$，每一對的角加起來都是 $45^\circ$，共 $4$ 對，乘積 $=2^4=16$。<br>
+<span class="note-sm">原題是 $\alpha+\beta=45^\circ$ 求 $(1+\tan\alpha)(1+\tan\beta)$（答案 $2$）；這裡改成 $\dfrac{3\pi}{4}$ 配 $(1-\tan\alpha)(1-\tan\beta)$，並加上連乘的應用。</span></div></div>
+
+<div class="fx" id="L3-17" data-gen="combineProps"><div class="fxh"><span class="no">L3-17</span><span class="kw">性質多選：先疊合成 r sin(x＋θ)，週期、最大值、對稱軸、對稱中心、有沒有解逐項判斷</span><span class="src">改編自 台中一中 110 上（第二次段考）多選 4</span></div>
+<div class="fxq">設 $f(x)=\sqrt3\sin x-\cos x$，選出正確的選項：<br>(1) 圖形的週期為 $2\pi$　(2) $f(x)$ 的最大值為 $4$　(3) 方程式 $f(x)=-\dfrac32$ 有實數解　(4) 圖形對稱於點 $\left(-\dfrac{\pi}{6},0\right)$　(5) 圖形對稱於直線 $x=\dfrac{2\pi}{3}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)(5)</div>
+<div class="fxs"><div class="move">做法：先疊合。$r=\sqrt{(\sqrt3)^2+(-1)^2}=2$，$\cos\theta=\dfrac{\sqrt3}{2}$、$\sin\theta=-\dfrac12$，$\theta=-\dfrac{\pi}{6}$，所以 $f(x)=2\sin\left(x-\dfrac{\pi}{6}\right)$。之後每個選項都用這個式子判斷。</div>
+(1) 週期 $\dfrac{2\pi}{1}=2\pi$，正確。<br>
+(2) 最大值是振幅 $2$，不是 $4$（$4$ 是 $r^2$），錯誤。<br>
+(3) $f(x)$ 的值域是 $[-2,2]$，而 $-2\le-\dfrac32\le2$，有實數解，正確。<br>
+(4) 對稱中心令 $x-\dfrac{\pi}{6}=k\pi$，得 $x=\dfrac{\pi}{6}+k\pi$，$-\dfrac{\pi}{6}$ 不在其中；直接代：$f\left(-\dfrac{\pi}{6}\right)=2\sin\left(-\dfrac{\pi}{3}\right)=-\sqrt3\ne0$，不是對稱中心，錯誤。<br>
+(5) 對稱軸令 $x-\dfrac{\pi}{6}=\dfrac{\pi}{2}+k\pi$，得 $x=\dfrac{2\pi}{3}+k\pi$，$k=0$ 就是 $x=\dfrac{2\pi}{3}$；此時 $f=2$ 是最大值，正確。<br>
+<span class="note-sm">原題是 $\sqrt3\sin x+\cos x=2\sin\left(x+\dfrac{\pi}{6}\right)$，對稱中心 $\left(-\dfrac{\pi}{6},0\right)$ 正確；這裡把 $\cos x$ 的係數改成負的，$\theta$ 變成 $-\dfrac{\pi}{6}$，同一個點就不再是對稱中心。</span></div></div>
+
+<div class="fx" id="L3-18" data-gen="quadCosRoots"><div class="fxh"><span class="no">L3-18</span><span class="kw">sin²x 與 cos x 混合：換成 cos x 的二次方程，由 cos x 的值判斷根落在哪個區間</span><span class="src">改編自 台南一中 110 上 多選 1</span></div>
+<div class="fxq">方程式 $20\sin^2x-7\cos x=14$ 在下列哪些區間有實根？<br>(1) $\left(0,\dfrac{\pi}{3}\right)$　(2) $\left(\dfrac{\pi}{3},\dfrac{\pi}{2}\right)$　(3) $\left(\dfrac{\pi}{2},\dfrac{2\pi}{3}\right)$　(4) $\left(\dfrac{2\pi}{3},\pi\right)$　(5) 以上皆非</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(4)</div>
+<div class="fxs"><div class="move">做法：用 $\sin^2x=1-\cos^2x$ 把方程式換成只有 $\cos x$ 的二次方程，先解出 $\cos x$ 的值，再看這些值夾在哪兩個特殊值之間。</div>
+$20(1-\cos^2x)-7\cos x=14$ ⟹ $20\cos^2x+7\cos x-6=0$ ⟹ $(5\cos x-2)(4\cos x+3)=0$，$\cos x=\dfrac25$ 或 $\cos x=-\dfrac34$，兩個都在 $[-1,1]$ 內。<br>
+$x$ 在 $(0,\pi)$ 時 $\cos x$ 遞減，四個區間的端點 $0,\ \dfrac{\pi}{3},\ \dfrac{\pi}{2},\ \dfrac{2\pi}{3},\ \pi$ 依序對應 $\cos x=1,\ \dfrac12,\ 0,\ -\dfrac12,\ -1$。<br>
+$0\lt\dfrac25\lt\dfrac12$ ⟹ 根在 $\left(\dfrac{\pi}{3},\dfrac{\pi}{2}\right)$，選 (2)；$-1\lt-\dfrac34\lt-\dfrac12$ ⟹ 根在 $\left(\dfrac{2\pi}{3},\pi\right)$，選 (4)。<br>
+<span class="note-sm">原題是 $7\cos x+20\sin^2x=17$，解出 $\cos x=\dfrac35$ 或 $-\dfrac14$，答案 (1)(3)；這裡改了常數與 $\cos x$ 的係數，兩個根換到別的區間。</span></div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3001" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>

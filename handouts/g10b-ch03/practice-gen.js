@@ -689,6 +689,245 @@
              p: { quiz: quiz, k: k, s1: s1, s2: s2, target: target, ans: ans } };
   };
 
+  /* ══════════ 2026-09-28 擴充（依段考卷出現頻率補題型）：L1 6 型、L2 4 型 ══════════ */
+  /* 小工具一律加 xp 前綴 */
+  function xpSq(f) { return f.d === 1 && f.n >= 0 ? dec(f) + '^2' : '(' + dec(f) + ')^2'; }            /* 平方的排版：負數或分數加括號 */
+  function xpPar(f) { return f.n < 0 ? '(' + dec(f) + ')' : dec(f); }                                   /* 負數加括號 */
+  function xpPos(sorted, k) {                                                                            /* 百分位數的取法說明（含值） */
+    var n = sorted.length, t = F(n * k, 100), v = pctF(sorted, k);
+    if (t.d === 1) return { txt: '$t=\\dfrac{' + n + '\\times' + k + '}{100}=' + t.n + '$ 是整數，取第 $' + t.n + '$、$' + (t.n + 1) + '$ 筆的平均：$\\dfrac{' + sorted[t.n - 1] + '+' + sorted[t.n] + '}{2}=' + dec(v) + '$', v: v, integer: true };
+    var c = Math.ceil(t.n / t.d);
+    return { txt: '$t=\\dfrac{' + n + '\\times' + k + '}{100}=' + dec(t) + '$ 不是整數，無條件進位取第 $' + c + '$ 筆：$' + dec(v) + '$', v: v, integer: false };
+  }
+
+  /* 1-2 四分位數與四分位距（Q₁＝P₂₅、Q₃＝P₇₅，照課本的百分位數規則） */
+  L1.quartile = function (r) {
+    var n = r.pick([10, 11, 12, 13, 14, 15, 16, 18, 20]), pool = [], v;
+    for (v = 12; v <= 99; v++) pool.push(v);
+    var data = r.shuffle(pool).slice(0, n), s = data.slice().sort(function (a, b) { return a - b; });
+    var P1 = xpPos(s, 25), P3 = xpPos(s, 75), q1 = P1.v, q3 = P3.v, iqr = Fr.sub(q3, q1);
+    var who = r.pick(['位同學的數學小考成績', '位選手的投籃命中數', '家分店某日的來客數', '天的單日銷售量']);
+    return { q: '某次調查 ' + T(String(n)) + ' ' + who + '為 ' + T(listTex(data)) + '。求 (1) 第一四分位數 ' + T('Q_1') + '　(2) 第三四分位數 ' + T('Q_3') + '　(3) 四分位距 ' + T('Q_3-Q_1') + '。',
+             a: '(1) ' + T('Q_1=' + dec(q1)) + '　(2) ' + T('Q_3=' + dec(q3)) + '　(3) ' + T('Q_3-Q_1=' + dec(iqr)),
+             h: '先由小到大排好：' + T(listTex(s)) + '。' + T('Q_1') + ' 就是 ' + T('P_{25}') + '：' + T('t=\\dfrac{' + n + '\\times25}{100}=' + dec(F(n * 25, 100))) + '；' + T('Q_3') + ' 就是 ' + T('P_{75}') + '：' + T('t=\\dfrac{' + n + '\\times75}{100}=' + dec(F(n * 75, 100))) + '。整數取兩筆平均、不是整數無條件進位。',
+             p: { n: n, data: data, ans: { q1: fr2(q1), q3: fr2(q3) } } };
+  };
+
+  /* 1-3 幾組資料的標準差比大小（平移不變、乘 c 倍變 |c| 倍） */
+  var XP_PAT = [[0, 1, 2, 3, 4], [0, 0, 2, 4, 4], [0, 2, 2, 2, 4], [1, 4, 9, 16, 25]];
+  var XP_SHIFT = [0, 0, 1, 90, 111, 996, 2021, -505, 60, 83];
+  function xpSetDesc(nm, c, P, b) {
+    var base = '$' + listTex(P) + '$';
+    if (c === 1) return nm + ' 是 ' + base + (b === 0 ? ' 本身' : ' 每個數加 $' + b + '$');
+    return nm + ' 是 ' + base + ' 每個數乘 $' + c + '$' + (b === 0 ? '' : ' 再加 $' + b + '$');
+  }
+  L1.sdCompare = function (r) {
+    var bp = r.int(0, 2), P = XP_PAT[bp], sets = [], cs, pats, j, tries = 0;
+    do {
+      var cBig = r.pick([2, 3, 5, 10]), other = r.pick([1, 2]);
+      cs = r.shuffle([1, r.pick([1, -1]) * r.pick([1, cBig]), r.pick([-1, 1]) * cBig, other === 1 ? 1 : -2]);
+      pats = [bp, bp, bp, r.pick([bp === 1 ? 2 : 1, 3])];
+      var vs = []; for (j = 0; j < 4; j++) vs.push(Fr.mul(varF(XP_PAT[pats[j]]), F(cs[j] * cs[j])));
+      var distinct = {}; vs.forEach(function (x) { distinct[x.n + '/' + x.d] = 1; });
+      tries++;
+    } while (Object.keys(distinct).length < 3 && tries < 30);
+    var order = r.shuffle([0, 1, 2, 3]), NM = ['A', 'B', 'C', 'D'], desc = [], vars = [];
+    for (j = 0; j < 4; j++) {
+      var k = order[j], c = cs[k], Pk = XP_PAT[pats[k]], b = r.pick(XP_SHIFT), arr = Pk.map(function (x) { return c * x + b; });
+      sets.push(arr); vars.push(varF(arr)); desc.push(xpSetDesc(NM[j], c, Pk, b)); sets[j]._c = c; sets[j]._p = pats[k]; sets[j]._b = b;
+    }
+    var idx = [0, 1, 2, 3].sort(function (a, b) { return Fr.lt(vars[a], vars[b]) ? -1 : Fr.lt(vars[b], vars[a]) ? 1 : a - b; });
+    var chain = '\\sigma_' + NM[idx[0]];
+    for (j = 1; j < 4; j++) chain += (Fr.eq(vars[idx[j]], vars[idx[j - 1]]) ? '=' : '\\lt') + '\\sigma_' + NM[idx[j]];
+    var vals = [0, 1, 2, 3].map(function (j) { return T('\\sigma_' + NM[j] + '=' + sqrtFracTex(vars[j])); });
+    var q = '四組資料 A：' + T(listTex(sets[0])) + '；B：' + T(listTex(sets[1])) + '；C：' + T(listTex(sets[2])) + '；D：' + T(listTex(sets[3])) + '。它們的標準差分別為 ' + T('\\sigma_A,\\sigma_B,\\sigma_C,\\sigma_D') + '，由小到大排列。';
+    return { q: q, a: T(chain) + '（' + vals.join('、') + '）',
+             h: '平移不改變標準差，每個數乘 $c$ 倍標準差變 $|c|$ 倍：' + desc.join('；') + '。先算基本組的標準差，再乘倍數的絕對值比較。',
+             p: { sets: sets.map(function (a) { return a.slice(); }), c: sets.map(function (a) { return a._c; }), pat: sets.map(function (a) { return a._p; }), b: sets.map(function (a) { return a._b; }), ans: vars.map(fr2) } };
+  };
+
+  /* 1-3 更正一筆誤登的資料／剔除一筆資料後的平均數與變異數（回到 Σx、Σx²） */
+  L1.dataFix = function (r) {
+    var kind = r.int(0, 1), n, mu, sg, a, b, v, sx, sxx, sx2, sxx2, n2, mu2, var2, tries = 0;
+    do {
+      tries++;
+      mu = r.int(55, 75); sg = r.pick([4, 5, 6, 8, 10, 12]);
+      if (kind === 0) {
+        n = r.pick([10, 20, 25, 40, 50]); b = r.int(Math.max(30, mu - 2 * sg), Math.min(98, mu + 2 * sg)); a = r.int(Math.max(20, mu - 3 * sg), Math.min(100, mu + 3 * sg));
+        if (Math.abs(a - b) < 5) continue;
+        n2 = n; sx = n * mu; sxx = n * (sg * sg + mu * mu); sx2 = sx - b + a; sxx2 = sxx - b * b + a * a;
+      } else {
+        n = r.pick([11, 21, 26, 41]); v = mu + r.nz(-Math.min(20, 3 * sg), Math.min(20, 3 * sg)); if (v > 100 || v < 0 || v === mu) continue;
+        n2 = n - 1; sx = n * mu; sxx = n * (sg * sg + mu * mu); sx2 = sx - v; sxx2 = sxx - v * v;
+      }
+      mu2 = F(sx2, n2); var2 = Fr.sub(F(sxx2, n2), Fr.mul(mu2, mu2));
+    } while ((var2 === undefined || var2.n <= 0) && tries < 60);
+    if (var2 === undefined || var2.n <= 0) { kind = 1; n = 11; mu = 32; sg = 5; v = 42; n2 = 10; sx = 352; sxx = 11539; sx2 = 310; sxx2 = 9775; mu2 = F(31); var2 = F(33, 2); }
+    var q = kind === 0
+      ? '某班 ' + T(String(n)) + ' 位同學的成績平均 ' + T(String(mu)) + ' 分、標準差 ' + T(String(sg)) + ' 分。後來發現有一位同學原本考 ' + T(String(a)) + ' 分，卻被誤登為 ' + T(String(b)) + ' 分。更正後，全班成績的平均數與變異數各是多少？'
+      : '某組 ' + T(String(n)) + ' 筆資料的平均數為 ' + T(String(mu)) + '、標準差為 ' + T(String(sg)) + '。從中剔除 ' + T(String(v)) + ' 這一筆，求剩下 ' + T(String(n2)) + ' 筆資料的平均數與變異數。';
+    return { q: q,
+             a: T("\\mu'=" + dec(mu2)) + '、' + T("\\sigma'^2=" + dec(var2)) + '（' + T("\\sigma'=" + sqrtBoth(var2)) + '）',
+             h: '回到總和與平方和：' + T('\\sum x_i=' + n + '\\times' + mu + '=' + sx) + '、' + T('\\sum x_i^2=n(\\sigma^2+\\mu^2)=' + sxx) + (kind === 0 ? '；把誤登的 $' + b + '$ 換成 $' + a + '$，兩個和各「減 $' + b + '$、加 $' + a + '$」（平方和是減 $' + b + '^2$、加 $' + a + '^2$），筆數不變' : '；剔除 $' + v + '$，兩個和各減掉它（平方和減 $' + v + '^2$），筆數變成 $' + n2 + '$') + '，最後 ' + T("\\sigma'^2=\\dfrac{\\sum x_i^2}{n}-\\mu'^2") + '。',
+             p: { kind: kind, n: n, mu: mu, sg: sg, a: a, b: b, v: v, n2: n2, sx: sx, sxx: sxx, sx2: sx2, sxx2: sxx2, ans: { mu: fr2(mu2), var: fr2(var2) } } };
+  };
+
+  /* 1-4 由調分公式與調整後的 μ、σ 反推原始 μ、σ；誰的分數不會變低 */
+  var XP_A = [[F(4, 5), 5], [F(3, 4), 4], [F(3, 5), 5], [F(1, 2), 2], [F(9, 10), 10], [F(7, 10), 10], [F(2, 3), 3]];
+  L1.linearBack = function (r) {
+    var pr = r.pick(XP_A), a = pr[0], st = pr[1], X0 = st * r.int(Math.ceil(60 / st), Math.floor(100 / st));
+    var b = Fr.mul(Fr.sub(F(1), a), F(X0)).n, mux = a.d * r.int(Math.ceil(35 / a.d), Math.floor(65 / a.d)), sgx = a.d * r.pick([2, 3, 4, 5]), kind = r.int(0, 1);
+    if (sgx > 20) sgx = a.d * 2;
+    var muy = Fr.add(Fr.mul(a, F(mux)), F(b)), sgy = Fr.mul(a, F(sgx)), x0 = 0, y0 = null;
+    if (kind === 1) { x0 = a.d * r.int(Math.ceil(20 / a.d), Math.floor(95 / a.d)); y0 = Fr.add(Fr.mul(a, F(x0)), F(b)); }
+    var fx = T('y=' + dec(a) + 'x+' + b);
+    return { q: '老師把全班成績用 ' + fx + ' 調整（' + T('x') + ' 為原始分數、' + T('y') + ' 為調整後分數），調整後的平均數為 ' + T(dec(muy)) + ' 分、標準差為 ' + T(dec(sgy)) + ' 分。(1) 求原始分數的平均數與標準差。　(2) ' + (kind === 0 ? '原始分數在多少分以下的同學，調整後的分數不低於原始分數？' : '調整後得 ' + T(dec(y0)) + ' 分的同學，原始分數是幾分？'),
+             a: '(1) ' + T('\\mu_x=' + mux) + '、' + T('\\sigma_x=' + sgx) + '　(2) ' + (kind === 0 ? T('x\\le' + X0) + ' 分' : T('x=' + x0) + ' 分'),
+             h: '把公式反過來用：' + T('\\mu_y=a\\mu_x+b') + ' ⟹ ' + T('\\mu_x=\\dfrac{' + dec(muy) + '-' + b + '}{' + dec(a) + '}') + '；' + T('\\sigma_y=|a|\\sigma_x') + ' ⟹ ' + T('\\sigma_x=\\dfrac{' + dec(sgy) + '}{' + dec(a) + '}') + '（常數 $' + b + '$ 不影響標準差）。' + (kind === 0 ? '(2) 解不等式 ' + T(dec(a) + 'x+' + b + '\\ge x') + '。' : '(2) 解方程式 ' + T(dec(a) + 'x+' + b + '=' + dec(y0)) + '。'),
+             p: { kind: kind, a: fr2(a), b: b, muy: fr2(muy), sgy: fr2(sgy), y0: y0 ? fr2(y0) : null, ans: { mux: mux, sgx: sgx, X0: X0, x0: x0 } } };
+  };
+
+  /* 1-4 標準化資料的和：Σz=0、Σz²=n、Σx²=n(σ²+μ²)、Σ(z+c)²=n(1+c²)、Σxz=nσ */
+  L1.zSums = function (r) {
+    var n = r.pick([10, 12, 15, 20, 25, 30, 40]), mu = r.int(8, 75), sg = r.pick([2, 3, 4, 5, 6, 8, 10]), c = r.nz(-3, 3);
+    var ks = [r.pick(['sx', 'sxx']), r.pick(['sz', 'szz']), r.pick(['szc', 'sxz', 'szc'])];
+    var up = '_{i=1}^{' + n + '}';
+    var cs = c > 0 ? '+' + c : String(c);
+    var E = {
+      sx: { q: '\\displaystyle\\sum' + up + 'x_i', l: '\\sum x_i', f: 'n\\mu=' + n + '\\times' + mu, v: n * mu },
+      sxx: { q: '\\displaystyle\\sum' + up + 'x_i^2', l: '\\sum x_i^2', f: 'n(\\sigma^2+\\mu^2)=' + n + '(' + sg + '^2+' + mu + '^2)', v: n * (sg * sg + mu * mu) },
+      sz: { q: '\\displaystyle\\sum' + up + 'z_i', l: '\\sum z_i', f: '\\dfrac{\\sum(x_i-\\mu)}{\\sigma}', v: 0 },
+      szz: { q: '\\displaystyle\\sum' + up + 'z_i^2', l: '\\sum z_i^2', f: '\\dfrac{\\sum(x_i-\\mu)^2}{\\sigma^2}=\\dfrac{n\\sigma^2}{\\sigma^2}', v: n },
+      szc: { q: '\\displaystyle\\sum' + up + '(z_i' + cs + ')^2', l: '\\sum(z_i' + cs + ')^2', f: '\\sum z_i^2' + (2 * c > 0 ? '+' : '') + (2 * c) + '\\sum z_i+' + (c * c === 1 ? String(n) : n + '\\times' + (c * c)) + '=' + n + '+' + (n * c * c), v: n * (1 + c * c) },
+      sxz: { q: '\\displaystyle\\sum' + up + 'x_iz_i', l: '\\sum x_iz_i', f: '\\sum(\\mu+\\sigma z_i)z_i=\\mu\\sum z_i+\\sigma\\sum z_i^2=' + sg + '\\times' + n, v: n * sg }
+    };
+    return { q: '有 ' + T(String(n)) + ' 筆資料 ' + T('x_1,x_2,\\ldots,x_{' + n + '}') + '，平均數為 ' + T(String(mu)) + '、標準差為 ' + T(String(sg)) + '。把它們標準化為 ' + T('z_i=\\dfrac{x_i-' + mu + '}{' + sg + '}') + '。求 (1) ' + T(E[ks[0]].q) + '　(2) ' + T(E[ks[1]].q) + '　(3) ' + T(E[ks[2]].q) + '。',
+             a: '(1) ' + T(E[ks[0]].l + '=' + E[ks[0]].v) + '　(2) ' + T(E[ks[1]].l + '=' + E[ks[1]].v) + '　(3) ' + T(E[ks[2]].l + '=' + E[ks[2]].v),
+             h: '標準化後一定有 ' + T('\\sum z_i=0') + '、' + T('\\sum z_i^2=n=' + n) + '（因為 ' + T('\\sum(x_i-\\mu)=0') + '、' + T('\\sum(x_i-\\mu)^2=n\\sigma^2') + '）；' + T('\\sum x_i^2') + ' 用 ' + T('n(\\sigma^2+\\mu^2)') + '；其他的式子先展開，再把這幾個和代進去' + (ks[2] === 'sxz' ? '（' + T('x_i=' + mu + '+' + sg + 'z_i') + '）' : '') + '。',
+             p: { n: n, mu: mu, sg: sg, c: c, ks: ks, ans: ks.map(function (k) { return E[k].v; }), f: ks.map(function (k) { return E[k].f; }), l: ks.map(function (k) { return E[k].l; }) } };
+  };
+
+  /* 2-2 最適直線通過某一點（不是重心）：斜率由兩點決定，再由斜率 = r·σy/σx 反推 */
+  var XP_R = [F(1, 2), F(3, 5), F(4, 5), F(3, 4), F(2, 5), F(9, 10), F(-1, 2), F(-3, 5), F(-4, 5), F(-3, 4)];
+  var XP_K = [F(1, 2), F(2), F(3, 2), F(4), F(5, 4), F(4, 3), F(3), F(6, 5), F(5, 2), F(5, 3)];
+  L1.fitThroughPt = function (r) {
+    var kind = r.int(0, 2), rr = r.pick(XP_R), k = r.pick(XP_K), m = Fr.mul(rr, k);
+    var mx = r.int(20, 70), my = r.int(20, 80), j = r.nz(-4, 4), dx = m.d * j;
+    if (Math.abs(dx) > 30) dx = m.d * (j > 0 ? 1 : -1);
+    if (mx + dx < 0) dx = -dx;
+    var x0 = mx + dx, y0 = Fr.add(F(my), Fr.mul(m, F(dx))), icpt = Fr.sub(F(my), Fr.mul(m, F(mx)));
+    var sx = kind === 0 ? r.pick([2, 4, 5, 6, 8, 10, 12]) : 0, sy = Fr.mul(k, F(sx));
+    var head = '已知兩變數 ' + T('x') + '、' + T('y') + ' 的平均數分別為 ' + T('\\mu_x=' + mx) + '、' + T('\\mu_y=' + my) + '，相關係數 ' + T('r=' + dec(rr));
+    if (kind === 1) {
+      var kt = dec(k);
+      return { q: head + '，標準差滿足 ' + T('\\sigma_y=' + kt + '\\sigma_x') + '。若 ' + T('y') + ' 對 ' + T('x') + ' 的最適直線通過點 ' + T('(' + x0 + ',t)') + '，求 ' + T('t') + '。',
+               a: T('t=' + dec(y0)),
+               h: '斜率 ' + T('=r\\cdot\\dfrac{\\sigma_y}{\\sigma_x}=' + xpPar(rr) + '\\times' + dec(k)) + '，直線必過重心 ' + T('(' + mx + ',' + my + ')') + '；從重心出發：' + T('t=' + my + '+\\text{斜率}\\times(' + x0 + '-' + mx + ')') + '。',
+               p: { kind: 1, mx: mx, my: my, r: fr2(rr), k: fr2(k), x0: x0, ans: fr2(y0) } };
+    }
+    var pt = T('(' + x0 + ',' + dec(y0) + ')');
+    if (kind === 0) {
+      return { q: head + '，' + T('\\sigma_x=' + sx) + '。已知 ' + T('y') + ' 對 ' + T('x') + ' 的最適直線通過點 ' + pt + '。(1) 求此最適直線。　(2) 求 ' + T('\\sigma_y') + '。',
+               a: '(1) ' + T(lineTex(m, icpt)) + '　(2) ' + T('\\sigma_y=' + dec(sy)),
+               h: '最適直線一定過重心 ' + T('(' + mx + ',' + my + ')') + '，又過 ' + pt + '：兩點決定斜率 ' + T('m=\\dfrac{' + my + '-' + xpPar(y0) + '}{' + mx + '-' + xpPar(F(x0)) + '}') + '；再由 ' + T('m=r\\cdot\\dfrac{\\sigma_y}{\\sigma_x}=' + dec(rr) + '\\cdot\\dfrac{\\sigma_y}{' + sx + '}') + ' 解 ' + T('\\sigma_y') + '。',
+               p: { kind: 0, mx: mx, my: my, r: fr2(rr), sx: sx, x0: x0, y0: fr2(y0), ans: { m: fr2(m), b: fr2(icpt), sy: fr2(sy) } } };
+    }
+    return { q: head + '。已知 ' + T('y') + ' 對 ' + T('x') + ' 的最適直線通過點 ' + pt + '。(1) 求此最適直線的斜率。　(2) ' + T('\\sigma_y') + ' 是 ' + T('\\sigma_x') + ' 的幾倍？',
+             a: '(1) ' + T('m=' + dec(m)) + '　(2) ' + T('\\dfrac{\\sigma_y}{\\sigma_x}=' + dec(k)),
+             h: '最適直線一定過重心 ' + T('(' + mx + ',' + my + ')') + '，又過 ' + pt + '：兩點決定斜率 ' + T('m=\\dfrac{' + my + '-' + xpPar(y0) + '}{' + mx + '-' + xpPar(F(x0)) + '}') + '；再由 ' + T('m=r\\cdot\\dfrac{\\sigma_y}{\\sigma_x}') + ' 得 ' + T('\\dfrac{\\sigma_y}{\\sigma_x}=\\dfrac{m}{r}') + '。',
+             p: { kind: 2, mx: mx, my: my, r: fr2(rr), x0: x0, y0: fr2(y0), ans: { m: fr2(m), k: fr2(k) } } };
+  };
+
+  /* ── L2 ── */
+  /* 一維：平均數＝中位數，求未知的那一筆（分三段討論 x 排在哪裡） */
+  function xpCenterSols(known) {
+    var k = known.slice().sort(function (a, b) { return a - b; }), n = k.length + 1, m = (n + 1) / 2, S = sumArr(k), out = [], lo = k[m - 2], hi = k[m - 1];
+    var add = function (f) { for (var i = 0; i < out.length; i++) if (Fr.eq(out[i], f)) return; out.push(f); };
+    var x1 = F(n * lo - S); if (!Fr.lt(F(lo), x1)) add(x1);
+    var x2 = F(S, n - 1); if (!Fr.lt(x2, F(lo)) && !Fr.lt(F(hi), x2)) add(x2);
+    var x3 = F(n * hi - S); if (!Fr.lt(x3, F(hi))) add(x3);
+    out.sort(function (a, b) { return Fr.lt(a, b) ? -1 : 1; });
+    return { sols: out, lo: lo, hi: hi, S: S, n: n, sorted: k };
+  }
+  L2.centerUnknown = function (r) {
+    var n = r.pick([5, 5, 5, 7]), want = r.pick([1, 1, 2, 3, 3]), known, info, tries = 0, pool = [], v;
+    for (v = 50; v <= 96; v++) pool.push(v);
+    do {
+      known = r.shuffle(pool).slice(0, n - 1); info = xpCenterSols(known); tries++;
+      var inRange = info.sols.every(function (f) { return !Fr.lt(f, F(0)) && !Fr.lt(F(100), f); });
+      var ok = inRange && (info.sols.length === want || tries > 150);
+    } while (!ok && tries < 200);
+    var ans = info.sols.map(function (f) { return T('x=' + dec(f)); }).join(' 或 ');
+    var nm = n === 5 ? '五' : '七';
+    return { q: '小瑜說：「我這次' + nm + '科的成績，有 ' + T(String(n - 1)) + ' 科是 ' + T(listTex(known)) + ' 分，另一科忘了幾分（記為 ' + T('x') + ' 分，' + T('0\\le x\\le100') + '），但我記得' + nm + '科的算術平均數與中位數相等。」求 ' + T('x') + ' 所有可能的值。',
+             a: ans + '（共 ' + T(String(info.sols.length)) + ' 個）',
+             h: '中位數要看 $x$ 排在哪裡，已知 ' + T(String(n - 1)) + ' 科由小到大是 ' + T(listTex(info.sorted)) + '，分三段：' + T('x\\le' + info.lo) + ' 時中位數是 ' + T(String(info.lo)) + '；' + T(info.lo + '\\le x\\le' + info.hi) + ' 時中位數是 ' + T('x') + '；' + T('x\\ge' + info.hi) + ' 時中位數是 ' + T(String(info.hi)) + '。每一段都列 ' + T('\\dfrac{' + info.S + '+x}{' + n + '}=\\text{中位數}') + ' 解 ' + T('x') + '，再檢查解有沒有落在那一段。',
+             p: { known: known, n: n, ans: info.sols.map(fr2) } };
+  };
+
+  /* 二維：標準化資料的 Σ(x′−y′)²、Σ(x′+y′)² 與相關係數（Σx′²=Σy′²=n、Σx′y′=nr） */
+  L2.stdPairSum = function (r) {
+    var n = r.pick([20, 25, 30, 40, 50, 100, 2025]), rr = F(r.nz(-9, 9), 10), kind = r.int(0, 3), sgn = kind % 2 === 0 ? -1 : 1;
+    var S = Fr.mul(F(2 * n), Fr.add(F(1), Fr.mul(F(sgn), rr)));
+    var op = sgn < 0 ? '-' : '+', expr = "\\sum_{i=1}^{" + n + "}(x_i'" + op + "y_i')^2";
+    var head = '有 ' + T(String(n)) + ' 筆二維數據 ' + T('(x_i,y_i)') + '，把 ' + T('x_i') + '、' + T('y_i') + ' 分別標準化為 ' + T("x_i'") + '、' + T("y_i'") + '。';
+    var hint = '標準化後 ' + T("\\sum x_i'^2=\\sum y_i'^2=n=" + n) + '，而且 ' + T("\\sum x_i'y_i'=nr") + '（相關係數就是標準化數據乘積的平均）。把 ' + T("(x_i'" + op + "y_i')^2") + ' 展開：' + T(expr + '=n+n' + op + '2nr=2n(1' + op + 'r)') + '。';
+    if (kind < 2)
+      return { q: head + '已知 ' + T('x') + ' 與 ' + T('y') + ' 的相關係數為 ' + T(dec(rr)) + '，求 ' + T('\\displaystyle' + expr) + '。',
+               a: T(expr + '=2\\times' + n + '\\times(1' + op + xpPar(rr) + ')=' + dec(S)),
+               h: hint + '本題代入 ' + T('r=' + dec(rr)) + '。', p: { n: n, kind: kind, r: fr2(rr), ans: fr2(S) } };
+    return { q: head + '已知 ' + T('\\displaystyle' + expr + '=' + dec(S)) + '，求 ' + T('x') + ' 與 ' + T('y') + ' 的相關係數 ' + T('r') + '。',
+             a: T('2\\times' + n + '\\times(1' + op + 'r)=' + dec(S)) + ' ⟹ ' + T('r=' + dec(rr)),
+             h: hint + '令它等於 ' + T(dec(S)) + ' 再解 ' + T('r') + '。', p: { n: n, kind: kind, S: fr2(S), ans: fr2(rr) } };
+  };
+
+  /* 二維：使 Σ(y_i−ax_i−b)² 最小的 (a,b)＝最適直線（資料點設計成 y＝a₀x＋b₀＋t·e，e 與 1、x 都正交） */
+  var XP_LSQ = [{ I: [-1, 0, 1], E: [1, -2, 1] }, { I: [-3, -1, 1, 3], E: [1, -1, -1, 1] }, { I: [-2, -1, 0, 1, 2], E: [-1, 2, 0, -2, 1] }];
+  function xpTerm(y, x) {                        /* (y − x·a − b) 的排版 */
+    var s = y === 0 ? '' : String(y);
+    if (x !== 0) { var cx = Math.abs(x) === 1 ? '' : String(Math.abs(x)); s += (x > 0 ? '-' : (s === '' ? '' : '+')) + cx + 'a'; }
+    s += '-b';
+    return s === '-b' ? 'b' : s;
+  }
+  L2.lsqMin = function (r) {
+    var D = r.pick(XP_LSQ), np = D.I.length, kind = r.int(0, 1), j;
+    var a0 = r.nz(-3, 3), b0 = r.int(-4, 9), t = r.pick([1, 1, 2]), c = r.int(-1, 4), k = r.pick([1, 1, 2]), x = [], y = [];
+    if (np === 4) x = [c, c + k, c + 2 * k, c + 3 * k];                               /* I=[-3,-1,1,3] 的等距點：x = c + k·(I+3)/2 */
+    else for (j = 0; j < np; j++) x.push(c + k * D.I[j]);
+    for (j = 0; j < np; j++) y.push(a0 * x[j] + b0 + t * D.E[j]);
+    var pm = r.shuffle(l3rng(0, np - 1)), X = pm.map(function (i) { return x[i]; }), Y = pm.map(function (i) { return y[i]; });
+    var mn = 0; for (j = 0; j < np; j++) mn += t * t * D.E[j] * D.E[j];
+    var mux = F(sumArr(x), np), muy = F(sumArr(y), np);
+    var q;
+    if (kind === 0) {
+      var terms = []; for (j = 0; j < np; j++) terms.push('(' + xpTerm(Y[j], X[j]) + ')^2');
+      q = '設 ' + T('a') + '、' + T('b') + ' 為實數，' + T('S=' + terms.join('+')) + '。求使 ' + T('S') + ' 有最小值的數對 ' + T('(a,b)') + '，以及 ' + T('S') + ' 的最小值。';
+    } else {
+      q = '已知 ' + T(String(np)) + ' 筆資料 ' + T(pairsTex(X, Y)) + '。求使 ' + T('\\displaystyle\\sum_{i=1}^{' + np + '}(y_i-ax_i-b)^2') + ' 最小的實數對 ' + T('(a,b)') + '，以及這個最小值。';
+    }
+    return { q: q,
+             a: T('(a,b)=(' + a0 + ',' + b0 + ')') + '，最小值 ' + T(String(mn)),
+             h: (kind === 0 ? '每一項都是 ' + T('(y_i-ax_i-b)^2') + ' 的樣子，讀出資料點 ' + T(pairsTex(X, Y)) + '；' : '') + '讓 ' + T('\\sum(y_i-ax_i-b)^2') + ' 最小的 ' + T('y=ax+b') + ' 就是最適直線：' + T('\\mu_x=' + dec(mux) + '、\\mu_y=' + dec(muy)) + '，' + T('a=\\dfrac{S_{xy}}{S_{xx}}') + '、' + T('b=\\mu_y-a\\mu_x') + '；最小值把 ' + T('(a,b)') + ' 代回去逐項平方相加。',
+             p: { kind: kind, x: X, y: Y, ans: { a: a0, b: b0, min: mn } } };
+  };
+
+  /* 二維：補登一筆橫坐標恰為 μx 的資料：S_xx、S_xy 不變 ⟹ 斜率不變；μy、r 會變 */
+  var XP_TRI = [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10], [5, 12, 13], [12, 5, 13]];
+  L2.addPointFit = function (r) {
+    var tri, q2, n, rr, sx, mx, my, d, y0, tries = 0;
+    do {
+      tri = r.pick(XP_TRI); q2 = r.pick([4, 5, 8, 10]); n = q2 * q2 - 1;
+      rr = r.pick([F(3, 5), F(4, 5), F(1, 2), F(7, 10), F(-3, 5), F(-4, 5), F(-1, 2)]); sx = r.pick([4, 5, 6, 8, 10]);
+      mx = r.int(45, 75); my = r.int(40, 75); d = tri[1] * q2 * r.sign(); y0 = my + d; tries++;
+    } while ((y0 < 0 || y0 > 100 || Math.abs(d) > 45) && tries < 80);
+    if (y0 < 0 || y0 > 100) { tri = [3, 4, 5]; q2 = 5; n = 24; d = 20; y0 = my + d; if (y0 > 100) { d = -20; y0 = my - 20; } }
+    var sy = tri[0], m = Fr.mul(rr, F(sy, sx)), my2 = Fr.add(F(my), F(d, n + 1)), icpt2 = Fr.sub(my2, Fr.mul(m, F(mx))), r2 = Fr.mul(rr, F(sy, tri[2]));
+    return { q: '某次檢定 ' + T(String(n)) + ' 人的筆試成績 ' + T('x') + ' 與實作成績 ' + T('y') + '：' + T('\\mu_x=' + mx + '、\\sigma_x=' + sx + '、\\mu_y=' + my + '、\\sigma_y=' + sy + '、r=' + dec(rr)) + '。後來補登一位漏登的考生，成績為 ' + T('(' + mx + ',' + y0 + ')') + '（筆試恰為平均）。求補登後 (1) 實作成績的平均數　(2) ' + T('y') + ' 對 ' + T('x') + ' 的最適直線　(3) 相關係數。',
+             a: '(1) ' + T("\\mu_y'=" + dec(my2)) + '　(2) ' + T(lineTex(m, icpt2)) + '　(3) ' + T("r'=" + dec(r2)),
+             h: '新的一筆 ' + T('x') + ' 偏差為 $0$ ⟹ ' + T('\\mu_x') + '、' + T('S_{xx}') + '、' + T('S_{xy}') + ' 都不變，斜率仍是 ' + T('r\\dfrac{\\sigma_y}{\\sigma_x}=' + dec(m)) + '；' + T("\\mu_y'=\\dfrac{" + n + '\\times' + my + '+' + y0 + '}{' + (n + 1) + '}') + '，直線改過新重心；' + T('S_{yy}') + ' 由 ' + T(n + '\\times' + (sy * sy)) + ' 增加 ' + T('\\dfrac{n}{n+1}d^2=\\dfrac{' + n + '}{' + (n + 1) + '}\\times' + xpPar(F(d)) + '^2') + '，再算 ' + T("r'=\\dfrac{S_{xy}}{\\sqrt{S_{xx}S_{yy}'}}") + '。',
+             p: { n: n, mx: mx, sx: sx, my: my, sy: sy, r: fr2(rr), y0: y0, ans: { my2: fr2(my2), m: fr2(m), b: fr2(icpt2), r2: fr2(r2) } } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -994,6 +1233,89 @@
       '(2) 把 ' + T("x''=" + dec(c)) + ' 代進去：' + T("\\hat y''=" + dec(rr) + '\\times(' + dec(c) + ')=' + dec(yh)) + '。' + solFin(o)];
   };
 
+  /* ── 2026-09-28 擴充：新 L1 六型的第一層提示與解題步驟 ── */
+  L1_H1.quartile = '這是「四分位數」：第一四分位數就是第二十五百分位數、第三四分位數就是第七十五百分位數，資料先排序，再照百分位數的規則算位置取值，兩者相減就是四分位距。';
+  L1_H1.sdCompare = '這是「標準差比大小」：把每一組看成某個基本組「每個數乘一個倍數、再加一個常數」，加常數不改變標準差，乘倍數時標準差乘上倍數的絕對值。';
+  L1_H1.dataFix = '這是「更正或剔除資料」：平均數與標準差不能直接改，要先回到總和與平方和，把錯的那一筆換掉或拿掉，再重新算平均數與變異數。';
+  L1_H1.linearBack = '這是「由調分公式反推原始成績」：平均數跟著公式走、標準差只乘係數的絕對值，把這兩條關係反過來解；比較調整前後的分數就解一個不等式。';
+  L1_H1.zSums = '這是「標準化資料的和」：標準化後的資料總和一定是零、平方和一定等於筆數；原始資料的平方和用「筆數乘上變異數加平均的平方」，其他式子展開後代入。';
+  L1_H1.fitThroughPt = '這是「最適直線通過某一點」：最適直線一定通過重心，再加上題目給的那一點就能算斜率；斜率又等於相關係數乘上兩個標準差的比，用它反推標準差。';
+
+  function xpTimes(m, inner) {                     /* 「+m×(inner)」的排版：m=±1 不寫係數 */
+    if (Fr.eq(m, F(1))) return '+(' + inner + ')';
+    if (Fr.eq(m, F(-1))) return '-(' + inner + ')';
+    return '+' + xpPar(m) + '\\times(' + inner + ')';
+  }
+  L1_SOL.quartile = function (p, o) {
+    var s = p.data.slice().sort(function (a, b) { return a - b; }), P1 = xpPos(s, 25), P3 = xpPos(s, 75), iqr = Fr.sub(P3.v, P1.v);
+    return ['先把 ' + T(String(p.n)) + ' 筆資料由小到大排好：' + T(listTex(s)) + '。',
+      T('Q_1') + ' 就是第 $25$ 百分位數：' + P1.txt + '，所以 ' + T('Q_1=' + dec(P1.v)) + '。',
+      T('Q_3') + ' 就是第 $75$ 百分位數：' + P3.txt + '，所以 ' + T('Q_3=' + dec(P3.v)) + '。',
+      '四分位距 ' + T('Q_3-Q_1=' + dec(P3.v) + '-' + dec(P1.v) + '=' + dec(iqr)) + '。' + solFin(o)];
+  };
+
+  L1_SOL.sdCompare = function (p, o) {
+    var NM = ['A', 'B', 'C', 'D'], lines = [], bases = {}, j;
+    for (j = 0; j < 4; j++) {
+      var P = XP_PAT[p.pat[j]], c = p.c[j], v0 = varF(P), v = solF(p.ans[j]);
+      bases[p.pat[j]] = T(listTex(P)) + ' 的 ' + T('\\sigma=' + (v0.d === 1 ? '' : '\\sqrt{' + dec(v0) + '}=') + sqrtFracTex(v0));
+      lines.push(T('\\sigma_' + NM[j] + '=' + (Math.abs(c) === 1 ? '' : Math.abs(c) + '\\times') + sqrtFracTex(v0) + (Math.abs(c) === 1 ? '' : '=' + sqrtFracTex(v))));
+    }
+    return ['加同一個常數（平移）不改變標準差；每個數乘 $c$ 倍，標準差變成 $|c|$ 倍。所以只要看每一組是「哪個基本組」乘「幾倍」。',
+      '基本組的標準差：' + Object.keys(bases).map(function (k) { return bases[k]; }).join('；') + '。',
+      '各組：' + lines.join('、') + '。',
+      '由小到大排列（相等的用等號）。' + solFin(o)];
+  };
+
+  L1_SOL.dataFix = function (p, o) {
+    var mu2 = solF(p.ans.mu), var2 = solF(p.ans.var);
+    var st2 = p.kind === 0
+      ? '把誤登的 ' + T(String(p.b)) + ' 換成正確的 ' + T(String(p.a)) + '：' + T("\\sum x_i'=" + p.sx + '-' + p.b + '+' + p.a + '=' + p.sx2) + '，' + T("\\sum x_i'^2=" + p.sxx + '-' + p.b + '^2+' + p.a + '^2=' + p.sxx2) + '，筆數仍是 ' + T(String(p.n2)) + '。'
+      : '剔除 ' + T(String(p.v)) + '：' + T("\\sum x_i'=" + p.sx + '-' + p.v + '=' + p.sx2) + '，' + T("\\sum x_i'^2=" + p.sxx + '-' + p.v + '^2=' + p.sxx2) + '，筆數變成 ' + T(String(p.n2)) + '。';
+    return ['平均數、標準差不能直接改，先回到總和與平方和：' + T('\\sum x_i=' + p.n + '\\times' + p.mu + '=' + p.sx) + '，' + T('\\sum x_i^2=n(\\sigma^2+\\mu^2)=' + p.n + '(' + p.sg + '^2+' + p.mu + '^2)=' + p.sxx) + '。',
+      st2,
+      '重新計算：' + T("\\mu'=\\dfrac{" + p.sx2 + '}{' + p.n2 + '}=' + dec(mu2)) + '，' + T("\\sigma'^2=\\dfrac{" + p.sxx2 + '}{' + p.n2 + '}-' + xpSq(mu2) + '=' + dec(var2)) + '。',
+      '標準差 ' + T("\\sigma'=\\sqrt{" + dec(var2) + '}=' + sqrtBoth(var2)) + '。' + solFin(o)];
+  };
+
+  L1_SOL.linearBack = function (p, o) {
+    var a = solF(p.a), muy = solF(p.muy), sgy = solF(p.sgy), oneA = Fr.sub(F(1), a);
+    var s3 = p.kind === 0
+      ? '(2) 調整後不低於原始分數：' + T(dec(a) + 'x+' + p.b + '\\ge x') + ' ⟺ ' + T(dec(oneA) + 'x\\le' + p.b) + ' ⟺ ' + T('x\\le\\dfrac{' + p.b + '}{' + dec(oneA) + '}=' + p.ans.X0) + '，原始分數在 ' + T(String(p.ans.X0)) + ' 分以下的同學分數不會變低。'
+      : '(2) 解 ' + T(dec(a) + 'x+' + p.b + '=' + dec(solF(p.y0))) + '：' + T('x=\\dfrac{' + dec(solF(p.y0)) + '-' + p.b + '}{' + dec(a) + '}=' + p.ans.x0) + '。';
+    return ['(1) 平均數跟著公式走：' + T('\\mu_y=a\\mu_x+b') + '，所以 ' + T('\\mu_x=\\dfrac{\\mu_y-b}{a}=\\dfrac{' + dec(muy) + '-' + p.b + '}{' + dec(a) + '}=' + p.ans.mux) + '。',
+      '標準差只乘係數的絕對值，常數 ' + T(String(p.b)) + ' 不影響：' + T('\\sigma_x=\\dfrac{\\sigma_y}{|a|}=\\dfrac{' + dec(sgy) + '}{' + dec(a) + '}=' + p.ans.sgx) + '。',
+      s3 + solFin(o)];
+  };
+
+  L1_SOL.zSums = function (p, o) {
+    var st = ['標準化的兩個性質：' + T('\\sum z_i=\\dfrac{\\sum(x_i-\\mu)}{\\sigma}=0') + '、' + T('\\sum z_i^2=\\dfrac{\\sum(x_i-\\mu)^2}{\\sigma^2}=\\dfrac{n\\sigma^2}{\\sigma^2}=n=' + p.n) + '；原始資料 ' + T('\\sum x_i=n\\mu') + '、' + T('\\sum x_i^2=n(\\sigma^2+\\mu^2)') + '。'];
+    var lab = ['(1) ', '(2) ', '(3) '], body = [];
+    for (var j = 0; j < 3; j++) body.push(lab[j] + T(p.l[j] + '=' + p.f[j] + '=' + p.ans[j]) + '。');
+    st.push(body[0] + body[1]);
+    st.push(body[2] + solFin(o));
+    return st;
+  };
+
+  L1_SOL.fitThroughPt = function (p, o) {
+    var rr = solF(p.r);
+    if (p.kind === 1) {
+      var k = solF(p.k), m = Fr.mul(rr, k), t = solF(p.ans);
+      return ['斜率 ' + T('=r\\cdot\\dfrac{\\sigma_y}{\\sigma_x}=' + xpPar(rr) + '\\times' + dec(k) + '=' + dec(m)) + '（' + T('\\sigma_y') + ' 是 ' + T('\\sigma_x') + ' 的 ' + T(dec(k)) + ' 倍）。',
+        '最適直線必過重心 ' + T('(' + p.mx + ',' + p.my + ')') + '，從重心出發：' + T('t=' + p.my + xpTimes(m, p.x0 + '-' + p.mx) + '=' + dec(t)) + '。' + solFin(o)];
+    }
+    var y0 = solF(p.y0), m2 = solF(p.ans.m), dxT = p.mx + '-' + xpPar(F(p.x0)), dyT = p.my + '-' + xpPar(y0);
+    var st = ['最適直線必過重心 ' + T('(' + p.mx + ',' + p.my + ')') + '，又過 ' + T('(' + p.x0 + ',' + dec(y0) + ')') + '，兩點決定斜率：' + T('m=\\dfrac{' + dyT + '}{' + dxT + '}=' + dec(m2)) + '。'];
+    if (p.kind === 0) {
+      var b = solF(p.ans.b), sy = solF(p.ans.sy);
+      st.push('(1) 點斜式 ' + T('y-' + p.my + '=' + solCoef(m2) + '(x-' + p.mx + ')') + ' 整理得 ' + T(lineTex(m2, b)) + '。');
+      st.push('(2) ' + T('m=r\\cdot\\dfrac{\\sigma_y}{\\sigma_x}') + '：' + T(dec(m2) + '=' + dec(rr) + '\\times\\dfrac{\\sigma_y}{' + p.sx + '}') + ' ⟹ ' + T('\\sigma_y=' + dec(sy)) + '。' + solFin(o));
+      return st;
+    }
+    st.push('(2) ' + T('m=r\\cdot\\dfrac{\\sigma_y}{\\sigma_x}') + ' ⟹ ' + T('\\dfrac{\\sigma_y}{\\sigma_x}=\\dfrac{m}{r}=\\dfrac{' + dec(m2) + '}{' + dec(rr) + '}=' + dec(solF(p.ans.k))) + '（' + T('m') + ' 與 ' + T('r') + ' 同號，比值是正的）。' + solFin(o));
+    return st;
+  };
+
   var META_L1 = [
       ['centralTrio', '§1-1 平均數、中位數、眾數'], ['weightedMean', '§1-1 兩班合併的平均'], ['weightedScore', '§1-1 加權平均：至少要考幾分'], ['freqTable', '§1-1 次數分配表的平均與中位數'], ['meanShift', '§1-1 新增／剔除資料後的平均'],
       ['pctPosition', '§1-2 百分位數取第幾筆'], ['pctData', '§1-2 排序資料的百分位數'], ['pctFreq', '§1-2 「持 k 顆的有 k 位」的百分位數'],
@@ -1001,12 +1323,15 @@
       ['linearTrans', '§1-4 線性變換 y=ax+b'], ['inverseTrans', '§1-4 由變換前後反推 a、b'], ['zCompare', '§1-4 標準化：跨科比較'], ['zInverse', '§1-4 z 分數與原始分數互換'], ['tScore', '§1-4 T 分數'],
       ['growthRate', '§1-5 平均成長率'], ['growthTotal', '§1-5 由首尾值求平均成長率'],
       ['corrData', '§2-1 由資料算相關係數'], ['corrSums', '§2-1 只給 Σ 的相關係數'], ['corrTransform', '§2-1 線性變換對 r 的影響'], ['corrPerfect', '§2-1 完全線性關係'],
-      ['fitData', '§2-2 由資料求最適直線'], ['fitStats', '§2-2 由統計量求最適直線與預測'], ['fitCentroid', '§2-2 由最適直線反推 μ_y 與 r'], ['fitTransform', '§2-2 線性變換後的最適直線'], ['stdFit', '§2-2 標準化後的最適直線']
+      ['fitData', '§2-2 由資料求最適直線'], ['fitStats', '§2-2 由統計量求最適直線與預測'], ['fitCentroid', '§2-2 由最適直線反推 μ_y 與 r'], ['fitTransform', '§2-2 線性變換後的最適直線'], ['stdFit', '§2-2 標準化後的最適直線'],
+      ['quartile', '§1-2 四分位數與四分位距'], ['sdCompare', '§1-3 幾組資料的標準差比大小'], ['dataFix', '§1-3 更正或剔除一筆資料後的 μ、σ'],
+      ['linearBack', '§1-4 由調分公式反推原始 μ、σ'], ['zSums', '§1-4 標準化資料的 Σz、Σz²'], ['fitThroughPt', '§2-2 最適直線通過某一點']
   ];
   var META_L2 = [
       ['regMissing', '§2 由迴歸直線反推缺失資料'], ['regReverse', '§2 由 r、直線反推 μ_x、σ_x'], ['regBothLines', '§2 兩條迴歸直線：交點與 r²'], ['regUnits', '§2 換單位後的迴歸直線'], ['corrFromSlope', '§2 由斜率反推 σ_y、μ_y'], ['addCentroid', '§2 新增重心那一筆'],
       ['minVarRange', '§1 固定全距的最小變異數'], ['sumSqShift', '§1 由 f(x)=Σ(x−x_i)² 反推 μ、σ'], ['reverseAdd', '§1 新增一筆後 σ 已知，反推那一筆'], ['mergeReverse', '§1 合併結果已知，反推 (x,y)'], ['linearReverse', '§1 把最高分最低分拉到指定值'], ['zRank', '§1 五科 z 分數排名'],
-      ['pctFreqSquare', '§1 k² 位／k+1 次的百分位數'], ['growthMixed', '§1 成長率：金額漲幅、反推最後一年'], ['apStats', '§1 等差資料的 μ、P_k、σ²'], ['pairProdVar', '§1 兩兩乘積和求變異數'], ['tThreshold', '§1 T 分數的及格門檻'], ['weightedMin', '§1 兩層加權：期末至少幾分']
+      ['pctFreqSquare', '§1 k² 位／k+1 次的百分位數'], ['growthMixed', '§1 成長率：金額漲幅、反推最後一年'], ['apStats', '§1 等差資料的 μ、P_k、σ²'], ['pairProdVar', '§1 兩兩乘積和求變異數'], ['tThreshold', '§1 T 分數的及格門檻'], ['weightedMin', '§1 兩層加權：期末至少幾分'],
+      ['centerUnknown', '§1 平均數＝中位數，求未知的一筆'], ['stdPairSum', '§2 標準化資料的 Σ(x′±y′)² 與 r'], ['lsqMin', '§2 使 Σ(y−ax−b)² 最小的 (a,b)'], ['addPointFit', '§2 補登一筆 x＝μₓ 的資料']
   ];
   /* ══════════════════════════════════════════════════════════
      L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
@@ -1579,15 +1904,90 @@
              p: { v: 0, sx: sx, sy: sy, mx: mx, a: fr2(slope), b: fr2(b), ans: { my: my, r: fr2(rr), a2: fr2(s2), b2: fr2(i2) } } };
   };
 
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* L3-16　標準化資料的組合平方和：ΣX²=ΣY²=n、ΣXY=nr ⟹ Σ(aX+bY)²=n(a²+b²+2abr) */
+  function l3xy(a, b) {                                   /* aX_i+bY_i 的排版 */
+    var s = (a === 1 ? '' : a === -1 ? '-' : String(a)) + 'X_i';
+    s += (b > 0 ? '+' : '-') + (Math.abs(b) === 1 ? '' : Math.abs(b)) + 'Y_i';
+    return s;
+  }
+  L3.stdComboSum = function (r) {
+    var n = r.pick([10, 20, 25, 30, 40, 50]), kind = r.int(0, 2), a, b, rr;
+    do { a = r.pick([1, 2, 3]); b = r.pick([-3, -2, -1, 1, 2, 3]); } while (a === 1 && Math.abs(b) === 1);
+    rr = F(r.nz(-9, 9), 10);
+    var ab2 = Fr.mul(F(2 * a * b), rr), inner = Fr.add(F(a * a + b * b), ab2), V = Fr.mul(F(n), inner);
+    var ex = '\\sum_{i=1}^{' + n + '}(' + l3xy(a, b) + ')^2';
+    var head = '已知二維數據 ' + T('(x_i,y_i)') + '，' + T('i=1,2,\\ldots,' + n) + '。將這 ' + T(String(n)) + ' 筆數據標準化成 ' + T('(X_i,Y_i)') + '。';
+    var core = '(' + (a * a) + '+' + (b * b) + (ab2.n >= 0 ? '+' : '') + dec(ab2) + ')';
+    var hb = '標準化後 $\\sum X_i^2=\\sum Y_i^2=n=' + n + '$、$\\sum X_iY_i=nr$（$r$ 就是標準化數據乘積的平均）。把 $(' + l3xy(a, b) + ')^2$ 展開成 $' + (a * a === 1 ? '' : a * a) + 'X_i^2' + (2 * a * b > 0 ? '+' : '') + (2 * a * b) + 'X_iY_i+' + (b * b === 1 ? '' : b * b) + 'Y_i^2$，逐項加總：$' + ex + '=' + n + '(' + (a * a + b * b) + (2 * a * b > 0 ? '+' : '') + (2 * a * b) + 'r)$。';
+    if (kind === 0)
+      return { q: head + '若 ' + T('x') + ' 與 ' + T('y') + ' 的相關係數為 ' + T(dec(rr)) + '，求 ' + T('\\displaystyle' + ex) + '。',
+               a: T(ex + '=' + n + core + '=' + dec(V)), h: hb,
+               p: { kind: 0, n: n, a: a, b: b, r: fr2(rr), ans: fr2(V) } };
+    if (kind === 1)
+      return { q: head + '若 ' + T('\\displaystyle' + ex + '=' + dec(V)) + '，求 ' + T('x') + ' 與 ' + T('y') + ' 的相關係數 ' + T('r') + '。',
+               a: T(n + '(' + (a * a + b * b) + (2 * a * b > 0 ? '+' : '') + (2 * a * b) + 'r)=' + dec(V)) + ' ⟹ ' + T('r=' + dec(rr)), h: hb + '再解 $r$。',
+               p: { kind: 1, n: n, a: a, b: b, V: fr2(V), ans: fr2(rr) } };
+    var V1 = Fr.mul(F(2 * n), Fr.sub(F(1), rr)), ex1 = '\\sum_{i=1}^{' + n + '}(X_i-Y_i)^2';
+    return { q: head + '若 ' + T('\\displaystyle' + ex1 + '=' + dec(V1)) + '，求 ' + T('\\displaystyle' + ex) + '。',
+             a: T('2\\times' + n + '(1-r)=' + dec(V1)) + ' ⟹ ' + T('r=' + dec(rr)) + '；' + T(ex + '=' + n + core + '=' + dec(V)),
+             h: '先由 $' + ex1 + '=' + n + '+' + n + '-2\\times' + n + 'r=2\\times' + n + '(1-r)$ 解出 $r$。' + hb,
+             p: { kind: 2, n: n, a: a, b: b, V1: fr2(V1), ans: fr2(V) } };
+  };
+
+  /* L3-17　寫成 (a+bx_i−y_i)² 的平方和：其實是資料點 (x_i,y_i) 的最適直線 y=a+bx */
+  var L3LSQX = [[1, 2, 3], [0, 1, 2], [-1, 0, 1], [1, 2, 4], [0, 1, 3], [0, 1, 2, 3], [1, 2, 3, 4], [-1, 0, 1, 2], [0, 1, 1, 2]];
+  function l3lsqTerm(x, y, form) {
+    var bx = x === 0 ? '' : (x > 0 ? (form === 0 ? '+' : '-') : (form === 0 ? '-' : '+')) + (Math.abs(x) === 1 ? '' : Math.abs(x)) + 'b';
+    if (form === 0) return 'a' + bx + (y > 0 ? '-' + y : y < 0 ? '+' + (-y) : '');
+    return (y === 0 ? '-a' : y + '-a') + bx;
+  }
+  L3.lsqDisguise = function (r) {
+    var xs, ys, n, mx, my, sxx, sxy, syy, bb, aa, mn, tries = 0, form = r.int(0, 1), j;
+    do {
+      xs = r.pick(L3LSQX); n = xs.length; ys = xs.map(function () { return r.int(-5, 9); });
+      mx = F(sumArr(xs), n); my = F(sumArr(ys), n); sxx = F(0); sxy = F(0); syy = F(0);
+      for (j = 0; j < n; j++) {
+        var dx = Fr.sub(F(xs[j]), mx), dy = Fr.sub(F(ys[j]), my);
+        sxx = Fr.add(sxx, Fr.mul(dx, dx)); sxy = Fr.add(sxy, Fr.mul(dx, dy)); syy = Fr.add(syy, Fr.mul(dy, dy));
+      }
+      bb = Fr.div(sxy, sxx); aa = Fr.sub(my, Fr.mul(bb, mx)); mn = Fr.sub(syy, Fr.div(Fr.mul(sxy, sxy), sxx)); tries++;
+    } while ((bb.n === 0 || mn.n === 0 || bb.d > 2 || aa.d > 2 || mn.d > 2) && tries < 400);
+    var pm = r.shuffle(l3rng(0, n - 1)), terms = pm.map(function (i) { return '(' + l3lsqTerm(xs[i], ys[i], form) + ')^2'; });
+    return { q: '設 ' + T('a') + '、' + T('b') + ' 為實數，' + T('F(a,b)=' + terms.join('+')) + '。求使 ' + T('F(a,b)') + ' 有最小值的數對 ' + T('(a,b)') + '，以及 ' + T('F(a,b)') + ' 的最小值。',
+             a: T('(a,b)=(' + dec(aa) + ',' + dec(bb) + ')') + '，最小值 ' + T(dec(mn)),
+             h: '每一項都是 $(a+bx_i-y_i)^2$ 的樣子：資料點 $' + pairsTex(xs, ys) + '$ 與直線 $y=a+bx$ 的鉛直差距平方和，讓它最小的就是最適直線。$\\mu_x=' + dec(mx) + '$、$\\mu_y=' + dec(my) + '$、$S_{xx}=' + dec(sxx) + '$、$S_{xy}=' + dec(sxy) + '$ ⟹ $b=\\dfrac{S_{xy}}{S_{xx}}$、$a=\\mu_y-b\\mu_x$；最小值把 $(a,b)$ 代回去逐項算。',
+             p: { form: form, x: xs, y: ys, ans: { a: fr2(aa), b: fr2(bb), min: fr2(mn) } } };
+  };
+
+  /* L3-18　由 r 反求資料中的未知數：μx 給 a+b，r 給另一條方程式（表列的設定都只有一組解） */
+  var L3CS = [[-5, 0, 0, 1, 2], [-4, -4, 2, 1, 2], [-4, 0, 0, 1, 2], [-4, 3, -3, 1, 10], [-3, -2, -1, 1, 5], [-3, -1, -2, 1, 10], [-3, 2, -1, 1, 3], [-3, 3, -4, 1, 10],
+              [-2, -2, 1, 1, 2], [-2, -3, -1, 1, 10], [-2, 3, 1, 1, 2], [-2, 4, -6, 1, 3], [-2, 4, 4, 1, 2], [-1, -3, 2, 1, 2], [-1, -2, -3, 1, 5], [-1, 0, 0, 1, 2],
+              [-1, 2, -3, 1, 3], [-1, 2, 2, 1, 2], [0, -3, 3, 1, 2], [0, -2, 2, 1, 2], [0, -1, 1, 1, 2], [0, 2, -2, 1, 2], [0, 3, -3, 1, 2], [1, -2, -2, 1, 2],
+              [1, -2, 3, 1, 3], [1, 2, 3, 1, 5], [1, 3, -2, 1, 2], [1, 3, 2, 1, 10], [2, -4, -4, 1, 2], [2, -4, 6, 1, 3], [2, -3, -1, 1, 2], [2, 1, 3, 1, 10],
+              [2, 2, -1, 1, 2], [2, 3, 1, 1, 10], [3, -3, 4, 1, 10], [3, -2, 1, 1, 3], [3, 1, 2, 1, 10], [3, 2, 1, 1, 5], [4, -3, 3, 1, 10], [4, 4, -2, 1, 2]];
+  L3.corrSolve = function (r) {
+    var cf = r.pick(L3CS), u1 = cf[0], u4 = cf[1], al = cf[2], be = -u1 - u4 - al, c = r.int(6, 9), my = r.int(3, 8), e = r.pick([1, 2, 3]) * r.sign();
+    var rr = F(cf[3] * ((al - u1) * e > 0 ? 1 : -1), cf[4]), A = c + al, Bv = c + be;
+    var pts = [[String(c + u1), my - e], ['a', my + e], ['b', my], [String(c + u4), my]], pm = r.shuffle([0, 1, 2, 3]);
+    var list = pm.map(function (i) { return '(' + pts[i][0] + ',' + pts[i][1] + ')'; }).join(',\\ ');
+    return { q: '設有四筆資料 ' + T('(x_i,y_i)') + '：' + T(list) + '，其中 ' + T('x_i') + ' 的算術平均數為 ' + T(String(c)) + '，且這四筆資料的相關係數為 ' + T(dec(rr)) + '。求數對 ' + T('(a,b)') + '。',
+             a: T('(a,b)=(' + A + ',' + Bv + ')'),
+             h: '由 $\\mu_x=' + c + '$ 得 $a+b=' + (4 * c - (c + u1) - (c + u4)) + '$。$y$ 的平均是 $' + my + '$，偏差只有兩筆不是 $0$（$' + (-e) + '$ 與 $' + e + '$），所以 $S_{yy}=' + (2 * e * e) + '$、$S_{xy}$ 只剩兩項；$S_{xx}$ 用 $a$ 表示（$b$ 換成 $' + (4 * c - (c + u1) - (c + u4)) + '-a$），代入 $r=\\dfrac{S_{xy}}{\\sqrt{S_{xx}S_{yy}}}$ 兩邊平方解 $a$，最後檢查 $S_{xy}$ 與 $r$ 同號。',
+             p: { c: c, my: my, e: e, u1: u1, u4: u4, r: fr2(rr), order: pm, ans: [A, Bv] } };
+  };
+
   var META_L3 = [['pctTop', '由大到小找百分位數（已知門檻以上幾位）'], ['pctSort', '亂序資料排到第 t 筆的百分位數'], ['pctLevels', '五級評分次數分配表的百分位數'],
                  ['sdSums', '由 Σx 與 Σx² 求標準差'], ['sqMean', '平方的平均＝σ²+μ²'], ['addAtMean', '新增一筆恰等於平均'],
                  ['mergeSolveSd', '合併變異數反求一組的 σ'], ['zGap', '標準化分數差求原始分數'], ['growthMean', '平均成長率：倍率相乘開 n 次方'],
                  ['zeroCorr', '哪幾組資料的 r＝0'], ['fitFour', '四點的最適直線與預估'], ['fitFive', '五筆資料的 r、迴歸直線與換單位預測'],
-                 ['fitSix', '六筆資料的偏差表與迴歸直線'], ['corrSigns', '線性變換後 r 的正負'], ['lineToCorr', '由 σ 與最適直線反解 r']];
+                 ['fitSix', '六筆資料的偏差表與迴歸直線'], ['corrSigns', '線性變換後 r 的正負'], ['lineToCorr', '由 σ 與最適直線反解 r'],
+                 ['stdComboSum', '標準化資料的 Σ(aX+bY)²'], ['lsqDisguise', '平方和 F(a,b) 的最小值＝最適直線'], ['corrSolve', '由 r 反求資料中的未知數']];
   /* 固定題 L3-n 對應的類似題型 */
   var L3_FIX = { 'L3-1': 'pctTop', 'L3-2': 'pctSort', 'L3-3': 'pctLevels', 'L3-4': 'sdSums', 'L3-5': 'sqMean',
                  'L3-6': 'addAtMean', 'L3-7': 'mergeSolveSd', 'L3-8': 'zGap', 'L3-9': 'growthMean', 'L3-10': 'zeroCorr',
-                 'L3-11': 'fitFour', 'L3-12': 'fitFive', 'L3-13': 'fitSix', 'L3-14': 'corrSigns', 'L3-15': 'lineToCorr' };
+                 'L3-11': 'fitFour', 'L3-12': 'fitFive', 'L3-13': 'fitSix', 'L3-14': 'corrSigns', 'L3-15': 'lineToCorr',
+                 'L3-16': 'stdComboSum', 'L3-17': 'lsqDisguise', 'L3-18': 'corrSolve' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：平均數與中位數（國中）、根式化簡（高一上 ch1）、兩點的斜率與點斜式（高一上 ch2）、配方求最小值（高一上 ch3）、Σ 記號求和（高一下 ch1）
@@ -1670,6 +2070,12 @@
     'L2.pctFreqSquare': { f: function (p) { return p.kind; }, why: '次數分配表求百分位數都是「累積次數第一次 $\\ge t$ 的那一級」：次數是 $k^2$ 時累積是 $\\sum k^2$、次數是 $k+1$ 時累積是等差級數。公式不同，找位置的方法相同。' },
     'L2.growthMixed': { f: function (p) { return p.kind; }, why: '平均成長率是「倍率相乘再開 $n$ 次方」：漲「幾元」要先換成倍率才能相乘；反求第三年的成長率則是把目標倍率的 $n$ 次方除以前幾年的倍率。成長率不能直接相加平均。' }
   };
+  /* 2026-09-28 擴充題型的對照題 */
+  CONTRAST['L1.quartile'] = { f: function (p) { return (p.n * 25) % 100 === 0; }, why: '四分位數照百分位數的規則取：$Q_1$ 先算 $t=\\dfrac{n\\times25}{100}$，是整數就取第 $t$、$t+1$ 筆的平均，不是整數就無條件進位取一筆。兩題的差別只在筆數 $n$ 讓 $t$ 是不是整數。' };
+  CONTRAST['L1.dataFix'] = { f: function (p) { return p.kind; }, why: '更正一筆：總和與平方和各「減掉錯的、加上對的」，筆數不變；剔除一筆：兩個和各減掉它，筆數少 $1$。兩種都要先回到 $\\sum x_i$、$\\sum x_i^2$，不能直接改平均數或標準差。' };
+  CONTRAST['L1.linearBack'] = { f: function (p) { return p.kind; }, why: '反推原始平均數與標準差的方法相同；第 (2) 小題一題問「調整後不低於原始」（解不等式 $ax+b\\ge x$），一題問某個調整後分數的原始分數（解方程式 $ax+b=y_0$）。' };
+  CONTRAST['L1.fitThroughPt'] = { f: function (p) { return p.kind === 1; }, why: '兩題都用「最適直線過重心」與「斜率 $=r\\dfrac{\\sigma_y}{\\sigma_x}$」：一題給直線上另一點，先用兩點算斜率再反推 $\\sigma$；一題給 $\\sigma_y$ 與 $\\sigma_x$ 的倍數關係，先算斜率再從重心出發求那一點。' };
+  CONTRAST['L2.stdPairSum'] = { f: function (p) { return p.kind >= 2; }, why: '同一條式子 $\\sum(x_i\'\\pm y_i\')^2=2n(1\\pm r)$ 的兩個方向：一題給 $r$ 求平方和，一題給平方和反求 $r$。關鍵都是標準化後 $\\sum x_i\'^2=\\sum y_i\'^2=n$、$\\sum x_i\'y_i\'=nr$。' };
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

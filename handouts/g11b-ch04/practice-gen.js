@@ -1304,6 +1304,350 @@
     return '把定義代回去逐項比對即可。';
   }
 
+  /* ══════════ 2026-09-29 擴充（依段考卷出現頻率補題型）：L1 5 型、L2 6 型 ══════════
+     頻率來源：question_bank 29 份高二段考卷（MTA／MTO／LE3／LE2），腳本 _scripts/round2/g11b-ch04-expand/freq.py。
+     小工具一律加前綴 nx，不改任何既有產生器（既有題型同種子出同一題）。 */
+  function nxT(v) { return typeof v === 'number' ? String(v) : Fr.tex(v, true); }
+  /* 一次式 c1·v1+c2·v2+…（整數或分數係數，0 不印、±1 不印數字） */
+  function nxLin(cs, vs) {
+    var s = '', i, c, a, t;
+    for (i = 0; i < cs.length; i++) {
+      c = (typeof cs[i] === 'number') ? F(cs[i]) : cs[i]; if (c.n === 0) continue;
+      a = F(Math.abs(c.n), c.d); t = (a.n === 1 && a.d === 1) ? '' : Fr.tex(a, true);
+      s += (c.n < 0 ? '-' : (s === '' ? '' : '+')) + t + vs[i];
+    }
+    return s === '' ? '0' : s;
+  }
+  /* xA+yI（係數為分數物件） */
+  function nxAI(x, y) { var s = nxLin([x, y], ['A', 'I']); return s === '0' ? 'O' : s; }
+  /* 直線 ax+by=c 的整係數最簡式：三個數約掉公因數，x（沒有 x 就 y）的係數取正 */
+  function nxLineN(a, b, c) {
+    var g = gcd(gcd(a, b), c) || 1; a /= g; b /= g; c /= g;
+    if (a < 0 || (a === 0 && b < 0)) { a = -a; b = -b; c = -c; }
+    return [a, b, c];
+  }
+  function nxLineT(L) { return lin([L[0], L[1]], VS2) + '=' + L[2]; }
+  function nxInt2(A) { return A.map(function (w) { return w.map(function (x) { return Fr.num(x); }); }); }
+  function nxAdj(A) { return [[A[1][1], -A[0][1]], [-A[1][0], A[0][0]]]; }
+  function nxMulI(A, B) { return [[A[0][0] * B[0][0] + A[0][1] * B[1][0], A[0][0] * B[0][1] + A[0][1] * B[1][1]], [A[1][0] * B[0][0] + A[1][1] * B[1][0], A[1][0] * B[0][1] + A[1][1] * B[1][1]]]; }
+  function nxMaxAbs(M) { var m = 0; M.forEach(function (w) { w.forEach(function (x) { m = Math.max(m, Math.abs(typeof x === 'number' ? x : Fr.num(x))); }); }); return m; }
+  function nxOpts(list) { return list.map(function (x) { return '(' + x + ')'; }).join(''); }
+
+  /* ── §4 由 a_ij 的規則寫矩陣：寫出矩陣、元素總和、乘積的某一格 ── */
+  function nxRule(r, allowPiece) {
+    var k = r.int(0, allowPiece ? 3 : 1), p, q, c, u, v, w;
+    if (k === 0) { p = r.nz(-3, 3); q = r.nz(-3, 3); c = r.int(-3, 3); return { k: 0, p: p, q: q, c: c, tex: lin([p, q], ['i', 'j']) + pm(c), f: function (i, j) { return p * i + q * j + c; } }; }
+    if (k === 1) {
+      p = r.pick([1, -1]); q = r.nz(-3, 3); c = r.int(-2, 2);
+      if (r.int(0, 1)) return { k: 1, p: p, q: q, c: c, sq: 'i', tex: (p < 0 ? '-' : '') + 'i^{2}' + tm(q, 'j') + pm(c), f: function (i, j) { return p * i * i + q * j + c; } };
+      return { k: 1, p: p, q: q, c: c, sq: 'j', tex: lin([q], ['i']) + (p < 0 ? '-' : '+') + 'j^{2}' + pm(c), f: function (i, j) { return q * i + p * j * j + c; } };
+    }
+    if (k === 2) { p = r.int(1, 3); c = r.int(-2, 2); return { k: 2, p: p, c: c, tex: (p === 1 ? '' : p) + '|i-j|' + pm(c), f: function (i, j) { return p * Math.abs(i - j) + c; } }; }
+    do { u = r.int(-3, 4); v = r.int(-2, 3); w = r.int(-3, 4); } while (u === v || v === w || u === w);
+    return { k: 3, u: u, v: v, w: w, tex: '\\begin{cases}' + u + ',&i\\gt j\\\\' + v + ',&i=j\\\\' + w + ',&i\\lt j\\end{cases}', f: function (i, j) { return i > j ? u : (i === j ? v : w); } };
+  }
+  function nxRuleM(R, m, n) { var M = [], i, j; for (i = 1; i <= m; i++) { M.push([]); for (j = 1; j <= n; j++) M[i - 1].push(R.f(i, j)); } return M; }
+  L1.aijRule = function (r) {
+    var t = r.int(0, 2), R, m, n, M, q, a, h, p;
+    if (t === 0) {
+      R = nxRule(r, true); m = r.int(2, 3); n = r.int(2, 3); M = nxRuleM(R, m, n);
+      q = '設 ' + T('A=[a_{ij}]_{' + m + '\\times' + n + '}') + '，其中 ' + T('a_{ij}=' + R.tex) + '。寫出矩陣 ' + T('A') + '。';
+      a = T('A=' + bm(M));
+      h = T('a_{ij}') + ' 是第 ' + T('i') + ' 列、第 ' + T('j') + ' 行的元素，' + T('A') + ' 共 ' + T(m) + ' 列 ' + T(n) + ' 行。例如 ' + T('a_{' + m + '1}=' + M[m - 1][0]) + '、' + T('a_{1' + n + '}=' + M[0][n - 1]) + '，其餘照同一條規則逐格代。';
+      p = { t: 0, rule: R.tex, m: m, n: n, ans: M };
+    } else if (t === 1) {
+      do { R = nxRule(r, true); } while (R.k === 1);
+      n = r.int(4, 10); M = nxRuleM(R, n, n);
+      var S = 0; M.forEach(function (w) { w.forEach(function (x) { S += x; }); });
+      q = '設 ' + T('A=[a_{ij}]_{' + n + '\\times' + n + '}') + '，其中 ' + T('a_{ij}=' + R.tex) + '。求 ' + T('A') + ' 的所有元素總和。';
+      a = T(String(S));
+      h = (R.k === 0 ? '把 ' + T(n + '\\times' + n) + ' 格加起來：' + T('i') + ' 與 ' + T('j') + ' 各自從 ' + T(1) + ' 跑到 ' + T(n) + '，每個 ' + T('i') + ' 都出現 ' + T(n) + ' 次，所以含 ' + T('i') + ' 的部分總和是 ' + T(par(R.p) + '\\times' + n + '\\times(1+2+\\cdots+' + n + ')') + '，含 ' + T('j') + ' 的部分同理，常數項共 ' + T(n * n) + ' 個。'
+          : R.k === 2 ? '對角線上 ' + T('|i-j|=0') + '；與對角線距離 ' + T('d') + ' 的格子上、下各有 ' + T(n + '-d') + ' 個，共 ' + T('2(' + n + '-d)') + ' 個、每個都是 ' + T('d') + '。把 ' + T('d=1,2,\\ldots,' + (n - 1)) + ' 的貢獻加起來就是 ' + T('|i-j|') + ' 的總和，再乘上倍數、加上常數項的 ' + T(n * n) + ' 個。'
+          : '對角線有 ' + T(n) + ' 格；對角線以下（' + T('i\\gt j') + '）與以上（' + T('i\\lt j') + '）各有 ' + T('\\dfrac{' + n + '\\times' + (n - 1) + '}{2}=' + (n * (n - 1) / 2)) + ' 格。');
+      p = { t: 1, rule: R.tex, n: n, R: { k: R.k, p: R.p, q: R.q, c: R.c, u: R.u, v: R.v, w: R.w }, ans: S };
+    } else {
+      var R1 = nxRule(r, false), R2 = nxRule(r, false), k = r.int(2, 4), mm = r.int(2, 4), nn = r.int(2, 4);
+      var A = nxRuleM(R1, mm, k), Bm = nxRuleM(R2, k, nn), ri = r.int(1, mm), sj = r.int(1, nn), val = 0, l, terms = [];
+      for (l = 0; l < k; l++) { val += A[ri - 1][l] * Bm[l][sj - 1]; terms.push(prod([A[ri - 1][l], Bm[l][sj - 1]])); }
+      q = '設 ' + T('A=[a_{ij}]_{' + mm + '\\times' + k + '}') + '、' + T('B=[b_{ij}]_{' + k + '\\times' + nn + '}') + '，其中 ' + T('a_{ij}=' + R1.tex) + '、' + T('b_{ij}=' + R2.tex) + '。若 ' + T('AB=C=[c_{ij}]') + '，求 ' + T('c_{' + ri + sj + '}') + '。';
+      a = T(String(val));
+      h = T('c_{' + ri + sj + '}') + ' 只要 ' + T('A') + ' 的第 ' + T(ri) + ' 列與 ' + T('B') + ' 的第 ' + T(sj) + ' 行：第 ' + T(ri) + ' 列是 ' + T('(' + A[ri - 1].join(',\\,') + ')') + '，第 ' + T(sj) + ' 行是 ' + T('(' + Bm.map(function (w) { return w[sj - 1]; }).join(',\\,') + ')') + '，對應相乘再相加，其他格不必算。';
+      p = { t: 2, r1: R1.tex, r2: R2.tex, dims: [mm, k, nn], rs: [ri, sj], row: A[ri - 1], col: Bm.map(function (w) { return w[sj - 1]; }), ans: val };
+    }
+    return { q: q, a: a, h: h, p: p };
+  };
+
+  /* ── §4 由 A、B 的兩個組合反求 A、B，再算 A²−B² ── */
+  var NXSD = [[1, 1, 1, -1], [1, 2, 1, -1], [2, 1, 1, -1], [1, 1, 2, -1], [1, -2, 1, 1], [3, 1, 1, -1], [1, 1, 1, -2], [2, -1, 1, 1]];
+  function nxCombT(x, y) { return nxLin([x, y], ['A', 'B']); }
+  L1.sumDiffSys = function (r) {
+    var f = r.pick(NXSD), A, B, t = 0;
+    do { A = rm2(r, -4, 4); B = rm2(r, -4, 4); t++; } while (t < 50 && (mSame(MF(A), MF(B)) || nxMaxAbs(A) === 0 || nxMaxAbs(B) === 0));
+    var P = mAdd(mK(f[0], MF(A)), mK(f[1], MF(B))), Q = mAdd(mK(f[2], MF(A)), mK(f[3], MF(B)));
+    var A2 = mMul(MF(A), MF(A)), B2 = mMul(MF(B), MF(B)), D = mSub(A2, B2), PQ = mMul(mAdd(MF(A), MF(B)), mSub(MF(A), MF(B))), same = mSame(D, PQ);
+    var q = '二階方陣 ' + T('A') + '、' + T('B') + ' 滿足 ' + T(nxCombT(f[0], f[1]) + '=' + bm(P)) + '、' + T(nxCombT(f[2], f[3]) + '=' + bm(Q)) + '。' + no(1) + '求 ' + T('A') + ' 與 ' + T('B') + '。' + no(2) + '求 ' + T('A^2-B^2') + '，並判斷它是否等於 ' + T('(A+B)(A-B)') + '。';
+    var a = jo([no(1) + T('A=' + bm(A)) + '，' + T('B=' + bm(B)), no(2) + T('A^2-B^2=' + bm(D)) + '，' + (same ? '相等' : '不相等')]);
+    var det = f[0] * f[3] - f[1] * f[2];
+    var h = '把兩式當成 ' + T('A') + '、' + T('B') + ' 的二元一次聯立（每一格各自成立）：兩式適當加減消去一個字母，係數的交叉差是 ' + T(prod([f[0], f[3]]) + '-' + prod([f[1], f[2]]) + '=' + det) + '。以左上角為例：' + T(nxLin([f[0], f[1]], ['a', 'b']) + '=' + nxT(P[0][0])) + '、' + T(nxLin([f[2], f[3]], ['a', 'b']) + '=' + nxT(Q[0][0])) + '（' + T('a') + '、' + T('b') + ' 分別是 ' + T('A') + '、' + T('B') + ' 的左上角）。求出 ' + T('A') + '、' + T('B') + ' 後<b>分別平方再相減</b>；' + T('(A+B)(A-B)=A^2-AB+BA-B^2') + '，要 ' + T('AB=BA') + ' 才會等於 ' + T('A^2-B^2') + '。';
+    return { q: q, a: a, h: h, p: { f: f, A: A, B: B, ans: { D: nxInt2(D), same: same } } };
+  };
+
+  /* ── §3 齊次方程組有非零解：Δ=0 求 k、解的比例 ── */
+  function nxRowK(row, j) {
+    var s = '', i, c;
+    for (i = 0; i < 3; i++) {
+      if (i === j) { s += (s === '' ? '' : '+') + 'k' + VS3[i]; continue; }
+      c = row[i]; if (c === 0) continue;
+      s += (c < 0 ? '-' : (s === '' ? '' : '+')) + (Math.abs(c) === 1 ? '' : Math.abs(c)) + VS3[i];
+    }
+    return s + '=0';
+  }
+  L1.homogNonzero = function (r) {
+    var r1, r2, cr, j, s, t, r3, tries = 0;
+    do {
+      r1 = [r.nz(-3, 3), r.int(-3, 3), r.int(-3, 3)]; r2 = [r.int(-3, 3), r.nz(-3, 3), r.int(-3, 3)];
+      cr = [r1[1] * r2[2] - r1[2] * r2[1], r1[2] * r2[0] - r1[0] * r2[2], r1[0] * r2[1] - r1[1] * r2[0]];
+      j = r.int(0, 2); s = r.nz(-2, 2); t = r.nz(-2, 2);
+      r3 = [s * r1[0] + t * r2[0], s * r1[1] + t * r2[1], s * r1[2] + t * r2[2]];
+      tries++;
+    } while (tries < 80 && (cr[j] === 0 || (cr[0] === 0 && cr[1] === 0 && cr[2] === 0) || r3[(j + 1) % 3] === 0 && r3[(j + 2) % 3] === 0 || Math.abs(r3[j]) > 12));
+    var k0 = r3[j], g = gcd(gcd(cr[0], cr[1]), cr[2]) || 1, d = cr.map(function (x) { return x / g; });
+    if (d[0] < 0 || (d[0] === 0 && (d[1] < 0 || (d[1] === 0 && d[2] < 0)))) d = d.map(function (x) { return -x; });
+    var cof = cr[j];                       /* Δ 對 k 的係數＝第三列第 j 行的餘因式 */
+    var sysT = '\\begin{cases}' + lin(r1, VS3) + '=0\\\\ ' + lin(r2, VS3) + '=0\\\\ ' + nxRowK(r3, j) + '\\end{cases}';
+    var q = '設 ' + T('k') + ' 為實數，方程組 ' + T(sysT) + ' 有異於 ' + T('(0,0,0)') + ' 的解。' + no(1) + '求 ' + T('k') + '。' + no(2) + '求此時的 ' + T('x:y:z') + '。';
+    var a = jo([no(1) + T('k=' + k0), no(2) + T('x:y:z=' + d.join(':'))]);
+    var h = '常數全是 ' + T(0) + ' ⟹ ' + T('(0,0,0)') + ' 一定是解；要有<b>別的</b>解就不能「恰有一組解」，所以 ' + T('\\Delta=0') + '。沿第三列展開，' + T('k') + ' 的係數是 ' + T(cof) + '，' + T('\\Delta') + ' 是 ' + T('k') + ' 的一次式。求出 ' + T('k') + ' 後，前兩式的兩個法向量 ' + T('(' + r1.join(',') + ')') + '、' + T('(' + r2.join(',') + ')') + ' 不平行，解就沿著它們的外積方向。';
+    return { q: q, a: a, h: h, p: { r1: r1, r2: r2, r3: r3, j: j, cof: cof, cr: cr, ans: { k: k0, d: d } } };
+  };
+
+  /* ── §5 對直線鏡射：由軸寫矩陣求像；由矩陣求軸（含 x 軸、y 軸） ── */
+  var NXAX = [[0, 1], [1, 0], [1, 1], [-1, 1], [2, 1], [-2, 1], [3, 1], [-3, 1], [1, 2], [-1, 2], [1, 3], [-1, 3], [3, 4], [-3, 4], [4, 3], [-4, 3]];   /* [p,q]：軸的方向 (q,p)，直線 px−qy=0 */
+  function nxAxisT(pq, form) {
+    var p = pq[0], q = pq[1];
+    if (p === 0) return ' ' + T('x') + ' 軸';
+    if (q === 0) return ' ' + T('y') + ' 軸';
+    if (form) { var L = nxLineN(p, -q, 0); return '直線 ' + T(nxLineT(L)); }
+    return '直線 ' + T('y=' + (p === q ? 'x' : (p === -q ? '-x' : Fr.tex(F(p, q), true) + 'x')));
+  }
+  function nxReflM(pq) { var p = pq[0], q = pq[1], L = p * p + q * q; return [[F(q * q - p * p, L), F(2 * p * q, L)], [F(2 * p * q, L), F(p * p - q * q, L)]]; }
+  L1.reflLine = function (r) {
+    var t = r.int(0, 2) === 2 ? 1 : 0, pq = r.pick(NXAX), M = nxReflM(pq), form = r.int(0, 1);
+    if (r.int(0, 3) === 0) pq = r.pick([[0, 1], [1, 0]]), M = nxReflM(pq);        /* 讓 x 軸、y 軸常出現 */
+    var q, a, h, P, img, axisL = nxLineN(pq[0], -pq[1], 0);
+    var c = M[0][0], s = M[0][1];
+    var d1 = [s, Fr.sub(F(1), c)], d2 = [Fr.add(F(1), c), s];
+    if (t === 0) {
+      do { P = [r.nz(-5, 5), r.int(-5, 5)]; } while (P[0] === 0 && P[1] === 0);
+      img = mVec(M, VF(P));
+      q = '考慮坐標平面上對' + nxAxisT(pq, form) + ' 的鏡射變換。' + no(1) + '寫出它的矩陣。' + no(2) + '求點 ' + T('P(' + P[0] + ',' + P[1] + ')') + ' 鏡射後的坐標。';
+      a = jo([no(1) + T(bm(M)), no(2) + T('(' + nxT(img[0]) + ',' + nxT(img[1]) + ')')]);
+      h = (pq[0] === 0 || pq[1] === 0 ? '看兩個單位向量：' + (pq[0] === 0 ? T('(1,0)') + ' 在軸上不動、' + T('(0,1)') + ' 變成 ' + T('(0,-1)') : T('(0,1)') + ' 在軸上不動、' + T('(1,0)') + ' 變成 ' + T('(-1,0)')) + '，兩個像當成兩行。'
+        : '軸的方向是 ' + T('(' + pq[1] + ',' + pq[0] + ')') + '，令斜角為 ' + T('\\theta') + '：' + T('\\cos\\theta=\\dfrac{' + pq[1] + '}{\\sqrt{' + (pq[0] * pq[0] + pq[1] * pq[1]) + '}}') + '、' + T('\\sin\\theta=\\dfrac{' + pq[0] + '}{\\sqrt{' + (pq[0] * pq[0] + pq[1] * pq[1]) + '}}') + '，鏡射矩陣是 ' + T('\\begin{bmatrix}\\cos2\\theta&\\sin2\\theta\\\\ \\sin2\\theta&-\\cos2\\theta\\end{bmatrix}') + '，用倍角公式算 ' + T('\\cos2\\theta') + '、' + T('\\sin2\\theta') + '。') + '再把矩陣乘上 ' + T(cv(P)) + '。';
+      return { q: q, a: a, h: h, p: { t: 0, pq: pq, P: P, ans: { M: M.map(function (w) { return w.map(fp); }), img: img.map(fp) } } };
+    }
+    q = '已知 ' + T('A=' + bm(M)) + ' 是坐標平面上的一個鏡射變換。' + no(1) + '求 ' + T('\\det A') + '。' + no(2) + '求對稱軸的方程式。';
+    a = jo([no(1) + T('\\det A=-1'), no(2) + T(nxLineT(axisL))]);
+    h = '對稱軸上的點鏡射後不動：解 ' + T('A' + cv(VS2) + '=' + cv(VS2)) + '。本題 ' + T('a=' + nxT(c)) + '、' + T('b=' + nxT(s)) + '，第一列給方向 ' + T('(b,1-a)=(' + nxT(d1[0]) + ',' + nxT(d1[1]) + ')') + '，第二列給方向 ' + T('(1+a,b)=(' + nxT(d2[0]) + ',' + nxT(d2[1]) + ')') + '；兩個方向平行，<b>取不是零向量的那一個</b>（' + T('x') + ' 軸、' + T('y') + ' 軸時會有一個變成零向量）。';
+    return { q: q, a: a, h: h, p: { t: 1, pq: pq, ans: { axis: axisL } } };
+  };
+
+  /* ── §5 判斷轉移方陣：四個方陣挑出轉移方陣／哪些組合一定還是轉移方陣 ── */
+  var NXTF = [F(0), F(1, 4), F(1, 3), F(1, 2), F(2, 3), F(3, 4), F(1), F(1, 5), F(2, 5), F(3, 5), F(1, 6), F(5, 6)];
+  var NXTC = [['AB', 1], ['BA', 1], ['A^{2}', 1], ['A^{3}', 1], ['ABA', 1], ['\\frac{1}{2}(A+B)', 1], ['\\frac{1}{3}A+\\frac{2}{3}B', 1], ['\\frac{1}{4}A+\\frac{3}{4}B', 1], ['\\frac{1}{4}(A+B)^{2}', 1], ['\\frac{1}{2}(A^{2}+B^{2})', 1], ['\\frac{1}{2}(A+AB)', 1], ['I', 1],
+              ['A+B', 0], ['2A-B', 0], ['A-B', 0], ['3A', 0], ['A^{2}+B^{2}', 0], ['\\frac{1}{5}(A^{2}+AB)', 0], ['\\frac{1}{2}(A-B)', 0], ['A+B-I', 0], ['\\frac{1}{3}(A+B)', 0], ['(A+B)^{2}', 0]];
+  function nxCol(r) { var x = r.pick(NXTF); return [x, Fr.sub(F(1), x)]; }
+  L1.transCheck = function (r) {
+    var t = r.int(0, 1), q, a, h, ok = [], i, list;
+    if (t === 0) {
+      var kinds, tries = 0;
+      do { kinds = [0, 1, 2, 3].map(function () { return r.int(0, 4); }); tries++; } while (tries < 40 && (kinds.filter(function (k) { return k < 2; }).length === 0 || kinds.filter(function (k) { return k >= 2; }).length === 0));
+      var why = [];
+      list = kinds.map(function (k) {
+        var c1 = nxCol(r), c2 = nxCol(r), M;
+        if (k < 2) { M = [[c1[0], c2[0]], [c1[1], c2[1]]]; ok.push(1); why.push('每行和為 ' + T(1) + '、元素都不是負數'); }
+        else if (k === 2) { var nn = r.pick([F(1, 3), F(1, 2), F(1, 4), F(2, 3)]); M = [[Fr.neg(nn), c2[0]], [Fr.add(F(1), nn), c2[1]]]; if (r.int(0, 1)) M = [[c2[0], Fr.neg(nn)], [c2[1], Fr.add(F(1), nn)]]; ok.push(0); why.push('行和是 ' + T(1) + '，但有負的元素'); }
+        else if (k === 3) { var x = r.pick([F(1, 4), F(1, 3), F(2, 5), F(1, 5)]), y; do { y = r.pick([F(1, 2), F(2, 3), F(3, 4), F(3, 5)]); } while (Fr.eq(Fr.add(x, y), F(1))); M = [[x, Fr.sub(F(1), x)], [y, Fr.sub(F(1), y)]]; ok.push(0); why.push('是「每一<b>列</b>」的和為 ' + T(1) + '，行的和不是 ' + T(1)); }
+        else { var u = r.pick([F(1, 2), F(1, 3), F(2, 3)]), v; do { v = r.pick([F(1, 4), F(1, 3), F(1, 2), F(3, 4)]); } while (Fr.eq(Fr.add(u, v), F(1))); M = [[u, c2[0]], [v, c2[1]]]; if (r.int(0, 1)) M = [[c2[0], u], [c2[1], v]]; ok.push(0); why.push('有一行的和不是 ' + T(1)); }
+        return M;
+      });
+      q = '下列哪些是二階轉移方陣？（把編號全部寫出來）<br>' + list.map(function (M, i2) { return '(' + (i2 + 1) + ') ' + T(bm(M)); }).join('　');
+      a = nxOpts(ok.map(function (v, i2) { return v ? i2 + 1 : 0; }).filter(function (x) { return x; }));
+      h = '轉移方陣兩個條件都要：<b>每個元素都不是負數</b>、<b>每一行（直的）的和都是 ' + T(1) + '</b>。本題：' + list.map(function (M, i2) { return '(' + (i2 + 1) + ') 兩行的和 ' + T(nxT(Fr.add(M[0][0], M[1][0])) + ',\\ ' + nxT(Fr.add(M[0][1], M[1][1]))); }).join('；') + '。';
+      return { q: q, a: a, h: h, p: { t: 0, kinds: kinds, why: why, ans: ok } };
+    }
+    var pick, tries2 = 0;
+    do { pick = r.shuffle(NXTC).slice(0, 5); tries2++; } while (tries2 < 40 && (pick.every(function (x) { return x[1]; }) || pick.every(function (x) { return !x[1]; })));
+    q = '設 ' + T('A') + '、' + T('B') + ' 都是二階轉移方陣，' + T('I') + ' 為二階單位方陣。下列哪些<b>一定</b>也是轉移方陣？（把編號全部寫出來）<br>' + pick.map(function (x, i2) { return '(' + (i2 + 1) + ') ' + T(x[0]); }).join('　');
+    a = nxOpts(pick.map(function (x, i2) { return x[1] ? i2 + 1 : 0; }).filter(function (x) { return x; }));
+    h = '兩個轉移方陣相乘還是轉移方陣（每一行都是「按比例混合」）；<b>係數都不是負數、加起來是 ' + T(1) + '</b> 的組合（例如 ' + T('\\frac{1}{3}A+\\frac{2}{3}B') + '）也還是；係數和不是 ' + T(1) + '，行的和就跟著變，例如 ' + T('A+B') + ' 的每行和是 ' + T(2) + '；有負係數時元素可能變負。本題第一個選項是 ' + T(pick[0][0]) + '。';
+    return { q: q, a: a, h: h, p: { t: 1, items: pick.map(function (x) { return x[0]; }), ans: pick.map(function (x) { return x[1]; }) } };
+  };
+
+  /* ══ L2 ══ */
+  /* ── §4 先算 A² 寫成 pA+qI，再表示 A⁻¹、A³（矩陣多項式降次） ── */
+  L2.polyInverse = function (r) {
+    var t = r.int(0, 2), q, a, h, p;
+    if (t === 0) {
+      var A, tr = 0; do { A = rm2(r, -4, 4); tr++; } while (tr < 60 && (sxDv2(A) === 0 || (A[0][1] === 0 && A[1][0] === 0)));
+      var P = A[0][0] + A[1][1], Q = -sxDv2(A), A2 = mMul(MF(A), MF(A));
+      var ix = F(1, Q), iy = F(-P, Q), cx = F(P * P + Q), cy = F(P * Q);
+      q = '設 ' + T('A=' + bm(A)) + '，' + T('I') + ' 為二階單位方陣。' + no(1) + '求實數 ' + T('p') + '、' + T('q') + ' 使 ' + T('A^2=pA+qI') + '。' + no(2) + '把 ' + T('A^{-1}') + ' 寫成 ' + T('xA+yI') + ' 的形式。' + no(3) + '把 ' + T('A^3') + ' 寫成 ' + T('uA+vI') + ' 的形式。';
+      a = jo([no(1) + T('(p,q)=(' + P + ',' + Q + ')'), no(2) + T('A^{-1}=' + nxAI(ix, iy)), no(3) + T('A^3=' + nxAI(cx, cy))]);
+      h = '先把 ' + T('A^2') + ' 乘出來：' + T('A^2=' + bm(A2)) + '，拿' + (A[0][1] !== 0 ? '右上角' : '左下角') + '比：' + T(nxT(A[0][1] !== 0 ? A2[0][1] : A2[1][0]) + '=p' + par(A[0][1] !== 0 ? A[0][1] : A[1][0])) + '（' + (A[0][1] !== 0 ? '右上角' : '左下角') + '沒有 ' + T('I') + ' 的貢獻），再用對角線求 ' + T('q') + '。有了 ' + T('A^2=pA+qI') + '：移項成 ' + T('A(A-pI)=qI') + '，兩邊除以 ' + T('q') + ' 就是反方陣；' + T('A^3=A\\cdot A^2') + '，裡面的 ' + T('A^2') + ' 再換掉一次。';
+      p = { t: 0, A: A, ans: { p: P, q: Q, inv: [fp(ix), fp(iy)], cube: [fp(cx), fp(cy)] } };
+    } else if (t === 1) {
+      var m, n, b, aa, s, k, tt = 0;
+      do { m = r.int(-4, 5); n = r.nz(-4, 4); b = r.int(-4, 5); aa = r.int(-4, 4); s = m + b; k = m * b - n * aa; tt++; } while (tt < 80 && (k === 0 || s === 0 || Math.abs(k) > 12));
+      var A1 = [[m, n], ['a', 'b']];
+      var kx = F(-1, k), ky = F(s, k);
+      q = '設 ' + T('a') + '、' + T('b') + ' 為實數，二階方陣 ' + T('A=' + bm(A1)) + ' 的反方陣存在，且 ' + T(nxLin([1, k], ['A', 'A^{-1}']) + '=' + (s === 1 ? '' : (s === -1 ? '-' : s)) + 'I') + '。' + no(1) + '求 ' + T('(a,b)') + '。' + no(2) + '把 ' + T('A^{-1}') + ' 寫成 ' + T('xA+yI') + ' 的形式。';
+      a = jo([no(1) + T('(a,b)=(' + aa + ',' + b + ')'), no(2) + T('A^{-1}=' + nxAI(kx, ky))]);
+      h = '兩邊右乘 ' + T('A') + '：' + T('A^2' + (k < 0 ? '-' : '+') + (Math.abs(k) === 1 ? '' : Math.abs(k)) + 'I=' + (s === 1 ? '' : (s === -1 ? '-' : s)) + 'A') + '，也就是 ' + T('A^2=' + nxAI(F(s), F(-k))) + '。另一方面把 ' + T('A^2') + ' 乘開會發現 ' + T('A^2=(\\text{對角線和})A-(\\det A)I') + '；右上角 ' + T(n) + ' 不是 ' + T(0) + '，' + T('A') + ' 不是 ' + T('I') + ' 的倍數，所以對角線和 ' + T(m + '+b=' + s) + '、' + T('\\det A=' + par(m) + 'b-' + par(n) + 'a=' + k) + '。';
+      p = { t: 1, m: m, n: n, s: s, k: k, ans: { a: aa, b: b, inv: [fp(kx), fp(ky)] } };
+    } else {
+      var al = r.int(1, 4), be = r.int(-6, 6), ga = r.nz(-6, 6), gg = gcd(gcd(al, be), ga) || 1, t2 = 0;
+      while (gg !== 1 && t2 < 20) { be = r.int(-6, 6); ga = r.nz(-6, 6); gg = gcd(gcd(al, be), ga) || 1; t2++; }
+      if (gg !== 1) { al = 1; }
+      var rel = nxLin([al, be, ga], ['A^2', 'A', 'I']) + '=O';
+      var ix2 = F(-al, ga), iy2 = F(-be, ga);
+      var c1 = Fr.sub(Fr.mul(F(be, al), F(be, al)), F(ga, al)), c0 = Fr.mul(F(be, al), F(ga, al));
+      q = '設二階方陣 ' + T('A') + ' 滿足 ' + T(rel) + '（' + T('I') + '、' + T('O') + ' 分別是單位方陣與零方陣）。' + no(1) + '說明 ' + T('A^{-1}') + ' 存在，並寫成 ' + T('xA+yI') + ' 的形式。' + no(2) + '把 ' + T('A^3') + ' 寫成 ' + T('uA+vI') + ' 的形式。';
+      a = jo([no(1) + T('A^{-1}=' + nxAI(ix2, iy2)), no(2) + T('A^3=' + nxAI(c1, c0))]);
+      h = '把有 ' + T('A') + ' 的項留在左邊、' + T('I') + ' 移到右邊，左邊提出 ' + T('A') + '：' + T('A(' + nxLin([al, be], ['A', 'I']) + ')=' + (-ga === 1 ? '' : (-ga === -1 ? '-' : -ga)) + 'I') + '，兩邊除以 ' + T(-ga) + ' 就看到 ' + T('A') + ' 乘某個方陣等於 ' + T('I') + '。' + T('A^3') + '：先把 ' + T('A^2') + ' 用 ' + T('A') + '、' + T('I') + ' 表示（除以 ' + T(al) + '），再算 ' + T('A\\cdot A^2') + '，出現的 ' + T('A^2') + ' 再換一次。';
+      p = { t: 2, rel: [al, be, ga], ans: { inv: [fp(ix2), fp(iy2)], cube: [fp(c1), fp(c0)] } };
+    }
+    return { q: q, a: a, h: h, p: p };
+  };
+
+  /* ── §4 (A+B)² 展開成立 ⟺ AB=BA：求未知的兩格 ── */
+  var NXCOND = ['(A+B)^2=A^2+2AB+B^2', '(A-B)^2=A^2-2AB+B^2', '(A+B)(A-B)=A^2-B^2', '(A-B)(A+B)=A^2-B^2', 'AB=BA'];
+  L2.commuteParam = function (r) {
+    var B, al, be, v = r.int(0, 1), tt = 0;
+    do { B = rm2(r, -4, 5); al = r.nz(-2, 2); be = r.int(-3, 3); tt++; } while (tt < 80 && ((v === 0 ? B[1][0] : B[0][1]) === 0 || (B[0][1] === 0 && B[1][0] === 0 && B[0][0] === B[1][1])));
+    var A = [[al * B[0][0] + be, al * B[0][1]], [al * B[1][0], al * B[1][1] + be]];
+    var shown = v === 0 ? [['a', 'b'], [A[1][0], A[1][1]]] : [['a', A[0][1]], ['b', A[1][1]]];
+    var ans = v === 0 ? [A[0][0], A[0][1]] : [A[0][0], A[1][0]];
+    var cond = r.pick(NXCOND), AB = nxMulI(A, B);
+    var q = '設 ' + T('a') + '、' + T('b') + ' 為實數，' + T('A=' + bm(shown)) + '、' + T('B=' + bm(B)) + ' 滿足 ' + T(cond) + '。' + no(1) + '求 ' + T('(a,b)') + '。' + no(2) + '求 ' + T('AB') + '。';
+    var a = jo([no(1) + T('(a,b)=(' + ans[0] + ',' + ans[1] + ')'), no(2) + T('AB=' + bm(AB))]);
+    var h = (cond === 'AB=BA' ? '' : '把左邊乘開（不能交換順序）：' + (cond.indexOf(')(') >= 0 ? T('(A\\pm B)(A\\mp B)=A^2\\mp AB\\pm BA-B^2') : T('(A\\pm B)^2=A^2\\pm AB\\pm BA+B^2')) + '，和右邊比較，條件就是 ' + T('AB=BA') + '。') + '把 ' + T('AB') + '、' + T('BA') + ' 都乘出來、逐格比對：' + T('AB') + ' 的' + (v === 0 ? '左下角是 ' + T(prod([A[1][0], B[0][0]]) + '+' + prod([A[1][1], B[1][0]])) : '右上角是 ' + T('a' + par(B[0][1]) + '+' + prod([A[0][1], B[1][1]]))) + '，' + T('BA') + ' 的同一格含 ' + T('a') + '、' + T('b') + '，列兩條一次方程式解出來。';
+    return { q: q, a: a, h: h, p: { v: v, B: B, cond: cond, shown: shown, ans: { ab: ans, AB: AB } } };
+  };
+
+  /* ── §2 哪些增廣矩陣經列運算可以化成指定的矩陣（列運算保解） ── */
+  function nxRowAdd(M, i, j, k) { var N = M.map(function (w) { return w.slice(); }); for (var c = 0; c < 4; c++) N[i][c] += k * M[j][c]; return N; }
+  function nxScramble(r, M) {
+    var N = M.map(function (w) { return w.slice(); }), n = r.int(3, 4), s, i, j;
+    for (s = 0; s < n; s++) { i = r.int(0, 2); do { j = r.int(0, 2); } while (j === i); N = nxRowAdd(N, i, j, r.nz(-2, 2)); }
+    if (r.int(0, 2) === 0) { i = r.int(0, 2); j = (i + 1) % 3; var tmp = N[i]; N[i] = N[j]; N[j] = tmp; }
+    return N;
+  }
+  function nxAgT(M) { return agm(M.map(function (w) { return w.slice(0, 3); }), M.map(function (w) { return w[3]; })); }
+  L2.rowEquivPick = function (r) {
+    var sol, Tm, tt = 0, x;
+    do { sol = [r.int(-4, 4), r.int(-4, 4), r.int(-4, 4)]; } while (sol[0] === 0 && sol[1] === 0 && sol[2] === 0);
+    var style = r.int(0, 1), u = r.int(-3, 3), v = r.int(-3, 3), w = r.int(-3, 3);
+    var C = style === 0 ? [[1, 0, 0], [0, 1, 0], [0, 0, 1]] : [[1, u, v], [0, 1, w], [0, 0, 1]];
+    Tm = C.map(function (row) { return row.concat([row[0] * sol[0] + row[1] * sol[1] + row[2] * sol[2]]); });
+    var nOk = r.int(1, 3), kinds = r.shuffle([0, 1, 2, 3]).slice(0, 4 - nOk), all = [], i, M, ok = [], tries;
+    function good(M) { return nxMaxAbs(M) <= 24 && M.every(function (w) { return w[0] !== 0 || w[1] !== 0 || w[2] !== 0; }); }
+    for (i = 0; i < nOk; i++) { tries = 0; do { M = nxScramble(r, Tm); tries++; } while (tries < 40 && !good(M)); all.push([M, 1, -1]); }
+    kinds.forEach(function (k) {
+      var base, T2, k1, k2, R;
+      tries = 0;
+      do {
+        if (k === 0) {                              /* 解不同 */
+          var s2 = sol.slice(), ix = r.int(0, 2); s2[ix] += r.nz(-2, 2);
+          T2 = C.map(function (row) { return row.concat([row[0] * s2[0] + row[1] * s2[1] + row[2] * s2[2]]); }); M = nxScramble(r, T2);
+        } else if (k === 1) {                       /* 係數行列式為 0、有無限多組解（本題的解也在裡面） */
+          base = nxScramble(r, Tm); k1 = r.nz(-2, 2); k2 = r.nz(-2, 2);
+          R = [0, 1, 2, 3].map(function (c) { return k1 * base[0][c] + k2 * base[1][c]; }); M = [base[0], base[1], R]; M = r.shuffle(M);
+        } else if (k === 2) {                       /* 常數行全為 0（只有零解） */
+          base = nxScramble(r, Tm); M = base.map(function (w) { return [w[0], w[1], w[2], 0]; });
+        } else {                                    /* 無解 */
+          base = nxScramble(r, Tm); k1 = r.nz(-2, 2); k2 = r.nz(-2, 2);
+          R = [0, 1, 2, 3].map(function (c) { return k1 * base[0][c] + k2 * base[1][c]; }); R[3] += r.nz(-3, 3); M = [base[0], base[1], R]; M = r.shuffle(M);
+        }
+        tries++;
+      } while (tries < 40 && !good(M));
+      all.push([M, 0, k]);
+    });
+    all = r.shuffle(all);
+    all.forEach(function (x2) { ok.push(x2[1]); });
+    var q = '下列哪些增廣矩陣經過一系列列運算後，可以化成 ' + T(nxAgT(Tm)) + '？（把編號全部寫出來）<br>' + all.map(function (x2, i2) { return '(' + (i2 + 1) + ') ' + T(nxAgT(x2[0])); }).join('<br>');
+    var a = nxOpts(ok.map(function (v2, i2) { return v2 ? i2 + 1 : 0; }).filter(function (z) { return z; }));
+    var h = '列運算不會改變解。目標矩陣代表的方程組恰有一組解 ' + T('(x,y,z)=(' + sol.join(',') + ')') + '，所以要選的是「<b>也恰有一組解、而且就是這一組</b>」的增廣矩陣：先把 ' + T('(' + sol.join(',') + ')') + ' 代進每一列檢查（常數行全是 ' + T(0) + ' 的、有一列不合的都不行），代得進去的再看係數行列式是不是 ' + T(0) + '（是 ' + T(0) + ' 就是無限多組解，化不成目標）。';
+    return { q: q, a: a, h: h, p: { sol: sol, style: style, kinds: all.map(function (x2) { return x2[2]; }), ans: ok } };
+  };
+
+  /* ── §4 有週期的方陣：A+A²+…+A^N ── */
+  var NXPER = [[0, 1, 4], [-1, 1, 3], [1, 1, 6]];            /* 對角線和、行列式、週期（一個週期的和是 O） */
+  L2.periodSum = function (r) {
+    var c = r.pick(NXPER), A, tt = 0, a0, b0, d0, c0;
+    do { a0 = r.int(-3, 3); b0 = r.nz(-3, 3); d0 = c[0] - a0; c0 = (a0 * d0 - c[1]) / b0; tt++; } while (tt < 200 && (c0 !== Math.round(c0) || Math.abs(c0) > 6 || (a0 === 0 && d0 === 0 && Math.abs(b0) === 1 && r.int(0, 2) > 0)));
+    if (c0 !== Math.round(c0) || Math.abs(c0) > 6) { a0 = 0; b0 = -1; d0 = c[0]; c0 = (a0 * d0 - c[1]) / b0; }
+    A = [[a0, b0], [c0, d0]];
+    var N = r.pick([r.int(20, 99), r.int(100, 130), r.pick([2024, 2025, 2026, 2027, 1000, 999, 500, 365])]);
+    var m = c[2], rem = N % m, S = [[0, 0], [0, 0]], Pw = [[1, 0], [0, 1]], i, pows = [];
+    for (i = 1; i <= m; i++) { Pw = nxMulI(Pw, A); pows.push(Pw); }
+    for (i = 0; i < rem; i++) S = [[S[0][0] + pows[i][0][0], S[0][1] + pows[i][0][1]], [S[1][0] + pows[i][1][0], S[1][1] + pows[i][1][1]]];
+    var askSum = r.int(0, 1), tot = S[0][0] + S[0][1] + S[1][0] + S[1][1];
+    var q = '設 ' + T('A=' + bm(A)) + '，' + T('S=A+A^2+A^3+\\cdots+A^{' + N + '}') + '。' + no(1) + '求使 ' + T('A^m=I') + ' 的最小正整數 ' + T('m') + '。' + no(2) + (askSum ? '若 ' + T('S=' + bm([['a', 'b'], ['c', 'd']])) + '，求 ' + T('a+b+c+d') + '。' : '求 ' + T('S') + '。');
+    var a = jo([no(1) + T('m=' + m), no(2) + (askSum ? T('a+b+c+d=' + tot) : T('S=' + bm(S)))]);
+    var h = '先算 ' + T('A^2=' + bm(pows[1])) + '、' + T('A^3') + '…直到回到 ' + T('I') + '；把一個週期的 ' + T('A+A^2+\\cdots+A^m') + ' 加起來會是 ' + T('O') + '（直接加加看）。' + T(N + '=' + m + '\\times' + Math.floor(N / m) + '+' + rem) + '，所以 ' + T('S') + ' 只剩最前面 ' + T(rem) + ' 項' + (rem === 0 ? '（一項都不剩）' : '') + '。';
+    return { q: q, a: a, h: h, p: { A: A, N: N, m: m, ask: askSum, ans: askSum ? tot : S } };
+  };
+
+  /* ── §5 直線經線性變換的像（或反求原來的直線） ── */
+  L2.lineImage = function (r) {
+    var t = r.int(0, 2), A, tt = 0, s1, s2, L, Lr, q, a, h, img;
+    do { L = [r.int(-4, 4), r.int(-4, 4), r.int(-6, 6)]; } while (L[0] === 0 && L[1] === 0);
+    L = nxLineN(L[0], L[1], L[2]); if (L[0] === 0 && L[1] === 0) L = [1, 2, 3];
+    if (t < 2) {
+      do { A = rm2(r, -3, 3); tt++; } while (tt < 80 && (sxDv2(A) === 0 || Math.abs(sxDv2(A)) > 3));
+      if (sxDv2(A) === 0) A = [[1, 1], [0, 1]];
+    } else {
+      do { s1 = basicInt(r); s2 = basicInt(r); tt++; } while (tt < 80 && (s1.t.indexOf('投影') >= 0 || s2.t.indexOf('投影') >= 0 || mSame(MF(s1.M), MF(s2.M))));
+      A = nxMulI(s2.M, s1.M);
+    }
+    var dt = sxDv2(A), adj = nxAdj(A);
+    if (t === 1) {                                    /* 已知像 L'，求原來的直線 L：代 (x',y')=A(x,y) */
+      Lr = nxLineN(L[0] * A[0][0] + L[1] * A[1][0], L[0] * A[0][1] + L[1] * A[1][1], L[2]);
+      q = '設 ' + T('A=' + bm(A)) + '。直線 ' + T('L') + ' 上的每一點經 ' + T('A') + ' 變換後，都落在直線 ' + T("L':" + nxLineT(L)) + ' 上，而且 ' + T("L'") + ' 上的每一點都是這樣來的。求 ' + T('L') + ' 的方程式。';
+      a = T('L:' + nxLineT(Lr));
+      h = '設 ' + T('L') + ' 上的點 ' + T('(x,y)') + ' 變成 ' + T("(x',y')") + '：' + T("x'=" + nxLin([A[0][0], A[0][1]], VS2)) + '、' + T("y'=" + nxLin([A[1][0], A[1][1]], VS2)) + '。' + T("(x',y')") + ' 在 ' + T("L'") + ' 上，直接代進 ' + T("L'") + ' 的方程式，整理成 ' + T('x') + '、' + T('y') + ' 的式子就是 ' + T('L') + '。';
+      return { q: q, a: a, h: h, p: { t: 1, A: A, L2: L, ans: Lr } };
+    }
+    img = nxLineN(L[0] * adj[0][0] + L[1] * adj[1][0], L[0] * adj[0][1] + L[1] * adj[1][1], L[2] * dt);
+    if (t === 0) q = '設 ' + T('A=' + bm(A)) + '。直線 ' + T('L:' + nxLineT(L)) + ' 上的每一點經 ' + T('A') + ' 變換後，都落在直線 ' + T("L'") + ' 上。求 ' + T("L'") + ' 的方程式。';
+    else q = '將直線 ' + T('L:' + nxLineT(L)) + ' 上的每一點依序做下列兩個動作：(a) ' + s1.t + '；(b) 再' + s2.t + '。所得的點都落在直線 ' + T("L'") + ' 上，求 ' + T("L'") + ' 的方程式。';
+    a = T("L':" + nxLineT(img));
+    h = (t === 2 ? '先寫出整體矩陣：後做的放左邊，' + T('M=' + bm(s2.M) + bm(s1.M) + '=' + bm(A)) + '。' : '') + '反過來用：' + T("(x',y')") + ' 是像，原來的點是 ' + T((t === 2 ? 'M' : 'A') + "^{-1}\\begin{bmatrix}x'\\\\ y'\\end{bmatrix}") + '，' + T('\\det=' + dt) + '，' + T((t === 2 ? 'M' : 'A') + '^{-1}=' + (dt === 1 ? '' : (dt === -1 ? '-' : Fr.tex(F(1, dt), true))) + bm(adj)) + '；把原來的點代進 ' + T('L') + ' 的方程式就是 ' + T("L'") + '。（也可以在 ' + T('L') + ' 上取兩點，求像再寫直線。）';
+    return { q: q, a: a, h: h, p: { t: t, A: A, L: L, ans: img } };
+  };
+
+  /* ── §5 兩袋取球放球：寫轉移方陣、第 k 回合、長期 ── */
+  L2.ballSwap = function (r) {
+    var m = r.int(0, 3), n = r.int(1, 4), ord = r.int(0, 1), k = r.int(2, 3), who = r.int(0, 1), col = r.pick(['紅', '黑']), bg = r.pick([['甲', '乙'], ['A', 'B']]);
+    if (ord === 1 && m === 0 && n === 1) n = 2;
+    var tAB, tBA;                                          /* 白球 甲→乙、乙→甲 的機率 */
+    if (ord === 0) { tAB = F(n, (m + 1) * (n + 1)); tBA = F(1, n + 1); }
+    else { tAB = F(1, m + 2); tBA = Fr.mul(F(1, n), F(m + 1, m + 2)); }
+    var M = [[Fr.sub(F(1), tAB), tBA], [tAB, Fr.sub(F(1), tBA)]], X = [F(1), F(0)], i;
+    for (i = 0; i < k; i++) X = mVec(M, X);
+    var st = Fr.div(tBA, Fr.add(tAB, tBA));
+    var bn = function (s) { return bg[0] === 'A' ? T(s === 0 ? 'A' : 'B') + ' 袋' : (s === 0 ? '甲' : '乙') + '袋'; };
+    var step = ord === 0 ? '先從' + bn(0) + '任取一球放入' + bn(1) + '，再從' + bn(1) + '任取一球放入' + bn(0) : '先從' + bn(1) + '任取一球放入' + bn(0) + '，再從' + bn(0) + '任取一球放入' + bn(1);
+    var q = bn(0) + '中有 ' + T(1) + ' 個白球' + (m ? '、' + T(m) + ' 個' + col + '球' : '') + '，' + bn(1) + '中有 ' + T(n) + ' 個' + col + '球。每一回合' + step + '（每次取球都是袋中每顆球機會均等）。狀態依序為「白球在' + bn(0) + '」「白球在' + bn(1) + '」，' + T('X_{k+1}=MX_k') + '。' + no(1) + '寫出轉移方陣 ' + T('M') + '。' + no(2) + '求 ' + T(k) + ' 回合後白球在' + bn(who) + '的機率。' + no(3) + '長期而言，白球在' + bn(0) + '的機率趨近多少？';
+    var a = jo([no(1) + T('M=' + bm(M)), no(2) + T(Fr.tex(X[who], false)), no(3) + T(Fr.tex(st, false))]);
+    var h = ord === 0
+      ? '白球在' + bn(0) + '時要「被取走、又沒被取回」才會跑到' + bn(1) + '：' + T('\\dfrac{1}{' + (m + 1) + '}\\times\\dfrac{' + n + '}{' + (n + 1) + '}') + '；白球在' + bn(1) + '時，' + bn(1) + '先多了一顆球變成 ' + T(n + 1) + ' 顆，取回白球的機率是 ' + T('\\dfrac{1}{' + (n + 1) + '}') + '。每一行的和是 ' + T(1) + '，' + T('X_0=' + cv([1, 0])) + '，連乘 ' + T(k) + ' 次；長期解 ' + T('MX=X') + ' 配兩個分量和為 ' + T(1) + '。'
+      : '白球在' + bn(0) + '時，' + bn(0) + '先多一顆球變成 ' + T(m + 2) + ' 顆，白球被取去' + bn(1) + '的機率是 ' + T('\\dfrac{1}{' + (m + 2) + '}') + '；白球在' + bn(1) + '時要「先被取到' + bn(0) + '、又沒被取回」：' + T('\\dfrac{1}{' + n + '}\\times\\dfrac{' + (m + 1) + '}{' + (m + 2) + '}') + '。每一行的和是 ' + T(1) + '，' + T('X_0=' + cv([1, 0])) + '，連乘 ' + T(k) + ' 次；長期解 ' + T('MX=X') + ' 配兩個分量和為 ' + T(1) + '。';
+    if (bg[0] === 'A') { q = q.replace(/([從在入])\$/g, '$1 $'); h = h.replace(/([從在入時到])\$/g, '$1 $'); }
+    return { q: q, a: a, h: h, p: { m: m, n: n, ord: ord, k: k, who: who, ans: { M: M.map(function (w) { return w.map(fp); }), pk: fp(X[who]), st: fp(st) } } };
+  };
+
   var L1_H1 = {
     matForm: '這是「把方程組寫成矩陣形式」：係數照未知數的順序橫著抄成一列，缺的字母那一格要補零，常數項另外排成一行。',
     matVec: '這是「方陣乘行向量」：橫的乘直的再相加；同一個式子按未知數分組，就是兩個行向量的線性組合。',
@@ -1749,21 +2093,109 @@
       '驗算 ' + T('MX') + '：第一個分量 ' + T(prod([Md[0][0], Fr.tex(xs, true)]) + '+' + prod([Md[0][1], Fr.tex(ys, true)]) + '=' + Fr.tex(xs, true)) + '、第二個分量 ' + T(prod([Md[1][0], Fr.tex(xs, true)]) + '+' + prod([Md[1][1], Fr.tex(ys, true)]) + '=' + Fr.tex(ys, true)) + ' ⟹ ' + T('MX=' + cv([Fr.tex(xs, true), Fr.tex(ys, true)]) + '=X') + ' ✓。' + sxFin(o)];
   };
 
+  /* ── 2026-09-29 擴充：新 L1 五型的第一層提示與解題步驟 ── */
+  L1_H1.aijRule = '這是「由規則寫矩陣」：$a_{ij}$ 是第 $i$ 列、第 $j$ 行的元素；求總和就把規則拆開分別加，求乘積的某一格只要用到一列和一行。';
+  L1_H1.sumDiffSys = '這是「由兩個組合反求兩個矩陣」：把兩式當成兩個未知數的聯立，加減消去；平方相減時要記得 $AB$ 與 $BA$ 不一定相等。';
+  L1_H1.homogNonzero = '這是「齊次方程組的非零解」：常數全為零時零解一定在，要有別的解，係數行列式就必須等於零；解的方向用兩個法向量的外積。';
+  L1_H1.reflLine = '這是「對直線鏡射」：軸上的點不動、垂直於軸的方向翻成相反；由軸寫矩陣用倍角公式，由矩陣找軸就解「鏡射後不動」。';
+  L1_H1.transCheck = '這是「判斷轉移方陣」：每個元素都不是負數，而且每一行的和都是一；相乘、或用非負且和為一的係數混合，結果仍是轉移方陣。';
+
+  L1_SOL.aijRule = function (p, o) {
+    if (p.t === 0) {
+      var M = p.ans, m = p.m, n = p.n;
+      return ['$a_{ij}$ 是第 $i$ 列、第 $j$ 行的元素，把 $i$、$j$ 代進 $a_{ij}=' + p.rule + '$。$A$ 是 $' + m + '\\times' + n + '$，所以 $i=1,\\ldots,' + m + '$、$j=1,\\ldots,' + n + '$。',
+        '例如 $a_{11}=' + M[0][0] + '$、$a_{' + m + '1}=' + M[m - 1][0] + '$、$a_{1' + n + '}=' + M[0][n - 1] + '$、$a_{' + m + n + '}=' + M[m - 1][n - 1] + '$，其餘逐格代入。',
+        sxFin(o)];
+    }
+    if (p.t === 1) {
+      var R = p.R, nn = p.n, Sn = nn * (nn + 1) / 2, s2;
+      if (R.k === 0) {
+        var pa = R.p * nn * Sn, pb = R.q * nn * Sn, pc = R.c * nn * nn;
+        s2 = '$1+2+\\cdots+' + nn + '=\\dfrac{' + nn + '\\times' + (nn + 1) + '}{2}=' + Sn + '$。含 $i$ 的部分：每個 $i$ 在同一列出現 $' + nn + '$ 次，合計 $' + par(R.p) + '\\times' + nn + '\\times' + Sn + '=' + pa + '$；含 $j$ 的部分同理 $' + par(R.q) + '\\times' + nn + '\\times' + Sn + '=' + pb + '$；常數項 $' + par(R.c) + '\\times' + nn + '\\times' + nn + '=' + pc + '$。總和 $' + pa + (pb < 0 ? '' : '+') + pb + (pc < 0 ? '' : '+') + pc + '=' + p.ans + '$。';
+      } else if (R.k === 2) {
+        var terms = [], sAbs = 0, dd;
+        for (dd = 1; dd < nn; dd++) { terms.push(String(2 * dd * (nn - dd))); sAbs += dd * (nn - dd); }
+        var pc2 = R.c * nn * nn;
+        s2 = '與對角線距離 $d$ 的格子共 $2(' + nn + '-d)$ 個，每格的 $|i-j|=d$，貢獻 $2d(' + nn + '-d)$；$d=1,2,\\ldots,' + (nn - 1) + '$ 依序是 $' + terms.join(',\\ ') + '$，$|i-j|$ 的總和是 $' + terms.join('+') + '=' + (2 * sAbs) + '$。再乘上倍數、加上常數項：$' + par(R.p) + '\\times' + (2 * sAbs) + (pc2 < 0 ? '' : '+') + pc2 + '=' + p.ans + '$。';
+      } else {
+        var half = nn * (nn - 1) / 2;
+        s2 = '對角線以下（$i\\gt j$）有 $\\dfrac{' + nn + '\\times' + (nn - 1) + '}{2}=' + half + '$ 格、對角線 $' + nn + '$ 格、對角線以上（$i\\lt j$）$' + half + '$ 格。總和 $' + par(R.u) + '\\times' + half + '+' + par(R.v) + '\\times' + nn + '+' + par(R.w) + '\\times' + half + '=' + p.ans + '$。';
+      }
+      return ['把 $' + nn + '\\times' + nn + '$ 格的 $a_{ij}=' + p.rule + '$ 全部加起來：不要一格一格代，按規則分成幾部分分別加。', s2, sxFin(o)];
+    }
+    var ri = p.rs[0], sj = p.rs[1], terms2 = [], k;
+    for (k = 0; k < p.row.length; k++) terms2.push(prod([p.row[k], p.col[k]]));
+    return ['$c_{' + ri + sj + '}$ 是 $A$ 的第 $' + ri + '$ 列與 $B$ 的第 $' + sj + '$ 行對應相乘再相加，其他格都不必算。',
+      '$A$ 的第 $' + ri + '$ 列：$a_{' + ri + 'j}$ 代 $j=1,\\ldots,' + p.row.length + '$ 得 $(' + p.row.join(',\\,') + ')$；$B$ 的第 $' + sj + '$ 行：$b_{i' + sj + '}$ 代 $i=1,\\ldots,' + p.col.length + '$ 得 $(' + p.col.join(',\\,') + ')$。',
+      '$c_{' + ri + sj + '}=' + terms2.join('+') + '=' + p.ans + '$。' + sxFin(o)];
+  };
+
+  L1_SOL.sumDiffSys = function (p, o) {
+    var f = p.f, A = MF(p.A), B = MF(p.B), P = mAdd(mK(f[0], A), mK(f[1], B)), Q = mAdd(mK(f[2], A), mK(f[3], B)), det = f[0] * f[3] - f[1] * f[2];
+    var nA = mSub(mK(f[3], P), mK(f[1], Q)), nB = mSub(mK(f[0], Q), mK(f[2], P)), sc = det === 1 ? '' : Fr.tex(F(1, det), true);
+    var A2 = mMul(A, A), B2 = mMul(B, B), D = mSub(A2, B2), S = mAdd(A, B), Df = mSub(A, B), PQ = mMul(S, Df);
+    return ['把兩式當成 $A$、$B$ 的聯立（每一格都成立）：第一式乘 $' + f[3] + '$ 減第二式乘 $' + f[1] + '$ 消去 $B$，第一式乘 $' + f[2] + '$ 減第二式乘 $' + f[0] + '$ 消去 $A$，係數都是 $' + prod([f[0], f[3]]) + '-' + prod([f[1], f[2]]) + '=' + det + '$。',
+      '$A=' + sc + bm(nA) + '=' + bm(A) + '$，$B=' + sc + bm(nB) + '=' + bm(B) + '$。',
+      '$A^2=' + bm(A) + bm(A) + '=' + bm(A2) + '$，$B^2=' + bm(B) + bm(B) + '=' + bm(B2) + '$，相減 $A^2-B^2=' + bm(D) + '$；而 $(A+B)(A-B)=' + bm(S) + bm(Df) + '=' + bm(PQ) + '$，' + (mSame(D, PQ) ? '剛好相等（這題 $AB=BA$）' : '不相等（因為 $AB\\ne BA$）') + '。' + sxFin(o)];
+  };
+
+  L1_SOL.homogNonzero = function (p, o) {
+    var k0 = p.ans.k, cof = p.cof, b0 = -cof * k0, r1 = p.r1, r2 = p.r2, cr = p.cr, d = p.ans.d;
+    var e = [prod([r1[1], r2[2]]) + '-' + prod([r1[2], r2[1]]), prod([r1[2], r2[0]]) + '-' + prod([r1[0], r2[2]]), prod([r1[0], r2[1]]) + '-' + prod([r1[1], r2[0]])];
+    return ['常數全為 $0$ ⟹ $(0,0,0)$ 一定是解；還有別的解 ⟺ 不是「恰有一組解」 ⟺ 係數行列式 $\\Delta=0$。',
+      '沿第三列展開，$k$ 的係數是前兩列刪去那一行的二階行列式（帶正負號）$=' + cof + '$，所以 $\\Delta=' + (cof === 1 ? '' : (cof === -1 ? '-' : cof)) + 'k' + pm(b0) + '$。令 $\\Delta=0$ ⟹ $k=' + k0 + '$。',
+      '$k=' + k0 + '$ 時第三式是前兩式的組合，只剩前兩式；兩個法向量 $(' + r1.join(',') + ')$、$(' + r2.join(',') + ')$ 不平行，解的方向是它們的外積 $(' + e.join(',\\ ') + ')=(' + cr.join(',') + ')$，所以 $x:y:z=' + d.join(':') + '$。' + sxFin(o)];
+  };
+
+  L1_SOL.reflLine = function (p, o) {
+    var pq = p.pq, M = nxReflM(pq), c = M[0][0], s = M[0][1], L = pq[0] * pq[0] + pq[1] * pq[1];
+    var mat = pq[0] === 0 ? '$x$ 軸上的 $(1,0)$ 不動、垂直方向的 $(0,1)$ 變成 $(0,-1)$，兩個像當成兩行：$' + bm(M) + '$。'
+      : pq[1] === 0 ? '$y$ 軸上的 $(0,1)$ 不動、垂直方向的 $(1,0)$ 變成 $(-1,0)$，兩個像當成兩行：$' + bm(M) + '$。'
+      : '軸的方向是 $(' + pq[1] + ',' + pq[0] + ')$，斜角 $\\theta$ 滿足 $\\cos\\theta=\\dfrac{' + pq[1] + '}{\\sqrt{' + L + '}}$、$\\sin\\theta=\\dfrac{' + pq[0] + '}{\\sqrt{' + L + '}}$。倍角：$\\cos2\\theta=\\cos^2\\theta-\\sin^2\\theta=\\dfrac{' + (pq[1] * pq[1]) + '-' + (pq[0] * pq[0]) + '}{' + L + '}=' + nxT(c) + '$、$\\sin2\\theta=2\\sin\\theta\\cos\\theta=\\dfrac{2\\times' + par(pq[0]) + '\\times' + par(pq[1]) + '}{' + L + '}=' + nxT(s) + '$，鏡射矩陣 $\\begin{bmatrix}\\cos2\\theta&\\sin2\\theta\\\\ \\sin2\\theta&-\\cos2\\theta\\end{bmatrix}=' + bm(M) + '$。';
+    if (p.t === 0) {
+      var img = mVec(M, VF(p.P)), tup = '(' + nxT(img[0]) + ',' + nxT(img[1]) + ')';
+      return [mat,
+        '$' + bm(M) + cv(p.P) + '=' + cv(img) + '$，所以 $P\'=' + tup + '$。',
+        sxFin(o)];
+    }
+    var d1 = [s, Fr.sub(F(1), c)], d2 = [Fr.add(F(1), c), s], z1 = Fr.isz(d1[0]) && Fr.isz(d1[1]), use = z1 ? d2 : d1;
+    return ['$\\det A=' + prod([nxT(c), nxT(Fr.neg(c))]) + '-' + prod([nxT(s), nxT(s)]) + '=-1$，而且兩行都是單位長、互相垂直，確實是鏡射。',
+      '對稱軸上的點不動：解 $A' + cv(VS2) + '=' + cv(VS2) + '$。記 $a=' + nxT(c) + '$、$b=' + nxT(s) + '$：第一列 $(a-1)x+by=0$ 給方向 $(b,1-a)=(' + nxT(d1[0]) + ',' + nxT(d1[1]) + ')$；第二列 $bx-(a+1)y=0$ 給方向 $(1+a,b)=(' + nxT(d2[0]) + ',' + nxT(d2[1]) + ')$。' + (z1 ? '第一個是零向量（' + (pq[0] === 0 ? '$x$' : '$y$') + ' 軸的情形），用第二個。' : (Fr.isz(d2[0]) && Fr.isz(d2[1]) ? '第二個是零向量，用第一個。' : '兩個方向平行，用哪一個都可以。')),
+      '軸通過原點、方向 $(' + nxT(use[0]) + ',' + nxT(use[1]) + ')$，方程式為 $' + nxLineT(p.ans.axis) + '$。' + sxFin(o)];
+  };
+
+  var NXTW = { 'AB': '兩個轉移方陣相乘', 'BA': '兩個轉移方陣相乘', 'A^{2}': '轉移方陣自己相乘', 'A^{3}': '轉移方陣自己相乘', 'ABA': '轉移方陣連乘', 'I': '每行和為 $1$、元素非負',
+    '\\frac{1}{2}(A+B)': '係數 $\\frac{1}{2},\\frac{1}{2}$ 非負、和為 $1$', '\\frac{1}{3}A+\\frac{2}{3}B': '係數 $\\frac{1}{3},\\frac{2}{3}$ 非負、和為 $1$', '\\frac{1}{4}A+\\frac{3}{4}B': '係數 $\\frac{1}{4},\\frac{3}{4}$ 非負、和為 $1$',
+    '\\frac{1}{4}(A+B)^{2}': '等於 $\\left(\\frac{1}{2}(A+B)\\right)^2$，轉移方陣的平方', '\\frac{1}{2}(A^{2}+B^{2})': '$A^2$、$B^2$ 都是轉移方陣，係數和為 $1$', '\\frac{1}{2}(A+AB)': '$A$、$AB$ 都是轉移方陣，係數和為 $1$',
+    'A+B': '每行和是 $2$', '2A-B': '行和是 $1$，但元素可能變負', 'A-B': '每行和是 $0$', '3A': '每行和是 $3$', 'A^{2}+B^{2}': '每行和是 $2$', '\\frac{1}{5}(A^{2}+AB)': '每行和是 $\\frac{2}{5}$',
+    '\\frac{1}{2}(A-B)': '每行和是 $0$', 'A+B-I': '行和是 $1$，但元素可能變負', '\\frac{1}{3}(A+B)': '每行和是 $\\frac{2}{3}$', '(A+B)^{2}': '每行和是 $4$' };
+  L1_SOL.transCheck = function (p, o) {
+    if (p.t === 0) {
+      return ['二階轉移方陣要同時滿足兩件事：<b>每個元素都不是負數</b>、<b>每一行（直的）加起來都是 $1$</b>。只看「列」的和是常見的錯。',
+        '逐一檢查：' + p.why.map(function (w, i) { return '(' + (i + 1) + ') ' + w + (p.ans[i] ? ' ✓' : ' ✗'); }).join('；') + '。',
+        sxFin(o)];
+    }
+    return ['兩個轉移方陣相乘，乘積的每一行都是「按比例混合」原來的行，所以仍然每行和為 $1$、元素非負；係數都不是負數而且和為 $1$ 的組合也一樣。',
+      '逐一檢查：' + p.items.map(function (x, i) { return '(' + (i + 1) + ') $' + x + '$：' + NXTW[x] + (p.ans[i] ? ' ✓' : ' ✗'); }).join('；') + '。',
+      sxFin(o)];
+  };
+
   var META_L1 = [
       ['matForm', '§1 寫出係數方陣與矩陣形式'], ['matVec', '§1 方陣乘向量與線性組合'], ['det2', '§1 二階行列式與面積'], ['cramer2', '§1 二元克拉瑪公式'], ['twoLineCase', '§1 二元聯立解的三種情況'], ['colCombo', '§1 行向量組合得出來嗎'],
       ['augRowOp', '§2 增廣矩陣與列運算'], ['elim3', '§2 消去法解三元一次聯立'], ['echelonRead', '§2 由階梯形讀答案'], ['cramer3', '§2 三階克拉瑪公式'], ['countSol3', '§2 三元聯立解的個數'],
-      ['planeOne', '§3 三平面交於一點'], ['planeCase', '§3 Δ 為零且有解的三種'], ['planeNoSol', '§3 Δ 為零且無解的四種'],
-      ['matAddK', '§4 矩陣加減與係數積'], ['matMul', '§4 矩陣相乘與可乘條件'], ['mulTrap', '§4 乘法的三個陷阱'], ['inv2', '§4 二階反方陣'], ['invExist', '§4 反方陣的存在性與參數'], ['invSolve', '§4 用反方陣解聯立'], ['matPow', '§4 方陣的乘冪'], ['detProp', '§4 行列式的性質'],
-      ['linTrans', '§5 線性變換的像與原像'], ['basicTrans', '§5 五種基本變換的矩陣'], ['compose', '§5 合成變換'], ['detArea', '§5 行列式與面積伸縮率'], ['transMat', '§5 二階轉移方陣'], ['steady', '§5 穩定狀態']
+      ['planeOne', '§3 三平面交於一點'], ['planeCase', '§3 Δ 為零且有解的三種'], ['planeNoSol', '§3 Δ 為零且無解的四種'], ['homogNonzero', '§3 齊次方程組的非零解'],
+      ['matAddK', '§4 矩陣加減與係數積'], ['matMul', '§4 矩陣相乘與可乘條件'], ['mulTrap', '§4 乘法的三個陷阱'], ['inv2', '§4 二階反方陣'], ['invExist', '§4 反方陣的存在性與參數'], ['invSolve', '§4 用反方陣解聯立'], ['matPow', '§4 方陣的乘冪'], ['detProp', '§4 行列式的性質'], ['aijRule', '§4 由 aᵢⱼ 的規則寫矩陣'], ['sumDiffSys', '§4 由 A±B 反求 A、B'],
+      ['linTrans', '§5 線性變換的像與原像'], ['basicTrans', '§5 五種基本變換的矩陣'], ['compose', '§5 合成變換'], ['detArea', '§5 行列式與面積伸縮率'], ['transMat', '§5 二階轉移方陣'], ['steady', '§5 穩定狀態'],
+      ['reflLine', '§5 對直線鏡射：矩陣、像與對稱軸'], ['transCheck', '§5 判斷轉移方陣']
   ];
   var META_L2 = [
-      ['mulCombo', '§4 矩陣乘法綜合'], ['detAdv', '§4 行列式的進階計算'], ['invAdv', '§4 反方陣與矩陣方程'], ['matEqAdv', '§4 反方陣的性質與順序'], ['powPeriod', '§4 方陣的乘冪：週期與拆解'],
-      ['transAdv', '§5 轉移方陣與穩定狀態'], ['linTransFind', '§5 由兩個像求變換矩陣'], ['rotAdv', '§5 旋轉矩陣與乘冪'], ['reflAdv', '§5 鏡射與旋轉的辨認'], ['composeAdv', '§5 合成的順序'], ['steadyParam', '§5 轉移方陣的參數題'],
-      ['solve3Param', '§2 含參數的三元聯立'], ['rowOpBack', '§2 從階梯形反推參數'], ['infSol', '§2 無限多組解的參數式'], ['gaussWord', '§2 三元一次聯立的應用'],
+      ['mulCombo', '§4 矩陣乘法綜合'], ['detAdv', '§4 行列式的進階計算'], ['invAdv', '§4 反方陣與矩陣方程'], ['matEqAdv', '§4 反方陣的性質與順序'], ['powPeriod', '§4 方陣的乘冪：週期與拆解'], ['polyInverse', '§4 A² 寫成 pA+qI：表示 A⁻¹、A³'], ['commuteParam', '§4 (A+B)² 能展開：由 AB=BA 求參數'], ['periodSum', '§4 有週期的方陣：A+A²+⋯+Aᴺ'],
+      ['transAdv', '§5 轉移方陣與穩定狀態'], ['linTransFind', '§5 由兩個像求變換矩陣'], ['rotAdv', '§5 旋轉矩陣與乘冪'], ['reflAdv', '§5 鏡射與旋轉的辨認'], ['composeAdv', '§5 合成的順序'], ['steadyParam', '§5 轉移方陣的參數題'], ['lineImage', '§5 直線經線性變換的像'], ['ballSwap', '§5 兩袋取放球的轉移方陣'],
+      ['solve3Param', '§2 含參數的三元聯立'], ['rowOpBack', '§2 從階梯形反推參數'], ['infSol', '§2 無限多組解的參數式'], ['gaussWord', '§2 三元一次聯立的應用'], ['rowEquivPick', '§2 哪些增廣矩陣能化成同一個'],
       ['planeParam', '§3 含參數的三平面']
   ];
   /* ══════════════════════════════════════════════════════════
-     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
+     L3　中上（18 型）：每型對應固定題 L3-1～L3-18 的「類似題」
      ─────────────────────────────────────────────────────────
      同題型換數字／情境，答案一律精確：整數、最簡分數（Fr.tex）、矩陣每一格最簡、
      無限多組解寫參數式、選項型寫成 (2)(3) 這種純字串。
@@ -2648,15 +3080,84 @@
     return { q: head + '求穩定狀態時甲' + S + '的' + ct.w + '占全體的百分比。', a: T(l3pct(x)), h: hb, p: pp };
   };
 
+  /* ══════════ 2026-09-29 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* L3-16　只給 A^p 與 A^q：相除（乘反方陣）降次，像輾轉相除一樣降到 A */
+  function nxPowI(A, n) { var R = [[1, 0], [0, 1]], i; for (i = 0; i < n; i++) R = nxMulI(R, A); return R; }
+  L3.powFromTwo = function (r) {
+    r();
+    var PAIRS = [[3, 5], [4, 7], [2, 5], [3, 7], [5, 8], [5, 7]], A, pr, Ap, Aq, tt = 0, d, mx;
+    do {
+      A = [[r.int(-2, 2), r.int(-2, 2)], [r.int(-2, 2), r.int(-2, 2)]]; pr = r.pick(PAIRS);
+      d = A[0][0] * A[1][1] - A[0][1] * A[1][0]; Ap = nxPowI(A, pr[0]); Aq = nxPowI(A, pr[1]); mx = nxMaxAbs(Aq); tt++;
+    } while (tt < 400 && (Math.abs(d) !== 1 || mx > 99 || mx < 3 || (A[0][1] === 0 && A[1][0] === 0) || nxMaxAbs(Ap) === 1));
+    var p = pr[0], q = pr[1], e = q - p, Ae = nxPowI(A, e);
+    var qq = '設二階方陣 ' + T('A') + ' 滿足 ' + T('A^{' + p + '}=' + bm(Ap)) + '、' + T('A^{' + q + '}=' + bm(Aq)) + '。' + l3no(1) + '求 ' + T('A^{' + e + '}') + '。' + l3no(2) + '求 ' + T('A') + '。';
+    var a = l3jo([l3no(1) + T('A^{' + e + '}=' + bm(Ae)), l3no(2) + T('A=' + bm(A))]);
+    var dp = Ap[0][0] * Ap[1][1] - Ap[0][1] * Ap[1][0];
+    var h = T('A^{' + q + '}=A^{' + e + '}A^{' + p + '}') + '，兩邊右乘 ' + T('(A^{' + p + '})^{-1}') + '：' + T('A^{' + e + '}=A^{' + q + '}(A^{' + p + '})^{-1}') + '，而 ' + T('\\det(A^{' + p + '})=' + dp) + '，' + T('(A^{' + p + '})^{-1}=' + (dp === 1 ? '' : '-') + bm(nxAdj(Ap))) + '。接著用 ' + T('A^{' + p + '}') + ' 與 ' + T('A^{' + e + '}') + ' 再相除一次，指數像輾轉相除一樣一路降到 ' + T(1) + '。';
+    return { q: qq, a: a, h: h, p: { p: p, q: q, ans: { Ae: Ae, A: A } } };
+  };
+
+  /* L3-17　已知 (a,b,c)→d 的解，把係數欄換位置：用「行向量的組合」看，不必解 */
+  L3.coefSwapSol = function (r) {
+    r();
+    var sol, perm, Z, k, mul, tt = 0, idxD, cz;
+    do {
+      sol = [r.int(-4, 4), r.int(-4, 4), r.int(-4, 4)];
+      perm = r.shuffle(['a', 'b', 'c', 'd']); Z = perm[3]; k = r.pick([1, 2, 3, -1, -2]);
+      mul = [1, 1, 1].map(function () { return r.pick([1, 1, 1, 2, -1]); });
+      idxD = perm.indexOf('d'); cz = Z === 'd' ? 0 : sol['abc'.indexOf(Z)]; tt++;
+    } while (tt < 200 && (Z === 'd' || cz === 0 || (sol[0] === 0 && sol[1] === 0) || (mul[0] !== 1 && mul[1] !== 1 && mul[2] !== 1)));
+    var vD = F(k, mul[idxD] * cz), v = [F(0), F(0), F(0)], i;
+    v[idxD] = vD;
+    for (i = 0; i < 3; i++) { if (i === idxD) continue; var col = 'abc'.indexOf(perm[i]); v[i] = Fr.neg(Fr.div(Fr.mul(F(mul[idxD] * sol[col]), vD), F(mul[i]))); }
+    var row = function (n) {
+      var s = '', j2;
+      for (j2 = 0; j2 < 3; j2++) { var m = mul[j2], t = (m === 1 ? '' : (m === -1 ? '-' : m)) + perm[j2] + '_' + n + VS3[j2]; s += (s === '' || m < 0 ? '' : '+') + t; }
+      return s + '=' + (k === 1 ? '' : (k === -1 ? '-' : k)) + Z + '_' + n;
+    };
+    var old = '\\begin{cases}a_1x+b_1y+c_1z=d_1\\\\ a_2x+b_2y+c_2z=d_2\\\\ a_3x+b_3y+c_3z=d_3\\end{cases}';
+    var nw = '\\begin{cases}' + [1, 2, 3].map(row).join('\\\\ ') + '\\end{cases}';
+    var qq = '已知方程組 ' + T(old) + ' 恰有一組解 ' + T('(x,y,z)=(' + sol.join(',') + ')') + '。求方程組 ' + T(nw) + ' 的解。';
+    var a = T('(x,y,z)=\\left(' + v.map(function (f) { return Fr.tex(f, true); }).join(',\\,') + '\\right)');
+    var dtex = nxLin(sol, ['\\vec a', '\\vec b', '\\vec c']);
+    var h = '把係數看成行向量 ' + T('\\vec a=(a_1,a_2,a_3)') + '、…：原方程組的解說的是 ' + T(dtex + '=\\vec d') + '。新方程組是「' + T('x') + '、' + T('y') + '、' + T('z') + ' 乘上三個行向量再相加等於 ' + (k === 1 ? '' : (k === -1 ? '負的' : T(k) + ' 倍的 ')) + T('\\vec ' + Z) + '」，把其中的 ' + T('\\vec d') + ' 換成 ' + T(dtex) + '，比較 ' + T('\\vec a') + '、' + T('\\vec b') + '、' + T('\\vec c') + ' 的係數（原方程組恰有一組解，表示法只有一種）。';
+    return { q: qq, a: a, h: h, p: { sol: sol, perm: perm, k: k, mul: mul, ans: v.map(l3fp) } };
+  };
+
+  /* L3-18　含未知數的轉移方陣＋給定不動的向量：每行和為 1、流進流出相等 */
+  L3.steadyToMatrix = function (r) {
+    r();
+    var CS = [F(1, 2), F(1, 3), F(2, 3), F(1, 4), F(3, 4), F(1, 5), F(2, 5), F(3, 5), F(4, 5), F(1, 6), F(5, 6)];
+    var m, n, pos, c, E, tt = 0, ok;
+    do {
+      m = r.int(1, 7); n = r.int(1, 7); pos = r.int(0, 3); c = r.pick(CS); tt++;
+      E = [[null, null], [null, null]];
+      if (pos === 2) { E[1][0] = c; E[0][0] = Fr.sub(F(1), c); E[0][1] = Fr.mul(c, F(m, n)); E[1][1] = Fr.sub(F(1), E[0][1]); }
+      else if (pos === 0) { E[0][0] = c; E[1][0] = Fr.sub(F(1), c); E[0][1] = Fr.mul(E[1][0], F(m, n)); E[1][1] = Fr.sub(F(1), E[0][1]); }
+      else if (pos === 1) { E[0][1] = c; E[1][1] = Fr.sub(F(1), c); E[1][0] = Fr.mul(c, F(n, m)); E[0][0] = Fr.sub(F(1), E[1][0]); }
+      else { E[1][1] = c; E[0][1] = Fr.sub(F(1), c); E[1][0] = Fr.mul(E[0][1], F(n, m)); E[0][0] = Fr.sub(F(1), E[1][0]); }
+      ok = gcd(m, n) === 1 && m !== n && [E[0][0], E[0][1], E[1][0], E[1][1]].every(function (x) { return x.n > 0 && x.n < x.d; });
+    } while (tt < 300 && !ok);
+    var names = ['p', 'q', 'r'], shown = [[0, 0], [0, 0]], ix = 0, vals = [], i, j;
+    for (i = 0; i < 2; i++) for (j = 0; j < 2; j++) { if (i * 2 + j === pos) shown[i][j] = Fr.tex(c, true); else { shown[i][j] = names[ix++]; vals.push(E[i][j]); } }
+    var prodv = Fr.mul(Fr.mul(vals[0], vals[1]), vals[2]);
+    var qq = '設 ' + T('A=' + l3bm(shown)) + ' 為轉移方陣，且 ' + T('A' + l3cv([m, n]) + '=' + l3cv([m, n])) + '。' + l3no(1) + '求 ' + T('p') + '、' + T('q') + '、' + T('r') + '。' + l3no(2) + '求 ' + T('p\\times q\\times r') + '。';
+    var a = l3jo([l3no(1) + T('(p,q,r)=\\left(' + vals.map(function (f) { return Fr.tex(f, true); }).join(',\\,') + '\\right)'), l3no(2) + T('p\\times q\\times r=' + Fr.tex(prodv, true))]);
+    var h = '轉移方陣每一行的和是 ' + T(1) + '，先用這條把和已知數 ' + T(Fr.tex(c, true)) + ' 同一行的那一格求出來；再把 ' + T('A' + l3cv([m, n]) + '=' + l3cv([m, n])) + ' 的第一列寫開：' + T('(\\text{第一列})\\cdot(' + m + ',' + n + ')=' + m) + '，就能解出另一行的一格，最後一格再用行和為 ' + T(1) + '。';
+    return { q: qq, a: a, h: h, p: { m: m, n: n, pos: pos, ans: vals.map(l3fp) } };
+  };
+
   var META_L3 = [['noSolTwoParam', '§1 二元含參數說無解：Δ 只是候選'], ['augZeroRow', '§2 增廣矩陣最後一列全零'], ['augBlurred', '§2 汙損的增廣矩陣（列運算保解）'],
                  ['noSolThreeParam', '§2 三元含參數說無解'], ['workRate3', '§2 工作效率的三元應用題'], ['matEqShift', '§4 X 在兩邊：提出 (A-kI)X=B'],
                  ['selfInverse', '§4 A 等於自己的反方陣'], ['matLawPick', '§4 矩陣運算律何者必成立'], ['powPeriodMin', '§4 A^n=A 的最小 n（找週期）'],
                  ['shearSum', '§4 推移方陣的乘冪與連加'], ['rotCompose', '§5 旋轉的合成與同餘'], ['reflAxis', '§5 鏡射矩陣求對稱軸'],
-                 ['detAreaRatio', '§5 兩組像求面積伸縮率'], ['transTwoStep', '§5 轉移方陣：兩期後'], ['steadyPct', '§5 穩定狀態的百分比']];
+                 ['detAreaRatio', '§5 兩組像求面積伸縮率'], ['transTwoStep', '§5 轉移方陣：兩期後'], ['steadyPct', '§5 穩定狀態的百分比'],
+                 ['powFromTwo', '§4 只給兩個乘冪反求 A'], ['coefSwapSol', '§2 係數換位置：看成行向量的組合'], ['steadyToMatrix', '§5 由不動的向量反求轉移方陣']];
   /* 固定題 L3-n 對應的類似題型 */
   var L3_FIX = { 'L3-1': 'noSolTwoParam', 'L3-2': 'augZeroRow', 'L3-3': 'augBlurred', 'L3-4': 'noSolThreeParam', 'L3-5': 'workRate3',
                  'L3-6': 'matEqShift', 'L3-7': 'selfInverse', 'L3-8': 'matLawPick', 'L3-9': 'powPeriodMin', 'L3-10': 'shearSum',
-                 'L3-11': 'rotCompose', 'L3-12': 'reflAxis', 'L3-13': 'detAreaRatio', 'L3-14': 'transTwoStep', 'L3-15': 'steadyPct' };
+                 'L3-11': 'rotCompose', 'L3-12': 'reflAxis', 'L3-13': 'detAreaRatio', 'L3-14': 'transTwoStep', 'L3-15': 'steadyPct', 'L3-16': 'powFromTwo', 'L3-17': 'coefSwapSol', 'L3-18': 'steadyToMatrix' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：二元一次聯立（國中）、兩直線的關係（高一上 ch2）、平面向量的線性組合（高二上 ch3）、三階行列式（本冊 ch1）、特殊角的三角函數值（高一下 ch4）
@@ -2756,6 +3257,10 @@
     'L2.rotAdv': { f: function (p) { return p.cw; }, why: '旋轉矩陣 $\\begin{bmatrix}\\cos\\theta&-\\sin\\theta\\\\\\sin\\theta&\\cos\\theta\\end{bmatrix}$ 的 $\\theta$ 是<b>逆時針</b>的角度；順時針轉 $\\theta$ 就是逆時針轉 $-\\theta$，矩陣變成 $\\begin{bmatrix}\\cos\\theta&\\sin\\theta\\\\-\\sin\\theta&\\cos\\theta\\end{bmatrix}$，<b>只有兩個 $\\sin$ 的位置換了正負號</b>。辨認時看左下角：正的是逆時針、負的是順時針（$0^\\circ\\lt\\theta\\lt180^\\circ$ 時）。' },
     'L2.reflAdv': { f: function (p) { return p.kind; }, why: '兩個行向量都是單位長而且互相垂直時，<b>$\\det=1$ 是旋轉、$\\det=-1$ 是鏡射</b>。長相也不同：旋轉是 $\\begin{bmatrix}c&-s\\\\s&c\\end{bmatrix}$（對角線相同、另一條對角線差一個負號）；鏡射是 $\\begin{bmatrix}c&s\\\\s&-c\\end{bmatrix}$（對角線差一個負號、另一條對角線相同），而且鏡射做兩次會回到原位，$A^2=I$。' }
   };
+  /* 2026-09-29 擴充題型的對照題 */
+  CONTRAST['L1.reflLine'] = { f: function (p) { return p.t; }, why: '同一種鏡射，兩個方向：<b>由軸寫矩陣</b>，軸的斜角 $\\theta$ 代進 $\\begin{bmatrix}\\cos2\\theta&\\sin2\\theta\\\\ \\sin2\\theta&-\\cos2\\theta\\end{bmatrix}$；<b>由矩陣找軸</b>，解「鏡射後不動」：$\\begin{bmatrix}a&b\\\\ b&-a\\end{bmatrix}$ 的軸方向是 $(b,1-a)$ 或 $(1+a,b)$，其中一個是零向量時（$x$ 軸、$y$ 軸）就用另一個。' };
+  CONTRAST['L2.lineImage'] = { f: function (p) { return p.t === 1 ? 1 : 0; }, why: '求<b>像</b>：已知的是原來的點，要用 $A^{-1}$ 把 $(x\',y\')$ 拉回去代進 $L$；求<b>原來的直線</b>：已知的是像所在的直線，直接把 $(x\',y\')=A(x,y)$ 代進 $L\'$ 就好，不必求反方陣。' };
+  CONTRAST['L2.ballSwap'] = { f: function (p) { return p.ord; }, why: '先從哪一袋取，決定「白球離開」要經過幾次抽中：從白球所在的袋子先取，白球要「被抽走、又沒被抽回」；從另一袋先取，白球所在的袋子會先多一顆球，機率的分母跟著變。每一行的和一定是 $1$，可以拿來檢查。' };
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -236,7 +236,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字與做法</b>：讀題時先找關鍵字，做法選對了，題目就有頭緒；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（10,250 題抽樣，全部用分數與根式精確重算一次）；固定題全數人工＋電腦重算。<b>三平面的位置關係一律用消去法分類、過交線的平面用「交線上兩點」的通法</b>；矩陣、克拉瑪公式、平面族公式、球面都超綱（矩陣與克拉瑪公式是本冊第四章、平面族公式課綱全文 0 次、球面是數學 B 的內容），本書全部不用。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（19,500 題抽樣，全部用分數與根式精確重算一次）；固定題全數人工＋電腦重算。<b>三平面的位置關係一律用消去法分類、過交線的平面用「交線上兩點」的通法</b>；矩陣、克拉瑪公式、平面族公式、球面都超綱（矩陣與克拉瑪公式是本冊第四章、平面族公式課綱全文 0 次、球面是數學 B 的內容），本書全部不用。</li>
   </ol>
 </div>
 
@@ -263,27 +263,27 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>看到平面方程式不知道係數就是法向量、直線的參數式與比例式換不過去、三種距離公式會混在一起的同學。</div>
-  <div><b>目標</b>25 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>31 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
 <h3 class="sec">1 平面方程式怎麼寫</h3>
-<div class="must">先要會：<b>法向量 $\vec n=(a,b,c)$ 就是 $ax+by+cz=d$ 的係數</b>，點＋法向量代進去定 $d$；<b>三點用 $\overrightarrow{AB}\times\overrightarrow{AC}$ 當法向量</b>，答案一律化成「最簡整數、首項為正」；<b>與 $x$ 軸的交點＝令 $y=z=0$</b>；含 $z$ 軸 ⟹ 形如 $ax+by=0$、平行 $xy$ 平面 ⟹ 形如 $z=k$；<b>四點共平面</b>就是第四點也滿足前三點的平面方程式。</div>
-<div class="gen-grid" data-tier="L1" data-keys="planePointNormal,planeThreePts,planeIntercepts,planeSpecial,twoPlanesRel,coplanarK"></div>
-<div class="fadeset" data-tier="L1" data-keys="planePointNormal,planeThreePts,planeIntercepts,planeSpecial,twoPlanesRel,coplanarK" data-seed="9101"></div>
-<div class="fixset" data-tier="L1" data-keys="planePointNormal,planeThreePts,planeIntercepts,planeSpecial,twoPlanesRel,coplanarK" data-seed="8101"></div>
+<div class="must">先要會：<b>法向量 $\vec n=(a,b,c)$ 就是 $ax+by+cz=d$ 的係數</b>，點＋法向量代進去定 $d$；<b>三點用 $\overrightarrow{AB}\times\overrightarrow{AC}$ 當法向量</b>，答案一律化成「最簡整數、首項為正」；<b>與 $x$ 軸的交點＝令 $y=z=0$</b>；含 $z$ 軸 ⟹ 形如 $ax+by=0$、平行 $xy$ 平面 ⟹ 形如 $z=k$；<b>四點共平面</b>就是第四點也滿足前三點的平面方程式；<b>過兩點且垂直平面 $E$：法向量取 $\overrightarrow{AB}\times\vec n_E$</b>；由兩面角求係數：先用坐標軸上的點把平面設成只剩一個未知係數，再列 $\cos\theta=\dfrac{|\vec n_1\cdot\vec n_2|}{|\vec n_1||\vec n_2|}$，會有兩解。</div>
+<div class="gen-grid" data-tier="L1" data-keys="planePointNormal,planeThreePts,planeIntercepts,planeSpecial,twoPlanesRel,coplanarK,planeTwoPtsPerp,planeAngleCoef"></div>
+<div class="fadeset" data-tier="L1" data-keys="planePointNormal,planeThreePts,planeIntercepts,planeSpecial,twoPlanesRel,coplanarK,planeTwoPtsPerp,planeAngleCoef" data-seed="9101"></div>
+<div class="fixset" data-tier="L1" data-keys="planePointNormal,planeThreePts,planeIntercepts,planeSpecial,twoPlanesRel,coplanarK,planeTwoPtsPerp,planeAngleCoef" data-seed="8101"></div>
 
 <h3 class="sec">2 點到平面的距離、投影與對稱</h3>
-<div class="must">先要會：<b>$d=\dfrac{|ax_0+by_0+cz_0-d|}{\sqrt{a^2+b^2+c^2}}$</b>；兩平行平面要<b>先把左式化成完全一樣</b>再比常數；<b>投影點令 $H=P+t\vec n$ 代入平面解 $t$，對稱點 $=P+2t\vec n$</b>；已知距離求未知數一定有<b>兩解</b>（去絕對值）；三頂點的平面＋體積法 $h=\dfrac{3V}{S}$ 與距離公式必須一致。</div>
-<div class="gen-grid" data-tier="L1" data-keys="ptPlaneDist,parallelPlaneDist,planeProjSym,planeDistUnknown,tetraPlaneDist"></div>
-<div class="fadeset" data-tier="L1" data-keys="ptPlaneDist,parallelPlaneDist,planeProjSym,planeDistUnknown,tetraPlaneDist" data-seed="9201"></div>
-<div class="fixset" data-tier="L1" data-keys="ptPlaneDist,parallelPlaneDist,planeProjSym,planeDistUnknown,tetraPlaneDist" data-seed="8201"></div>
+<div class="must">先要會：<b>$d=\dfrac{|ax_0+by_0+cz_0-d|}{\sqrt{a^2+b^2+c^2}}$</b>；兩平行平面要<b>先把左式化成完全一樣</b>再比常數；<b>投影點令 $H=P+t\vec n$ 代入平面解 $t$，對稱點 $=P+2t\vec n$</b>；已知距離求未知數一定有<b>兩解</b>（去絕對值）；三頂點的平面＋體積法 $h=\dfrac{3V}{S}$ 與距離公式必須一致；<b>兩點代入「左式減常數」，同號在同側、異號在異側</b>，異側時交點分線段的比＝兩個值的絕對值比。</div>
+<div class="gen-grid" data-tier="L1" data-keys="ptPlaneDist,parallelPlaneDist,planeProjSym,planeDistUnknown,tetraPlaneDist,planeSideRatio"></div>
+<div class="fadeset" data-tier="L1" data-keys="ptPlaneDist,parallelPlaneDist,planeProjSym,planeDistUnknown,tetraPlaneDist,planeSideRatio" data-seed="9201"></div>
+<div class="fixset" data-tier="L1" data-keys="ptPlaneDist,parallelPlaneDist,planeProjSym,planeDistUnknown,tetraPlaneDist,planeSideRatio" data-seed="8201"></div>
 
 <h3 class="sec">3 空間直線與它和平面的關係</h3>
-<div class="must">先要會：<b>參數式＝起點＋$t\vec d$</b>；比例式是消 $t$，<b>分母為 $0$ 那一項要改寫成 $y=y_0$</b>（兩個 $0$ 就寫兩條常數式）；比例式讀回點時 $x+2$ 要讀成 $x-(-2)$；<b>交點＝把參數式代入平面解 $t$</b>；先看 $\vec n\cdot\vec d$ 是不是 $0$，再看 $P_0$ 在不在平面上，才能分「相交／平行／在平面上」；<b>線面角用 $\sin$ 不是 $\cos$</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="lineParamRatio,lineReadBack,lineTwoPts,linePlaneInt,linePlaneRel,linePlaneAngle"></div>
-<div class="fadeset" data-tier="L1" data-keys="lineParamRatio,lineReadBack,lineTwoPts,linePlaneInt,linePlaneRel,linePlaneAngle" data-seed="9301"></div>
-<div class="fixset" data-tier="L1" data-keys="lineParamRatio,lineReadBack,lineTwoPts,linePlaneInt,linePlaneRel,linePlaneAngle" data-seed="8301"></div>
+<div class="must">先要會：<b>參數式＝起點＋$t\vec d$</b>；比例式是消 $t$，<b>分母為 $0$ 那一項要改寫成 $y=y_0$</b>（兩個 $0$ 就寫兩條常數式）；比例式讀回點時 $x+2$ 要讀成 $x-(-2)$；<b>交點＝把參數式代入平面解 $t$</b>；先看 $\vec n\cdot\vec d$ 是不是 $0$，再看 $P_0$ 在不在平面上，才能分「相交／平行／在平面上」；<b>線面角用 $\sin$ 不是 $\cos$</b>；<b>兩平面的交線：方向取 $\vec n_1\times\vec n_2$，令一個坐標為定值解出一點</b>；含直線且過線外一點的平面，法向量取 $\vec d\times\overrightarrow{P_0P}$；<b>線面夾角是直線與它在平面上的投影所夾的角</b>：$\vec d\cdot\vec n=0$ 是 $0^\circ$（平行或在平面上，代點分辨），$\vec d\parallel\vec n$ 是 $90^\circ$，其他算出 $\sin\theta$ 再對照特別角。</div>
+<div class="gen-grid" data-tier="L1" data-keys="lineParamRatio,lineReadBack,lineTwoPts,linePlaneInt,linePlaneRel,linePlaneAngle,interLineParam,planeLinePt,linePlaneAngleDeg"></div>
+<div class="fadeset" data-tier="L1" data-keys="lineParamRatio,lineReadBack,lineTwoPts,linePlaneInt,linePlaneRel,linePlaneAngle,interLineParam,planeLinePt,linePlaneAngleDeg" data-seed="9301"></div>
+<div class="fixset" data-tier="L1" data-keys="lineParamRatio,lineReadBack,lineTwoPts,linePlaneInt,linePlaneRel,linePlaneAngle,interLineParam,planeLinePt,linePlaneAngleDeg" data-seed="8301"></div>
 
 <h3 class="sec">4 點到直線與兩直線的距離</h3>
 <div class="must">先要會：<b>$d=\dfrac{|\overrightarrow{AP}\times\vec d|}{|\vec d|}$</b>；垂足令 $H=A+t\vec d$、由 $\overrightarrow{PH}\cdot\vec d=0$ 解 $t$；兩平行線距離＝其中一點到另一條的距離；<b>兩直線先看方向是否成比例，不成比例就算 $\det(\vec d_1,\vec d_2,\overrightarrow{P_1P_2})$</b>；只解前兩式就宣布相交是最典型的失分；<b>歪斜線距離 $=\dfrac{|\overrightarrow{P_1P_2}\cdot(\vec d_1\times\vec d_2)|}{|\vec d_1\times\vec d_2|}$</b>。</div>
@@ -298,7 +298,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fixset" data-tier="L1" data-keys="symPtLine,mirrorReflect,boxCoord" data-seed="8501" data-n="6"></div>
 
 
-<h3 class="sec">L1 混合檢測 12 題（全章 25 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">L1 混合檢測 12 題（全章 31 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -307,19 +307,19 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
-  <div><b>目標</b>16 個段考主力型，依 31 份段考卷的出現率排序（平面方程式 22 卷、題組 10、點到平面距離 9、正立方體 9、兩平面交線 8、法向量 8、點到直線距離 7、平行平面 5、兩歪斜線距離 5、直線與平面關係 5、二面角 4、投影點 4、公垂線 4、外積 4、直線與平面交點 4、兩直線交點 4）。</div>
+  <div><b>目標</b>23 個段考主力型，依段考卷的出現率選出（2026-09-29 用題庫 41 份高二下段考卷重新統計，補了 6 型，並為主講義新小節 3-5 補 1 型；前幾名：兩直線的關係與交點 34 卷、平面方程式 30、空間敘述判斷 29、歪斜線與公垂線 25、含直線或交線的平面 22、直線與平面的關係 21、立體圖形坐標化 21、投影點與對稱點 20、點到平面距離 18、平行平面 17、最大最小值 16、兩平面交線 15、兩面角 13）。</div>
   <div><b>通過標準</b>固定 12 題限時 40 分鐘做完，對 10 題以上。</div>
 </div>
 
-<h3 class="sec">平面、交線與距離的綜合：三平面、過交線的平面、角平分面、截線段、體積法、最大距離</h3>
-<div class="must">段考 31 卷中<b>平面方程式 22 卷、點到平面距離 9 卷、兩平面交線 8 卷、平行平面 5 卷、二面角 4 卷、四面體體積 3 卷、角平分 3 卷</b>。解題要點：<b>三平面用消去法分成「一點／一直線／空集合」</b>，第三式若是前兩式的組合就少一條有效方程式（常數也合就是交線，不合就沒有共同點）；<b>「過兩平面交線且過一點」用交線上取兩點＋該點＝三點決定平面的通法</b>；角平分面是 $\dfrac{|\cdot|}{|\vec n_1|}=\dfrac{|\cdot|}{|\vec n_2|}$ 去絕對值取 $\pm$（<b>兩解、且兩面互相垂直</b>）；被兩平行平面截的線段長一般大於兩平面的距離；含直線又垂直某平面 ⟹ $\vec n_F=\vec d\times\vec n$；「過定直線的平面到定點的最大距離」＝該點到那條直線的距離。</div>
-<div class="gen-grid" data-tier="L2" data-keys="threePlanesRel,planeThroughInter,bisectPlanes,chordTwoPlanes,tetraVolHeight,maxDistPlaneLine,planeContainLinePerp,interLineAxis"></div>
+<h3 class="sec">平面、交線與距離的綜合：三平面、過交線的平面、角平分面、截線段、體積法、最大距離、敘述判斷、直線在平面上求未知數、平面上的最小值、由線面夾角求未知數</h3>
+<div class="must">41 份高二下段考卷中<b>平面方程式 30 卷、空間敘述判斷 29 卷、含直線或交線的平面 22 卷、直線與平面的關係 21 卷、點到平面距離 18 卷、平行平面 17 卷、最大最小值 16 卷、兩平面交線 15 卷、兩面角 13 卷</b>。解題要點：<b>三平面用消去法分成「一點／一直線／空集合」</b>，第三式若是前兩式的組合就少一條有效方程式（常數也合就是交線，不合就沒有共同點）；<b>「過兩平面交線且過一點」用交線上取兩點＋該點＝三點決定平面的通法</b>；角平分面是 $\dfrac{|\cdot|}{|\vec n_1|}=\dfrac{|\cdot|}{|\vec n_2|}$ 去絕對值取 $\pm$（<b>兩解、且兩面互相垂直</b>）；被兩平行平面截的線段長一般大於兩平面的距離；含直線又垂直某平面 ⟹ $\vec n_F=\vec d\times\vec n$；「過定直線的平面到定點的最大距離」＝該點到那條直線的距離；<b>敘述判斷：每一句都翻成方向向量、法向量的關係，錯的用坐標軸、坐標平面找反例</b>；直線在平面上要「方向 $\perp$ 法向量」而且「線上一點在平面上」，平行只要前者、點不在平面上，垂直是方向與法向量成比例；<b>平面上的點到定點的距離最小值＝定點到平面的距離，取到最小的點是投影點</b>；<b>由線面夾角求未知數：把 $\sin\theta=\dfrac{|\vec d\cdot\vec n|}{|\vec d||\vec n|}$ 兩邊平方</b>，得到一元二次方程式，兩個解都要代回檢查（線面夾角：本章 2 卷直接考，成功 112下、師大附中 113下；空間概念章另有 2 卷用長方體考，建中 109下、台南一中 113下）。</div>
+<div class="gen-grid" data-tier="L2" data-keys="threePlanesRel,planeThroughInter,bisectPlanes,chordTwoPlanes,tetraVolHeight,maxDistPlaneLine,planeContainLinePerp,interLineAxis,spaceFacts,linePlaneParam,planeMinDist,linePlaneAngleParam"></div>
 
-<h3 class="sec">直線、投影與立體坐標化：公垂線段、角平分線、投影直線、正射影長、反射、最短路徑</h3>
-<div class="must">段考 31 卷中<b>點到直線距離 7 卷、兩歪斜線距離 5 卷、投影點 4 卷、公垂線 4 卷、正立方體 9 卷、長方體 3 卷、鏡面反射 3 卷、直線在平面投影 2 卷</b>。解題要點：<b>公垂線段令 $P=P_1+t\vec d_1$、$Q=P_2+s\vec d_2$（兩條線一定要用不同參數）</b>，兩個內積為 $0$ 解二元一次聯立，算完用「$\overrightarrow{PQ}\parallel\vec d_1\times\vec d_2$」雙重驗算；<b>角平分線方向一定先化單位向量再相加減</b>，$\vec d_1\cdot\vec d_2$ 的正負決定哪一條是銳角平分線；直線在平面上的投影用「投影兩個點」，交點本身就是現成的投影點；線段正射影長 $=\sqrt{\overline{AB}^2-(\text{沿法向量的分量})^2}$；<b>反射把平行 $\vec n$ 的分量變號</b>：$\vec v'=\vec v-\dfrac{2(\vec v\cdot\vec n)}{|\vec n|^2}\vec n$；同側兩點的最短路徑先作對稱點再連線；立體題一律先坐標化。</div>
-<div class="gen-grid" data-tier="L2" data-keys="commonPerpSeg,lineBisector,boxSkewDist,lineProjPlane,segProjPlane,rayReflectPlane,shortestPath,boxPlaneDist"></div>
+<h3 class="sec">直線、投影與立體坐標化：公垂線段、角平分線、投影直線、正射影長、反射、最短路徑、含一線平行另一線的平面、兩直線相交求未知數、正四角錐</h3>
+<div class="must">41 份高二下段考卷中<b>兩直線的關係與交點 34 卷、歪斜線與公垂線 25 卷、立體圖形坐標化 21 卷、投影點與對稱點 20 卷、點到直線距離 13 卷、直線在平面上的投影 13 卷、鏡面反射與最短路徑 7 卷</b>。解題要點：<b>公垂線段令 $P=P_1+t\vec d_1$、$Q=P_2+s\vec d_2$（兩條線一定要用不同參數）</b>，兩個內積為 $0$ 解二元一次聯立，算完用「$\overrightarrow{PQ}\parallel\vec d_1\times\vec d_2$」雙重驗算；<b>角平分線方向一定先化單位向量再相加減</b>，$\vec d_1\cdot\vec d_2$ 的正負決定哪一條是銳角平分線；直線在平面上的投影用「投影兩個點」，交點本身就是現成的投影點；線段正射影長 $=\sqrt{\overline{AB}^2-(\text{沿法向量的分量})^2}$；<b>反射把平行 $\vec n$ 的分量變號</b>：$\vec v'=\vec v-\dfrac{2(\vec v\cdot\vec n)}{|\vec n|^2}\vec n$；同側兩點的最短路徑先作對稱點再連線；立體題一律先坐標化；<b>含 $L_1$ 且平行 $L_2$ 的平面：法向量 $\vec d_1\times\vec d_2$，兩歪斜線的距離就是 $L_2$ 上一點到這個平面的距離</b>；兩直線方向不平行時，相交 ⟺ $(\vec d_1\times\vec d_2)\cdot\overrightarrow{P_1P_2}=0$；正四角錐以底面中心為原點，側面的法向量用外積。</div>
+<div class="gen-grid" data-tier="L2" data-keys="commonPerpSeg,lineBisector,boxSkewDist,lineProjPlane,segProjPlane,rayReflectPlane,shortestPath,boxPlaneDist,planeParLine,linesCoplanarK,pyramidCoord"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<h3 class="sec">L2 混合檢測 12 題（全 23 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -328,10 +328,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字：做法」，練到看見關鍵字就知道怎麼做；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的做法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>19 題各校段考中後段常見題：每題附「關鍵字：做法」，練到看見關鍵字就知道怎麼做；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>19 題全部能獨立完成，且說得出每題的做法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過。</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字。答案與詳解皆用程式重新驗算過。</div>
 
 <div class="fx" id="L3-1" data-gen="axisTriDist"><div class="fxh"><span class="no">L3-1</span><span class="kw">三個點各在一條坐標軸上：設 ax+by+cz=d 代三點解出係數比，再套點到平面的距離</span><span class="src">華江高中 101下 選填 F</span></div>
 <div class="fxq">空間中有 $A(6,0,0)$、$B(0,-4,0)$、$C(0,0,-2)$ 與 $P(2,1,-1)$。求 $P$ 點到平面 $ABC$ 的距離（以最簡分數表示）。</div>
@@ -469,7 +469,45 @@ $z=0$ ⟹ $\begin{cases}x+y=3\\2x-y=0\end{cases}$ ⟹ $3x=3$ ⟹ $x=1$、$y=2$�
 交點 $(0,0,-1)$。<span class="note-sm">若 $z$ 對不上就代表兩束光歪斜、根本不相交，這一步不能省。</span></div></div>
 
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fx" id="L3-16" data-gen="commonPerpPoint"><div class="fxh"><span class="no">L3-16</span><span class="kw">與兩條歪斜線都垂直、而且都相交的直線就是公垂線：方向取 $\vec d_1\times\vec d_2$，再求公垂線段的一個端點</span><span class="src">改編自 台南女中 113下 填 8</span></div>
+<div class="fxq">兩歪斜線 $L_1:\dfrac{x-3}{1}=\dfrac{y-3}{2}=\dfrac{z-6}{2}$、$L_2:\dfrac{x-1}{2}=\dfrac{y-2}{-2}=\dfrac{z+1}{1}$。直線 $L_3$ 與 $L_1$、$L_2$ 都垂直而且都相交，點 $A(p,2,q)$ 在 $L_3$ 上。求 $(p,q)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(p,q)=(7,-4)$</div>
+<div class="fxs"><div class="move">做法：$L_3$ 就是公垂線，方向是 $\vec d_1\times\vec d_2$；但只有方向還寫不出直線，要先求出公垂線段的一個端點。</div>
+$\vec d_1=(1,2,2)$、$\vec d_2=(2,-2,1)$，$\vec d_1\times\vec d_2=(6,3,-6)\parallel(2,1,-2)$。<br>
+令 $M=(3+t,\ 3+2t,\ 6+2t)\in L_1$、$N=(1+2s,\ 2-2s,\ -1+s)\in L_2$，$\overrightarrow{MN}=(-2+2s-t,\ -1-2s-2t,\ -7+s-2t)$。<br>
+$\overrightarrow{MN}\cdot\vec d_1=-18-9t=0$ ⟹ $t=-2$；$\overrightarrow{MN}\cdot\vec d_2=-9+9s=0$ ⟹ $s=1$。得 $M(1,-1,2)$、$N(3,0,0)$，$\overrightarrow{MN}=(2,1,-2)$ 與外積平行 ✓。<br>
+$L_3:(1,-1,2)+u(2,1,-2)$。$A$ 的 $y$ 坐標是 $2$：$-1+u=2$ ⟹ $u=3$ ⟹ $A=(7,2,-4)$，所以 $(p,q)=(7,-4)$。</div></div>
+
+<div class="fx" id="L3-17" data-gen="equidistOnLine"><div class="fxh"><span class="no">L3-17</span><span class="kw">直線上到兩點等距的點：它在兩點連線的中垂面上，把中垂面和直線的兩個平面方程式聯立</span><span class="src">改編自 台中一中 113下 填 7</span></div>
+<div class="fxq">空間中有 $A(3,1,0)$、$B(-3,3,-2)$ 兩點，點 $Q$ 在直線 $L:\begin{cases}y+z=0\\ x-3z=-1\end{cases}$ 上，而且 $Q$ 到 $A$、$B$ 的距離相等。求 $Q$ 的坐標。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$Q(-1,0,0)$</div>
+<div class="fxs"><div class="move">做法：$\overline{QA}=\overline{QB}$ 的點都在 $\overline{AB}$ 的中垂面上（過中點、法向量 $\overrightarrow{AB}$），不必把兩個距離平方展開。</div>
+中點 $(0,2,-1)$，$\overrightarrow{AB}=(-6,2,-2)\parallel(3,-1,1)$ ⟹ 中垂面 $3x-y+z=3(0)-2+(-1)=-3$。<br>
+$L$ 的兩式：$y=-z$、$x=3z-1$，代入中垂面：$3(3z-1)-(-z)+z=11z-3=-3$ ⟹ $z=0$ ⟹ $Q(-1,0,0)$。<br>
+驗算：$\overline{QA}^2=16+1+0=17$、$\overline{QB}^2=4+9+4=17$ ✓。</div></div>
+
+<div class="fx" id="L3-18" data-gen="perimMinArea"><div class="fxh"><span class="no">L3-18</span><span class="kw">第三個頂點在坐標平面上、周長最小：$\overline{AB}$ 固定，只要 $\overline{AC}+\overline{CB}$ 最小，作 $A$ 的對稱點 $A'$ 再連 $\overline{A'B}$</span><span class="src">改編自 武陵高中 113下 填 9</span></div>
+<div class="fxq">$\triangle ABC$ 中，$A(3,-2,4)$、$B(0,-5,2)$，頂點 $C(x,y,0)$ 在 $xy$ 平面上移動。當 $\triangle ABC$ 的周長最小時，求 $C$ 的坐標與 $\triangle ABC$ 的面積。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$C(1,-4,0)$，面積 $4\sqrt{2}$</div>
+<div class="fxs"><div class="move">做法：$A$、$B$ 的 $z$ 坐標都是正的，在 $xy$ 平面同側。把 $A$ 對 $xy$ 平面作對稱點 $A'$，$\overline{AC}+\overline{CB}=\overline{A'C}+\overline{CB}\ge\overline{A'B}$，等號在 $C$ 落在 $\overline{A'B}$ 上時成立。</div>
+$A'(3,-2,-4)$，$\overrightarrow{A'B}=(-3,-3,6)\parallel(-1,-1,2)$，$\overline{A'B}$ 上的點 $(3-s,\ -2-s,\ -4+2s)$；令 $z=0$ ⟹ $s=2$ ⟹ $C(1,-4,0)$。<br>
+$\overrightarrow{AB}=(-3,-3,-2)$、$\overrightarrow{AC}=(-2,-2,-4)$，$\overrightarrow{AB}\times\overrightarrow{AC}=(8,-8,0)$，長度 $8\sqrt{2}$。<br>
+面積 $=\dfrac12\times8\sqrt{2}=4\sqrt{2}$。</div></div>
+
+
+<div class="fx" id="L3-19" data-gen="linePlaneTrig"><div class="fxh"><span class="no">L3-19</span><span class="kw">線面夾角問 $\cos\theta$ 或 $\tan\theta$：公式算出來的是 $\sin\theta$，先求它，再用 $\sin^2\theta+\cos^2\theta=1$</span><span class="src">改編自 師大附中 113下 填 9</span></div>
+<div class="fxq">$y$ 軸與平面 $F:6x-2y+3z=4$ 的夾角為 $\theta$，求 (1) $\cos\theta$　(2) $\tan\theta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\cos\theta=\dfrac{3\sqrt5}{7}$　(2) $\tan\theta=\dfrac{2\sqrt5}{15}$</div>
+<div class="fxs"><div class="move">做法：線面夾角的公式給的是正弦 $\sin\theta=\dfrac{|\vec d\cdot\vec n|}{|\vec d||\vec n|}$；$\theta$ 在 $0^\circ$ 到 $90^\circ$ 之間，餘弦開根號取正的，正切再用 $\dfrac{\sin\theta}{\cos\theta}$。</div>
+$y$ 軸的方向 $\vec d=(0,1,0)$，$\vec n=(6,-2,3)$，$|\vec n|=\sqrt{36+4+9}=7$。<br>
+$\sin\theta=\dfrac{|-2|}{1\times7}=\dfrac27$ ⟹ $\cos\theta=\sqrt{1-\dfrac{4}{49}}=\dfrac{\sqrt{45}}{7}=\dfrac{3\sqrt5}{7}$。<br>
+$\tan\theta=\dfrac{2/7}{3\sqrt5/7}=\dfrac{2}{3\sqrt5}=\dfrac{2\sqrt5}{15}$。</div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（19 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>

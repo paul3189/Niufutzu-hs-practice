@@ -899,6 +899,449 @@
              p: { kind: 1, s: s, tan: fr2(tanD), ans: { h: h, l: l, vol: fr2(vol), tan: sArr(tanE) } } };
   };
 
+  /* ══════════ 2026-09-28 擴充（依段考卷出現頻率補題型）：L1 5 型、L2 6 型 ══════════
+     頻率：question_bank 14 份高一段考卷（另參考 12 份 99 課綱高二上的三角卷），統計腳本 _scripts/round2/g10b-ch04-expand/freq.py。
+     每型開頭先丟掉一次 r()：連號種子的 LCG 首值幾乎相同，變體旗標不能靠它。小工具一律加 n28 前綴。 */
+  /* 係數·變數（first：是不是第一項；變數是空字串時照印數字） */
+  function n28term(c, v, first) {
+    if (c === 0) return '';
+    var ab = Math.abs(c), body = (ab === 1 && v !== '') ? v : ab + v;
+    return first ? (c < 0 ? '-' : '') + body : (c < 0 ? '-' : '+') + body;
+  }
+  function n28lin(list) { var s = ''; list.forEach(function (t) { s += n28term(t[0], t[1], s === ''); }); return s === '' ? '0' : s; }
+  /* 分數係數（1 省略、-1 只印負號） */
+  function n28fc(f, v) { if (f.n === f.d) return v; if (f.n === -f.d) return '-' + v; return Fr.tex(f) + v; }
+  function n28sg(s) { return s > 0 ? '正' : '負'; }
+  function n28val(fn, deg) { var x = deg * Math.PI / 180; return fn === 'sin' ? Math.sin(x) : fn === 'cos' ? Math.cos(x) : Math.tan(x); }
+  function n28pt(x, y) { return '(' + x + ',\\ ' + y + ')'; }
+
+  /* 1-8 直角三角形：已知一個銳角的三角比與一邊，求其他邊（14 份高一段考卷有 10 份考直角三角形） */
+  L1.rightSolve = function (r) {
+    r();
+    var t = r.int(0, 1), tr = tri(r), g = gcd(gcd(tr[0], tr[1]), tr[2]), a = tr[0] / g, b = tr[1] / g, c = tr[2] / g, m = g * r.int(1, 5);
+    if (t === 0) {
+      var fn = r.pick(['sin', 'cos', 'tan']), side = r.int(0, 2), names = ['BC', 'AC', 'AB'], base = [a, b, c], vals = [m * a, m * b, m * c];
+      var ratio = fn === 'sin' ? F(a, c) : fn === 'cos' ? F(b, c) : F(a, b), per = m * (a + b + c);
+      var oth = [0, 1, 2].filter(function (i) { return i !== side; });
+      var rtxt = fn === 'sin' ? '對邊 $\\overline{BC}$ 比斜邊 $\\overline{AB}$' : fn === 'cos' ? '鄰邊 $\\overline{AC}$ 比斜邊 $\\overline{AB}$' : '對邊 $\\overline{BC}$ 比鄰邊 $\\overline{AC}$';
+      return { q: '直角三角形 $ABC$ 中 $\\angle C=90°$，' + T('\\' + fn + ' A=' + Fr.tex(ratio)) + '、' + T(ov(names[side]) + '=' + vals[side]) + '。求 ' + T(ov(names[oth[0]])) + '、' + T(ov(names[oth[1]])) + ' 與 $\\triangle ABC$ 的周長。',
+               a: T(ov(names[oth[0]]) + '=' + vals[oth[0]]) + '、' + T(ov(names[oth[1]]) + '=' + vals[oth[1]]) + '、周長 ' + T('=' + per),
+               h: T('\\' + fn + ' A=' + Fr.tex(ratio)) + ' 是' + rtxt + '，畢氏定理補第三個數：' + T(ov('BC') + ':' + ov('AC') + ':' + ov('AB') + '=' + a + ':' + b + ':' + c) + '。已知的 ' + T(ov(names[side]) + '=' + vals[side]) + ' 對到比例裡的 $' + base[side] + '$，所以三邊都是比例的 $' + m + '$ 倍。',
+               p: { t: 0, fn: fn, side: side, a: a, b: b, c: c, m: m, ans: { BC: vals[0], AC: vals[1], AB: vals[2], per: per } } };
+    }
+    /* ∠A=90°、AD 是斜邊上的高：AB=ma、AC=mb、BC=mc；cosB=a/c、sinB=b/c、tanB=b/a */
+    var fnB = r.pick(['sin', 'cos', 'tan']), gs = r.int(0, 2), ask = r.int(0, 2), AB = m * a, AC = m * b, BC = m * c;
+    var ratioB = fnB === 'sin' ? F(b, c) : fnB === 'cos' ? F(a, c) : F(b, a);
+    var gN = ['AB', 'AC', 'BC'][gs], gV = [AB, AC, BC][gs], AD = F(m * a * b, c), BD = F(m * a * a, c), CD = F(m * b * b, c);
+    var aN = ['AD', 'BD', 'CD'][ask], aV = [AD, BD, CD][ask];
+    var how = ask === 0 ? '$\\triangle ABD$ 也是直角三角形（$\\angle ADB=90°$），' + T(ov('AD') + '=' + ov('AB') + '\\sin B=' + AB + '\\cdot' + Fr.tex(F(b, c)))
+            : ask === 1 ? '$\\triangle ABD$ 也是直角三角形（$\\angle ADB=90°$），' + T(ov('BD') + '=' + ov('AB') + '\\cos B=' + AB + '\\cdot' + Fr.tex(F(a, c)))
+                        : '先在直角 $\\triangle ABD$ 求 ' + T(ov('BD') + '=' + ov('AB') + '\\cos B=' + AB + '\\cdot' + Fr.tex(F(a, c))) + '，再用 ' + T(ov('CD') + '=' + BC + '-' + ov('BD'));
+    return { q: '$\\triangle ABC$ 中 $\\angle A=90°$，$\\overline{AD}$ 是斜邊 $\\overline{BC}$ 上的高（$D$ 在 $\\overline{BC}$ 上）。若 ' + T(ov(gN) + '=' + gV) + '、' + T('\\' + fnB + ' B=' + Fr.tex(ratioB)) + '，求 ' + T(ov(aN)) + '。',
+             a: T(ov(aN) + '=' + Fr.tex(aV)),
+             h: '$\\angle A=90°$，' + T('\\' + fnB + ' B=' + Fr.tex(ratioB)) + ' 給出 ' + T(ov('AB') + ':' + ov('AC') + ':' + ov('BC') + '=' + a + ':' + b + ':' + c) + '，由 ' + T(ov(gN) + '=' + gV) + ' 得三邊 ' + T(ov('AB') + '=' + AB) + '、' + T(ov('AC') + '=' + AC) + '、' + T(ov('BC') + '=' + BC) + '。' + how + '。',
+             p: { t: 1, fnB: fnB, gs: gs, ask: ask, a: a, b: b, c: c, m: m, ans: { AD: fr2(AD), BD: fr2(BD), CD: fr2(CD) } } };
+  };
+
+  /* 1-9 已知 tanθ 求 sin、cos 的齊次式（同角關係 12 卷；成功 113下、北一女 113下、台中一中 113下 都考） */
+  var N28M = [F(1, 2), F(2), F(1, 3), F(3), F(2, 3), F(3, 2), F(3, 4), F(4, 3), F(1, 4), F(4), F(2, 5), F(5, 2), F(5), F(1, 5)];
+  L1.tanHomog = function (r) {
+    r();
+    var t = r.int(0, 2), m = r.pick(N28M), SN = '\\sin\\theta', CS = '\\cos\\theta', TN = '\\tan\\theta';
+    if (r() < 0.5) m = F(-m.n, m.d);
+    if (t === 1) {
+      var qa, qb, qc;
+      do { qa = r.int(-4, 4); qb = r.int(-5, 5); qc = r.int(-4, 4); }
+      while ([qa, qb, qc].filter(function (x) { return x !== 0; }).length < 2 || (qa === qc && qb === 0));
+      var num = Fr.add(Fr.add(Fr.mul(F(qa), Fr.mul(m, m)), Fr.mul(F(qb), m)), F(qc)), den = Fr.add(F(1), Fr.mul(m, m)), v = Fr.div(num, den);
+      var ex = n28lin([[qa, '\\sin^2\\theta'], [qb, '\\sin\\theta\\cos\\theta'], [qc, '\\cos^2\\theta']]);
+      return { q: '已知 ' + T(TN + '=' + Fr.tex(m)) + '，求 ' + T(ex) + ' 的值。',
+               a: T(Fr.tex(v)),
+               h: '把式子除以 $\\sin^2\\theta+\\cos^2\\theta=1$（值不變），分子分母再同除以 $\\cos^2\\theta$，得 ' + T('\\dfrac{' + n28lin([[qa, '\\tan^2\\theta'], [qb, TN], [qc, '']]) + '}{\\tan^2\\theta+1}') + '；代 ' + T(TN + '=' + Fr.tex(m)) + '，分子 ' + T('=' + Fr.tex(num)) + '、分母 ' + T('=' + Fr.tex(den)) + '。',
+               p: { t: 1, m: fr2(m), co: [qa, qb, qc], num: fr2(num), den: fr2(den), ans: fr2(v) } };
+    }
+    var a1, b1, c1, d1, num0, den0;
+    do {
+      a1 = r.int(-5, 5); b1 = r.int(-5, 5); c1 = r.int(-5, 5); d1 = r.int(-5, 5);
+      num0 = Fr.add(Fr.mul(F(a1), m), F(b1)); den0 = Fr.add(Fr.mul(F(c1), m), F(d1));
+    } while ((a1 === 0 && b1 === 0) || (c1 === 0 && d1 === 0) || (a1 === 0 && c1 === 0) || (b1 === 0 && d1 === 0) || den0.n === 0 || num0.n === 0 || a1 * d1 === b1 * c1 ||
+             (t === 2 && Fr.eq(F(a1), Fr.mul(Fr.div(num0, den0), F(c1)))));
+    var v0 = Fr.div(num0, den0), top = n28lin([[a1, SN], [b1, CS]]), bot = n28lin([[c1, SN], [d1, CS]]);
+    var topT = n28lin([[a1, TN], [b1, '']]), botT = n28lin([[c1, TN], [d1, '']]);
+    if (t === 0)
+      return { q: '已知 ' + T(TN + '=' + Fr.tex(m)) + '，求 ' + T('\\dfrac{' + top + '}{' + bot + '}') + ' 的值。',
+               a: T(Fr.tex(v0)),
+               h: '分子分母同除以 $\\cos\\theta$（$\\tan\\theta$ 存在，所以 $\\cos\\theta\\ne0$），得 ' + T('\\dfrac{' + topT + '}{' + botT + '}') + '；代 ' + T(TN + '=' + Fr.tex(m)) + '，分子 ' + T('=' + Fr.tex(num0)) + '、分母 ' + T('=' + Fr.tex(den0)) + '。',
+               p: { t: 0, m: fr2(m), co: [a1, b1, c1, d1], num: fr2(num0), den: fr2(den0), ans: fr2(v0) } };
+    var A = Fr.sub(F(a1), Fr.mul(v0, F(c1))), Bv = Fr.sub(Fr.mul(v0, F(d1)), F(b1));
+    return { q: '若 ' + T('\\dfrac{' + top + '}{' + bot + '}=' + Fr.tex(v0)) + '，求 ' + T(TN) + '。',
+             a: T(TN + '=' + Fr.tex(m)),
+             h: '左邊分子分母同除以 $\\cos\\theta$，變成 ' + T('\\dfrac{' + topT + '}{' + botT + '}=' + Fr.tex(v0)) + '；交叉相乘後整理成 ' + T(n28fc(A, TN) + '=' + Fr.tex(Bv)) + '。',
+             p: { t: 2, m: fr2(m), co: [a1, b1, c1, d1], v: fr2(v0), A: fr2(A), B: fr2(Bv), ans: fr2(m) } };
+  };
+
+  /* 2-8 廣義角三角比比大小（9 卷；建中、北一女、台中女中 113下都考） */
+  L1.trigCompare = function (r) {
+    r();
+    var t = r.int(0, 1), labs, i;
+    if (t === 0) {
+      var refs = [10, 20, 25, 35, 40, 50, 55, 65, 70, 80], ref, qd, al, vals, ok;
+      do {
+        ref = r.pick(refs); qd = r.int(1, 4);
+        var base = [0, ref, 180 - ref, 180 + ref, 360 - ref][qd], sh = r.pick([0, 0, 0, 360, -360]); al = base + sh;
+        if (al <= -180) al = base;
+        vals = ['sin', 'cos', 'tan'].map(function (f) { return n28val(f, al); });
+        ok = (ref > 45 || qd >= 3) && Math.abs(vals[0] - vals[1]) > 1e-3 && Math.abs(vals[0] - vals[2]) > 1e-3 && Math.abs(vals[1] - vals[2]) > 1e-3;
+      } while (!ok);
+      var fns = r.shuffle(['sin', 'cos', 'tan']); labs = ['a', 'b', 'c'];
+      var items = fns.map(function (f, k) { return { l: labs[k], f: f, v: n28val(f, al) }; });
+      var ord = items.slice().sort(function (x, y) { return x.v - y.v; }).map(function (x) { return x.l; });
+      var sgn = ['sin', 'cos', 'tan'].map(function (f) { return n28val(f, al) > 0 ? 1 : -1; });
+      return { q: '設 ' + T(items.map(function (x) { return x.l + '=\\' + x.f + hxA(al); }).join(',\\ ')) + '，將 ' + T('a,b,c') + ' 由小到大排列。',
+               a: T(ord.join('\\lt ')),
+               h: T(hxA(al)) + ' 的終邊在' + hxPos(al) + '，參考角 $' + ref + '°$：$\\sin$ 為' + n28sg(sgn[0]) + '、$\\cos$ 為' + n28sg(sgn[1]) + '、$\\tan$ 為' + n28sg(sgn[2]) + '。' + (ref > 45 ? '參考角大於 $45°$，所以 $|\\sin|\\gt|\\cos|$，而且 $|\\tan|=\\dfrac{|\\sin|}{|\\cos|}\\gt1$。' : '參考角小於 $45°$，所以 $|\\cos|\\gt|\\sin|$，而 $|\\tan|=\\dfrac{|\\sin|}{|\\cos|}\\gt|\\sin|$。') + '先分正負，負的裡面絕對值大的比較小。',
+               p: { t: 0, al: al, ref: ref, fns: fns, ans: ord } };
+    }
+    var fn = r.pick(['sin', 'cos', 'tan']), angs, vs, good;
+    do {
+      angs = []; good = true;
+      while (angs.length < 4) {
+        var d = r.int(-17, 53) * 10;
+        if (d % 90 === 0 || d % 30 === 0 || angs.indexOf(d) >= 0) continue;
+        angs.push(d);
+      }
+      vs = angs.map(function (d) { return n28val(fn, d); });
+      for (i = 0; i < 4; i++) for (var j = i + 1; j < 4; j++) if (Math.abs(vs[i] - vs[j]) < 1e-3) good = false;
+    } while (!good);
+    labs = ['a', 'b', 'c', 'd'];
+    var it2 = angs.map(function (d, k) { return { l: labs[k], d: d, v: vs[k] }; });
+    var ord2 = it2.slice().sort(function (x, y) { return x.v - y.v; }).map(function (x) { return x.l; });
+    var conv = it2.map(function (x) {
+      var ref2 = hxRef(x.d), s2 = x.v > 0 ? '' : '-';
+      return T(FN[fn] + hxA(x.d) + (x.d === ref2 ? '' : '=' + s2 + FN[fn] + ref2 + '°'));
+    }).join('、');
+    return { q: '設 ' + T(it2.map(function (x) { return x.l + '=' + FN[fn] + hxA(x.d); }).join(',\\ ')) + '，將 ' + T('a,b,c,d') + ' 由小到大排列。',
+             a: T(ord2.join('\\lt ')),
+             h: '每個都化成參考角（銳角）的' + { sin: '正弦', cos: '餘弦', tan: '正切' }[fn] + '，正負看象限：' + conv + '。銳角的 ' + (fn === 'cos' ? '$\\cos$ 角度越大值越小' : '$' + FN[fn] + '$ 角度越大值越大') + '；先分正負再比。',
+             p: { t: 1, fn: fn, angs: angs, ans: ord2 } };
+  };
+
+  /* 2-9 對稱點、旋轉點的極坐標（極坐標 13 卷；北一女、武陵、板橋 113下 都考「P 的極坐標是 [r,θ]，別的點怎麼寫」） */
+  var N28TR = [
+    { f: function (x, y) { return [-x, y]; }, e: '180°-\\theta', w: '對 $y$ 軸對稱', c: '-\\cos\\theta', s: '\\sin\\theta' },
+    { f: function (x, y) { return [x, -y]; }, e: '-\\theta', w: '對 $x$ 軸對稱', c: '\\cos\\theta', s: '-\\sin\\theta' },
+    { f: function (x, y) { return [-x, -y]; }, e: '180°+\\theta', w: '對原點對稱', c: '-\\cos\\theta', s: '-\\sin\\theta' },
+    { f: function (x, y) { return [y, x]; }, e: '90°-\\theta', w: '對直線 $y=x$ 對稱', c: '\\sin\\theta', s: '\\cos\\theta' },
+    { f: function (x, y) { return [-y, x]; }, e: '90°+\\theta', w: '繞原點逆時針轉 $90°$', c: '-\\sin\\theta', s: '\\cos\\theta' },
+    { f: function (x, y) { return [y, -x]; }, e: '\\theta-90°', w: '繞原點順時針轉 $90°$', c: '\\sin\\theta', s: '-\\cos\\theta' },
+    { f: function (x, y) { return [-y, -x]; }, e: '270°-\\theta', w: '對直線 $y=-x$ 對稱', c: '-\\sin\\theta', s: '-\\cos\\theta' }
+  ];
+  L1.polarSym = function (r) {
+    r();
+    var t = r.int(0, 1), tr = r.pick([[3, 4, 5], [4, 3, 5], [5, 12, 13], [12, 5, 13], [8, 15, 17], [15, 8, 17], [7, 24, 25], [24, 7, 25], [6, 8, 10], [8, 6, 10]]);
+    var x = tr[0] * r.sign(), y = tr[1] * r.sign(), rr = tr[2], k = r.int(0, 6), s = r.pick([1, 1, 1, 2, 3]), TRk = N28TR[k], Q = TRk.f(x, y), X = s * Q[0], Y = s * Q[1];
+    var head = '直角坐標 ' + T('P' + n28pt(x, y)) + ' 的極坐標為 ' + T('[' + rr + ',\\theta]') + '。';
+    var idt = T('\\cos(' + TRk.e + ')=' + TRk.c) + '、' + T('\\sin(' + TRk.e + ')=' + TRk.s);
+    var rel = (s > 1 ? '$Q$ 的坐標除以 $' + s + '$ 之後是 ' + T(n28pt(Q[0], Q[1])) + '，這一點是' : '$Q$ 是') + '由 $P$ ' + TRk.w + '得到的';
+    if (t === 0)
+      return { q: head + '用 ' + T('\\theta') + ' 表示點 ' + T('Q' + n28pt(X, Y)) + ' 的極坐標。',
+               a: T('[' + s * rr + ',' + TRk.e + ']'),
+               h: T(ov('OQ') + '=\\sqrt{' + hxSq(X) + '+' + hxSq(Y) + '}=' + s * rr) + '；' + rel + '，所以極角是 $' + TRk.e + '$。可以用 ' + idt + ' 代回驗算。',
+               p: { t: 0, x: x, y: y, r: rr, k: k, s: s, tr: k, ans: [X, Y] } };
+    return { q: head + '求極坐標 ' + T('[' + s * rr + ',' + TRk.e + ']') + ' 的直角坐標。',
+             a: T(n28pt(X, Y)),
+             h: T('[' + s * rr + ',' + TRk.e + ']') + ' 的直角坐標是 ' + T('\\left(' + s * rr + '\\cos(' + TRk.e + '),\\ ' + s * rr + '\\sin(' + TRk.e + ')\\right)') + '；' + idt + '，再代 ' + T('\\cos\\theta=' + Fr.tex(F(x, rr)) + ',\\ \\sin\\theta=' + Fr.tex(F(y, rr))) + '。',
+             p: { t: 1, x: x, y: y, r: rr, k: k, s: s, tr: k, ans: [X, Y] } };
+  };
+
+  /* 4-7 四邊形面積＝½·兩對角線·sin 夾角（三角形面積 14 卷；成功、高雄中學、高雄中學 114 都考對角線夾角） */
+  L1.quadDiagArea = function (r) {
+    r();
+    var t = r.int(0, 2), p = r.int(3, 14), q = r.int(3, 14), phi = t === 2 ? r.pick([30, 45, 60, 90]) : r.pick([30, 45, 60, 90, 120, 135, 150]);
+    var K = sMulF(tv(phi).sin, F(p * q, 2)), stem = '凸四邊形 $ABCD$ 的兩條對角線 ' + T(ov('AC') + '=' + p);
+    var why = '對角線交於 $O$，切成的四個小三角形都用「兩邊夾角」算面積（相鄰的角互補，正弦相等），合起來 ' + T('[ABCD]=\\dfrac12\\cdot' + ov('AC') + '\\cdot' + ov('BD') + '\\sin\\theta') + '。';
+    if (t === 0)
+      return { q: stem + '、' + T(ov('BD') + '=' + q) + '，兩條對角線的夾角為 ' + T(phi + '°') + '。求四邊形 $ABCD$ 的面積。',
+               a: T(sTex(K)),
+               h: why + '代入 ' + T('\\dfrac12\\cdot' + p + '\\cdot' + q + '\\sin' + phi + '°') + '，其中 ' + T(hxEq('sin', phi)) + '。',
+               p: { t: 0, p: p, q: q, phi: phi, ans: sArr(K) } };
+    if (t === 1)
+      return { q: stem + '，兩條對角線的夾角為 ' + T(phi + '°') + '，四邊形 $ABCD$ 的面積為 ' + T(sTex(K)) + '。求 ' + T(ov('BD')) + '。',
+               a: T(ov('BD') + '=' + q),
+               h: why + '代入：' + T(sTex(K) + '=\\dfrac12\\cdot' + p + '\\cdot' + ov('BD') + (phi === 90 ? '' : '\\cdot' + sTex(tv(phi).sin))) + '，解出 ' + T(ov('BD')) + '。',
+               p: { t: 1, p: p, K: sArr(K), phi: phi, ans: q } };
+    return { q: stem + '、' + T(ov('BD') + '=' + q) + '，四邊形 $ABCD$ 的面積為 ' + T(sTex(K)) + '。求兩條對角線所夾的銳角（或直角）。',
+             a: T(phi + '°'),
+             h: why + '代入：' + T(sTex(K) + '=\\dfrac12\\cdot' + p + '\\cdot' + q + '\\sin\\theta') + ' ⟹ ' + T('\\sin\\theta=' + sTex(tv(phi).sin)) + '。' + (phi === 90 ? '' : '夾角有銳角、鈍角兩個，題目問銳角。'),
+             p: { t: 2, p: p, q: q, K: sArr(K), ans: phi } };
+  };
+
+  /* ═════ L2 ═════ */
+  /* 2-18 已知一個廣義角的三角比＝k，以 k 表示另一個（誘導公式 13 卷；高雄中學 113下、成功 113下 都考） */
+  var N28X = [10, 20, 25, 35, 40, 50, 55, 65, 70, 80];
+  function n28mono(R, G) {   /* 目標 R={sign,es,ec}、已知 G={es,ec}（K=|k|）→ [K 的次方, √(1−K²) 的次方, √(1+K²) 的次方] */
+    var s, c;
+    if (G.es === 1 && G.ec === 0) { s = [1, 0, 0]; c = [0, 1, 0]; }
+    else if (G.es === 0 && G.ec === 1) { s = [0, 1, 0]; c = [1, 0, 0]; }
+    else if (G.es === 1) { s = [1, 0, -1]; c = [0, 0, -1]; }
+    else { s = [0, 0, -1]; c = [1, 0, -1]; }
+    return [0, 1, 2].map(function (i) { return R.es * s[i] + R.ec * c[i]; });
+  }
+  function n28kTex(sg, e) {   /* 分母有根號一律有理化 */
+    var num = [], den = [];
+    if (e[0] === 1) num.push('k'); else if (e[0] === -1) den.push('k');
+    if (e[1] !== 0) { num.push('\\sqrt{1-k^2}'); if (e[1] === -1) den.push('1-k^2'); }
+    if (e[2] !== 0) { num.push('\\sqrt{1+k^2}'); if (e[2] === -1) den.push('1+k^2'); }
+    var n = num.join('') || '1', d = den.join('');
+    return (sg < 0 ? '-' : '') + (d ? '\\dfrac{' + n + '}{' + d + '}' : n);
+  }
+  function n28baseTex(R, x) {   /* sin^es·cos^ec（es,ec ∈ 那四種）的銳角寫法 */
+    if (R.es === 1 && R.ec === 0) return '\\sin' + x + '°';
+    if (R.es === 0 && R.ec === 1) return '\\cos' + x + '°';
+    if (R.es === 1) return '\\tan' + x + '°';
+    return '\\dfrac{1}{\\tan' + x + '°}';
+  }
+  L2.reduceK = function (r) {
+    r();
+    var x = r.pick(N28X), fns = ['sin', 'cos', 'tan'], f1 = r.pick(fns), j1 = r.int(-1, 7), e1 = r.sign(), g = j1 * 90 + e1 * x, R1 = reduceOne(f1, j1, e1);
+    var tg = [], used = {}; used[f1 + g] = 1;
+    while (tg.length < 2) {
+      var f2 = r.pick(fns), j2 = r.int(-2, 7), e2 = r.sign(), a2 = j2 * 90 + e2 * x;
+      if (used[f2 + a2] || (tg.length === 1 && tg[0].f === f2)) continue;
+      var R2 = reduceOne(f2, j2, e2), ex = n28mono(R2, R1);
+      if (ex.some(function (v) { return Math.abs(v) > 1; })) continue;
+      var sg = R2.sign * (Math.abs(ex[0]) === 1 ? R1.sign : 1), tx = n28kTex(sg, ex);
+      if (tg.length === 1 && tg[0].tex === tx) continue;
+      used[f2 + a2] = 1;
+      tg.push({ f: f2, a: a2, R: R2, tex: tx });
+    }
+    var Kt = R1.sign < 0 ? '-k' : 'k', gv = n28baseTex(R1, x);
+    var tri3 = (R1.es === 1 && R1.ec === 0) ? '斜邊 $1$、對邊 $' + Kt + '$、鄰邊 $\\sqrt{1-k^2}$' : (R1.es === 0 && R1.ec === 1) ? '斜邊 $1$、鄰邊 $' + Kt + '$、對邊 $\\sqrt{1-k^2}$'
+             : R1.es === 1 ? '鄰邊 $1$、對邊 $' + Kt + '$、斜邊 $\\sqrt{1+k^2}$' : '對邊 $1$、鄰邊 $' + Kt + '$、斜邊 $\\sqrt{1+k^2}$';
+    var red = tg.map(function (u) { return T(FN[u.f] + hxA(u.a) + '=' + (u.R.sign < 0 ? '-' : '') + n28baseTex(u.R, x)); }).join('、');
+    return { q: '已知 ' + T(FN[f1] + hxA(g) + '=k') + '，以 ' + T('k') + ' 表示 ' + T(FN[tg[0].f] + hxA(tg[0].a)) + ' 與 ' + T(FN[tg[1].f] + hxA(tg[1].a)) + '。',
+             a: T(FN[tg[0].f] + hxA(tg[0].a) + '=' + tg[0].tex) + '、' + T(FN[tg[1].f] + hxA(tg[1].a) + '=' + tg[1].tex),
+             h: '全部化成參考角 $' + x + '°$ 的三角比：' + T(FN[f1] + hxA(g) + '=' + (R1.sign < 0 ? '-' : '') + gv) + '，所以 ' + T(gv + '=' + Kt) + '（' + T('k' + (R1.sign < 0 ? '\\lt0' : '\\gt0')) + '）；' + red + '。畫一個銳角 $' + x + '°$ 的直角三角形：' + tri3 + '，再讀出要的比值（分母有根號要有理化）。',
+             p: { x: x, f1: f1, g: g, tg: tg.map(function (u) { return [u.f, u.a]; }), ans: tg.map(function (u) { return u.tex; }) } };
+  };
+
+  /* 2-19 平方關係化成二次方程再找角（同角關係 12 卷；高雄中學 113下、高雄女中 114、台中一中 113下） */
+  var N28R = [F(0), F(1, 2), F(-1, 2), F(1), F(-1)];
+  var N28E = [F(2), F(-2), F(3), F(-3), F(3, 2), F(-3, 2), F(5, 2), F(-5, 2), F(4, 3), F(-4, 3)];
+  function n28sol(uf, v) {
+    var key = v.n + '/' + v.d, SS = { '0/1': [0, 180], '1/2': [30, 150], '-1/2': [210, 330], '1/1': [90], '-1/1': [270] }, CC = { '0/1': [90, 270], '1/2': [60, 300], '-1/2': [120, 240], '1/1': [0], '-1/1': [180] };
+    return (uf === 'sin' ? SS : CC)[key];
+  }
+  function n28inRange(v) { return v.n * v.n <= v.d * v.d; }
+  L2.trigQuadEq = function (r) {
+    r();
+    var t = r.int(0, 1), uf = r.pick(['sin', 'cos']), vf = uf === 'sin' ? 'cos' : 'sin', U = '\\' + uf + '\\theta', U2 = '\\' + uf + '^2\\theta', V2 = '\\' + vf + '^2\\theta';
+    var r1, r2, A, B, C, P, Q, R0, g, rg = 0;
+    do {
+      if (t === 0) { r1 = r.pick(N28R); do { r2 = r.pick(N28R.concat(N28E)); } while (Fr.eq(r1, r2)); }
+      else {
+        var pp, qq; do { qq = r.int(3, 7); pp = r.int(1, qq - 1); } while (gcd(pp, qq) !== 1);
+        r1 = F(pp, qq); r2 = r.pick(N28E.concat([F(-1, 2), F(-1, 3), F(-2, 3), F(-3, 4)]));
+      }
+      A = r1.d * r2.d; B = -(r1.d * r2.n + r2.d * r1.n); C = r1.n * r2.n; g = gcd(gcd(A, Math.abs(B)), Math.abs(C)) || 1; A /= g; B /= g; C /= g;
+      P = -A; Q = B; R0 = A + C;
+      if (P < 0) { P = -P; Q = -Q; R0 = -R0; }
+    } while (Q === 0);
+    var form = r.int(0, 1), eq;
+    if (form === 0 || R0 === 0) eq = n28lin([[P, V2], [Q, U], [R0, '']]) + '=0';
+    else if (Q < 0) eq = n28lin([[P, V2], [R0, '']]) + '=' + n28lin([[-Q, U]]);
+    else eq = n28lin([[P, V2], [Q, U]]) + '=' + n28lin([[-R0, '']]);
+    var fac = '\\left(' + n28lin([[r1.d, U], [-r1.n, '']]) + '\\right)\\left(' + n28lin([[r2.d, U], [-r2.n, '']]) + '\\right)=0';
+    var hq = '把 ' + T(V2) + ' 換成 ' + T('1-' + U2) + '，整理成 ' + T(U) + ' 的二次方程式 ' + T(n28lin([[A, U2], [B, U], [C, '']]) + '=0') + '，因式分解 ' + T(fac) + '，得 ' + T(U + '=' + Fr.tex(r1)) + ' 或 ' + T(Fr.tex(r2)) + '。';
+    if (t === 0) {
+      rg = r.int(0, 1);
+      var sols = [];
+      [r1, r2].forEach(function (v) { if (n28inRange(v)) n28sol(uf, v).forEach(function (d) { sols.push(rg === 1 && d > 180 ? d - 360 : d); }); });
+      sols.sort(function (a, b) { return a - b; });
+      var rgT = rg === 0 ? '0°\\le\\theta\\lt360°' : '-180°\\lt\\theta\\le180°', bad = [r1, r2].filter(function (v) { return !n28inRange(v); });
+      return { q: '在 ' + T(rgT) + ' 的範圍內解方程式 ' + T(eq) + '。',
+               a: T('\\theta=' + sols.map(function (d) { return d + '°'; }).join(',\\ ')),
+               h: hq + (bad.length ? T(Fr.tex(bad[0])) + ' 超出 $-1$ 到 $1$，不合。' : '兩個值都在 $-1$ 到 $1$ 之間，都要找角。') + '再用單位圓找出 ' + T(rgT) + ' 裡的每一個角。',
+               p: { t: 0, uf: uf, rg: rg, r: [fr2(r1), fr2(r2)], ans: sols } };
+    }
+    var d2 = r1.d * r1.d - r1.n * r1.n, tn = uf === 'cos' ? S(1, d2, r1.n) : S(r1.n, d2, d2);
+    return { q: '已知 $\\theta$ 為銳角，且 ' + T(eq) + '。求 ' + T('\\tan\\theta') + '。',
+             a: T('\\tan\\theta=' + sTex(tn)),
+             h: hq + '$\\theta$ 是銳角，' + T(U + '\\gt0') + '，只能取 ' + T(Fr.tex(r1)) + '。畫直角三角形：' + (uf === 'cos' ? '鄰邊 $' + r1.n + '$、斜邊 $' + r1.d + '$' : '對邊 $' + r1.n + '$、斜邊 $' + r1.d + '$') + '，第三邊 ' + T('\\sqrt{' + r1.d + '^2-' + r1.n + '^2}=' + sqrtTex(d2)) + '。',
+             p: { t: 1, uf: uf, r: [fr2(r1), fr2(r2)], ans: sArr(tn) } };
+  };
+
+  /* 3-5 哪些條件能決定唯一的三角形（解三角形論證；14 份高一卷有 7 份考：北一女、建中、台中一中、台中女中、高雄中學、武陵、高雄女中） */
+  function n28opt(type, r) {
+    var b, c, a, A, B, K, p, q, u, v, x, y, z;
+    if (type === 'SSS') {
+      x = r.int(2, 9); y = r.int(2, 9); z = r.int(0, 2) === 0 ? x + y + r.int(0, 2) : r.int(Math.abs(x - y) + 1, x + y - 1);
+      var ok = x + y > z && y + z > x && z + x > y;
+      return { txt: T('a=' + x + ',\\ b=' + y + ',\\ c=' + z), n: ok ? 1 : 0,
+               why: ok ? '三邊都給了，兩小邊的和大於最大邊，唯一' : T(x + '+' + y + '\\le ' + z) + '，構不成三角形' };
+    }
+    if (type === 'SAScos') {
+      b = r.int(2, 9); c = r.int(2, 9); do { q = r.int(2, 9); p = r.int(1, q - 1); } while (gcd(p, q) !== 1); var sg = r.sign();
+      return { txt: T('b=' + b + ',\\ c=' + c + ',\\ \\cos A=' + (sg < 0 ? '-' : '') + Fr.tex(F(p, q))), n: 1, why: '$\\cos A$ 定了 $\\angle A$（$0°$ 到 $180°$ 之間只有一個角），兩邊夾一角，唯一' };
+    }
+    if (type === 'SASsin') {
+      b = r.int(2, 9); c = r.int(2, 9); do { q = r.int(2, 9); p = r.int(1, q - 1); } while (gcd(p, q) !== 1);
+      return { txt: T('b=' + b + ',\\ c=' + c + ',\\ \\sin A=' + Fr.tex(F(p, q))), n: 2, why: T('\\sin A=' + Fr.tex(F(p, q))) + ' 時 $\\angle A$ 可以是銳角也可以是鈍角，有兩個三角形' };
+    }
+    if (type === 'AAS') {
+      A = r.int(2, 30) * 5; B = r.int(2, 30) * 5; c = r.int(2, 12); var sum = A + B;
+      if (r.int(0, 3) === 0) { B = 180 - A + r.int(0, 2) * 5; sum = A + B; }
+      if (B <= 0 || B >= 180) { B = 40; sum = A + B; }
+      return { txt: T('\\angle A=' + A + '°,\\ \\angle B=' + B + '°,\\ c=' + c), n: sum < 180 ? 1 : 0,
+               why: sum < 180 ? '兩角一邊（第三個角 $' + (180 - sum) + '°$），唯一' : '兩角和 $' + sum + '°\\ge180°$，構不成三角形' };
+    }
+    if (type === 'SSA') {
+      A = r.pick([30, 30, 45, 120, 150]);
+      if (A === 30) {
+        b = 2 * r.int(2, 8); var h = b / 2, cs = r.int(0, 3);
+        a = cs === 0 ? r.int(1, h - 1) : cs === 1 ? h : cs === 2 ? r.int(h + 1, b - 1) : r.int(b, b + 4);
+        var n = a < h ? 0 : a === h ? 1 : a < b ? 2 : 1;
+        return { txt: T('a=' + a + ',\\ b=' + b + ',\\ \\angle A=30°'), n: n,
+                 why: '高 ' + T('h=b\\sin A=' + h) + '；' + (n === 0 ? T('a\\lt h') + '，無解' : a === h ? T('a=h') + '，恰一個（直角）' : n === 2 ? T('h\\lt a\\lt b') + '，兩個' : T('a\\ge b') + '，一個') };
+      }
+      if (A === 45) {
+        b = r.int(3, 10); var h2 = b * b / 2, cs2 = r.int(0, 2), lo = Math.ceil(Math.sqrt(h2)); if (lo * lo === h2) lo++;
+        a = cs2 === 0 ? r.int(1, Math.max(1, lo - 1)) : cs2 === 1 ? r.int(lo, b - 1) : r.int(b, b + 3);
+        if (a >= lo && a < b && lo >= b) a = b;
+        var n2 = a * a < h2 ? 0 : a < b ? 2 : 1;
+        return { txt: T('a=' + a + ',\\ b=' + b + ',\\ \\angle A=45°'), n: n2,
+                 why: '高 ' + T('h=b\\sin A=' + sTex(S(b, 2, 2))) + '；' + (n2 === 0 ? T('a\\lt h') + '，無解' : n2 === 2 ? T('h\\lt a\\lt b') + '，兩個' : T('a\\ge b') + '，一個') };
+      }
+      b = r.int(2, 9); a = r.int(0, 1) ? b + r.int(1, 4) : r.int(1, b);
+      return { txt: T('a=' + a + ',\\ b=' + b + ',\\ \\angle A=' + A + '°'), n: a > b ? 1 : 0,
+               why: '$\\angle A$ 是鈍角，對邊 $a$ 必須是最大邊：' + (a > b ? T('a\\gt b') + '，一個' : T('a\\le b') + '，無解') };
+    }
+    if (type === 'area') {
+      b = r.int(2, 9); c = r.int(2, 9); var half = b * c; /* 面積上限 bc/2 */
+      var cs3 = r.int(0, 2); K = cs3 === 0 ? F(r.int(1, half - 1), 2) : cs3 === 1 ? F(half, 2) : F(half + r.int(1, 6), 2);
+      var sn = Fr.div(Fr.mul(F(2), K), F(half)), n3 = Fr.lt(sn, F(1)) ? 2 : Fr.eq(sn, F(1)) ? 1 : 0;
+      return { txt: T('b=' + b + ',\\ c=' + c) + '，面積為 ' + T(Fr.tex(K)), n: n3,
+               why: T('\\sin A=\\dfrac{2\\times\\text{面積}}{bc}=' + Fr.tex(sn)) + '：' + (n3 === 2 ? '銳角、鈍角各一，兩個' : n3 === 1 ? '$\\angle A=90°$，一個' : '大於 $1$，無解') };
+    }
+    if (type === 'AAA') {
+      A = r.int(4, 20) * 5; B = r.int(4, 20) * 5; if (A + B >= 175) B = 175 - A - 5 * r.int(1, 3); if (B < 5) B = 20;
+      return { txt: T('\\angle A=' + A + '°,\\ \\angle B=' + B + '°,\\ \\angle C=' + (180 - A - B) + '°'), n: 9, why: '只給三個角，大小可以任意放大縮小（相似），有無限多個' };
+    }
+    /* cos2：cosA、cosB＋一邊 */
+    do { q = r.int(2, 9); p = r.int(1, q - 1); } while (gcd(p, q) !== 1);
+    do { z = r.int(2, 9); y = r.int(1, z - 1); } while (gcd(y, z) !== 1);
+    u = F(p * r.sign(), q); v = F(y * r.sign(), z); c = r.int(2, 9);
+    if (u.n < 0 && v.n < 0) v = F(-v.n, v.d);
+    var s4 = Fr.add(u, v), n4 = s4.n > 0 ? 1 : 0;
+    return { txt: T('\\cos A=' + Fr.tex(u) + ',\\ \\cos B=' + Fr.tex(v) + ',\\ c=' + c), n: n4,
+             why: n4 ? T('\\cos A\\gt-\\cos B=\\cos(180°-B)') + '，所以 $\\angle A+\\angle B\\lt180°$，兩角一邊，唯一' : T('\\cos A\\le-\\cos B=\\cos(180°-B)') + '，所以 $\\angle A+\\angle B\\ge180°$，構不成三角形' };
+  }
+  L2.uniqueTri = function (r) {
+    r();
+    var types, opts, good;
+    do {
+      types = r.shuffle(['SSS', 'SAScos', 'SASsin', 'AAS', 'SSA', 'SSA', 'area', 'AAA', 'cos2']).slice(0, 5);
+      opts = types.map(function (ty) { return n28opt(ty, r); });
+      var ones = opts.filter(function (o) { return o.n === 1; }).length;
+      good = ones >= 1 && ones <= 4;
+    } while (!good);
+    var ans = [];
+    opts.forEach(function (o, i) { if (o.n === 1) ans.push('(' + (i + 1) + ')'); });
+    return { q: '$\\triangle ABC$ 中 $a,b,c$ 分別為 $\\angle A,\\angle B,\\angle C$ 的對邊。下列哪些選項的條件恰可決定唯一的 $\\triangle ABC$？' + opts.map(function (o, i) { return '　(' + (i + 1) + ') ' + o.txt; }).join(''),
+             a: ans.join(''),
+             h: '逐項數「能畫出幾個不同的三角形」：' + opts.map(function (o, i) { return '(' + (i + 1) + ') ' + o.why; }).join('；') + '。',
+             p: { types: types, ns: opts.map(function (o) { return o.n; }), ans: ans } };
+  };
+
+  /* 3-6 弦長＝2R sin（圓周角）：共弦的兩圓、共邊的兩三角形、同圓的兩條弦（外接圓 11 卷；建中、北一女 113下、高雄中學 114、台中女中、竹科、武陵） */
+  var N28ANG = [30, 45, 60, 90, 120, 135, 150];
+  L2.chordSineRatio = function (r) {
+    r();
+    var t = r.int(0, 2), al, be, m;
+    if (t === 0) {
+      do { al = r.pick(N28ANG); be = r.pick(N28ANG); } while (!(sNum(tv(al).sin) < sNum(tv(be).sin) - 1e-9));
+      var ratio = sToF(sMul(sDiv(tv(be).sin, tv(al).sin), sDiv(tv(be).sin, tv(al).sin)));
+      return { q: '兩圓相交於 $A$、$B$ 兩點。$C$ 在大圓上、$D$ 在小圓上，且 ' + T('\\angle ACB=' + al + '°') + '、' + T('\\angle ADB=' + be + '°') + '。求大圓面積與小圓面積的比值。',
+               a: T(Fr.tex(ratio)),
+               h: '$\\overline{AB}$ 是兩圓的公共弦：在大圓裡 ' + T(ov('AB') + '=2R_1\\sin' + al + '°') + '，在小圓裡 ' + T(ov('AB') + '=2R_2\\sin' + be + '°') + '，所以 ' + T('\\dfrac{R_1}{R_2}=\\dfrac{\\sin' + be + '°}{\\sin' + al + '°}=' + sTex(sDiv(tv(be).sin, tv(al).sin))) + '；面積比是半徑比的平方。',
+               p: { t: 0, al: al, be: be, ans: fr2(ratio) } };
+    }
+    if (t === 1) {
+      do { al = r.pick(N28ANG); be = r.pick(N28ANG); } while (al === be);
+      m = r.int(2, 12);
+      var R1 = sMulF(sDiv(S(1, 1, 1), tv(al).sin), F(m, 2)), R2 = sMulF(sDiv(S(1, 1, 1), tv(be).sin), F(m, 2));
+      return { q: '$\\triangle ABC$ 與 $\\triangle ACD$ 有公共邊 ' + T(ov('AC') + '=' + m) + '，且 ' + T('\\angle ABC=' + al + '°') + '、' + T('\\angle ADC=' + be + '°') + '。設兩個三角形的外接圓半徑分別為 ' + T('R_1') + '、' + T('R_2') + '，求 ' + T('R_1') + '、' + T('R_2') + '。',
+               a: T('R_1=' + sTex(R1)) + '、' + T('R_2=' + sTex(R2)),
+               h: '正弦定理用在公共邊 $\\overline{AC}$ 與它的對角：' + T('\\dfrac{' + m + '}{\\sin' + al + '°}=2R_1') + '、' + T('\\dfrac{' + m + '}{\\sin' + be + '°}=2R_2') + '，分母有根號要有理化。',
+               p: { t: 1, al: al, be: be, m: m, ans: [sArr(R1), sArr(R2)] } };
+    }
+    al = r.pick([30, 45, 60]); do { be = r.pick([30, 45, 60, 90]); } while (be === al); m = r.int(2, 12);
+    var AB = sMulF(sDiv(tv(be).sin, tv(al).sin), F(m)), RR = sMulF(sDiv(S(1, 1, 1), tv(al).sin), F(m, 2));
+    return { q: '圓內接四邊形 $ABCD$ 中，' + T('\\angle CAD=' + al + '°') + '、' + T('\\angle ACB=' + be + '°') + '、' + T(ov('CD') + '=' + m) + '。求 ' + T(ov('AB')) + ' 與外接圓半徑 ' + T('R') + '。',
+             a: T(ov('AB') + '=' + sTex(AB)) + '、' + T('R=' + sTex(RR)),
+             h: '四個頂點在同一個圓上，每條弦都等於 ' + T('2R\\sin') + '（它所對的圓周角）：' + T(ov('CD') + '=2R\\sin\\angle CAD') + ' ⟹ ' + T(m + '=2R\\sin' + al + '°') + '；' + T(ov('AB') + '=2R\\sin\\angle ACB=2R\\sin' + be + '°') + '。',
+             p: { t: 2, al: al, be: be, m: m, ans: [sArr(AB), sArr(RR)] } };
+  };
+
+  /* 4-15 面積拆兩塊求中間的線段（三角形面積 14 卷；台中女中 113下 填 17、高雄女中 113下 填 9、武陵 113下 填 9） */
+  L2.areaSplitCevian = function (r) {
+    r();
+    var t = r.int(0, 2), o = r.int(0, 1), b, c, k, AD, ans, hh, q;
+    var pre = '$\\triangle ABC$ 中，$D$ 在 $\\overline{BC}$ 上，';
+    if (t === 0) {
+      b = r.int(2, 12); c = r.int(2, 12);
+      var aB = o === 0 ? 30 : 90, aC = o === 0 ? 90 : 30;
+      AD = o === 0 ? S(b * c, 3, c + 2 * b) : S(b * c, 3, 2 * c + b);
+      return { q: pre + T('\\angle BAD=' + aB + '°') + '、' + T('\\angle DAC=' + aC + '°') + '，' + T(ov('AB') + '=' + c) + '、' + T(ov('AC') + '=' + b) + '。求 ' + T(ov('AD')) + '。',
+               a: T(ov('AD') + '=' + sTex(AD)),
+               h: '設 ' + T(ov('AD') + '=x') + '，面積拆兩塊 ' + T('[ABC]=[ABD]+[ADC]') + '，三塊都用「兩邊夾角」：' + T('\\dfrac12\\cdot' + c + '\\cdot' + b + '\\sin120°=\\dfrac12\\cdot' + c + '\\cdot x\\sin' + aB + '°+\\dfrac12\\cdot' + b + '\\cdot x\\sin' + aC + '°') + '，解 $x$。',
+               p: { t: 0, o: o, b: b, c: c, ans: sArr(AD) } };
+    }
+    if (t === 1) {
+      /* 90° 那一側的邊 X、30° 那一側的邊 Y、AD=k√3：AD(Y+2X)=√3XY */
+      k = r.int(1, 6); var giveX = r.int(0, 1), X, Y, val;
+      if (giveX) { X = k + r.int(1, 10); val = F(2 * k * X, X - k); }
+      else { Y = 2 * k + r.int(1, 10); val = F(k * Y, Y - 2 * k); }
+      var n90 = o === 0 ? 'AC' : 'AB', n30 = o === 0 ? 'AB' : 'AC', ang = o === 0 ? T('\\angle DAC=90°') + '、' + T('\\angle BAD=30°') : T('\\angle BAD=90°') + '、' + T('\\angle DAC=30°');
+      var gN = giveX ? n90 : n30, gV = giveX ? X : Y, aN = giveX ? n30 : n90;
+      return { q: pre + ang + '，' + T(ov(gN) + '=' + gV) + '、' + T(ov('AD') + '=' + (k === 1 ? '' : k) + '\\sqrt3') + '。求 ' + T(ov(aN)) + '。',
+               a: T(ov(aN) + '=' + Fr.tex(val)),
+               h: '設 ' + T(ov(aN) + '=y') + '，面積拆兩塊：' + T('\\dfrac12\\cdot ' + (giveX ? X + '\\cdot y' : 'y\\cdot ' + Y) + '\\sin120°=\\dfrac12\\cdot ' + (giveX ? 'y' : Y) + '\\cdot ' + (k === 1 ? '' : k) + '\\sqrt3\\sin30°+\\dfrac12\\cdot ' + (giveX ? X : 'y') + '\\cdot ' + (k === 1 ? '' : k) + '\\sqrt3\\sin90°') + '，兩邊的 $\\sqrt3$ 約掉就是 $y$ 的一次方程式。',
+               p: { t: 1, o: o, k: k, giveX: giveX, gv: gV, ans: fr2(val) } };
+    }
+    var tr = r.pick([[3, 4, 5], [4, 3, 5], [5, 12, 13], [12, 5, 13], [8, 15, 17], [15, 8, 17], [7, 24, 25], [24, 7, 25]]), u = tr[0], v = tr[1], w = tr[2];
+    b = r.int(2, 15); c = r.int(2, 15);
+    AD = o === 0 ? F(b * c * v, c * u + b * w) : F(b * c * v, b * u + c * w);
+    var perp = o === 0 ? T(ov('AC') + '\\perp' + ov('AD')) : T(ov('AB') + '\\perp' + ov('AD')), other = o === 0 ? '\\angle BAD' : '\\angle DAC';
+    return { q: '$\\triangle ABC$ 中 ' + T(ov('AB') + '=' + c) + '、' + T(ov('AC') + '=' + b) + '、' + T('\\cos\\angle BAC=-' + Fr.tex(F(u, w))) + '。$D$ 在 $\\overline{BC}$ 上且 ' + perp + '，求 ' + T(ov('AD')) + '。',
+             a: T(ov('AD') + '=' + Fr.tex(AD)),
+             h: T('\\cos\\angle BAC\\lt0') + '，$\\angle BAC$ 是鈍角，' + T('\\sin\\angle BAC=' + Fr.tex(F(v, w))) + '。' + T(other + '=\\angle BAC-90°') + '，' + T('\\sin(\\angle BAC-90°)=-\\cos\\angle BAC=' + Fr.tex(F(u, w))) + '。設 ' + T(ov('AD') + '=x') + '，面積拆兩塊：' + T('\\dfrac12\\cdot' + c + '\\cdot' + b + '\\cdot' + Fr.tex(F(v, w)) + '=\\dfrac12\\cdot' + (o === 0 ? c : b) + '\\cdot x\\cdot' + Fr.tex(F(u, w)) + '+\\dfrac12\\cdot' + (o === 0 ? b : c) + '\\cdot x') + '。',
+             p: { t: 2, o: o, b: b, c: c, tr: [u, v, w], ans: fr2(AD) } };
+  };
+
+  /* 4-16 餘弦定理＋最值：相對運動的最短距離、兩邊和固定的最大面積（最值 11 卷；成功、台中一中、高雄女中、武陵 113下） */
+  L2.triOptimize = function (r) {
+    r();
+    var t = r.int(0, 1), th = r.pick([60, 90, 120]);
+    if (t === 0) {
+      var k = th === 120 ? r.int(1, 2) : r.int(1, 5), d = r.int(5, 30), cs2 = th === 60 ? 1 : th === 90 ? 0 : -1;
+      var A2 = k * k + 1 + k * cs2, B1 = -(2 * d * k + d * cs2), sin2 = th === 90 ? F(1) : F(3, 4);
+      var xs = F(d * (2 * k + cs2), 2 * A2), mn2 = Fr.div(Fr.mul(F(d * d), sin2), F(A2)), mn = sqrtF(mn2);
+      var sp = k === 1 ? '兩人的速度相同' : '乙的速度是甲的 $' + k + '$ 倍', kx = (k === 1 ? '' : k) + 'x';
+      return { q: '$A$、$B$ 兩地相距 ' + T(String(d)) + ' 公里，道路 $\\overline{BA}$ 與 $\\overline{BC}$ 的夾角為 ' + T(th + '°') + '。甲從 $B$ 出發沿 $\\overline{BC}$ 前進，同時乙從 $A$ 出發沿 $\\overline{AB}$ 朝 $B$ 前進，' + sp + '。求 (1) 甲、乙兩人的最短距離　(2) 距離最短時甲走了幾公里。',
+               a: '(1) ' + T(sTex(mn)) + ' 公里　(2) ' + T(Fr.tex(xs)) + ' 公里',
+               h: '甲走 $x$ 公里時乙走 $' + kx + '$ 公里，兩人到 $B$ 的距離是 $x$ 與 $' + d + '-' + kx + '$，夾角 $' + th + '°$。餘弦定理：距離的平方 ' + T('=(' + d + '-' + kx + ')^2+x^2-2x(' + d + '-' + kx + ')\\cos' + th + '°=' + n28lin([[A2, 'x^2'], [B1, 'x'], [d * d, '']])) + '，配方求最小值，並確認這時乙還沒走到 $B$。',
+               p: { t: 0, th: th, k: k, d: d, ans: { mn: sArr(mn), x: fr2(xs) } } };
+    }
+    var L = 2 * r.int(3, 20), hl = L / 2, Kmax = sMulF(tv(th).sin, F(hl * hl, 2)), AB = S(hl, th === 60 ? 1 : th === 90 ? 2 : 3, 1), fence = r.int(0, 1);
+    var q = fence ? '用一條長 ' + T(String(L)) + ' 公尺的圍籬靠著一面直牆圍出三角形花圃 $\\triangle ABC$：牆是 $\\overline{AB}$，圍籬是 $\\overline{CA}$ 與 $\\overline{CB}$（' + T(ov('CA') + '+' + ov('CB') + '=' + L) + '，設 $\overline{CB}=a$、$\overline{CA}=b$），且 ' + T('\\angle ACB=' + th + '°') + '。求 (1) 花圃面積的最大值　(2) 面積最大時牆面 $\\overline{AB}$ 的長。'
+                  : '$\\triangle ABC$ 中 ' + T('\\angle C=' + th + '°') + '，且 ' + T('a+b=' + L) + '（$a=\\overline{BC}$、$b=\\overline{CA}$）。求 (1) $\\triangle ABC$ 面積的最大值　(2) 面積最大時 $\\overline{AB}$ 的長。';
+    return { q: q,
+             a: '(1) ' + T(sTex(Kmax)) + '　(2) ' + T(sTex(AB)),
+             h: '面積 ' + T('=\\dfrac12ab\\sin' + th + '°') + '；算幾不等式 ' + T('ab\\le\\left(\\dfrac{a+b}{2}\\right)^2=' + hl * hl) + '，' + T('a=b=' + hl) + ' 時取等號。再用餘弦定理 ' + T(ov('AB') + '^2=' + hl + '^2+' + hl + '^2-2\\cdot' + hl + '\\cdot' + hl + '\\cos' + th + '°') + '。',
+             p: { t: 1, th: th, L: L, fence: fence, ans: { K: sArr(Kmax), AB: sArr(AB) } } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -1266,17 +1709,99 @@
     return st;
   };
 
+  /* ── 2026-09-28 擴充：新 L1 五型的第一層提示與解題步驟 ── */
+  L1_H1.rightSolve = '這是「直角三角形：已知一個三角比與一邊」：先把三角比翻成三邊的比，再看已知的那一邊是比例的幾倍。';
+  L1_H1.tanHomog = '這是「已知正切求齊次式」：分子分母同除以餘弦（或先除以一再同除以餘弦的平方），整個式子就只剩正切。';
+  L1_H1.trigCompare = '這是「三角比比大小」：每個值先看正負，同號的再換成參考角（銳角）的三角比比大小。';
+  L1_H1.polarSym = '這是「對稱點、旋轉點的極坐標」：先看新點和原來的點是什麼關係（對稱或旋轉），極角就跟著那樣變，半徑不變或按比例放大。';
+  L1_H1.quadDiagArea = '這是「四邊形面積」：兩條對角線把四邊形切成四個小三角形，面積合起來是兩條對角線乘積的一半再乘夾角的正弦。';
+
+  L1_SOL.rightSolve = function (p, o) {
+    var a = p.a, b = p.b, c = p.c, m = p.m;
+    if (p.t === 0) {
+      var names = ['BC', 'AC', 'AB'], base = [a, b, c], v = [p.ans.BC, p.ans.AC, p.ans.AB], ratio = p.fn === 'sin' ? F(a, c) : p.fn === 'cos' ? F(b, c) : F(a, b);
+      var two = p.fn === 'sin' ? ['BC', 'AB', a, c] : p.fn === 'cos' ? ['AC', 'AB', b, c] : ['BC', 'AC', a, b];
+      var oth = [0, 1, 2].filter(function (i) { return i !== p.side; });
+      return ['$\\angle C=90°$，' + T('\\' + p.fn + ' A=' + Fr.tex(ratio)) + ' 表示 ' + T(ov(two[0]) + ':' + ov(two[1]) + '=' + two[2] + ':' + two[3]) + '，可以設三邊是比例的 $k$ 倍。',
+        '畢氏定理補第三個數：' + T(ov('BC') + ':' + ov('AC') + ':' + ov('AB') + '=' + a + ':' + b + ':' + c) + '。',
+        '已知 ' + T(ov(names[p.side]) + '=' + v[p.side] + '=' + base[p.side] + 'k') + ' ⟹ $k=' + m + '$，所以 ' + T(ov(names[oth[0]]) + '=' + v[oth[0]]) + '、' + T(ov(names[oth[1]]) + '=' + v[oth[1]]) + '，周長 ' + T('=' + v[0] + '+' + v[1] + '+' + v[2] + '=' + p.ans.per) + '。' + solFin(o)];
+    }
+    var AB = m * a, AC = m * b, BC = m * c, rB = p.fnB === 'sin' ? F(b, c) : p.fnB === 'cos' ? F(a, c) : F(b, a);
+    var gN = ['AB', 'AC', 'BC'][p.gs], gV = [AB, AC, BC][p.gs], BD = solF(p.ans.BD);
+    var last = p.ask === 0 ? '$\\triangle ABD$ 中 $\\angle ADB=90°$：' + T(ov('AD') + '=' + ov('AB') + '\\sin B=' + AB + '\\cdot' + Fr.tex(F(b, c)) + '=' + Fr.tex(solF(p.ans.AD))) + '。'
+             : p.ask === 1 ? '$\\triangle ABD$ 中 $\\angle ADB=90°$：' + T(ov('BD') + '=' + ov('AB') + '\\cos B=' + AB + '\\cdot' + Fr.tex(F(a, c)) + '=' + Fr.tex(BD)) + '。'
+                           : '$\\triangle ABD$ 中 $\\angle ADB=90°$：' + T(ov('BD') + '=' + ov('AB') + '\\cos B=' + AB + '\\cdot' + Fr.tex(F(a, c)) + '=' + Fr.tex(BD)) + '，所以 ' + T(ov('CD') + '=' + ov('BC') + '-' + ov('BD') + '=' + BC + '-' + Fr.tex(BD) + '=' + Fr.tex(solF(p.ans.CD))) + '。';
+    return ['$\\angle A=90°$，斜邊是 $\\overline{BC}$。' + T('\\' + p.fnB + ' B=' + Fr.tex(rB)) + ' ⟹ ' + T(ov('AB') + ':' + ov('AC') + ':' + ov('BC') + '=' + a + ':' + b + ':' + c) + '（畢氏定理補第三個數）。',
+      '由 ' + T(ov(gN) + '=' + gV) + ' 得 ' + T(ov('AB') + '=' + AB) + '、' + T(ov('AC') + '=' + AC) + '、' + T(ov('BC') + '=' + BC) + '。',
+      last + solFin(o)];
+  };
+
+  L1_SOL.tanHomog = function (p, o) {
+    var m = solF(p.m), TN = '\\tan\\theta', co = p.co;
+    if (p.t === 1)
+      return ['先除以 ' + T('\\sin^2\\theta+\\cos^2\\theta=1') + '（值不變），把式子寫成分式：' + T('\\dfrac{' + n28lin([[co[0], '\\sin^2\\theta'], [co[1], '\\sin\\theta\\cos\\theta'], [co[2], '\\cos^2\\theta']]) + '}{\\sin^2\\theta+\\cos^2\\theta}') + '。',
+        '分子分母同除以 $\\cos^2\\theta$：' + T('\\dfrac{' + n28lin([[co[0], '\\tan^2\\theta'], [co[1], TN], [co[2], '']]) + '}{\\tan^2\\theta+1}') + '。',
+        '代 ' + T(TN + '=' + Fr.tex(m)) + '：分子 ' + T('=' + Fr.tex(solF(p.num))) + '、分母 ' + T('=' + Fr.tex(solF(p.den))) + '，相除得 ' + T(Fr.tex(solF(p.ans))) + '。' + solFin(o)];
+    var topT = n28lin([[co[0], TN], [co[1], '']]), botT = n28lin([[co[2], TN], [co[3], '']]);
+    if (p.t === 0)
+      return ['$\\tan\\theta$ 存在，所以 $\\cos\\theta\\ne0$，分子分母可以同除以 $\\cos\\theta$。',
+        '得 ' + T('\\dfrac{' + topT + '}{' + botT + '}') + '（' + T('\\dfrac{\\sin\\theta}{\\cos\\theta}=\\tan\\theta') + '）。',
+        '代 ' + T(TN + '=' + Fr.tex(m)) + '：分子 ' + T('=' + Fr.tex(solF(p.num))) + '、分母 ' + T('=' + Fr.tex(solF(p.den))) + '，相除得 ' + T(Fr.tex(solF(p.ans))) + '。' + solFin(o)];
+    var v = solF(p.v), vt = Fr.tex(v);
+    return ['左邊分子分母同除以 $\\cos\\theta$：' + T('\\dfrac{' + topT + '}{' + botT + '}=' + vt) + '。',
+      '交叉相乘：' + T(topT + '=' + (v.n === v.d ? '' : v.n === -v.d ? '-' : vt) + '\\left(' + botT + '\\right)') + '，把 $\\tan\\theta$ 移到同一邊：' + T(n28fc(solF(p.A), TN) + '=' + Fr.tex(solF(p.B))) + '。',
+      '所以 ' + T(TN + '=' + Fr.tex(m)) + '。' + solFin(o)];
+  };
+
+  L1_SOL.trigCompare = function (p, o) {
+    var ord = p.ans.join('\\lt ');
+    if (p.t === 0) {
+      var al = p.al, sg = ['sin', 'cos', 'tan'].map(function (f) { return n28val(f, al) > 0 ? '正' : '負'; });
+      return [T(hxA(al)) + ' 的終邊在' + hxPos(al) + '，參考角 $' + p.ref + '°$，所以 $\\sin$ 為' + sg[0] + '、$\\cos$ 為' + sg[1] + '、$\\tan$ 為' + sg[2] + '。',
+        p.ref > 45 ? '參考角大於 $45°$：$|\\sin|\\gt|\\cos|$；又 $|\\tan|=\\dfrac{|\\sin|}{|\\cos|}\\gt1$，比 $|\\sin|$、$|\\cos|$ 都大。' : '參考角小於 $45°$：$|\\cos|\\gt|\\sin|$；又 $|\\tan|=\\dfrac{|\\sin|}{|\\cos|}\\gt|\\sin|$（除以小於 $1$ 的正數會變大）。',
+        '正的比負的大；兩個負的，絕對值大的反而小。所以 ' + T(ord) + '。' + solFin(o)];
+    }
+    var fn = p.fn, conv = p.angs.map(function (d) {
+      var ref = hxRef(d), v = n28val(fn, d);
+      return T(FN[fn] + hxA(d) + (d === ref ? '' : '=' + (v > 0 ? '' : '-') + FN[fn] + ref + '°'));
+    });
+    return ['每個角都化成參考角，正負看象限：' + conv.join('、') + '。',
+      '參考角都在 $0°$ 到 $90°$ 之間：' + (fn === 'cos' ? '$\\cos$ 角度越大值越小' : '$' + FN[fn] + '$ 角度越大值越大') + '（看單位圓）。',
+      '先分正負，再比同號的大小：' + T(ord) + '。' + solFin(o)];
+  };
+
+  L1_SOL.polarSym = function (p, o) {
+    var TRk = N28TR[p.k], X = p.ans[0], Y = p.ans[1], sr = p.s * p.r, Q = TRk.f(p.x, p.y);
+    var idt = T('\\cos(' + TRk.e + ')=' + TRk.c) + '、' + T('\\sin(' + TRk.e + ')=' + TRk.s);
+    if (p.t === 0)
+      return [T(ov('OQ') + '=\\sqrt{' + hxSq(X) + '+' + hxSq(Y) + '}=' + sr) + '，所以 $Q$ 的極坐標第一個數是 $' + sr + '$。',
+        '比坐標：' + (p.s > 1 ? '$Q$ 的坐標除以 $' + p.s + '$ 是 ' + T(n28pt(Q[0], Q[1])) + '，' : '') + '$P' + n28pt(p.x, p.y) + '$ 到 ' + T(n28pt(Q[0], Q[1])) + ' 是' + TRk.w + '。',
+        '所以極角是 $' + TRk.e + '$，驗算：' + idt + '，代 ' + T('\\cos\\theta=' + Fr.tex(F(p.x, p.r)) + ',\\ \\sin\\theta=' + Fr.tex(F(p.y, p.r))) + ' 會回到 $Q$。' + solFin(o)];
+    return ['極坐標 ' + T('[' + sr + ',' + TRk.e + ']') + ' 的直角坐標是 ' + T('\\left(' + sr + '\\cos(' + TRk.e + '),\\ ' + sr + '\\sin(' + TRk.e + ')\\right)') + '。',
+      '誘導公式：' + idt + '；由 $P$ 得 ' + T('\\cos\\theta=' + Fr.tex(F(p.x, p.r)) + ',\\ \\sin\\theta=' + Fr.tex(F(p.y, p.r))) + '。',
+      '代入得 ' + T(n28pt(X, Y)) + '（它是 $P$ ' + TRk.w + (p.s > 1 ? '，再放大 $' + p.s + '$ 倍' : '') + '）。' + solFin(o)];
+  };
+
+  L1_SOL.quadDiagArea = function (p, o) {
+    var st = ['設兩條對角線交於 $O$，夾角 $\\theta$。四個小三角形都用「兩邊夾角」算面積，夾角是 $\\theta$ 或 $180°-\\theta$，正弦一樣。',
+      '四塊相加：' + T('[ABCD]=\\dfrac12(\\overline{OA}+\\overline{OC})(\\overline{OB}+\\overline{OD})\\sin\\theta=\\dfrac12\\cdot' + ov('AC') + '\\cdot' + ov('BD') + '\\sin\\theta') + '。'];
+    if (p.t === 0) st.push('代入：' + T('\\dfrac12\\cdot' + p.p + '\\cdot' + p.q + (p.phi === 90 ? '' : '\\cdot' + sTex(tv(p.phi).sin)) + '=' + sTex(solS(p.ans))) + '。' + solFin(o));
+    else if (p.t === 1) st.push('代入：' + T(sTex(solS(p.K)) + '=\\dfrac12\\cdot' + p.p + '\\cdot' + ov('BD') + (p.phi === 90 ? '' : '\\cdot' + sTex(tv(p.phi).sin))) + '，解出 ' + T(ov('BD') + '=' + p.ans) + '。' + solFin(o));
+    else st.push('代入：' + T(sTex(solS(p.K)) + '=\\dfrac12\\cdot' + p.p + '\\cdot' + p.q + '\\sin\\theta') + ' ⟹ ' + T('\\sin\\theta=' + sTex(tv(p.ans).sin)) + '，銳角（或直角）是 $' + p.ans + '°$。' + solFin(o));
+    return st;
+  };
+
   var META_L1 = [
-      ['triDef', '§1 三角比的定義'], ['specialEval', '§1 特殊角求值'], ['sinToCos', '§1 同角關係：知一求二'], ['sumProdAcute', '§1 對稱式 sin±cos 與 sincos'], ['coAngleSum', '§1 餘角關係：整串求和／求積'], ['elevOne', '§1 仰角測高：一次測量'], ['elevTwo', '§1 仰角測高：兩次測量'],
-      ['coterminal', '§2 同界角與象限'], ['pointTrig', '§2 終邊上一點求三角比'], ['quadFind', '§2 象限判定與符號'], ['reduceEval', '§2 廣義角的特殊值'], ['polarConv', '§2 極坐標與直角坐標互換'], ['polarDist', '§2 極坐標下的距離與面積'], ['slopeAngle', '§2 斜角、斜率與夾角'],
+      ['triDef', '§1 三角比的定義'], ['specialEval', '§1 特殊角求值'], ['sinToCos', '§1 同角關係：知一求二'], ['sumProdAcute', '§1 對稱式 sin±cos 與 sincos'], ['coAngleSum', '§1 餘角關係：整串求和／求積'], ['elevOne', '§1 仰角測高：一次測量'], ['elevTwo', '§1 仰角測高：兩次測量'], ['rightSolve', '§1 直角三角形：已知三角比與一邊求其他邊'], ['tanHomog', '§1 已知 tanθ 求 sin、cos 的齊次式'],
+      ['coterminal', '§2 同界角與象限'], ['pointTrig', '§2 終邊上一點求三角比'], ['quadFind', '§2 象限判定與符號'], ['reduceEval', '§2 廣義角的特殊值'], ['polarConv', '§2 極坐標與直角坐標互換'], ['polarDist', '§2 極坐標下的距離與面積'], ['slopeAngle', '§2 斜角、斜率與夾角'], ['trigCompare', '§2 廣義角三角比比大小'], ['polarSym', '§2 對稱點、旋轉點的極坐標'],
       ['sineLaw', '§3 正弦定理求邊'], ['circumR', '§3 外接圓半徑'], ['cosLawSide', '§3 餘弦定理求邊（SAS）'], ['cosLawAngle', '§3 餘弦定理求角（SSS）與形狀'], ['sideRange', '§3 三角形存在條件與鈍角範圍'], ['ssaCount', '§3 SSA 有幾組解'],
-      ['areaSAS', '§4 面積公式與已知面積求角'], ['heronArea', '§4 海龍公式'], ['inOutRadius', '§4 內切圓與外接圓半徑'], ['medianLen', '§4 中線長'], ['bisectorLen', '§4 角平分線'], ['cyclicQuad', '§4 圓內接四邊形'],
+      ['areaSAS', '§4 面積公式與已知面積求角'], ['heronArea', '§4 海龍公式'], ['inOutRadius', '§4 內切圓與外接圓半徑'], ['medianLen', '§4 中線長'], ['bisectorLen', '§4 角平分線'], ['cyclicQuad', '§4 圓內接四邊形'], ['quadDiagArea', '§4 四邊形面積：對角線與夾角'],
       ['projLen', '§5 正射影'], ['projTheorem', '§5 投影定理'], ['cuboid', '§5 長方體的立體測量'], ['pyramid', '§5 正四角錐']
   ];
   var META_L2 = [
-      ['quadSumProd', '§2 廣義角的同角關係（象限定號）'], ['reduceSimplify', '§2 誘導公式化簡'], ['polarTriangle', '§2 三個極坐標點的三角形'], ['lineAngle', '§2 與已知直線夾特殊角的直線'], ['sinCount', '§2 範圍內三角方程的解數'],
-      ['sineRatio', '§3 sin 比⟹邊比：形狀與面積'], ['cevianLen', '§3 D 在 BC 上：補角餘弦串連'], ['ssaSolve', '§3 SSA 兩解求第三邊'], ['shapeJudge', '§3 由邊角關係判定形狀'],
-      ['heronFull', '§4 三邊全知：K、r、R、高'], ['heightsHeron', '§4 三高／sin 比＋內切圓⟹R'], ['cyclicQuadFull', '§4 圓內接四邊形全套'], ['bisector', '§4 角平分線全套'], ['areaMinPQ', '§4 面積條件下的最短線段'],
+      ['quadSumProd', '§2 廣義角的同角關係（象限定號）'], ['reduceSimplify', '§2 誘導公式化簡'], ['polarTriangle', '§2 三個極坐標點的三角形'], ['lineAngle', '§2 與已知直線夾特殊角的直線'], ['sinCount', '§2 範圍內三角方程的解數'], ['reduceK', '§2 以 k 表示廣義角的三角比'], ['trigQuadEq', '§2 平方關係化成二次方程'],
+      ['sineRatio', '§3 sin 比⟹邊比：形狀與面積'], ['cevianLen', '§3 D 在 BC 上：補角餘弦串連'], ['ssaSolve', '§3 SSA 兩解求第三邊'], ['shapeJudge', '§3 由邊角關係判定形狀'], ['uniqueTri', '§3 哪些條件決定唯一的三角形'], ['chordSineRatio', '§3 弦長＝2R sin：共弦兩圓與同圓的弦'],
+      ['heronFull', '§4 三邊全知：K、r、R、高'], ['heightsHeron', '§4 三高／sin 比＋內切圓⟹R'], ['cyclicQuadFull', '§4 圓內接四邊形全套'], ['bisector', '§4 角平分線全套'], ['areaMinPQ', '§4 面積條件下的最短線段'], ['areaSplitCevian', '§4 面積拆兩塊求中間的線段'], ['triOptimize', '§4 餘弦定理＋最值（相對運動、定和）'],
       ['elevMedian', '§5 三點仰角＋中點'], ['bearingHeight', '§5 方位角＋仰角測山高'], ['pyramidSolve', '§5 正四角錐反推']
   ];
   /* ══════════════════════════════════════════════════════════
@@ -1832,15 +2357,80 @@
              p: { v: 2, p: p, q: q, K: K.n, ans: [A1, A2] } };
   };
 
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* L3-16　四邊形只給四邊與對角線的銳夾角：四個小三角形各寫一次餘弦定理，AB²+CD²−BC²−DA²＝−2·AC·BD·cos∠AOB */
+  L3.quadDiagAngle = function (r) {
+    r();
+    var phi = r.pick([60, 60, 45, 30]), mm = phi === 60 ? 1 : phi === 45 ? 2 : 3, sg = r.sign(), a, b, c, d, s2, ok;
+    /* OA=a√mm、OC=c√mm、OB=b、OD=d；∠AOB 的 cos＝sg·cosφ；2·OA·OB·cos∠AOB＝sg·k·a·b（k：60°→1、45°→2、30°→3） */
+    var kk = phi === 60 ? 1 : phi === 45 ? 2 : 3;
+    do {
+      a = r.int(1, 8); b = r.int(1, 9); c = r.int(1, 8); d = r.int(1, 9);
+      s2 = [mm * a * a + b * b - sg * kk * a * b, b * b + mm * c * c + sg * kk * b * c, mm * c * c + d * d - sg * kk * c * d, d * d + mm * a * a + sg * kk * d * a];
+      ok = s2.every(function (v) { return v > 0; }) && (s2.filter(function (v) { var q = simpSqrt(v); return q[1] === 1; }).length >= 1);
+    } while (!ok);
+    var Sv = s2[0] + s2[2] - s2[1] - s2[3], area = phi === 60 ? S(Math.abs(Sv), 3, 4) : phi === 45 ? S(Math.abs(Sv), 1, 4) : S(Math.abs(Sv), 3, 12);
+    var nm = ['AB', 'BC', 'CD', 'DA'], sides = nm.map(function (n, i) { return T(ov(n) + '=' + sqrtTex(s2[i])); }).join('、');
+    return { q: '凸四邊形 $ABCD$ 中 ' + sides + '，兩條對角線所夾的銳角為 ' + T(phi + '°') + '。求四邊形 $ABCD$ 的面積。',
+             a: T(sTex(area)),
+             h: '設對角線交於 $O$，' + T(ov('OA') + '=p,\\ ' + ov('OB') + '=q,\\ ' + ov('OC') + '=r,\\ ' + ov('OD') + '=s') + '，' + T('\\angle AOB=\\alpha') + '。四個小三角形各寫一次餘弦定理（對頂角相等、鄰角互補，$\\cos$ 差一個負號），相加減得 ' + T(ov('AB') + '^2+' + ov('CD') + '^2-' + ov('BC') + '^2-' + ov('DA') + '^2=-2\\cos\\alpha\\,(p+r)(q+s)') + '。左邊 ' + T('=' + s2[0] + '+' + s2[2] + '-' + s2[1] + '-' + s2[3] + '=' + Sv) + '，所以 ' + T(ov('AC') + '\\cdot' + ov('BD') + '=\\dfrac{' + Math.abs(Sv) + '}{2\\cos' + phi + '°}') + '，面積 ' + T('=\\dfrac12\\cdot' + ov('AC') + '\\cdot' + ov('BD') + '\\sin' + phi + '°') + '。',
+             p: { phi: phi, sg: sg, seg: [a, b, c, d], s2: s2, ans: sArr(area) } };
+  };
+
+  /* L3-17　角平分線＋等腰（AB＝AD）：分比設 pk、qk，同一個半角在兩個小三角形各寫一次餘弦定理 */
+  L3.bisectorIsos = function (r) {
+    r();
+    var p, q; do { p = r.int(1, 9); q = r.int(2, 12); } while (p >= q || gcd(p, q) !== 1 || q - p > 9);
+    var side = r.int(0, 1), t = r.int(0, 2), k2 = F(q, q - p), cosH = F(p + q, 2 * q);
+    var eq2 = Fr.mul(F(p * p), k2), ot2 = Fr.mul(F(q * q), k2), cosA = Fr.div(Fr.sub(Fr.add(eq2, ot2), F((p + q) * (p + q))), Fr.mul(F(2 * p * q), k2));
+    var E = side === 0 ? 'AB' : 'AC', O = side === 0 ? 'AC' : 'AB', BD = side === 0 ? p : q, DC = side === 0 ? q : p, half = side === 0 ? '\\angle BAD' : '\\angle DAC';
+    var ask = t === 0 ? T('\\cos' + half) : t === 1 ? T(ov('AB')) + ' 與 ' + T(ov('AC')) : T('\\cos\\angle BAC');
+    var eqS = sqrtF(eq2), otS = sqrtF(ot2);
+    var ans = t === 0 ? T('\\cos' + half + '=' + Fr.tex(cosH)) : t === 1 ? T(ov(E) + '=' + sTex(eqS)) + '、' + T(ov(O) + '=' + sTex(otS)) : T('\\cos\\angle BAC=' + Fr.tex(cosA));
+    return { q: '$\\triangle ABC$ 中，$\\overline{AD}$ 是 $\\angle BAC$ 的角平分線（$D$ 在 $\\overline{BC}$ 上），' + T(ov('BD') + '=' + BD) + '、' + T(ov('DC') + '=' + DC) + '，且 ' + T(ov(E) + '=' + ov('AD')) + '。求 ' + ask + '。',
+             a: ans,
+             h: '分比：' + T(ov('AB') + ':' + ov('AC') + '=' + BD + ':' + DC) + '，設 ' + T(ov(E) + '=' + ov('AD') + '=' + (p === 1 ? '' : p) + 'k') + '、' + T(ov(O) + '=' + q + 'k') + '。兩個小三角形共用半角 $\\beta$，各寫一次餘弦定理：' + T(p + '^2=2(' + (p === 1 ? '' : p) + 'k)^2(1-\\cos\\beta)') + '、' + T(q + '^2=(' + (p === 1 ? '' : p) + 'k)^2+(' + q + 'k)^2-2\\cdot' + (p === 1 ? '' : p + '\\cdot') + q + 'k^2\\cos\\beta') + '，消去 $\\cos\\beta$ 得 ' + T('k^2=' + Fr.tex(k2)) + '。' + (t === 2 ? '再對整個 $\\triangle ABC$ 用餘弦定理（' + T(ov('BC') + '=' + (p + q)) + '）。' : ''),
+             p: { p: p, q: q, side: side, t: t, ans: { cosH: fr2(cosH), eq2: fr2(eq2), ot2: fr2(ot2), cosA: fr2(cosA) } } };
+  };
+
+  /* L3-18　兩個方位＋兩個俯角（或仰角）：俯視圖裡用餘弦定理求兩點距離 */
+  function n28bear(b) {
+    b = ((b % 360) + 360) % 360;
+    if (b % 90 === 0) return ['正北', '正東', '正南', '正西'][b / 90];
+    if (b < 90) return '北 $' + b + '°$ 東'; if (b < 180) return '南 $' + (180 - b) + '°$ 東';
+    if (b < 270) return '南 $' + (b - 180) + '°$ 西'; return '北 $' + (360 - b) + '°$ 西';
+  }
+  L3.depressTwoDir = function (r) {
+    r();
+    var COT = { 30: S(1, 3, 1), 45: S(1, 1, 1), 60: S(1, 3, 3) }, al, be, ga, b1, b2, TP, TQ, cross, pq2, h, ok;
+    do {
+      al = r.pick([30, 45, 60]); be = r.pick([30, 45, 60]); ga = r.pick([30, 60, 90, 120, 150]); h = r.pick([6, 12, 18, 24, 30, 36, 45, 60, 90, 120]);
+      TP = sMulF(COT[al], F(h)); TQ = sMulF(COT[be], F(h));
+      cross = sMulF(sMul(sMul(TP, TQ), tv(ga).cos), F(2));
+      ok = (cross.c === 0 || cross.r === 1);
+      if (ok) pq2 = Fr.sub(Fr.add(sToF(sMul(TP, TP)), sToF(sMul(TQ, TQ))), cross.c === 0 ? F(0) : sToF(cross));
+      ok = ok && pq2.n > 0;
+    } while (!ok);
+    b1 = r.int(0, 11) * 30 + r.pick([0, 0, 15]); b2 = b1 + r.sign() * ga;
+    var PQ = sqrtF(pq2), v = r.int(0, 1), dirs = '$P$ 在塔的' + n28bear(b1) + '方、$Q$ 在塔的' + n28bear(b2) + '方';
+    var q = v === 0 ? '一座塔高 ' + T(String(h)) + ' 公尺，從塔頂看地面上 $P$、$Q$ 兩點的俯角分別為 ' + T(al + '°') + '、' + T(be + '°') + '；' + dirs + '（塔底與 $P$、$Q$ 在同一水平面上）。求 $P$、$Q$ 兩點的距離。'
+                    : '在地面上 $P$、$Q$ 兩點分別測得一座塔頂的仰角為 ' + T(al + '°') + '、' + T(be + '°') + '，' + dirs + '，塔高 ' + T(String(h)) + ' 公尺（塔底與 $P$、$Q$ 在同一水平面上）。求 $P$、$Q$ 兩點的距離。';
+    return { q: q,
+             a: T(ov('PQ') + '=' + sTex(PQ)) + ' 公尺',
+             h: '側視圖：塔底 $T$，' + T(ov('TP') + '=\\dfrac{' + h + '}{\\tan' + al + '°}=' + sTex(TP)) + '、' + T(ov('TQ') + '=\\dfrac{' + h + '}{\\tan' + be + '°}=' + sTex(TQ)) + '。俯視圖：兩個方位相差 ' + T('\\angle PTQ=' + ga + '°') + '，在 $\\triangle PTQ$ 用餘弦定理 ' + T(ov('PQ') + '^2=' + ov('TP') + '^2+' + ov('TQ') + '^2-2\\cdot' + ov('TP') + '\\cdot' + ov('TQ') + '\\cos' + ga + '°') + '。',
+             p: { h: h, al: al, be: be, ga: ga, b: [b1, b2], v: v, ans: fr2(pq2) } };
+  };
+
   var META_L3 = [['rightCoQuad', '直角三角形＋互餘換角解二次'], ['tanCosQuad', 'a cosθ＝b tanθ：化 sinθ 的二次方程'], ['coPairSum', '互餘配對整串求和'],
                  ['reduceSum', '誘導公式化簡（給範圍）'], ['polarFromTrig', '(±sinα, ±cosα) 化極坐標'], ['polarRatio', '四個極坐標點的長度比與面積比'],
                  ['tanRecip', 'tanθ＋1/tanθ 型＋範圍定號'], ['tanSecLin', 'tanθ±1/cosθ＝k 與平方關係聯立'], ['linTrigAcute', 'a cosθ＋b sinθ＝c（銳角）'],
                  ['twoTowers', '兩棟樓的仰角（tan15°＝2−√3）'], ['kiteDiag', '箏形：對稱軸與另一條對角線'], ['cyclicPerp', '圓內接四邊形配 2R sin'],
-                 ['altSplit', '作高分兩段求面積'], ['sineLawR', '邊化 2R sin 求外接圓半徑'], ['areaTwoSol', '面積反求第三邊的兩解']];
+                 ['altSplit', '作高分兩段求面積'], ['sineLawR', '邊化 2R sin 求外接圓半徑'], ['areaTwoSol', '面積反求第三邊的兩解'],
+                 ['quadDiagAngle', '四邊形：四邊＋對角線夾角求面積'], ['bisectorIsos', '角平分線＋等腰：兩次餘弦定理'], ['depressTwoDir', '兩個方位＋兩個俯角求兩點距離']];
   /* 固定題 L3-n 對應的類似題型 */
   var L3_FIX = { 'L3-1': 'rightCoQuad', 'L3-2': 'tanCosQuad', 'L3-3': 'coPairSum', 'L3-4': 'reduceSum', 'L3-5': 'polarFromTrig',
                  'L3-6': 'polarRatio', 'L3-7': 'tanRecip', 'L3-8': 'tanSecLin', 'L3-9': 'linTrigAcute', 'L3-10': 'twoTowers',
-                 'L3-11': 'kiteDiag', 'L3-12': 'cyclicPerp', 'L3-13': 'altSplit', 'L3-14': 'sineLawR', 'L3-15': 'areaTwoSol' };
+                 'L3-11': 'kiteDiag', 'L3-12': 'cyclicPerp', 'L3-13': 'altSplit', 'L3-14': 'sineLawR', 'L3-15': 'areaTwoSol', 'L3-16': 'quadDiagAngle', 'L3-17': 'bisectorIsos', 'L3-18': 'depressTwoDir' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：畢氏定理（國中）、特殊直角三角形的邊長比（國中）、相似三角形的比例（國中）、根式化簡與有理化（高一上 ch1）、兩點的斜率（高一上 ch2）
@@ -1926,6 +2516,12 @@
     'L2.sineRatio': { f: function (p) { return p.ans.shape; }, why: '$\\sin A:\\sin B:\\sin C=a:b:c$，所以給正弦的比就是給邊長的比：最大邊所對的角用餘弦定理算 $\\cos$，正負決定是銳角、直角還是鈍角三角形。' },
     'L2.bisector': { f: function (p) { return p.A; }, why: '角平分線的三件事（分對邊成 $c:b$、長度用面積法、兩塊面積比也是 $c:b$）對任何夾角都成立；夾角換了，只是 $\\sin A$、$\\sin\\dfrac A2$ 代的特殊角值換了。' }
   };
+  /* 2026-09-28 擴充題型的對照題 */
+  CONTRAST['L1.polarSym'] = { f: function (p) { return p.k; }, keep: ['t'], why: '對 $y$ 軸對稱極角變成 $180°-\\theta$、對 $x$ 軸變成 $-\\theta$、對原點變成 $180°+\\theta$、對 $y=x$ 變成 $90°-\\theta$、逆時針轉 $90°$ 變成 $90°+\\theta$；半徑不變，坐標放大幾倍半徑就放大幾倍。' };
+  CONTRAST['L1.quadDiagArea'] = { f: function (p) { return p.t; }, why: '三題用的都是 $[ABCD]=\\dfrac12\\overline{AC}\\cdot\\overline{BD}\\sin\\theta$：求面積就直接代；給面積反求對角線或夾角，就把同一條式子倒過來解。夾角是銳角或鈍角，正弦都一樣。' };
+  CONTRAST['L2.trigQuadEq'] = { f: function (p) { return p.uf; }, keep: ['t'], why: '有 $\\cos^2\\theta$ 就換成 $1-\\sin^2\\theta$，有 $\\sin^2\\theta$ 就換成 $1-\\cos^2\\theta$，留下來的那個函數才是未知數。解出來的值要在 $-1$ 到 $1$ 之間，再回單位圓找角。' };
+  CONTRAST['L2.chordSineRatio'] = { f: function (p) { return p.t; }, why: '三種情形都是「弦長 $=2R\\sin$（它所對的圓周角）」：同一條弦放在兩個圓裡，圓周角的正弦越小，圓越大；同一個圓裡的兩條弦，長度比就是所對圓周角的正弦比。' };
+  CONTRAST['L2.areaSplitCevian'] = { f: function (p) { return p.t; }, why: '都是把大三角形的面積拆成兩塊，三塊都用「兩邊夾角」的面積公式；未知數在哪一塊就解哪一個。夾角若是 $\\angle BAC-90°$，用 $\\sin(\\angle BAC-90°)=-\\cos\\angle BAC$。' };
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

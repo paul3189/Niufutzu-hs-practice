@@ -679,6 +679,267 @@
              p: { ratios: ratios, ans: fr2(v) } };
   };
 
+  /* ══════════ 2026-09-29 擴充（依段考卷出現頻率補題型）：L1 6 型、L2 6 型 ══════════ */
+  function x1Pt(cs) { return cs.some(function (c) { return c.indexOf('\\') >= 0; }) ? '\\left(' + cs.join(',\\ ') + '\\right)' : '(' + cs.join(',') + ')'; }
+  function x1vf(v) { return x1Pt(v.map(function (f) { return Fr.tex(f); })); }
+  function x1Sum(list) { var s = ''; list.forEach(function (v) { s += term(v, '', s === ''); }); return s === '' ? '0' : s; }
+  var X1CV = { A: [0, 0, 0], B: [1, 0, 0], C: [1, 1, 0], D: [0, 1, 0], E: [0, 0, 1], F: [1, 0, 1], G: [1, 1, 1], H: [0, 1, 1] };
+  var X1PAIRS = (function () { var o = [], L = 'ABCDEFGH'; for (var i = 0; i < 8; i++) for (var j = i + 1; j < 8; j++) o.push(L.charAt(i) + L.charAt(j)); return o; })();
+  function x1Dir(l) { return sub(X1CV[l.charAt(1)], X1CV[l.charAt(0)]); }
+  function x1Rel(l1, l2) {                                   /* 兩條頂點連線：0 平行、1 相交、2 歪斜 */
+    var d1 = x1Dir(l1), d2 = x1Dir(l2);
+    if (isZero(cross(d1, d2))) return 0;
+    return det3(d1, d2, sub(X1CV[l2.charAt(0)], X1CV[l1.charAt(0)])) === 0 ? 1 : 2;
+  }
+  var X1COS = { 45: [1, 2, 2], 60: [1, 1, 2], 90: [0, 1, 1], 120: [-1, 1, 2], 135: [-1, 2, 2] };       /* cos θ = n√r/d */
+  var X1TRI = [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10], [5, 12, 13], [12, 5, 13], [8, 15, 17], [15, 8, 17], [9, 12, 15], [12, 9, 15]];
+  var X1REG = ['$x$ 軸', '$y$ 軸', '$z$ 軸', '$xy$ 平面', '$yz$ 平面', '$zx$ 平面', ''];
+  var X1FREE = [[0], [1], [2], [0, 1], [1, 2], [0, 2], [0, 1, 2]];
+  function x1Pts(r, n) {
+    var out = [], key = {};
+    while (out.length < n) { var P = rp(r, -6, 6), k = P.join(','); if (!key[k]) { key[k] = 1; out.push(P); } }
+    return out;
+  }
+  /* 距離平方（加權）和的最小值：能動的坐標取加權平均，被限制為 0 的坐標代 0 */
+  function x1WMin(pts, w, reg) {
+    var W = w.reduce(function (s, v) { return s + v; }, 0), free = X1FREE[reg], P = [F(0), F(0), F(0)];
+    free.forEach(function (i) { var s = 0; pts.forEach(function (A, k) { s += w[k] * A[i]; }); P[i] = F(s, W); });
+    var mn = F(0), each = pts.map(function (A) { var d = F(0); for (var i = 0; i < 3; i++) { var t = Fr.sub(F(A[i]), P[i]); d = Fr.add(d, Fr.mul(t, t)); } return d; });
+    each.forEach(function (d, k) { mn = Fr.add(mn, Fr.mul(F(w[k]), d)); });
+    return { P: P, mn: mn, each: each, W: W };
+  }
+
+  /* 1-1 正立方體中直線的位置關係：平行、相交、歪斜、垂直各幾條 */
+  L1.cubeLineRel = function (r) {
+    r();
+    var XY = r.pick(X1PAIRS), s = r.int(0, 2), NAMES = ['$12$ 條稜', '$12$ 條面對角線', '$8$ 個頂點中任兩點決定的 $28$ 條直線'];
+    var d = x1Dir(XY), inSet = s === 2 || n2(d) === s + 1;
+    var set = X1PAIRS.filter(function (l) { return (s === 2 || n2(x1Dir(l)) === s + 1) && l !== XY; });
+    var par = [], thru = [], other = [], nskew = 0, perp = [], pskew = 0;
+    set.forEach(function (l) {
+      var k = x1Rel(XY, l);
+      if (k === 0) par.push(l); else if (k === 1) { if (l.indexOf(XY.charAt(0)) >= 0 || l.indexOf(XY.charAt(1)) >= 0) thru.push(l); else other.push(l); } else nskew++;
+      if (dot(d, x1Dir(l)) === 0) { perp.push(l); if (k === 2) pskew++; }
+    });
+    var inter = thru.length + other.length, N = set.length;
+    return { q: '正立方體 $ABCD$-$EFGH$ 中（$ABCD$ 為底面，$\\overline{AE}$、$\\overline{BF}$、$\\overline{CG}$、$\\overline{DH}$ 為側稜）。在 ' + NAMES[s] + ' 中' + (inSet ? '（直線 $' + XY + '$ 本身不算）' : '') + '，與直線 $' + XY + '$ (1) 平行的有幾條？(2) 相交的有幾條？(3) 歪斜的有幾條？(4) 垂直的有幾條（相交垂直、歪斜垂直都算）？',
+             a: '(1) $' + par.length + '$ 條　(2) $' + inter + '$ 條　(3) $' + nskew + '$ 條　(4) $' + perp.length + '$ 條',
+             h: '以 $A$ 為原點、邊長當 $1$：直線 $' + XY + '$ 的方向是 $' + vt(d) + '$。這組直線' + (inSet ? '扣掉 $' + XY + '$ 本身' : '') + '共 $' + N + '$ 條。相交：經過 $' + XY.charAt(0) + '$ 或 $' + XY.charAt(1) + '$ 的有 $' + thru.length + '$ 條' + (other.length ? '，另外有 $' + other.length + '$ 條與它交在頂點以外的點（兩條對角線交在面或體的中心）' : '，除此之外沒有別的交點') + '。平行看方向向量成比例；歪斜是不平行也不相交，用總數減去平行與相交最快。垂直（包含歪斜垂直）看方向向量的內積是不是 $0$。',
+             p: { XY: XY, s: s, N: N, par: par, thru: thru.length, other: other, pskew: pskew, ans: { par: par.length, inter: inter, skew: nskew, perp: perp.length } } };
+  };
+
+  /* 1-2 正方形沿對角線摺起：兩面角與兩頂點的距離 */
+  L1.foldSquare = function (r) {
+    r();
+    var a = r.int(2, 10), v = r.int(0, 2), CS = { 60: F(1, 2), 90: F(0), 120: F(-1, 2) }, CT = { 60: '\\dfrac{1}{2}', 90: '0', 120: '-\\dfrac{1}{2}' };
+    var AO = radTex(a, 2, 2), AO2 = F(a * a, 2), base = '邊長 $' + a + '$ 的正方形紙片 $ABCD$ 沿對角線 $\\overline{BD}$ 摺起';
+    var hO = '設 $O$ 為 $\\overline{BD}$ 的中點：摺起前後都有 $\\overline{AO}\\perp\\overline{BD}$、$\\overline{CO}\\perp\\overline{BD}$，所以 $\\angle AOC$ 就是兩面角，而 $\\overline{AO}=\\overline{CO}=' + AO + '$（半條對角線）。';
+    if (v < 2) {
+      var th = r.pick([60, 90, 120]), AC2 = Fr.mul(F(a * a), Fr.sub(F(1), CS[th]));
+      var ACt = th === 60 ? radTex(a, 2, 2) : th === 90 ? String(a) : radTex(a, 6, 2);
+      var Vt = th === 90 ? radTex(a * a * a, 2, 12) : radTex(a * a * a, 6, 24);
+      return { q: base + '，使平面 $ABD$ 與平面 $CBD$ 所夾的兩面角為 $' + th + '^\\circ$。(1) 求 $\\overline{AC}$。(2) 求四面體 $ABCD$ 的體積。',
+               a: '(1) $\\overline{AC}=' + ACt + '$　(2) $' + Vt + '$',
+               h: hO + '(1) 在 $\\triangle AOC$ 用餘弦定理：$\\overline{AC}^2=\\overline{AO}^2+\\overline{CO}^2-2\\overline{AO}\\cdot\\overline{CO}\\cos' + th + '^\\circ$，其中 $\\overline{AO}^2=' + Fr.tex(AO2) + '$、$\\cos' + th + '^\\circ=' + CT[th] + '$。(2) 以 $\\triangle BCD$（面積 $' + Fr.tex(AO2) + '$）為底，$A$ 到底面的高是 $\\overline{AO}\\sin' + th + '^\\circ$。',
+               p: { a: a, v: 0, th: th, ans: { AC2: fr2(AC2), V: th === 90 ? [a * a * a, 2, 12] : [a * a * a, 6, 24] } } };
+    }
+    var m = r.int(1, Math.floor(Math.sqrt(2 * a * a - 1))), cs = F(a * a - m * m, a * a), kind = cs.n > 0 ? '銳角' : cs.n < 0 ? '鈍角' : '直角';
+    return { q: base + '，摺起後 $\\overline{AC}=' + m + '$。設平面 $ABD$ 與平面 $CBD$ 所夾的兩面角為 $\\theta$。(1) 求 $\\cos\\theta$。(2) $\\theta$ 是銳角、直角還是鈍角？',
+             a: '(1) $\\cos\\theta=' + Fr.tex(cs) + '$　(2) ' + kind,
+             h: hO + '(1) $\\triangle AOC$ 三邊都知道，用餘弦定理 $\\cos\\theta=\\dfrac{\\overline{AO}^2+\\overline{CO}^2-\\overline{AC}^2}{2\\overline{AO}\\cdot\\overline{CO}}$，其中 $\\overline{AO}^2=\\overline{CO}^2=' + Fr.tex(AO2) + '$、$\\overline{AC}^2=' + (m * m) + '$。(2) 看 $\\cos\\theta$ 的正負：正的是銳角、$0$ 是直角、負的是鈍角。',
+             p: { a: a, v: 2, m: m, ans: { cos: fr2(cs), kind: kind } } };
+  };
+
+  /* 1-3 三垂線定理：P 到底面上直線的距離與兩面角 */
+  L1.threePerpDist = function (r) {
+    r();
+    var ln = r.int(0, 2), a, b, c = 0, h = r.int(1, 12);
+    if (ln === 0) { var t = r.pick(X1TRI); a = t[0]; b = t[1]; c = t[2]; } else { a = r.int(2, 9); b = r.int(2, 9); }
+    var LN = ['BD', 'BC', 'CD'][ln], PL = ['PBD', 'PBC', 'PCD'][ln];
+    var AH = ln === 0 ? F(a * b, c) : ln === 1 ? F(a) : F(b), d2 = Fr.add(F(h * h), Fr.mul(AH, AH)), tn = Fr.div(F(h), AH);
+    var hh = ln === 0
+      ? '從 $A$ 作 $\\overline{BD}$ 的垂線，垂足 $H$：$\\overline{BD}=' + c + '$，$\\overline{AH}=\\dfrac{\\overline{AB}\\cdot\\overline{AD}}{\\overline{BD}}=' + Fr.tex(AH) + '$（$\\triangle ABD$ 的面積算兩次）。由三垂線定理 $\\overline{PH}\\perp\\overline{BD}$，所以 $\\overline{PH}$ 就是距離，$\\angle PHA$ 就是兩面角的平面角。'
+      : ln === 1 ? '長方形中 $\\overline{AB}\\perp\\overline{BC}$，所以 $A$ 到直線 $BC$ 的垂足就是 $B$，$\\overline{AB}=' + a + '$。由三垂線定理 $\\overline{PB}\\perp\\overline{BC}$，所以 $\\overline{PB}$ 就是距離，$\\angle PBA$ 就是兩面角的平面角。'
+      : '長方形中 $\\overline{AD}\\perp\\overline{CD}$，所以 $A$ 到直線 $CD$ 的垂足就是 $D$，$\\overline{AD}=' + b + '$。由三垂線定理 $\\overline{PD}\\perp\\overline{CD}$，所以 $\\overline{PD}$ 就是距離，$\\angle PDA$ 就是兩面角的平面角。';
+    return { q: '長方形 $ABCD$ 中 $\\overline{AB}=' + a + '$、$\\overline{AD}=' + b + '$，$\\overline{PA}$ 垂直平面 $ABCD$ 且 $\\overline{PA}=' + h + '$。(1) 求 $P$ 到直線 $' + LN + '$ 的距離。(2) 設平面 $' + PL + '$ 與平面 $ABCD$ 所夾的兩面角為 $\\theta$，求 $\\tan\\theta$。',
+             a: '(1) $' + sqrtFracTex(d2.n, d2.d) + '$　(2) $\\tan\\theta=' + Fr.tex(tn) + '$',
+             h: hh + '距離的平方 $=\\overline{PA}^2+(\\text{垂足到 }A\\text{ 的距離})^2$，$\\tan\\theta=\\dfrac{\\overline{PA}}{\\text{垂足到 }A\\text{ 的距離}}$，其中 $\\overline{PA}=' + h + '$。',
+             p: { a: a, b: b, c: c, h: h, ln: ln, ans: { d2: fr2(d2), tan: fr2(tn), AH: fr2(AH) } } };
+  };
+
+  /* 2-8 OP 與坐標軸的夾角 */
+  var X1DIR = [[60, 60, 45], [60, 120, 45], [120, 60, 45], [120, 120, 45], [45, 60, 60], [60, 45, 60], [45, 120, 60], [120, 45, 60], [135, 60, 60], [60, 135, 60], [135, 120, 60], [120, 135, 60]];
+  L1.dirCos = function (r) {
+    r();
+    var t = r.pick(X1DIR), R = r.int(2, 12), al = t[0], be = t[1], ga = t[2];
+    var cx = X1COS[al], cy = X1COS[be], cz = X1COS[ga];
+    var xT = radTex(R * cx[0], cx[1], cx[2]), yT = radTex(R * cy[0], cy[1], cy[2]), zT = radTex(R * cz[0], cz[1], cz[2]);
+    var oct = (cx[0] > 0 ? (cy[0] > 0 ? 1 : 4) : (cy[0] > 0 ? 2 : 3));
+    var sq = function (c) { return F(R * R * c[0] * c[0] * c[1], c[2] * c[2]); };
+    return { q: '空間中 $O$ 為原點，$\\overline{OP}=' + R + '$，$\\overrightarrow{OP}$ 與 $x$ 軸正向的夾角為 $' + al + '^\\circ$、與 $y$ 軸正向的夾角為 $' + be + '^\\circ$，而且 $P$ 的 $z$ 坐標為正。(1) 求 $\\overrightarrow{OP}$ 與 $z$ 軸正向的夾角。(2) 求 $P$ 的坐標。(3) $P$ 在第幾卦限？',
+             a: '(1) $' + ga + '^\\circ$　(2) $P' + x1Pt([xT, yT, zT]) + '$　(3) 第' + CN[oct] + '卦限',
+             h: '設 $P(x,y,z)$。$\\overrightarrow{OP}$ 與 $x$ 軸正向 $(1,0,0)$ 的夾角用內積：$\\cos' + al + '^\\circ=\\dfrac{x}{\\overline{OP}}$，所以 $x=' + R + '\\cos' + al + '^\\circ$；$y=' + R + '\\cos' + be + '^\\circ$ 同理。再由 $x^2+y^2+z^2=' + (R * R) + '$ 解出 $z^2$，$z$ 取正的，最後 $\\cos\\gamma=\\dfrac{z}{' + R + '}$ 定出與 $z$ 軸的夾角 $\\gamma$；卦限看 $x$、$y$ 的正負（$z$ 為正在上半）。',
+             p: { R: R, al: al, be: be, ans: { ga: ga, x2: fr2(sq(cx)), y2: fr2(sq(cy)), z2: fr2(sq(cz)), oct: oct } } };
+  };
+
+  /* 2-9 距離平方和的最小值 */
+  L1.sqDistMin = function (r) {
+    r();
+    var n = r.int(2, 3), pts = x1Pts(r, n), reg = r.int(0, 6), NM = ['A', 'B', 'C'], w = pts.map(function () { return 1; });
+    var res = x1WMin(pts, w, reg), P = res.P;
+    var sumTex = NM.slice(0, n).map(function (c) { return '\\overline{P' + c + '}^2'; }).join('+');
+    var cond = reg === 6 ? '$P$ 為空間中任一點' : '$P$ 在 ' + X1REG[reg] + '上';
+    var zero = [0, 1, 2].filter(function (i) { return X1FREE[reg].indexOf(i) < 0; });
+    var avg = X1FREE[reg].map(function (i) { return '$' + AXES[i] + '=\\dfrac{' + pts.map(function (A) { return hxPar(A[i]); }).join('+') + '}{' + n + '}=' + Fr.tex(P[i]) + '$'; }).join('、');
+    return { q: '設 ' + pts.map(function (A, k) { return '$' + NM[k] + vt(A) + '$'; }).join('、') + '，' + cond + '。求 $' + sumTex + '$ 的最小值，以及此時 $P$ 的坐標。',
+             a: '最小值 $' + Fr.tex(res.mn) + '$，此時 $P' + x1vf(P) + '$',
+             h: '設 $P(x,y,z)$' + (zero.length ? '，' + zero.map(function (i) { return '$' + AXES[i] + '=0$'; }).join('、') : '') + '。把平方和按坐標拆開，每個坐標各自是一個開口向上的二次式，在「各點該坐標的平均」時最小：' + avg + '。' + (zero.length ? '被限制為 $0$ 的坐標不能動，直接代 $0$。' : '') + '最後把 $P$ 代回去，算各點到 $P$ 的距離平方再相加。',
+             p: { pts: pts, reg: reg, ans: { P: P.map(fr2), mn: fr2(res.mn), each: res.each.map(fr2) } } };
+  };
+
+  /* 5-5 解含 x 的三階行列式方程式 */
+  L1.detEquation = function (r) {
+    r();
+    var E, f0, f1, fm1, A, Bc, C, tries = 0;
+    var ent = function (e) { var s = term(e[1], 'x', true) + term(e[0], '', e[1] === 0); return s === '' ? '0' : s; };
+    var dv = function (x) { var M = E.map(function (row) { return row.map(function (e) { return e[0] + e[1] * x; }); }); return det3(M[0], M[1], M[2]); };
+    do {
+      E = []; for (var i = 0; i < 3; i++) { E.push([]); for (var j = 0; j < 3; j++) E[i].push([r.int(-4, 4), 0]); }
+      var i1 = r.int(0, 2), j1 = r.int(0, 2), i2 = (i1 + r.int(1, 2)) % 3, j2 = (j1 + r.int(1, 2)) % 3;
+      E[i1][j1][1] = r.pick([1, -1, 1, 2]); E[i2][j2][1] = r.pick([1, -1, -1, 2]);
+      f0 = dv(0); f1 = dv(1); fm1 = dv(-1); C = f0; A = (f1 + fm1) / 2 - C; Bc = (f1 - fm1) / 2; tries++;
+    } while (A === 0 && tries < 200);
+    if (A === 0) { E = [[[0, 1], [2, 0], [1, 0]], [[3, 0], [0, -1], [1, 0]], [[2, 0], [1, 0], [1, 0]]]; f0 = dv(0); f1 = dv(1); fm1 = dv(-1); C = f0; A = (f1 + fm1) / 2 - C; Bc = (f1 - fm1) / 2; }
+    var r1 = r.int(-4, 4), k = A * r1 * r1 + Bc * r1 + C, r2 = Fr.sub(F(-Bc, A), F(r1)), same = Fr.eq(r2, F(r1));
+    var lo = (r2.n / r2.d) < r1 ? r2 : F(r1), hi = (r2.n / r2.d) < r1 ? F(r1) : r2;
+    var tex = '\\begin{vmatrix}' + E.map(function (row) { return row.map(ent).join('&'); }).join('\\\\') + '\\end{vmatrix}';
+    var poly = hxLin([[A, 'x^2'], [Bc, 'x'], [C, '']]), c0 = C - k;
+    return { q: '解方程式 $' + tex + '=' + k + '$。',
+             a: same ? '$x=' + r1 + '$（重根）' : '$x=' + Fr.tex(lo) + '$ 或 $x=' + Fr.tex(hi) + '$',
+             h: '只有兩格含 $x$，而且它們不同列也不同行，所以展開後是 $x$ 的二次式。用對角線法（或沿含 $x$ 的列展開）整理得 $' + poly + '$；令它等於 $' + k + '$，移項變成 $' + hxLin([[A, 'x^2'], [Bc, 'x'], [c0, '']]) + '=0$，再因式分解或用公式解。',
+             p: { E: E, k: k, ans: { A: A, B: Bc, C: C, roots: same ? [[r1, 1]] : [fr2(lo), fr2(hi)] } } };
+  };
+
+  /* ═══════ L2 新增 ═══════ */
+  /* 1-4 長方形沿對角線摺起：兩個垂足錯開 */
+  L2.foldRect = function (r) {
+    r();
+    var v = r.int(0, 2);
+    if (v < 2) {
+      var t = r.pick(X1TRI), a = t[0], b = t[1], c = t[2], th = r.pick([60, 90, 120]);
+      var BE = F(a * b, c), EF = F(Math.abs(a * a - b * b), c), BE2 = Fr.mul(BE, BE), k = { 60: 1, 90: 2, 120: 3 }[th];
+      var BD2 = Fr.add(Fr.mul(F(k), BE2), Fr.mul(EF, EF));
+      var Vq = th === 90 ? F(a * a * b * b, 6 * c) : F(a * a * b * b, 12 * c), Vt = th === 90 ? Fr.tex(Vq) : radTex(Vq.n, 3, Vq.d);
+      return { q: '長方形紙片 $ABCD$ 中 $\\overline{AB}=' + a + '$、$\\overline{BC}=' + b + '$。沿對角線 $\\overline{AC}$ 摺起，使平面 $ABC$ 與平面 $ADC$ 所夾的兩面角為 $' + th + '^\\circ$。(1) 求 $\\overline{BD}$。(2) 求四面體 $ABCD$ 的體積。',
+               a: '(1) $\\overline{BD}=' + sqrtFracTex(BD2.n, BD2.d) + '$　(2) $' + Vt + '$',
+               h: '$B$、$D$ 到 $\\overline{AC}$ 的垂足 $E$、$F$ 不是同一點：$\\overline{AC}=' + c + '$，$\\overline{BE}=\\overline{DF}=' + Fr.tex(BE) + '$，$\\overline{AE}=' + Fr.tex(F(a * a, c)) + '$、$\\overline{AF}=' + Fr.tex(F(b * b, c)) + '$，所以 $\\overline{EF}=' + Fr.tex(EF) + '$。沿 $\\overline{AC}$ 方向的 $\\overline{EF}$ 摺起後不變，垂直 $\\overline{AC}$ 的 $\\overline{BE}$、$\\overline{DF}$ 夾 $' + th + '^\\circ$：$\\overline{BD}^2=\\overline{BE}^2+\\overline{DF}^2-2\\overline{BE}\\cdot\\overline{DF}\\cos' + th + '^\\circ+\\overline{EF}^2$（也可以把 $\\overline{AC}$ 放在 $x$ 軸上坐標化）。體積：以 $\\triangle ABC$ 為底，高 $=\\overline{DF}\\sin' + th + '^\\circ$。',
+               p: { a: a, b: b, c: c, th: th, v: 0, ans: { BD2: fr2(BD2), V: [Vq.n, Vq.d, th === 90 ? 1 : 3] } } };
+    }
+    var a2 = r.int(3, 10), b2 = r.int(1, a2 - 1), AH = F(b2 * b2, a2), DHt = radTex(b2, a2 * a2 - b2 * b2, a2);
+    return { q: '長方形紙片 $ABCD$ 中 $\\overline{AB}=' + a2 + '$、$\\overline{BC}=' + b2 + '$。沿對角線 $\\overline{AC}$ 把 $\\triangle ACD$ 摺起，使 $D$ 在平面 $ABC$ 上的投影點 $H$ 恰好落在 $\\overline{AB}$ 上。(1) 求 $\\overline{AH}$。(2) 求 $\\overline{DH}$。(3) 求 $\\overline{BD}$。',
+             a: '(1) $\\overline{AH}=' + Fr.tex(AH) + '$　(2) $\\overline{DH}=' + DHt + '$　(3) $\\overline{BD}=' + sqrtTex(a2 * a2 - b2 * b2) + '$',
+             h: '摺起後 $D$ 到 $A$、$C$ 的距離不變：$\\overline{AD}=' + b2 + '$、$\\overline{CD}=' + a2 + '$。以 $A$ 為原點、$\\overline{AB}$ 為 $x$ 軸：$B(' + a2 + ',0,0)$、$C(' + a2 + ',' + b2 + ',0)$，投影在 $\\overline{AB}$ 上 ⟹ 設 $D(h,0,k)$。由 $h^2+k^2=' + (b2 * b2) + '$ 與 $(h-' + a2 + ')^2+' + b2 + '^2+k^2=' + (a2 * a2) + '$ 相減解出 $h$，再求 $k$；$\\overline{BD}$ 用 $D$ 與 $B$ 的坐標算。',
+             p: { a: a2, b: b2, v: 2, ans: { AH: fr2(AH), DH2: fr2(F(b2 * b2 * (a2 * a2 - b2 * b2), a2 * a2)), BD2: a2 * a2 - b2 * b2 } } };
+  };
+
+  /* 1-5 牆角型四面體：斜面與底面的兩面角、面積 */
+  L2.cornerDihedral = function (r) {
+    r();
+    var v = r.int(0, 3), L = [0, 0, 0], bi = v === 3 ? 0 : v;   /* bi：底面是哪一個坐標平面（0：OAB、1：OBC、2：OCA） */
+    var BASE = [['A', 'B', 'C', 0, 1, 2], ['B', 'C', 'A', 1, 2, 0], ['C', 'A', 'B', 2, 0, 1]][bi];
+    var p1, p2, hgt;
+    if (r() < 0.6) { var t = r.pick(X1TRI); p1 = t[0]; p2 = t[1]; } else { p1 = r.int(2, 12); p2 = r.int(2, 12); }
+    hgt = r.int(2, 12); L[BASE[3]] = p1; L[BASE[4]] = p2; L[BASE[5]] = hgt;
+    var a = L[0], b = L[1], c = L[2], s = p1 * p1 + p2 * p2, N = a * a * b * b + b * b * c * c + c * c * a * a;
+    var OM = radTex(p1 * p2, s, s), tn = radTex(hgt, s, p1 * p2), ar = radTex(1, N, 2);
+    var e1 = BASE[0], e2 = BASE[1], top = BASE[2], edge = e1 < e2 ? e1 + e2 : e2 + e1, basePl = 'O' + edge;
+    var pts = '$A(' + a + ',0,0)$、$B(0,' + b + ',0)$、$C(0,0,' + c + ')$';
+    var hint = '$\\overline{O' + top + '}$ 垂直平面 $' + basePl + '$。從 $O$ 作 $\\overline{' + edge + '}$ 的垂線，垂足 $M$：$\\overline{' + edge + '}=' + sqrtTex(s) + '$，$\\overline{OM}=\\dfrac{\\overline{O' + e1 + '}\\cdot\\overline{O' + e2 + '}}{\\overline{' + edge + '}}$（$\\triangle ' + basePl + '$ 的面積算兩次）。由三垂線定理 $\\overline{' + top + 'M}\\perp\\overline{' + edge + '}$，所以 $\\angle ' + top + 'MO$ 是兩面角，$\\tan\\theta=\\dfrac{\\overline{O' + top + '}}{\\overline{OM}}$。面積：$\\overrightarrow{AB}\\times\\overrightarrow{AC}=' + vt([b * c, c * a, a * b]) + '$，$\\triangle ABC$ 的面積是它長度的一半；而且 $\\triangle ' + basePl + '$ 是 $\\triangle ABC$ 在底面上的正射影，面積 $=\\triangle ABC\\text{ 的面積}\\times\\cos\\theta$。';
+    if (v === 3)
+      return { q: '空間中 $O$ 為原點，$A(' + a + ',0,0)$、$B(0,' + b + ',0)$、$C(0,0,c)$，$c>0$，且 $\\triangle ABC$ 的面積為 $' + ar + '$。(1) 求 $c$。(2) 設平面 $ABC$ 與平面 $OAB$ 所夾的兩面角為 $\\theta$，求 $\\tan\\theta$。',
+               a: '(1) $c=' + c + '$　(2) $\\tan\\theta=' + tn + '$',
+               h: '$\\overrightarrow{AB}\\times\\overrightarrow{AC}=(' + b + 'c,\\ ' + a + 'c,\\ ' + (a * b) + ')$，面積 $=\\dfrac12\\sqrt{' + (b * b) + 'c^2+' + (a * a) + 'c^2+' + (a * a * b * b) + '}$，令它等於 $' + ar + '$ 解出 $c^2$。(2) 從 $O$ 作 $\\overline{AB}$ 的垂線，垂足 $M$：$\\overline{AB}=' + sqrtTex(s) + '$，$\\overline{OM}=\\dfrac{\\overline{OA}\\cdot\\overline{OB}}{\\overline{AB}}$；由三垂線定理 $\\angle CMO$ 是兩面角，$\\tan\\theta=\\dfrac{\\overline{OC}}{\\overline{OM}}$。',
+               p: { a: a, b: b, c: c, v: 3, ans: { c: c, tan: [hgt, s, p1 * p2] } } };
+    return { q: '空間中 $O$ 為原點，' + pts + '。設平面 $ABC$ 與平面 $' + basePl + '$ 所夾的兩面角為 $\\theta$。(1) 求 $O$ 到直線 $' + edge + '$ 的距離。(2) 求 $\\tan\\theta$。(3) 求 $\\triangle ABC$ 的面積。',
+             a: '(1) $' + OM + '$　(2) $\\tan\\theta=' + tn + '$　(3) $' + ar + '$',
+             h: hint,
+             p: { a: a, b: b, c: c, v: v, ans: { OM: [p1 * p2, s, s], tan: [hgt, s, p1 * p2], N: N } } };
+  };
+
+  /* 1-6 正四角錐的兩面角 */
+  L2.pyramidDihedral = function (r) {
+    r();
+    var m = r.int(1, 6), h = r.int(1, 10), v = r.int(0, 1), l2 = h * h + 2 * m * m, s = h * h + m * m;
+    var giv = v === 0 ? '高為 $' + h + '$' : '側稜長為 $' + sqrtTex(l2) + '$';
+    return { q: '正四角錐 $P$-$ABCD$ 的底面是邊長 $' + (2 * m) + '$ 的正方形，' + giv + '。(1) 求 $P$ 到底邊 $\\overline{AB}$ 的距離。(2) 設側面 $PAB$ 與底面 $ABCD$ 所夾的兩面角為 $\\alpha$，求 $\\cos\\alpha$。(3) 設相鄰兩側面 $PAB$ 與 $PBC$ 所夾的兩面角為 $\\beta$（取角錐內部的那個角），求 $\\cos\\beta$。',
+             a: '(1) $' + sqrtTex(s) + '$　(2) $\\cos\\alpha=' + sqrtFracTex(m * m, s) + '$　(3) $\\cos\\beta=' + Fr.tex(F(-m * m, s)) + '$',
+             h: (v === 1 ? '先求高：底面中心 $O$ 到頂點的距離是半條對角線 $' + radTex(m, 2, 1) + '$，高 $=\\sqrt{' + l2 + '-' + (2 * m * m) + '}=' + h + '$。' : '') + '以底面中心 $O$ 為原點：$A(' + (-m) + ',' + (-m) + ',0)$、$B(' + m + ',' + (-m) + ',0)$、$C(' + m + ',' + m + ',0)$、$P(0,0,' + h + ')$。(1) $\\overline{AB}$ 的中點 $M(0,' + (-m) + ',0)$，$\\overline{PM}^2=' + hxSq(h) + '+' + hxSq(m) + '$。(2) $\\overline{PM}\\perp\\overline{AB}$、$\\overline{OM}\\perp\\overline{AB}$，$\\cos\\alpha=\\dfrac{\\overline{OM}}{\\overline{PM}}$。(3) 用外積求兩側面的法向量：$\\overrightarrow{PA}\\times\\overrightarrow{PB}$ 與 $\\overrightarrow{PB}\\times\\overrightarrow{PC}$，兩法向量夾角的餘弦是 $' + Fr.tex(F(m * m, s)) + '$；角錐內部的兩面角是鈍角，是它的補角，所以要變號（也可以從 $A$、$C$ 向 $\\overline{PB}$ 作垂線，垂足相同，用餘弦定理）。',
+             p: { m: m, h: h, v: v, ans: { PM2: s, cosA2: [m * m, s], cosB: fr2(F(-m * m, s)) } } };
+  };
+
+  /* 4-9 兩平面的夾角：外積求法向量 */
+  L2.planeAngleCoord = function (r) {
+    r();
+    var v = r.int(0, 1), A, Bp, C, D, n1, n2v, tries = 0, red = function (u) { var g = gcd(gcd(u[0], u[1]), u[2]) || 1, sg = (u[0] || u[1] || u[2]) < 0 ? -1 : 1; return sc(sg / g, u); };
+    if (v === 0) {
+      do { A = rv(r, -3, 3); Bp = rv(r, -3, 3); C = rv(r, -3, 3); D = rv(r, -3, 3); n1 = cross(sub(Bp, A), sub(C, A)); n2v = cross(sub(Bp, A), sub(D, A)); tries++; }
+      while ((isZero(n1) || isZero(n2v) || parallel(n1, n2v) || dot(n1, n2v) === 0 || n2(red(n1)) > 60 || n2(red(n2v)) > 60) && tries < 800);
+      var u1 = red(n1), u2 = red(n2v), dd = dot(u1, u2);
+      return { q: '空間中 $A' + vt(A) + '$、$B' + vt(Bp) + '$、$C' + vt(C) + '$、$D' + vt(D) + '$。(1) 各求平面 $ABC$、平面 $ABD$ 的一個法向量（分量為互質整數）。(2) 兩平面所夾的兩面角取銳角為 $\\theta$，求 $\\cos\\theta$。',
+               a: '(1) 平面 $ABC$：$' + vt(u1) + '$，平面 $ABD$：$' + vt(u2) + '$（或它們的倍數）　(2) $\\cos\\theta=' + sqrtFracTex(dd * dd, n2(u1) * n2(u2)) + '$',
+               h: '先算 $\\overrightarrow{AB}=' + vt(sub(Bp, A)) + '$、$\\overrightarrow{AC}=' + vt(sub(C, A)) + '$、$\\overrightarrow{AD}=' + vt(sub(D, A)) + '$。平面 $ABC$ 的法向量取 $\\overrightarrow{AB}\\times\\overrightarrow{AC}=' + vt(n1) + '$，平面 $ABD$ 取 $\\overrightarrow{AB}\\times\\overrightarrow{AD}=' + vt(n2v) + '$，約掉公因數。兩面角等於兩法向量的夾角（或它的補角），取銳角就是 $\\cos\\theta=\\dfrac{|\\vec n_1\\cdot\\vec n_2|}{|\\vec n_1||\\vec n_2|}$。',
+               p: { A: A, B: Bp, C: C, D: D, v: 0, ans: { n1: u1, n2: u2, cos2: [dd * dd, n2(u1) * n2(u2)] } } };
+    }
+    var k = r.int(0, 2), PN = ['xy', 'yz', 'zx'][k], ax = [2, 0, 1][k];
+    do { A = rv(r, -4, 4); Bp = rv(r, -4, 4); C = rv(r, -4, 4); n1 = cross(sub(Bp, A), sub(C, A)); tries++; }
+    while ((isZero(n1) || n1[ax] === 0 || n1[ax] * n1[ax] === n2(n1)) && tries < 400);
+    var nn = n2(n1), ar = radTex(1, nn, 2), pa = F(Math.abs(n1[ax]), 2);
+    return { q: '空間中 $A' + vt(A) + '$、$B' + vt(Bp) + '$、$C' + vt(C) + '$。(1) 求 $\\triangle ABC$ 的面積。(2) 平面 $ABC$ 與 $' + PN + '$ 平面所夾的兩面角取銳角為 $\\theta$，求 $\\cos\\theta$。(3) 求 $\\triangle ABC$ 在 $' + PN + '$ 平面上的正射影（三個頂點各自投影所成的三角形）的面積。',
+             a: '(1) $' + ar + '$　(2) $\\cos\\theta=' + sqrtFracTex(n1[ax] * n1[ax], nn) + '$　(3) $' + Fr.tex(pa) + '$',
+             h: '先算 $\\overrightarrow{AB}=' + vt(sub(Bp, A)) + '$、$\\overrightarrow{AC}=' + vt(sub(C, A)) + '$，外積 $\\vec n=\\overrightarrow{AB}\\times\\overrightarrow{AC}=' + vt(n1) + '$ 就是平面 $ABC$ 的法向量。(1) 面積 $=\\dfrac12|\\vec n|$。(2) $' + PN + '$ 平面的法向量取 $' + vt([0, 1, 2].map(function (i) { return i === ax ? 1 : 0; })) + '$，兩法向量夾角的餘弦取絕對值。(3) 正射影的面積 $=$ 原面積 $\\times\\cos\\theta$，也可以把三點投影後直接算（兩個答案一樣）。',
+             p: { A: A, B: Bp, C: C, v: 1, k: k, ans: { nn: nn, pa: fr2(pa) } } };
+  };
+
+  /* 2-10 加權距離平方和的最小值 */
+  L2.weightedSqMin = function (r) {
+    r();
+    var n = r.int(2, 3), pts = x1Pts(r, n), reg = r.int(0, 6), NM = ['A', 'B', 'C'], w, tries = 0;
+    do { w = pts.map(function () { return r.int(1, 4); }); tries++; } while (w.every(function (x) { return x === w[0]; }) && tries < 20);
+    if (w.every(function (x) { return x === w[0]; })) w[0] = w[0] === 4 ? 3 : w[0] + 1;
+    var res = x1WMin(pts, w, reg), P = res.P, W = res.W;
+    var sumTex = ''; w.forEach(function (c, k) { sumTex += term(c, '\\overline{P' + NM[k] + '}^2', sumTex === ''); });
+    var cond = reg === 6 ? '$P$ 為空間中任一點' : '$P$ 在 ' + X1REG[reg] + '上';
+    var zero = [0, 1, 2].filter(function (i) { return X1FREE[reg].indexOf(i) < 0; });
+    var avg = X1FREE[reg].map(function (i) { var s = ''; pts.forEach(function (A, k) { s += (s === '' ? '' : '+') + hxPr([w[k], A[i]]); }); return '$' + AXES[i] + '=\\dfrac{' + s + '}{' + W + '}=' + Fr.tex(P[i]) + '$'; }).join('、');
+    return { q: '設 ' + pts.map(function (A, k) { return '$' + NM[k] + vt(A) + '$'; }).join('、') + '，' + cond + '。求 $' + sumTex + '$ 的最小值，以及此時 $P$ 的坐標。',
+             a: '最小值 $' + Fr.tex(res.mn) + '$，此時 $P' + x1vf(P) + '$',
+             h: '設 $P(x,y,z)$' + (zero.length ? '，' + zero.map(function (i) { return '$' + AXES[i] + '=0$'; }).join('、') : '') + '。展開後每個能動的坐標都是開口向上的二次式，平方項係數是權重和 $' + W + '$，在「加權平均」時最小：' + avg + '。' + (zero.length ? '被限制為 $0$ 的坐標直接代 $0$。' : '') + '最後把 $P$ 代回去，每一段距離平方乘上自己的權重再相加。',
+             p: { pts: pts, w: w, reg: reg, ans: { P: P.map(fr2), mn: fr2(res.mn) } } };
+  };
+
+  /* 5-6 一列在 x²+y²+z²=R² 上：行列式的最大、最小值 */
+  L2.detMaxSphere = function (r) {
+    r();
+    var U, V, w, tries = 0, pos = r.int(0, 2), L;
+    do {
+      U = rv(r, -3, 3); V = rv(r, -3, 3); tries++;
+      w = pos === 0 ? cross(U, V) : pos === 1 ? cross(V, U) : cross(U, V);
+      L = Math.round(Math.sqrt(n2(w)));
+    } while ((isZero(w) || L * L !== n2(w)) && tries < 600);
+    if (isZero(w) || L * L !== n2(w)) { U = [1, 2, 2]; V = [2, 1, -2]; w = pos === 1 ? cross(V, U) : cross(U, V); L = 9; }
+    var R = r.int(1, 5), sh = r() < 0.5, cen = sh ? [r.int(-3, 3), r.int(-3, 3), r.int(-3, 3)] : [0, 0, 0];
+    var varRow = [0, 1, 2].map(function (i) { return AXES[i] + term(-cen[i], '', false); });
+    var rows = pos === 0 ? [varRow, U, V] : pos === 1 ? [U, varRow, V] : [U, V, varRow];
+    var tex = '\\begin{vmatrix}' + rows.map(function (row) { return row.join('&'); }).join('\\\\') + '\\end{vmatrix}';
+    var cons = isZero(cen) ? 'x^2+y^2+z^2=' + (R * R) : [0, 1, 2].map(function (i) { return cen[i] === 0 ? AXES[i] + '^2' : '(' + varRow[i] + ')^2'; }).join('+') + '=' + (R * R);
+    var Pm = [0, 1, 2].map(function (i) { return Fr.add(F(cen[i]), F(R * w[i], L)); });
+    var uName = '(' + varRow.join(',\\ ') + ')', oth = pos === 0 ? '第二列 $\\times$ 第三列' : pos === 1 ? '第三列 $\\times$ 第一列' : '第一列 $\\times$ 第二列';
+    return { q: '實數 $x,y,z$ 滿足 $' + cons + '$。求 $' + tex + '$ 的 (1) 最大值　(2) 最小值　(3) 取到最大值時的 $(x,y,z)$。',
+             a: '(1) $' + (R * L) + '$　(2) $' + (-R * L) + '$　(3) $' + x1vf(Pm) + '$',
+             h: '行列式 $=$ 含 $x,y,z$ 的那一列與另外兩列外積的內積（三重積，照列的輪換順序：' + oth + '）：$\\vec w=' + vt(w) + '$，所以行列式 $=' + uName + '\\cdot\\vec w$，$|\\vec w|=\\sqrt{' + hxN2(w) + '}=' + L + '$。條件說 $' + uName + '$ 的長度是 $' + R + '$，由 $\\vec u\\cdot\\vec w=|\\vec u||\\vec w|\\cos\\theta$（或柯西），範圍是 $-' + (R === 1 ? L : R + '\\times' + L) + '$ 到 $' + (R === 1 ? L : R + '\\times' + L) + '$；最大值在 $' + uName + '$ 與 $\\vec w$ 同向時取到，此時 $' + uName + '=' + (R === L ? '' : Fr.tex(F(R, L))) + '\\vec w$。',
+             p: { U: U, V: V, pos: pos, R: R, cen: cen, ans: { mx: R * L, P: Pm.map(fr2) } } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -960,19 +1221,94 @@
       '用體積法反解高（本章不需要平面方程式）：' + T('d=\\dfrac{3V}{S}=\\dfrac{' + (a * b * c) + '}{\\sqrt{' + N + '}}=' + sqrtFracTex(a * a * b * b * c * c, N)) + '。' + solFin(o)];
   };
 
+  /* ── 2026-09-29 擴充：新 L1 六型的第一層提示與解題步驟 ── */
+  L1_H1.cubeLineRel = '這是「正立方體中直線的位置關係」：以一個頂點為原點坐標化，平行看方向是否成比例，相交先數經過兩個端點的直線，歪斜用總數扣掉平行與相交，垂直看方向向量的內積是否為零。';
+  L1_H1.foldSquare = '這是「正方形沿對角線摺起」：摺痕的中點與兩個頂點的連線都垂直摺痕，它們的夾角就是兩面角，再用餘弦定理把兩頂點的距離和兩面角連起來。';
+  L1_H1.threePerpDist = '這是「三垂線定理」：先在底面上從垂足作那條直線的垂線，由三垂線定理，斜線段到該直線的垂線就是距離，而兩條垂線的夾角就是兩面角。';
+  L1_H1.dirCos = '這是「向量與坐標軸的夾角」：與某一軸正向的夾角用內積，餘弦就等於那個坐標除以向量長；三個坐標的平方和等於長度的平方。';
+  L1_H1.sqDistMin = '這是「距離平方和的最小值」：把平方和按坐標拆開，每個能動的坐標各自配方，在各點該坐標的平均處最小；被限制在軸或平面上的坐標直接代零。';
+  L1_H1.detEquation = '這是「含未知數的三階行列式方程式」：先展開成未知數的多項式，移項後解方程式；只有兩格含未知數而且不同列不同行時，展開後是二次式。';
+
+  L1_SOL.cubeLineRel = function (p, o) {
+    var d = x1Dir(p.XY), A = p.ans, X = p.XY.charAt(0), Y = p.XY.charAt(1), nm = function (l) { return '直線 $' + l + '$'; };
+    var rest = A.par ? p.N + '-' + A.par + '-' + A.inter : p.N + '-' + A.inter;
+    return ['以 $A$ 為原點、邊長當 $1$：直線 $' + p.XY + '$ 的方向是 $' + vt(d) + '$，這組直線共 $' + p.N + '$ 條要分類。平行（方向成比例）：' + (A.par ? p.par.map(nm).join('、') + '，共 $' + A.par + '$ 條' : '沒有平行的') + '。',
+      '相交：經過 $' + X + '$ 或 $' + Y + '$ 的有 $' + p.thru + '$ 條' + (p.other.length ? '，再加上交在頂點以外的 ' + p.other.map(nm).join('、') : '') + '，共 $' + A.inter + '$ 條。歪斜是其餘的：$' + rest + '=' + A.skew + '$ 條。',
+      '垂直：方向向量與 $' + vt(d) + '$ 的內積為 $0$ 的有 $' + A.perp + '$ 條' + (p.pskew ? '（其中 $' + p.pskew + '$ 條是歪斜垂直）' : '') + '。' + solFin(o)];
+  };
+
+  L1_SOL.foldSquare = function (p, o) {
+    var a = p.a, AO = radTex(a, 2, 2), AO2 = F(a * a, 2);
+    var s1 = '設 $O$ 為 $\\overline{BD}$ 的中點。$\\overline{AO}\\perp\\overline{BD}$、$\\overline{CO}\\perp\\overline{BD}$（摺起後仍然垂直），所以 $\\angle AOC$ 就是兩面角；$\\overline{AO}=\\overline{CO}=\\dfrac12\\overline{BD}=\\dfrac12\\cdot' + radTex(a, 2, 1) + '=' + AO + '$。';
+    if (p.v === 2) {
+      var cs = solF(p.ans.cos);
+      return [s1,
+        '在 $\\triangle AOC$ 用餘弦定理：$\\overline{AO}^2+\\overline{CO}^2=' + (a * a) + '$、$2\\overline{AO}\\cdot\\overline{CO}=' + (a * a) + '$，所以 $\\cos\\theta=\\dfrac{' + (a * a) + '-' + (p.m * p.m) + '}{' + (a * a) + '}=' + Fr.tex(cs) + '$。',
+        '$\\cos\\theta' + (cs.n > 0 ? '\\gt0' : cs.n < 0 ? '\\lt0' : '=0') + '$，所以 $\\theta$ 是' + p.ans.kind + '。' + solFin(o)];
+    }
+    var th = p.th, CT = { 60: '\\dfrac{1}{2}', 90: '0', 120: '-\\dfrac{1}{2}' }, AC2 = solF(p.ans.AC2);
+    var ACt = th === 60 ? radTex(a, 2, 2) : th === 90 ? String(a) : radTex(a, 6, 2), hT = th === 90 ? AO : radTex(a, 6, 4), Vt = radTex(p.ans.V[0], p.ans.V[1], p.ans.V[2]);
+    return [s1,
+      '在 $\\triangle AOC$ 用餘弦定理：$\\overline{AC}^2=' + Fr.tex(AO2) + '+' + Fr.tex(AO2) + '-2\\cdot' + Fr.tex(AO2) + '\\cdot' + hxPar(CT[th]) + '=' + Fr.tex(AC2) + '$，所以 $\\overline{AC}=' + ACt + '$。',
+      '以 $\\triangle BCD$ 為底，面積 $\\dfrac12\\cdot' + a + '^2=' + Fr.tex(AO2) + '$；$A$ 到底面的高 $=\\overline{AO}\\sin' + th + '^\\circ=' + hT + '$。體積 $=\\dfrac13\\cdot' + Fr.tex(AO2) + '\\cdot' + hT + '=' + Vt + '$。' + solFin(o)];
+  };
+
+  L1_SOL.threePerpDist = function (p, o) {
+    var AH = solF(p.ans.AH), d2 = solF(p.ans.d2), tn = solF(p.ans.tan), dT = sqrtFracTex(d2.n, d2.d);
+    var foot = ['H', 'B', 'D'][p.ln], LN = ['BD', 'BC', 'CD'][p.ln];
+    var s1 = p.ln === 0
+      ? '從 $A$ 作 $\\overline{BD}$ 的垂線，垂足 $H$：$\\overline{BD}=\\sqrt{' + hxSq(p.a) + '+' + hxSq(p.b) + '}=' + p.c + '$，用 $\\triangle ABD$ 的面積算兩次：$\\overline{AH}=\\dfrac{' + p.a + '\\times' + p.b + '}{' + p.c + '}=' + Fr.tex(AH) + '$。'
+      : p.ln === 1 ? '長方形中 $\\overline{AB}\\perp\\overline{BC}$，所以 $A$ 到直線 $BC$ 的垂足就是 $B$，$\\overline{AB}=' + p.a + '$。'
+      : '長方形中 $\\overline{AD}\\perp\\overline{CD}$，所以 $A$ 到直線 $CD$ 的垂足就是 $D$，$\\overline{AD}=' + p.b + '$。';
+    var sq = AH.d === 1 ? hxSq(AH.n) : '\\left(' + Fr.tex(AH) + '\\right)^2';
+    return [s1,
+      '$\\overline{PA}\\perp$ 平面 $ABCD$，由三垂線定理 $\\overline{P' + foot + '}\\perp\\overline{' + LN + '}$，所以距離是 $\\overline{P' + foot + '}=\\sqrt{' + hxSq(p.h) + '+' + sq + '}=' + solEq('\\sqrt{' + Fr.tex(d2) + '}', dT) + '$。',
+      '$\\overline{A' + foot + '}$、$\\overline{P' + foot + '}$ 都垂直 $\\overline{' + LN + '}$，所以 $\\angle P' + foot + 'A$ 是兩面角：$\\tan\\theta=\\dfrac{\\overline{PA}}{\\overline{A' + foot + '}}=' + p.h + '\\div' + (AH.d === 1 ? String(AH.n) : hxPar(Fr.tex(AH))) + '=' + Fr.tex(tn) + '$。' + solFin(o)];
+  };
+
+  L1_SOL.dirCos = function (p, o) {
+    var R = p.R, cx = X1COS[p.al], cy = X1COS[p.be], cz = X1COS[p.ans.ga];
+    var xT = radTex(R * cx[0], cx[1], cx[2]), yT = radTex(R * cy[0], cy[1], cy[2]), zT = radTex(R * cz[0], cz[1], cz[2]), cg = radTex(cz[0], cz[1], cz[2]);
+    var x2 = solF(p.ans.x2), y2 = solF(p.ans.y2), z2 = solF(p.ans.z2), sg = function (c) { return c[0] > 0 ? '\\gt0' : '\\lt0'; };
+    return ['由內積，$\\cos' + p.al + '^\\circ=\\dfrac{x}{' + R + '}$ ⟹ $x=' + R + '\\cos' + p.al + '^\\circ=' + xT + '$；同理 $y=' + R + '\\cos' + p.be + '^\\circ=' + yT + '$。',
+      '$z^2=' + (R * R) + '-' + Fr.tex(x2) + '-' + Fr.tex(y2) + '=' + Fr.tex(z2) + '$，$z\\gt0$ ⟹ $z=' + zT + '$；$\\cos\\gamma=\\dfrac{z}{' + R + '}=' + cg + '$ ⟹ $\\gamma=' + p.ans.ga + '^\\circ$。',
+      '$P' + x1Pt([xT, yT, zT]) + '$，$x' + sg(cx) + '$、$y' + sg(cy) + '$、$z\\gt0$ ⟹ 第' + CN[p.ans.oct] + '卦限。' + solFin(o)];
+  };
+
+  L1_SOL.sqDistMin = function (p, o) {
+    var pts = p.pts, n = pts.length, NM = ['A', 'B', 'C'], P = p.ans.P.map(solF), zero = [0, 1, 2].filter(function (i) { return X1FREE[p.reg].indexOf(i) < 0; });
+    var avg = X1FREE[p.reg].map(function (i) { return '$' + AXES[i] + '=\\dfrac{' + pts.map(function (A) { return hxPar(A[i]); }).join('+') + '}{' + n + '}=' + Fr.tex(P[i]) + '$'; }).join('、');
+    return ['設 $P(x,y,z)$' + (zero.length ? '，限制條件是 ' + zero.map(function (i) { return '$' + AXES[i] + '=0$'; }).join('、') : '') + '。平方和按坐標拆開後，每個能動的坐標都是開口向上的二次式，在平均處最小：' + avg + '。',
+      '所以 $P' + x1vf(P) + '$。各點到 $P$ 的距離平方：' + p.ans.each.map(function (e, k) { return '$\\overline{P' + NM[k] + '}^2=' + Fr.tex(solF(e)) + '$'; }).join('、') + '，相加得最小值 $' + Fr.tex(solF(p.ans.mn)) + '$。',
+      '（也可以把整個式子展開成 $x,y,z$ 的二次式再配方，結果相同。）' + solFin(o)];
+  };
+
+  L1_SOL.detEquation = function (p, o) {
+    var A = p.ans.A, Bc = p.ans.B, c0 = p.ans.C - p.k, sg = A < 0 ? -1 : 1, a2 = sg * A, b2 = sg * Bc, c2 = sg * c0, D = b2 * b2 - 4 * a2 * c2, sd = Math.round(Math.sqrt(D));
+    var poly = hxLin([[A, 'x^2'], [Bc, 'x'], [p.ans.C, '']]), quad = hxLin([[a2, 'x^2'], [b2, 'x'], [c2, '']]);
+    var roots = p.ans.roots.length === 1 ? '$x=\\dfrac{' + (-b2) + '}{' + (2 * a2) + '}=' + p.ans.roots[0][0] + '$（重根）' : '$x=\\dfrac{' + (-b2) + '\\pm' + sd + '}{' + (2 * a2) + '}$，即 $x=' + Fr.tex(solF(p.ans.roots[0])) + '$ 或 $x=' + Fr.tex(solF(p.ans.roots[1])) + '$';
+    return ['只有兩格含 $x$，而且不同列、不同行：用對角線法展開，只有一支乘積同時含這兩格，整理得 $' + poly + '$。',
+      '令它等於 $' + p.k + '$，移項' + (sg < 0 ? '（再兩邊乘 $-1$）' : '') + '：$' + quad + '=0$，判別式 $' + hxSq(b2) + '-4' + hxPr([a2, c2]) + '=' + D + '$。',
+      '公式解：' + roots + '。' + solFin(o)];
+  };
+
   var META_L1 = [
       ['octantDist', '§2 卦限與距離'], ['symProj', '§2 對稱點與投影點'], ['midDiv', '§2 分點與中點'], ['centroidC', '§2 重心反求頂點'], ['equidistAxis', '§2 軸上等距點'], ['boxGeom', '§2 長方體體對角線'], ['minSum', '§2 坐標化解最小值'],
       ['vecOps3', '§3 向量基本運算'], ['parallel3', '§3 平行：待定分量'], ['collinear3', '§3 三點共線'], ['divCoef', '§3 係數和判別法'], ['coplanarComb', '§3 共平面與線性組合'], ['fourCoplanar', '§3 四點共平面'], ['triIneq3', '§3 三角不等式'], ['sumLen', '§3 三向量和的長度'],
       ['dotAngle3', '§4 內積與夾角'], ['perpT', '§4 垂直：待定係數'], ['unitPerp', '§4 同時垂直的單位向量'], ['proj3', '§4 正射影'], ['cauchy3', '§4 柯西不等式'], ['cross3', '§4 外積計算'], ['area3', '§4 三角形面積'], ['dihedralBox', '§4 長方體的兩面角'],
-      ['det3calc', '§5 三階行列式'], ['detProps', '§5 行列式性質'], ['volume3', '§5 平行六面體與四面體體積'], ['ptPlaneAxes', '§5 牆角型：點到平面（體積法）']
+      ['det3calc', '§5 三階行列式'], ['detProps', '§5 行列式性質'], ['volume3', '§5 平行六面體與四面體體積'], ['ptPlaneAxes', '§5 牆角型：點到平面（體積法）'],
+      ['cubeLineRel', '§1 正立方體中直線的位置關係'], ['foldSquare', '§1 正方形沿對角線摺起'], ['threePerpDist', '§1 三垂線：到直線的距離與兩面角'],
+      ['dirCos', '§2 OP 與坐標軸的夾角'], ['sqDistMin', '§2 距離平方和的最小值'], ['detEquation', '§5 解行列式方程式']
   ];
   var META_L2 = [
       ['lineFaceAngle', '§2 兩體對角線的夾角'], ['cubeCoefDist', '§3 係數就是坐標'], ['bisectorT', '§4 角平分線方向'], ['extBisector', '§4 外角平分線交對邊'], ['weightedZero', '§3 加權和為零向量'],
       ['reflectPlane', '§2 鏡面反射'], ['paraCenter', '§3 平行六面體的面心'], ['detPoly', '§5 含 x 的行列式'], ['tetraDist', '§5 四面體體積與點到平面'], ['fourthVertex', '§3 平行四邊形第四頂點'],
-      ['regularTetra', '§1 正四面體的五個數字'], ['projLine3', '§4 點在直線上的投影'], ['ptLineDist', '§4 點到直線的距離'], ['cauchyPoint', '§4 平面上的最近點'], ['skewAngleBox', '§1 歪斜線的夾角'], ['volumeRatio', '§5 三角錐體積比']
+      ['regularTetra', '§1 正四面體的五個數字'], ['projLine3', '§4 點在直線上的投影'], ['ptLineDist', '§4 點到直線的距離'], ['cauchyPoint', '§4 平面上的最近點'], ['skewAngleBox', '§1 歪斜線的夾角'], ['volumeRatio', '§5 三角錐體積比'],
+      ['foldRect', '§1 長方形沿對角線摺起'], ['cornerDihedral', '§1 牆角四面體：斜面與底面的兩面角'], ['pyramidDihedral', '§1 正四角錐的兩面角'],
+      ['planeAngleCoord', '§4 兩平面的夾角（外積求法向量）'], ['weightedSqMin', '§2 加權距離平方和的最小值'], ['detMaxSphere', '§5 行列式的最大值與最小值']
   ];
   /* ══════════════════════════════════════════════════════════
-     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
+     L3　中上（18 型）：每型對應固定題 L3-1～L3-18 的「類似題」
      ─────────────────────────────────────────────────────────
      同題型換數字／情境，答案一律精確：整數、F()（分數）、sqrtTex／sqrtFracTex／radTex（最簡根式、分母有理化）。
      本章工具只到「坐標＋向量＋內積＋外積＋三階行列式」：
@@ -1469,15 +1805,63 @@
              p: { M: M, d: d, v: v, ln: ln, ans: val } };
   };
 
+  /* ══════════ 2026-09-29 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* ══ L3-16　兩個全等直角三角形沿斜邊摺起：兩個垂足重合，∠BMD 就是兩面角 ══ */
+  L3.foldKite = function (r) {
+    r();
+    var p, q, ph, cs, BD2, s, tries = 0;
+    do {
+      p = r.int(1, 9); q = r.int(1, 9); ph = r.pick([60, 90, 120]); s = p * p + q * q;
+      BD2 = { 60: p * p, 90: 2 * p * p, 120: 3 * p * p }[ph];
+      cs = Fr.sub(F(1), F(BD2 * s, 2 * p * p * q * q)); tries++;
+    } while ((Math.abs(cs.n) >= cs.d) && tries < 200);
+    if (Math.abs(cs.n) >= cs.d) { p = 3; q = 4; ph = 60; s = 25; BD2 = 9; cs = F(7, 32); }
+    var BDt = ph === 60 ? String(p) : ph === 90 ? radTex(p, 2, 1) : radTex(p, 3, 1), BM2 = F(p * p * q * q, s), BMt = radTex(p * q, s, s);
+    return { q: '四邊形 $ABCD$ 由兩個全等的直角三角形 $\\triangle ABC$、$\\triangle ADC$ 組成，$\\angle B=\\angle D=90^\\circ$，$\\overline{AB}=\\overline{AD}=' + p + '$、$\\overline{BC}=\\overline{DC}=' + q + '$。將它沿對角線 $\\overline{AC}$ 摺起，使 $\\angle BAD=' + ph + '^\\circ$。設平面 $ABC$ 與平面 $ADC$ 所夾的兩面角為 $\\theta$，求 (1) $\\overline{BD}$　(2) $B$ 到 $\\overline{AC}$ 的距離　(3) $\\cos\\theta$。',
+             a: '(1) $' + BDt + '$　(2) $' + BMt + '$　(3) $\\cos\\theta=' + Fr.tex(cs) + '$',
+             h: '摺起後 $\\overline{AB}=\\overline{AD}=' + p + '$ 不變，$\\triangle ABD$ 中 $\\angle BAD=' + ph + '^\\circ$，由餘弦定理 $\\overline{BD}^2=' + BD2 + '$。兩個全等直角三角形對斜邊 $\\overline{AC}=' + sqrtTex(s) + '$ 作高，垂足是同一點 $M$（$\\overline{AM}=\\dfrac{\\overline{AB}^2}{\\overline{AC}}$ 兩邊一樣），高 $\\overline{BM}=\\overline{DM}=\\dfrac{\\overline{AB}\\cdot\\overline{BC}}{\\overline{AC}}$，$\\overline{BM}^2=' + Fr.tex(BM2) + '$。$\\overline{BM}$、$\\overline{DM}$ 都垂直摺痕，$\\angle BMD$ 就是兩面角：$\\cos\\theta=\\dfrac{\\overline{BM}^2+\\overline{DM}^2-\\overline{BD}^2}{2\\overline{BM}\\cdot\\overline{DM}}$。',
+             p: { p: p, q: q, ph: ph, ans: { BD2: BD2, BM2: fr2(BM2), cos: fr2(cs) } } };
+  };
+
+  /* ══ L3-17　先配方，再把行列式看成「含 x,y,z 的列」與另外兩列外積的內積 ══ */
+  L3.detMaxShift = function (r) {
+    r();
+    var r1, r3, w, tries = 0;
+    do { r1 = rv(r, -3, 3); r3 = rv(r, -3, 3); w = cross(r3, r1); tries++; } while ((isZero(w) || n2(w) > 200) && tries < 300);
+    if (isZero(w)) { r1 = [1, 2, -1]; r3 = [2, -1, 3]; w = cross(r3, r1); }
+    var g = gcd(gcd(w[0], w[1]), w[2]), w0 = sc(1 / g, w), n0 = n2(w0), j = r.int(1, 3), cen;
+    do { cen = [r.int(-3, 3), r.int(-3, 3), r.int(-3, 3)]; } while (isZero(cen));
+    var R2 = j * j * n0, mn = -j * g * n0, Pm = sub(cen, sc(j, w0)), G = n2(cen) - R2;
+    var eq = 'x^2+y^2+z^2' + term(-2 * cen[0], 'x', false) + term(-2 * cen[1], 'y', false) + term(-2 * cen[2], 'z', false) + term(G, '', false) + '=0';
+    var vr = [0, 1, 2].map(function (i) { return AXES[i] + term(-cen[i], '', false); });
+    var cons = [0, 1, 2].map(function (i) { return cen[i] === 0 ? AXES[i] + '^2' : '(' + vr[i] + ')^2'; }).join('+') + '=' + R2;
+    var tex = '\\begin{vmatrix}' + r1.join('&') + '\\\\' + vr.join('&') + '\\\\' + r3.join('&') + '\\end{vmatrix}';
+    return { q: '實數 $x,y,z$ 滿足 $' + eq + '$。當 $x=t$ 時，行列式 $' + tex + '$ 有最小值 $m$。(1) 求數對 $(t,m)$。(2) 求此行列式的最大值。',
+             a: '(1) $(t,m)=(' + Pm[0] + ',' + mn + ')$　(2) $' + (-mn) + '$',
+             h: '先配方：$' + cons + '$，令 $\\vec u=(' + vr.join(',\\ ') + ')$，則 $|\\vec u|=' + sqrtTex(R2) + '$。行列式沿第二列看是 $\\vec u\\cdot(\\text{第三列}\\times\\text{第一列})$，第三列 $\\times$ 第一列 $=\\vec w=' + vt(w) + '$，$|\\vec w|=' + sqrtTex(n2(w)) + '$。由 $\\vec u\\cdot\\vec w=|\\vec u||\\vec w|\\cos\\theta$，最小值在 $\\vec u$ 與 $\\vec w$ 反向時取到，$m=-|\\vec u||\\vec w|$；此時 $\\vec u$ 是與 $\\vec w$ 反向、長度 $' + sqrtTex(R2) + '$ 的向量，再由 $\\vec u$ 的第一個分量求 $t$。',
+             p: { r1: r1, r3: r3, cen: cen, j: j, ans: { t: Pm[0], m: mn, P: Pm } } };
+  };
+
+  /* ══ L3-18　稜同時垂直兩個面內的線：兩面角直接就是那兩條線的夾角 ══ */
+  L3.tetraPerpEdge = function (r) {
+    r();
+    var p = r.int(2, 9), h = r.int(2, 9), q = r.int(2, 9), s = p * p + q * q;
+    return { q: '$D$-$ABC$ 為四面體，$\\overline{DA}$ 垂直 $\\overline{AB}$ 與 $\\overline{AC}$，且 $\\overline{DB}\\perp\\overline{BC}$。已知 $\\overline{DA}=' + h + '$、$\\overline{DB}=' + sqrtTex(p * p + h * h) + '$、$\\overline{BC}=' + q + '$。(1) 求 $\\overline{AC}$。(2) 設平面 $DAB$ 與平面 $DAC$ 所夾的兩面角為 $\\theta$，求 $\\cos\\theta$。(3) 設平面 $DBC$ 與平面 $ABC$ 所夾的兩面角為 $\\varphi$，求 $\\tan\\varphi$。',
+             a: '(1) $' + sqrtTex(s) + '$　(2) $\\cos\\theta=' + sqrtFracTex(p * p, s) + '$　(3) $\\tan\\varphi=' + Fr.tex(F(h, p)) + '$',
+             h: '$\\overline{DA}$ 垂直平面 $ABC$ 內兩條相交直線 ⟹ $\\overline{DA}\\perp$ 平面 $ABC$，$\\overline{AB}^2=\\overline{DB}^2-\\overline{DA}^2=' + (p * p) + '$。$\\overline{BC}$ 同時垂直 $\\overline{DB}$ 與 $\\overline{DA}$ ⟹ $\\overline{BC}\\perp$ 平面 $DAB$ ⟹ $\\overline{BC}\\perp\\overline{AB}$，所以 $\\triangle ABC$ 是直角三角形，$\\overline{AC}^2=\\overline{AB}^2+\\overline{BC}^2$。(2) 稜 $\\overline{DA}$ 同時垂直 $\\overline{AB}$、$\\overline{AC}$ ⟹ 兩面角就是 $\\angle BAC$，$\\cos\\theta=\\dfrac{\\overline{AB}}{\\overline{AC}}$。(3) 稜 $\\overline{BC}$ 同時垂直 $\\overline{AB}$、$\\overline{DB}$ ⟹ 兩面角就是 $\\angle DBA$，$\\tan\\varphi=\\dfrac{\\overline{DA}}{\\overline{AB}}$。',
+             p: { p: p, h: h, q: q, ans: { AC2: s, cos2: [p * p, s], tan: fr2(F(h, p)) } } };
+  };
+
   var META_L3 = [['polePythag', '直徑上的圓周角＋垂直桿：兩次畢氏'], ['antUnfold', '螞蟻爬表面：兩種展開取小'], ['cornerSection', '正立方體的牆角截面三角形'],
                  ['tetraEdgeDist', '三稜兩兩垂直：頂點到對稜的距離'], ['threePerpLine', '三垂線定理：三個直角三角形接力'], ['cubeProj', '正立方體頂點在直線上的投影點'],
                  ['twoDivSeg', '兩個分點再求距離'], ['cubeCenter', '三頂點還原正立方體的中心'], ['segPlaneHit', '線段交坐標平面的交點'],
                  ['axisDistFind', '到三軸的距離反求坐標'], ['pillarsRect', '底面矩形＋四根柱子'], ['mirrorMinPlane', '鏡射求 AP＋BP 的最小值'],
-                 ['crossAreaDist', '一個外積：面積與點到直線距離'], ['maxDotVec', '|b| 固定求 a·b 的最大值'], ['detCloseRows', '數字接近的行列式：列減列']];
+                 ['crossAreaDist', '一個外積：面積與點到直線距離'], ['maxDotVec', '|b| 固定求 a·b 的最大值'], ['detCloseRows', '數字接近的行列式：列減列'],
+                 ['foldKite', '全等直角三角形沿斜邊摺起'], ['detMaxShift', '先配方的行列式最小值'], ['tetraPerpEdge', '稜垂直兩條線：兩面角化成平面角']];
   /* 固定題 L3-n 對應的類似題型 */
   var L3_FIX = { 'L3-1': 'polePythag', 'L3-2': 'antUnfold', 'L3-3': 'cornerSection', 'L3-4': 'tetraEdgeDist', 'L3-5': 'threePerpLine',
                  'L3-6': 'cubeProj', 'L3-7': 'twoDivSeg', 'L3-8': 'cubeCenter', 'L3-9': 'segPlaneHit', 'L3-10': 'axisDistFind',
-                 'L3-11': 'pillarsRect', 'L3-12': 'mirrorMinPlane', 'L3-13': 'crossAreaDist', 'L3-14': 'maxDotVec', 'L3-15': 'detCloseRows' };
+                 'L3-11': 'pillarsRect', 'L3-12': 'mirrorMinPlane', 'L3-13': 'crossAreaDist', 'L3-14': 'maxDotVec', 'L3-15': 'detCloseRows', 'L3-16': 'foldKite', 'L3-17': 'detMaxShift', 'L3-18': 'tetraPerpEdge' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：兩點距離與中點（高一上 ch2）、平面向量的內積與夾角、垂直與平行的待定係數、二階行列式與三角形面積、分點公式（以上高二上 ch3）
@@ -1564,6 +1948,13 @@
     'L2.cubeCoefDist': { f: function (p) { return p.which; }, why: '以 $A$ 為原點、三條稜為坐標軸，三個係數就是 $P$ 的坐標。到<b>哪一條稜</b>（坐標軸）的距離，就把<b>那個坐標丟掉</b>，剩下兩個坐標的平方和開根號；到哪一個面（坐標平面）的距離，就是名字裡缺的那個坐標。問的軸換了，被丟掉的坐標就跟著換。' },
     'L2.reflectPlane': { f: function (p) { return p.pl; }, why: '光線對坐標平面反射時，<b>只有垂直鏡面的那個分量變號</b>，平行鏡面的兩個分量不變：鏡面是 $xy$ 平面 ⟹ $z$ 分量變號；$yz$ 平面 ⟹ $x$ 分量變號；$zx$ 平面 ⟹ $y$ 分量變號。先寫出入射方向 $\\overrightarrow{PO}$，再依鏡面改一個正負號。' }
   };
+  /* 2026-09-29 擴充題型的對照題 */
+  CONTRAST['L1.threePerpDist'] = { f: function (p) { return p.ln === 0; }, why: '垂足的位置決定一切：直線是長方形的邊（$BC$ 或 $CD$）時，$A$ 到它的垂足就是頂點 $B$ 或 $D$，距離直接是 $\\overline{PB}$ 或 $\\overline{PD}$；直線是對角線 $BD$ 時，垂足 $H$ 在對角線中間，要先用面積算 $\\overline{AH}=\\dfrac{\\overline{AB}\\cdot\\overline{AD}}{\\overline{BD}}$。之後都是 $\\overline{PA}$ 與垂足距離的畢氏定理，$\\tan\\theta$ 也都是 $\\overline{PA}$ 除以垂足到 $A$ 的距離。' };
+  CONTRAST['L1.foldSquare'] = { f: function (p) { return p.v === 2; }, why: '同一個 $\\triangle AOC$、同一條餘弦定理：已知兩面角求 $\\overline{AC}$ 是「代進去」，已知 $\\overline{AC}$ 求兩面角是「反解 $\\cos\\theta$」。$\\overline{AO}=\\overline{CO}$ 都是半條對角線，摺起前後不變。' };
+  CONTRAST['L1.sqDistMin'] = { f: function (p) { return p.reg === 6; }, why: '$P$ 在空間中自由移動時，三個坐標都取各點的平均（就是重心）；$P$ 被限制在坐標軸或坐標平面上時，被限制的坐標只能是 $0$，能動的坐標照樣取平均，最小值因此比較大。' };
+  CONTRAST['L2.pyramidDihedral'] = { f: function (p) { return p.v; }, why: '給高或給側稜長只差第一步：側稜長的平方＝高的平方＋半條底面對角線的平方。求出高之後，兩個兩面角都只由「底邊的一半」與「高」決定。' };
+  CONTRAST['L2.foldRect'] = { f: function (p) { return p.v === 2; }, why: '同樣沿對角線摺長方形：給兩面角時，兩個垂足錯開 $\\overline{EF}$，距離要把「沿摺痕的差」與「垂直摺痕的兩段」合起來；給「投影落在邊上」時，改用坐標設 $D(h,0,k)$，由摺痕兩端的距離不變列兩條方程式。' };
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

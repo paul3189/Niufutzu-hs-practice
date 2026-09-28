@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -236,7 +236,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（15,000 題抽樣）；固定題全數人工＋電腦重算。本章只用有限項的等差、等比、遞迴、Σ 公式與數學歸納法；無窮多項的相加（無窮等比級數）是高三選修的內容，本書一律不碰。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（18,000 題抽樣）；固定題全數人工＋電腦重算。本章只用有限項的等差、等比、遞迴、Σ 公式與數學歸納法；無窮多項的相加（無窮等比級數）是高三選修的內容，本書一律不碰。</li>
   </ol>
 </div>
 
@@ -263,15 +263,15 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>$a_n$ 與 $S_n$ 分不清、遞迴式看到就想「代到底」、Σ 公式背了不會拆的同學。</div>
-  <div><b>目標</b>24 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>28 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
 <h3 class="sec">1-1 等差與等比：兩項定數列、對稱設法、平均成長率</h3>
-<div class="must">先要會：<b>等差兩項相減 $=(q-p)d$、等比兩項相除 $=r^{q-p}$</b>、<b>$a_n=a_1+(n-1)d$ 寫成 $dn+(a_1-d)$</b>、<b>變號位置：解 $a_n\gt0$ 再取整數</b>、<b>三數等差設 $m-d,m,m+d$；三數等比設 $\frac ar,a,ar$</b>、<b>立方根唯一、平方根要 $\pm$</b>、<b>平均成長率是幾何平均：$(1+r)^n=$ 各年倍率相乘</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth"></div>
-<div class="fadeset" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth" data-seed="7101"></div>
-<div class="fixset" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth" data-seed="6101"></div>
+<div class="must">先要會：<b>等差兩項相減 $=(q-p)d$、等比兩項相除 $=r^{q-p}$</b>、<b>$a_n=a_1+(n-1)d$ 寫成 $dn+(a_1-d)$</b>、<b>變號位置：解 $a_n\gt0$ 再取整數</b>、<b>三數等差設 $m-d,m,m+d$；三數等比設 $\frac ar,a,ar$</b>、<b>立方根唯一、平方根要 $\pm$</b>、<b>平均成長率是幾何平均：$(1+r)^n=$ 各年倍率相乘</b>、<b>反求某一年：先算總倍率 $(1+r)^n$，再除掉已知年份的倍率</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth,growthNeed"></div>
+<div class="fadeset" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth,growthNeed" data-seed="7101"></div>
+<div class="fixset" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth,growthNeed" data-seed="6101"></div>
 
 <h3 class="sec">1-2 遞迴：四種基本型＋週期</h3>
 <div class="must">先要會：<b>$a_{n+1}=pa_n+q$：先解不動點 $x^\ast=px^\ast+q$，$\langle a_n-x^\ast\rangle$ 是公比 $p$ 的等比</b>、<b>$a_{n+1}=a_n+f(n)$：疊縮相加 $a_n=a_1+\sum_{k=1}^{n-1}f(k)$</b>、<b>$a_{n+1}=g(n)\,a_n$：疊縮相乘，分子分母交錯消</b>、<b>$a_{n+1}=\dfrac{a_n}{ka_n+1}$：取倒數變等差</b>、<b>分式遞迴先算前幾項，看到回到 $a_1$ 就是週期</b>。</div>
@@ -280,10 +280,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fixset" data-tier="L1" data-keys="recurLinear,recurSum,recurProd,recurRecip,periodic" data-seed="6151"></div>
 
 <h3 class="sec">2 級數：Σ 公式與五種求和技術</h3>
-<div class="must">先要會：<b>$\sum k=\frac{n(n+1)}2$、$\sum k^2=\frac{n(n+1)(2n+1)}6$、$\sum k^3=\left[\frac{n(n+1)}2\right]^2$</b>、<b>Σ 可以拆、常數可以提</b>、<b>等差和 $=\frac{n(a_1+a_n)}2$；中段和＝大減小</b>、<b>$S_n$ 最大 ⟺ 加到最後一個正項</b>、<b>等比和 $=\frac{a_1(1-r^n)}{1-r}$，三段和也成等比</b>、<b>裂項：$\frac1{(ak+b)(ak+a+b)}=\frac1a\left(\frac1{ak+b}-\frac1{ak+a+b}\right)$</b>、<b>等差 $\times$ 等比：錯位相減</b>、<b>$a_n=S_n-S_{n-1}$ 只對 $n\ge2$；$S_n$ 有常數項第一項就脫隊</b>、<b>絕對值和：找變號位置，負段整段變號</b>、<b>複利 $P(1+i)^n$、單利 $P(1+ni)$</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound"></div>
-<div class="fadeset" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound" data-seed="7301"></div>
-<div class="fixset" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound" data-seed="6201" data-n="11"></div>
+<div class="must">先要會：<b>$\sum k=\frac{n(n+1)}2$、$\sum k^2=\frac{n(n+1)(2n+1)}6$、$\sum k^3=\left[\frac{n(n+1)}2\right]^2$</b>、<b>Σ 可以拆、常數可以提</b>、<b>等差和 $=\frac{n(a_1+a_n)}2$；中段和＝大減小</b>、<b>$S_n$ 最大 ⟺ 加到最後一個正項</b>、<b>等比和 $=\frac{a_1(1-r^n)}{1-r}$，三段和也成等比</b>、<b>裂項：$\frac1{(ak+b)(ak+a+b)}=\frac1a\left(\frac1{ak+b}-\frac1{ak+a+b}\right)$</b>、<b>等差 $\times$ 等比：錯位相減</b>、<b>$a_n=S_n-S_{n-1}$ 只對 $n\ge2$；$S_n$ 有常數項第一項就脫隊</b>、<b>絕對值和：找變號位置，負段整段變號</b>、<b>複利 $P(1+i)^n$、單利 $P(1+ni)$</b>、<b>平方和不從 $1$ 開始：大的減小的；奇數的平方和＝全部減偶數</b>、<b>$\sum(pa_k+q)^2$：先乘開再逐項求和，常數要乘項數</b>、<b>圖形每次縮成固定的倍數，那個倍數就是公比</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound,powerSumRange,sigmaLinear,shapeGP"></div>
+<div class="fadeset" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound,powerSumRange,sigmaLinear,shapeGP" data-seed="7301"></div>
+<div class="fixset" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound,powerSumRange,sigmaLinear,shapeGP" data-seed="6201" data-n="11"></div>
 
 <h3 class="sec">3 數學歸納法：遞推步驟怎麼寫</h3>
 <div class="must">先要會：<b>兩步缺一不可：起始值驗證 ＋「$n=k$ 成立 ⟹ $n=k+1$ 成立」</b>、<b>恆等式型：$n=k$ 的右式 ＋ 第 $k+1$ 項，要化成 $n=k+1$ 的右式</b>、<b>整除型：設 $f(k)=mt$，把 $f(k+1)$ 寫成 $b\,f(k)+$（$m$ 的倍數）</b>、<b>起始點不一定是 $1$</b>。</div>
@@ -291,7 +291,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fadeset" data-tier="L1" data-keys="inductionStep,divisible" data-seed="7401"></div>
 <div class="fixset" data-tier="L1" data-keys="inductionStep,divisible" data-seed="6301" data-n="6"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 24 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">L1 混合檢測 12 題（全章 28 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -300,19 +300,19 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>16 個段考最常見題型（依 28 份高一段考卷的出現率選出），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>21 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 26 份高一段考卷重新統計，補了 5 型），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
-<h3 class="sec">數列進階：對稱性、奇偶項、由 S_n 反推、混合遞迴</h3>
-<div class="must">段考 28 卷中<b>等差數列 18 卷、等比數列 20 卷、遞迴數列 13 卷、一般項 10 卷</b>。解題要點：<b>$S_m=S_n$ ⟹ $a_{m+1}+\cdots+a_n=0$，正中間那項是 $0$，對稱軸 $\frac{m+n+1}2$</b>；<b>$\dfrac{a_k}{b_k}=\dfrac{S_{2k-1}}{T_{2k-1}}$（奇數項的和＝項數 $\times$ 中間項）</b>；<b>偶數項和 $=r\times$ 奇數項和</b>；<b>$\langle a_n^2\rangle$ 公比 $r^2$，不必決定 $r$ 正負</b>；<b>$S_n=A\cdot b^n+C$：$C\ne-A$ 就脫隊</b>；<b>$\sum ka_k=T_n$ ⟹ $na_n=T_n-T_{n-1}$</b>；<b>$a_{n+1}=pa_n+q^n$：除以 $q^{n+1}$ 回到一階線性</b>；<b>$S_n=c-a_n$ 類：$n=1$ 先解 $a_1$，再相減得公比</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="arSymm,sumRatio,oddEvenGP,gpSquares,sumFromSn,weightedRecur,recurMixed,snRecur"></div>
+<h3 class="sec">數列進階：對稱性、奇偶項、由 S_n 反推、混合遞迴、衍生數列、等差變等比</h3>
+<div class="must">26 份高一段考卷中<b>等比數列 26 卷、等差數列 24 卷、遞迴數列 23 卷、衍生數列是否等差／等比 14 卷、三數成等差或等比 11 卷</b>。解題要點：<b>$S_m=S_n$ ⟹ $a_{m+1}+\cdots+a_n=0$，正中間那項是 $0$，對稱軸 $\frac{m+n+1}2$</b>；<b>$\dfrac{a_k}{b_k}=\dfrac{S_{2k-1}}{T_{2k-1}}$（奇數項的和＝項數 $\times$ 中間項）</b>；<b>偶數項和 $=r\times$ 奇數項和</b>；<b>$\langle a_n^2\rangle$ 公比 $r^2$，不必決定 $r$ 正負</b>；<b>$S_n=A\cdot b^n+C$：$C\ne-A$ 就脫隊</b>；<b>$\sum ka_k=T_n$ ⟹ $na_n=T_n-T_{n-1}$</b>；<b>$a_{n+1}=pa_n+q^n$：除以 $q^{n+1}$ 回到一階線性</b>；<b>$S_n=c-a_n$ 類：$n=1$ 先解 $a_1$，再相減得公比</b>；<b>衍生數列：問等差算相鄰兩項的差、問等比算比，與 $n$ 無關才是；常數數列兩種都算</b>；<b>等差三數調整後成等比：設 $m-d,m,m+d$，調整後中間項的平方＝兩端相乘</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="arSymm,sumRatio,oddEvenGP,gpSquares,sumFromSn,weightedRecur,recurMixed,snRecur,derivedSeq,apToGp"></div>
 
-<h3 class="sec">級數技術：等差 × 等差、絕對值、高斯符號、分群、等差 ÷ 等比、年金、對數</h3>
-<div class="must">段考 28 卷中<b>級數求和 16 卷、等比級數 14 卷、複利／年金 8 卷、裂項 4 卷、錯位相減 4 卷</b>。解題要點：<b>等差 $\times$ 等差＝二次式，套三個公式</b>；<b>$|a_n|$ 和：先因式分解找負段</b>；<b>$\lfloor k/m\rfloor$：每 $m$ 個一群，最後一群數個數</b>；<b>分群數列先問「前面幾群共幾項」</b>；<b>$\sum\frac{k}{2^k}=2-\frac{n+2}{2^n}$（錯位相減推一次）</b>；<b>裂項反求 $n$：化成 $\frac{n}{2n+1}$ 直接比對</b>；<b>年金：每一筆各自滾幾年，是等比級數</b>；<b>等比取 $\log$ 變等差</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="prodAP,absQuad,floorSum,groupSeq,kOver2k,telescopeN,annuity,logGP"></div>
+<h3 class="sec">級數技術：等差 × 等差、絕對值、高斯符號、分群、等差 ÷ 等比、年金、對數、和的正負、分期付款、圖形規律</h3>
+<div class="must">26 份高一段考卷中<b>等比級數 21 卷、等差級數 15 卷、平方和與立方和 13 卷、圖形規律 11 卷、複利／年金／分期付款 10 卷、$S_n$ 最大與正負判斷 10 卷、裂項 10 卷</b>。解題要點：<b>等差 $\times$ 等差＝二次式，套三個公式</b>；<b>$|a_n|$ 和：先因式分解找負段</b>；<b>$\lfloor k/m\rfloor$：每 $m$ 個一群，最後一群數個數</b>；<b>分群數列先問「前面幾群共幾項」</b>；<b>$\sum\frac{k}{2^k}=2-\frac{n+2}{2^n}$（錯位相減推一次）</b>；<b>裂項反求 $n$：化成 $\frac{n}{2n+1}$ 直接比對</b>；<b>年金：每一筆各自滾幾年，是等比級數</b>；<b>等比取 $\log$ 變等差</b>；<b>$S_{2k-1}=(2k-1)a_k$、$S_{2k}=k(a_k+a_{k+1})$：由 $S_n$ 的正負找出變號的那一項</b>；<b>分期付款：借款和每一期的還款都滾到最後一期再比較</b>；<b>圖形規律：先寫出第 $k$ 層（第 $k$ 個圖）的個數，再用 $\sum$ 加起來</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="prodAP,absQuad,floorSum,groupSeq,kOver2k,telescopeN,annuity,logGP,arSignSn,loanPay,figStack"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<h3 class="sec">L2 混合檢測 12 題（全 21 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -321,12 +321,12 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過（L3-3 的官方答案有誤，見該題）。</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字或問法。答案與詳解皆重新驗算過（L3-3 的官方答案有誤，見該題）。</div>
 
-<div class="fx" id="L3-1" data-gen="recurDivide"><div class="fxh"><span class="no">L3-1</span><span class="kw">3a_{n+1}−2a_n=−2：先除成 a_{n+1}=pa_n+q，再解不動點</span><span class="src">雄中 113上 填 4</span></div>
+<div class="fx" id="L3-1" data-gen="recurDivide"><div class="fxh"><span class="no">L3-1</span><span class="kw">$3a_{n+1}-2a_n=-2$：先除成 $a_{n+1}=pa_n+q$，再解不動點</span><span class="src">雄中 113上 填 4</span></div>
 <div class="fxq">設 $a_1=7$，且 $3a_{n+1}-2a_n=-2$（$n\ge1$）。求 $a_8$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$a_8=-\dfrac{358}{243}$</div>
@@ -439,7 +439,34 @@ $S-(-2S)=3S=\big[1+(-2)+(-2)^2+\cdots+(-2)^7\big]-8(-2)^8=\dfrac{1-(-2)^8}{1-(-2
 $a_3=12$、$a_5=48$：$12x+48y=16$ ⟹ $3x+12y=4$；又 $(3x)(12y)=36xy=3$。<br>
 $3x$ 與 $12y$ 是 $t^2-4t+3=0$ 的兩根 $1,3$：若 $3x=3$ 則 $x=1$ 不合（須小於 $1$）；故 $3x=1,\ 12y=3$，$x=\dfrac13,\ y=\dfrac14$，$3x-20y=1-5=-4$。</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fx" id="L3-16" data-gen="blockSums"><div class="fxh"><span class="no">L3-16</span><span class="kw">每 10 項切成一段：等比數列各段的和也成等比，公比是 $r^{10}$</span><span class="src">改編自 建國中學 113下 填 8</span></div>
+<div class="fxq">已知各項都是正數的等比數列 $\langle a_n\rangle$ 滿足 $a_{11}+a_{12}+\cdots+a_{30}=36$、$a_{31}+a_{32}+\cdots+a_{50}=324$。求 $a_1+a_2+\cdots+a_{60}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1092$</div>
+<div class="fxs"><div class="move">做法：每 $10$ 項切成一段。等比數列每一段的和也成等比，公比是 $r^{10}$，所以不必求出 $r$。</div>
+令 $T=a_1+a_2+\cdots+a_{10}$、$q=r^{10}$。各項都是正數，所以 $r\gt0$、$q\gt0$。第 $2$、$3$ 段的和是 $Tq$、$Tq^2$，第 $4$、$5$ 段的和是 $Tq^3$、$Tq^4$。<br>
+$Tq+Tq^2=36$、$Tq^3+Tq^4=324$，後式是前式乘上 $q^2$ ⟹ $q^2=9$ ⟹ $q=3$。代回 $3T+9T=36$ ⟹ $T=3$。<br>
+$a_1+a_2+\cdots+a_{60}$ 是前 $6$ 段：$T(1+q+q^2+\cdots+q^5)=3\times\dfrac{3^6-1}{3-1}=3\times364=1092$。</div></div>
+
+<div class="fx" id="L3-17" data-gen="fracPosition"><div class="fxh"><span class="no">L3-17</span><span class="kw">分數依「分子＋分母」分群：先數前面幾群共幾項，再數群內第幾個</span><span class="src">改編自 成功高中 110下 填 7</span></div>
+<div class="fxq">數列 $\dfrac11,\ \dfrac21,\dfrac12,\ \dfrac31,\dfrac22,\dfrac13,\ \dfrac41,\dfrac32,\dfrac23,\dfrac14,\ \dots$（分數不約分）。(1) $\dfrac{4}{9}$ 是第幾項？(2) 第 $100$ 項是哪一個分數？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) 第 $75$ 項　(2) $\dfrac{6}{9}$</div>
+<div class="fxs"><div class="move">做法：依「分子＋分母」分群。第 $k$ 群的分子＋分母都是 $k+1$，共 $k$ 項；分子從 $k$ 往下數到 $1$，分母從 $1$ 往上數到 $k$。前 $k$ 群共 $\dfrac{k(k+1)}{2}$ 項。</div>
+(1) $\dfrac49$ 的分子＋分母 $=13$，在第 $12$ 群；群內分母依序是 $1,2,3,\dots$，分母 $9$ 是第 $9$ 個。前 $11$ 群共 $\dfrac{11\times12}{2}=66$ 項，所以 $\dfrac49$ 是第 $66+9=75$ 項。<br>
+(2) 前 $13$ 群共 $\dfrac{13\times14}{2}=91$ 項、前 $14$ 群共 $105$ 項，$91\lt100\le105$，所以第 $100$ 項是第 $14$ 群的第 $9$ 個：分母 $9$、分子 $14-9+1=6$，是 $\dfrac69$。</div></div>
+
+<div class="fx" id="L3-18" data-gen="wrongAddTerm"><div class="fxh"><span class="no">L3-18</span><span class="kw">多加了一項：正確的和 $S$ 滿足 $S\lt$ 錯的和 $\le S+n$，先用它夾出 $n$</span><span class="src">改編自 中山女高 110下 填 12</span></div>
+<div class="fxq">小芬計算 $1+2+3+\cdots+n$ 時，不小心把其中某一項多加了一次，得到 $250$。求 $n$、多加的那一項，以及正確的和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$n=21$，多加的那一項是 $19$，正確的和是 $231$</div>
+<div class="fxs"><div class="move">做法：正確的和 $S=\dfrac{n(n+1)}{2}$。多加的那一項在 $1$ 到 $n$ 之間，所以 $S\lt250\le S+n$，用它夾出 $n$。</div>
+$n=20$：$S=210$，就算多加最大的 $20$ 也只有 $230$，不到 $250$。<br>
+$n=21$：$S=231$，$250-231=19$，在 $1$ 到 $21$ 之間，符合。<br>
+$n=22$：$S=253$，已經超過 $250$，不可能。<br>
+所以 $n=21$，多加的是 $19$，正確的和是 $231$。</div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -456,7 +483,7 @@ $3x$ 與 $12y$ 是 $t^2-4t+3=0$ 的兩根 $1,3$：若 $3x=3$ 則 $x=1$ 不合（
   <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
 </div>
 
-<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">a₁&gt;0 且 S_m&lt;0：等差看公差、等比看「1−rᵐ 與 1−r 異號」；每個選項找反例</span><span class="src">北一女中 113下 多 6</span></div>
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">a₁&gt;0 且 $S_m$&lt;0：等差看公差、等比看「1−rᵐ 與 1−r 異號」；每個選項找反例</span><span class="src">北一女中 113下 多 6</span></div>
 <div class="fxq">設 $m$ 為正整數，數列 $\langle a_n\rangle$ 的首項 $a_1\gt0$，前 $m$ 項和 $S_m\lt0$。選出正確的選項。<br>(1) 若 $\langle a_n\rangle$ 為等差數列，則公差 $d\lt0$　(2) 若 $\langle a_n\rangle$ 為等差數列且 $m$ 為偶數，則 $a_{m/2}\lt0$　(3) 若 $\langle a_n\rangle$ 為等比數列，則公比 $r\lt-\dfrac12$　(4) 若 $\langle a_n\rangle$ 為等比數列，則 $m$ 為偶數　(5) 若 $\langle a_n\rangle$ 為等比數列，則 $a_{n+1}+a_n\lt0$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(1)(3)(4)</div>
@@ -485,7 +512,7 @@ $2^8-1=255\lt300\le511$ ⟹ 第 $9$ 群、分母 $256$，是該群第 $300-255=4
 $a_n=\dfrac12\cdot\left(\dfrac21\cdot\dfrac32\cdots\dfrac n{n-1}\right)\left(\dfrac23\cdot\dfrac34\cdots\dfrac n{n+1}\right)=\dfrac12\cdot n\cdot\dfrac2{n+1}=\dfrac{n}{n+1}$。<br>
 $b_n=b_1\prod_{k=2}^{n}2^{\,k-1}a_k=2^{1+2+\cdots+(n-1)}\cdot\dfrac23\cdot\dfrac34\cdots\dfrac n{n+1}=2^{\frac{n(n-1)}2}\cdot\dfrac2{n+1}$。驗 $n=2$：$b_2=2\cdot\dfrac23\cdot1=\dfrac43$，公式 $2^1\cdot\dfrac23=\dfrac43$ ✔</div></div>
 
-<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">a_{n+2}=2aₙ−a_{n+1} 前六項皆正：把 a₃…a₆ 全寫成 a₂ 的一次式，取不等式的交集</span><span class="src">武陵 111下 多 3</span></div>
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">$a_{n+2}=2a_n-a_{n+1}$ 前六項皆正：把 a₃…a₆ 全寫成 a₂ 的一次式，取不等式的交集</span><span class="src">武陵 111下 多 3</span></div>
 <div class="fxq">數列 $\langle a_n\rangle$ 滿足 $a_1=2$，且 $a_{n+2}=2a_n-a_{n+1}$。當 $a_2$ 為下列哪些值時，前六項均為正數？<br>(1) $\dfrac{20}{11}$　(2) $2$　(3) $\dfrac{23}{11}$　(4) $\dfrac{11}5$　(5) $\dfrac{13}5$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(2)(3)(4)</div>
@@ -493,7 +520,7 @@ $b_n=b_1\prod_{k=2}^{n}2^{\,k-1}a_k=2^{1+2+\cdots+(n-1)}\cdot\dfrac23\cdot\dfrac
 六項皆正：$t\gt0$、$t\lt4$、$t\gt\dfrac43$、$t\lt\dfrac{12}5$、$t\gt\dfrac{20}{11}$ ⟹ $\dfrac{20}{11}\lt t\lt\dfrac{12}5$。<br>
 (1) 等於下界，$a_6=0$ ✘；(2)(3)(4) 在區間內 ✔；(5) $\dfrac{13}5\gt\dfrac{12}5$ ✘。</div></div>
 
-<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">「哪些也是等差」：一律算 c_{n+1}−cₙ 是不是常數；常數數列也算等差</span><span class="src">竹科實中 113下 多 6</span></div>
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">「哪些也是等差」：一律算 $c_{n+1}-c_n$ 是不是常數；常數數列也算等差</span><span class="src">竹科實中 113下 多 6</span></div>
 <div class="fxq">$\langle a_n\rangle$ 為公差不為 $0$ 的等差數列，$\langle b_n\rangle$ 為公比不為 $1$ 的等比數列，且 $a_n\gt0$、$b_n\gt0$。下列哪些也是等差數列？<br>(1) $\langle3a_n+2\rangle$　(2) $\langle5^{a_n}\rangle$　(3) $\langle b_nb_{n+1}\rangle$　(4) $\langle a_n+a_{n+1}\rangle$　(5) $\left\langle\dfrac{b_n}{b_{n-2}}\right\rangle$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(1)(4)(5)</div>
@@ -623,7 +650,7 @@ $\displaystyle\sum_{b=51}^{100}(2b-101)=1+3+5+\cdots+99=50^2=2500$。<span class
 <div class="fxs"><div class="move">做法：任一 $2\times2$ 方塊的四個數是 $x,\ x+1,\ x+7,\ x+8$（$x$ 不在第 $7$ 欄）。缺一格的三數和分別為 $3x+16,\ 3x+15,\ 3x+9,\ 3x+8$。</div>
 $346-16=330=3\cdot110$ ✔；$346-15=331$、$346-9=337$、$346-8=338$ 都不是 $3$ 的倍數。故 $x=110$（第 $16$ 列第 $5$ 欄，不在邊界），罩住 $111,117,118$，最小為 $111$。</div></div>
 
-<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">分式遞迴 a_{n+1}=(aₙ+3)/(2aₙ−4)：解兩個不動點 3、−1/2，(aₙ−3)/(aₙ+1/2) 是等比</span><span class="src">東石高中 112 教甄 計 2</span></div>
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">分式遞迴 $a_{n+1}=(a_n+3)/(2a_n-4)$：解兩個不動點 3、−1/2，(aₙ−3)/(aₙ+1/2) 是等比</span><span class="src">東石高中 112 教甄 計 2</span></div>
 <div class="fxq">已知遞迴數列滿足 $a_1=\dfrac12$、$a_{n+1}=\dfrac{a_n+3}{2a_n-4}$。求一般項 $a_n$（以 $n$ 表示）。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$a_n=\dfrac{3\cdot2^{\,n+1}+(-5)^n}{2^{\,n+1}-2\cdot(-5)^n}$</div>
@@ -640,7 +667,7 @@ $a_{n+1}-3=\dfrac{-5(a_n-3)}{2a_n-4}$、$a_{n+1}+\dfrac12=\dfrac{2a_n+1}{2a_n-4}
 代入：$a\left(3-\dfrac2a\right)^2=8$ ⟹ $(3a-2)^2=8a$ ⟹ $9a^2-20a+4=0$ ⟹ $a=2$ 或 $\dfrac29$。<br>
 $a=2$：$r=3$，得 $2,6,18$（驗：$2,10,18$ 等差；$2,10,50$ 等比 ✔）。$a=\dfrac29$：$r=-5$，得 $\dfrac29,-\dfrac{10}9,\dfrac{50}9$（驗：$\dfrac29,\dfrac{26}9,\dfrac{50}9$ 等差；$\dfrac29,\dfrac{26}9,\dfrac{338}9$ 等比，公比 $13$ ✔）。</div></div>
 
-<div class="fx" id="L5-S6"><div class="fxh"><span class="no">S6</span><span class="kw">二階遞迴 a_{n+2}=⅓a_{n+1}+⅔aₙ：移項成「相鄰差」的等比：a_{n+2}−a_{n+1}=−⅔(a_{n+1}−aₙ)</span><span class="src">竹北高中 101 教甄 填 10</span></div>
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">S6</span><span class="kw">二階遞迴 $a_{n+2}=\tfrac13a_{n+1}+\tfrac23a_n$：移項成「相鄰差」的等比：$a_{n+2}-a_{n+1}=-\tfrac23(a_{n+1}-a_n)$</span><span class="src">竹北高中 101 教甄 填 10</span></div>
 <div class="fxq">數列 $\langle a_n\rangle$ 滿足 $a_1=1$、$a_2=2$，$a_{n+2}=\dfrac13a_{n+1}+\dfrac23a_n$（$n\ge1$）。求一般項 $a_n$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$a_n=\dfrac85-\dfrac35\left(-\dfrac23\right)^{n-1}$</div>
@@ -648,7 +675,7 @@ $a=2$：$r=3$，得 $2,6,18$（驗：$2,10,18$ 等差；$2,10,50$ 等比 ✔）�
 $a_n=a_1+\displaystyle\sum_{k=1}^{n-1}\left(-\dfrac23\right)^{k-1}=1+\dfrac{1-\left(-\frac23\right)^{n-1}}{1+\frac23}=1+\dfrac35\left[1-\left(-\dfrac23\right)^{n-1}\right]=\dfrac85-\dfrac35\left(-\dfrac23\right)^{n-1}$。驗 $n=3$：$a_3=\dfrac23+\dfrac23=\dfrac43$，公式 $\dfrac85-\dfrac35\cdot\dfrac49=\dfrac{24-4}{15}=\dfrac43$ ✔<br>
 <span class="note-sm">「係數和為 $1$」的二階遞迴一定能這樣拆；教學手冊「陸」有更一般的說法。</span></div></div>
 
-<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">(1+2)(1+2²)(1+2⁴)…(1+2^{2^{n−1}})：前面補一個 (2−1)，平方差一路滾成 2^{2ⁿ}−1</span><span class="src">新化高中 101 教甄 填 1（改寫）</span></div>
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">$(1+2)(1+2^2)(1+2^4)\cdots(1+2^{2^{n-1}})$：前面補一個 (2−1)，平方差一路滾成 $2^{2^n}-1$</span><span class="src">新化高中 101 教甄 填 1（改寫）</span></div>
 <div class="fxq">設 $a_n=2^{\,n-1}$。求 $\dfrac{(1+2^{a_1})(1+2^{a_2})\cdots(1+2^{a_n})}{2^{\,a_1+a_2+\cdots+a_n}}$（以 $n$ 表示）。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$2-2^{\,1-2^{n}}$，即 $\dfrac{2^{2^n}-1}{2^{2^n-1}}$</div>
@@ -704,7 +731,7 @@ $\sum(\text{根})^2=11m^2+2d^2(1^2+2^2+3^2+4^2+5^2)=\dfrac{36}{11}+110d^2=26$ �
 $\ge1$ ⟺ $4n^2+24n+20\ge5n^2+20n$ ⟺ $n^2-4n-20\le0$ ⟺ $n\le2+\sqrt{24}\approx6.9$。<br>
 所以 $f(1)\lt f(2)\lt\cdots\lt f(6)\lt f(7)$，而 $f(8)\lt f(7)$，最大在 $n=7$。<span class="note-sm">（$f(7)=\frac{4^7\cdot77}{5^7}\approx16.15$，$f(6)\approx15.73$，$f(8)\approx16.10$，確實只差一點點，比值法比硬算穩。）</span></div></div>
 
-<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">2023 個點、P_k 到 P_{k+1} 距離 1/k，求所有兩點距離總和：換個方向數：每一段 1/k 被多少對點「跨過」</span><span class="src">台中一中 112 教甄 填 7</span></div>
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">2023 個點、$P_k$ 到 $P_{k+1}$ 距離 $1/k$，求所有兩點距離總和：換個方向數：每一段 $1/k$ 被多少對點「跨過」</span><span class="src">台中一中 112 教甄 填 7</span></div>
 <div class="fxq">將 $2023$ 個點 $P_1,P_2,\dots,P_{2023}$ 依序排在一直線上，使 $P_k$ 與 $P_{k+1}$ 的距離為 $\dfrac1k$（$k=1,\dots,2022$）。求從這 $2023$ 個點中任取兩點的所有距離總和。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$2045253$</div>

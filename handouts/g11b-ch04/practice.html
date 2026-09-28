@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -240,7 +240,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（11,000 題抽樣，全部從題幹把方程組與矩陣重新讀回來、用分數精確重算一次）；固定題全數人工＋電腦重算。<b>解聯立的主路是消去法（列運算）</b>，克拉瑪公式只在題目指定時用；<b>反方陣只算二階</b>（三階以上只判斷存不存在）；$A^n$ 用找規律、找週期或拆成 $kI+N$；穩定狀態用解 $MX=X$ 配 $x+y=1$。這些都是課綱內的做法。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（13,750 題抽樣，全部從題幹把方程組與矩陣重新讀回來、用分數精確重算一次）；固定題全數人工＋電腦重算。<b>解聯立的主路是消去法（列運算）</b>，克拉瑪公式只在題目指定時用；<b>反方陣只算二階</b>（三階以上只判斷存不存在）；$A^n$ 用找規律、找週期或拆成 $kI+N$；穩定狀態用解 $MX=X$ 配 $x+y=1$。這些都是課綱內的做法。</li>
   </ol>
 </div>
 
@@ -267,7 +267,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>列運算做到一半就亂掉、矩陣相乘不知道哪一列配哪一行、以為 $AB=BA$、分不清「無解」與「無限多組解」的同學。</div>
-  <div><b>目標</b>28 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>33 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
@@ -284,25 +284,25 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fixset" data-tier="L1" data-keys="augRowOp,elim3,echelonRead,cramer3,countSol3" data-seed="8201"></div>
 
 <h3 class="sec">3 三平面的代數判定</h3>
-<div class="must">先要會：<b>$\Delta\ne0$ ⟺ 三平面恰交於一點</b>；$\Delta=0$ 時行列式就幫不上忙了，<b>一律回到消去法，看「剩幾條有效方程式、常數項合不合」</b>：有解時剩 $2$ 條＝交於一直線、剩 $1$ 條＝三平面重合；無解時要<b>回頭看原來的係數</b>有沒有平行（成比例）的平面。<b>「三平面兩兩平行」與「兩平面重合、第三面平行」化成階梯形一模一樣</b>，只能靠原係數分辨。</div>
-<div class="gen-grid" data-tier="L1" data-keys="planeOne,planeCase,planeNoSol"></div>
-<div class="fadeset" data-tier="L1" data-keys="planeOne,planeCase,planeNoSol" data-seed="9301"></div>
-<div class="fixset" data-tier="L1" data-keys="planeOne,planeCase,planeNoSol" data-seed="8301" data-n="6"></div>
+<div class="must">先要會：<b>$\Delta\ne0$ ⟺ 三平面恰交於一點</b>；$\Delta=0$ 時行列式就幫不上忙了，<b>一律回到消去法，看「剩幾條有效方程式、常數項合不合」</b>：有解時剩 $2$ 條＝交於一直線、剩 $1$ 條＝三平面重合；無解時要<b>回頭看原來的係數</b>有沒有平行（成比例）的平面。<b>「三平面兩兩平行」與「兩平面重合、第三面平行」化成階梯形一模一樣</b>，只能靠原係數分辨。<b>齊次方程組</b>（常數全為 $0$）一定有零解：有非零解 ⟺ $\Delta=0$，解的方向是兩個法向量的外積。</div>
+<div class="gen-grid" data-tier="L1" data-keys="planeOne,planeCase,planeNoSol,homogNonzero"></div>
+<div class="fadeset" data-tier="L1" data-keys="planeOne,planeCase,planeNoSol,homogNonzero" data-seed="9301"></div>
+<div class="fixset" data-tier="L1" data-keys="planeOne,planeCase,planeNoSol,homogNonzero" data-seed="8301" data-n="6"></div>
 
 <h3 class="sec">4 矩陣的運算與二階反方陣</h3>
-<div class="must">先要會：加減與係數積「同位置各自算」；<b>相乘是「列乘行」</b>：$AB$ 的第 $i$ 列第 $j$ 行＝$A$ 的第 $i$ 列與 $B$ 的第 $j$ 行對應相乘再相加，<b>$A$ 的行數要等於 $B$ 的列數</b>才能乘；<b>三個陷阱</b>：$AB\ne BA$、$AB=O$ 不代表 $A=O$ 或 $B=O$、$AB=AC$ 不能直接消掉 $A$；<b>$\begin{bmatrix}a&b\\c&d\end{bmatrix}^{-1}=\dfrac1{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}$</b>（$ad-bc=0$ 就沒有反方陣）；$AX=B$ ⟹ $X=A^{-1}B$（<b>乘在左邊就一直在左邊</b>）；$A^n$ 先算 $A^2$、$A^3$ 找規律或週期；$\det(AB)=\det A\det B$、$\det(kA)=k^2\det A$（二階）。</div>
-<div class="gen-grid" data-tier="L1" data-keys="matAddK,matMul,mulTrap,inv2,invExist,invSolve,matPow,detProp"></div>
-<div class="fadeset" data-tier="L1" data-keys="matAddK,matMul,mulTrap,inv2,invExist,invSolve,matPow,detProp" data-seed="9401"></div>
-<div class="fixset" data-tier="L1" data-keys="matAddK,matMul,mulTrap,inv2,invExist,invSolve,matPow,detProp" data-seed="8401"></div>
+<div class="must">先要會：加減與係數積「同位置各自算」；<b>相乘是「列乘行」</b>：$AB$ 的第 $i$ 列第 $j$ 行＝$A$ 的第 $i$ 列與 $B$ 的第 $j$ 行對應相乘再相加，<b>$A$ 的行數要等於 $B$ 的列數</b>才能乘；<b>三個陷阱</b>：$AB\ne BA$、$AB=O$ 不代表 $A=O$ 或 $B=O$、$AB=AC$ 不能直接消掉 $A$；<b>$\begin{bmatrix}a&b\\c&d\end{bmatrix}^{-1}=\dfrac1{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}$</b>（$ad-bc=0$ 就沒有反方陣）；$AX=B$ ⟹ $X=A^{-1}B$（<b>乘在左邊就一直在左邊</b>）；$A^n$ 先算 $A^2$、$A^3$ 找規律或週期；$\det(AB)=\det A\det B$、$\det(kA)=k^2\det A$（二階）；<b>$a_{ij}$ 是第 $i$ 列、第 $j$ 行的元素</b>；給了 $A\pm B$ 就把 $A$、$B$ 當成兩個未知數解聯立，<b>$A^2-B^2$ 不一定等於 $(A+B)(A-B)$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="matAddK,matMul,mulTrap,inv2,invExist,invSolve,matPow,detProp,aijRule,sumDiffSys"></div>
+<div class="fadeset" data-tier="L1" data-keys="matAddK,matMul,mulTrap,inv2,invExist,invSolve,matPow,detProp,aijRule,sumDiffSys" data-seed="9401"></div>
+<div class="fixset" data-tier="L1" data-keys="matAddK,matMul,mulTrap,inv2,invExist,invSolve,matPow,detProp,aijRule,sumDiffSys" data-seed="8401"></div>
 
 <h3 class="sec">5 線性變換與轉移方陣</h3>
-<div class="must">先要會：<b>矩陣就是一個動作</b>：$\begin{bmatrix}x'\\y'\end{bmatrix}=A\begin{bmatrix}x\\y\end{bmatrix}$，<b>兩個行向量就是 $(1,0)$、$(0,1)$ 被送去的地方</b>；五種基本變換（伸縮、旋轉 $\begin{bmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{bmatrix}$、鏡射、推移、投影）；<b>「先做 $A$ 再做 $B$」的矩陣是 $BA$</b>（靠近向量的先做）；<b>$|\det A|$ 是面積的伸縮倍率</b>，$\det A\lt0$ 表示翻面；轉移方陣<b>每一行的和都是 $1$</b>，下一期＝$M$ 乘上這一期；<b>穩定狀態解 $MX=X$ 再配上 $x+y=1$</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="linTrans,basicTrans,compose,detArea,transMat,steady"></div>
-<div class="fadeset" data-tier="L1" data-keys="linTrans,basicTrans,compose,detArea,transMat,steady" data-seed="9501"></div>
-<div class="fixset" data-tier="L1" data-keys="linTrans,basicTrans,compose,detArea,transMat,steady" data-seed="8501"></div>
+<div class="must">先要會：<b>矩陣就是一個動作</b>：$\begin{bmatrix}x'\\y'\end{bmatrix}=A\begin{bmatrix}x\\y\end{bmatrix}$，<b>兩個行向量就是 $(1,0)$、$(0,1)$ 被送去的地方</b>；五種基本變換（伸縮、旋轉 $\begin{bmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{bmatrix}$、鏡射、推移、投影）；<b>「先做 $A$ 再做 $B$」的矩陣是 $BA$</b>（靠近向量的先做）；<b>$|\det A|$ 是面積的伸縮倍率</b>，$\det A\lt0$ 表示翻面；轉移方陣<b>每一行的和都是 $1$</b>，下一期＝$M$ 乘上這一期；<b>穩定狀態解 $MX=X$ 再配上 $x+y=1$</b>；以 $y=(\tan\theta)x$ 為軸的<b>鏡射</b>是 $\begin{bmatrix}\cos2\theta&\sin2\theta\\\sin2\theta&-\cos2\theta\end{bmatrix}$，反過來由 $\begin{bmatrix}a&b\\b&-a\end{bmatrix}$ 找軸，方向用 $(b,1-a)$ 或 $(1+a,b)$（$x$ 軸、$y$ 軸時其中一個是零向量，就用另一個）；<b>轉移方陣</b>要元素非負、每行和為 $1$，兩個相乘、或用非負且和為 $1$ 的係數混合，仍是轉移方陣。</div>
+<div class="gen-grid" data-tier="L1" data-keys="linTrans,basicTrans,compose,detArea,transMat,steady,reflLine,transCheck"></div>
+<div class="fadeset" data-tier="L1" data-keys="linTrans,basicTrans,compose,detArea,transMat,steady,reflLine,transCheck" data-seed="9501"></div>
+<div class="fixset" data-tier="L1" data-keys="linTrans,basicTrans,compose,detArea,transMat,steady,reflLine,transCheck" data-seed="8501"></div>
 
 
-<h3 class="sec">L1 混合檢測 12 題（全章 28 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">L1 混合檢測 12 題（全章 33 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -311,19 +311,19 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
-  <div><b>目標</b>16 個段考主力型，依 21 份段考卷的出現率排序（矩陣乘法 14 卷、行列式 13、反方陣 13、轉移方陣 12、線性變換 12、三元一次聯立 11、列運算 10、增廣矩陣 9、旋轉矩陣 9、矩陣的乘冪 7、鏡射矩陣 7、矩陣方程 6、無限多組解 5、線性變換的合成 5、穩定狀態 5）。</div>
+  <div><b>目標</b>22 個段考主力型，依段考卷出現率選出（原 16 型依 21 份段考卷排序；2026-09-29 用題庫 29 份高二段考卷重新統計，補了 6 型：矩陣多項式降次、由 $AB=BA$ 求參數、列運算能否化成同一個、有週期的方陣連加、直線的像、兩袋取放球）。</div>
   <div><b>通過標準</b>固定 12 題限時 40 分鐘做完，對 10 題以上。</div>
 </div>
 
-<h3 class="sec">聯立方程組與矩陣運算：含參數的三元聯立、由階梯形反推、無限多組解的參數式、應用題、含參數的三平面、乘法綜合、行列式、矩陣方程</h3>
-<div class="must">段考 21 卷中<b>矩陣乘法 14 卷、行列式 13 卷、反方陣 13 卷、三元一次聯立 11 卷、列運算 10 卷、增廣矩陣 9 卷、矩陣方程 6 卷、無限多組解 5 卷</b>。解題要點：<b>含參數的聯立先用列運算化到最後一列只剩「$(\text{含 }k\text{ 的式子})\,z=(\text{含 }k\text{ 的式子})$」</b>，左邊不為 $0$ ⟹ 恰一組解；左邊為 $0$ 時右邊也為 $0$ ⟹ 無限多組解、右邊不為 $0$ ⟹ 無解，<b>每個臨界值都要代回去分開檢查</b>；無限多組解令自由的那個未知數為 $t$，其餘用 $t$ 表示；<b>$AX=B$ 與 $XA=B$ 的答案不同</b>（$A^{-1}$ 一個乘在左邊、一個乘在右邊）；$(AB)^{-1}=B^{-1}A^{-1}$，順序要反過來。</div>
-<div class="gen-grid" data-tier="L2" data-keys="solve3Param,rowOpBack,infSol,gaussWord,planeParam,mulCombo,detAdv,invAdv"></div>
+<h3 class="sec">聯立方程組與矩陣運算：含參數的三元聯立、由階梯形反推、無限多組解的參數式、應用題、含參數的三平面、乘法綜合、行列式、矩陣方程、列運算能否化成同一個、矩陣多項式降次、由 $AB=BA$ 求參數</h3>
+<div class="must">段考 21 卷中<b>矩陣乘法 14 卷、行列式 13 卷、反方陣 13 卷、三元一次聯立 11 卷、列運算 10 卷、增廣矩陣 9 卷、矩陣方程 6 卷、無限多組解 5 卷</b>。解題要點：<b>含參數的聯立先用列運算化到最後一列只剩「$(\text{含 }k\text{ 的式子})\,z=(\text{含 }k\text{ 的式子})$」</b>，左邊不為 $0$ ⟹ 恰一組解；左邊為 $0$ 時右邊也為 $0$ ⟹ 無限多組解、右邊不為 $0$ ⟹ 無解，<b>每個臨界值都要代回去分開檢查</b>；無限多組解令自由的那個未知數為 $t$，其餘用 $t$ 表示；<b>$AX=B$ 與 $XA=B$ 的答案不同</b>（$A^{-1}$ 一個乘在左邊、一個乘在右邊）；$(AB)^{-1}=B^{-1}A^{-1}$，順序要反過來；<b>列運算不改變解</b>：問「哪些增廣矩陣能化成某個矩陣」，就是問「哪些方程組恰有同一組解」；<b>先把 $A^2$ 乘開寫成 $pA+qI$</b>，移項提出 $A$ 就得到 $A^{-1}$，高次方也一路用它降次；<b>$(A+B)^2=A^2+2AB+B^2$ ⟺ $AB=BA$</b>，逐格比對 $AB$、$BA$ 列方程式。（2026-09-29 用 29 份高二段考卷重新統計：三元聯立與列運算 24 卷、解的判別 22 卷、矩陣乘法 20 卷、行列式 19 卷、反方陣 18 卷、運算性質 16 卷、矩陣多項式 10 卷、列運算能否化成同一個 7 卷。）</div>
+<div class="gen-grid" data-tier="L2" data-keys="solve3Param,rowOpBack,infSol,gaussWord,planeParam,mulCombo,detAdv,invAdv,rowEquivPick,polyInverse,commuteParam"></div>
 
-<h3 class="sec">乘冪、線性變換與轉移方陣：找週期與拆 $kI+N$、由兩個像求矩陣、旋轉與鏡射、合成的順序、轉移方陣與穩定狀態</h3>
-<div class="must">段考 21 卷中<b>轉移方陣 12 卷、線性變換 12 卷、旋轉矩陣 9 卷、矩陣的乘冪 7 卷、鏡射矩陣 7 卷、線性變換的合成 5 卷、穩定狀態 5 卷</b>。解題要點：<b>旋轉 $\theta$ 連做 $n$ 次就是旋轉 $n\theta$</b>，轉滿 $360^\circ$ 就回到 $I$（找週期）；$A=kI+N$ 且 $N^2=O$ 時 $A^n=k^nI+nk^{n-1}N$；<b>知道兩個點被送到哪裡就能決定矩陣</b>：把「原來的兩點」與「像」各排成方陣，$A=[\text{像}][\text{原}]^{-1}$；<b>$\det=1$ 是旋轉、$\det=-1$ 是鏡射</b>（兩個行向量都是單位長且互相垂直時）；三個變換依序做，矩陣要<b>由右往左</b>排；轉移方陣的題目先確認每行和為 $1$，再解 $MX=X$。</div>
-<div class="gen-grid" data-tier="L2" data-keys="matEqAdv,powPeriod,transAdv,linTransFind,rotAdv,reflAdv,composeAdv,steadyParam"></div>
+<h3 class="sec">乘冪、線性變換與轉移方陣：找週期與拆 $kI+N$、由兩個像求矩陣、旋轉與鏡射、合成的順序、轉移方陣與穩定狀態、有週期的方陣連加、直線的像、兩袋取放球</h3>
+<div class="must">段考 21 卷中<b>轉移方陣 12 卷、線性變換 12 卷、旋轉矩陣 9 卷、矩陣的乘冪 7 卷、鏡射矩陣 7 卷、線性變換的合成 5 卷、穩定狀態 5 卷</b>。解題要點：<b>旋轉 $\theta$ 連做 $n$ 次就是旋轉 $n\theta$</b>，轉滿 $360^\circ$ 就回到 $I$（找週期）；$A=kI+N$ 且 $N^2=O$ 時 $A^n=k^nI+nk^{n-1}N$；<b>知道兩個點被送到哪裡就能決定矩陣</b>：把「原來的兩點」與「像」各排成方陣，$A=[\text{像}][\text{原}]^{-1}$；<b>$\det=1$ 是旋轉、$\det=-1$ 是鏡射</b>（兩個行向量都是單位長且互相垂直時）；三個變換依序做，矩陣要<b>由右往左</b>排；轉移方陣的題目先確認每行和為 $1$，再解 $MX=X$；<b>有週期的方陣</b>一個週期的和是 $O$，$A+A^2+\cdots+A^N$ 只剩 $N$ 除以週期的餘數那幾項；<b>直線的像</b>：把像 $(x',y')$ 用 $A^{-1}$ 拉回原來的點，代進原方程式（反求原來的直線則直接把 $A$ 代進去）；<b>兩袋取放球</b>：狀態是「白球在哪一袋」，一回合的機率就是轉移方陣。（2026-09-29 重新統計：乘冪 18 卷、轉移方陣 17 卷、線性變換 15 卷、直線的像 8 卷、取放球 7 卷。）</div>
+<div class="gen-grid" data-tier="L2" data-keys="matEqAdv,powPeriod,transAdv,linTransFind,rotAdv,reflAdv,composeAdv,steadyParam,periodSum,lineImage,ballSwap"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<h3 class="sec">L2 混合檢測 12 題（全 22 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -332,10 +332,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過（矩陣一律用 sympy 直接乘開或解聯立，不抄公式）。</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字。答案與詳解皆用程式重新驗算過（矩陣一律用 sympy 直接乘開或解聯立，不抄公式）。</div>
 
 <div class="fx" id="L3-1" data-gen="noSolTwoParam"><div class="fxh"><span class="no">L3-1</span><span class="kw">二元一次寫成矩陣形式又說「無解」：先算係數行列式 $\Delta$，$\Delta=0$ 只是候選；把 $\Delta=0$ 的每一個值代回去看「兩式是平行還是重合」，平行的那個才是無解</span><span class="src">北一女中 112下 第三次 填 5</span></div>
 <div class="fxq">設 $\begin{bmatrix}1-a&5\\-4&1+3a\end{bmatrix}\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}1\\2\end{bmatrix}$ 無解，求 $a$。</div>
@@ -507,7 +507,40 @@ $M=\begin{bmatrix}\frac12&\frac13\\[2pt]\frac12&\frac23\end{bmatrix}$（第一�
 驗算：$\begin{bmatrix}0.9&0.3\\0.1&0.7\end{bmatrix}\begin{bmatrix}0.75\\0.25\end{bmatrix}=\begin{bmatrix}0.675+0.075\\0.075+0.175\end{bmatrix}=\begin{bmatrix}0.75\\0.25\end{bmatrix}$ ✓<span class="note-sm">穩定狀態的比例有個好記的規律：$x:y=(\text{郊}\to\text{市的比率}):(\text{市}\to\text{郊的比率})=0.3:0.1=3:1$，<b>人會往「留得住人」的那一邊集中</b>。另外，穩定狀態與一開始的分配無關，這是轉移方陣的重要性質。</span></div></div>
 
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fx" id="L3-16" data-gen="powFromTwo"><div class="fxh"><span class="no">L3-16</span><span class="kw">只給 $A$ 的兩個乘冪（$A^3$、$A^5$）：$A^5=A^2A^3$，右乘 $(A^3)^{-1}$ 就降成 $A^2$；再用 $A^3$、$A^2$ 相除一次得到 $A$，指數像輾轉相除一樣往下降</span><span class="src">改編自 中崙高中 100下 第二次 填 12</span></div>
+<div class="fxq">設二階方陣 $A$ 滿足 $A^3=\begin{bmatrix}5&8\\8&13\end{bmatrix}$、$A^5=\begin{bmatrix}34&55\\55&89\end{bmatrix}$。(1) 求 $A^2$　(2) 求 $A$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $A^2=\begin{bmatrix}2&3\\3&5\end{bmatrix}$　(2) $A=\begin{bmatrix}1&1\\1&2\end{bmatrix}$</div>
+<div class="fxs"><div class="move">做法：同一個方陣的乘冪可以交換、可以「相除」（乘反方陣），$A^5=A^2A^3$ ⟹ $A^2=A^5(A^3)^{-1}$；接著 $A^3=A\cdot A^2$ ⟹ $A=A^3(A^2)^{-1}$。</div>
+(1) $\det(A^3)=5\times13-8\times8=1$，所以 $(A^3)^{-1}=\begin{bmatrix}13&-8\\-8&5\end{bmatrix}$。<br>
+$A^2=A^5(A^3)^{-1}=\begin{bmatrix}34&55\\55&89\end{bmatrix}\begin{bmatrix}13&-8\\-8&5\end{bmatrix}=\begin{bmatrix}442-440&-272+275\\715-712&-440+445\end{bmatrix}=\begin{bmatrix}2&3\\3&5\end{bmatrix}$。<br>
+(2) $\det(A^2)=10-9=1$，$(A^2)^{-1}=\begin{bmatrix}5&-3\\-3&2\end{bmatrix}$。<br>
+$A=A^3(A^2)^{-1}=\begin{bmatrix}5&8\\8&13\end{bmatrix}\begin{bmatrix}5&-3\\-3&2\end{bmatrix}=\begin{bmatrix}25-24&-15+16\\40-39&-24+26\end{bmatrix}=\begin{bmatrix}1&1\\1&2\end{bmatrix}$。<br>
+驗算：$A^2=\begin{bmatrix}1&1\\1&2\end{bmatrix}\begin{bmatrix}1&1\\1&2\end{bmatrix}=\begin{bmatrix}2&3\\3&5\end{bmatrix}$ ✓，$A^3=A^2A=\begin{bmatrix}5&8\\8&13\end{bmatrix}$ ✓。<span class="note-sm">指數 $5$ 與 $3$ 互質，所以一定降得到 $A^1$：$(5,3)\to(3,2)\to(2,1)$，和輾轉相除法完全一樣。若給的是 $A^4$ 與 $A^6$（不互質），最多只降得到 $A^2$，$A$ 本身就不一定唯一。</span></div></div>
+
+<div class="fx" id="L3-17" data-gen="coefSwapSol"><div class="fxh"><span class="no">L3-17</span><span class="kw">已知一組抽象係數的解、再問「係數換位置」的新方程組：把每一行係數看成行向量，原來的解就是 $2\vec a-\vec b+3\vec c=\vec d$；新方程組把 $\vec d$ 換掉再比較 $\vec a$、$\vec b$、$\vec c$ 的係數，不必解</span><span class="src">改編自 板橋高中 101下 第二次 填 C</span></div>
+<div class="fxq">已知方程組 $\begin{cases}a_1x+b_1y+c_1z=d_1\\a_2x+b_2y+c_2z=d_2\\a_3x+b_3y+c_3z=d_3\end{cases}$ 恰有一組解 $(x,y,z)=(2,-1,3)$。求方程組 $\begin{cases}c_1x+d_1y+a_1z=3b_1\\c_2x+d_2y+a_2z=3b_2\\c_3x+d_3y+a_3z=3b_3\end{cases}$ 的解。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(x,y,z)=(9,-3,6)$</div>
+<div class="fxs"><div class="move">做法：令 $\vec a=\begin{bmatrix}a_1\\a_2\\a_3\end{bmatrix}$、$\vec b$、$\vec c$、$\vec d$ 同理（係數排成的行向量）。方程組 $a_ix+b_iy+c_iz=d_i$ 就是 $x\vec a+y\vec b+z\vec c=\vec d$。</div>
+原方程組的解是 $(2,-1,3)$：$2\vec a-\vec b+3\vec c=\vec d$。<br>
+新方程組是 $x\vec c+y\vec d+z\vec a=3\vec b$。把 $\vec d$ 換掉：$x\vec c+y(2\vec a-\vec b+3\vec c)+z\vec a=3\vec b$，整理成 $(2y+z)\vec a-y\,\vec b+(x+3y)\vec c=3\vec b$。<br>
+原方程組<b>恰有一組解</b>（$\Delta\ne0$），表示用 $\vec a$、$\vec b$、$\vec c$ 組合出同一個向量的方法只有一種，所以三個係數分別相等：$2y+z=0$、$-y=3$、$x+3y=0$。<br>
+解得 $y=-3$、$z=6$、$x=9$，即 $(x,y,z)=(9,-3,6)$。<br>
+驗算：$9\vec c+(-3)\vec d+6\vec a=9\vec c-3(2\vec a-\vec b+3\vec c)+6\vec a=3\vec b$ ✓<span class="note-sm">新方程組也恰有一組解：它的係數行列式把三行換成 $\vec c$、$\vec d$、$\vec a$，而 $\vec d=2\vec a-\vec b+3\vec c$ 中與 $\vec c$、$\vec a$ 無關的只剩 $-\vec b$，所以行列式是 $\pm\Delta\ne0$。</span></div></div>
+
+<div class="fx" id="L3-18" data-gen="steadyToMatrix"><div class="fxh"><span class="no">L3-18</span><span class="kw">轉移方陣裡有未知數、又給一個「乘了不變」的向量：先用「每一行的和是 $1$」補出已知數那一行，再把 $AX=X$ 的第一列寫開解出另一格，最後一格再用行和為 $1$</span><span class="src">改編自 台中一中 112下 第三次 填 7</span></div>
+<div class="fxq">設 $A=\begin{bmatrix}p&q\\\frac14&r\end{bmatrix}$ 為轉移方陣，且 $A\begin{bmatrix}3\\2\end{bmatrix}=\begin{bmatrix}3\\2\end{bmatrix}$。求 $p\times q\times r$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{45}{256}$</div>
+<div class="fxs"><div class="move">做法：轉移方陣的條件是「元素都不是負數、每一行的和都是 $1$」；$AX=X$ 說 $X$ 是不動的狀態，兩個分量各給一條方程式（其中一條是多的，可以拿來驗算）。</div>
+第一行的和是 $1$：$p+\dfrac14=1$ ⟹ $p=\dfrac34$。<br>
+$AX=X$ 的第一列：$3p+2q=3$ ⟹ $\dfrac94+2q=3$ ⟹ $q=\dfrac38$。<br>
+第二行的和是 $1$：$r=1-\dfrac38=\dfrac58$。<br>
+驗算第二列：$\dfrac14\times3+\dfrac58\times2=\dfrac34+\dfrac54=2$ ✓。<br>
+$p\times q\times r=\dfrac34\times\dfrac38\times\dfrac58=\dfrac{45}{256}$。<span class="note-sm">也可以用「流進＝流出」一眼看出 $q$：穩定時從甲流到乙的是 $\dfrac14\times3$，從乙流回甲的是 $q\times2$，兩者相等 ⟹ $q=\dfrac38$。</span></div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>

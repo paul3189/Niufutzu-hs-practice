@@ -613,6 +613,262 @@
              h: '每年剩 $' + dec + '$ 倍：$' + dec + '^n<\\dfrac1{' + k + '}$，取 $\\log$ 得 $-' + lg1.toFixed(4) + 'n<-' + lgk.toFixed(4) + '$，除以負數不等號反向。', p: { v: 2, rate: rate, k: k, n: n } };
   };
 
+  /* ══════════ 2026-09-28 擴充（依段考卷出現頻率補題型）：L1 5 型、L2 6 型 ══════════ */
+  function radTerms(list) {             /* [[c, n]]：c·√n → 各自化簡、合併同類根式（保留出現順序），回傳 [[c, r]]（r=1 表整數項） */
+    var m = {}, order = [];
+    list.forEach(function (t) { var s = simpSqrt(t[1]), rr = s.r, c = t[0] * s.c; if (!(rr in m)) { m[rr] = 0; order.push(rr); } m[rr] += c; });
+    return order.filter(function (rr) { return m[rr] !== 0; }).map(function (rr) { return [m[rr], rr]; });
+  }
+  function radTex(ts) {                 /* [[c, r]] → c₁√r₁ ± c₂√r₂ … */
+    var s = '';
+    ts.forEach(function (t, i) {
+      var c = t[0], rr = t[1], ac = Math.abs(c), body = rr === 1 ? String(ac) : (ac === 1 ? '' : ac) + '\\sqrt{' + rr + '}';
+      s += (c < 0 ? '-' : (i ? '+' : '')) + body;
+    });
+    return s || '0';
+  }
+  function radDivTex(ts, d) {           /* (Σ c√r)/d，約到最簡 */
+    var g = Math.abs(d); ts.forEach(function (t) { g = gcd(g, t[0]); });
+    var t2 = ts.map(function (t) { return [t[0] / g, t[1]]; }), d2 = d / g;
+    if (d2 < 0) { d2 = -d2; t2 = t2.map(function (t) { return [-t[0], t[1]]; }); }
+    return d2 === 1 ? radTex(t2) : '\\dfrac{' + radTex(t2) + '}{' + d2 + '}';
+  }
+  function vlin(v, c) { return c === 0 ? v : v + (c > 0 ? '-' + c : '+' + (-c)); }   /* v−c 的寫法：c=0 只寫 v */
+  var LBL = ['a', 'b', 'c'];
+
+  /* 1-6 有理數與無理數的四則：√k 的係數能不能消掉 */
+  L1.ratIrrMix = function (r) {
+    var k = r.pick([2, 3, 5, 6, 7, 10]), m = r.int(1, 6), t = r.sign(), pick = r.int(0, 2), n;
+    if (pick === 0) n = -t * m;                                   /* xy 的 √k 係數 mt+n=0 */
+    else if (pick === 1 && t < 0) n = -m;                         /* y=−x：x/y=−1 */
+    else { do { n = r.int(-6, 6); } while (n === 0 || n === -t * m || n === t * m); }
+    var X = surdTex(m, 1, k), Y = surdTex(n, t, k);
+    var names = ['x+y', 'x-y', 'xy', '\\dfrac{x}{y}'];
+    var parts = [[m + n, 1 + t], [m - n, 1 - t], [m * n + t * k, m * t + n]];
+    var qd = n * n - k, qr = [m * n - t * k, n - t * m];          /* x/y 有理化：(m+√k)(n−t√k)/(n²−k) */
+    var rat = [parts[0][1] === 0, parts[1][1] === 0, parts[2][1] === 0, qr[1] === 0];
+    var vals = [String(parts[0][0]), String(parts[1][0]), String(parts[2][0]), Fr.tex(F(qr[0], qd))];
+    var yes = [], vs = [];
+    for (var i = 0; i < 4; i++) if (rat[i]) { yes.push(T(names[i])); vs.push(T(names[i] + '=' + vals[i])); }
+    return { q: '設 ' + T('x=' + X) + '、' + T('y=' + Y) + '，在 ' + names.map(T).join('、') + ' 這四個數中，哪些是有理數？',
+             a: yes.join('、') + ' 是有理數（' + vs.join('，') + '），其餘是無理數',
+             h: '$x$ 的 $\\sqrt{' + k + '}$ 係數是 $1$、$y$ 的是 $' + t + '$：相加、相減、相乘後，看 $\\sqrt{' + k + '}$ 的係數是不是剛好變成 $0$；$\\dfrac xy$ 先有理化（分母 $' + parT(n) + '^2-' + k + '=' + qd + '$）再看。',
+             p: { m: m, n: n, t: t, k: k, rat: rat } };
+  };
+
+  /* 2-8 根式比大小：係數放進根號再比 */
+  L1.surdCompare = function (r) {
+    var Ns = [], tries = 0;
+    while (Ns.length < 3 && tries++ < 400) {
+      var N;
+      if (Ns.length < 2) { N = Math.pow(r.int(2, 5), 2) * r.pick([2, 3, 5, 6, 7]); }
+      else { N = r.int(Math.min(Ns[0], Ns[1]) - 4, Math.max(Ns[0], Ns[1]) + 4); if (N < 2 || isSquare(N)) continue; }
+      if (N > 180 || Ns.indexOf(N) >= 0) continue;
+      Ns.push(N);
+    }
+    var texs = Ns.map(sqrtTex), order = [0, 1, 2].sort(function (i, j) { return Ns[j] - Ns[i]; });
+    return { q: '比較 ' + T(LBL.map(function (L, i) { return L + '=' + texs[i]; }).join(',\\ ')) + ' 的大小，由大到小排列。',
+             a: T(order.map(function (i) { return LBL[i]; }).join('\\gt ')),
+             h: '都寫成 $\\sqrt{\\ \\ }$ 再比根號裡的數（係數平方後放進去）：' + LBL.map(function (L, i) { return '$' + L + '=\\sqrt{' + Ns[i] + '}$'; }).join('、') + '。',
+             p: { Ns: Ns, order: order } };
+  };
+
+  /* 3-5 已知 |x−a|≤b，求 cx+d 的範圍 */
+  L1.absRange = function (r) {
+    var a = r.int(-5, 5), b = r.int(1, 6), c = r.pick([1, 2, 3, -1, -2, -3]), d = r.int(-9, 9), strict = r() < 0.5;
+    if (c === 1 && d === 0) d = r.pick([-3, 2, 5]);
+    var lo = a - b, hi = a + b, v1 = c * lo + d, v2 = c * hi + d, L = Math.min(v1, v2), H = Math.max(v1, v2), op = strict ? '\\lt ' : '\\le ';
+    var ex = linTex(c, d);
+    return { q: '已知 ' + T('|' + vlin('x', a) + '|' + op + b) + '，求 ' + T(ex) + ' 的範圍。',
+             a: T(L + op + ex + op + H),
+             h: '先拆成 $' + lo + op + 'x' + op + hi + '$；三邊同乘 $' + c + '$' + (c < 0 ? '（負數，不等號反向）' : '') + '，再同加 $' + d + '$。',
+             p: { a: a, b: b, c: c, d: d, strict: strict, L: L, H: H } };
+  };
+
+  /* 4-6 同底的指數方程式：化成同底、指數相等 */
+  L1.expEqSame = function (r) {
+    var b = r.pick([2, 3, 5]), maxp = b === 2 ? 5 : b === 3 ? 3 : 2, p, q, sq, u, v, al, tries = 0;
+    do {
+      p = r.int(1, maxp); q = r.int(1, maxp); sq = r() < 0.35 ? -1 : 1; u = r.int(-4, 4); v = r.int(-4, 4); al = r() < 0.3 ? 2 : 1;
+    } while ((p * al === sq * q || (p === q && sq > 0) || (p === 1 && q === 1) || (u === 0 && v === 0)) && tries++ < 100);
+    if (p * al === sq * q) al = 3 - al;
+    var X = F(sq * q * v - p * u, p * al - sq * q);
+    var Lb = String(Math.pow(b, p)), Rb = sq > 0 ? String(Math.pow(b, q)) : '\\left(\\dfrac{1}{' + Math.pow(b, q) + '}\\right)';
+    var le = linTex(al, u), re = linTex(1, v);
+    return { q: '解方程式 ' + T(Lb + '^{' + le + '}=' + Rb + '^{' + re + '}') + '。',
+             a: T('x=' + Fr.tex(X)),
+             h: '兩邊都化成以 $' + b + '$ 為底：' + [[Lb, p], [sq > 0 ? Rb : '\\dfrac{1}{' + Math.pow(b, q) + '}', sq * q]].filter(function (x) { return x[1] !== 1; }).map(function (x) { return '$' + x[0] + '=' + b + '^{' + x[1] + '}$'; }).join('、') + '，再讓指數相等。',
+             p: { b: b, p: p, q: q, sq: sq, u: u, v: v, al: al, xn: X.n, xd: X.d } };
+  };
+
+  /* 4-7 用 log2、log3 算其他數的對數 */
+  function fmt4(v) { var a = Math.abs(v), s = String(a % 10000); while (s.length < 4) s = '0' + s; return (v < 0 ? '-' : '') + Math.floor(a / 10000) + '.' + s; }
+  function numShift(M, e) {             /* M×10^e 的十進位寫法 */
+    var s = String(M);
+    if (e >= 0) return s + '0'.repeat(e);
+    var k = s.length + e;
+    return k > 0 ? s.slice(0, k) + '.' + s.slice(k) : '0.' + '0'.repeat(-k) + s;
+  }
+  L1.logCombo = function (r) {
+    var i, j, k, M, e, tries = 0;
+    do { i = r.int(0, 4); j = r.int(0, 3); k = r.int(0, 2); M = Math.pow(2, i) * Math.pow(3, j) * Math.pow(5, k); }
+    while ((i + j + k < 2 || M > 1000 || (j === 0 && i === k)) && tries++ < 200);
+    e = r.pick([-3, -2, -1, 0, 0, 0, 1]);
+    while (M % 10 === 0) { M /= 10; i--; k--; e++; }
+    var N = numShift(M, e), v = i * 3010 + j * 4771 + k * 6990 + e * 10000;
+    var fac = []; if (i) fac.push(i > 1 ? '2^{' + i + '}' : '2'); if (j) fac.push(j > 1 ? '3^{' + j + '}' : '3'); if (k) fac.push(k > 1 ? '5^{' + k + '}' : '5'); if (e) fac.push(e === 1 ? '10' : '10^{' + e + '}');
+    return { q: '已知 ' + T('\\log2\\approx0.3010,\\ \\log3\\approx0.4771') + '，求 ' + T('\\log' + N) + ' 的近似值（到小數點後第 4 位）。',
+             a: T(fmt4(v)),
+             h: '拆成 $2$、$3$、$5$、$10$ 的乘積：$' + N + '=' + fac.join('\\times') + '$；乘積的 $\\log$ 等於各自的 $\\log$ 相加' + (k ? '，而 $\\log5=\\log\\dfrac{10}{2}=1-\\log2\\approx0.6990$' : '') + '。',
+             p: { i: i, j: j, k: k, e: e, M: M, v: v } };
+  };
+
+  /* ── L2 ── */
+  /* 4-6 分數指數求值、根式化成分數指數 */
+  function powFactor(r) {
+    var n = r.pick([2, 2, 3, 3, 4]), m, s = r.sign(), a, b;
+    do { m = r.int(1, 3); } while (gcd(m, n) !== 1);
+    var cap = n === 2 ? (m === 1 ? 15 : 6) : n === 3 ? (m === 1 ? 6 : 4) : 3;
+    a = r.int(2, cap); b = r() < 0.4 ? r.int(2, cap) : 1;
+    if (b > 1 && gcd(a, b) !== 1) b = 1;
+    var A = Math.pow(a, n), Bn = Math.pow(b, n);
+    var baseT = Bn === 1 ? String(A) : '\\left(\\dfrac{' + A + '}{' + Bn + '}\\right)';
+    return { tex: baseT + '^{' + (s < 0 ? '-' : '') + '\\frac{' + m + '}{' + n + '}}', val: s > 0 ? F(Math.pow(a, m), Math.pow(b, m)) : F(Math.pow(b, m), Math.pow(a, m)),
+             how: '$' + baseT + '=' + (b === 1 ? a : '\\left(\\dfrac{' + a + '}{' + b + '}\\right)') + '^{' + n + '}$' };
+  }
+  function aPow(fr) { return fr.d === 1 ? (fr.n === 1 ? 'a' : 'a^{' + fr.n + '}') : 'a^{' + (fr.n < 0 ? '-' : '') + '\\frac{' + Math.abs(fr.n) + '}{' + fr.d + '}}'; }
+  function rootT(q, inner) { return q === 2 ? '\\sqrt{' + inner + '}' : '\\sqrt[' + q + ']{' + inner + '}'; }
+  L2.expValue = function (r) {
+    var v = r.int(0, 2);
+    if (v === 0) {
+      var cnt = r.int(2, 3), fs = [], ops = [], val = F(1), tries = 0;
+      while (fs.length < cnt && tries++ < 50) {
+        var f = powFactor(r), op = fs.length === 0 ? '' : r.pick(['\\times', '\\div']);
+        var nv = op === '\\div' ? Fr.div(val, f.val) : Fr.mul(val, f.val);
+        if (Math.abs(nv.n) > 5000 || nv.d > 5000) continue;
+        fs.push(f); ops.push(op); val = nv;
+      }
+      var tex = fs.map(function (f, i) { return (i ? ops[i] : '') + f.tex; }).join('');
+      return { q: '計算 ' + T(tex) + '，以最簡分數或整數表示。', a: T(Fr.tex(val)),
+               h: '每個底數都寫成某數的次方：' + fs.map(function (f) { return f.how; }).join('、') + '，再用 $(b^n)^{\\frac mn}=b^m$；負指數就取倒數。',
+               p: { v: 0, n: val.n, d: val.d } };
+    }
+    if (v === 1) {   /* ᵖ√(a·ᑫ√(aᵉ)) = a^{(1+e/q)/p} */
+      var p = r.pick([2, 3]), q, e, tries2 = 0;
+      do { q = r.pick([2, 3, 4]); e = r.int(1, 3); } while ((gcd(e, q) !== 1 || e >= q + 1) && tries2++ < 50);
+      var ex = F(q + e, q * p), inner = rootT(q, e === 1 ? 'a' : 'a^{' + e + '}');
+      return { q: '設 ' + T('a\\gt0') + '，把 ' + T(rootT(p, 'a' + inner)) + ' 寫成 ' + T('a') + ' 的分數指數。', a: T(aPow(ex)),
+               h: '由內往外：$' + inner + '=a^{\\frac{' + e + '}{' + q + '}}$，乘上 $a$ 得 $a^{1+\\frac{' + e + '}{' + q + '}}$，再開 $' + p + '$ 次方就是指數乘 $\\dfrac1{' + p + '}$。',
+               p: { v: 1, p: p, q: q, e: e, en: ex.n, ed: ex.d } };
+    }
+    /* aᵐ·ᑫ√(aᶠ) ÷ ʳ√(aᵍ) */
+    var m1 = r.int(1, 3), q1 = r.pick([2, 3]), f1 = r.int(1, 2 * q1 - 1), q2 = r.pick([3, 4, 5]), f2 = r.int(1, q2 + 2), tries3 = 0;
+    while ((gcd(f1, q1) !== 1 || gcd(f2, q2) !== 1) && tries3++ < 50) { f1 = r.int(1, 2 * q1 - 1); f2 = r.int(1, q2 + 2); }
+    var ex2 = Fr.sub(Fr.add(F(m1), F(f1, q1)), F(f2, q2));
+    if (ex2.n === 0) { f2 = f2 + 1; while (gcd(f2, q2) !== 1) f2++; ex2 = Fr.sub(Fr.add(F(m1), F(f1, q1)), F(f2, q2)); }
+    var num = (m1 === 1 ? 'a' : 'a^{' + m1 + '}') + rootT(q1, f1 === 1 ? 'a' : 'a^{' + f1 + '}');
+    return { q: '設 ' + T('a\\gt0') + '，把 ' + T('\\dfrac{' + num + '}{' + rootT(q2, f2 === 1 ? 'a' : 'a^{' + f2 + '}') + '}') + ' 寫成 ' + T('a') + ' 的分數指數。', a: T(aPow(ex2)),
+             h: '全部改成分數指數：分子 $a^{' + m1 + '}\\cdot a^{\\frac{' + f1 + '}{' + q1 + '}}$、分母 $a^{\\frac{' + f2 + '}{' + q2 + '}}$；相乘指數相加、相除指數相減：$' + m1 + '+\\dfrac{' + f1 + '}{' + q1 + '}-\\dfrac{' + f2 + '}{' + q2 + '}$。',
+             p: { v: 2, en: ex2.n, ed: ex2.d } };
+  };
+
+  /* 2-8 有理化後裂項相消 */
+  L2.ratTelescope = function (r) {
+    var d = r.pick([1, 1, 2]), s = r.int(1, 6), N = r.int(6, 40), e = s + N * d, form = r.int(0, 1);
+    var term = function (k) { return form === 0 ? '\\dfrac{1}{\\sqrt{' + k + '}+\\sqrt{' + (k + d) + '}}' : '\\dfrac{1}{\\sqrt{' + (k + d) + '}+\\sqrt{' + k + '}}'; };
+    var ans = radDivTex(radTerms([[1, e], [-1, s]]), d);
+    return { q: '計算 ' + T(term(s) + '+' + term(s + d) + '+\\cdots+' + term(e - d)) + '。',
+             a: T(ans),
+             h: '每一項都有理化：$\\dfrac{1}{\\sqrt{k}+\\sqrt{k+' + d + '}}=' + (d === 1 ? '\\sqrt{k+1}-\\sqrt{k}' : '\\dfrac{\\sqrt{k+' + d + '}-\\sqrt{k}}{' + d + '}') + '$（分母 $(k+' + d + ')-k=' + d + '$），相加時中間全部消掉，只剩 $' + (d === 1 ? '\\sqrt{' + e + '}-\\sqrt{' + s + '}' : '\\dfrac{\\sqrt{' + e + '}-\\sqrt{' + s + '}}{' + d + '}') + '$，最後化簡。',
+             p: { d: d, s: s, e: e, form: form } };
+  };
+
+  /* 2-9 根式和比大小：平方後比 */
+  L2.surdSumCompare = function (r) {
+    var T0 = r.int(11, 30), ps = [], tries = 0;
+    while (ps.length < 3 && tries++ < 300) { var p = r.int(2, Math.floor((T0 - 1) / 2)); if (ps.indexOf(p) < 0 && !(isSquare(p) && isSquare(T0 - p))) ps.push(p); }
+    var sw = [r.int(0, 1), r.int(0, 1), r.int(0, 1)];
+    var texs = ps.map(function (p, i) { var A = sqrtTex(p), Bq = sqrtTex(T0 - p); return sw[i] ? Bq + '+' + A : A + '+' + Bq; });
+    var order = [0, 1, 2].sort(function (i, j) { return ps[j] * (T0 - ps[j]) - ps[i] * (T0 - ps[i]); });
+    return { q: '比較 ' + T(LBL.map(function (L, i) { return L + '=' + texs[i]; }).join(',\\ ')) + ' 的大小，由大到小排列。',
+             a: T(order.map(function (i) { return LBL[i]; }).join('\\gt ')),
+             h: '三個都是正數，平方後比：' + LBL.map(function (L, i) { return '$' + L + '^2=' + T0 + '+2\\sqrt{' + ps[i] * (T0 - ps[i]) + '}$'; }).join('、') + '（根號裡兩數的和都是 $' + T0 + '$），只要比 $\\sqrt{\\ \\ }$ 裡的乘積。',
+             p: { T0: T0, ps: ps, order: order } };
+  };
+
+  /* 3-6 |ax+b|=cx+d：右邊要 ≥0，解完要驗 */
+  L2.absLinEq = function (r) {
+    var a, b, c, d, r1, r2, ok1, ok2, want = r.int(0, 2) ? 1 : 2, tries = 0, found = false;
+    while (!found && tries++ < 400) {
+      a = r.pick([1, 2, 3]); c = r.pick([-2, -1, 1, 2, 3]); b = r.int(-8, 8); d = r.int(-8, 8);
+      if (c === a || c === -a) continue;
+      r1 = F(d - b, a - c); r2 = F(-(b + d), a + c);
+      if (Fr.eq(r1, r2)) continue;
+      ok1 = c * r1.n + d * r1.d > 0; ok2 = c * r2.n + d * r2.d > 0;
+      if ((ok1 ? 1 : 0) + (ok2 ? 1 : 0) === want) found = true;
+    }
+    if (!found) { a = 2; b = -3; c = 1; d = 1; r1 = F(4, 1); r2 = F(2, 3); ok1 = true; ok2 = true; }
+    var rhs = linTex(c, d), good = [], bad = [];
+    [r1, r2].forEach(function (x, i) { (i === 0 ? ok1 : ok2) ? good.push(x) : bad.push(x); });
+    good.sort(function (x, y) { return Fr.lt(x, y) ? -1 : 1; });
+    var ans = good.map(function (x) { return 'x=' + Fr.tex(x); }).join('\\ \\text{或}\\ ');
+    var note = bad.map(function (x) { return '；' + T('x=' + Fr.tex(x)) + ' 代入右邊得 ' + T(Fr.tex(Fr.add(Fr.mul(F(c), x), F(d))) + '\\lt0') + '，不合'; }).join('');
+    return { q: '解方程式 ' + T('|' + linTex(a, b) + '|=' + rhs) + '。',
+             a: T(ans) + (note ? '（' + note.slice(1) + '）' : ''),
+             h: '絕對值不會是負的，所以右邊 $' + rhs + '\\ge0$。拆成 $' + linTex(a, b) + '=' + rhs + '$ 或 $' + linTex(a, b) + '=-(' + rhs + ')$，各解一次，再把解代回檢查右邊是否 $\\ge0$。',
+             p: { a: a, b: b, c: c, d: d, ng: good.length } };
+  };
+
+  /* 3-7 已知 |x−a|≤b，求 |cx+d| 的最大值、最小值 */
+  L2.absBound = function (r) {
+    var a = r.int(-4, 4), b = r.int(1, 5), c = r.pick([1, 2, 3, -1, -2, -3]), d = r.int(-9, 9), v = r.int(0, 1);
+    var lo = a - b, hi = a + b, e1 = Math.abs(c * lo + d), e2 = Math.abs(c * hi + d), M = Math.max(e1, e2);
+    var z = F(-d, c), inside = !Fr.lt(z, F(lo)) && !Fr.lt(F(hi), z), mn = inside ? 0 : Math.min(e1, e2);
+    var cond = T('|' + vlin('x', a) + '|\\le ' + b), ex = '|' + linTex(c, d) + '|';
+    var u1 = c * lo + d, u2 = c * hi + d, L = Math.min(u1, u2), H = Math.max(u1, u2);
+    var h = '由 ' + cond + ' 得 $' + lo + '\\le x\\le ' + hi + '$，所以 $' + L + '\\le ' + linTex(c, d) + '\\le ' + H + '$；再取絕對值' + (L < 0 && H > 0 ? '（範圍跨過 $0$，最小值是 $0$；最大值比 $|' + L + '|$ 與 $|' + H + '|$）' : '（範圍沒有跨過 $0$）') + '。';
+    if (v === 0) return { q: '已知 ' + cond + '，求 ' + T(ex) + ' 的最大值與最小值。', a: '最大值 ' + T(String(M)) + '，最小值 ' + T(String(mn)), h: h, p: { v: 0, a: a, b: b, c: c, d: d, M: M, mn: mn } };
+    return { q: '若滿足 ' + cond + ' 的每一個實數 ' + T('x') + ' 都使 ' + T(ex + '\\le k') + ' 成立，求 ' + T('k') + ' 的最小值。', a: T(String(M)),
+             h: h + '要對範圍內每個 $x$ 都成立，$k$ 至少要等於最大值。', p: { v: 1, a: a, b: b, c: c, d: d, M: M, mn: mn } };
+  };
+
+  /* 4-7 對數尺度：地震規模、分貝、pH */
+  function tenPow(k) {                  /* 10^k 的寫法（k 可為 .5），整數且不大時補上數值 */
+    var kt = Number.isInteger(k) ? String(k) : String(k);
+    if (Number.isInteger(k) && k >= 1 && k <= 6) return '10^{' + kt + '}=' + Math.pow(10, k);
+    if (Number.isInteger(k) && k <= -1 && k >= -4) return '10^{' + kt + '}=\\dfrac{1}{' + Math.pow(10, -k) + '}';
+    return '10^{' + kt + '}';
+  }
+  L2.logScale = function (r) {
+    var v = r.int(0, 3);
+    if (v === 0) {
+      var dM = r.pick([1, 2, 3, 4]), M2 = r.int(30, 60), M1 = M2 + 10 * dM, k = 1.5 * dM;
+      return { q: '地震的芮氏規模 ' + T('M') + ' 與釋放的能量 ' + T('E') + ' 滿足 ' + T('\\log E=11.8+1.5M') + '。規模 ' + T((M1 / 10).toFixed(1)) + ' 的地震釋放的能量是規模 ' + T((M2 / 10).toFixed(1)) + ' 的幾倍？',
+               a: T(tenPow(k)) + ' 倍',
+               h: '兩式相減：$\\log E_1-\\log E_2=1.5\\times(' + (M1 / 10).toFixed(1) + '-' + (M2 / 10).toFixed(1) + ')=' + k + '$，而 $\\log E_1-\\log E_2=\\log\\dfrac{E_1}{E_2}$，所以 $\\dfrac{E_1}{E_2}=10^{' + k + '}$。',
+               p: { v: 0, M1: M1, M2: M2, k: k } };
+    }
+    if (v === 1) {
+      var b1 = r.int(3, 8) * 10, dB = r.pick([10, 20, 30, 40]), b2 = b1 + dB;
+      return { q: '聲音強度 ' + T('I') + ' 的分貝數為 ' + T('\\beta=10\\log\\dfrac{I}{I_0}') + '（' + T('I_0') + ' 是定值）。聲音由 ' + T(String(b1)) + ' 分貝變成 ' + T(String(b2)) + ' 分貝，強度變為原來的幾倍？',
+               a: T(tenPow(dB / 10)) + ' 倍',
+               h: '$' + b2 + '-' + b1 + '=10\\left(\\log\\dfrac{I_2}{I_0}-\\log\\dfrac{I_1}{I_0}\\right)=10\\log\\dfrac{I_2}{I_1}$，所以 $\\log\\dfrac{I_2}{I_1}=' + (dB / 10) + '$。',
+               p: { v: 1, b1: b1, b2: b2 } };
+    }
+    if (v === 2) {
+      var p1 = r.int(2, 12), p2; do { p2 = r.int(2, 12); } while (p2 === p1 || Math.abs(p2 - p1) > 4);
+      return { q: '溶液的 ' + T('\\mathrm{pH}=-\\log[\\mathrm{H}^{+}]') + '。某溶液的 ' + T('\\mathrm{pH}') + ' 由 ' + T(String(p1)) + ' 變成 ' + T(String(p2)) + '，氫離子濃度 ' + T('[\\mathrm{H}^{+}]') + ' 變為原來的幾倍？',
+               a: T(tenPow(p1 - p2)) + ' 倍',
+               h: '$[\\mathrm{H}^{+}]=10^{-\\mathrm{pH}}$：由 $10^{-' + p1 + '}$ 變成 $10^{-' + p2 + '}$，相除得 $10^{' + (p1 - p2) + '}$。pH 變大，濃度變小。',
+               p: { v: 2, p1: p1, p2: p2 } };
+    }
+    var dM2 = r.pick([1, 2, 3, 4]), k2 = 1.5 * dM2, big = Number.isInteger(k2) ? String(Math.pow(10, k2)) : '10^{' + k2 + '}';
+    return { q: '地震的芮氏規模 ' + T('M') + ' 與釋放的能量 ' + T('E') + ' 滿足 ' + T('\\log E=11.8+1.5M') + '。若甲地震釋放的能量是乙地震的 ' + T(big) + ' 倍，甲的規模比乙大多少？',
+             a: T(String(dM2)),
+             h: '甲的能量、規模記作 $E_1$、$M_1$，乙的記作 $E_2$、$M_2$：$\\log E_1-\\log E_2=1.5(M_1-M_2)$，左邊是 $\\log\\dfrac{E_1}{E_2}=\\log' + (Number.isInteger(k2) ? big : '10^{' + k2 + '}') + '=' + k2 + '$，所以 $M_1-M_2=' + k2 + '\\div1.5$。',
+             p: { v: 3, k: k2, dM: dM2 } };
+  };
+
   /* ══════════════════════════════════════════════════════════ */
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
@@ -836,20 +1092,77 @@
       '$10^{' + fl + '}$ 是最小的 $' + (fl + 1) + '$ 位數，所以 $' + p.base + '^{' + p.n + '}$ 是 $' + (fl + 1) + '$ 位數（位數＝整數部分 $' + fl + '$ 加 $1$）。'];
   };
 
+  /* ── 2026-09-28 擴充：新 L1 五型的第一層提示與解題步驟 ── */
+  L1_H1.ratIrrMix = '這是「有理數與無理數的四則」：把結果整理成「有理數＋有理數 $\\times\\sqrt{k}$」，$\\sqrt{k}$ 的係數剛好是 $0$ 才是有理數；相除要先有理化。';
+  L1_H1.surdCompare = '這是「根式比大小」：把根號外的係數平方後放進根號，全部寫成 $\\sqrt{N}$，再比根號裡的數。';
+  L1_H1.absRange = '這是「由絕對值不等式求範圍」：先把絕對值拆成夾在兩數之間，再對三邊同乘、同加（乘負數不等號要反向）。';
+  L1_H1.expEqSame = '這是「同底的指數方程式」：兩邊化成同一個底數的次方，底數相同時指數相等，變成一次方程式。';
+  L1_H1.logCombo = '這是「用已知的對數值算別的對數」：把真數拆成 $2$、$3$、$5$、$10$ 的乘積，乘積的對數等於對數相加（由 $a=10^{\\log a}$ 與指數律推出）。';
+
+  L1_SOL.ratIrrMix = function (p) {
+    var m = p.m, n = p.n, t = p.t, k = p.k, X = surdTex(m, 1, k), Y = surdTex(n, t, k), Yc = surdTex(n, -t, k), qd = n * n - k;
+    var names = ['$x+y$', '$x-y$', '$xy$', '$\\dfrac xy$'], yes = [], no = [];
+    p.rat.forEach(function (b, i) { (b ? yes : no).push(names[i]); });
+    return ['$x+y=' + surdTex(m + n, 1 + t, k) + '$，$x-y=' + surdTex(m - n, 1 - t, k) + '$。',
+      '$xy=(' + X + ')(' + Y + ')=' + (m * n) + (t > 0 ? '+' : '-') + k + '+(' + m + '\\times' + parT(t) + '+' + parT(n) + ')\\sqrt{' + k + '}=' + surdTex(m * n + t * k, m * t + n, k) + '$。',
+      '$\\dfrac xy$ 分子分母同乘 $' + Yc + '$：$\\dfrac{(' + X + ')(' + Yc + ')}{' + parT(n) + '^2-' + k + '}=' + surdFracTex(m * n - t * k, n - t * m, k, qd) + '$。',
+      '$\\sqrt{' + k + '}$ 的係數是 $0$ 的才是有理數：' + yes.join('、') + ' 是有理數' + (no.length ? '；' + no.join('、') + ' 還留著 $\\sqrt{' + k + '}$，是無理數' : '') + '。'];
+  };
+  L1_SOL.surdCompare = function (p) {
+    var lbl = ['a', 'b', 'c'], items = p.Ns.map(function (N, i) {
+      var s = simpSqrt(N);
+      return s.c === 1 ? '$' + lbl[i] + '=\\sqrt{' + N + '}$ 不用動' : '$' + lbl[i] + '=' + s.c + '\\sqrt{' + s.r + '}=\\sqrt{' + s.c + '^2\\times' + s.r + '}=\\sqrt{' + N + '}$';
+    });
+    return ['根號外的係數平方後放進根號：' + items.join('、') + '。',
+      '正數的平方根，根號裡越大值越大：$' + p.order.map(function (i) { return p.Ns[i]; }).join('\\gt ') + '$。',
+      '所以 $' + p.order.map(function (i) { return lbl[i]; }).join('\\gt ') + '$。'];
+  };
+  L1_SOL.absRange = function (p) {
+    var a = p.a, b = p.b, c = p.c, d = p.d, op = p.strict ? '\\lt ' : '\\le ', lo = a - b, hi = a + b, cx = coefTex(c, 'x');
+    var st = ['$|' + vlin('x', a) + '|' + op + b + '$ ⟺ $-' + b + op + vlin('x', a) + op + b + '$' + (a === 0 ? '，即' : '，三邊同加 $' + parT(a) + '$：') + '$' + lo + op + 'x' + op + hi + '$。'];
+    if (c === 1) st.push('要的式子是 $x$ 本身（係數 $1$），不用乘。');
+    else if (c > 0) st.push('三邊同乘 $' + c + '$（正數，方向不變）：$' + (c * lo) + op + cx + op + (c * hi) + '$。');
+    else st.push('三邊同乘 $' + c + '$（負數，不等號反向，左右對調）：$' + (c * hi) + op + cx + op + (c * lo) + '$。');
+    st.push(d === 0 ? '不用再加常數：$' + p.L + op + linTex(c, d) + op + p.H + '$。' : '三邊同加 $' + parT(d) + '$：$' + p.L + op + linTex(c, d) + op + p.H + '$。');
+    return st;
+  };
+  L1_SOL.expEqSame = function (p) {
+    var b = p.b, Lb = Math.pow(b, p.p), Rb = p.sq > 0 ? String(Math.pow(b, p.q)) : '\\dfrac{1}{' + Math.pow(b, p.q) + '}';
+    var le = linTex(p.al, p.u), re = linTex(1, p.v), LE = linTex(p.p * p.al, p.p * p.u), RE = linTex(p.sq * p.q, p.sq * p.q * p.v);
+    var X = F(p.xn, p.xd), A = p.p * p.al - p.sq * p.q, Bv = p.sq * p.q * p.v - p.p * p.u;
+    var pw = function (c, inner, full) {
+      if (c === 1) return b + '^{' + inner + '}';
+      if (inner === 'x') return b + '^{' + full + '}';
+      return b + '^{' + (c === -1 ? '-' : c) + '(' + inner + ')}=' + b + '^{' + full + '}';
+    };
+    return ['化成以 $' + b + '$ 為底：$' + Lb + '=' + b + (p.p === 1 ? '' : '^{' + p.p + '}') + '$、$' + Rb + '=' + b + '^{' + (p.sq * p.q) + '}$，所以左邊 $=' + pw(p.p, le, LE) + '$，右邊 $=' + pw(p.sq * p.q, re, RE) + '$。',
+      '底數相同（$' + b + '\\gt0$ 且不等於 $1$），指數必須相等：$' + LE + '=' + RE + '$。',
+      '移項：$' + coefTex(A, 'x') + '=' + Bv + '$，得 $x=' + Fr.tex(X) + '$。'];
+  };
+  L1_SOL.logCombo = function (p) {
+    var N = numShift(p.M, p.e), fac = [], terms = [], L = { 2: '0.3010', 3: '0.4771', 5: '0.6990' };
+    [[2, p.i], [3, p.j], [5, p.k]].forEach(function (x) { if (x[1]) { fac.push(x[1] > 1 ? x[0] + '^{' + x[1] + '}' : String(x[0])); terms.push((x[1] > 1 ? x[1] + '\\times' : '') + L[x[0]]); } });
+    if (p.e) { fac.push(p.e === 1 ? '10' : '10^{' + p.e + '}'); terms.push(String(p.e)); }
+    var sum = terms.join('+').replace(/\+-/g, '-');
+    return ['由 $a=10^{\\log a}$、$b=10^{\\log b}$ 與指數律：$ab=10^{\\log a+\\log b}$，所以 $\\log(ab)=\\log a+\\log b$，同理 $\\log a^{n}=n\\log a$、$\\log10^{n}=n$。',
+      '拆開：$' + N + '=' + fac.join('\\times') + '$' + (p.k ? '；$\\log5=\\log\\dfrac{10}{2}=1-\\log2\\approx0.6990$' : '') + '。',
+      '$\\log' + N + '\\approx' + sum + '=' + fmt4(p.v) + '$。'];
+  };
+
   var META_L1 = [
       ['rational', '§1 有理數／無理數判別'], ['repPure', '§1 純循環小數化分數'], ['repMixed', '§1 混循環小數化分數'],
-      ['fracKind', '§1 分數化小數：有限還是循環'], ['divPoint', '§1 數線上的內分點'],
+      ['fracKind', '§1 分數化小數：有限還是循環'], ['divPoint', '§1 數線上的內分點'], ['ratIrrMix', '§1 有理數與無理數的四則'],
       ['simpRoot', '§2 根式化簡'], ['addRoots', '§2 同類根式加減'], ['ratSingle', '§2 分母有理化（單項）'],
       ['ratConj', '§2 分母有理化（共軛）'], ['doubleRoot', '§2 雙重根號（直接拆）'], ['intFrac', '§2 整數部分與小數部分'],
-      ['amgm', '§2 算幾不等式（直接型）'],
-      ['absSimp', '§3 去絕對值符號'], ['absEq', '§3 絕對值方程式'], ['absIneq', '§3 絕對值不等式'], ['absSum2', '§3 兩點距離和的最小值'],
-      ['expLaw', '§4 指數律化簡'], ['expCompare', '§4 同底指數比較'], ['sciNot', '§4 科學記號'], ['logBasic', '§4 常用對數基本值'], ['digits', '§4 位數']
+      ['amgm', '§2 算幾不等式（直接型）'], ['surdCompare', '§2 根式比大小'],
+      ['absSimp', '§3 去絕對值符號'], ['absEq', '§3 絕對值方程式'], ['absIneq', '§3 絕對值不等式'], ['absSum2', '§3 兩點距離和的最小值'], ['absRange', '§3 由絕對值不等式求範圍'],
+      ['expLaw', '§4 指數律化簡'], ['expCompare', '§4 同底指數比較'], ['sciNot', '§4 科學記號'], ['logBasic', '§4 常用對數基本值'], ['digits', '§4 位數'], ['expEqSame', '§4 同底的指數方程式'], ['logCombo', '§4 用 log2、log3 算對數']
   ];
   var META_L2 = [
       ['repArith', '§1 循環小數的四則'], ['nthDigit', '§1 小數點後第 n 位'], ['coefCompare', '§1 有理化＋係數比較'],
-      ['intFracOp', '§2 整數／小數部分再運算'], ['doubleRoot2', '§2 雙重根號（先提 2）'], ['symm', '§2 $x+\\frac1x$ 對稱式'], ['amgmCond', '§2 算幾：條件式×目標式'],
-      ['absIneq2', '§3 絕對值不等式三型'], ['absSumIneq', '§3 距離和不等式'], ['absMedian', '§3 加權距離和最小值'], ['absParam', '§3 反推參數'], ['absIntCount', '§3 整數解個數'],
-      ['expEq', '§4 指數方程式（換元）'], ['expSymm', '§4 $a^x\\pm a^{-x}$ 升冪'], ['digitsLead', '§4 位數與最高位數字'], ['decimalFirst', '§4 小數點後第幾位非零'], ['compound', '§4 複利幾年']
+      ['intFracOp', '§2 整數／小數部分再運算'], ['doubleRoot2', '§2 雙重根號（先提 2）'], ['symm', '§2 $x+\\frac1x$ 對稱式'], ['amgmCond', '§2 算幾：條件式×目標式'], ['ratTelescope', '§2 有理化後裂項相消'], ['surdSumCompare', '§2 根式和比大小（平方後比）'],
+      ['absIneq2', '§3 絕對值不等式三型'], ['absSumIneq', '§3 距離和不等式'], ['absMedian', '§3 加權距離和最小值'], ['absParam', '§3 反推參數'], ['absIntCount', '§3 整數解個數'], ['absLinEq', '§3 |ax+b|=cx+d（要驗根）'], ['absBound', '§3 已知範圍求絕對值的最值'],
+      ['expEq', '§4 指數方程式（換元）'], ['expSymm', '§4 $a^x\\pm a^{-x}$ 升冪'], ['digitsLead', '§4 位數與最高位數字'], ['decimalFirst', '§4 小數點後第幾位非零'], ['compound', '§4 複利幾年'], ['expValue', '§4 分數指數求值與化簡'], ['logScale', '§4 對數尺度：地震規模、分貝、pH']
   ];
   /* ══════════════════════════════════════════════════════════
      L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
@@ -1072,9 +1385,46 @@
     return { q: q, a: ans, h: '$\\log' + n + '$ 落在 $' + ip + '$ 與 $' + (ip + 1) + '$ 之間（$10^{' + ip + '}\\le' + n + '<10^{' + (ip + 1) + '}$）' + (two !== null ? '；再取一次 $\\log$：$\\log' + n + '\\approx' + lv.toFixed(2) + '$ 在 $10^{' + two + '}$ 與 $10^{' + (two + 1) + '}$ 之間。' : '。'), p: { mode: 3, n: n, ip: ip, two: two } };
   };
 
-  var META_L3 = [['farDigit', '有限＋循環小數的第 N 位'], ['sqrtMixedDigit', '帶分數開根號後的第 N 位'], ['coefCompareLin', '展開後係數比較解 (x,y)'], ['doubleRootCoef', '雙重根號＋有理係數比較'], ['surdDiffOrder', '根式相減比大小（有理化）'], ['symmFromQuad', '二次方程 ÷ x 得對稱式'], ['amgmLinProduct', '乘積定值求線性式最小'], ['avgCostMin', '平均成本最低（算幾）'], ['absRatioPoints', '|x−a|=m|x−b| 的內外分點'], ['exactIntParam', '恰有 k 個整數解求參數'], ['absSumEqCount', '|x−a|+|x−b|=k 解的個數'], ['chainEqLog', '連等式取 log'], ['expSymmEq', 'b^{2x}+b^{−2x} 換元解方程'], ['halfLife', '半衰期／衰變取 log'], ['logCalcCount', '按 log 鍵落在區間的個數']];
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* L3-16　雙重根號化簡後取整數、小數部分，再有理化 */
+  L3.intFracDbl = function (r) {
+    var q = nonSquare(r, 5, 60), k = isqrt(q), s = r.int(1, Math.max(1, k - 1)), v = r.int(0, 1);
+    var A = q + s * s, sq = simpSqrt(q), co = 2 * s * sq.c, a = k - s, c = s + k, den = q - k * k;
+    var rad = '\\sqrt{' + A + '-' + co + '\\sqrt{' + sq.r + '}}', ask, ans, tail;
+    if (v === 0) { ask = '\\dfrac{1}{a+b+' + c + '}-\\dfrac{1}{b}'; ans = Fr.tex(F(-2 * k, den)); tail = '$a+b+' + c + '=\\sqrt{' + q + '}+' + k + '$，$b=\\sqrt{' + q + '}-' + k + '$，兩個分式各自有理化（分母都變成 $' + q + '-' + k * k + '=' + den + '$）再相減。'; }
+    else { ask = 'a-\\dfrac{1}{b}'; ans = surdFracTex(a * den - k, -sq.c, sq.r, den); tail = '$\\dfrac1b=\\dfrac{1}{\\sqrt{' + q + '}-' + k + '}$ 乘共軛有理化，分母 $' + q + '-' + k * k + '=' + den + '$。'; }
+    return { q: '設 ' + T(rad) + ' 的整數部分為 ' + T('a') + '、小數部分為 ' + T('b') + '，求 ' + T(ask) + ' 的值。', a: T(ans),
+             h: '先化簡雙重根號：' + (co === 2 && sq.r === q ? '' : '$' + co + '\\sqrt{' + sq.r + '}=2\\sqrt{' + (s * s * q) + '}$，') + '找和 $' + A + '$、積 $' + (s * s * q) + '$ 的兩數 $' + q + '$ 與 $' + (s * s) + '$，得 $\\sqrt{' + q + '}-' + s + '$（大的在前）。$' + k + '\\lt\\sqrt{' + q + '}\\lt ' + (k + 1) + '$，所以 $a=' + a + '$、$b=\\sqrt{' + q + '}-' + k + '$。' + tail,
+             p: { q: q, s: s, v: v } };
+  };
+
+  /* L3-17　已知 a^{1/2}±a^{-1/2}，求 a+a⁻¹、a^{3/2}±a^{-3/2}、a²+a⁻² 組成的式子 */
+  L3.halfExpSymm = function (r) {
+    var sg = r.sign(), t = sg > 0 ? r.int(3, 8) : r.int(1, 8), v = sg > 0 ? r.pick([0, 1, 2]) : r.pick([0, 2]);
+    var S1 = t * t - 2 * sg, C = t * t * t - 3 * sg * t, S2 = S1 * S1 - 2, pm = sg > 0 ? '+' : '-', ask, ans;
+    if (v === 0) { ask = '\\dfrac{a^{\\frac32}' + pm + 'a^{-\\frac32}}{a+a^{-1}}'; ans = F(C, S1); }
+    else if (v === 1) { var k1 = r.int(1, 4), k2 = r.int(1, 4); ask = '\\dfrac{a^{\\frac32}+a^{-\\frac32}+' + k1 + '}{a^{2}+a^{-2}+' + k2 + '}'; ans = F(C + k1, S2 + k2); }
+    else { ask = 'a^{2}+a^{-2}'; ans = F(S2); }
+    return { q: '設 ' + T('a\\gt0') + '，且 ' + T('a^{\\frac12}' + pm + 'a^{-\\frac12}=' + t) + '，求 ' + T(ask) + ' 的值。', a: T(Fr.tex(ans)),
+             h: '令 $x=a^{\\frac12}$，則 $x' + pm + '\\dfrac1x=' + t + '$。平方：$a+a^{-1}=x^2+\\dfrac1{x^2}=' + t + '^2' + (sg > 0 ? '-' : '+') + '2=' + S1 + '$；立方：$a^{\\frac32}' + pm + 'a^{-\\frac32}=x^3' + pm + '\\dfrac1{x^3}=' + t + '^3' + (sg > 0 ? '-' : '+') + '3\\times' + t + '=' + C + '$；$a^2+a^{-2}=(a+a^{-1})^2-2=' + S2 + '$。',
+             p: { sg: sg, t: t, v: v } };
+  };
+
+  /* L3-18　兩個絕對值不等式給 a、b 的範圍，求 a+b、a−b、ab 的範圍 */
+  L3.absRangeCombo = function (r) {
+    var p = r.int(-2, 4), rr = r.int(1, 3), q = r.int(-2, 3), s = r.int(1, 3);
+    if (p - rr >= 0 && q - s >= 0) q = s - r.int(1, 2);                 /* 至少一個區間跨過 0，乘積才有陷阱 */
+    var a1 = p - rr, a2 = p + rr, b1 = q - s, b2 = q + s;
+    var cs = [a1 * b1, a1 * b2, a2 * b1, a2 * b2], P1 = Math.min.apply(null, cs), P2 = Math.max.apply(null, cs);
+    return { q: '設實數 ' + T('a,b') + ' 滿足 ' + T('|' + vlin('a', p) + '|\\lt ' + rr) + '、' + T('|' + vlin('b', q) + '|\\lt ' + s) + '，求 ' + T('a+b') + '、' + T('a-b') + '、' + T('ab') + ' 的範圍。',
+             a: T((a1 + b1) + '\\lt a+b\\lt ' + (a2 + b2)) + '；' + T((a1 - b2) + '\\lt a-b\\lt ' + (a2 - b1)) + '；' + T(P1 + '\\lt ab\\lt ' + P2),
+             h: '先寫成 $' + a1 + '\\lt a\\lt ' + a2 + '$、$' + b1 + '\\lt b\\lt ' + b2 + '$。和：兩式直接相加；差：先把 $b$ 的範圍變成 $' + (-b2) + '\\lt -b\\lt ' + (-b1) + '$ 再加；積：不能只拿兩個左端點相乘，要比四個端點乘積 $' + cs.join(',\\ ') + '$，取最小與最大（區間裡有負數時最容易錯）。',
+             p: { p: p, r: rr, q: q, s: s } };
+  };
+
+  var META_L3 = [['farDigit', '有限＋循環小數的第 N 位'], ['sqrtMixedDigit', '帶分數開根號後的第 N 位'], ['coefCompareLin', '展開後係數比較解 (x,y)'], ['doubleRootCoef', '雙重根號＋有理係數比較'], ['surdDiffOrder', '根式相減比大小（有理化）'], ['symmFromQuad', '二次方程 ÷ x 得對稱式'], ['amgmLinProduct', '乘積定值求線性式最小'], ['avgCostMin', '平均成本最低（算幾）'], ['absRatioPoints', '|x−a|=m|x−b| 的內外分點'], ['exactIntParam', '恰有 k 個整數解求參數'], ['absSumEqCount', '|x−a|+|x−b|=k 解的個數'], ['chainEqLog', '連等式取 log'], ['expSymmEq', 'b^{2x}+b^{−2x} 換元解方程'], ['halfLife', '半衰期／衰變取 log'], ['logCalcCount', '按 log 鍵落在區間的個數'], ['intFracDbl', '雙重根號化簡後的整數／小數部分'], ['halfExpSymm', '√a±1/√a 型的分數指數對稱式'], ['absRangeCombo', '由 a、b 的範圍求 a+b、a−b、ab 的範圍']];
   /* 固定題 L3-n 對應的類似題型 */
-  var L3_FIX = { 'L3-1': 'farDigit', 'L3-2': 'sqrtMixedDigit', 'L3-3': 'coefCompareLin', 'L3-4': 'doubleRootCoef', 'L3-5': 'surdDiffOrder', 'L3-6': 'symmFromQuad', 'L3-7': 'amgmLinProduct', 'L3-8': 'avgCostMin', 'L3-9': 'absRatioPoints', 'L3-10': 'exactIntParam', 'L3-11': 'absSumEqCount', 'L3-12': 'chainEqLog', 'L3-13': 'expSymmEq', 'L3-14': 'halfLife', 'L3-15': 'logCalcCount' };
+  var L3_FIX = { 'L3-1': 'farDigit', 'L3-2': 'sqrtMixedDigit', 'L3-3': 'coefCompareLin', 'L3-4': 'doubleRootCoef', 'L3-5': 'surdDiffOrder', 'L3-6': 'symmFromQuad', 'L3-7': 'amgmLinProduct', 'L3-8': 'avgCostMin', 'L3-9': 'absRatioPoints', 'L3-10': 'exactIntParam', 'L3-11': 'absSumEqCount', 'L3-12': 'chainEqLog', 'L3-13': 'expSymmEq', 'L3-14': 'halfLife', 'L3-15': 'logCalcCount', 'L3-16': 'intFracDbl', 'L3-17': 'halfExpSymm', 'L3-18': 'absRangeCombo' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：全部是國中內容——質因數分解、分數四則、平方根估計、一元一次不等式、乘法公式
@@ -1156,6 +1506,15 @@
     'L3.halfLife': { f: function (p) { return p.base; }, keep: ['P'], why: '每期剩一半用 $\\log2$、剩三分之一用 $\\log3$：分母不同，所需週期數就不同。' },
     'L3.logCalcCount': { f: function (p) { return p.mode; }, why: '按一次 $\\log$ 卡 $10^a<M<10^b$；按兩次要先把「介於」翻成 $\\log N$ 的範圍，再翻成 $N$ 的範圍。' }
   };
+  /* 2026-09-28 擴充題型的對照題 */
+  CONTRAST['L1.ratIrrMix'] = { f: function (p) { return p.t; }, keep: ['k'], why: '$y$ 的 $\\sqrt k$ 係數是 $+1$ 時，$x-y$ 會把根號消掉；是 $-1$ 時換成 $x+y$ 消掉。$xy$ 要看交叉項 $(mt+n)\\sqrt k$ 是不是 $0$。' };
+  CONTRAST['L1.absRange'] = { f: function (p) { return p.c > 0; }, keep: ['a', 'b'], why: '同樣的 $x$ 範圍，乘正數方向不變；乘負數不等號反向，左右兩端要對調。' };
+  CONTRAST['L1.expEqSame'] = { f: function (p) { return p.sq; }, keep: ['b'], why: '$\\dfrac{1}{b^{q}}$ 就是 $b^{-q}$：指數前面多一個負號，移項時最容易漏掉。' };
+  CONTRAST['L2.absLinEq'] = { f: function (p) { return p.ng; }, why: '兩題都拆成兩個一次方程式，差別在代回檢查：右邊算出來是負的那個解要丟掉。' };
+  CONTRAST['L2.absBound'] = { f: function (p) { return p.mn === 0; }, keep: ['v'], why: '$cx+d$ 的範圍跨過 $0$ 時，$|cx+d|$ 的最小值是 $0$；沒跨過時，最小值在離 $0$ 較近的那一端。' };
+  CONTRAST['L2.logScale'] = { f: function (p) { return p.v; }, why: '地震看 $1.5M$、分貝看 $10\\log$、pH 看 $-\\log$：先把公式兩式相減，得到 $\\log$ 比值，再還原成 $10$ 的次方。' };
+  CONTRAST['L3.halfExpSymm'] = { f: function (p) { return p.sg; }, why: '$a^{\\frac12}+a^{-\\frac12}=t$ 時 $a+a^{-1}=t^2-2$；$a^{\\frac12}-a^{-\\frac12}=t$ 時 $a+a^{-1}=t^2+2$，立方公式的正負號也跟著換。' };
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

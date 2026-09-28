@@ -118,7 +118,7 @@
   ];
 
   /* ══════════════════════════════════════════════════════════
-     L1　基礎（21 型）
+     L1　基礎（25 型；2026-09-28 依段考頻率補 4 型）
      ══════════════════════════════════════════════════════════ */
   var L1 = {};
 
@@ -318,6 +318,97 @@
     return { q: '求 ' + T('y=' + expr) + ' 的最小正週期。', a: T(P.n === 1 && P.d === 1 ? '\\pi' : Fr.tex(P) + '\\pi'), h: '這裡 $b=' + (b === 0.5 ? '\\dfrac12' : b) + '$：' + { sin: '$\\sin$ 的週期 $\\dfrac{2\\pi}{|b|}$', cos: '$\\cos$ 的週期 $\\dfrac{2\\pi}{|b|}$', tan: '$\\tan$ 本身的週期就是 $\\pi$，所以是 $\\dfrac{\\pi}{|b|}$', abssin: '加絕對值把負半波翻上來，週期減半成 $\\dfrac{\\pi}{|b|}$', sin2: '平方後 $\\sin^2u=\\dfrac{1-\\cos2u}{2}$，週期減半成 $\\dfrac{\\pi}{|b|}$' }[kind] + '。', p: { b: b, kind: kind, P: [P.n, P.d] } };
   };
 
+  /* ══════════ 2026-09-28 擴充（依段考卷出現頻率補題型）：L1 4 型 ══════════ */
+  function nonSpecDeg(r, lo, hi) { var d; do { d = r.int(lo, hi); } while (d % 15 === 0); return d; }   /* 不是 15° 倍數的整數度 */
+  function dg(x) { return x + '^\\circ'; }
+
+  /* 1-2 和差角公式逆用：看出是哪一條公式的展開式，合回一個角 */
+  L1.sumReverse = function (r) {
+    var fn = r.pick(['sin', 'sin', 'cos', 'cos', 'tan']), op = r.pick(['+', '-']), sw = r.int(0, 1);
+    var Td = r.pick(fn === 'tan' ? [30, 45, 60, 120, 135, 150] : [30, 45, 60, 90, 120, 135, 150]);
+    var B = op === '+' ? nonSpecDeg(r, 5, Math.min(85, Td - 5)) : nonSpecDeg(r, 5, Math.min(85, 175 - Td));
+    var A = op === '+' ? Td - B : Td + B, sA = '\\sin' + dg(A), cA = '\\cos' + dg(A), sB = '\\sin' + dg(B), cB = '\\cos' + dg(B), expr;
+    if (fn === 'sin') expr = sw ? cB + sA + op + sB + cA : sA + cB + op + cA + sB;
+    else if (fn === 'cos') expr = op === '+' ? cA + cB + '-' + sA + sB : (sw ? sA + sB + '+' + cA + cB : cA + cB + '+' + sA + sB);
+    else expr = '\\dfrac{\\tan' + dg(A) + op + '\\tan' + dg(B) + '}{1' + (op === '+' ? '-' : '+') + '\\tan' + dg(A) + '\\tan' + dg(B) + '}';
+    var v = tv(Td)[fn], one = '\\' + fn + '(' + dg(A) + op + dg(B) + ')';
+    return { q: '求 ' + T(expr) + ' 的值。', a: T(vTex(v)),
+      h: '這是 $\\' + fn + '(\\alpha' + op + '\\beta)$ 的展開式（$\\alpha=' + dg(A) + '$、$\\beta=' + dg(B) + '$），合回一個角：$' + one + '=\\' + fn + dg(Td) + '$，再查特殊角的值。',
+      p: { fn: fn, op: op, A: A, B: B, Td: Td, sw: sw } };
+  };
+
+  /* 1-2 倍角公式逆用：2 sinθcosθ、cos²θ−sin²θ、1−2sin²θ、2cos²θ−1、2tanθ/(1−tan²θ)、cos⁴θ−sin⁴θ 合成 2θ */
+  var DBL_K = [2, 10, 14, 22, 3, 9, 15, 21];          /* θ = k·7.5°：前四個是 π/12 家族（2θ 是 30° 的倍數），後四個是 π/8 家族（2θ 是 45° 的倍數） */
+  L1.doubleReverse = function (r) {
+    var k = r.pick(DBL_K), form = r.int(0, 6), rad = k % 2 === 1 || r() < 0.5;
+    var th = rad ? piTex(k, 24) : dg(7.5 * k), two = rad ? piTex(2 * k, 24) : dg(15 * k);
+    var S = function (f, pw) { return '\\' + f + (pw ? '^' + pw : '') + (rad ? th : ' ' + th); };
+    var expr = [ '2' + S('sin') + S('cos'), S('sin') + S('cos'), S('cos', 2) + '-' + S('sin', 2), '1-2' + S('sin', 2), '2' + S('cos', 2) + '-1',
+      '\\dfrac{2' + S('tan') + '}{1-' + S('tan', 2) + '}', S('cos', 4) + '-' + S('sin', 4)][form];
+    var f2 = form <= 1 ? 'sin' : form === 5 ? 'tan' : 'cos', v = tv(15 * k)[f2];
+    var ans = form === 1 ? surdOver(v.c, v.r, 2 * v.d) : vTex(v);
+    return { q: '求 ' + T(expr) + ' 的值。', a: T(ans),
+      h: '把式子看成 $2\\theta$ 的倍角公式（$\\theta=' + th + '$）：原式 $=' + (form === 1 ? '\\dfrac12' : '') + '\\' + f2 + '\\left(2\\times' + th + '\\right)=' + (form === 1 ? '\\dfrac12' : '') + '\\' + f2 + (rad ? two : ' ' + two) + '$。' + (form === 6 ? '$\\cos^4\\theta-\\sin^4\\theta$ 先用平方差分解。' : ''),
+      p: { k: k, form: form, rad: rad } };
+  };
+
+  /* 1-3 對稱軸與對稱中心：y=a sin(bx+c)+d、a cos(bx+c)+d */
+  function kStepTex(st) {                         /* kπ·st（st 為分數）→ LaTeX */
+    if (st.d === 1) return (st.n === 1 ? '' : st.n) + 'k\\pi';
+    return '\\dfrac{' + (st.n === 1 ? '' : st.n) + 'k\\pi}{' + st.d + '}';
+  }
+  function modFr(x, st) {                          /* x 化到 [0, st) */
+    var q = Math.floor((x.n * st.d) / (x.d * st.n));
+    return Fr.sub(x, Fr.mul(F(q), st));
+  }
+  L1.symAxis = function (r) {
+    var fn = r.pick(['sin', 'cos']), bF = r.pick([F(1), F(2), F(3), F(1, 2)]), cK = r.pick([2, 3, 4, 6, 8, 9, 10, -2, -3, -4, -6, -8]);
+    var a = r.int(1, 4) * r.sign(), d = r.pick([0, 0, 1, -1, 2, -2]), t = r.int(0, 3), isAxis = t % 2 === 0;
+    var bT = bF.d === 2 ? '\\dfrac{x}{2}' : (bF.n === 1 ? 'x' : bF.n + 'x');
+    var inner = bT + (cK > 0 ? '+' : '-') + piTex(Math.abs(cK), 12);
+    var expr = (a === 1 ? '' : a === -1 ? '-' : a) + '\\' + fn + '\\left(' + inner + '\\right)' + (d === 0 ? '' : signed(d));
+    var u0 = ((fn === 'sin') === isAxis) ? 6 : 0;  /* 括號＝u0·π/12＋kπ */
+    var st = Fr.div(F(1), bF), raw = Fr.div(F(u0 - cK, 12), bF), x0 = modFr(raw, st);
+    var gen = (x0.n === 0 ? '' : piTex(x0.n, x0.d) + '+') + kStepTex(st), sp = x0.n === 0 ? st : x0;
+    var kind = isAxis ? '對稱軸' : '對稱中心', a1, q;
+    if (t === 0) { q = '寫出 ' + T('y=' + expr) + ' 圖形的所有對稱軸（用整數 ' + T('k') + ' 表示）。'; a1 = T('x=' + gen) + '（' + T('k') + ' 為整數）'; }
+    else if (t === 1) { q = '寫出 ' + T('y=' + expr) + ' 圖形的所有對稱中心（用整數 ' + T('k') + ' 表示）。'; a1 = T('\\left(' + gen + ',' + d + '\\right)') + '（' + T('k') + ' 為整數）'; }
+    else if (t === 2) { q = T('y=' + expr) + ' 圖形的對稱軸中，' + T('x') + ' 坐標是最小正數的是哪一條？'; a1 = T('x=' + piTex(sp.n, sp.d)); }
+    else { q = T('y=' + expr) + ' 圖形的對稱中心中，' + T('x') + ' 坐標是最小正數的是哪一點？'; a1 = T('\\left(' + piTex(sp.n, sp.d) + ',' + d + '\\right)'); }
+    var cond = u0 === 6 ? '\\dfrac{\\pi}{2}+k\\pi' : 'k\\pi';
+    return { q: q, a: a1,
+      h: '$\\' + fn + '$ 型的' + kind + (isAxis ? '通過最高點、最低點' : '在中線 $y=' + d + '$ 上') + '：令括號 $' + inner + '=' + cond + '$，解出 $x$；相鄰兩條' + (isAxis ? '對稱軸' : '對稱中心') + '相隔半個週期 $' + piTex(st.n, st.d) + '$。',
+      p: { fn: fn, b: [bF.n, bF.d], cK: cK, a: a, d: d, t: t, x0: [x0.n, x0.d], st: [st.n, st.d] } };
+  };
+
+  /* 1-3 三角函數值的大小比較（弧度 1～6） */
+  function cmpMap(fn, v) {                         /* 把角搬到函數單調的區間：回傳 [搬過去的角(數值), 說明 HTML] */
+    var P = Math.PI, keep = function (rg) { return '$' + v + '$ 本身就在 ' + rg + ' 內'; };
+    var mv = function (eq, w, ap) { return '$' + eq + '$，$' + w + '\\approx' + ap.toFixed(2) + '$'; };
+    if (fn === 'sin') {
+      if (v < P / 2) return [v, keep('$\\left[-\\dfrac{\\pi}{2},\\dfrac{\\pi}{2}\\right]$')];
+      if (v < 1.5 * P) return [P - v, mv('\\sin' + v + '=\\sin(\\pi-' + v + ')', '\\pi-' + v, 3.14 - v)];
+      return [v - 2 * P, mv('\\sin' + v + '=\\sin(' + v + '-2\\pi)', v + '-2\\pi', v - 6.28)];
+    }
+    if (fn === 'cos') {
+      if (v < P) return [v, keep('$[0,\\pi]$')];
+      return [2 * P - v, mv('\\cos' + v + '=\\cos(2\\pi-' + v + ')', '2\\pi-' + v, 6.28 - v)];
+    }
+    if (v < P / 2) return [v, keep('$\\left(-\\dfrac{\\pi}{2},\\dfrac{\\pi}{2}\\right)$')];
+    if (v < 1.5 * P) return [v - P, mv('\\tan' + v + '=\\tan(' + v + '-\\pi)', v + '-\\pi', v - 3.14)];
+    return [v - 2 * P, mv('\\tan' + v + '=\\tan(' + v + '-2\\pi)', v + '-2\\pi', v - 6.28)];
+  }
+  L1.trigCompare = function (r) {
+    var fn = r.pick(['sin', 'cos', 'tan']), vs = r.shuffle([1, 2, 3, 4, 5, 6]).slice(0, 3), nm = ['a', 'b', 'c'];
+    var val = { sin: Math.sin, cos: Math.cos, tan: Math.tan }[fn];
+    var ord = [0, 1, 2].sort(function (i, j) { return val(vs[j]) - val(vs[i]); });
+    var ans = nm[ord[0]] + '\\gt ' + nm[ord[1]] + '\\gt ' + nm[ord[2]];
+    var where = { sin: '$\\left[-\\dfrac{\\pi}{2},\\dfrac{\\pi}{2}\\right]$（$\\sin$ 在這裡遞增）', cos: '$[0,\\pi]$（$\\cos$ 在這裡遞減）', tan: '$\\left(-\\dfrac{\\pi}{2},\\dfrac{\\pi}{2}\\right)$（$\\tan$ 在這裡遞增）' }[fn];
+    return { q: '設 ' + T('a=\\' + fn + vs[0]) + '、' + T('b=\\' + fn + vs[1]) + '、' + T('c=\\' + fn + vs[2]) + '（角的單位為弧度），比較 ' + T('a,b,c') + ' 的大小。', a: T(ans),
+      h: '$\\pi\\approx3.14$。用誘導公式把 $' + vs.join('$、$') + '$ 都搬到 ' + where + '，再比較搬過去的角。',
+      p: { fn: fn, vs: vs, ord: ord } };
+  };
+
   /* ══════════════════════════════════════════════════════════
      L1 解題步驟（s：每步一段 HTML）與第一層提示（h1：只講「這是哪一型、第一步做什麼」，不帶數字）
      由 p 重算，所以與題目、答案一定一致；答案由頁面另行附在步驟後。
@@ -475,12 +566,68 @@
     return [why + '。', '$u=' + bT + 'x$，$x$ 的週期是 $u$ 的週期除以 $|b|$：$\\dfrac{' + base + '}{' + bT + '}=' + PT + '$。'];
   };
 
+  /* ── 2026-09-28 擴充：新 L1 四型的第一層提示與解題步驟 ── */
+  L1_H1.sumReverse = '這是「和差角公式倒過來用」：先認出是 $\\sin(\\alpha\\pm\\beta)$、$\\cos(\\alpha\\pm\\beta)$ 還是 $\\tan(\\alpha\\pm\\beta)$ 的展開式，再合回一個角。';
+  L1_H1.doubleReverse = '這是「倍角公式倒過來用」：式子裡同一個角出現兩次（或平方），把它合成兩倍角的一個函數。';
+  L1_H1.symAxis = '這是「對稱軸、對稱中心」：對稱軸通過最高點、最低點，對稱中心在中線上；令括號等於那些位置的角，解出 $x$。';
+  L1_H1.trigCompare = '這是「大小比較」：用誘導公式把每個角搬到同一段函數單調的區間，再比較搬過去的角。';
+
+  L1_SOL.sumReverse = function (p) {
+    var A = dg(p.A), B = dg(p.B), op = p.op, v = vTex(tv(p.Td)[p.fn]);
+    var fm = { sin: '\\sin(\\alpha' + op + '\\beta)=\\sin\\alpha\\cos\\beta' + op + '\\cos\\alpha\\sin\\beta',
+      cos: '\\cos(\\alpha' + op + '\\beta)=\\cos\\alpha\\cos\\beta' + (op === '+' ? '-' : '+') + '\\sin\\alpha\\sin\\beta',
+      tan: '\\tan(\\alpha' + op + '\\beta)=\\dfrac{\\tan\\alpha' + op + '\\tan\\beta}{1' + (op === '+' ? '-' : '+') + '\\tan\\alpha\\tan\\beta}' }[p.fn];
+    return ['對照公式 $' + fm + '$' + (p.sw ? '（乘法可以交換順序，' + (p.fn === 'sin' ? '兩項也' : '加法也') + '可以交換）' : '') + '，題目正是 $\\alpha=' + A + '$、$\\beta=' + B + '$ 的展開式。',
+      '合回一個角：原式 $=\\' + p.fn + '(' + A + op + B + ')=\\' + p.fn + dg(p.Td) + '$。',
+      '$\\' + p.fn + dg(p.Td) + '=' + v + '$。'];
+  };
+
+  L1_SOL.doubleReverse = function (p) {
+    var rad = p.rad, th = rad ? piTex(p.k, 24) : dg(7.5 * p.k), two = rad ? piTex(2 * p.k, 24) : dg(15 * p.k);
+    var f2 = p.form <= 1 ? 'sin' : p.form === 5 ? 'tan' : 'cos', v = tv(15 * p.k)[f2], half = p.form === 1;
+    var id = ['2\\sin\\theta\\cos\\theta=\\sin2\\theta', '\\sin\\theta\\cos\\theta=\\dfrac12\\sin2\\theta', '\\cos^2\\theta-\\sin^2\\theta=\\cos2\\theta', '1-2\\sin^2\\theta=\\cos2\\theta', '2\\cos^2\\theta-1=\\cos2\\theta',
+      '\\dfrac{2\\tan\\theta}{1-\\tan^2\\theta}=\\tan2\\theta', '\\cos^4\\theta-\\sin^4\\theta=(\\cos^2\\theta+\\sin^2\\theta)(\\cos^2\\theta-\\sin^2\\theta)=\\cos^2\\theta-\\sin^2\\theta=\\cos2\\theta'][p.form];
+    var st = ['倍角公式倒過來看：$' + id + '$，這裡 $\\theta=' + th + '$。',
+      '原式 $=' + (half ? '\\dfrac12' : '') + '\\' + f2 + '\\left(2\\times' + th + '\\right)=' + (half ? '\\dfrac12' : '') + '\\' + f2 + (rad ? two : ' ' + two) + '$。'];
+    if (half) st.push('$\\sin' + (rad ? two : ' ' + two) + '=' + vTex(v) + '$，所以原式 $=\\dfrac12\\times' + negP(vTex(v)) + '=' + surdOver(v.c, v.r, 2 * v.d) + '$。');
+    else st.push('$\\' + f2 + (rad ? two : ' ' + two) + '=' + vTex(v) + '$。');
+    return st;
+  };
+
+  L1_SOL.symAxis = function (p) {
+    var bF = F(p.b[0], p.b[1]), bT = bF.d === 2 ? '\\dfrac{x}{2}' : (bF.n === 1 ? 'x' : bF.n + 'x'), isAxis = p.t % 2 === 0;
+    var inner = bT + (p.cK > 0 ? '+' : '-') + piTex(Math.abs(p.cK), 12);
+    var u0 = ((p.fn === 'sin') === isAxis) ? 6 : 0, cond = u0 === 6 ? '\\dfrac{\\pi}{2}+k\\pi' : 'k\\pi';
+    var st = F(p.st[0], p.st[1]), x0 = F(p.x0[0], p.x0[1]), raw = Fr.div(F(u0 - p.cK, 12), bF);
+    var gen = (x0.n === 0 ? '' : piTex(x0.n, x0.d) + '+') + kStepTex(st), rawT = (raw.n === 0 ? '' : piTex(raw.n, raw.d) + '+') + kStepTex(st);
+    var sp = x0.n === 0 ? st : x0;
+    var why = isAxis ? '對稱軸通過最高點、最低點，那裡 $\\' + p.fn + '$ 的值是 $\\pm1$' : '對稱中心在中線 $y=' + p.d + '$ 上，那裡 $\\' + p.fn + '$ 的值是 $0$';
+    var out = [why + '：令 $' + inner + '=' + cond + '$（$k$ 為整數）。',
+      '移項再除以 $' + (bF.d === 2 ? '\\dfrac12' : bF.n) + '$：$x=' + rawT + '$' + (Fr.eq(raw, x0) ? '' : '，常數項調到 $0$ 與半週期 $' + piTex(st.n, st.d) + '$ 之間：$x=' + gen + '$') + '。'];
+    if (p.t === 0) out.push('所有對稱軸：$x=' + gen + '$，$k$ 為整數。');
+    else if (p.t === 1) out.push('所有對稱中心：$\\left(' + gen + ',' + p.d + '\\right)$，$k$ 為整數。');
+    else if (p.t === 2) out.push('取 $k$ 讓 $x$ 是最小的正數：$x=' + piTex(sp.n, sp.d) + '$。');
+    else out.push('取 $k$ 讓 $x$ 是最小的正數，對稱中心是 $\\left(' + piTex(sp.n, sp.d) + ',' + p.d + '\\right)$。');
+    return out;
+  };
+
+  L1_SOL.trigCompare = function (p) {
+    var nm = ['a', 'b', 'c'], m = p.vs.map(function (v) { return cmpMap(p.fn, v); });
+    var where = { sin: '$\\left[-\\dfrac{\\pi}{2},\\dfrac{\\pi}{2}\\right]$，$\\sin$ 在這裡遞增', cos: '$[0,\\pi]$，$\\cos$ 在這裡遞減', tan: '$\\left(-\\dfrac{\\pi}{2},\\dfrac{\\pi}{2}\\right)$，$\\tan$ 在這裡遞增' }[p.fn];
+    var st = ['$\\pi\\approx3.14$。目標區間是 ' + where + '。'];
+    st.push(m.map(function (x, i) { return '$' + nm[i] + '$：' + x[1]; }).join('；') + '。');
+    var byW = [0, 1, 2].sort(function (i, j) { return m[j][0] - m[i][0]; });
+    var wOrd = byW.map(function (i) { return nm[i]; });
+    st.push('搬過去的角由大到小是 $' + wOrd.join('$、$') + '$ 的；' + (p.fn === 'cos' ? '$\\cos$ 遞減，角越大值越小，順序反過來' : '函數遞增，角越大值越大，順序不變') + '：$' + nm[p.ord[0]] + '\\gt ' + nm[p.ord[1]] + '\\gt ' + nm[p.ord[2]] + '$。');
+    return st;
+  };
+
   var META_L1 = [['degToRad', '度 → 弧度'], ['radToDeg', '弧度 → 度・判象限'], ['arcArea', '弧長與扇形面積'], ['sectorFromArc', '由弧長反推圓心角'], ['signQuad', '弧度值的正負判斷'], ['specialValue', '特殊角的函數值'], ['pointDef', '終邊過一點求三角函數'], ['fromSinQuad', '已知一個函數值求另兩個'], ['coterminal', '同界角與象限'], ['reduceFormula', '誘導公式化簡'],
-    ['sumExact', '15° 倍數的精確值'], ['cosDiffQuad', '和差角公式求值'], ['tanSum', 'tan 的和差角'], ['doubleFromSin', '二倍角求值'], ['halfFromCos', '半角求值'],
-    ['ampPeriod', '振幅・週期・最大最小'], ['shiftFunc', '平移後的方程式'], ['combineStd', '正餘弦疊合（標準組合）'], ['maxMin', 'a sin x + b cos x 的最值'], ['basicEq', '基本三角方程式'], ['periodOf', '最小正週期']];
+    ['sumExact', '15° 倍數的精確值'], ['cosDiffQuad', '和差角公式求值'], ['tanSum', 'tan 的和差角'], ['sumReverse', '和差角公式逆用'], ['doubleFromSin', '二倍角求值'], ['doubleReverse', '倍角公式逆用'], ['halfFromCos', '半角求值'],
+    ['ampPeriod', '振幅・週期・最大最小'], ['shiftFunc', '平移後的方程式'], ['combineStd', '正餘弦疊合（標準組合）'], ['maxMin', 'a sin x + b cos x 的最值'], ['basicEq', '基本三角方程式'], ['periodOf', '最小正週期'], ['symAxis', '對稱軸與對稱中心'], ['trigCompare', '三角函數值比大小']];
 
   /* ══════════════════════════════════════════════════════════
-     L2　中等（16 型）
+     L2　中等（22 型；2026-09-28 依段考頻率補 6 型）
      ══════════════════════════════════════════════════════════ */
   var L2 = {};
 
@@ -740,10 +887,134 @@
       a: T(cnt) + ' 個，總和 ' + T(sumK + '\\pi'), h: '令 $u=' + b + 'x\\in(0,' + (2 * b) + '\\pi)$，每個週期有兩解且對稱於 $\\dfrac{\\pi}{2}$（或 $\\dfrac{3\\pi}{2}$、$\\pi$）配對相加，最後除以 $' + b + '$。', p: { b: b, fn: fn, kpos: kpos, cnt: cnt, sumK: sumK } };
   };
 
-  var META_L2 = [['sectorSys', '周長與面積反求扇形'], ['sectorMax', '定周長扇形面積最大'], ['coneShortest', '圓錐側面最短路徑'], ['sumProd', 'sinθ+cosθ=k 的連鎖求值'], ['quadRootCos2', '方程式的根 → cos2θ'], ['tanQuad', '根與係數 × tan 和角'], ['systemSquare', '平方相加求 cos(A+B)'], ['halfFromCos2x', 'cos2x → 半角組合'], ['paramFit', '由最高最低點反求 (a,b,c,d)'], ['transformOrder', '伸縮與平移的順序'], ['periodJudge', '合成函數的週期'], ['rootCount', '方程式 c+k sin x=x 的解數'], ['trigIneq', '三角不等式（含孤立解）'], ['combineInterval', '疊合後的區間最值'], ['squareSub', 'sin x±cos x 的二次代換'], ['eqSumCount', 'sin bx=k 的解數與總和']];
+  /* ══════════ 2026-09-28 擴充（依段考卷出現頻率補題型）：L2 6 型 ══════════ */
+  /* 1-1 弓形面積：扇形減三角形（優弧那一塊：圓減劣弓形） */
+  L2.segmentArea = function (r) {
+    var rad = r.int(2, 10), give = r.pick(['angle', 'angle', 'chord']), which = r.pick(['minor', 'minor', 'major']);
+    var K = give === 'chord' ? r.pick([4, 6, 8]) : r.pick([2, 3, 4, 6, 8, 9, 10]);        /* 圓心角 = Kπ/12 */
+    var sec = F(rad * rad * K, 24), sv = tv(15 * K).sin, tri = surdOver(rad * rad * sv.c, sv.r, 2 * sv.d);
+    var ans = which === 'minor' ? coefPi(sec) + '-' + tri : coefPi(Fr.sub(F(rad * rad), sec)) + '+' + tri;
+    var arcW = which === 'minor' ? '劣弧' : '優弧';
+    var q = give === 'angle' ? '半徑為 ' + T(rad) + ' 的圓中，一弦所對的圓心角為 ' + T(piTex(K, 12)) + '，求此弦與' + arcW + '所圍成的弓形面積。'
+      : '半徑為 ' + T(rad) + ' 的圓中，有一條長為 ' + T(sqrtTex(rad * rad * { 4: 1, 6: 2, 8: 3 }[K])) + ' 的弦，求此弦與' + arcW + '所圍成的弓形面積。';
+    var h = (give === 'chord' ? '先求圓心角：弦長 $=2r\\sin\\dfrac{\\theta}{2}$，得 $\\theta=' + piTex(K, 12) + '$。' : '') +
+      '劣弓形 $=$ 扇形 $-$ 三角形 $=\\dfrac12r^2\\theta-\\dfrac12r^2\\sin\\theta=\\dfrac12\\times' + rad + '^2\\times' + piTex(K, 12) + '-\\dfrac12\\times' + rad + '^2\\times' + vTex(sv) + '$' +
+      (which === 'major' ? '；優弧那一塊是整個圓 $' + coefPi(F(rad * rad)) + '$ 減去劣弓形。' : '。');
+    return { q: q, a: T(ans), h: h, p: { r: rad, K: K, give: give, which: which } };
+  };
+
+  /* 1-2 角的拆分：α=(α+β)−β、α=(α−β)+β */
+  L2.angleSplit = function (r) {
+    var g = 0, form, ask, gF, bF, t1, t2, cg, sg, R1, sb, cb, R2, ca, sa;
+    do {
+      form = r.pick(['sum', 'sum', 'diff']); ask = r.pick(['cos', 'sin']); bF = r.pick(['sin', 'cos']);
+      gF = form === 'sum' ? 'cos' : r.pick(['sin', 'cos']);
+      t1 = r.pick(TRIPLES); t2 = r.pick(TRIPLES);
+      sg = t1[0]; cg = (form === 'sum' ? r.sign() : 1) * t1[1]; R1 = t1[2]; sb = t2[0]; cb = t2[1]; R2 = t2[2];
+      ca = form === 'sum' ? cg * cb + sg * sb : cg * cb - sg * sb;          /* cos((α+β)−β)、cos((α−β)+β) */
+      sa = form === 'sum' ? sg * cb - cg * sb : sg * cb + cg * sb;
+    } while (!(ca > 0 && sa > 0) && g++ < 200);
+    if (!(ca > 0 && sa > 0)) return L2.angleSplit(makeRng(r.int(1, 1e6)));
+    var gam = form === 'sum' ? '\\alpha+\\beta' : '\\alpha-\\beta';
+    var givenG = '\\' + gF + '(' + gam + ')=' + fracTex(gF === 'cos' ? cg : sg, R1), givenB = '\\' + bF + '\\beta=' + fracTex(bF === 'sin' ? sb : cb, R2);
+    var rng = form === 'sum' ? T('0\\lt\\alpha\\lt\\dfrac{\\pi}{2}') + '、' + T('0\\lt\\beta\\lt\\dfrac{\\pi}{2}') : T('0\\lt\\beta\\lt\\alpha\\lt\\dfrac{\\pi}{2}');
+    var val = ask === 'cos' ? ca : sa;
+    return { q: '已知 ' + rng + '，' + T(givenG) + '、' + T(givenB) + '，求 ' + T('\\' + ask + '\\alpha') + '。', a: T('\\' + ask + '\\alpha=' + fracTex(val, R1 * R2)),
+      h: '把 $\\alpha$ 看成 $' + (form === 'sum' ? '(\\alpha+\\beta)-\\beta' : '(\\alpha-\\beta)+\\beta') + '$。先補齊：$' + gam + '$ 在 ' + (form === 'sum' ? '$(0,\\pi)$ 內，$\\sin(\\alpha+\\beta)$ 一定是正的' : '$\\left(0,\\dfrac{\\pi}{2}\\right)$ 內，正弦、餘弦都是正的') + '；$\\beta$ 是銳角。再用' + (form === 'sum' ? '差' : '和') + '角公式。',
+      p: { form: form, ask: ask, gF: gF, bF: bF, sg: sg, cg: cg, R1: R1, sb: sb, cb: cb, R2: R2, val: [val, R1 * R2] } };
+  };
+
+  /* 1-2 三角形中求 cos C（或 sin C）：C=π−(A+B)；給 sin 的角要檢查能不能是鈍角 */
+  L2.triCosC = function (r) {
+    for (var g = 0; g < 300; g++) {
+      var tA = r.pick(TRIPLES), tB = r.pick(TRIPLES), oA = r() < 0.3, oB = !oA && r() < 0.25;
+      var RA = tA[2], RB = tB[2], sA = tA[0], cA = (oA ? -1 : 1) * tA[1], sB = tB[0], cB = (oB ? -1 : 1) * tB[1];
+      var A = Math.atan2(sA, cA), Bn = Math.atan2(sB, cB);
+      if (A + Bn > Math.PI - 0.05) continue;
+      var gA = r.pick(['sin', 'sin', 'cos']), gB = r.pick(['sin', 'cos', 'cos']);
+      var candA = gA === 'cos' ? [A] : [A, Math.PI - A], candB = gB === 'cos' ? [Bn] : [Bn, Math.PI - Bn], ok = 0;
+      candA.forEach(function (x) { candB.forEach(function (y) { if (x + y < Math.PI - 1e-9) ok++; }); });
+      if (ok !== 1) continue;
+      var ask = r.pick(['cos', 'cos', 'sin']);
+      var num = ask === 'cos' ? sA * sB - cA * cB : sA * cB + cA * sB;
+      if (num === 0) continue;
+      var tipA = gA === 'sin' ? '$A$ 若是鈍角，$\\cos A=' + fracTex(-Math.abs(cA), RA) + '$' : '';
+      return { q: '在 ' + T('\\triangle ABC') + ' 中，' + T('\\' + gA + ' A=' + fracTex(gA === 'sin' ? sA : cA, RA)) + '、' + T('\\' + gB + ' B=' + fracTex(gB === 'sin' ? sB : cB, RB)) + '，求 ' + T('\\' + ask + ' C') + '。',
+        a: T('\\' + ask + ' C=' + fracTex(num, RA * RB)),
+        h: '$C=\\pi-(A+B)$ ⟹ ' + (ask === 'cos' ? '$\\cos C=-\\cos(A+B)=\\sin A\\sin B-\\cos A\\cos B$' : '$\\sin C=\\sin(A+B)=\\sin A\\cos B+\\cos A\\sin B$') + '。給 $\\sin$ 的角要討論銳角、鈍角：' + (tipA ? tipA + '，' : '') + '兩角加起來不能超過 $\\pi$，不合的要捨去。',
+        p: { gA: gA, gB: gB, sA: sA, cA: cA, RA: RA, sB: sB, cB: cB, RB: RB, ask: ask, val: [num, RA * RB] } };
+    }
+    return L2.triCosC(makeRng(r.int(1, 1e6)));
+  };
+
+  /* 1-2 三倍角（進階：課綱沒列，段考常考） */
+  L2.tripleEval = function (r) {
+    var t = r.int(0, 2);
+    if (t < 2) {
+      var dd = r.int(2, 7), nn = r.int(1, dd - 1); while (gcd(nn, dd) !== 1) nn = r.int(1, dd - 1);
+      var x = F(r.sign() * nn, dd), x3 = Fr.mul(Fr.mul(x, x), x);
+      var val = t === 0 ? Fr.sub(Fr.mul(F(3), x), Fr.mul(F(4), x3)) : Fr.sub(Fr.mul(F(4), x3), Fr.mul(F(3), x));
+      var fn = t === 0 ? 'sin' : 'cos';
+      return { q: '已知 ' + T('\\' + fn + '\\theta=' + Fr.tex(x)) + '，求 ' + T('\\' + fn + '3\\theta') + '。', a: T('\\' + fn + '3\\theta=' + Fr.tex(val)),
+        h: t === 0 ? '$\\sin3\\theta=3\\sin\\theta-4\\sin^3\\theta=3\\times' + negP(Fr.tex(x)) + '-4\\times\\left(' + Fr.tex(x) + '\\right)^3$，不用知道 $\\theta$ 在哪一象限。'
+          : '$\\cos3\\theta=4\\cos^3\\theta-3\\cos\\theta=4\\times\\left(' + Fr.tex(x) + '\\right)^3-3\\times' + negP(Fr.tex(x)) + '$，不用知道 $\\theta$ 在哪一象限。',
+        p: { t: t, x: [x.n, x.d], val: [val.n, val.d] } };
+    }
+    var fn2 = r.pick(['sin', 'cos']), m = r.pick([1, 2]), th = r.pick([10, 20, 40, 50, 70, 80, 100, 110, 130, 140, 160, 170]);
+    var S1 = '\\' + fn2 + dg(th), S3 = '\\' + fn2 + '^3 ' + dg(th);
+    var expr = fn2 === 'sin' ? (3 * m) + S1 + '-' + (4 * m) + S3 : (4 * m) + S3 + '-' + (3 * m) + S1;
+    var v = tv(3 * th)[fn2];
+    return { q: '求 ' + T(expr) + ' 的值。', a: T(surdOver(m * v.c, v.r, v.d)),
+      h: (fn2 === 'sin' ? '$3\\sin\\theta-4\\sin^3\\theta=\\sin3\\theta$' : '$4\\cos^3\\theta-3\\cos\\theta=\\cos3\\theta$') + '（三倍角公式倒過來用），' + (m === 2 ? '先提出 $2$，' : '') + '$\\theta=' + dg(th) + '$，$3\\theta=' + dg(3 * th) + '$ 是特殊角。',
+      p: { t: t, fn: fn2, m: m, th: th } };
+  };
+
+  /* 1-3 二次型值域：cos²x＋p sin x＋q、sin²x＋p cos x＋q、cos2x＋p sin x＋q，令 t＝sin x 或 cos x */
+  L2.quadTrigRange = function (r) {
+    var form = r.int(0, 2), p = r.pick([-4, -3, -2, -1, 1, 2, 3, 4]), q = r.int(-3, 3), dom = r.pick([0, 0, 1]);
+    var tv_ = form === 1 ? 'cos' : 'sin', other = form === 1 ? 'sin' : 'cos';
+    var Aa = form === 2 ? 2 : 1, C = F(1 + q);                              /* g(t) = −Aa t² + p t + (1+q) */
+    var lo = dom ? F(0) : F(-1), hi = F(1);
+    var g = function (t) { return Fr.add(Fr.add(Fr.mul(F(-Aa), Fr.mul(t, t)), Fr.mul(F(p), t)), C); };
+    var tv0 = F(p, 2 * Aa), inside = Fr.toNum(tv0) >= Fr.toNum(lo) && Fr.toNum(tv0) <= Fr.toNum(hi);
+    var gl = g(lo), gh = g(hi), M = inside ? g(tv0) : (Fr.toNum(gl) > Fr.toNum(gh) ? gl : gh), mn = Fr.toNum(gl) < Fr.toNum(gh) ? gl : gh;
+    var pT = (p === 1 ? '+' : p === -1 ? '-' : signed(p)) + '\\' + tv_ + ' x';
+    var expr = (form === 2 ? '\\cos2x' : '\\' + other + '^2x') + pT + (q === 0 ? '' : signed(q));
+    var domT = dom ? (tv_ === 'sin' ? '0\\le x\\le\\pi' : '-\\dfrac{\\pi}{2}\\le x\\le\\dfrac{\\pi}{2}') : '';
+    return { q: (dom ? '設 ' + T(domT) + '，求 ' : '求 ') + T('f(x)=' + expr) + ' 的最大值與最小值。', a: '最大值 ' + T(Fr.tex(M)) + '，最小值 ' + T(Fr.tex(mn)),
+      h: '令 $t=\\' + tv_ + ' x$，' + (dom ? '在 $' + domT + '$ 時 $' + Fr.tex(lo) + '\\le t\\le1$' : '$-1\\le t\\le1$') + '；' + (form === 2 ? '$\\cos2x=1-2\\sin^2x=1-2t^2$' : '$\\' + other + '^2x=1-t^2$') + '，$f=' + (Aa === 2 ? '-2' : '-') + 't^2' + (p === 1 ? '+' : p === -1 ? '-' : signed(p)) + 't' + (1 + q === 0 ? '' : signed(1 + q)) + '$，頂點在 $t=' + Fr.tex(tv0) + '$，' + (inside ? '在範圍內' : '不在範圍內') + '；最大最小要看頂點與兩端。',
+      p: { form: form, p: p, q: q, dom: dom, M: [M.n, M.d], m: [mn.n, mn.d] } };
+  };
+
+  /* 1-3 二次型三角方程式：化成 sin x（或 cos x）的一元二次方程，因式分解，範圍外的根不合 */
+  var QROOT_IN = [[-1, 1], [-1, 2], [0, 1], [1, 2], [1, 1]], QROOT_OUT = [[2, 1], [-2, 1], [3, 2], [-3, 2], [3, 1], [-3, 1]];
+  L2.quadTrigEq = function (r) {
+    var fn = r.pick(['sin', 'cos']), form = r.pick(['same', 'mixed', 'mixed', 'double']), i1 = r.int(0, 4), r1 = QROOT_IN[i1], r2, sgn = r.sign();
+    if (r() < 0.5) r2 = r.pick(QROOT_OUT); else { var i2 = r.int(0, 4); while (i2 === i1) i2 = r.int(0, 4); r2 = QROOT_IN[i2]; }
+    var A = sgn * r1[1] * r2[1], B = -sgn * (r1[1] * r2[0] + r2[1] * r1[0]), C = sgn * r1[0] * r2[0];   /* A t² + B t + C = 0 */
+    var og = fn === 'sin' ? 'cos' : 'sin', terms;
+    if (form === 'same') terms = [[A, '\\' + fn + '^2x'], [B, '\\' + fn + ' x'], [C, '']];
+    else if (form === 'mixed') terms = [[-A, '\\' + og + '^2x'], [B, '\\' + fn + ' x'], [A + C, '']];
+    else if (fn === 'sin') terms = [[-A, '\\cos2x'], [2 * B, '\\sin x'], [A + 2 * C, '']];
+    else terms = [[A, '\\cos2x'], [2 * B, '\\cos x'], [A + 2 * C, '']];
+    var gg = 0; terms.forEach(function (x) { gg = gcd(gg, x[0]); });
+    var lead = terms.filter(function (x) { return x[0] !== 0; })[0][0] < 0 ? -1 : 1;
+    terms = terms.map(function (x) { return [lead * x[0] / gg, x[1]]; });
+    var lhs = '', first = true;
+    terms.forEach(function (x) { if (x[0] === 0) return; var n = x[0], mag = x[1] === '' ? String(Math.abs(n)) : ((Math.abs(n) === 1 ? '' : Math.abs(n)) + x[1]); lhs += (n < 0 ? '-' : (first ? '' : '+')) + mag; first = false; });
+    var roots = [r1, r2].filter(function (x) { return Math.abs(x[0]) <= x[1]; }), ks = [];
+    roots.forEach(function (x) { for (var k = 0; k < 24; k += 2) { var v = vNum(tv(k * 15)[fn]); if (Math.abs(v - x[0] / x[1]) < 1e-9 && ks.indexOf(k) < 0) ks.push(k); } });
+    ks.sort(function (a, b) { return a - b; });
+    var rt = function (x) { return fracTex(x[0], x[1]); };
+    return { q: '解方程式 ' + T(lhs + '=0') + '，' + T('0\\le x\\lt2\\pi') + '。', a: T('x=' + ks.map(function (k) { return piTex(k, 12); }).join(',\\ ')),
+      h: (form === 'mixed' ? '先用 $\\sin^2x+\\cos^2x=1$ 把 $\\' + og + '^2x$ 換成 $1-\\' + fn + '^2x$，' : form === 'double' ? '先用 $\\cos2x=' + (fn === 'sin' ? '1-2\\sin^2x' : '2\\cos^2x-1') + '$ 換掉 $\\cos2x$，' : '') + '整理成 $\\' + fn + ' x$ 的二次方程，因式分解得 $\\' + fn + ' x=' + rt(r1) + '$ 或 $' + rt(r2) + '$' + (Math.abs(r2[0]) > r2[1] ? '（$' + rt(r2) + '$ 超出 $[-1,1]$，不合）' : '') + '，再在 $[0,2\\pi)$ 內找角。',
+      p: { fn: fn, form: form, r1: r1, r2: r2, ks: ks } };
+  };
+
+  var META_L2 = [['sectorSys', '周長與面積反求扇形'], ['sectorMax', '定周長扇形面積最大'], ['coneShortest', '圓錐側面最短路徑'], ['segmentArea', '弓形面積'], ['sumProd', 'sinθ+cosθ=k 的連鎖求值'], ['quadRootCos2', '方程式的根 → cos2θ'], ['tanQuad', '根與係數 × tan 和角'], ['systemSquare', '平方相加求 cos(A+B)'], ['angleSplit', '角的拆分：α=(α+β)−β'], ['triCosC', '三角形中由 A、B 求 C'], ['halfFromCos2x', 'cos2x → 半角組合'], ['tripleEval', '三倍角（進階）'], ['paramFit', '由最高最低點反求 (a,b,c,d)'], ['transformOrder', '伸縮與平移的順序'], ['periodJudge', '合成函數的週期'], ['rootCount', '方程式 c+k sin x=x 的解數'], ['trigIneq', '三角不等式（含孤立解）'], ['quadTrigEq', '二次型三角方程式'], ['combineInterval', '疊合後的區間最值'], ['squareSub', 'sin x±cos x 的二次代換'], ['quadTrigRange', 'cos²x＋p sin x 型的最值'], ['eqSumCount', 'sin bx=k 的解數與總和']];
 
   /* ══════════════════════════════════════════════════════════
-     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
+     L3　中上（18 型）：每型對應固定題 L3-1～L3-18 的「類似題」
      角一律是 π/12 的倍數（K 單位），值由 tv() 精確給出。
      ══════════════════════════════════════════════════════════ */
   var L3 = {};
@@ -1116,9 +1387,92 @@
       a: T(d(t3)) + ' 公尺（' + T('a=' + a + ',\\ b=' + b) + '）', h: '把 $x=' + t1.x + ',' + t2.x + ',' + t3.x + '$ 代進括號，分別是 $' + [t1, t2, t3].map(function (t) { return piTex(((t.x * 12 / TT + phiK) % 24 + 24) % 24, 12); }).join('$、$') + '$，都是特殊角；兩個已知時刻給 $a\\cos(\\cdot)+b$ 的兩條一次方程，解出 $a,b$ 再代第三個時刻。', p: { T: TT, phiK: phiK, a: a, b: b, x1: t1.x, d1: d(t1), x2: t2.x, d2: d(t2), x3: t3.x, d3: d(t3) } };
   };
 
-  var META_L3 = [['radEstimate', '弧度值估大小（多選）'], ['periodFromHighLow', '最高最低點的水平距離 → 週期'], ['tanShiftCoincide', 'tan 平移後重合'], ['rootSumSin', 'sin bx=k 在 (0,Lπ) 的解數與總和'], ['absPeriodSum', '絕對值／平方的週期相加'], ['quadTanPoint', 'tan 與坐標正負定象限（多選）'], ['homogEq', '齊次式方程：降冪、疊合'], ['fracSubCombine', '分式通分後疊合'], ['halfDiffIsos', 'cos(θ/2)−sin(θ/2) 已知的等腰三角形'], ['sinCosMixRange', 'sin x cos x 與平方混合的區間最值'], ['expandCombineRange', '先展開再疊合的區間最值'], ['tanRootsTriangle', '兩根為 tanA、tanB 的三角形'], ['crossSquareSum', '兩式平方相加'], ['reduceBigAngle', '大角度的誘導公式'], ['tideModel', '週期模型（潮汐）']];
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* L3-16　α+β=π/4（或 3π/4）：tan 和角公式交叉相乘，(1±tanα)(1±tanβ)=2 */
+  L3.tanPairProd = function (r) {
+    var t = r.int(0, 4), q, a, h, p;
+    if (t <= 1) {
+      var K = (t === 0 ? 3 : 9) + 12 * r.pick([0, 1, -1, 2]), sg = t === 0 ? '+' : '-';
+      q = '若 ' + T('\\alpha+\\beta=' + piTex(K, 12)) + '（' + T('\\tan\\alpha') + '、' + T('\\tan\\beta') + ' 都有意義），求 ' + T('(1' + sg + '\\tan\\alpha)(1' + sg + '\\tan\\beta)') + ' 的值。';
+      a = T('2');
+      h = '$\\tan(\\alpha+\\beta)=\\tan\\left(' + piTex(K, 12) + '\\right)='+ (t === 0 ? '1' : '-1') + '$，把 $\\dfrac{\\tan\\alpha+\\tan\\beta}{1-\\tan\\alpha\\tan\\beta}=' + (t === 0 ? '1' : '-1') + '$ 交叉相乘得 $\\tan\\alpha+\\tan\\beta=' + (t === 0 ? '1-' : '-1+') + '\\tan\\alpha\\tan\\beta$，再把 $(1' + sg + '\\tan\\alpha)(1' + sg + '\\tan\\beta)$ 乘開代進去。';
+      p = { t: t, K: K };
+    } else if (t <= 3) {
+      var S = t === 2 ? r.pick([45, 225]) : r.pick([135, 315]), A, B;
+      do { A = S === 45 ? r.int(1, 44) : S === 225 ? r.int(46, 89) : S === 135 ? r.int(1, 89) : r.int(181, 224); B = S - A; } while (A === B || A % 90 === 0 || B % 90 === 0 || (A % 15 === 0 && B % 15 === 0));
+      var ex = t === 2 ? '\\tan' + dg(A) + '+\\tan' + dg(B) + '+\\tan' + dg(A) + '\\tan' + dg(B) : '\\tan' + dg(A) + '+\\tan' + dg(B) + '-\\tan' + dg(A) + '\\tan' + dg(B);
+      q = '求 ' + T(ex) + ' 的值。'; a = T(t === 2 ? '1' : '-1');
+      h = '$' + dg(A) + '+' + dg(B) + '=' + dg(S) + '$，$\\tan' + dg(S) + '=' + (t === 2 ? '1' : '-1') + '$：由 $\\tan(' + dg(A) + '+' + dg(B) + ')$ 的公式交叉相乘，得 $\\tan' + dg(A) + '+\\tan' + dg(B) + '=' + (t === 2 ? '1-' : '-1+') + '\\tan' + dg(A) + '\\tan' + dg(B) + '$，代進去。';
+      p = { t: t, A: A, B: B, S: S };
+    } else {
+      var sd = r.pick([1, 1, 1, 3, 5, 9]), m = sd === 1 ? r.int(1, 20) : sd, cnt = (45 - 2 * m) / sd + 1, n = cnt / 2, terms = [];   /* 角 m, m+sd, …, 45−m：頭尾配對和都是 45° */
+      for (var j = 0; j < cnt; j++) terms.push('(1+\\tan' + dg(m + j * sd) + ')');
+      q = '求 ' + T(cnt > 4 ? terms.slice(0, 3).join('') + '\\cdots' + terms[cnt - 1] : terms.join('')) + ' 的值。';
+      a = T('2^{' + n + '}');
+      h = '頭尾配對：$' + dg(m) + '+' + dg(45 - m) + '=45^\\circ$、$' + dg(m + sd) + '+' + dg(45 - m - sd) + '=45^\\circ$、…，角的和是 $45^\\circ$ 的兩個因式相乘等於 $2$；從 $' + dg(m) + '$ 到 $' + dg(45 - m) + '$' + (sd > 1 ? '（每次加 $' + dg(sd) + '$）' : '') + '共 $' + cnt + '$ 個因式，配成 $' + n + '$ 對。';
+      p = { t: t, m: m, sd: sd, n: n };
+    }
+    return { q: q, a: a, h: h, p: p };
+  };
+
+  /* L3-17　a sin x + b cos x 疊合後判斷五個敘述（多選） */
+  function valCoef(coef, m) { var s3 = Math.abs(coef) === 3; return (coef < 0 ? '-' : '') + (s3 ? (m === 1 ? '' : m) + '\\sqrt3' : String(m)); }
+  L3.combineProps = function (r) {
+    var row = r.pick(COMB), m = r.pick([1, 1, 2]), R2 = row[2] * m * m, RT = sqrtTex(R2), thK = row[3] * 12 / row[4], R = Math.sqrt(R2);
+    var aV = (Math.abs(row[0]) === 3 ? SQ3 : 1) * (row[0] < 0 ? -1 : 1) * m, bV = (Math.abs(row[1]) === 3 ? SQ3 : 1) * (row[1] < 0 ? -1 : 1) * m;
+    var f = function (x) { return aV * Math.sin(x) + bV * Math.cos(x); };
+    var expr = combTerm(row[0], m, true) + '\\sin x' + combTerm(row[1], m, false) + '\\cos x';
+    var pickX = function (base) { var c = [], k; for (k = -2; k <= 3; k++) { var x = base + 12 * k; if (x > -12 && x < 24 && x !== 0) c.push(x); } return r.pick(c); };
+    var kinds = r.shuffle(['per', 'max', 'axis', 'ctr', 'solv', 'mono', 'yint']).slice(0, 5), items = [], ans = [];
+    kinds.forEach(function (kd) {
+      var tr = r() < 0.5, txt, v, x, cc;
+      if (kd === 'per') { txt = '圖形的週期為 ' + T(tr ? '2\\pi' : '\\pi'); v = tr; }
+      else if (kd === 'max') { txt = T('f(x)') + ' 的最大值為 ' + T(tr ? RT : String(R2)); v = tr; }
+      else if (kd === 'axis') { x = pickX(tr ? 6 - thK : -thK); txt = '圖形對稱於直線 ' + T('x=' + piTex(x, 12)); v = tr; }
+      else if (kd === 'ctr') { x = pickX(tr ? -thK : 6 - thK); txt = '圖形對稱於點 ' + T('\\left(' + piTex(x, 12) + ',0\\right)'); v = tr; }
+      else if (kd === 'solv') { do { cc = r.int(1, 5) * r.sign(); } while (Math.abs(Math.abs(cc) - R) < 0.2); txt = '方程式 ' + T('f(x)=' + cc) + ' 有實數解'; v = Math.abs(cc) <= R; }
+      else if (kd === 'mono') {
+        var lo = r.int(-6, 18) * 2, len = r.pick([4, 6]), inc = r() < 0.5, allI = true, allD = true;
+        for (var i = 1; i < 60; i++) { var u = (lo + len * i / 60 + thK) * Math.PI / 12, dcos = Math.cos(u); if (dcos < 1e-12) allI = false; if (dcos > -1e-12) allD = false; }
+        txt = '在 ' + T(piTex(lo, 12) + '\\lt x\\lt' + piTex(lo + len, 12)) + ' 時，' + T('f(x)') + ' 遞' + (inc ? '增' : '減'); v = inc ? allI : allD;
+      } else { var yv = tr ? valCoef(row[1], m) : (row[0] === row[1] ? RT : valCoef(row[0], m)); txt = '圖形與 ' + T('y') + ' 軸的交點為 ' + T('\\left(0,' + yv + '\\right)'); v = tr; }
+      items.push({ k: kd, txt: txt, v: v });
+    });
+    var nT = items.filter(function (o) { return o.v; }).length;
+    if (nT === 0 || nT === 5) return L3.combineProps(makeRng(r.int(1, 1e6)));
+    var q = '設 ' + T('f(x)=' + expr) + '，選出正確的選項：<br>' + items.map(function (o, i) { if (o.v) ans.push(i + 1); return '(' + (i + 1) + ') ' + o.txt; }).join('　');
+    var thT = (row[3] < 0 ? '-' : '+') + piTex(Math.abs(row[3]), row[4]);
+    return { q: q, a: '(' + ans.join(')(') + ')',
+      h: '先疊合：$f(x)=' + RT + '\\sin\\left(x' + thT + '\\right)$。週期 $2\\pi$、最大值 $' + RT + '$；對稱軸令 $x' + thT + '=\\dfrac{\\pi}{2}+k\\pi$，對稱中心令 $x' + thT + '=k\\pi$；$f(x)=c$ 有解 ⟺ $|c|\\le' + RT + '$；遞增看 $x' + thT + '$ 是否整段落在 $\\left[-\\dfrac{\\pi}{2}+2k\\pi,\\dfrac{\\pi}{2}+2k\\pi\\right]$ 內；$y$ 軸交點是 $f(0)$。',
+      p: { row: row, m: m, kinds: kinds, ans: ans } };
+  };
+
+  /* L3-18　k sin²x + B cos x = D：化成 cos x 的二次方程，由 cos x 的值判斷根落在哪個區間（多選） */
+  var QC_IN = [[1, 3], [2, 3], [1, 4], [3, 4], [1, 5], [2, 5], [3, 5], [4, 5], [1, 6], [5, 6]], QC_OUT = [[3, 2], [4, 3], [5, 4], [5, 3], [2, 1], [7, 4]];
+  L3.quadCosRoots = function (r) {
+    var c1, c2, g = 0, B;
+    do {
+      c1 = r.pick(QC_IN).slice(); c1[0] *= r.sign();
+      c2 = (r() < 0.4 ? r.pick(QC_OUT) : r.pick(QC_IN)).slice(); c2[0] *= r.sign();
+      B = c1[1] * c2[0] + c2[1] * c1[0];
+    } while ((B === 0 || c1[0] * c2[1] === c2[0] * c1[1]) && g++ < 50);
+    var k = c1[1] * c2[1], D = k + c1[0] * c2[0], gg = gcd(gcd(k, Math.abs(B)), Math.abs(D)) || 1;
+    k /= gg; B /= gg; D /= gg;
+    var eq = (k === 1 ? '' : k) + '\\sin^2x' + (B > 0 ? '+' : '-') + (Math.abs(B) === 1 ? '' : Math.abs(B)) + '\\cos x=' + D;
+    var IV = [[0, 4], [4, 6], [6, 8], [8, 12]], BD = [[0.5, 1], [0, 0.5], [-0.5, 0], [-1, -0.5]], ans = [];
+    [c1, c2].forEach(function (c) { var v = c[0] / c[1]; BD.forEach(function (b, i) { if (v > b[0] && v < b[1] && ans.indexOf(i + 1) < 0) ans.push(i + 1); }); });
+    ans.sort(); if (!ans.length) ans = [5];
+    var opts = IV.map(function (iv, i) { return '(' + (i + 1) + ') ' + T('\\left(' + piTex(iv[0], 12) + ',' + piTex(iv[1], 12) + '\\right)'); }).join('　') + '　(5) 以上皆非';
+    var quad = (k === 1 ? '' : k) + '\\cos^2x' + (B > 0 ? '-' : '+') + (Math.abs(B) === 1 ? '' : Math.abs(B)) + '\\cos x' + (D - k === 0 ? '' : signed(D - k)) + '=0';
+    var out = [c1, c2].filter(function (c) { return Math.abs(c[0]) > c[1]; });
+    return { q: '方程式 ' + T(eq) + ' 在下列哪些區間有實根？<br>' + opts, a: '(' + ans.join(')(') + ')',
+      h: '$\\sin^2x=1-\\cos^2x$ 代入，整理成 $' + quad + '$，因式分解得 $\\cos x=' + fracTex(c1[0], c1[1]) + '$ 或 $' + fracTex(c2[0], c2[1]) + '$' + (out.length ? '（$' + fracTex(out[0][0], out[0][1]) + '$ 超出 $[-1,1]$，不合）' : '') + '。$x$ 在 $(0,\\pi)$ 時 $\\cos x$ 遞減，四個區間的端點依序對應 $\\cos x=1,\\ \\dfrac12,\\ 0,\\ -\\dfrac12,\\ -1$。',
+      p: { c1: c1, c2: c2, k: k, B: B, D: D, ans: ans } };
+  };
+
+  var META_L3 = [['radEstimate', '弧度值估大小（多選）'], ['periodFromHighLow', '最高最低點的水平距離 → 週期'], ['tanShiftCoincide', 'tan 平移後重合'], ['rootSumSin', 'sin bx=k 在 (0,Lπ) 的解數與總和'], ['absPeriodSum', '絕對值／平方的週期相加'], ['quadTanPoint', 'tan 與坐標正負定象限（多選）'], ['homogEq', '齊次式方程：降冪、疊合'], ['fracSubCombine', '分式通分後疊合'], ['halfDiffIsos', 'cos(θ/2)−sin(θ/2) 已知的等腰三角形'], ['sinCosMixRange', 'sin x cos x 與平方混合的區間最值'], ['expandCombineRange', '先展開再疊合的區間最值'], ['tanRootsTriangle', '兩根為 tanA、tanB 的三角形'], ['crossSquareSum', '兩式平方相加'], ['reduceBigAngle', '大角度的誘導公式'], ['tideModel', '週期模型（潮汐）'], ['tanPairProd', '和為 π/4：(1+tanα)(1+tanβ)'], ['combineProps', '疊合後的性質（多選）'], ['quadCosRoots', 'cos x 二次方程的根在哪個區間（多選）']];
   /* 固定題 L3-n 對應的類似題型 */
-  var L3_FIX = { 'L3-1': 'radEstimate', 'L3-2': 'periodFromHighLow', 'L3-3': 'tanShiftCoincide', 'L3-4': 'rootSumSin', 'L3-5': 'absPeriodSum', 'L3-6': 'quadTanPoint', 'L3-7': 'homogEq', 'L3-8': 'fracSubCombine', 'L3-9': 'halfDiffIsos', 'L3-10': 'sinCosMixRange', 'L3-11': 'expandCombineRange', 'L3-12': 'tanRootsTriangle', 'L3-13': 'crossSquareSum', 'L3-14': 'reduceBigAngle', 'L3-15': 'tideModel' };
+  var L3_FIX = { 'L3-1': 'radEstimate', 'L3-2': 'periodFromHighLow', 'L3-3': 'tanShiftCoincide', 'L3-4': 'rootSumSin', 'L3-5': 'absPeriodSum', 'L3-6': 'quadTanPoint', 'L3-7': 'homogEq', 'L3-8': 'fracSubCombine', 'L3-9': 'halfDiffIsos', 'L3-10': 'sinCosMixRange', 'L3-11': 'expandCombineRange', 'L3-12': 'tanRootsTriangle', 'L3-13': 'crossSquareSum', 'L3-14': 'reduceBigAngle', 'L3-15': 'tideModel', 'L3-16': 'tanPairProd', 'L3-17': 'combineProps', 'L3-18': 'quadCosRoots' };
 
   /* ══════════════════════════════════════════════════════════
      L0　章首先備診斷（5 型）：國中幾何、高一下三角比、高一上二次函數
@@ -1205,6 +1559,20 @@
     'L3.crossSquareSum': { f: function (p) { return p.kind; }, why: '兩式的組合方式不同，平方相加的交叉項是 $\\sin(\\alpha+\\beta)$、$\\cos(\\alpha+\\beta)$ 還是 $\\cos(\\alpha-\\beta)$。' },
     'L3.reduceBigAngle': { f: function (p) { return p.sg; }, why: '$+\\theta$ 與 $-\\theta$：化簡後差在正負與函數名，象限判斷相同。' }
   };
+  /* 2026-09-28 擴充題型的對照題 */
+  CONTRAST['L1.sumReverse'] = { f: function (p) { return p.op; }, keep: ['fn'], why: '同一個函數，展開式中間的正負號決定是和角還是差角；$\\cos$ 的號與角的和差相反：$\\cos\\alpha\\cos\\beta-\\sin\\alpha\\sin\\beta$ 是 $\\cos(\\alpha+\\beta)$。' };
+  CONTRAST['L1.doubleReverse'] = { f: function (p) { return p.form; }, why: '$2\\sin\\theta\\cos\\theta$ 合成 $\\sin2\\theta$，少了係數 $2$ 就要再乘 $\\dfrac12$；$\\cos^2\\theta-\\sin^2\\theta$、$1-2\\sin^2\\theta$、$2\\cos^2\\theta-1$ 三種寫法都是 $\\cos2\\theta$。' };
+  CONTRAST['L1.symAxis'] = { f: function (p) { return p.t % 2; }, keep: ['fn'], why: '同一個函數：$\\sin$ 型的對稱軸令括號 $=\\dfrac{\\pi}{2}+k\\pi$、對稱中心令括號 $=k\\pi$；$\\cos$ 型剛好相反。對稱中心的 $y$ 坐標是中線 $d$，不一定是 $0$。' };
+  CONTRAST['L1.trigCompare'] = { f: function (p) { return p.fn; }, why: '$\\sin$、$\\tan$ 在搬過去的區間遞增，角越大值越大；$\\cos$ 在 $[0,\\pi]$ 遞減，角越大值越小，順序要反過來。' };
+  CONTRAST['L2.segmentArea'] = { f: function (p) { return p.which; }, why: '劣弓形是扇形減三角形；優弧那一塊是整個圓減劣弓形，三角形的面積變成加回去。' };
+  CONTRAST['L2.angleSplit'] = { f: function (p) { return p.form; }, why: '$\\alpha=(\\alpha+\\beta)-\\beta$ 用差角公式、$\\alpha=(\\alpha-\\beta)+\\beta$ 用和角公式；補齊函數值時，$\\alpha+\\beta$ 可能是鈍角，要看給的 $\\cos$ 的正負。' };
+  CONTRAST['L2.triCosC'] = { f: function (p) { return p.gA; }, why: '給 $\\cos A$ 時角唯一；給 $\\sin A$ 時 $A$ 可能是銳角也可能是鈍角，要用「$A+B\\lt\\pi$」把不合的那個刪掉。' };
+  CONTRAST['L2.quadTrigRange'] = { f: function (p) { return p.dom; }, keep: ['form'], why: '同一個二次式，$x$ 的範圍變了，$t$ 的範圍就跟著變（例如 $0\\le x\\le\\pi$ 時 $\\sin x$ 只在 $[0,1]$），最大最小值要重新看頂點與端點。' };
+  CONTRAST['L2.quadTrigEq'] = { f: function (p) { return p.form; }, keep: ['fn'], why: '三種寫法（同一函數、混 $\\sin^2$ 與 $\\cos^2$、混 $\\cos2x$）都先換成同一個函數的二次方程，換完之後解法一模一樣。' };
+  CONTRAST['L2.tripleEval'] = { f: function (p) { return p.t; }, why: '$\\sin3\\theta=3\\sin\\theta-4\\sin^3\\theta$、$\\cos3\\theta=4\\cos^3\\theta-3\\cos\\theta$：兩條的次方項係數都是 $4$，正負號位置相反。' };
+  CONTRAST['L3.tanPairProd'] = { f: function (p) { return p.t; }, why: '和是 $\\dfrac{\\pi}{4}$ 型（$\\tan=1$）配 $(1+\\tan\\alpha)(1+\\tan\\beta)$，和是 $\\dfrac{3\\pi}{4}$ 型（$\\tan=-1$）配 $(1-\\tan\\alpha)(1-\\tan\\beta)$，乘開後都等於 $2$。' };
+  CONTRAST['L3.quadCosRoots'] = { f: function (p) { return p.ans.join(''); }, why: '兩個根的 $\\cos$ 值換了，落在哪個區間就跟著換；先確認根在 $[-1,1]$ 內，再和 $1,\\ \\dfrac12,\\ 0,\\ -\\dfrac12,\\ -1$ 比大小。' };
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

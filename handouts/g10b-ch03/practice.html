@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -240,7 +240,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（11,750 題抽樣，全部用分數精確重算一次）；固定題全數人工＋電腦重算。名詞照 108 課綱：課綱說「最適直線」，段考與大考也常寫「迴歸直線」，兩者是同一條線；百分位數採課本的「$t=\frac{nk}{100}$ 整數取兩筆平均、非整數進位」定義。<b>常態分布、信賴區間、抽樣、假設檢定都不在 108 課綱高一範圍</b>，本書一律不用。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（14,250 題抽樣，全部用分數精確重算一次）；固定題全數人工＋電腦重算。名詞照 108 課綱：課綱說「最適直線」，段考與大考也常寫「迴歸直線」，兩者是同一條線；百分位數採課本的「$t=\frac{nk}{100}$ 整數取兩筆平均、非整數進位」定義。<b>常態分布、信賴區間、抽樣、假設檢定都不在 108 課綱高一範圍</b>，本書一律不用。</li>
   </ol>
 </div>
 
@@ -267,7 +267,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>分不清平均數與中位數、算標準差忘了除以 $n$ 再開根號、看到 $r$ 就以為是斜率的同學。</div>
-  <div><b>目標</b>29 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>35 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
@@ -278,22 +278,22 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fixset" data-tier="L1" data-keys="centralTrio,weightedMean,weightedScore,freqTable,meanShift" data-seed="9101"></div>
 
 <h3 class="sec">1-2 百分位數</h3>
-<div class="must">先要會：<b>$t=\dfrac{nk}{100}$，是整數就取第 $t$、$t+1$ 筆的平均；不是整數就無條件進位取第 $\lceil t\rceil$ 筆</b>、<b>資料一定要先由小到大排</b>、<b>次數有規律時（持 $k$ 顆的有 $k$ 位）先算總筆數 $\frac{m(m+1)}{2}$，再用累積次數表找第 $t$ 筆落在哪一格</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="pctPosition,pctData,pctFreq"></div>
-<div class="fadeset" data-tier="L1" data-keys="pctPosition,pctData,pctFreq" data-seed="7201"></div>
-<div class="fixset" data-tier="L1" data-keys="pctPosition,pctData,pctFreq" data-seed="9201"></div>
+<div class="must">先要會：<b>$t=\dfrac{nk}{100}$，是整數就取第 $t$、$t+1$ 筆的平均；不是整數就無條件進位取第 $\lceil t\rceil$ 筆</b>、<b>資料一定要先由小到大排</b>、<b>次數有規律時（持 $k$ 顆的有 $k$ 位）先算總筆數 $\frac{m(m+1)}{2}$，再用累積次數表找第 $t$ 筆落在哪一格</b>、<b>四分位數：$Q_1=P_{25}$、$Q_3=P_{75}$，照百分位數的規則取，四分位距是 $Q_3-Q_1$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="pctPosition,pctData,pctFreq,quartile"></div>
+<div class="fadeset" data-tier="L1" data-keys="pctPosition,pctData,pctFreq,quartile" data-seed="7201"></div>
+<div class="fixset" data-tier="L1" data-keys="pctPosition,pctData,pctFreq,quartile" data-seed="9201"></div>
 
 <h3 class="sec">1-3 分散程度：全距、變異數、標準差</h3>
-<div class="must">先要會：<b>偏差 $x_i-\mu$ 的總和必為 $0$（拿來檢查）</b>、<b>$\sigma^2=\dfrac{\sum(x_i-\mu)^2}{n}=\dfrac{\sum x_i^2}{n}-\mu^2$</b>、<b>$\sum x_i^2=n(\sigma^2+\mu^2)$、$\sum(x_i-a)^2=n\sigma^2+n(\mu-a)^2$</b>、<b>新增一筆：先算新平均，平方和搬到新平均要加 $n(\mu-\mu')^2$</b>、<b>合併兩組：$\sigma^2=\dfrac{n_1[\sigma_1^2+(\mu_1-\mu)^2]+n_2[\sigma_2^2+(\mu_2-\mu)^2]}{n_1+n_2}$，合併後的 $\sigma$ 絕不會比兩組中較小的那個更小</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="sdBasic,sdFromSums,sumSqFromStats,addOne,mergeTwo"></div>
-<div class="fadeset" data-tier="L1" data-keys="sdBasic,sdFromSums,sumSqFromStats,addOne,mergeTwo" data-seed="7301"></div>
-<div class="fixset" data-tier="L1" data-keys="sdBasic,sdFromSums,sumSqFromStats,addOne,mergeTwo" data-seed="9301"></div>
+<div class="must">先要會：<b>偏差 $x_i-\mu$ 的總和必為 $0$（拿來檢查）</b>、<b>$\sigma^2=\dfrac{\sum(x_i-\mu)^2}{n}=\dfrac{\sum x_i^2}{n}-\mu^2$</b>、<b>$\sum x_i^2=n(\sigma^2+\mu^2)$、$\sum(x_i-a)^2=n\sigma^2+n(\mu-a)^2$</b>、<b>新增一筆：先算新平均，平方和搬到新平均要加 $n(\mu-\mu')^2$</b>、<b>合併兩組：$\sigma^2=\dfrac{n_1[\sigma_1^2+(\mu_1-\mu)^2]+n_2[\sigma_2^2+(\mu_2-\mu)^2]}{n_1+n_2}$，合併後的 $\sigma$ 絕不會比兩組中較小的那個更小</b>、<b>幾組資料比標準差：看成基本組「每個數乘 $c$ 再加常數」，只看 $|c|$</b>、<b>更正或剔除一筆：先回到 $\sum x_i$、$\sum x_i^2$，換掉或拿掉那一筆再重算</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="sdBasic,sdFromSums,sumSqFromStats,addOne,mergeTwo,sdCompare,dataFix"></div>
+<div class="fadeset" data-tier="L1" data-keys="sdBasic,sdFromSums,sumSqFromStats,addOne,mergeTwo,sdCompare,dataFix" data-seed="7301"></div>
+<div class="fixset" data-tier="L1" data-keys="sdBasic,sdFromSums,sumSqFromStats,addOne,mergeTwo,sdCompare,dataFix" data-seed="9301"></div>
 
 <h3 class="sec">1-4 線性變換與標準化</h3>
-<div class="must">先要會：<b>$y=ax+b$ ⟹ $\mu_y=a\mu_x+b$、$\sigma_y=|a|\sigma_x$（平移不影響 $\sigma$，係數取絕對值）</b>、<b>反推調分公式：$a=\dfrac{\sigma_y}{\sigma_x}$，再用平均求 $b$</b>、<b>$z=\dfrac{x-\mu}{\sigma}$ 比「高出幾個標準差」；標準化後永遠 $\mu=0$、$\sigma=1$</b>、<b>$T=50+10z$</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="linearTrans,inverseTrans,zCompare,zInverse,tScore"></div>
-<div class="fadeset" data-tier="L1" data-keys="linearTrans,inverseTrans,zCompare,zInverse,tScore" data-seed="7401"></div>
-<div class="fixset" data-tier="L1" data-keys="linearTrans,inverseTrans,zCompare,zInverse,tScore" data-seed="9401"></div>
+<div class="must">先要會：<b>$y=ax+b$ ⟹ $\mu_y=a\mu_x+b$、$\sigma_y=|a|\sigma_x$（平移不影響 $\sigma$，係數取絕對值）</b>、<b>反推調分公式：$a=\dfrac{\sigma_y}{\sigma_x}$，再用平均求 $b$</b>、<b>$z=\dfrac{x-\mu}{\sigma}$ 比「高出幾個標準差」；標準化後永遠 $\mu=0$、$\sigma=1$</b>、<b>$T=50+10z$</b>、<b>由調分公式反推原始成績：$\mu_x=\dfrac{\mu_y-b}{a}$、$\sigma_x=\dfrac{\sigma_y}{|a|}$</b>、<b>標準化後 $\sum z_i=0$、$\sum z_i^2=n$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="linearTrans,inverseTrans,zCompare,zInverse,tScore,linearBack,zSums"></div>
+<div class="fadeset" data-tier="L1" data-keys="linearTrans,inverseTrans,zCompare,zInverse,tScore,linearBack,zSums" data-seed="7401"></div>
+<div class="fixset" data-tier="L1" data-keys="linearTrans,inverseTrans,zCompare,zInverse,tScore,linearBack,zSums" data-seed="9401"></div>
 
 <h3 class="sec">1-5 平均成長率</h3>
 <div class="must">先要會：<b>成長率用「乘」的：$(1+\bar r)^n=(1+r_1)(1+r_2)\cdots(1+r_n)$，右邊乘出來會恰好是某個數的 $n$ 次方</b>、<b>只給首尾值：$(1+\bar r)^n=\dfrac{\text{末}}{\text{初}}$</b>、<b>把成長率直接平均是錯的（$+100\%$ 再 $-50\%$ 是 $0\%$，不是 $25\%$）</b>。段考一律把它放在數據分析考（五校都考）。</div>
@@ -308,12 +308,12 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fixset" data-tier="L1" data-keys="corrData,corrSums,corrTransform,corrPerfect" data-seed="9601"></div>
 
 <h3 class="sec">2-2 最適直線與預測</h3>
-<div class="must">先要會：<b>斜率 $=\dfrac{S_{xy}}{S_{xx}}=r\dfrac{\sigma_y}{\sigma_x}$，直線必過重心 $(\mu_x,\mu_y)$</b>、<b>預測直接從重心出發：$\hat y=\mu_y+\text{斜率}\times(x_0-\mu_x)$</b>、<b>反推：代 $\mu_x$ 得 $\mu_y$；由斜率反解 $r$ 或 $\sigma$</b>、<b>線性變換後：新斜率 $=\dfrac{s}{p}\times$ 舊斜率、過新重心</b>、<b>標準化後的最適直線是 $y''=r\,x''$（過原點，斜率就是 $r$）</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="fitData,fitStats,fitCentroid,fitTransform,stdFit"></div>
-<div class="fadeset" data-tier="L1" data-keys="fitData,fitStats,fitCentroid,fitTransform,stdFit" data-seed="7701"></div>
-<div class="fixset" data-tier="L1" data-keys="fitData,fitStats,fitCentroid,fitTransform,stdFit" data-seed="9701"></div>
+<div class="must">先要會：<b>斜率 $=\dfrac{S_{xy}}{S_{xx}}=r\dfrac{\sigma_y}{\sigma_x}$，直線必過重心 $(\mu_x,\mu_y)$</b>、<b>預測直接從重心出發：$\hat y=\mu_y+\text{斜率}\times(x_0-\mu_x)$</b>、<b>反推：代 $\mu_x$ 得 $\mu_y$；由斜率反解 $r$ 或 $\sigma$</b>、<b>線性變換後：新斜率 $=\dfrac{s}{p}\times$ 舊斜率、過新重心</b>、<b>標準化後的最適直線是 $y''=r\,x''$（過原點，斜率就是 $r$）</b>、<b>直線通過某一點（不是重心）：和重心兩點決定斜率，再用斜率 $=r\dfrac{\sigma_y}{\sigma_x}$ 反推</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="fitData,fitStats,fitCentroid,fitTransform,stdFit,fitThroughPt"></div>
+<div class="fadeset" data-tier="L1" data-keys="fitData,fitStats,fitCentroid,fitTransform,stdFit,fitThroughPt" data-seed="7701"></div>
+<div class="fixset" data-tier="L1" data-keys="fitData,fitStats,fitCentroid,fitTransform,stdFit,fitThroughPt" data-seed="9701"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 29 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">L1 混合檢測 12 題（全章 35 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -322,19 +322,19 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
-  <div><b>目標</b>18 個段考主力型，依 31 份段考卷的出現率排序（相關係數 28 卷、迴歸直線 25、標準差 23、平均數 15、標準化 14、線性變換 13、百分位數 12、中位數 11、合併標準差 11、變異數 10、最小平方法 8）。</div>
+  <div><b>目標</b>22 個段考主力型，依段考卷的出現率選出（2026-09-28 用題庫 30 份高一段考卷重新統計：標準差與變異數 28 卷、相關係數 28、最適直線 27、線性變換與調分 22、標準化 21、中位數與眾數 17、百分位數 16、合併兩組 15；依此補了 4 型）。</div>
   <div><b>通過標準</b>固定 12 題限時 40 分鐘做完，對 10 題以上。</div>
 </div>
 
 <h3 class="sec">一維進階：極值、反推、兩層加權</h3>
-<div class="must">段考 31 卷中<b>標準差 23 卷、平均數 15 卷、標準化 14 卷、線性變換 13 卷、百分位數 12 卷、中位數 11 卷、合併標準差 11 卷、變異數 10 卷、加權平均 6 卷、平均成長率 6 卷</b>。解題要點：<b>固定全距求最小變異數 ⟹ 兩端固定，其餘全擠到中間的整數</b>；<b>$f(x)=\sum(x-x_i)^2=n(x-\mu)^2+n\sigma^2$ ⟹ 兩個函數值相減先解 $\mu$</b>；<b>新增一筆後 $\sigma$ 已知 ⟹ 新平方和 $=n\sigma^2+\frac{n}{n+1}d^2$ 解 $d$</b>；<b>合併結果反推 ⟹ 平均式解一個未知、變異數式解另一個</b>；<b>最高分最低分拉到指定值 ⟹ 兩點決定 $y=a+bx$，$b\lt1$ 就是壓縮</b>；<b>五科比表現 ⟹ 全部化成 $z$</b>；<b>$k^2$ 位／$k+1$ 次 ⟹ 先算總筆數，再列累積次數</b>；<b>金額漲幅先換成百分比；反推最後一年 ⟹ $(1+g)^3$ 除掉已知倍率</b>；<b>等差資料 $\mu=Me$、$\sigma^2=\frac{d^2(n^2-1)}{12}$</b>；<b>兩兩乘積和 ⟹ $(\sum x)^2=\sum x^2+2\sum_{i\lt j}x_ix_j$</b>；<b>$T\ge40$ ⟺ $z\ge-1$ ⟹ $\sigma$ 大的科目門檻低</b>；<b>兩層加權：先算裡面那層</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="minVarRange,sumSqShift,reverseAdd,mergeReverse,linearReverse,zRank,pctFreqSquare,growthMixed,apStats,pairProdVar,tThreshold,weightedMin"></div>
+<div class="must">段考 31 卷中<b>標準差 23 卷、平均數 15 卷、標準化 14 卷、線性變換 13 卷、百分位數 12 卷、中位數 11 卷、合併標準差 11 卷、變異數 10 卷、加權平均 6 卷、平均成長率 6 卷</b>。解題要點：<b>固定全距求最小變異數 ⟹ 兩端固定，其餘全擠到中間的整數</b>；<b>$f(x)=\sum(x-x_i)^2=n(x-\mu)^2+n\sigma^2$ ⟹ 兩個函數值相減先解 $\mu$</b>；<b>新增一筆後 $\sigma$ 已知 ⟹ 新平方和 $=n\sigma^2+\frac{n}{n+1}d^2$ 解 $d$</b>；<b>合併結果反推 ⟹ 平均式解一個未知、變異數式解另一個</b>；<b>最高分最低分拉到指定值 ⟹ 兩點決定 $y=a+bx$，$b\lt1$ 就是壓縮</b>；<b>五科比表現 ⟹ 全部化成 $z$</b>；<b>$k^2$ 位／$k+1$ 次 ⟹ 先算總筆數，再列累積次數</b>；<b>金額漲幅先換成百分比；反推最後一年 ⟹ $(1+g)^3$ 除掉已知倍率</b>；<b>等差資料 $\mu=Me$、$\sigma^2=\frac{d^2(n^2-1)}{12}$</b>；<b>兩兩乘積和 ⟹ $(\sum x)^2=\sum x^2+2\sum_{i\lt j}x_ix_j$</b>；<b>$T\ge40$ ⟺ $z\ge-1$ ⟹ $\sigma$ 大的科目門檻低</b>；<b>兩層加權：先算裡面那層</b>；<b>平均數＝中位數求未知的一筆 ⟹ 依未知數排在哪裡分三段，每段解完都要檢查有沒有落在那一段</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="minVarRange,sumSqShift,reverseAdd,mergeReverse,linearReverse,zRank,pctFreqSquare,growthMixed,apStats,pairProdVar,tThreshold,weightedMin,centerUnknown"></div>
 
-<h3 class="sec">二維進階：由迴歸直線反推、換單位、新增重心</h3>
-<div class="must">段考 31 卷中<b>相關係數 28 卷、迴歸直線 25 卷、最小平方法 8 卷、散布圖 6 卷、預測 5 卷</b>。解題要點：<b>資料缺兩筆＋直線已知 ⟹ 「過重心」給一式、「斜率 $=\frac{S_{xy}}{S_{xx}}$」給另一式</b>；<b>已知 $r$、直線、$\mu_y$、$\sigma_y$ ⟹ 代 $\mu_y$ 解 $\mu_x$，斜率反解 $\sigma_x$</b>；<b>兩條迴歸直線 ⟹ 交點是重心、斜率相乘是 $r^2$</b>；<b>換單位 $u=px$、$v=qy$ ⟹ 新斜率 $=\frac{q}{p}\times$ 舊斜率，$r$ 看 $pq$ 正負；$u=100-x$ 會變號</b>；<b>由斜率與 $\sigma_x$、$r$ 反推 $\sigma_y$</b>；<b>新增恰在重心那一筆 ⟹ 平均不變、$r$ 不變、變異數乘 $\frac{n}{n+1}$</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="regMissing,regReverse,regBothLines,regUnits,corrFromSlope,addCentroid"></div>
+<h3 class="sec">二維進階：由迴歸直線反推、換單位、新增資料、標準化平方和、最小平方</h3>
+<div class="must">段考 31 卷中<b>相關係數 28 卷、迴歸直線 25 卷、最小平方法 8 卷、散布圖 6 卷、預測 5 卷</b>。解題要點：<b>資料缺兩筆＋直線已知 ⟹ 「過重心」給一式、「斜率 $=\frac{S_{xy}}{S_{xx}}$」給另一式</b>；<b>已知 $r$、直線、$\mu_y$、$\sigma_y$ ⟹ 代 $\mu_y$ 解 $\mu_x$，斜率反解 $\sigma_x$</b>；<b>兩條迴歸直線 ⟹ 交點是重心、斜率相乘是 $r^2$</b>；<b>換單位 $u=px$、$v=qy$ ⟹ 新斜率 $=\frac{q}{p}\times$ 舊斜率，$r$ 看 $pq$ 正負；$u=100-x$ 會變號</b>；<b>由斜率與 $\sigma_x$、$r$ 反推 $\sigma_y$</b>；<b>新增恰在重心那一筆 ⟹ 平均不變、$r$ 不變、變異數乘 $\frac{n}{n+1}$</b>；<b>標準化後 $\sum x_i'^2=\sum y_i'^2=n$、$\sum x_i'y_i'=nr$ ⟹ $\sum(x_i'\pm y_i')^2=2n(1\pm r)$</b>；<b>使 $\sum(y_i-ax_i-b)^2$ 最小的 $(a,b)$，就是最適直線 $y=ax+b$</b>；<b>補登一筆 $x=\mu_x$ 的資料 ⟹ $S_{xx}$、$S_{xy}$ 不變，斜率不變，但 $\mu_y$ 與 $r$ 會變</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="regMissing,regReverse,regBothLines,regUnits,corrFromSlope,addCentroid,stdPairSum,lsqMin,addPointFit"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 18 型打亂・可列印・可換組）</h3>
+<h3 class="sec">L2 混合檢測 12 題（全 22 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -343,10 +343,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過。</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字。答案與詳解皆用程式重新驗算過。</div>
 
 <div class="fx" id="L3-1" data-gen="pctTop"><div class="fxh"><span class="no">L3-1</span><span class="kw">30 筆求 P₈₀、已知 90 分以上有 10 位：t=24 是整數，取第 24、25 筆平均；只要找出「前 7 大」就夠，不必全排</span><span class="src">中山女高 110下 填 15</span></div>
 <div class="fxq">某次考試 A 班 $30$ 位同學的成績為 $95,85,80,73,94,94,65,56,88,100,91,87,86,87,76,77,87,91,68,86,91,77,92,98,66,88,72,81,89,98$。已知 $90$ 分以上恰有 $10$ 位，求此次成績的第 $80$ 百分位數。</div>
@@ -456,7 +456,34 @@ $r(u,w)$：係數 $3\times7\gt0$ ⟹ $r(u,w)=r(x,y)=-0.83$；$w=7y-3$ 與 $y$ �
 <div class="fxs"><div class="move">做法：直線過重心 ⟹ $a=0.6(60)+25=61$；斜率 $0.6=r\cdot\dfrac{8}{10}$ ⟹ $r=0.75$。</div>
 兩個性質各用一次就結束；$r=0.75\le1$ 也順便檢查了合理性。</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fx" id="L3-16" data-gen="stdComboSum"><div class="fxh"><span class="no">L3-16</span><span class="kw">標準化後的 Σ(X−3Y)²：ΣX²＝ΣY²＝n、ΣXY＝nr，把平方展開逐項加</span><span class="src">改編自 高雄中學 114下 單選</span></div>
+<div class="fxq">已知二維數據 $(x_i,y_i)$，$i=1,2,\ldots,30$，其相關係數為 $0.7$。將這 $30$ 筆數據標準化成 $(X_i,Y_i)$，求 $\displaystyle\sum_{i=1}^{30}(X_i-3Y_i)^2$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$174$</div>
+<div class="fxs"><div class="move">做法：標準化後平均是 $0$、標準差是 $1$，所以 $\sum X_i^2=\sum Y_i^2=30$；相關係數是標準化數據乘積的平均，所以 $\sum X_iY_i=30\times0.7=21$。</div>
+$\displaystyle\sum_{i=1}^{30}(X_i-3Y_i)^2=\sum X_i^2-6\sum X_iY_i+9\sum Y_i^2=30-6\times21+9\times30=174$。<br>
+<span class="note-sm">一般式：$\sum(aX_i+bY_i)^2=n(a^2+b^2+2abr)$。反過來給平方和，也能用同一條式子解出 $r$。</span></div></div>
+
+<div class="fx" id="L3-17" data-gen="lsqDisguise"><div class="fxh"><span class="no">L3-17</span><span class="kw">F(a,b)＝(a＋b−2)²＋(a＋2b−1)²＋…：每一項是 (a＋bxᵢ−yᵢ)²，就是資料點的最適直線 y＝a＋bx</span><span class="src">改編自 高雄女中 114下 填 K</span></div>
+<div class="fxq">設 $a$、$b$ 為實數，$F(a,b)=(a+b-2)^2+(a+2b-1)^2+(a+3b-6)^2$。求使 $F(a,b)$ 有最小值的數對 $(a,b)$，以及 $F(a,b)$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(-1,2)$，最小值 $6$</div>
+<div class="fxs"><div class="move">做法：三項分別是 $(a+b\cdot1-2)^2$、$(a+b\cdot2-1)^2$、$(a+b\cdot3-6)^2$，也就是資料點 $(1,2)$、$(2,1)$、$(3,6)$ 與直線 $y=a+bx$ 的鉛直差距平方和。讓它最小的直線就是最適直線。</div>
+$\mu_x=2$、$\mu_y=3$；$x$ 的偏差 $-1,0,1$，$y$ 的偏差 $-1,-2,3$。$S_{xx}=2$、$S_{xy}=1+0+3=4$ ⟹ $b=\dfrac{S_{xy}}{S_{xx}}=2$，直線過重心：$a=\mu_y-b\mu_x=3-4=-1$。<br>
+代回：$F(-1,2)=(-1)^2+2^2+(-1)^2=6$。<br>
+<span class="note-sm">不認出最適直線也能做：把 $F$ 當成 $a$ 的二次函數配方，得 $a=\dfrac{9-6b}{3}$，代回後再對 $b$ 配方，一樣得到 $b=2$、$a=-1$，只是計算長很多。</span></div></div>
+
+<div class="fx" id="L3-18" data-gen="corrSolve"><div class="fxh"><span class="no">L3-18</span><span class="kw">資料裡有兩個未知數、給 μₓ 與 r：μₓ 給 a＋b，r 的式子平方後解 a，最後檢查 Sxy 與 r 同號</span><span class="src">改編自 成功高中 110下 填 11</span></div>
+<div class="fxq">設有四筆資料 $(x_i,y_i)$：$(4,3)$、$(a,7)$、$(b,5)$、$(7,5)$，其中 $x_i$ 的算術平均數為 $5$，且這四筆資料的相關係數為 $0.5$。求數對 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(7,2)$</div>
+<div class="fxs"><div class="move">做法：$\mu_x=5$ ⟹ $4+a+b+7=20$，$b=9-a$。$y$ 的平均是 $5$，偏差 $-2,2,0,0$，只有前兩筆會進到 $S_{xy}$。</div>
+$S_{yy}=8$，$S_{xy}=(4-5)(-2)+(a-5)(2)=2a-8$，$S_{xx}=1+(a-5)^2+(4-a)^2+4$。<br>
+$r=\dfrac{2a-8}{\sqrt{8S_{xx}}}=\dfrac12$ ⟹ 兩邊平方：$(2a-8)^2=2S_{xx}$，即 $4(a-4)^2=10+2(a-5)^2+2(a-4)^2$，整理得 $(a-4)^2-(a-5)^2=5$，$2a-9=5$，$a=7$。<br>
+檢查：$S_{xy}=2\times7-8=6\gt0$，與 $r\gt0$ 同號 ✓；$b=9-7=2$。<br>
+<span class="note-sm">$r=\dfrac12$ 時平方後的二次項剛好消掉，只剩一次方程式；$r$ 是別的值時會解出兩個 $a$，要用「$S_{xy}$ 與 $r$ 同號」刪掉一個。</span></div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -602,10 +629,10 @@ $r=\dfrac18\sum X'Y'=\dfrac{0.2+2.4+0+0+3+0-0.2-0.2}{8}=\dfrac{5.2}{8}=0.65$。<
 設甲組中位數 $m$、乙組中位數 $m+1$。甲組比 $m$ 小的有 $12$ 個；乙組比 $m+1$ 小的也有 $12$ 個，而 $m$ 本身在甲組，所以乙組這 $12$ 個都比 $m$ 小。於是 $1\sim50$ 中比 $m$ 小的數恰有 $12+12=24$ 個 ⟹ $m=25$，乙組中位數為 $26$。<br>
 接著：$25$ 一定在甲組、$26$ 一定在乙組；$1\sim24$ 這 $24$ 個數甲、乙各拿 $12$ 個，有 $C^{24}_{12}$ 種；$27\sim50$ 這 $24$ 個數也各拿 $12$ 個，有 $C^{24}_{12}$ 種。共 $\left(C^{24}_{12}\right)^2$ 種，選 (4)。<span class="note-sm">（反過來檢查：甲組 $=12$ 個小數＋$25$＋$12$ 個大數，第 $13$ 小正是 $25$；乙組同理是 $26$，每一種這樣的分法都符合題意，沒有重複也沒有漏掉。）</span></div></div>
 
-<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">兩個單位向量正交、證 (Σa)²+(Σb)² ≤ n：把 (1,1,…,1) 投影到 a、b 張出的平面，投影長不超過原長</span><span class="src">中山女高 110下 證明 19</span></div>
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">Σa²＝Σb²＝1、Σab＝0，證 (Σa)²+(Σb)² ≤ n：展開 Σ(1−A·aᵢ−B·bᵢ)² ≥ 0</span><span class="src">中山女高 110下 證明 19</span></div>
 <div class="fxq">實數列 $\langle a_n\rangle,\langle b_n\rangle$（$n\ge2$）滿足 $a_1^2+\cdots+a_n^2=1$、$b_1^2+\cdots+b_n^2=1$、$a_1b_1+\cdots+a_nb_n=0$。證明：$(a_1+\cdots+a_n)^2+(b_1+\cdots+b_n)^2\le n$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
-<div class="fxa">證明見詳解（等號成立 ⟺ $(1,1,\dots,1)$ 落在 $\vec a,\vec b$ 張出的平面上）</div>
+<div class="fxa">證明見詳解（等號成立 ⟺ 每一個 $i$ 都有 $Aa_i+Bb_i=1$，其中 $A=\sum a_i$、$B=\sum b_i$）</div>
 <div class="fxs"><div class="move">做法：令 $A=\sum a_i$、$B=\sum b_i$，考慮 $\displaystyle\sum_{i=1}^{n}(1-Aa_i-Bb_i)^2\ge0$。</div>
 展開：$\sum1-2A\sum a_i-2B\sum b_i+A^2\sum a_i^2+B^2\sum b_i^2+2AB\sum a_ib_i\ge0$
 $$n-2A^2-2B^2+A^2+B^2+0\ge0\ \Longrightarrow\ A^2+B^2\le n.\quad\blacksquare$$

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -237,7 +237,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（12,500 題抽樣，全部用窮舉重數一次）；固定題全數人工＋電腦重算。本章的每一題都只靠「把樣本空間數清楚」：環狀排列不在本章範圍，條件機率與獨立事件是高二下的內容，二項分布屬高三選修，本書一律不用；連「已知前面抽走了什麼」的題也只是換一個較小的樣本空間重新數。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（14,500 題抽樣，全部用窮舉重數一次）；固定題全數人工＋電腦重算。本章的每一題都只靠「把樣本空間數清楚」：環狀排列不在本章範圍，條件機率與獨立事件是高二下的內容，二項分布屬高三選修，本書一律不用；連「已知前面抽走了什麼」的題也只是換一個較小的樣本空間重新數。</li>
   </ol>
 </div>
 
@@ -264,15 +264,15 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>分不清「分類用加、分步用乘」、看到「至少」就想正面硬算、$C$ 與 $P$ 混用的同學。</div>
-  <div><b>目標</b>32 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>35 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
 <h3 class="sec">1 計數原理：加法、乘法、取捨與補集</h3>
-<div class="must">先要會：<b>分類（互斥）用加、分步用乘</b>、<b>最受限的位置先排</b>（首位不能是 $0$）、<b>兩集合取捨 $n(A\cup B)=n(A)+n(B)-n(A\cap B)$，交集是最小公倍數的倍數</b>、<b>三集合文氏圖從最裡面往外填七塊</b>、<b>「至少」的反面往往只有一類 ⟹ 全部減掉反面</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="routes,passcode,digitsEven,multiples,venn3,complement"></div>
-<div class="fadeset" data-tier="L1" data-keys="routes,passcode,digitsEven,multiples,venn3,complement" data-seed="9101"></div>
-<div class="fixset" data-tier="L1" data-keys="routes,passcode,digitsEven,multiples,venn3,complement" data-seed="8101"></div>
+<div class="must">先要會：<b>分類（互斥）用加、分步用乘</b>、<b>最受限的位置先排</b>（首位不能是 $0$）、<b>兩集合取捨 $n(A\cup B)=n(A)+n(B)-n(A\cap B)$，交集是最小公倍數的倍數</b>、<b>三集合文氏圖從最裡面往外填七塊</b>、<b>「至少」的反面往往只有一類 ⟹ 全部減掉反面</b>、<b>正因數個數：質因數分解後，各個指數加 $1$ 再相乘</b>、<b>塗色：從相鄰最多的區域開始依序塗，每區避開已塗好又相鄰的顏色；不相鄰的兩區可能同色時先分「同色／不同色」</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="routes,passcode,digitsEven,multiples,venn3,complement,divisorCount,coloring"></div>
+<div class="fadeset" data-tier="L1" data-keys="routes,passcode,digitsEven,multiples,venn3,complement,divisorCount,coloring" data-seed="9101"></div>
+<div class="fixset" data-tier="L1" data-keys="routes,passcode,digitsEven,multiples,venn3,complement,divisorCount,coloring" data-seed="8101"></div>
 
 <h3 class="sec">2 排列：直線排列的五種做法、不盡相異物、路徑、重複排列</h3>
 <div class="must">先要會：<b>$P^n_k=n(n-1)\cdots(n-k+1)$</b>、<b>相鄰 ⟹ 捆綁（包內要再自排）</b>、<b>不相鄰 ⟹ 先排其他人再插空</b>、<b>順序固定 ⟹ 除以那幾個人的階乘</b>、<b>相同物 ⟹ 除以相同物的階乘；相同物插空用組合</b>、<b>格子路徑＝「右右…上上…」的不盡相異物排列</b>、<b>「球選箱」每球各自獨立選 ⟹ $n^k$</b>。</div>
@@ -281,10 +281,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fixset" data-tier="L1" data-keys="permBasic,bundle,gaps,fixedOrder,multisetPerm,gridPath,repPerm" data-seed="8201"></div>
 
 <h3 class="sec">3 組合與二項式定理：選而不排、分組分堆、隔板、幾何計數、係數</h3>
-<div class="must">先要會：<b>職位相同用 $C$、職位不同用 $P$，差 $k!$ 倍</b>、<b>「至少」用補集、「恰好」直接分步</b>、<b>分組有名字不除、分堆沒名字要除同人數堆的階乘</b>、<b>隔板法：每箱至少一 $C^{n-1}_{k-1}$，可空先借 $k$ 顆</b>、<b>共線 $m$ 點：直線先扣 $C^m_2$ 再補 $1$，三角形直接扣 $C^m_3$</b>、<b>矩形＝選兩橫線兩直線</b>、<b>一般項 $T_{k+1}=C^n_k a^{n-k}b^k$，先算 $x$ 的次數再定 $k$</b>、<b>代 $x=1$、$x=0$、$\frac{f(1)+f(-1)}2$</b>、<b>曲棍棒 $\sum C^k_r=C^{n+1}_{r+1}$</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="combVsPerm,atLeastComb,groups,bars,geomLines,rectCount,binomTerm,coefSum,hockey"></div>
-<div class="fadeset" data-tier="L1" data-keys="combVsPerm,atLeastComb,groups,bars,geomLines,rectCount,binomTerm,coefSum,hockey" data-seed="9301"></div>
-<div class="fixset" data-tier="L1" data-keys="combVsPerm,atLeastComb,groups,bars,geomLines,rectCount,binomTerm,coefSum,hockey" data-seed="8301"></div>
+<div class="must">先要會：<b>職位相同用 $C$、職位不同用 $P$，差 $k!$ 倍</b>、<b>「至少」用補集、「恰好」直接分步</b>、<b>分組有名字不除、分堆沒名字要除同人數堆的階乘</b>、<b>隔板法：每箱至少一 $C^{n-1}_{k-1}$，可空先借 $k$ 顆</b>、<b>共線 $m$ 點：直線先扣 $C^m_2$ 再補 $1$，三角形直接扣 $C^m_3$</b>、<b>矩形＝選兩橫線兩直線</b>、<b>一般項 $T_{k+1}=C^n_k a^{n-k}b^k$，先算 $x$ 的次數再定 $k$</b>、<b>代 $x=1$、$x=0$、$\frac{f(1)+f(-1)}2$</b>、<b>曲棍棒 $\sum C^k_r=C^{n+1}_{r+1}$</b>、<b>重複組合：$n$ 種東西可以重複地選 $k$ 個（不計順序）就是 $x_1+\cdots+x_n=k$ 的非負整數解 $C^{\,n+k-1}_{\,n-1}$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="combVsPerm,atLeastComb,groups,bars,geomLines,rectCount,binomTerm,coefSum,hockey,repChoose"></div>
+<div class="fadeset" data-tier="L1" data-keys="combVsPerm,atLeastComb,groups,bars,geomLines,rectCount,binomTerm,coefSum,hockey,repChoose" data-seed="9301"></div>
+<div class="fixset" data-tier="L1" data-keys="combVsPerm,atLeastComb,groups,bars,geomLines,rectCount,binomTerm,coefSum,hockey,repChoose" data-seed="8301"></div>
 
 <h3 class="sec">4 古典機率：樣本空間、事件運算、取球、抽籤</h3>
 <div class="must">先要會：<b>先寫 $n(S)$，分子分母用同一個樣本空間</b>、<b>兩顆骰子 $36$ 個有序對；硬幣 $2^n$</b>、<b>文氏圖四塊填出來再回答</b>、<b>同色球仍視為不同的球</b>、<b>「至少」用餘事件</b>、<b>抽籤與順序無關：任何指定位置是中獎籤的機率都是 $\frac kn$</b>。</div>
@@ -298,7 +298,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fadeset" data-tier="L1" data-keys="expBasic,expShift,fairGame,expLinear,expMax" data-seed="9501"></div>
 <div class="fixset" data-tier="L1" data-keys="expBasic,expShift,fairGame,expLinear,expMax" data-seed="8501"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 32 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">L1 混合檢測 12 題（全章 35 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -307,19 +307,19 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>18 個段考最常見題型（依 50 份高一下段考卷的出現率選出），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>23 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 43 份高一段考卷重新統計，補了 5 型），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
-<h3 class="sec">計數與排列組合進階：相鄰與不相鄰並存、分配、不盡相異物插空、先選後排、路徑取捨、整數解、分堆、二項式、恆等式、不相連</h3>
-<div class="must">段考 50 卷中<b>排列 34 卷、組合 32 卷、二項式定理 19 卷、組合恆等式 13 卷、不相鄰 12 卷、分配 11 卷、排容 10 卷、重複組合 10 卷、路徑 9 卷、整數解 9 卷</b>。解題要點：<b>相鄰＋不相鄰 ⟹ 先捆綁再扣「兩者都相鄰」</b>；<b>每人至少一件 ⟹ $3^k-3\cdot2^k+3$（層數＝被要求的人數）</b>；<b>$3$ 的倍數 ⟹ 先依除以 $3$ 的餘數分堆選數，再排（含 $0$ 另算）</b>；<b>不經過 $Q$ ⟹ 總數減經過；經 $P$ 不經 $Q$ ⟹ 經 $P$ 減「經 $P$ 又經 $Q$」</b>；<b>有下限先換元、不等式加鬆弛變數</b>；<b>平分成堆除以堆數階乘，甲乙同堆先把甲乙那堆補齊</b>；<b>$x^2$ 與 $\frac1x$ 混合：次數 $2n-3k$</b>；<b>恆等式求值：代值、奇偶項對半、$kC^n_k=nC^{n-1}_{k-1}$、范德蒙</b>；<b>不相連 $C^{n-r+1}_r$</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="adjNotAdj,distributeAll,multisetGap,digitsMult3,gridAvoid,lettersSelect,barsBound,groupsEqual,binomGeneral,combIdentityVal,nonAdjSelect"></div>
+<h3 class="sec">計數與排列組合進階：相鄰與不相鄰並存、分配、不盡相異物插空、先選後排、路徑取捨、整數解、分堆、二項式、恆等式、不相連、球入箱四種模型、相同物與相異物一起分、整數解的上限、二項式的近似與餘數</h3>
+<div class="must">段考 50 卷中<b>排列 34 卷、組合 32 卷、二項式定理 19 卷、組合恆等式 13 卷、不相鄰 12 卷、分配 11 卷、排容 10 卷、重複組合 10 卷、路徑 9 卷、整數解 9 卷</b>。解題要點：<b>相鄰＋不相鄰 ⟹ 先捆綁再扣「兩者都相鄰」</b>；<b>每人至少一件 ⟹ $3^k-3\cdot2^k+3$（層數＝被要求的人數）</b>；<b>$3$ 的倍數 ⟹ 先依除以 $3$ 的餘數分堆選數，再排（含 $0$ 另算）</b>；<b>不經過 $Q$ ⟹ 總數減經過；經 $P$ 不經 $Q$ ⟹ 經 $P$ 減「經 $P$ 又經 $Q$」</b>；<b>有下限先換元、不等式加鬆弛變數</b>；<b>平分成堆除以堆數階乘，甲乙同堆先把甲乙那堆補齊</b>；<b>$x^2$ 與 $\frac1x$ 混合：次數 $2n-3k$</b>；<b>恆等式求值：代值、奇偶項對半、$kC^n_k=nC^{n-1}_{k-1}$、范德蒙</b>；<b>不相連 $C^{n-r+1}_r$</b>。<br>2026-09-28 用題庫 43 份高一段考卷重新統計，另補：<b>分配 21 卷、二項式定理 21 卷、重複組合與整數解 16 卷</b>。<b>球入箱先問兩件事：東西相不相同、可不可以空</b>；<b>相同物與相異物一起分 ⟹ 分開算再相乘，「至少一件東西」才要整體取捨</b>；<b>有上限的整數解 ⟹ 先隔板，再扣掉「某一個超過上限」（先分給它上限 $+1$ 個）</b>；<b>近似值、除以 $100$ 的餘數、除以 $x^2$ 的餘式 ⟹ 拆成「好算的數＋小的數」再展開，只留需要的幾項</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="adjNotAdj,distributeAll,multisetGap,digitsMult3,gridAvoid,lettersSelect,barsBound,groupsEqual,binomGeneral,combIdentityVal,nonAdjSelect,ballsModels,mixDistribute,barsUpper,binomApprox"></div>
 
-<h3 class="sec">機率與期望值進階：至少 2 個、機率範圍、取完全部球、三骰結構、號碼差、三骰公平遊戲、摸彩進行到一半</h3>
-<div class="must">段考 50 卷中<b>機率 19 卷、古典機率 15 卷、骰子 13 卷、期望值 11 卷、樣本空間 8 卷、互斥 7 卷</b>。解題要點：<b>「至少 2」的反面是「0 或 1」兩類</b>；<b>聯集介於較大者與 $1$、交集介於 $P(A)+P(B)-1$ 與 $\min$</b>；<b>只看首末兩個位置，$n(S)=n(n-1)$；指定位置的顏色機率＝比例</b>；<b>三骰依最大點數分類、恰兩同 $C^3_2\cdot6\cdot5$、等差先找三元組再乘 $3!$</b>；<b>號碼差為 $k$ 的取法 $2\cdot2\cdot(n-k)$</b>；<b>三個 $6$、恰兩個、恰一個的情形數 $1,15,75$</b>；<b>摸彩：先由中獎率反推球數，更新袋中剩什麼，剩下的球等可能，這不是條件機率</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="probAtLeast2,probRange,drawOrder,dice3,expectPairs,fairMulti,expectUpdated"></div>
+<h3 class="sec">機率與期望值進階：至少 2 個、機率範圍、取完全部球、三骰結構、號碼差、三骰公平遊戲、摸彩進行到一半、三色球</h3>
+<div class="must">段考 50 卷中<b>機率 19 卷、古典機率 15 卷、骰子 13 卷、期望值 11 卷、樣本空間 8 卷、互斥 7 卷</b>。解題要點：<b>「至少 2」的反面是「0 或 1」兩類</b>；<b>聯集介於較大者與 $1$、交集介於 $P(A)+P(B)-1$ 與 $\min$</b>；<b>只看首末兩個位置，$n(S)=n(n-1)$；指定位置的顏色機率＝比例</b>；<b>三骰依最大點數分類、恰兩同 $C^3_2\cdot6\cdot5$、等差先找三元組再乘 $3!$</b>；<b>號碼差為 $k$ 的取法 $2\cdot2\cdot(n-k)$</b>；<b>三個 $6$、恰兩個、恰一個的情形數 $1,15,75$</b>；<b>摸彩：先由中獎率反推球數，更新袋中剩什麼，剩下的球等可能，這不是條件機率</b>；<b>三色球（題庫 43 份卷中取球 24 卷）：「三色都有」直接相乘，「恰兩色」用全部扣掉「三色都有」與「同色」</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="probAtLeast2,probRange,drawOrder,dice3,expectPairs,fairMulti,expectUpdated,draw3Colors"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 18 型打亂・可列印・可換組）</h3>
+<h3 class="sec">L2 混合檢測 12 題（全 23 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -328,10 +328,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用窮舉程式重新驗算過。</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字。答案與詳解皆用窮舉程式重新驗算過。</div>
 
 <div class="fx" id="L3-1" data-gen="multiples3"><div class="fxh"><span class="no">L3-1</span><span class="kw">4 或 6 或 9 的倍數：三集合取捨，交集是最小公倍數的倍數</span><span class="src">北一女中 103下 填 2</span></div>
 <div class="fxq">求 $1$ 到 $360$ 的正整數中，$4$ 或 $6$ 或 $9$ 的倍數有幾個。</div>
@@ -390,7 +390,7 @@ $C^{10}_3-65=120-65=55$。</div></div>
 $C^3_1\times C^7_3\times C^4_2\times C^2_2=3\times35\times6\times1=630$。<br>
 <span class="note-sm">另一條路：先分堆 $\dfrac{C^7_3C^4_2C^2_2}{2!}=105$（兩個 $2$ 人堆沒區別要除 $2!$），再貼名字 $\times3!$ ⟹ $630$ ✓</span></div></div>
 
-<div class="fx" id="L3-8" data-gen="sumCoefC"><div class="fxh"><span class="no">L3-8</span><span class="kw">k·C(10,k+1) 的連加：換下標成 (j−1)C(10,j)，拆成 ΣjC − ΣC，用 kC(n,k)=nC(n−1,k−1) 與 2^n</span><span class="src">北一女中 103下 期末 填戊</span></div>
+<div class="fx" id="L3-8" data-gen="sumCoefC"><div class="fxh"><span class="no">L3-8</span><span class="kw">k·C(10,k+1) 的連加：換下標成 (j−1)C(10,j)，拆成 ΣjC − ΣC，用 $kC(n,k)=nC(n-1,k-1)$ 與 $2^n$</span><span class="src">北一女中 103下 期末 填戊</span></div>
 <div class="fxq">求 $1\cdot C^{10}_2+2\cdot C^{10}_3+3\cdot C^{10}_4+\cdots+9\cdot C^{10}_{10}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$4097$</div>
@@ -413,7 +413,7 @@ $n(A)=C^{10}_3\times2=240$ ⟹ $p=\dfrac{240}{900}=\dfrac{4}{15}$。</div></div>
 <div class="fxs"><div class="move">做法：$n(S)=C^{10}_3=120$；不相連 $=C^{10-3+1}_3=C^8_3=56$。</div>
 $\dfrac{56}{120}=\dfrac{7}{15}$。<span class="note-sm">原理：沒被選的 $7$ 人排好造出 $8$ 個空隙，選 $3$ 個空隙放被選的人。</span></div></div>
 
-<div class="fx" id="L3-11" data-gen="sameGroup"><div class="fxh"><span class="no">L3-11</span><span class="kw">至少有兩人同班：餘事件「四人全在不同班」= 排列 P(8,4)，分母 8^4</span><span class="src">明倫高中 103下 期末 填 6</span></div>
+<div class="fx" id="L3-11" data-gen="sameGroup"><div class="fxh"><span class="no">L3-11</span><span class="kw">至少有兩人同班：餘事件「四人全在不同班」= 排列 P(8,4)，分母 $8^4$</span><span class="src">明倫高中 103下 期末 填 6</span></div>
 <div class="fxq">$4$ 位同學都選了第一類組，明年高二將有 $8$ 個第一類組班。在每人被編入每個班的機會都一樣的情況下，這 $4$ 人中至少有兩人同班的機率為？</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac{151}{256}$</div>
@@ -448,7 +448,36 @@ $5\cdot\dfrac38+10\cdot\dfrac38+15\cdot\dfrac18-x\cdot\dfrac18=0$ ⟹ $15+30+15=
 <div class="fxs"><div class="move">做法：土雞蛋個數 $=X_1+X_2+X_3$（第 $i$ 顆是不是土雞蛋），每個 $X_i$ 的期望值都是 $\dfrac3{10}$（抽籤公平性），不放回也一樣。</div>
 $E=3\times\dfrac{3}{10}=\dfrac9{10}$。<span class="note-sm">老實列表：$n(S)=C^{10}_3=120$，恰 $1,2,3$ 顆的情形數 $3\cdot21=63$、$3\cdot7=21$、$1$ ⟹ $\dfrac{63+42+3}{120}=\dfrac{108}{120}=\dfrac9{10}$ ✓</span></div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+
+<div class="fx" id="L3-16" data-gen="coloringRing"><div class="fxh"><span class="no">L3-16</span><span class="kw">中央一區加外圈一圈的塗色：先塗中央，外圈只剩 $k-1$ 色；外圈圍成一圈，依相對兩區同色與否分類（或剪開成一列再扣掉首尾同色）</span><span class="src">改編自 北一女中 103下 第二次 填 4</span></div>
+<div class="fxq">一個正方形花圃分成中央一區與外圈 $4$ 區：外圈的 $4$ 區圍成一圈，每區只與左右兩區相鄰；中央那一區與外圈每一區都相鄰。用 $6$ 種顏色塗色，每區一色、顏色可以重複使用，相鄰區不同色，共有幾種塗法？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1560$ 種</div>
+<div class="fxs"><div class="move">做法：先塗和每一區都相鄰的中央，外圈每一區都要避開中央的顏色，只剩 $5$ 色可用；外圈的第 $1$、$3$ 區不相鄰，可能同色，依「同色／不同色」分兩類。</div>
+中央：$6$ 種。外圈用 $5$ 色：<br>
+第 $1$、$3$ 區同色：第 $1$ 區 $5$ 種、第 $3$ 區 $1$ 種，第 $2$、$4$ 區各避開這一色，$5\times4\times4=80$ 種；<br>
+第 $1$、$3$ 區不同色：$5\times4$ 種，第 $2$、$4$ 區各避開兩色，$5\times4\times3\times3=180$ 種。<br>
+外圈共 $80+180=260$ 種，總數 $6\times260=1560$ 種。<br>
+<span class="note-sm">也可以把外圈從第 $1$ 區剪開：當成一列有 $5\times4^3=320$ 種，扣掉首尾同色的（首尾黏成一區，就是 $3$ 區的一圈，$5\times4\times3=60$ 種），$320-60=260$ ✓</span></div></div>
+
+<div class="fx" id="L3-17" data-gen="derangeDoor"><div class="fxh"><span class="no">L3-17</span><span class="kw">指定的幾個人都不回原位：只對這幾個人做取捨，$n!-C^m_1(n-1)!+C^m_2(n-2)!-\cdots$；其他人不必管</span><span class="src">改編自 台中一中 113下 第二次</span></div>
+<div class="fxq">一間教室有 $6$ 個門，甲、乙、丙、丁、戊、己 $6$ 人分別從不同的門進入教室。下課後 $6$ 人又分別從不同的門離開（每個門恰好一人），且甲、乙、丙 $3$ 人都不從自己進來的門離開（其他人不限），共有幾種離開的方法？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$426$ 種</div>
+<div class="fxs"><div class="move">做法：全部 $6!$ 種，扣掉「甲、乙、丙之中有人從自己的門離開」，用取捨原理；丁、戊、己沒有限制，不必管。</div>
+設 $A_1,A_2,A_3$ 分別是甲、乙、丙從自己的門離開。$n(A_i)=5!=120$、$n(A_i\cap A_j)=4!=24$、$n(A_1\cap A_2\cap A_3)=3!=6$。<br>
+所求 $=6!-3\times120+3\times24-6=720-360+72-6=426$ 種。<br>
+<span class="note-sm">若 $6$ 人全都不從自己的門離開，就是錯排 $265$ 種；這題只限制 $3$ 人，所以比 $265$ 多。</span></div></div>
+
+<div class="fx" id="L3-18" data-gen="divisorIE"><div class="fxh"><span class="no">L3-18</span><span class="kw">正因數中「是 $A$ 的倍數但不是 $B$、也不是 $C$ 的倍數」：質因數分解後，每個條件化成指數的範圍；條件互相牽連時在 $A$ 的倍數裡做取捨</span><span class="src">改編自 台中一中 113下 第二次</span></div>
+<div class="fxq">$54000$ 的正因數中，是 $5$ 的倍數，但不是 $8$ 的倍數也不是 $9$ 的倍數的共有幾個？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$18$ 個</div>
+<div class="fxs"><div class="move">做法：先質因數分解，正因數寫成 $2^a3^b5^c$；「是／不是某數的倍數」都化成指數的範圍。</div>
+$54000=2^4\times3^3\times5^3$。是 $5$ 的倍數：$c\ge1$，$c=1,2,3$；不是 $8$ 的倍數：$a\le2$，$a=0,1,2$；不是 $9$ 的倍數：$b\le1$，$b=0,1$。三個條件管的是不同的指數，$3\times2\times3=18$ 個。<br>
+<span class="note-sm">用取捨也可以：$5$ 的倍數 $5\times4\times3=60$ 個，扣掉 $40$ 的倍數 $2\times4\times3=24$ 個、$45$ 的倍數 $5\times2\times3=30$ 個，補回 $360$ 的倍數 $2\times2\times3=12$ 個：$60-24-30+12=18$ ✓</span></div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -515,7 +544,7 @@ $7!-2\cdot6!-2\cdot6!+2\cdot2\cdot5!=5040-1440-1440+480=2640$。<br>
 (1) 末兩位可為 $04,08,20,40,60,80$（含 $0$，$6$ 種）或 $24,28,48,64,68,84$（不含 $0$，$6$ 種）。前者前三位任排 $3!=6$；後者 $0$ 在前三位中不能當首位 $3!-2!=4$ ⟹ $6\cdot6+6\cdot4=60$。<br>
 (2) 除 $8$ 外每個數選左或右 $2^4=16$ 種，其中 $0$ 是最小數必在最左或最右；$0$ 在最左（首位）的恰佔一半 ⟹ $16-8=8$ 個。</div></div>
 
-<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">一整串 (1+x²)^k 的 x⁶ 係數：每一項貢獻 C(k,3)，連加就是曲棍棒</span><span class="src">高雄中學 112下 高二 填 4</span></div>
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">一整串 $(1+x^2)^k$ 的 x⁶ 係數：每一項貢獻 C(k,3)，連加就是曲棍棒</span><span class="src">高雄中學 112下 高二 填 4</span></div>
 <div class="fxq">求 $(1+x^2)+(1+x^2)^2+\cdots+(1+x^2)^{17}$ 展開式中 $x^6$ 項的係數。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$3060$</div>
@@ -677,7 +706,7 @@ $40+4=44$。</div></div>
 全部 $C^{100}_2=4950$；和 $=101$ 的有 $\{1,100\},\dots,\{50,51\}$ 共 $50$ 種 ⟹ 和 $\gt101$ 的有 $\dfrac{4950-50}2=2450$ 種。<br>
 和 $\gt100$ ⟺ 和 $\ge101$ ⟹ $2450+50=2500$。<span class="note-sm">（正面數：較大的數 $y$ 從 $51$ 到 $100$，配的 $x$ 有 $2y-101$ 種，$\sum(2y-101)=2500$ ✓）</span></div></div>
 
-<div class="fx" id="L5-S5"><div class="fxh"><span class="no">S5</span><span class="kw">2^a·4^b·8^c=1024：指數比較變 a+2b+3c=10 的非負整數解，依 c 分類；連擲三骰依序成等差：依公差列舉</span><span class="src">嘉義高中 115 科學班 填 6、填 8</span></div>
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">S5</span><span class="kw">$2^a\cdot4^b\cdot8^c=1024$：指數比較變 $a+2b+3c=10$ 的非負整數解，依 c 分類；連擲三骰依序成等差：依公差列舉</span><span class="src">嘉義高中 115 科學班 填 6、填 8</span></div>
 <div class="fxq">(1) 共有多少組非負整數 $(a,b,c)$ 滿足 $2^a\cdot4^b\cdot8^c=1024$？<br>(2) 某遊戲的通關條件為連續擲三顆骰子，若點數依序成等差數列則過關。求一次過關的機率。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(1) $14$ 組　(2) $\dfrac1{12}$</div>
@@ -718,7 +747,7 @@ $P=\dfrac{19\cdot19\cdot27}{3^9}=\dfrac{361}{729}$。<span class="note-sm">（�
 四件事的 $24$ 種順序中合格的：最後一件是「早」⟹ 前三件洗、刷、隱且洗在隱前 ⟹ $3$ 種；最後一件是「隱」⟹ 前三件洗、刷、早且洗、刷都在早前 ⟹ $2$ 種。共 $5$ 種。<br>
 $6!\times\dfrac{5}{24}=720\times\dfrac5{24}=150$。</div></div>
 
-<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">空箱數的期望值：指標變數：每個箱子是空的機率 (4/5)^n，五個相加；再用常用對數解 5(0.8)^n < 0.1</span><span class="src">台中一中 101 教甄 填 14</span></div>
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">空箱數的期望值：指標變數：每個箱子是空的機率 $(4/5)^n$，五個相加；再用常用對數解 $5(0.8)^n\lt0.1$</span><span class="src">台中一中 101 教甄 填 14</span></div>
 <div class="fxq">將 $n$ 顆球全部投入 $5$ 個箱中，每球投入每箱的機率均為 $0.2$（各球互不影響）。若空箱數的期望值小於 $0.1$，求 $n$ 的最小值。（$\log2\approx0.3010$）</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$n=18$</div>

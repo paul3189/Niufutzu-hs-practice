@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -236,7 +236,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字與做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（14,250 題抽樣）；固定題全數人工＋電腦重算。本章不用超出高一上的工具：三次方程式只用勘根與因式分解，一次近似只用「除以 $(x-h)$ 兩次」。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（18,500 題抽樣）；固定題全數人工＋電腦重算。本章不用超出高一上的工具：三次方程式只用勘根與因式分解，一次近似只用「除以 $(x-h)$ 兩次」。</li>
   </ol>
 </div>
 
@@ -263,29 +263,29 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練到熟</h2>
 <div class="goal">
   <div><b>對象</b>綜合除法會漏補 $0$、看到「餘式」就想長除法、配方常算錯的同學。</div>
-  <div><b>目標</b>21 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>28 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
 <h3 class="sec">3-1 多項式的運算、除法與餘式定理</h3>
-<div class="must">先要會：<b>次數：乘積相加、合成相乘、商式相減</b>、<b>恆等式代特殊值（代根最快）</b>、<b>指定項只挑「次數相加＝目標」的配對</b>、<b>綜合除法（缺項補 $0$、除以 $x-k$ 是「乘 $k$ 再加」）</b>、<b>數字題把底數當 $x$（秦九韶）</b>、<b>餘式定理 $f(k)$、因式定理 $f(k)=0$</b>、<b>除以二次式的餘式是「過兩點的直線」</b>、<b>三根之積 $=-\dfrac{\text{常數項}}{\text{首項}}$</b>、<b>勘根：相鄰兩值異號就有根</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="degOps,identCoef,prodCoef,synthDiv,hornerVal,remThm,rem2pts,factorThm,factorize,rootLoc"></div>
-<div class="fadeset" data-tier="L1" data-keys="degOps,identCoef,prodCoef,synthDiv,hornerVal,remThm,rem2pts,factorThm,factorize,rootLoc" data-seed="7101"></div>
-<div class="fixset" data-tier="L1" data-keys="degOps,identCoef,prodCoef,synthDiv,hornerVal,remThm,rem2pts,factorThm,factorize,rootLoc" data-seed="4101"></div>
+<div class="must">先要會：<b>次數：乘積相加、合成相乘、商式相減</b>、<b>恆等式代特殊值（代根最快）</b>、<b>指定項只挑「次數相加＝目標」的配對</b>、<b>綜合除法（缺項補 $0$、除以 $x-k$ 是「乘 $k$ 再加」）</b>、<b>數字題把底數當 $x$（秦九韶）</b>、<b>餘式定理 $f(k)$、因式定理 $f(k)=0$</b>、<b>除以二次式的餘式是「過兩點的直線」</b>、<b>三根之積 $=-\dfrac{\text{常數項}}{\text{首項}}$</b>、<b>勘根：相鄰兩值異號就有根</b>、<b>係數和代 $x=1$、常數項代 $x=0$，奇次、偶次項再加上代 $x=-1$ 的值相加減</b>、<b>除以 $ax-b$：先用綜合除法除以 $x-\dfrac ba$，商式再除以 $a$，餘式不變</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="degOps,identCoef,prodCoef,synthDiv,hornerVal,remThm,rem2pts,factorThm,factorize,rootLoc,evenOddSum,divAxB"></div>
+<div class="fadeset" data-tier="L1" data-keys="degOps,identCoef,prodCoef,synthDiv,hornerVal,remThm,rem2pts,factorThm,factorize,rootLoc,evenOddSum,divAxB" data-seed="7101"></div>
+<div class="fixset" data-tier="L1" data-keys="degOps,identCoef,prodCoef,synthDiv,hornerVal,remThm,rem2pts,factorThm,factorize,rootLoc,evenOddSum,divAxB" data-seed="4101"></div>
 
 <h3 class="sec">3-2 二次函數：配方、平移、判別式、區間最值</h3>
-<div class="must">先要會：<b>頂點 $x=-\dfrac b{2a}$，$y$ 直接代回</b>、<b>$f(p+t)=f(q-t)$ ⟹ 對稱軸在 $p,q$ 正中間</b>、<b>平移只動頂點，$a$ 不變</b>、<b>兩交點距離 $=\dfrac{\sqrt D}{|a|}$</b>、<b>區間最值：軸在區間內看頂點＋離軸最遠的端點；軸在外只看兩端點</b>、<b>恆正 ⟺ $a\gt0$ 且 $D\lt0$</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="vertex,axisCond,shiftQuad,discrimDist,intervalMax,alwaysPos"></div>
-<div class="fadeset" data-tier="L1" data-keys="vertex,axisCond,shiftQuad,discrimDist,intervalMax,alwaysPos" data-seed="7201"></div>
-<div class="fixset" data-tier="L1" data-keys="vertex,axisCond,shiftQuad,discrimDist,intervalMax,alwaysPos" data-seed="4201"></div>
+<div class="must">先要會：<b>頂點 $x=-\dfrac b{2a}$，$y$ 直接代回</b>、<b>$f(p+t)=f(q-t)$ ⟹ 對稱軸在 $p,q$ 正中間</b>、<b>平移只動頂點，$a$ 不變</b>、<b>兩交點距離 $=\dfrac{\sqrt D}{|a|}$</b>、<b>區間最值：軸在區間內看頂點＋離軸最遠的端點；軸在外只看兩端點</b>、<b>恆正 ⟺ $a\gt0$ 且 $D\lt0$</b>、<b>一次函數：先求斜率（$x$ 每增加 $1$，函數值的變化量）</b>、<b>看圖定正負：開口定 $a$、對稱軸在 $y$ 軸哪一邊定 $b$、$y$ 截距是 $c$、與 $x$ 軸的交點個數定 $b^2-4ac$</b>、<b>交點兩個、一個、沒有 ⟺ $D\gt0$、$D=0$、$D\lt0$</b>、<b>畫 $y=|f(x)|$：$x$ 軸下方那段對 $x$ 軸往上翻，再用水平線數交點（$k=0$ 就是 $x$ 軸）</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="vertex,axisCond,shiftQuad,discrimDist,intervalMax,alwaysPos,linFunc,quadSigns,discrimParam,absQuadCount"></div>
+<div class="fadeset" data-tier="L1" data-keys="vertex,axisCond,shiftQuad,discrimDist,intervalMax,alwaysPos,linFunc,quadSigns,discrimParam,absQuadCount" data-seed="7201"></div>
+<div class="fixset" data-tier="L1" data-keys="vertex,axisCond,shiftQuad,discrimDist,intervalMax,alwaysPos,linFunc,quadSigns,discrimParam,absQuadCount" data-seed="4201"></div>
 
 <h3 class="sec">3-3 三次函數與多項式不等式</h3>
-<div class="must">先要會：<b>對稱中心 $x=-\dfrac b{3a}$，$y$ 代回</b>、<b>一次近似：除以 $(x-c)$ 兩次，餘式依序是 $c_0,c_1$，直線 $y=c_0+c_1(x-c)$</b>、<b>二次不等式：先分解、開口向下先除掉負號並反向</b>、<b>三次不等式：最右邊區間符號＝首項係數，每過一個單根變號</b>、<b>分式不等式：改成相乘，但分母的根一定挖掉</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="cubicCenter,linApprox,quadIneq,cubicIneq,fracIneq"></div>
-<div class="fadeset" data-tier="L1" data-keys="cubicCenter,linApprox,quadIneq,cubicIneq,fracIneq" data-seed="7301"></div>
-<div class="fixset" data-tier="L1" data-keys="cubicCenter,linApprox,quadIneq,cubicIneq,fracIneq" data-seed="4301"></div>
+<div class="must">先要會：<b>對稱中心 $x=-\dfrac b{3a}$，$y$ 代回</b>、<b>一次近似：除以 $(x-c)$ 兩次，餘式依序是 $c_0,c_1$，直線 $y=c_0+c_1(x-c)$</b>、<b>二次不等式：先分解、開口向下先除掉負號並反向</b>、<b>三次不等式：最右邊區間符號＝首項係數，每過一個單根變號</b>、<b>分式不等式：改成相乘，但分母的根一定挖掉</b>、<b>改寫成 $(x-h)$ 的多項式：連續用綜合除法除以 $x-h$，餘式由低次到高次依序排上；只要係數和就代 $x=h+1$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="cubicCenter,linApprox,quadIneq,cubicIneq,fracIneq,shiftExpand"></div>
+<div class="fadeset" data-tier="L1" data-keys="cubicCenter,linApprox,quadIneq,cubicIneq,fracIneq,shiftExpand" data-seed="7301"></div>
+<div class="fixset" data-tier="L1" data-keys="cubicCenter,linApprox,quadIneq,cubicIneq,fracIneq,shiftExpand" data-seed="4301"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 21 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">L1 混合檢測 12 題（全章 28 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -294,23 +294,23 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>16 個段考最常見題型（依約 120 份高一段考卷的出現率選出），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>22 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 128 份高一段考卷重新統計，補了 5 型；2026-09-29 補含絕對值的二次函數 1 型），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
-<h3 class="sec">3-1 除法原理進階：拼餘式、重根式、同餘、根與係數</h3>
-<div class="must">段考約 120 卷中<b>餘式定理 71 卷、綜合除法 33 卷、重根式 29 卷、根與係數 19 卷</b>。解題要點：<b>兩個二次條件各取出一個函數值，再求過兩點的直線</b>；<b>$x^n$ 除以 $(x\pm1)^2$：換元 $x=t\pm1$ 只留常數項與一次項</b>；<b>$(x-k)f(x)$ 型：設 $f\equiv ax+b$，用 $x^2\equiv$（低次式）降次後比較係數</b>；<b>三根和、兩兩積和、三根積是三個「開關」</b>；<b>三根成等差就設 $d-e,d,d+e$，中間項是根</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="remQuadTwo,remSqr,congRem,vieta3,cubicAP"></div>
+<h3 class="sec">3-1 除法原理進階：拼餘式、重根式、同餘、根與係數、逐步設式</h3>
+<div class="must">128 份高一段考卷中<b>除以二次式的餘式 55 卷、餘式定理 52 卷、除以三次式或重根式 46 卷、由函數值求多項式 41 卷</b>。解題要點：<b>兩個二次條件各取出一個函數值，再求過兩點的直線</b>；<b>$x^n$ 除以 $(x\pm1)^2$：換元 $x=t\pm1$ 只留常數項與一次項</b>；<b>$(x-k)f(x)$ 型：設 $f\equiv ax+b$，用 $x^2\equiv$（低次式）降次後比較係數</b>；<b>三根和、兩兩積和、三根積是三個「開關」</b>；<b>三根成等差就設 $d-e,d,d+e$，中間項是根</b>；<b>除以 $(x-a)^2(x-b)$：餘式設成 $A(x-a)^2+$（除以 $(x-a)^2$ 的餘式），只剩一個 $A$</b>；<b>由四個函數值求三次式：逐步設式 $a(x-x_1)(x-x_2)(x-x_3)+b(x-x_1)(x-x_2)+c(x-x_1)+d$，一次只解一個未知數</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="remQuadTwo,remSqr,congRem,vieta3,cubicAP,remCubicDiv,stepwisePoly"></div>
 
-<h3 class="sec">3-2 二次函數：反推係數、含參數最值、恆成立、應用</h3>
-<div class="must">段考約 120 卷中<b>判別式 73 卷、二次函數 65 卷、平移 50 卷、頂點 37 卷、區間最值 31 卷、恆成立 24 卷</b>。解題要點：<b>對稱軸＋交點距離 ⟹ 兩根就是「軸 $\pm$ 半距」，設 $a(x-p)(x-q)$ 再用截距定 $a$</b>；<b>三點求式：設 $p(x-x_1)(x-x_2)+q(x-x_1)+r$ 由左到右代</b>；<b>軸在端點 ⟹ 區間內單調，分 $a\gt0$、$a\lt0$ 兩解</b>；<b>首項係數含參數要先檢查它等於 $0$ 的情形</b>；<b>「恆在直線上方」＝相減後恆正</b>；<b>定價題設調價次數 $t$，頂點在兩根正中間</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="quadFromCond,quadThreePts,intervalParam,alwaysPosCount,lineBelowParab,profit"></div>
+<h3 class="sec">3-2 二次函數：反推係數、看圖定正負、含參數最值、恆成立、應用、含絕對值</h3>
+<div class="must">128 份高一段考卷中<b>最大最小值 80 卷、判別式與交點 76 卷、由圖形判斷係數正負 63 卷、平移 61 卷、恆成立 53 卷、應用題 43 卷</b>。解題要點：<b>對稱軸＋交點距離 ⟹ 兩根就是「軸 $\pm$ 半距」，設 $a(x-p)(x-q)$ 再用截距定 $a$</b>；<b>三點求式：設 $p(x-x_1)(x-x_2)+q(x-x_1)+r$ 由左到右代</b>；<b>軸在端點 ⟹ 區間內單調，分 $a\gt0$、$a\lt0$ 兩解</b>；<b>首項係數含參數要先檢查它等於 $0$ 的情形</b>；<b>「恆在直線上方」＝相減後恆正</b>；<b>定價題設調價次數 $t$，頂點在兩根正中間</b>；<b>由開口與 $x$ 截距判斷正負：設 $a(x-p)(x-q)$，$a+b+c=f(1)$、$a-b+c=f(-1)$</b>；<b>圍籬面積：用總長把一邊換成另一邊，面積是開口向下的二次函數</b>；<b>含絕對值由交點個數求 $k$：$|f(x)|$ 把 $x$ 軸下方翻上去、$f(|x|)$ 畫右半邊再對 $y$ 軸鏡射、其他就在絕對值內部為 $0$ 的點分段；畫好後水平線由下往上掃，接點只算一次</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="quadFromCond,quadThreePts,intervalParam,alwaysPosCount,lineBelowParab,profit,quadSignExpr,fenceArea,absQuadParam"></div>
 
-<h3 class="sec">3-3 三次函數與高次不等式</h3>
-<div class="must">段考約 120 卷中<b>三次函數 38 卷、對稱中心 36 卷、一次近似 24 卷、三次不等式 21 卷、高次不等式 18 卷</b>。解題要點：<b>知道中心就設 $a(x-h)^3+p(x-h)+k$，兩點解 $a,p$</b>；<b>平移只改 $h,k$，$a,p$ 不變</b>；<b>近似值＝$f(c)+f'(c)\cdot\varepsilon$，兩個數都靠綜合除法連除</b>；<b>偶次重根不變號：嚴格不等式要挖洞、含等號是孤立解</b>；<b>由解區間反推：端點就是根，常數項定 $a$，最右邊的正負核對 $a$ 的符號</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="cubicCenterPts,cubicShift,linApproxVal,highIneq,ineqFromSol"></div>
+<h3 class="sec">3-3 三次函數與高次不等式、由解反推</h3>
+<div class="must">128 份高一段考卷中<b>一次近似 51 卷、高次不等式 48 卷、三次函數 46 卷、由不等式的解反推係數 43 卷、對稱中心 39 卷</b>。解題要點：<b>知道中心就設 $a(x-h)^3+p(x-h)+k$，兩點解 $a,p$</b>；<b>平移只改 $h,k$，$a,p$ 不變</b>；<b>近似值＝$f(c)+f'(c)\cdot\varepsilon$，兩個數都靠綜合除法連除</b>；<b>偶次重根不變號：嚴格不等式要挖洞、含等號是孤立解</b>；<b>由解區間反推：端點就是根，常數項定 $a$，最右邊的正負核對 $a$ 的符號</b>；<b>二次不等式反推：解在兩根之間 ⟹ $a\lt0$，把 $b,c$ 用 $a$ 表示，代進新式子後提出 $a$（$a\lt0$ 要反向）</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="cubicCenterPts,cubicShift,linApproxVal,highIneq,ineqFromSol,quadIneqRev"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<h3 class="sec">L2 混合檢測 12 題（全 22 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -319,10 +319,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字：做法」，練到一看到關鍵字就知道怎麼做；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的做法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>19 題各校段考中後段常見題：每題附「關鍵字：做法」，練到一看到關鍵字就知道怎麼做；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>19 題全部能獨立完成，且說得出每題的做法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過（L3-5 原卷等號兩側用了同一組字母 $a,b$，會自相矛盾，本書右式改用 $p,q,r$）。</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字或問法。答案與詳解皆重新驗算過（L3-5 原卷等號兩側用了同一組字母 $a,b$，會自相矛盾，本書右式改用 $p,q,r$）。</div>
 
 <div class="fx" id="L3-1" data-gen="hornerParam"><div class="fxh"><span class="no">L3-1</span><span class="kw">一串 11 的次方加起來：把 11 當 x，用綜合除法算 f(11)</span><span class="src">台中女中 113上 填 8</span></div>
 <div class="fxq">若 $1\times11^{5}-10\times11^{4}-12\times11^{3}+13\times11^{2}-21\times11+k=13$，求 $k$。</div>
@@ -450,7 +450,52 @@ $m=2$ 時原式為 $2x+4\gt0$，有解，不合。<br>
 $D/4=(2m-3)^2-(m-2)(5m-6)=4m^2-12m+9-(5m^2-16m+12)=-m^2+4m-3\le0$ ⟹ $(m-1)(m-3)\ge0$ ⟹ $m\le1$ 或 $m\ge3$。<br>
 與 $m\lt2$ 取交集：$m\le1$。</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fx" id="L3-16" data-gen="recipInterp"><div class="fxh"><span class="no">L3-16</span><span class="kw">f(k)=1/k 給了 5 個條件：令 g(x)=x·f(x)−1，5 個根都知道，再代 x=0 定首項係數</span><span class="src">改編自 師大附中 113上 填 18</span></div>
+<div class="fxq">已知 $f(x)$ 為 $4$ 次多項式，且 $f(k)=\dfrac1k$，$k=1,2,3,4,5$。求 $f(7)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$f(7)=1$</div>
+<div class="fxs"><div class="move">做法：條件都是「$k\cdot f(k)=1$」，所以 $g(x)=xf(x)-1$ 在 $x=1,2,3,4,5$ 都是 $0$；$g$ 是 $5$ 次式，五個根全部知道，只剩首項係數。</div>
+設 $g(x)=xf(x)-1=c(x-1)(x-2)(x-3)(x-4)(x-5)$。<br>
+代 $x=0$：左邊 $=0\cdot f(0)-1=-1$，右邊 $=c\cdot(-1)(-2)(-3)(-4)(-5)=-120c$，所以 $c=\dfrac{1}{120}$。<br>
+代 $x=7$：$7f(7)-1=\dfrac{1}{120}\cdot6\cdot5\cdot4\cdot3\cdot2=6$，所以 $f(7)=1$。<br>
+<span class="note-sm">原題是 $2024$ 次多項式、$k=1,2,\ldots,2025$、求 $f(2026)$，做法完全一樣（答案 $\dfrac{1}{1013}$）。不必真的把 $f(x)$ 求出來。</span></div></div>
+
+<div class="fx" id="L3-17" data-gen="cubicSigns"><div class="fxh"><span class="no">L3-17</span><span class="kw">恰交兩點又在其中一點相切：那一點是重根，設 a(x−2)²(x−6)；8ax³+4bx²+2cx+d 就是 f(2x)</span><span class="src">改編自 高雄中學 112上 填 8</span></div>
+<div class="fxq">三次函數 $y=f(x)=ax^3+bx^2+cx+d$ 的圖形與 $x$ 軸恰交於 $(2,0)$、$(6,0)$ 兩點，在 $(2,0)$ 與 $x$ 軸相切，且與 $y$ 軸交於負半軸。<br>(1) 判斷 $a,b,c,d$ 的正負。　(2) 解不等式 $8ax^3+4bx^2+2cx+d\lt0$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $a\gt0$、$b\lt0$、$c\gt0$、$d\lt0$　(2) $x\lt1$ 或 $1\lt x\lt3$</div>
+<div class="fxs"><div class="move">做法：三次方程式有三個根（含重根），圖形只碰到 $x$ 軸兩個點，其中一個一定是重根；在 $(2,0)$ 相切，所以 $x=2$ 是重根，$f(x)=a(x-2)^2(x-6)$。</div>
+(1) 展開：$f(x)=a(x^2-4x+4)(x-6)=a(x^3-10x^2+28x-24)$，所以 $b=-10a$、$c=28a$、$d=-24a$。<br>
+與 $y$ 軸交於負半軸 ⟹ $d=-24a\lt0$ ⟹ $a\gt0$，於是 $b\lt0$、$c\gt0$、$d\lt0$。<br>
+(2) $8ax^3+4bx^2+2cx+d=a(2x)^3+b(2x)^2+c(2x)+d=f(2x)=a(2x-2)^2(2x-6)=8a(x-1)^2(x-3)$。<br>
+$a\gt0$，所以 $f(2x)\lt0$ ⟺ $(x-1)^2(x-3)\lt0$：$(x-1)^2\ge0$ 不改變正負、但 $x=1$ 時整個是 $0$ 要挖掉，剩下 $x-3\lt0$。<br>
+所以 $x\lt1$ 或 $1\lt x\lt3$。<br>
+<span class="note-sm">原題用圖形給條件（在 $x=-1$ 碰一下、在 $x=2$ 穿過），本書改成文字敘述並換了數字；原題只問第 (2) 小題。</span></div></div>
+
+<div class="fx" id="L3-18" data-gen="divTransform"><div class="fxh"><span class="no">L3-18</span><span class="kw">商與餘的變形：一律從 f(x)=(3x+2)Q(x)+r 出發，改寫成「除式×商式＋餘式」再對照</span><span class="src">改編自 師大附中 113上 多選 5</span></div>
+<div class="fxq">設多項式 $f(x)$ 除以 $3x+2$ 的商式為 $Q(x)$、餘式為 $r$（$r\ne0$）。下列哪些正確？（可複選）<br>(1) $2f(x)$ 除以 $3x+2$ 的商式為 $Q(x)$，餘式為 $2r$<br>(2) $f(x)$ 除以 $6x+4$ 的商式為 $\dfrac12Q(x)$，餘式為 $r$<br>(3) $f(x)$ 除以 $x+\dfrac23$ 的商式為 $3Q(x)$，餘式為 $r$<br>(4) $-f(x)$ 除以 $3x+2$ 的商式為 $-Q(x)$，餘式為 $r$<br>(5) $f(2x)$ 除以 $6x+2$ 的商式為 $Q(2x)$，餘式為 $r$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(5)</div>
+<div class="fxs"><div class="move">做法：由 $f(x)=(3x+2)Q(x)+r$ 出發，把每個選項的被除式寫成「除式 $\times$ 某式 $+$ 常數」，某式就是商式、常數就是餘式（除式是一次，餘式一定是常數）。</div>
+(1) $2f(x)=(3x+2)\cdot2Q(x)+2r$，商式是 $2Q(x)$，不是 $Q(x)$ ✘<br>
+(2) $f(x)=2(3x+2)\cdot\dfrac12Q(x)+r=(6x+4)\cdot\dfrac12Q(x)+r$ ✔<br>
+(3) $f(x)=3\left(x+\dfrac23\right)Q(x)+r=\left(x+\dfrac23\right)\cdot3Q(x)+r$ ✔<br>
+(4) $-f(x)=(3x+2)\cdot\big(-Q(x)\big)-r$，餘式是 $-r$，不是 $r$ ✘<br>
+(5) 把 $x$ 換成 $2x$：$f(2x)=(6x+2)Q(2x)+r$ ✔</div></div>
+
+<div class="fx" id="L3-19" data-gen="absPiecewise"><div class="fxh"><span class="no">L3-19</span><span class="kw">含絕對值的分段拋物線：以 x=−1 為界拆絕對值，兩段在 (−1,0) 接成一峰一谷；水平線夾在峰谷之間就是 3 個交點</span><span class="src">改編自 台南一中 113上 填 16</span></div>
+<div class="fxq">函數 $y=(x+1)(|x+1|-6)$ 的圖形和直線 $y=k$ 恰有 $3$ 個交點，求實數 $k$ 的範圍。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-9\lt k\lt 9$</div>
+<div class="fxs"><div class="move">做法：絕對值裡的 $x+1$ 在 $x=-1$ 變號，以 $x=-1$ 為界分兩段，每段都是拋物線；畫出來再用水平線 $y=k$ 由下往上掃。</div>
+$x\ge-1$ 時：$y=(x+1)(x+1-6)=(x+1)(x-5)=(x-2)^2-9$，頂點 $(2,-9)$ 是山谷。<br>
+$x\lt-1$ 時：$y=(x+1)(-x-1-6)=-(x+1)(x+7)=-(x+4)^2+9$，頂點 $(-4,9)$ 是山峰。<br>
+兩段在 $(-1,0)$ 接起來：左段由很低升到 $(-4,9)$ 再降到 $(-1,0)$；右段由 $(-1,0)$ 降到 $(2,-9)$，再一路升高。<br>
+水平線 $y=k$：$0\lt k\lt 9$ 時左段 $2$ 點、右段 $1$ 點；$k=0$ 時交於 $x=-7,\,-1,\,5$；$-9\lt k\lt 0$ 時左段 $1$ 點、右段 $2$ 點，都是 $3$ 個。$k=\pm9$ 時只剩 $2$ 個，$k\lt-9$ 或 $k\gt9$ 時只有 $1$ 個。<br>
+所以 $-9\lt k\lt 9$。<br>
+<span class="note-sm">原題是 $y=(x-2)(|x-2|-2)$，答案 $-1\lt k\lt 1$。$y=(x-h)(|x-h|-c)$ 的圖形對點 $(h,0)$ 對稱，山峰和山谷一樣高（都是 $\dfrac{c^2}{4}$），所以恰有 $3$ 個交點的答案總是 $-\dfrac{c^2}{4}\lt k\lt\dfrac{c^2}{4}$。</span></div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（19 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -579,7 +624,7 @@ $k^2-8k+19=(k-4)^2+3$ 在 $0\le k\le3$ 遞減，$k=3$ 時最小 $=1+3=4$。</div
   <div><b>通過標準</b>沒有標準，會一題算一題。</div>
 </div>
 
-<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">f(2^k)=k：構造 h(x)=f(2x)−f(x)−1，它有 7 個根 2⁰…2⁶，常數項定 c，再讀 x 項係數</span><span class="src">台南一中 112上期末 填 17</span></div>
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">$f(2^k)=k$：構造 $h(x)=f(2x)-f(x)-1$，它有 7 個根 2⁰…2⁶，常數項定 c，再讀 x 項係數</span><span class="src">台南一中 112上期末 填 17</span></div>
 <div class="fxq">設 $f(x)$ 為 $7$ 次多項式，滿足 $f(2^0)=0,\ f(2^1)=1,\ f(2^2)=2,\dots,f(2^7)=7$。求 $f(x)$ 的 $x$ 項係數。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac{127}{64}$</div>

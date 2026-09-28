@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -236,7 +236,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（15,750 題抽樣）；固定題全數人工＋電腦重算。本章只用坐標、向量、內積、外積與三階行列式：點到平面的距離一律用體積法，平面與直線的方程式是下一章的東西，本書不用。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（19,500 題抽樣）；固定題全數人工＋電腦重算。本章只用坐標、向量、內積、外積與三階行列式：點到平面的距離一律用體積法，平面與直線的方程式是下一章的東西，本書不用。</li>
   </ol>
 </div>
 
@@ -263,15 +263,21 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>卦限數不清、對稱點與投影點搞混、外積中間那項老是忘了變號的同學。</div>
-  <div><b>目標</b>27 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>33 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
+<h3 class="sec">1 空間概念：直線的位置關係、摺紙與兩面角、三垂線定理</h3>
+<div class="must">題庫 35 份高二段考卷中<b>兩面角 23 卷、線面垂直與三垂線 19 卷、正立方體 19 卷、摺紙與展開 13 卷、歪斜線 12 卷</b>（「兩面角」有的考卷寫「二面角」，意思相同）。先要會：<b>歪斜是不平行也不相交，用「總數－平行－相交」去數</b>、<b>摺紙：摺痕兩側各作垂直摺痕的線段，它們的夾角就是兩面角，摺起前後長度不變</b>、<b>三垂線定理：$\overline{PA}\perp$ 平面、$\overline{AH}\perp L$ ⟹ $\overline{PH}\perp L$，$\overline{PH}$ 是距離、$\angle PHA$ 是兩面角</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="cubeLineRel,foldSquare,threePerpDist"></div>
+<div class="fadeset" data-tier="L1" data-keys="cubeLineRel,foldSquare,threePerpDist" data-seed="8001"></div>
+<div class="fixset" data-tier="L1" data-keys="cubeLineRel,foldSquare,threePerpDist" data-seed="7101"></div>
+
 <h3 class="sec">2 空間坐標系：卦限、距離、對稱、分點、長方體坐標化</h3>
-<div class="must">先要會：<b>卦限先看 $z$ 分上下、再看 $(x,y)$ 象限</b>、<b>到坐標軸的距離「丟掉一個坐標」、到坐標平面的距離是缺的那個坐標的絕對值</b>、<b>對平面對稱只變一個號、對軸對稱變兩個、對原點全變</b>、<b>分點交叉配：$P=\dfrac{nA+mB}{m+n}$</b>、<b>重心＝頂點平均</b>、<b>長方體以一頂點為原點、三稜為三軸</b>、<b>兩個根號和的最小值＝異側兩點的距離</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="octantDist,symProj,midDiv,centroidC,equidistAxis,boxGeom,minSum"></div>
-<div class="fadeset" data-tier="L1" data-keys="octantDist,symProj,midDiv,centroidC,equidistAxis,boxGeom,minSum" data-seed="8101"></div>
-<div class="fixset" data-tier="L1" data-keys="octantDist,symProj,midDiv,centroidC,equidistAxis,boxGeom,minSum" data-seed="7201"></div>
+<div class="must">先要會：<b>卦限先看 $z$ 分上下、再看 $(x,y)$ 象限</b>、<b>到坐標軸的距離「丟掉一個坐標」、到坐標平面的距離是缺的那個坐標的絕對值</b>、<b>對平面對稱只變一個號、對軸對稱變兩個、對原點全變</b>、<b>分點交叉配：$P=\dfrac{nA+mB}{m+n}$</b>、<b>重心＝頂點平均</b>、<b>長方體以一頂點為原點、三稜為三軸</b>、<b>兩個根號和的最小值＝異側兩點的距離</b>、<b>$\overrightarrow{OP}$ 與 $x$ 軸正向的夾角用內積：$\cos\alpha=\dfrac{x}{\overline{OP}}$，三個坐標的平方和是 $\overline{OP}^2$</b>、<b>距離平方和 $\overline{PA}^2+\overline{PB}^2+\cdots$ 的最小值：每個能動的坐標各自取平均（空間中就是重心），被限制在軸或平面上的坐標代 $0$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="octantDist,symProj,midDiv,centroidC,equidistAxis,boxGeom,minSum,dirCos,sqDistMin"></div>
+<div class="fadeset" data-tier="L1" data-keys="octantDist,symProj,midDiv,centroidC,equidistAxis,boxGeom,minSum,dirCos,sqDistMin" data-seed="8101"></div>
+<div class="fixset" data-tier="L1" data-keys="octantDist,symProj,midDiv,centroidC,equidistAxis,boxGeom,minSum,dirCos,sqDistMin" data-seed="7201"></div>
 
 <h3 class="sec">3 空間向量：運算、平行、共線、共平面、係數和判別法</h3>
 <div class="must">先要會：<b>分量各算各的，長度 $=\sqrt{x^2+y^2+z^2}$</b>、<b>平行 ⟺ 分量成比例（先用已知分量定倍數）</b>、<b>三點共線 ⟺ $\overrightarrow{AC}\parallel\overrightarrow{AB}$</b>、<b>$\overrightarrow{OP}=x\overrightarrow{OA}+y\overrightarrow{OB}$：係數和 $=1$ 在直線上，兩係數皆正在線段內</b>、<b>共平面 ⟺ $\vec w=p\vec u+q\vec v$ 有解 ⟺ $\det=0$</b>、<b>三角不等式；求長度先平方</b>。</div>
@@ -286,12 +292,12 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fixset" data-tier="L1" data-keys="dotAngle3,perpT,unitPerp,proj3,cauchy3,cross3,area3,dihedralBox" data-seed="7401"></div>
 
 <h3 class="sec">5 三階行列式與體積</h3>
-<div class="must">先要會：<b>沿第一列展開或對角線法</b>、<b>每一列都是線性的、相同兩列為 $0$、對調變號、輪換不變</b>、<b>三重積 $\vec u\cdot(\vec v\times\vec w)=$ 行列式 $=$ 平行六面體體積（絕對值），四面體再除 $6$</b>、<b>牆角型 $V=\dfrac{abc}6$，$\overrightarrow{AB}\times\overrightarrow{AC}=(bc,ca,ab)$</b>、<b>點到平面距離 $=\dfrac{3V}{S}$（體積法）</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="det3calc,detProps,volume3,ptPlaneAxes"></div>
-<div class="fadeset" data-tier="L1" data-keys="det3calc,detProps,volume3,ptPlaneAxes" data-seed="8401"></div>
-<div class="fixset" data-tier="L1" data-keys="det3calc,detProps,volume3,ptPlaneAxes" data-seed="7501" data-n="8"></div>
+<div class="must">先要會：<b>沿第一列展開或對角線法</b>、<b>每一列都是線性的、相同兩列為 $0$、對調變號、輪換不變</b>、<b>三重積 $\vec u\cdot(\vec v\times\vec w)=$ 行列式 $=$ 平行六面體體積（絕對值），四面體再除 $6$</b>、<b>牆角型 $V=\dfrac{abc}6$，$\overrightarrow{AB}\times\overrightarrow{AC}=(bc,ca,ab)$</b>、<b>點到平面距離 $=\dfrac{3V}{S}$（體積法）</b>、<b>含 $x$ 的行列式方程式：只有兩格含 $x$ 而且不同列不同行時，展開是二次式，移項後解</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="det3calc,detProps,volume3,ptPlaneAxes,detEquation"></div>
+<div class="fadeset" data-tier="L1" data-keys="det3calc,detProps,volume3,ptPlaneAxes,detEquation" data-seed="8401"></div>
+<div class="fixset" data-tier="L1" data-keys="det3calc,detProps,volume3,ptPlaneAxes,detEquation" data-seed="7501" data-n="8"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 27 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">L1 混合檢測 12 題（全章 33 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -300,19 +306,23 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>16 個段考最常見題型（依 38 份高二段考卷的出現率選出），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>22 個段考最常見題型（依 38 份高二段考卷的出現率選出；2026-09-29 再用題庫 35 份高二段考卷重新統計，補了摺紙、牆角四面體、正四角錐、兩平面夾角、加權平方和、行列式最值 6 型），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
 <h3 class="sec">坐標與向量進階：體對角線、係數即坐標、角平分線、加權和、鏡面、面心</h3>
-<div class="must">段考 38 卷中<b>坐標 16 卷、正立方體 16 卷、長方體 12 卷、線性組合 12 卷、角平分線 7 卷</b>。解題要點：<b>長方體兩體對角線的夾角：同長度，$\cos=\dfrac{\text{內積}}{|\overrightarrow{AG}|^2}$</b>；<b>$\overrightarrow{AP}=x\overrightarrow{AB}+y\overrightarrow{AD}+z\overrightarrow{AE}$ 的係數就是坐標</b>；<b>角平分線方向＝兩單位向量的和，外角是差（外分對邊）</b>；<b>$\alpha\overrightarrow{DA}+\beta\overrightarrow{DB}+\gamma\overrightarrow{DC}=\vec0$ ⟹ $D=\dfrac{\alpha A+\beta B+\gamma C}{\alpha+\beta+\gamma}$</b>；<b>鏡面反射：垂直鏡面的分量變號</b>；<b>面心＝該面對角線的中點</b>；<b>第四頂點有三種配法</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="lineFaceAngle,cubeCoefDist,bisectorT,extBisector,weightedZero,reflectPlane,paraCenter,fourthVertex"></div>
+<div class="must">段考 38 卷中<b>坐標 16 卷、正立方體 16 卷、長方體 12 卷、線性組合 12 卷、角平分線 7 卷</b>。解題要點：<b>長方體兩體對角線的夾角：同長度，$\cos=\dfrac{\text{內積}}{|\overrightarrow{AG}|^2}$</b>；<b>$\overrightarrow{AP}=x\overrightarrow{AB}+y\overrightarrow{AD}+z\overrightarrow{AE}$ 的係數就是坐標</b>；<b>角平分線方向＝兩單位向量的和，外角是差（外分對邊）</b>；<b>$\alpha\overrightarrow{DA}+\beta\overrightarrow{DB}+\gamma\overrightarrow{DC}=\vec0$ ⟹ $D=\dfrac{\alpha A+\beta B+\gamma C}{\alpha+\beta+\gamma}$</b>；<b>鏡面反射：垂直鏡面的分量變號</b>；<b>面心＝該面對角線的中點</b>；<b>第四頂點有三種配法</b>；<b>加權距離平方和 $\alpha\overline{PA}^2+\beta\overline{PB}^2+\cdots$：能動的坐標取加權平均</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="lineFaceAngle,cubeCoefDist,bisectorT,extBisector,weightedZero,reflectPlane,paraCenter,fourthVertex,weightedSqMin"></div>
 
 <h3 class="sec">內外積、行列式與立體：含 $x$ 的行列式、體積法、投影點、距離、歪斜線夾角</h3>
-<div class="must">段考 38 卷中<b>兩面角（有的考卷寫「二面角」，意思相同）25 卷、外積 22 卷、內積 20 卷、三重積 17 卷、正射影 15 卷、柯西 15 卷、三角形面積 14 卷、正四面體 13 卷、三階行列式 13 卷</b>。解題要點：<b>含 $x$ 的行列式：常數項 $=f(0)$、係數和 $=f(1)$、偶次和 $=\frac{f(1)+f(-1)}2$</b>；<b>點到平面 $=\dfrac{|\det|}{|\overrightarrow{AB}\times\overrightarrow{AC}|}$</b>；<b>正四面體：體高 $\frac{\sqrt6}3a$、體積 $\frac{\sqrt2}{12}a^3$、$\cos\theta=\frac13$</b>；<b>投影點 $=A+t\overrightarrow{AC}$、$t=\frac{\overrightarrow{AB}\cdot\overrightarrow{AC}}{|\overrightarrow{AC}|^2}$</b>；<b>點到直線 $=\dfrac{|\overrightarrow{AP}\times\overrightarrow{AB}|}{|\overrightarrow{AB}|}$</b>；<b>平面上的最近點：柯西的等號</b>；<b>歪斜線夾角＝方向向量夾角</b>；<b>三角錐體積比＝三個伸縮比相乘</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="detPoly,tetraDist,regularTetra,projLine3,ptLineDist,cauchyPoint,skewAngleBox,volumeRatio"></div>
+<div class="must">段考 38 卷中<b>兩面角（有的考卷寫「二面角」，意思相同）25 卷、外積 22 卷、內積 20 卷、三重積 17 卷、正射影 15 卷、柯西 15 卷、三角形面積 14 卷、正四面體 13 卷、三階行列式 13 卷</b>。解題要點：<b>含 $x$ 的行列式：常數項 $=f(0)$、係數和 $=f(1)$、偶次和 $=\frac{f(1)+f(-1)}2$</b>；<b>點到平面 $=\dfrac{|\det|}{|\overrightarrow{AB}\times\overrightarrow{AC}|}$</b>；<b>正四面體：體高 $\frac{\sqrt6}3a$、體積 $\frac{\sqrt2}{12}a^3$、$\cos\theta=\frac13$</b>；<b>投影點 $=A+t\overrightarrow{AC}$、$t=\frac{\overrightarrow{AB}\cdot\overrightarrow{AC}}{|\overrightarrow{AC}|^2}$</b>；<b>點到直線 $=\dfrac{|\overrightarrow{AP}\times\overrightarrow{AB}|}{|\overrightarrow{AB}|}$</b>；<b>平面上的最近點：柯西的等號</b>；<b>歪斜線夾角＝方向向量夾角</b>；<b>三角錐體積比＝三個伸縮比相乘</b>；<b>一列受 $x^2+y^2+z^2=R^2$ 限制：行列式＝這一列與另外兩列外積 $\vec w$ 的內積，範圍是 $-R|\vec w|$ 到 $R|\vec w|$</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="detPoly,tetraDist,regularTetra,projLine3,ptLineDist,cauchyPoint,skewAngleBox,volumeRatio,detMaxSphere"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<h3 class="sec">空間概念進階：摺紙、牆角四面體、正四角錐、兩平面的夾角</h3>
+<div class="must">題庫 35 份高二段考卷中<b>兩面角 23 卷、四面體與角錐 23 卷、摺紙與展開 13 卷</b>。解題要點：<b>長方形沿對角線摺：兩個垂足錯開 $\overline{EF}$，$\overline{BD}^2=\overline{BE}^2+\overline{DF}^2-2\overline{BE}\cdot\overline{DF}\cos\theta+\overline{EF}^2$</b>；<b>「投影落在邊上」：設坐標 $D(h,0,k)$，用到摺痕兩端的距離不變列式</b>；<b>牆角四面體：$\tan\theta=\dfrac{\text{高}}{O\text{ 到稜的距離}}$，底面三角形是斜面三角形的正射影，面積比就是 $\cos\theta$</b>；<b>正四角錐：側面與底面 $\cos\alpha=\dfrac{\text{底邊的一半}}{P\text{ 到底邊的距離}}$，相鄰兩側面的兩面角是鈍角</b>；<b>一般的兩面角：用外積求兩個法向量，再算夾角（取銳角加絕對值）</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="foldRect,cornerDihedral,pyramidDihedral,planeAngleCoord"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 22 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -321,10 +331,10 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過。</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字。答案與詳解皆重新驗算過。</div>
 
 <div class="fx" id="L3-1" data-gen="polePythag"><div class="fxh"><span class="no">L3-1</span><span class="kw">直徑上的圓周角：∠ACB=90°；桿垂直地面：用三垂線，桿頂到 C 的距離用兩次畢氏</span><span class="src">武陵高中 109下 填 6</span></div>
 <div class="fxq">地面上 $A$、$B$ 兩點相距 $30$ 公尺，$C$ 在以 $\overline{AB}$ 為直徑的圓上且 $\angle CAB=60^\circ$。在 $A$ 點立一根垂直於地面的木桿，桿頂到 $B$ 的距離為 $50$ 公尺。求桿頂到 $C$ 的繩索長。</div>
@@ -433,7 +443,35 @@ $\vec b=\dfrac{5}{7}\vec a=\left(-\dfrac{10}7,\dfrac{30}7,\dfrac{15}7\right)$。
 <div class="fxs"><div class="move">做法：第一列減第二列得 $(4,4,4)$、第二列減第三列得 $(12,13,11)$。列減列，行列式不變。</div>
 $$\begin{vmatrix}4&4&4\\12&13&11\\13&11&12\end{vmatrix}=4\begin{vmatrix}1&1&1\\12&13&11\\13&11&12\end{vmatrix}=4\big[(156-121)-(144-143)+(132-169)\big]=4(35-1-37)=-12$$</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fx" id="L3-16" data-gen="foldKite"><div class="fxh"><span class="no">L3-16</span><span class="kw">兩個全等直角三角形沿斜邊摺起：兩個垂足重合於同一點 M，∠BMD 就是兩面角，三邊都有了用餘弦定理</span><span class="src">改編自 台中女中 112下 填 4</span></div>
+<div class="fxq">四邊形 $ABCD$ 由兩個全等的直角三角形 $\triangle ABC$、$\triangle ADC$ 組成，$\angle B=\angle D=90^\circ$，$\overline{AB}=\overline{AD}=3$、$\overline{BC}=\overline{DC}=4$。將它沿對角線 $\overline{AC}$ 摺起，使 $\angle BAD=60^\circ$。設平面 $ABC$ 與平面 $ADC$ 所夾的兩面角為 $\theta$，求 (1) $\overline{BD}$　(2) $B$ 到 $\overline{AC}$ 的距離　(3) $\cos\theta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $3$　(2) $\dfrac{12}{5}$　(3) $\cos\theta=\dfrac{7}{32}$</div>
+<div class="fxs"><div class="move">做法：摺起前後長度不變；兩個全等直角三角形對斜邊的高落在同一點 $M$，$\overline{BM}$、$\overline{DM}$ 都垂直摺痕 $\overline{AC}$，所以 $\angle BMD$ 就是兩面角。</div>
+(1) $\overline{AB}=\overline{AD}=3$ 且 $\angle BAD=60^\circ$ ⟹ $\triangle ABD$ 是正三角形，$\overline{BD}=3$。<br>
+(2) $\overline{AC}=\sqrt{3^2+4^2}=5$，$\overline{BM}=\dfrac{\overline{AB}\cdot\overline{BC}}{\overline{AC}}=\dfrac{12}{5}$；而 $\overline{AM}=\dfrac{\overline{AB}^2}{\overline{AC}}=\dfrac95$，$D$ 那一側算出來也是 $\dfrac95$，所以兩個垂足是同一點，$\overline{DM}=\dfrac{12}{5}$。<br>
+(3) $\cos\theta=\dfrac{\overline{BM}^2+\overline{DM}^2-\overline{BD}^2}{2\,\overline{BM}\cdot\overline{DM}}=\dfrac{\frac{144}{25}+\frac{144}{25}-9}{2\cdot\frac{144}{25}}=\dfrac{288-225}{288}=\dfrac{7}{32}$。</div></div>
+
+<div class="fx" id="L3-17" data-gen="detMaxShift"><div class="fxh"><span class="no">L3-17</span><span class="kw">含 x、y、z 的那一列受平方和條件限制：先配方，行列式＝（那一列）·（另外兩列的外積），反向時最小</span><span class="src">改編自 武陵高中 112下 填 8</span></div>
+<div class="fxq">實數 $x,y,z$ 滿足 $x^2+y^2+z^2-2x+4y-7=0$。當 $x=t$ 時，行列式 $\begin{vmatrix}1&2&-1\\x-1&y+2&z\\2&-1&3\end{vmatrix}$ 有最小值 $m$。(1) 求數對 $(t,m)$。(2) 求此行列式的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $(t,m)=(3,-30)$　(2) $30$</div>
+<div class="fxs"><div class="move">做法：配方成 $(x-1)^2+(y+2)^2+z^2=12$，令 $\vec u=(x-1,\ y+2,\ z)$，$|\vec u|=2\sqrt3$；行列式沿第二列看是 $\vec u\cdot(\text{第三列}\times\text{第一列})$。</div>
+第三列 $\times$ 第一列 $=(2,-1,3)\times(1,2,-1)=(-5,5,5)=\vec w$，$|\vec w|=5\sqrt3$。行列式 $=\vec u\cdot\vec w=|\vec u||\vec w|\cos\theta$，介於 $-2\sqrt3\cdot5\sqrt3=-30$ 與 $30$ 之間。<br>
+最小值在 $\vec u$ 與 $\vec w$ 反向時：$\vec u=-\dfrac{2\sqrt3}{5\sqrt3}\vec w=-\dfrac25(-5,5,5)=(2,-2,-2)$ ⟹ $x-1=2$，$t=3$；$m=-30$。最大值 $30$。<br>
+<span class="note-sm">驗算：$(x,y,z)=(3,-4,-2)$ 代入條件 $9+16+4-6-16-7=0$ ✔；行列式 $=(2,-2,-2)\cdot(-5,5,5)=-30$ ✔。</span></div></div>
+
+<div class="fx" id="L3-18" data-gen="tetraPerpEdge"><div class="fxh"><span class="no">L3-18</span><span class="kw">一條稜同時垂直兩個面裡的兩條線：兩面角就是那兩條線的夾角；DB⊥BC、DA⊥底面 ⟹ AB⊥BC</span><span class="src">改編自 成功高中 112下 填 6</span></div>
+<div class="fxq">$D$-$ABC$ 為四面體，$\overline{DA}$ 垂直 $\overline{AB}$ 與 $\overline{AC}$，且 $\overline{DB}\perp\overline{BC}$。已知 $\overline{DA}=4$、$\overline{DB}=5$、$\overline{BC}=4$。(1) 求 $\overline{AC}$。(2) 設平面 $DAB$ 與平面 $DAC$ 所夾的兩面角為 $\theta$，求 $\cos\theta$。(3) 設平面 $DBC$ 與平面 $ABC$ 所夾的兩面角為 $\varphi$，求 $\tan\varphi$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $5$　(2) $\cos\theta=\dfrac35$　(3) $\tan\varphi=\dfrac43$</div>
+<div class="fxs"><div class="move">做法：$\overline{DA}$ 垂直底面上兩條相交直線 ⟹ $\overline{DA}\perp$ 平面 $ABC$；$\overline{BC}$ 同時垂直 $\overline{DB}$、$\overline{DA}$ ⟹ $\overline{BC}\perp$ 平面 $DAB$ ⟹ $\overline{BC}\perp\overline{AB}$。</div>
+(1) $\overline{AB}=\sqrt{5^2-4^2}=3$，$\triangle ABC$ 在 $B$ 是直角：$\overline{AC}=\sqrt{3^2+4^2}=5$。<br>
+(2) 兩面的交線是 $\overline{DA}$，而 $\overline{AB}$、$\overline{AC}$ 都垂直 $\overline{DA}$，所以兩面角 $=\angle BAC$：$\cos\theta=\dfrac{\overline{AB}}{\overline{AC}}=\dfrac35$。<br>
+(3) 交線是 $\overline{BC}$，$\overline{AB}\perp\overline{BC}$、$\overline{DB}\perp\overline{BC}$，所以兩面角 $=\angle DBA$：$\tan\varphi=\dfrac{\overline{DA}}{\overline{AB}}=\dfrac43$。<br>
+<span class="note-sm">也可以坐標化驗算：$A(0,0,0)$、$B(3,0,0)$、$C(3,4,0)$、$D(0,0,4)$。</span></div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>

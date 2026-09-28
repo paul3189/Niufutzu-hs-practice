@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js"></script>
+<script src="practice-gen.js?v=20260929c"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -236,7 +236,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字與做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（14,500 題抽樣）；固定題全數人工＋電腦重算。常用對數近似值統一用 $\log2\approx0.3010$、$\log3\approx0.4771$、$\log7\approx0.8451$。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（18,500 題抽樣）；固定題全數人工＋電腦重算。常用對數近似值統一用 $\log2\approx0.3010$、$\log3\approx0.4771$、$\log7\approx0.8451$。</li>
   </ol>
 </div>
 
@@ -263,15 +263,15 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>指數律還會漏、看到 $\log$ 就先卡住的同學。</div>
-  <div><b>目標</b>22 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>28 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
 <h3 class="sec">2-1 指數的推廣與指數函數</h3>
-<div class="must">先要會：<b>指數律三條</b>（同底相乘指數加、次方相乘、分數指數＝根號）、<b>$k^{m/n}$ 先把底寫成 $k^n$</b>、<b>同底比大小：底 $\gt1$ 看指數、底在 $0$ 與 $1$ 之間反向</b>、<b>同底方程式指數相等</b>、<b>平移：$x\to x-h$、整體加 $k$，漸近線跟著動</b>、<b>換元 $t=a^x\gt0$ 化二次</b>、<b>每期成長 $k$ 倍 ⟹ 先數幾個週期</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="expLaw,radicalVal,expOrder,expEqSame,expIneqSame,expShift,expQuadEq,growthTimes"></div>
-<div class="fadeset" data-tier="L1" data-keys="expLaw,radicalVal,expOrder,expEqSame,expIneqSame,expShift,expQuadEq,growthTimes" data-seed="7101"></div>
-<div class="fixset" data-tier="L1" data-keys="expLaw,radicalVal,expOrder,expEqSame,expIneqSame,expShift,expQuadEq,growthTimes" data-seed="3101"></div>
+<div class="must">先要會：<b>指數律三條</b>（同底相乘指數加、次方相乘、分數指數＝根號）、<b>$k^{m/n}$ 先把底寫成 $k^n$</b>、<b>同底比大小：底 $\gt1$ 看指數、底在 $0$ 與 $1$ 之間反向</b>、<b>同底方程式指數相等</b>、<b>平移：$x\to x-h$、整體加 $k$，漸近線跟著動</b>、<b>換元 $t=a^x\gt0$ 化二次</b>、<b>每期成長 $k$ 倍 ⟹ 先數幾個週期</b>、<b>對稱式：$a^{x}+a^{-x}=k$ 平方得 $a^{2x}+a^{-2x}=k^{2}-2$（$a^{x}\cdot a^{-x}=1$）</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="expLaw,radicalVal,expOrder,expEqSame,expIneqSame,expShift,expQuadEq,growthTimes,symmPower"></div>
+<div class="fadeset" data-tier="L1" data-keys="expLaw,radicalVal,expOrder,expEqSame,expIneqSame,expShift,expQuadEq,growthTimes,symmPower" data-seed="7101"></div>
+<div class="fixset" data-tier="L1" data-keys="expLaw,radicalVal,expOrder,expEqSame,expIneqSame,expShift,expQuadEq,growthTimes,symmPower" data-seed="3101"></div>
 
 <h3 class="sec">2-2 對數的定義與運算</h3>
 <div class="must">先要會：<b>定義 $\log_aM=c\iff a^c=M$</b>、<b>運算律：加變乘、減變除、係數變次方</b>、<b>$\log5=1-\log2$</b>、<b>換底 $\log_ab=\dfrac{\log b}{\log a}$</b>、<b>位數＝首數 $+1$</b>、<b>負的 $\log$ 要寫成「負整數＋正小數」</b>、<b>最高位數字看尾數落在 $\log k$ 與 $\log(k+1)$ 之間</b>、<b>對數方程式解完代回檢查真數 $\gt0$</b>、<b>對數不等式先寫定義域</b>。</div>
@@ -279,13 +279,19 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fadeset" data-tier="L1" data-keys="logDef,logLaw,logExpress,changeBase,digits,charMant,leadDigit,logEqSimple,logIneqSimple" data-seed="7201"></div>
 <div class="fixset" data-tier="L1" data-keys="logDef,logLaw,logExpress,changeBase,digits,charMant,leadDigit,logEqSimple,logIneqSimple" data-seed="3201"></div>
 
-<h3 class="sec">2-3 對數函數與對數刻度</h3>
-<div class="must">先要會：<b>平移與三種對稱（$x$ 軸變號、$y$ 軸 $x\to-x$、$y=x$ 是反函數）</b>、<b>比大小先看正負再和整數比</b>、<b>定義域三條件：底 $\gt0$、底 $\ne1$、真數 $\gt0$</b>、<b>換元 $t=\log_ax$ 配方求最值</b>、<b>對數刻度：規模差 $\Delta M$ ⟹ 能量 $10^{1.5\Delta M}$ 倍；強度 $n$ 倍 ⟹ 分貝加 $10\log n$</b>。</div>
-<div class="gen-grid" data-tier="L1" data-keys="logShift,logOrder,logDomain,logQuadMin,logScale"></div>
-<div class="fadeset" data-tier="L1" data-keys="logShift,logOrder,logDomain,logQuadMin,logScale" data-seed="7301"></div>
-<div class="fixset" data-tier="L1" data-keys="logShift,logOrder,logDomain,logQuadMin,logScale" data-seed="3301"></div>
+<h3 class="sec">2-2 續：換底連乘、不同底的指數方程式、科學記號</h3>
+<div class="must">29 份高二段考卷中<b>換底 20 卷、常用對數與科學記號 18 卷、指數方程式 12 卷</b>。先要會：<b>換底連乘：前一個的真數＝下一個的底，中間全部約掉，$\log_ab\cdot\log_bc=\log_ac$</b>、<b>$a^{\log_aM}=M$；底數不同先寫成同一個數的次方，例如 $9^{\log_32}=3^{2\log_32}=4$</b>、<b>底數化不成一樣就兩邊取 $\log$，把指數拉下來</b>、<b>乘 $10^{n}$ 只改首數、尾數不變：$\log(M\times10^{n})=n+\log M$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="logChain,expEqDiffBase,mantissaShift"></div>
+<div class="fadeset" data-tier="L1" data-keys="logChain,expEqDiffBase,mantissaShift" data-seed="7401"></div>
+<div class="fixset" data-tier="L1" data-keys="logChain,expEqDiffBase,mantissaShift" data-seed="3401"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 22 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">2-3 對數函數與對數刻度</h3>
+<div class="must">先要會：<b>平移與三種對稱（$x$ 軸變號、$y$ 軸 $x\to-x$、$y=x$ 是反函數）</b>、<b>比大小先看正負再和整數比</b>、<b>定義域三條件：底 $\gt0$、底 $\ne1$、真數 $\gt0$</b>、<b>換元 $t=\log_ax$ 配方求最值</b>、<b>對數刻度：規模差 $\Delta M$ ⟹ 能量 $10^{1.5\Delta M}$ 倍；強度 $n$ 倍 ⟹ 分貝加 $10\log n$</b>、<b>伸縮化成平移：$\log_a(a^{j}x)=\log_ax+j$ 是上下移，$a^{j}\cdot a^{x}=a^{x+j}$ 是左右移</b>、<b>底數大於 $1$ 的 $\log$ 凹口向下：$\dfrac{\log_ap+\log_aq}{2}=\log_a\sqrt{pq}\lt\log_a\dfrac{p+q}{2}$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="logShift,logOrder,logDomain,logQuadMin,logScale,scaleShift,midpointConcave"></div>
+<div class="fadeset" data-tier="L1" data-keys="logShift,logOrder,logDomain,logQuadMin,logScale,scaleShift,midpointConcave" data-seed="7301"></div>
+<div class="fixset" data-tier="L1" data-keys="logShift,logOrder,logDomain,logQuadMin,logScale,scaleShift,midpointConcave" data-seed="3301"></div>
+
+<h3 class="sec">L1 混合檢測 12 題（全章 28 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -294,23 +300,23 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>16 個段考最常見題型（依 34 份高二段考卷的出現率選出），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>23 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 29 份高二段考卷重新統計，補了 7 型），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
-<h3 class="sec">2-1 指數：換元最值、不等式、算幾、應用</h3>
-<div class="must">段考 34 卷中<b>換元出現 10 卷、指數不等式 10 卷、算幾 7 卷、半衰期 5 卷、複利 6 卷</b>。解題要點：<b>$t=a^x+a^{-x}\ge2$，$a^{2x}+a^{-2x}=t^2-2$；頂點在 $t\lt2$ 就取端點</b>；<b>乘積定值 ⟹ 算幾，等號要能成立</b>；<b>指數是二次式：先求指數的範圍，底數小於 $1$ 時大小對調</b>；<b>剩 $\frac1{2^k}$ 就是 $k$ 個半衰期</b>；<b>$(1+r)^n\gt k$ 兩邊取 $\log$ 再取下一個整數</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="expSymmMin,expIneqQuad,expAMGM,expIntervalMax,halfLife,compoundYears"></div>
+<h3 class="sec">2-1 指數：換元最值、不等式、算幾、應用、$a^{x}=b^{y}$ 型</h3>
+<div class="must">29 份高二段考卷中<b>換元 15 卷、指數方程式 12 卷、複利與成長 12 卷、算幾 8 卷</b>。解題要點：<b>$t=a^x+a^{-x}\ge2$，$a^{2x}+a^{-2x}=t^2-2$；頂點在 $t\lt2$ 就取端點</b>；<b>乘積定值 ⟹ 算幾，等號要能成立</b>；<b>指數是二次式：先求指數的範圍，底數小於 $1$ 時大小對調</b>；<b>剩 $\frac1{2^k}$ 就是 $k$ 個半衰期</b>；<b>$(1+r)^n\gt k$ 兩邊取 $\log$ 再取下一個整數</b>；<b>$a^{x}=b^{y}=N$：取 $\log$ 得 $\dfrac1x=\log_Na$、$\dfrac1y=\log_Nb$，倒數相加就是真數相乘</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="expSymmMin,expIneqQuad,expAMGM,expIntervalMax,halfLife,compoundYears,expEqualChain"></div>
 
-<h3 class="sec">2-2 對數：換元、方程式、不等式、查表題</h3>
-<div class="must">段考 34 卷中<b>對數方程 14 卷、對數不等式 12 卷、常用對數 15 卷</b>。解題要點：<b>$t=\log_ax$ 的範圍由 $x$ 的區間換算</b>；<b>真數相乘的方程式解完必刪負真數的根</b>；<b>底數小於 $1$ 的不等式方向反過來，且定義域要交集</b>；<b>$\log\frac{k+1}{k}$ 連加會對消</b>；<b>首數定位數、尾數定最高位；負對數先借位</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="logQuadRange,logEqQuad,logEqProduct,logIneqBase,logSumTele,digitsLead,decimalFirst"></div>
+<h3 class="sec">2-2 對數：換元、方程式、不等式、查表題、換底表示</h3>
+<div class="must">29 份高二段考卷中<b>換底 20 卷、對數方程 18 卷、常用對數 18 卷、對數不等式 12 卷</b>。解題要點：<b>$t=\log_ax$ 的範圍由 $x$ 的區間換算</b>；<b>真數相乘的方程式解完必刪負真數的根</b>；<b>底數小於 $1$ 的不等式方向反過來，且定義域要交集</b>；<b>$\log\frac{k+1}{k}$ 連加會對消</b>；<b>首數定位數、尾數定最高位；負對數先借位</b>；<b>真數相乘的不等式：合併成二次不等式，再和定義域取交集</b>；<b>$\log_ax$ 與 $\log_xa$ 同時出現：令 $t=\log_ax$，$\log_xa=\dfrac1t$</b>；<b>換底後用代號表示：全部換成同一個底再拆質因數</b>；<b>$\dfrac{1}{\log_bN}=\log_Nb$</b>；<b>$x$ 的次方裡有 $\log x$：兩邊取 $\log$，令 $t=\log x$ 化二次</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="logQuadRange,logEqQuad,logEqProduct,logIneqBase,logSumTele,digitsLead,decimalFirst,logIneqProduct,logRecipEq,changeBaseExpress,recipLogSum,xPowLog"></div>
 
-<h3 class="sec">2-3 對數函數上的點、兩種半衰期、分貝</h3>
-<div class="must">解題要點：<b>「$(a,b)$ 在 $y=\log_kx$ 的圖形上」只給一件事 $b=\log_ka$，每個選項都代進去用運算律核對</b>；<b>兩物質相除：$2^{t/T_B-t/T_A}$，指數是整數</b>；<b>分貝相加不能直接加，先換回強度</b>。</div>
-<div class="gen-grid" data-tier="L2" data-keys="logPointSym,decayRatio,dbMulti"></div>
+<h3 class="sec">2-3 對數函數上的點、兩層對數、兩種半衰期、分貝</h3>
+<div class="must">29 份高二段考卷中<b>定義域 12 卷、反函數 11 卷</b>。解題要點：<b>「$(a,b)$ 在 $y=\log_kx$ 的圖形上」只給一件事 $b=\log_ka$，每個選項都代進去用運算律核對</b>；<b>兩物質相除：$2^{t/T_B-t/T_A}$，指數是整數</b>；<b>分貝相加不能直接加，先換回強度</b>；<b>兩層對數：由外往內拆，每一層的真數都要 $\gt0$，底數小於 $1$ 方向就反一次</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="logPointSym,decayRatio,dbMulti,nestedLog"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 16 型打亂・可列印・可換組）</h3>
+<h3 class="sec">L2 混合檢測 12 題（全 23 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2001" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -319,12 +325,12 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>15 題各校段考中後段常見題：每題附「關鍵字：做法」，練到看見關鍵字就知道怎麼做；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的做法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字：做法」，練到看見關鍵字就知道怎麼做；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題的做法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
-<div class="note">題目來源標示為出題學校與年度；答案與詳解皆重新驗算過（L3-7 補上原卷漏掉的一個解）。</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字。答案與詳解皆重新驗算過（L3-7 補上原卷漏掉的一個解）。</div>
 
-<div class="fx" id="L3-1" data-gen="expSystem"><div class="fxh"><span class="no">L3-1</span><span class="kw">兩個指數的聯立：令 u=2^x、v=2^y，先解 u、v</span><span class="src">台中女中 112上 填 9</span></div>
+<div class="fx" id="L3-1" data-gen="expSystem"><div class="fxh"><span class="no">L3-1</span><span class="kw">兩個指數的聯立：令 $u=2^x$、$v=2^y$，先解 u、v</span><span class="src">台中女中 112上 填 9</span></div>
 <div class="fxq">解聯立方程式 $\begin{cases}2^x-2^y=96\\ 2^{x-y}=4\end{cases}$，求 $(x,y)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(x,y)=(7,5)$</div>
@@ -332,7 +338,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 $v=32=2^5$，$u=128=2^7$ ⟹ $y=5$、$x=7$。<br>
 <span class="note-sm">檢查：$2^7-2^5=128-32=96$ ✔、$2^{7-5}=4$ ✔。</span></div></div>
 
-<div class="fx" id="L3-2" data-gen="expIneqHalf"><div class="fxh"><span class="no">L3-2</span><span class="kw">4^{x+1/2}：2·(2^x)²，換元二次不等式</span><span class="src">台中女中 110上 填 10</span></div>
+<div class="fx" id="L3-2" data-gen="expIneqHalf"><div class="fxh"><span class="no">L3-2</span><span class="kw">$4^{x+1/2}$：$2\cdot(2^x)^2$，換元二次不等式</span><span class="src">台中女中 110上 填 10</span></div>
 <div class="fxq">解不等式 $4^{x+\frac12}-11\cdot2^x-6\le0$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$x\le\log_26$</div>
@@ -347,7 +353,7 @@ $2t^2-11t-6\le0\Rightarrow(2t+1)(t-6)\le0\Rightarrow-\dfrac12\le t\le6$；配合
 <div class="fxs"><div class="move">做法：$t=2^x$，$0\le x\le3$ ⟹ $1\le t\le8$；$f=t^2-4t+5=(t-2)^2+1$。</div>
 頂點 $t=2$ 在區間內 ⟹ $m=1$（$x=1$）；最大值在離頂點較遠的端點 $t=8$：$M=36+1=37$（$x=3$）。$M+m=38$。</div></div>
 
-<div class="fx" id="L3-4" data-gen="expTower"><div class="fxh"><span class="no">L3-4</span><span class="kw">指數塔 2^{10^x}：取兩次對數</span><span class="src">台中一中 110上 單 2</span></div>
+<div class="fx" id="L3-4" data-gen="expTower"><div class="fxh"><span class="no">L3-4</span><span class="kw">指數塔 $2^{10^x}$：取兩次對數</span><span class="src">台中一中 110上 單 2</span></div>
 <div class="fxq">方程式 $2^{10^x}=10^7$ 的實數解 $x$ 落在哪個範圍？（$\log2\approx0.3010$）<br>(1) $0\lt x\lt0.5$　(2) $0.5\lt x\lt1$　(3) $1\lt x\lt1.5$　(4) $1.5\lt x\lt2$　(5) $2\lt x\lt2.5$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(3)</div>
@@ -355,7 +361,7 @@ $2t^2-11t-6\le0\Rightarrow(2t+1)(t-6)\le0\Rightarrow-\dfrac12\le t\le6$；配合
 $10\lt23.26\lt100$ ⟹ $1\lt x\lt2$；再細一點：$23.26\lt\sqrt{1000}\approx31.6$ ⟹ $x\lt1.5$。故 $1\lt x\lt1.5$。<br>
 <span class="note-sm">$x=\log\frac{7}{\log2}=\log7-\log(\log2)=0.8451-\log0.3010=0.8451+0.5214\approx1.367$。</span></div></div>
 
-<div class="fx" id="L3-5" data-gen="vertGap"><div class="fxh"><span class="no">L3-5</span><span class="kw">鉛直線截兩曲線的長度：函數值相減，出現 t=2^h 的二次式</span><span class="src">台中一中 110上 單 1</span></div>
+<div class="fx" id="L3-5" data-gen="vertGap"><div class="fxh"><span class="no">L3-5</span><span class="kw">鉛直線截兩曲線的長度：函數值相減，出現 $t=2^h$ 的二次式</span><span class="src">台中一中 110上 單 1</span></div>
 <div class="fxq">直線 $x=h$ 分別與 $y=2^{x+\frac12}$、$y=4^x$ 交於 $A$、$B$，且 $\overline{AB}=4$，求 $h$。<br>(1) $\dfrac12$　(2) $\dfrac{\sqrt2}2$　(3) $\dfrac{\sqrt3}2$　(4) $\dfrac32$　(5) $\dfrac{\sqrt5}2$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(4) $h=\dfrac32$</div>
@@ -363,7 +369,7 @@ $10\lt23.26\lt100$ ⟹ $1\lt x\lt2$；再細一點：$23.26\lt\sqrt{1000}\approx
 $t^2-\sqrt2t-4=0$ ⟹ $t=\dfrac{\sqrt2\pm\sqrt{2+16}}{2}=\dfrac{\sqrt2\pm3\sqrt2}{2}$，取正：$t=2\sqrt2=2^{3/2}$ ⟹ $h=\dfrac32$。<br>
 <span class="note-sm">另一種情形 $\sqrt2t-t^2=4$ 判別式為負，無解；所以不必討論誰在上面。</span></div></div>
 
-<div class="fx" id="L3-6" data-gen="logEqSolveX"><div class="fxh"><span class="no">L3-6</span><span class="kw">x 藏在對數等式裡：先解出 x，再把 2^x 用換底整理</span><span class="src">台中一中 110上 填 9</span></div>
+<div class="fx" id="L3-6" data-gen="logEqSolveX"><div class="fxh"><span class="no">L3-6</span><span class="kw">x 藏在對數等式裡：先解出 x，再把 $2^x$ 用換底整理</span><span class="src">台中一中 110上 填 9</span></div>
 <div class="fxq">設 $\log_36=\dfrac{x-2}{x-1}$，求 $2^x$。（化為最簡分數）</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$2^x=\dfrac23$</div>
@@ -371,7 +377,7 @@ $t^2-\sqrt2t-4=0$ ⟹ $t=\dfrac{\sqrt2\pm\sqrt{2+16}}{2}=\dfrac{\sqrt2\pm3\sqrt2
 $2^x=2^{1-\log_23}=\dfrac{2}{2^{\log_23}}=\dfrac23$。<br>
 <span class="note-sm">$\dfrac{1}{\log_32}=\log_23$ 與 $2^{\log_23}=3$ 是本題的兩把鑰匙。</span></div></div>
 
-<div class="fx" id="L3-7" data-gen="logTripleProduct"><div class="fxh"><span class="no">L3-7</span><span class="kw">三種底的對數相乘等於兩兩相乘之和：全部換成 t=log_2 x，除以 t² 前先看 t=0</span><span class="src">台中女中 110上 填 14</span></div>
+<div class="fx" id="L3-7" data-gen="logTripleProduct"><div class="fxh"><span class="no">L3-7</span><span class="kw">三種底的對數相乘等於兩兩相乘之和：全部換成 $t=\log_2 x$，除以 $t^2$ 前先看 $t=0$</span><span class="src">台中女中 110上 填 14</span></div>
 <div class="fxq">若 $\log_2x\cdot\log_4x\cdot\log_6x=\log_2x\cdot\log_4x+\log_4x\cdot\log_6x+\log_6x\cdot\log_2x$，求 $x$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$x=48$ 或 $x=1$<br><span class="note-sm">（原卷參考答案只列 $48$；$x=1$ 使三個對數皆為 $0$，兩邊都是 $0$，也是解。）</span></div>
@@ -413,7 +419,7 @@ $s^2+(\log3+\log4)s+\log3\log4-1=0$ ⟹ $s_1+s_2=-(\log3+\log4)=-\log12$ ⟹ $\l
 (3) $\log ab=20.378$，尾數 $0.378$ 在 $\log2=0.301$ 與 $\log3=0.477$ 之間 ⟹ 最高位 $2$，錯。<br>
 (4)(5) $\log\dfrac a{b^2}=9.542-21.672=-12.130=-13+0.870$ ⟹ 第 $13$ 位開始非零（(4) 錯）；$10^{0.870}\approx7.4$ ⟹ 首個非零數字 $7$（(5) 對）。</div></div>
 
-<div class="fx" id="L3-12" data-gen="logShiftMatch"><div class="fxh"><span class="no">L3-12</span><span class="kw">平移後與已知圖形重合：把平移後的式子用運算律整理成 log_2(px+q)</span><span class="src">台中女中 112上 填 8</span></div>
+<div class="fx" id="L3-12" data-gen="logShiftMatch"><div class="fxh"><span class="no">L3-12</span><span class="kw">平移後與已知圖形重合：把平移後的式子用運算律整理成 $\log_2(px+q)$</span><span class="src">台中女中 112上 填 8</span></div>
 <div class="fxq">將 $y=\log_2(ax+b)$ 的圖形向右平移 $2$ 單位、再向下平移 $3$ 單位後，得到 $y=\log_2(x-3)$ 的圖形，求 $(a,b)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(a,b)=(8,-8)$</div>
@@ -442,7 +448,36 @@ $-x=2(x+1)$ ⟹ $x=-\dfrac23$；檢查定義域：$-x=\frac23\gt0$ ✔、$x+1=\f
 <div class="fxs"><div class="move">做法：對 $y=x$ 對稱＝反函數，反函數過 $(4,25)$ ⟺ 原函數過 $(25,4)$。</div>
 過 $(1,2)$：$2=b+\log_a1=b$ ⟹ $b=2$。過 $(25,4)$：$4=2+\log_a25$ ⟹ $a^2=25$ ⟹ $a=5$。$a+b=7$。</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+
+<div class="fx" id="L3-16" data-gen="inverseLineSum"><div class="fxh"><span class="no">L3-16</span><span class="kw">直線 $x+y=k$ 交 $y=a^{x}$ 與 $y=\log_ax$：兩個交點對 $y=x$ 對稱，坐標對調就好</span><span class="src">改編自 台中一中 112上 填 11</span></div>
+<div class="fxq">已知 $a\gt1$。直線 $x+y=k$ 與 $y=a^{x}$ 的圖形交於 $A(3,p)$，與 $y=\log_ax$ 的圖形交於 $B(8,q)$，求 $k+a^{2}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k+a^{2}=15$</div>
+<div class="fxs"><div class="move">做法：$y=a^{x}$ 與 $y=\log_ax$ 對稱於 $y=x$，直線 $x+y=k$ 也對稱於 $y=x$ ⟹ $A$ 的對稱點 $(p,3)$ 也在 $y=\log_ax$ 與直線上。</div>
+$y=\log_ax$（$a\gt1$，遞增）和直線 $x+y=k$（遞減）只交一點，所以 $(p,3)$ 就是 $B(8,q)$：$p=8$、$q=3$。<br>
+$k=3+p=11$；$A(3,8)$ 在 $y=a^{x}$ 上：$a^{3}=8$ ⟹ $a=2$。所以 $k+a^{2}=11+4=15$。<br>
+<span class="note-sm">檢查：$2^{3}+3=11$ ✔、$\log_28+8=11$ ✔。</span></div></div>
+
+<div class="fx" id="L3-17" data-gen="logOfExpEq"><div class="fxh"><span class="no">L3-17</span><span class="kw">真數裡有 $3^{x}$：右邊併成一個對數，令 $t=3^{\frac{x}{2}}$ 化成二次方程式</span><span class="src">改編自 建國中學 110上 填 11</span></div>
+<div class="fxq">解方程式 $\log_3\left(3^{x}+243\right)=\dfrac{x}{2}+2+\log_34$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$x=4$ 或 $x=6$</div>
+<div class="fxs"><div class="move">做法：右邊每一項都寫成 $\log_3(\cdots)$ 再相加：$\dfrac{x}{2}=\log_33^{\frac{x}{2}}$、$2=\log_39$，所以右邊 $=\log_3\left(36\cdot3^{\frac{x}{2}}\right)$。</div>
+真數相等：$3^{x}+243=36\cdot3^{\frac{x}{2}}$。令 $t=3^{\frac{x}{2}}\gt0$，則 $3^{x}=t^{2}$：$t^{2}-36t+243=0$ ⟹ $(t-9)(t-27)=0$ ⟹ $t=9$ 或 $27$。<br>
+$3^{\frac{x}{2}}=9$ ⟹ $x=4$；$3^{\frac{x}{2}}=27$ ⟹ $x=6$。<br>
+<span class="note-sm">檢查：$x=4$：$81+243=324=36\times9$ ✔；$x=6$：$729+243=972=36\times27$ ✔。真數 $3^{x}+243$ 恆正，兩個都合。</span></div></div>
+
+<div class="fx" id="L3-18" data-gen="logRecipIneq"><div class="fxh"><span class="no">L3-18</span><span class="kw">$\log_2x$ 與 $\log_x2$ 的不等式：$t$ 可正可負，不能直接乘 $t$，通分後分段看正負</span><span class="src">改編自 台南一中 110上 非選 20</span></div>
+<div class="fxq">解不等式 $\log_2x-12\log_x2\le1$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$0\lt x\le\dfrac18$ 或 $1\lt x\le16$</div>
+<div class="fxs"><div class="move">做法：令 $t=\log_2x$；$x\ne1$ ⟹ $t\ne0$，且 $\log_x2=\dfrac1t$。$t$ 的正負未知，<b>移項通分</b>，不要直接乘 $t$。</div>
+$t-\dfrac{12}{t}-1\le0$ ⟹ $\dfrac{t^{2}-t-12}{t}\le0$ ⟹ $\dfrac{(t-4)(t+3)}{t}\le0$。<br>
+數線上用 $-3$、$0$、$4$ 分段看正負：$t\le-3$ 或 $0\lt t\le4$（$t=0$ 不能取）。<br>
+換回 $x$（底數 $2\gt1$，方向不變）：$0\lt x\le2^{-3}=\dfrac18$ 或 $1\lt x\le2^{4}=16$。<br>
+<span class="note-sm">常見錯誤：直接乘 $t$ 得 $t^{2}-t-12\le0$，解成 $-3\le t\le4$——漏掉 $t\lt-3$ 的部分，又把 $-3\lt t\lt0$ 算進來（那一段 $t$ 是負的，乘 $t$ 要變號）。</span></div></div>
+
+<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -459,7 +494,7 @@ $-x=2(x+1)$ ⟹ $x=-\dfrac23$；檢查定義域：$-x=\frac23\gt0$ ✔、$x+1=\f
   <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
 </div>
 
-<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">a^x=b^y=c^z：令共同值為 k，1/x=log_k a，把條件全翻成 log_k</span><span class="src">台中一中 113上 多 4</span></div>
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">$a^x=b^y=c^z$：令共同值為 $k$，$1/x=\log_k a$，把條件全翻成 $\log_k$</span><span class="src">台中一中 113上 多 4</span></div>
 <div class="fxq">設 $xyz\ne0$，$a,b,c$ 為不等於 $1$ 的正實數，且 $a^x=b^y=c^z$。選出正確的選項。<br>(1) 若 $a=8,b=4,c=2$，則 $x:y:z=2:3:6$　(2) 若 $ab=1$，則 $\dfrac xy=-1$　(3) 若 $a\lt b\lt c$，則 $x\gt y\gt z$　(4) 若 $ab=c$，則 $\dfrac1x+\dfrac1y=\dfrac1z$　(5) 若 $abc=1$，則 $\dfrac1x+\dfrac1y+\dfrac1z=0$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(1)(2)(4)(5)</div>
@@ -477,7 +512,7 @@ $\dfrac{10}{36}\lt L\le\dfrac{10}{35}$，即 $0.2778\lt L\le0.2857$。<br>
 $y\gt\dfrac6L$，而 $\dfrac6L\in\left[21,\ 21.6\right)$ ⟹ 最小正整數 $y=22$。<br>
 <span class="note-sm">真值 $\log1.9\approx0.2788$，$\frac{6}{0.2788}=21.5$，確為 $22$。</span></div></div>
 
-<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">兩偶函數的交點：對稱於 y 軸，AB=2 給 x=±1，代回求 t=3^x+3^{-x}</span><span class="src">建國中學 113上 填 8</span></div>
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">兩偶函數的交點：對稱於 y 軸，AB=2 給 x=±1，代回求 $t=3^x+3^{-x}$</span><span class="src">建國中學 113上 填 8</span></div>
 <div class="fxq">兩函數 $y=\dfrac{3^x+3^{-x}}4$ 與 $y=\dfrac{k}{3^x+3^{-x}}$ 的圖形交於 $A,B$ 兩點，且 $\overline{AB}=2$，求 $k$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$k=\dfrac{25}9$</div>
@@ -499,7 +534,7 @@ $10a-a=9$ ⟹ $a=1$、$b=10$、$r=0$、$s=1$。$C(0,1)$、$D(1,10)$（果然在 
 <div class="fxs"><div class="move">做法：首數 $-40$ ⟺ $-40\le n\log\frac49\lt-39$，$\log\frac49=2\log2-2\log3=-0.3522$。</div>
 $\dfrac{39}{0.3522}\lt n\le\dfrac{40}{0.3522}$ ⟹ $110.7\lt n\le113.6$ ⟹ $n=111,112,113$，總和 $336$。</div></div>
 
-<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">9^{x+1}=5^{x²−1}：對底 5 取對數，左右共有因式 (x+1)</span><span class="src">台中一中 112上 填 14</span></div>
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">$9^{x+1}=5^{x^2-1}$：對底 5 取對數，左右共有因式 (x+1)</span><span class="src">台中一中 112上 填 14</span></div>
 <div class="fxq">設 $x=\log_5k$ 滿足 $9^{x+1}=5^{x^2-1}$。求所有滿足此式的 $k$ 中，最大者減最小者。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac{224}5$</div>
@@ -523,7 +558,7 @@ $\beta=\dfrac{5-2\alpha}2+1=\dfrac72-\alpha$ ⟹ $\alpha+\beta=\dfrac72$。<br>
 <div class="fxs"><div class="move">做法：$x^2y=10$ 取 $\log$：$2X+Y=1$；$x\ge\frac1{10}$ ⟺ $X\ge-1$，$Y\ge-1$ 同理。</div>
 直線 $2X+Y=1$ 上 $X\ge-1$ 且 $Y\ge-1$：端點 $X=-1$ 時 $Y=3$；$Y=-1$ 時 $X=1$。線段 $(-1,3)$ 到 $(1,-1)$，長 $\sqrt{4+16}=2\sqrt5$。</div></div>
 
-<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">log a·log b 與 ab 都已知：log a、log b 是某二次方程的兩根，log_a b 是根的比</span><span class="src">建國中學 113上 填 10</span></div>
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">$\log a\cdot\log b$ 與 $ab$ 都已知：$\log a$、$\log b$ 是某二次方程的兩根，$\log_a b$ 是根的比</span><span class="src">建國中學 113上 填 10</span></div>
 <div class="fxq">設 $a\gt b\gt0$，$(\log_3a)(\log_3b)=-2$ 且 $ab=81$，求 $\log_ab$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$-5+2\sqrt6$</div>
@@ -531,7 +566,7 @@ $\beta=\dfrac{5-2\alpha}2+1=\dfrac72-\alpha$ ⟹ $\alpha+\beta=\dfrac72$。<br>
 $t=2\pm\sqrt6$；$a\gt b$ ⟹ $u=2+\sqrt6$、$v=2-\sqrt6$。$\log_ab=\dfrac vu=\dfrac{2-\sqrt6}{2+\sqrt6}=\dfrac{(2-\sqrt6)^2}{4-6}=\dfrac{10-4\sqrt6}{-2}=-5+2\sqrt6$。<br>
 <span class="note-sm">$\log_ab\lt0$ 合理：$b=3^{2-\sqrt6}\lt1\lt a$。</span></div></div>
 
-<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">底數 1/9、1/3 混用：全部換成 log_{1/3}，係數 2 與底數平方互相抵銷</span><span class="src">建國中學 113上 填 11</span></div>
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">底數 1/9、1/3 混用：全部換成 $\log_{1/3}$，係數 2 與底數平方互相抵銷</span><span class="src">建國中學 113上 填 11</span></div>
 <div class="fxq">解不等式 $2\log_{1/9}\left(\dfrac{17}2-2x\right)\gt\log_{1/3}(x-3)-1$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac72\lt x\lt\dfrac{17}4$</div>
@@ -539,7 +574,7 @@ $t=2\pm\sqrt6$；$a\gt b$ ⟹ $u=2+\sqrt6$、$v=2-\sqrt6$。$\log_ab=\dfrac vu=\
 定義域：$\dfrac{17}2-2x\gt0$ 且 $x-3\gt0$ ⟹ $3\lt x\lt\dfrac{17}4$。<br>
 不等式：$\dfrac{17}2-2x\lt3x-9$ ⟹ $5x\gt\dfrac{35}2$ ⟹ $x\gt\dfrac72$。交集：$\dfrac72\lt x\lt\dfrac{17}4$。</div></div>
 
-<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">根號乘 log 等於 −1：先判定 log_3 x 為負，平方後解，再回頭驗根號內非負</span><span class="src">台南一中 110上 填 17</span></div>
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">根號乘 log 等於 −1：先判定 $\log_3 x$ 為負，平方後解，再回頭驗根號內非負</span><span class="src">台南一中 110上 填 17</span></div>
 <div class="fxq">若 $\sqrt{1+\log_x\sqrt{27}}\cdot\log_3x+1=0$，求 $x$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$x=\dfrac19$</div>
@@ -589,7 +624,7 @@ $t=-2$：根號內 $1-\dfrac34=\dfrac14\ge0$ ✔，$x=3^{-2}=\dfrac19$。</div><
 根與係數：兩根積 $1\cdot\dfrac12=\dfrac3a\Rightarrow a=6$；兩根和 $1+\dfrac12=-\dfrac ba\Rightarrow b=-9$。<br>
 <span class="note-sm">也可以直接代入：$x=2$ 得 $a+3+b=0$；$x=\sqrt2$ 得 $\dfrac a2+6+b=0$；聯立得 $a=6$、$b=-9$。驗算：$6u^2-9u+3=3(2u-1)(u-1)=0$，$u=\frac12,1$ ✔。</span></div></div>
 
-<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">連等式 2^x=3^y=5^z=a：令共同值 a，1/x＝log_a 2，倒數的組合併成一個對數</span><span class="src">明倫高中 104上 填充</span></div>
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">連等式 $2^x=3^y=5^z=a$：令共同值 $a$，$1/x=\log_a 2$，倒數的組合併成一個對數</span><span class="src">明倫高中 104上 填充</span></div>
 <div class="fxq">設 $x,y,z$ 是不為 $0$ 的實數，若 $2^x=3^y=5^z=a$，且 $\dfrac3x+\dfrac2y+\dfrac1z=4$，求 $a$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$a=\sqrt[4]{360}$</div>
@@ -607,7 +642,7 @@ $$f=2(1+u)^2+(2+2u)+2u+2=2u^2+8u+6=2(u+2)^2-2$$
 $u=-2$，即 $x=2^{-2}=\dfrac14$ 時，最小值 $-2$。<br>
 <span class="note-sm">$\log_2(2x)^2=2\log_2(2x)$ 這一步要 $2x\gt0$，題目的 $\log_22x$ 已經要求 $x\gt0$，所以可以放心拉下來。</span></div></div>
 
-<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">4^x+4^y=2^{x+1}+2^{y+1}：換元成圓 (u−1)²+(v−1)²=2，只取第一象限</span><span class="src">109 學測模考 全國數A 第 2 次 單 6</span></div>
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">$4^x+4^y=2^{x+1}+2^{y+1}$：換元成圓 (u−1)²+(v−1)²=2，只取第一象限</span><span class="src">109 學測模考 全國數A 第 2 次 單 6</span></div>
 <div class="fxq">設實數 $x,y$ 滿足 $4^x+4^y=2^{x+1}+2^{y+1}$，關於 $2^x+2^y$ 的極值，下列何者正確？<br>(1) 最大值 $4$、最小值 $0$　(2) 最大值 $4$，沒有最小值　(3) 最大值 $2$、最小值 $1$　(4) 最大值 $2$，沒有最小值　(5) 沒有最大值，最小值 $0$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(2)</div>
@@ -643,7 +678,7 @@ $u+v=s$ 是斜率 $-1$ 的直線族；最大在切點 $(2,2)$：$s=4$，取得�
 <div class="fxs"><div class="move">做法：交點滿足 $\log_2(kx^2)=2^{|x|}$，左右都是偶函數 ⟹ 交點 $x=\pm t$；$A(t,2^t+t)$、$B(-t,2^t-t)$，$\overline{AB}^2=(2t)^2+(2t)^2=8t^2$。</div>
 $8t^2=128$ ⟹ $t=4$。代回：$\log_2(16k)=2^4=16$ ⟹ $16k=2^{16}$ ⟹ $k=2^{12}=4096$。</div></div>
 
-<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">x+10^x=10 與 x+log x=10：互為反函數的兩曲線與 x+y=10 的交點對稱</span><span class="src">111 全國教甄 單 6</span></div>
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">$x+10^x=10$ 與 $x+\log x=10$：互為反函數的兩曲線與 $x+y=10$ 的交點對稱</span><span class="src">111 全國教甄 單 6</span></div>
 <div class="fxq">$x-10+10^x=0$ 的解為 $\alpha$，$x-10+\log x=0$ 的解為 $\beta$，求 $10^\alpha+\log\beta$。<br>(A) $1$　(B) $5$　(C) $10$　(D) $100$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">(C) $10$</div>
@@ -693,7 +728,7 @@ $8888\equiv8+8+8+8=32\equiv5\pmod9$，$5^6\equiv1\pmod9$，$8888=6\times1481+2$ 
 $n-1=332$ ⟹ $n=333$。<br>
 <span class="note-sm">檢查題目給的例子：$\log_210=3.32$ ⟹ $4$ 位 ✔、$\log_2100=6.64$ ⟹ $7$ 位 ✔。十進位的「位數＝首數＋1」換個底一樣成立。</span></div></div>
 
-<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">1/(log_n 2n − 1)：換底後就是 log₂n；Σ[log₂n] 按 2 的次方分段數</span><span class="src">台中二中 108 教甄 填 1</span></div>
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">$1/(\log_n 2n-1)$：換底後就是 log₂n；Σ[log₂n] 按 2 的次方分段數</span><span class="src">台中二中 108 教甄 填 1</span></div>
 <div class="fxq">$[x]$ 表不大於 $x$ 的最大整數，求 $\displaystyle\sum_{n=2}^{2056}\left[\frac{1}{(\log_n2n)-1}\right]$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$18533$</div>
@@ -732,7 +767,7 @@ $x=2$：左 $2\log_22=2$、右 $2$ ✔；$x=4$：左 $2\log_24=4$、右 $4$ ✔�
 小明 ✔、小華 ✔（「最多兩個」成立）；小英、小毛說有三個 ✘；小芬 ✘。<br>
 <span class="note-sm">原方程式 $x^2=2^x$ 的負根 $x\approx-0.77$ 去哪了？正確取對數應寫 $\log_2x^2=2\log_2|x|$，它才保留負根；寫成 $2\log_2x$ 就把 $x\lt0$ 丟掉了。這是「取對數前先看定義域」的常見陷阱。</span></div></div>
 
-<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">log_a b＋log_b a=5/2：r+1/r，a>b>1 決定 r<1；再用 a^b=b^a</span><span class="src">改編自 2016 中國高考 浙江卷理科 第 12 題</span></div>
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">$\log_a b+\log_b a=5/2$：$r+1/r$，$a>b>1$ 決定 $r<1$；再用 $a^b=b^a$</span><span class="src">改編自 2016 中國高考 浙江卷理科 第 12 題</span></div>
 <div class="fxq">已知 $a\gt b\gt1$，$\log_ab+\log_ba=\dfrac52$ 且 $a^b=b^a$，求 $(a,b)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(a,b)=(4,2)$</div>
