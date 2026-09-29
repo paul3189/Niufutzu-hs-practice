@@ -589,7 +589,7 @@ $f(x)=4\sin x\left(\dfrac12\cos x+\dfrac{\sqrt3}{2}\sin x\right)-\sqrt3=2\sin x\
 <h2><span class="tag">L5</span>補充專區：競賽味、證明題與科學班・教甄</h2>
 <div class="goal">
   <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
-  <div><b>目標</b>6 題經典壓軸＋15 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>目標</b>6 題經典壓軸＋19 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
   <div><b>通過標準</b>沒有標準，會一題算一題。教甄題原卷為掃描影像，OCR 後逐題重打、重解、驗算。</div>
 </div>
 
@@ -643,8 +643,8 @@ $$2\sin\frac{\pi}{7}\cdot S=\left(\sin\frac{2\pi}{7}-0\right)+\left(\sin\frac{4\
 面積比較：$\triangle OAP\lt$ 扇形 $OAP\lt\triangle OAT$，即 $\dfrac12\cdot1\cdot\sin x\lt\dfrac12\cdot1^2\cdot x\lt\dfrac12\cdot1\cdot\tan x$。<br>
 同乘 $2$ 即得 $\sin x\lt x\lt\tan x$。<span class="note-sm">這也是「扇形面積 $=\frac12r^2\theta$ 必須用弧度」的理由：用度數的話，中間那一項就不會是 $x$。</span></div></div>
 
-<h3 class="sec" id="L5-sci">科學班・教甄專區（15 題）</h3>
-<div class="note">來源：師大附中 111、台中文華 106、112 全國聯招、台南二中 101、中和 101、鳳山 106、香山 111、台中一中 109、屏東女中 112 教甄，嘉義高中 115 科學班，另加兩題教甄常見的經典恆等式。原卷多為掃描影像，OCR 後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。</div>
+<h3 class="sec" id="L5-sci">科學班・教甄專區（19 題）</h3>
+<div class="note">來源：師大附中 111、台中文華 106、112 全國聯招、台南二中 101、中和 101、鳳山 106、香山 111、台中一中 109、屏東女中 112 教甄，嘉義高中 115 科學班，另加兩題教甄常見的經典恆等式。原卷多為掃描影像，OCR 後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。另收 114 年新竹高中、臺中二中、華江高中、北一女中教甄的改編題（換數字，答案重新驗算）。</div>
 
 <div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">兩角和為 60°：降冪後 cos(A+B)=1/2 把交叉項消掉</span><span class="src">師大附中 111 教甄 填 1</span></div>
 <div class="fxq">計算 $\sin^241^\circ+\sin^219^\circ+\sin41^\circ\sin19^\circ$ 的值。</div>
@@ -764,6 +764,55 @@ $\dfrac{|\cos\alpha|}{\sqrt{(\cos\alpha-1)^2+\sin^2\alpha}}\le1$ ⟹ $\cos^2\alp
 (A) $x\lt0$：$x^2\gt0$，而 $-\pi\lt x\lt0$ 時 $\sin x\lt0$、$x\le-\pi$ 時 $x^2\gt9\gt1$，無交點；$0\lt x\lt1$：$\sin0.5\approx0.479\gt0.25$、$\sin1\approx0.841\lt1$，$\sin x-x^2$ 先正後負且圖形凹口向下，恰交一次（$x\approx0.877$）⟹ 共 $2$ 點，正確。<br>
 (B) $\sin x$ 與 $x^3$ 都是奇函數，$x\gt0$ 時 $\sin x-x^3$ 由正（$x$ 小時 $\sin x\approx x\gt x^3$）變負（$x=1$ 時 $0.841\lt1$），恰交一次（$x\approx0.929$），對稱過去 $x\lt0$ 再一次 ⟹ 共 $3$ 點，正確。<br>
 (C) $x\gt0$ 時 $\sin x\lt x$、$x\lt0$ 時 $\sin x\gt x$，只交於原點 $1$ 點，錯。(D) $x\gt1$ ⟹ $x^2\gt1\ge\sin x$，正確。(E) 取 $x=0.9$：$\sin0.9\approx0.783\lt0.81=x^2$，錯。</div></div>
+
+<div class="fx" id="L5-S16"><div class="fxh"><span class="no">S16</span><span class="kw">一次的兩項疊合、三倍角的兩項也疊合，平移同一個角後化成 $c=\cos y$ 的三次式 $\sqrt2(9c-4c^3)$</span><span class="src">改編自 新竹高中 114 教甄 填 9</span></div>
+<div class="fxq">設 $x$ 為實數，求 $1+3(\sqrt3+1)\cos x-3(\sqrt3-1)\sin x-\cos3x+\sin3x$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1+3\sqrt6$</div>
+<div class="fxs"><div class="move">做法：前兩項疊合成 $6\sqrt2\cos\left(x+\frac{\pi}{12}\right)$，後兩項疊合成 $-\sqrt2\cos\left(3x+\frac\pi4\right)$；令 $y=x+\frac\pi{12}$，剛好 $3x+\frac\pi4=3y$。</div>
+$\cos\dfrac\pi{12}=\dfrac{\sqrt6+\sqrt2}4$、$\sin\dfrac\pi{12}=\dfrac{\sqrt6-\sqrt2}4$，<br>
+$6\sqrt2\cos\left(x+\dfrac\pi{12}\right)=6\sqrt2\cdot\dfrac{\sqrt6+\sqrt2}4\cos x-6\sqrt2\cdot\dfrac{\sqrt6-\sqrt2}4\sin x=3(\sqrt3+1)\cos x-3(\sqrt3-1)\sin x$。<br>
+$-\cos3x+\sin3x=-\sqrt2\left(\cos3x\cdot\dfrac{\sqrt2}2-\sin3x\cdot\dfrac{\sqrt2}2\right)=-\sqrt2\cos\left(3x+\dfrac\pi4\right)$。<br>
+令 $y=x+\dfrac\pi{12}$、$c=\cos y$，由三倍角 $\cos3y=4c^3-3c$：<br>
+原式 $=1+6\sqrt2c-\sqrt2(4c^3-3c)=1+\sqrt2\,(9c-4c^3)$，$-1\le c\le1$。<br>
+$9c-4c^3\le3\sqrt3$ ⟺ $4c^3-9c+3\sqrt3\ge0$ ⟺ $\left(c-\dfrac{\sqrt3}2\right)^2(4c+4\sqrt3)\ge0$，在 $c\ge-\sqrt3$ 時一定成立，等號在 $c=\dfrac{\sqrt3}2$。<br>
+最大值 $=1+\sqrt2\cdot3\sqrt3=1+3\sqrt6$（$y=\dfrac\pi6$，即 $x=\dfrac\pi{12}$ 時）。<br>
+<span class="note-sm">端點 $c=1$ 只得 $1+5\sqrt2\approx8.07$，比 $1+3\sqrt6\approx8.35$ 小，最大值出現在區間內部。電腦掃描 $x\in[0,2\pi)$ 的最大值 $8.34847\ldots$ ✔。</span></div></div>
+
+<div class="fx" id="L5-S17"><div class="fxh"><span class="no">S17</span><span class="kw">$c\cos B+b\cos C=a$（投影）⟹ $\cos A=\frac12$；再用正弦定理把 $2c-b$ 疊合成一個正弦</span><span class="src">改編自 臺中二中 114 教甄 填 9</span></div>
+<div class="fxq">$\triangle ABC$ 中，$c\ge a$，且 $2a\cos(B+C)+c\cos B+b\cos C=0$。若 $\triangle ABC$ 的外接圓半徑為 $\sqrt3$，求 $2c-b$ 的範圍。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3\le 2c-b\lt6$</div>
+<div class="fxs"><div class="move">做法：把 $a$ 投影到另外兩邊：$c\cos B+b\cos C=a$；$\cos(B+C)=-\cos A$。</div>
+條件變成 $-2a\cos A+a=0$ ⟹ $\cos A=\dfrac12$ ⟹ $A=\dfrac\pi3$。<br>
+$c\ge a$ ⟺ $C\ge A=\dfrac\pi3$；又 $B=\dfrac{2\pi}3-C\gt0$ ⟹ $\dfrac\pi3\le C\lt\dfrac{2\pi}3$。<br>
+正弦定理：$b=2\sqrt3\sin B$、$c=2\sqrt3\sin C$。<br>
+$2c-b=2\sqrt3\left[2\sin C-\sin\left(\dfrac{2\pi}3-C\right)\right]=2\sqrt3\left[2\sin C-\dfrac{\sqrt3}2\cos C-\dfrac12\sin C\right]=2\sqrt3\left(\dfrac32\sin C-\dfrac{\sqrt3}2\cos C\right)$<br>
+$=2\sqrt3\cdot\sqrt3\left(\dfrac{\sqrt3}2\sin C-\dfrac12\cos C\right)=6\sin\left(C-\dfrac\pi6\right)$。<br>
+$C-\dfrac\pi6\in\left[\dfrac\pi6,\dfrac\pi2\right)$ ⟹ $\sin\left(C-\dfrac\pi6\right)\in\left[\dfrac12,1\right)$ ⟹ $3\le2c-b\lt6$。<br>
+<span class="note-sm">左端 $3$ 在 $C=\frac\pi3$（正三角形，$a=b=c=3$）取到；右端 $6$ 要 $C=\frac{2\pi}3$、$B=0$，三角形不存在，所以取不到。</span></div></div>
+
+<div class="fx" id="L5-S18"><div class="fxh"><span class="no">S18</span><span class="kw">圓過原點、圓心在第三象限：兩段弧的弦在兩軸上，半弦長 $|h|$、$|k|$ 滿足 $h^2+k^2=r^2$ ⟹ 兩個半圓心角互餘</span><span class="src">改編自 華江高中 114 教甄 填 5</span></div>
+<div class="fxq">圓 $x^2+y^2+dx+ey+f=0$ 通過原點，圓心在第三象限。已知此圓在第二象限內的弧長為 $3\pi$，在第四象限內的弧長為 $\pi$，求此圓的半徑。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$</div>
+<div class="fxs"><div class="move">做法：設圓心 $(h,k)$、$h\lt0$、$k\lt0$、半徑 $r$。圓與 $x$ 軸交於 $O$ 和 $(2h,0)$，與 $y$ 軸交於 $O$ 和 $(0,2k)$。</div>
+第二象限那段弧：$x$ 軸上方、兩端是 $(2h,0)$ 與 $O$，弦長 $2|h|$。設它對應的圓心角為 $2\alpha$，則 $\sin\alpha=\dfrac{|h|}{r}$，弧長 $=r\cdot2\alpha$。<br>
+第四象限那段弧：$y$ 軸右方、兩端是 $(0,2k)$ 與 $O$，弦長 $2|k|$。設圓心角為 $2\beta$，則 $\sin\beta=\dfrac{|k|}{r}$，弧長 $=r\cdot2\beta$。<br>
+圓過原點 ⟹ $h^2+k^2=r^2$ ⟹ $\sin^2\alpha+\sin^2\beta=1$ ⟹ $\sin\beta=\cos\alpha$。$\alpha$、$\beta$ 都是銳角（圓心在弦的另一側，這兩段是劣弧），所以 $\alpha+\beta=\dfrac\pi2$。<br>
+兩段弧長相加：$2r(\alpha+\beta)=3\pi+\pi$ ⟹ $r\pi=4\pi$ ⟹ $r=4$。<br>
+<span class="note-sm">再算回去：$2r\alpha=3\pi$ ⟹ $\alpha=\frac{3\pi}8$、$\beta=\frac\pi8$，圓心 $\left(-4\sin\frac{3\pi}8,\,-4\sin\frac\pi8\right)$ 確實在第三象限。電腦沿圓周量兩段弧長，得 $3\pi$ 與 $\pi$ ✔。</span></div></div>
+
+<div class="fx" id="L5-S19"><div class="fxh"><span class="no">S19</span><span class="kw">正三角形的一個頂點在原點：$B$ 是 $A$ 繞原點轉 $\pm60^\circ$，用和角公式只看 $y$ 坐標</span><span class="src">改編自 北一女中 114 教甄 填 2</span></div>
+<div class="fxq">坐標平面上 $O(0,0)$、$A(a,12)$、$B(b,18)$ 為正三角形的三個頂點，求 $ab$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$ab=-48$</div>
+<div class="fxs"><div class="move">做法：設 $A=(\rho\cos\theta,\rho\sin\theta)$，$B$ 是 $A$ 繞 $O$ 轉 $60^\circ$ 或 $-60^\circ$：$B=\left(\rho\cos(\theta\pm60^\circ),\rho\sin(\theta\pm60^\circ)\right)$。</div>
+轉 $+60^\circ$：$y_B=\rho\sin\theta\cos60^\circ+\rho\cos\theta\sin60^\circ=\dfrac12\cdot12+\dfrac{\sqrt3}2a=18$ ⟹ $a=8\sqrt3$；<br>
+$x_B=\rho\cos\theta\cos60^\circ-\rho\sin\theta\sin60^\circ=\dfrac12a-\dfrac{\sqrt3}2\cdot12=4\sqrt3-6\sqrt3=-2\sqrt3=b$。$ab=-48$。<br>
+轉 $-60^\circ$：$18=6-\dfrac{\sqrt3}2a$ ⟹ $a=-8\sqrt3$，$b=\dfrac12a+\dfrac{\sqrt3}2\cdot12=2\sqrt3$。$ab=-48$。<br>
+兩種情形都得 $ab=-48$。<br>
+<span class="note-sm">驗：$\overline{OA}^2=192+144=336$、$\overline{OB}^2=12+324=336$、$\overline{AB}^2=(10\sqrt3)^2+6^2=336$ ✔。</span></div></div>
 </section>
 
 <div class="ch-nav">

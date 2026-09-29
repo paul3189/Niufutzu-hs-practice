@@ -593,7 +593,7 @@ $16=\overline{OA}^2+\overline{OB}^2-2\,\overline{OA}\cdot\overline{OB}\cos30°\g
 <h2><span class="tag">L5</span>補充：大考壓軸、經典證明與科學班・教甄專區</h2>
 <div class="goal">
   <div><b>對象</b>數理志向、想看「這一章能走多遠」的同學；不列入通過標準。</div>
-  <div><b>目標</b>8 題大考經典 ＋ 專區 15 題（教甄 12、科學班 3）。每題都只用本章的工具解完：需要半角、和角的地方，本書都改用「補角等腰三角形」、「投影定理」這些課綱內的方法。</div>
+  <div><b>目標</b>8 題大考經典 ＋ 專區 18 題（教甄 15、科學班 3）。每題都只用本章的工具解完：需要半角、和角的地方，本書都改用「補角等腰三角形」、「投影定理」這些課綱內的方法。</div>
   <div><b>通過標準</b>無。能講出每題的關鍵一步就很好了。</div>
 </div>
 
@@ -657,8 +657,8 @@ $\triangle ABE$：$\overline{AB}^2=8^2+7^2-2\cdot8\cdot7\cos120°=64+49+56=169$ 
 餘弦定理（$\angle B=60°$）：$49k^2=25k^2+144-2\cdot5k\cdot12\cdot\dfrac12$ ⟹ $24k^2+60k-144=0$ ⟹ $2k^2+5k-12=0$ ⟹ $(2k-3)(k+4)=0$ ⟹ $k=\dfrac32$ ⟹ $\overline{AB}=\dfrac{15}2$、$\overline{AC}=\dfrac{21}2$。<br>
 (1) $\sin C=\dfrac{\overline{AB}\sin B}{\overline{AC}}=\dfrac{\frac{15}2\cdot\frac{\sqrt3}2}{\frac{21}2}=\dfrac{5\sqrt3}{14}$。(2) $\sin A=\dfrac{\overline{BC}\sin B}{\overline{AC}}=\dfrac{12\cdot\frac{\sqrt3}2}{\frac{21}2}=\dfrac{4\sqrt3}7$。(3) $\dfrac{15}2$。</div></div>
 
-<h3 class="sec">科學班・教甄專區（15 題）</h3>
-<div class="must">來源：嘉義高中科學班（113、115）、師大附中 111、台中一中 109、松山工農 107、文華 106、鳳山 106、家齊 111、松山家商 101、北一女 108、西松 109、羅東高工 112、高雄市 107 聯招教甄。<b>只收「用本章工具就能解完」的題</b>；用到向量條件的（台中一中 109 填 16）改寫成等角條件並註明；含和差角、倍角、半角、$\ln$、極限的教甄題一律不收。每題都經 sympy 重算。</div>
+<h3 class="sec">科學班・教甄專區（18 題）</h3>
+<div class="must">來源：嘉義高中科學班（113、115）、師大附中 111、台中一中 109、松山工農 107、文華 106、鳳山 106、家齊 111、松山家商 101、北一女 108、西松 109、羅東高工 112、高雄市 107 聯招教甄。<b>只收「用本章工具就能解完」的題</b>；用到向量條件的（台中一中 109 填 16）改寫成等角條件並註明；含和差角、倍角、半角、$\ln$、極限的教甄題一律不收。每題都經 sympy 重算。另收 114 年北一女中、華江高中教甄的改編題（換數字，答案重新驗算）。</div>
 
 <div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">sin²41°+sin²19°+sin41°sin19°：41°+19°+120°=180°，造一個三角形，三邊 ∝ 三個正弦，對 120° 寫餘弦定理</span><span class="src">師大附中 111 教甄 填 1</span></div>
 <div class="fxq">計算 $\sin^241°+\sin^219°+\sin41°\sin19°$ 的值。</div>
@@ -773,6 +773,43 @@ $\overline{GE}^2=\dfrac14+\dfrac{27}4=7$ ⟹ $\overline{GE}=\sqrt7$（官方參�
 內心 $I$ 在 $\overline{AD}$ 上：$\tan\angle CAD=\dfrac{\overline{CD}}{\overline{AC}}=\dfrac6b$，又在切點的直角三角形裡 $\tan\angle CAD=\tan\angle IAR=\dfrac{r}{b-r}$ ⟹ $\dfrac r{b-r}=\dfrac6b$ ⟹ $b=\dfrac{6r}{6-r}$；同理 $\dfrac r{a-r}=\dfrac4a$ ⟹ $a=\dfrac{4r}{4-r}$。<br>
 直角三角形 $c=a+b-2r$ 與畢氏 $c^2=a^2+b^2$ ⟹ $(a+b)^2-4r(a+b)+4r^2=a^2+b^2$ ⟹ $ab-2r(a+b)+2r^2=0$。代入並乘 $(6-r)(4-r)$：$24r^2-2r^2(48-10r)+2r^2(6-r)(4-r)=0$ ⟹ 除以 $2r^2$：$12-48+10r+24-10r+r^2=0$ ⟹ $r^2=12$ ⟹ $r=2\sqrt3$。<br>
 驗算：$a=\dfrac{8\sqrt3}{4-2\sqrt3}=12+8\sqrt3$、$b=\dfrac{12\sqrt3}{6-2\sqrt3}=3+3\sqrt3$、$c=15+7\sqrt3$，$\dfrac{ab}{b+c}=6$ ✓、$\dfrac{ab}{a+c}=4$ ✓（官方參考答案 $2\sqrt3$ ✓）。<span class="note-sm">$\angle CAD$ 恰是 $\dfrac A2$，但整題只把它當一個角的 $\tan$ 用兩種方式寫出來，不需要半角公式。</span></div></div>
+
+<div class="fx" id="L5-S16"><div class="fxh"><span class="no">專區 16</span><span class="kw">切線 ＋ 平行：先用角度證出 $\overline{AC}=\overline{AD}$，再用 $\triangle EDC\sim\triangle EAD$ 求 $\overline{CE}$</span><span class="src">改編自 北一女中 114 教甄 填 7</span></div>
+<div class="fxq">梯形 $ABCD$ 內接於圓，$\overline{AD}\parallel\overline{BC}$。過 $D$ 作圓的切線交直線 $AC$ 於 $E$。若 $\overline{DE}\parallel\overline{AB}$，且 $\overline{AD}=9$、$\overline{AB}=6$，求 $\overline{CE}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\overline{CE}=\dfrac{36}{5}$</div>
+<div class="fxs"><div class="move">做法：設 $\angle DAC=\alpha$、$\angle BAC=\gamma$，把圖上的角都用 $\alpha$、$\gamma$ 表示，找出等腰三角形。</div>
+① 圓內接梯形是等腰梯形：$\overline{CD}=\overline{AB}=6$，且 $\angle ADC=\angle DAB=\alpha+\gamma$。<br>
+② 切線與弦的夾角：設圓心 $O$，切線垂直半徑 $\overline{OD}$，所以切線與弦 $\overline{DC}$ 的夾角 $=90^\circ-\angle ODC=\dfrac12\angle DOC$，也就是弦 $\overline{DC}$ 所對的圓周角 $\angle DAC$。因此 $\angle EDC=\alpha$。<br>
+③ $\overline{DE}\parallel\overline{AB}$，$B$、$D$ 在直線 $AC$ 的兩側，內錯角相等：$\angle AED=\angle BAC=\gamma$。<br>
+④ 在 $\triangle ADE$ 中：$\angle DAE+\angle AED+\angle ADE=\alpha+\gamma+\left[(\alpha+\gamma)+\alpha\right]=180^\circ$，即 $3\alpha+2\gamma=180^\circ$。<br>
+⑤ 在 $\triangle ACD$ 中：$\angle ACD=180^\circ-\alpha-(\alpha+\gamma)=(3\alpha+2\gamma)-2\alpha-\gamma=\alpha+\gamma=\angle ADC$，所以 $\overline{AC}=\overline{AD}=9$。<br>
+⑥ $\triangle EDC$ 與 $\triangle EAD$：$\angle E$ 共用、$\angle EDC=\angle EAD=\alpha$，兩三角形相似，$\dfrac{\overline{EC}}{\overline{ED}}=\dfrac{\overline{ED}}{\overline{EA}}=\dfrac{\overline{DC}}{\overline{AD}}=\dfrac69=\dfrac23$。<br>
+所以 $\overline{EC}=\dfrac49\overline{EA}=\dfrac49\left(\overline{EC}+9\right)$ ⟹ $\dfrac59\overline{EC}=4$ ⟹ $\overline{CE}=\dfrac{36}{5}$。<br>
+<span class="note-sm">順便求 $\overline{BC}$：等腰梯形的對角線滿足 $\overline{AC}^2=\overline{AB}^2+\overline{AD}\cdot\overline{BC}$（從 $A$、$D$ 各作 $\overline{BC}$ 的垂線，用畢氏定理相減），$81=36+9\overline{BC}$ ⟹ $\overline{BC}=5$。坐標驗算：$E$ 在 $\overline{AC}$ 延長線上、$\overline{CE}=\frac{36}5$、切線與 $\overline{AB}$ 平行 ✔。</span></div></div>
+
+<div class="fx" id="L5-S17"><div class="fxh"><span class="no">專區 17</span><span class="kw">兩個三角形共用對角線 $\overline{AC}=x$：面積平方用餘弦定理寫成 $x^2$ 的二次函數，配方求最大</span><span class="src">改編自 華江高中 114 教甄 計算 16</span></div>
+<div class="fxq">四邊形 $ABCD$ 中，$\overline{AB}=3$、$\overline{BC}=\overline{CD}=\overline{DA}=2$。設 $\triangle ABC$ 的面積為 $S$、$\triangle ACD$ 的面積為 $T$。當 $\overline{AC}$ 為多少時 $S^2+T^2$ 有最大值？並求此最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\overline{AC}=\dfrac{\sqrt{42}}{2}$ 時，最大值 $\dfrac{391}{32}$</div>
+<div class="fxs"><div class="move">做法：設 $\overline{AC}=x$。每個三角形都用「$\frac12\times$兩邊$\times\sin$夾角」＋ 餘弦定理，把面積平方寫成 $x^2$ 的式子。</div>
+$\triangle ABC$：$\cos B=\dfrac{9+4-x^2}{2\cdot3\cdot2}=\dfrac{13-x^2}{12}$，$S=\dfrac12\cdot3\cdot2\sin B=3\sin B$，<br>
+$S^2=9(1-\cos^2B)=9-\dfrac{(13-x^2)^2}{16}$，即 $16S^2=144-(13-x^2)^2$。<br>
+$\triangle ACD$：$\cos D=\dfrac{8-x^2}{8}$，$T=2\sin D$，$T^2=4-\dfrac{(8-x^2)^2}{16}$，即 $16T^2=64-(8-x^2)^2$。<br>
+令 $t=x^2$：$16(S^2+T^2)=208-(13-t)^2-(8-t)^2=-2t^2+42t-25=-2\left(t-\dfrac{21}2\right)^2+\dfrac{391}2$。<br>
+$x$ 的範圍：$\triangle ABC$ 要 $1\lt x\lt5$，$\triangle ACD$ 要 $0\lt x\lt4$，所以 $1\lt t\lt16$，$t=\dfrac{21}2$ 在範圍內。<br>
+$\overline{AC}=\sqrt{\dfrac{21}2}=\dfrac{\sqrt{42}}2$ 時最大，$S^2+T^2=\dfrac{391}{32}$。<br>
+<span class="note-sm">也可以用海龍公式寫 $16S^2$、$16T^2$，結果相同。電腦用海龍公式掃描 $x\in(1,4)$：最大值 $12.21875=\frac{391}{32}$，在 $x\approx3.2404$ ✔。</span></div></div>
+
+<div class="fx" id="L5-S18"><div class="fxh"><span class="no">專區 18</span><span class="kw">兩邊的係數是 $1,3,3,1$：認出 $(1+3\cos\theta)^3=(2+\sin\theta)^3$，再配 $\sin^2\theta+\cos^2\theta=1$</span><span class="src">改編自 華江高中 114 教甄 填 4</span></div>
+<div class="fxq">銳角 $\theta$ 滿足 $C^3_0+C^3_1\cdot3\cos\theta+C^3_2\cdot9\cos^2\theta+C^3_3\cdot27\cos^3\theta=C^3_0\cdot8+C^3_1\cdot4\sin\theta+C^3_2\cdot2\sin^2\theta+C^3_3\sin^3\theta$，求 $\tan^2\theta$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{16}{9}$</div>
+<div class="fxs"><div class="move">做法：左邊是 $(1+3\cos\theta)^3$ 的二項展開、右邊是 $(2+\sin\theta)^3$ 的二項展開。</div>
+左邊 $=\sum C^3_k(3\cos\theta)^k=(1+3\cos\theta)^3$；右邊 $=\sum C^3_k\,2^{3-k}\sin^k\theta=(2+\sin\theta)^3$。<br>
+兩個實數的立方相等，這兩個數就相等：$1+3\cos\theta=2+\sin\theta$ ⟹ $\sin\theta=3\cos\theta-1$。<br>
+代入 $\sin^2\theta+\cos^2\theta=1$：$(3\cos\theta-1)^2+\cos^2\theta=1$ ⟹ $10\cos^2\theta-6\cos\theta=0$ ⟹ $\cos\theta=0$ 或 $\dfrac35$。<br>
+$\theta$ 是銳角，$\cos\theta=0$ 不合（此時 $\sin\theta=-1$）；$\cos\theta=\dfrac35$、$\sin\theta=\dfrac45$，$\tan^2\theta=\dfrac{16}9$。</div></div>
 </section>
 
 <div class="ch-nav">

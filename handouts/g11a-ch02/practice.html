@@ -597,7 +597,7 @@ $t=-2$：根號內 $1-\dfrac34=\dfrac14\ge0$ ✔，$x=3^{-2}=\dfrac19$。</div><
 <h2><span class="tag">L5</span>補充專區：經典題與教甄</h2>
 <div class="goal">
   <div><b>對象</b>學有餘力、想參加數學競賽或未來想走數理科系的同學。</div>
-  <div><b>目標</b>6 題經典 ＋ 15 題教甄／大考難題：學會把「證明」寫完整，也看看出題老師怎麼想。</div>
+  <div><b>目標</b>6 題經典 ＋ 19 題教甄／大考難題：學會把「證明」寫完整，也看看出題老師怎麼想。</div>
   <div><b>說明</b>本區不列入段考通過標準。科學班甄選（國三）不考指對數，專區以各校教甄為主，另收大考與段考的壓軸題，原卷多為掃描影像，以 OCR 讀出後逐題重打、重解、驗算。</div>
 </div>
 
@@ -651,8 +651,8 @@ $u+v=s$ 是斜率 $-1$ 的直線族；最大在切點 $(2,2)$：$s=4$，取得�
 落在開第一象限的弧是從 $(0,2)$ 經 $(2,2)$ 到 $(2,0)$ 這一段（兩端點各有一個坐標為 $0$，取不到）；$s$ 可以任意接近 $2$ 卻取不到 $2$ ⟹ 沒有最小值 ⟹ (2)。<br>
 <span class="note-sm">常見誤判：以為圓過原點所以 $s$ 可趨近 $0$，但原點附近的弧在 $u\gt0$ 時 $v\lt0$，不在允許範圍內。</span></div></div>
 
-<h3 class="sec" id="L5-sci">教甄・大考難題專區（15 題）</h3>
-<div class="note">來源：基隆女中 112、竹科實中 109、111 全國教甄、關西高農、台南女中 112、嘉義高中 112、桃園高中 111、麗山高中 106、台中二中 108 各校教甄，以及 92 指考、113 學測模考、北一女中 110、竹科實中 112 段考與 2016 中國高考（浙江卷）的壓軸題。掃描卷以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。</div>
+<h3 class="sec" id="L5-sci">教甄・大考難題專區（19 題）</h3>
+<div class="note">來源：基隆女中 112、竹科實中 109、111 全國教甄、關西高農、台南女中 112、嘉義高中 112、桃園高中 111、麗山高中 106、台中二中 108 各校教甄，以及 92 指考、113 學測模考、北一女中 110、竹科實中 112 段考與 2016 中國高考（浙江卷）的壓軸題。掃描卷以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。另收 114 年北一女中、湖口高中、華江高中教甄的改編題（換數字，答案重新驗算）。</div>
 
 <div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">[log√n]=[√(log n)]：令 t=√(log n)，兩個高斯符號相等的整數 a 只能是 0 或 2</span><span class="src">基隆女中 112 教甄 填 1</span></div>
 <div class="fxq">滿足 $\left[\log\sqrt n\right]=\left[\sqrt{\log n}\right]$ 的最大正整數 $n$ 為何？（$[x]$ 表不大於 $x$ 的最大整數）</div>
@@ -783,6 +783,49 @@ $a^b=b^a$ ⟹ $a^{\sqrt a}=(\sqrt a)^a=a^{a/2}$ ⟹ $\sqrt a=\dfrac a2$ ⟹ $a=4
 $\log f(x)=u^2+2u=(u+1)^2-1$，頂點 $u=-1$ 在區間左邊，所以在 $[3,6]$ 上遞增：<br>
 $u=3$：$\log f=15$，最小值 $10^{15}$；$u=6$：$\log f=48$，最大值 $10^{48}$。故 $(a,b)=(15,48)$。<br>
 <span class="note-sm">$\log$ 是遞增函數，$f$ 的最大、最小就是 $\log f$ 的最大、最小。區間上的二次函數要先看頂點在不在區間內，這題不在，最值落在兩端。</span></div></div>
+
+<div class="fx" id="L5-S16"><div class="fxh"><span class="no">S16</span><span class="kw">$[\log_{30}k]$ 分段：$30\le k\lt900$ 每項是 $1$，$k\ge900=30^2$ 每項是 $2$</span><span class="src">改編自 北一女中 114 教甄 填 1</span></div>
+<div class="fxq">以 $[x]$ 表示不大於 $x$ 的最大整數。若 $\displaystyle\sum_{k=1}^{n}[\log_{30}k]=1000$，求正整數 $n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$n=964$</div>
+<div class="fxs"><div class="move">做法：$[\log_{30}k]=m$ ⟺ $30^m\le k\lt30^{m+1}$，按 $30$ 的次方切段數項數。</div>
+$1\le k\le29$：每項 $0$。<br>
+$30\le k\le899$：每項 $1$，共 $899-30+1=870$ 項，合計 $870$。<br>
+$900\le k\le26999$：每項 $2$。還差 $1000-870=130$，需要 $65$ 項：$k=900,\ldots,964$。<br>
+所以 $n=964$。<br>
+<span class="note-sm">$n=963$ 時和為 $998$，$n=964$ 時恰為 $1000$，答案唯一（程式逐項累加驗算）。</span></div></div>
+
+<div class="fx" id="L5-S17"><div class="fxh"><span class="no">S17</span><span class="kw">連比的對數設 $t$：$4^t+6^t=9^t$，令 $r=\frac\beta\alpha=\left(\frac32\right)^t$ 得 $r^2=r+1$</span><span class="src">改編自 湖口高中 114 教甄 填 6</span></div>
+<div class="fxq">兩正數 $\alpha$、$\beta$ 滿足 $\log_4\alpha=\log_6\beta=\log_9(\alpha+\beta)$，求 $\log_{125}\dfrac{\alpha^2+\beta^2}{\alpha\beta}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac16$</div>
+<div class="fxs"><div class="move">做法：三個對數設成同一個 $t$，把 $\alpha$、$\beta$、$\alpha+\beta$ 都寫成 $t$ 次方，看比值。</div>
+$\alpha=4^t$、$\beta=6^t$、$\alpha+\beta=9^t$。令 $r=\dfrac\beta\alpha=\left(\dfrac32\right)^t\gt0$，則 $\dfrac{9^t}{4^t}=r^2$。<br>
+$\alpha+\beta=9^t$ 兩邊除以 $\alpha=4^t$：$1+r=r^2$ ⟹ $r=\dfrac{1+\sqrt5}2$（取正）。<br>
+$r^2-r-1=0$ ⟹ $r-\dfrac1r=1$ ⟹ $\left(r+\dfrac1r\right)^2=\left(r-\dfrac1r\right)^2+4=5$ ⟹ $r+\dfrac1r=\sqrt5$。<br>
+$\dfrac{\alpha^2+\beta^2}{\alpha\beta}=\dfrac\alpha\beta+\dfrac\beta\alpha=r+\dfrac1r=\sqrt5=5^{\frac12}=125^{\frac16}$，所求 $=\dfrac16$。</div></div>
+
+<div class="fx" id="L5-S18"><div class="fxh"><span class="no">S18</span><span class="kw">指數裡有 $\frac1x$：取常用對數後通分，化成三次方程式，三根之和用根與係數</span><span class="src">改編自 湖口高中 114 教甄 填 2</span></div>
+<div class="fxq">設 $a,b,c$ 為正實數。若 $3,7,10$ 是方程式 $a^{\frac1x}\,b^{\frac1{x+2}}\,c^{\frac1{x+5}}=100$ 的三個根，求 $abc$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$abc=10^{54}$</div>
+<div class="fxs"><div class="move">做法：兩邊取常用對數，令 $A=\log a$、$B=\log b$、$C=\log c$，所求是 $10^{A+B+C}$。</div>
+$\dfrac Ax+\dfrac B{x+2}+\dfrac C{x+5}=2$，兩邊乘 $x(x+2)(x+5)$：<br>
+$A(x+2)(x+5)+Bx(x+5)+Cx(x+2)=2x(x+2)(x+5)=2x^3+14x^2+20x$。<br>
+移項：$2x^3+\left(14-(A+B+C)\right)x^2+\left(20-7A-5B-2C\right)x-10A=0$。<br>
+$3,7,10$ 都不是 $0,-2,-5$，所以它們就是這個三次方程式的三根：$3+7+10=-\dfrac{14-(A+B+C)}{2}$ ⟹ $A+B+C=54$。<br>
+$abc=10^{54}$。<br>
+<span class="note-sm">其他係數可確認這樣的 $a,b,c$ 存在：常數項 $-10A=2\cdot(-3)(-7)(-10)=-420$ ⟹ $A=42$，再由 $x$ 的係數得 $B=-180$、$C=192$，和為 $54$ ✔。</span></div></div>
+
+<div class="fx" id="L5-S19"><div class="fxh"><span class="no">S19</span><span class="kw">三條對數曲線上的正方形：同高 ⟹ $\log_ax_A=2\log_ax_B$ ⟹ $x_A=x_B^2$；$C$ 在 $B$ 的正上方</span><span class="src">改編自 華江高中 114 教甄 填 8</span></div>
+<div class="fxq">實數 $a\gt1$。正方形 $ABCD$ 的面積為 $144$，$\overline{AB}$ 與 $x$ 軸平行，且 $A$、$B$、$C$ 分別在 $y=\log_ax$、$y=2\log_ax$、$y=3\log_ax$ 的圖形上。求 $a$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a=\sqrt[6]2$</div>
+<div class="fxs"><div class="move">做法：正方形邊長 $12$。$\overline{AB}$ 水平 ⟹ $A$、$B$ 同高；$\overline{BC}$ 鉛直 ⟹ $B$、$C$ 同一個 $x$ 坐標。</div>
+設 $A(p,\log_ap)$、$B(q,2\log_aq)$。同高：$\log_ap=2\log_aq=\log_aq^2$ ⟹ $p=q^2$。<br>
+$\overline{AB}=|q^2-q|=12$。若 $0\lt q\lt1$，$q-q^2\le\dfrac14$，不可能；所以 $q\gt1$，$q^2-q-12=0$ ⟹ $q=4$、$p=16$。<br>
+$C(4,3\log_a4)$，$\overline{BC}=3\log_a4-2\log_a4=\log_a4=12$ ⟹ $a^{12}=4$ ⟹ $a=4^{\frac1{12}}=2^{\frac16}=\sqrt[6]2$。<br>
+<span class="note-sm">驗：$a=\sqrt[6]2$ 時 $\log_ax=6\log_2x$。$A$ 的 $y=6\log_216=24$、$B$ 的 $y=2\cdot6\log_24=24$、$C$ 的 $y=3\cdot6\log_24=36$，四個頂點 $A(16,24)$、$B(4,24)$、$C(4,36)$、$D(16,36)$，邊長 $12$ ✔。</span></div></div>
 </section>
 
 <div class="ch-nav">

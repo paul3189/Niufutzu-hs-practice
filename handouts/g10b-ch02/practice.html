@@ -598,7 +598,7 @@ $E=\dfrac{2\cdot2+3\cdot4}{6}=\dfrac{16}{6}=\dfrac83$。</div></div>
 <h2><span class="tag">L5</span>補充專區：經典題、科學班與教甄</h2>
 <div class="goal">
   <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
-  <div><b>目標</b>8 題經典壓軸＋15 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>目標</b>8 題經典壓軸＋19 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
   <div><b>通過標準</b>沒有標準，會一題算一題。</div>
 </div>
 
@@ -672,8 +672,8 @@ $120+192=312$。</div></div>
 (2) 和 $8$：$C^7_3=35$，任一變數最多 $5$，不必扣 ✓（$C^{4+4-1}_4=C^7_4=35$ 巧合相等）。(3) $28-20=8$ ⟹ $35$ ✓。<br>
 (4) 和 $10$：$C^9_3=84$，扣掉某變數 $\ge7$（令它減 $6$，其餘正整數和為 $4$：$C^3_3=1$，四個變數各一種）⟹ $84-4=80\ne126$ ✗。</div></div>
 
-<h3 class="sec" id="L5-sci">科學班・教甄專區（15 題）</h3>
-<div class="note">來源：北一女中 113 科學班、嘉義高中 113／114／115 科學班（官網 PDF 有文字層，附參考答案）；關西高中 112、嘉義女中 112、台中一中 101／109、彰化女中 106、嘉義高中 109 教師甄選（掃描卷以 Windows 內建 OCR 讀出後逐題重打）。<b>答案全部重新解過並經電腦窮舉驗算</b>；解答手冊算錯的地方直接註明。含條件機率、獨立事件或矩陣的教甄題不收；「已知前面發生了什麼」的題只用「縮小樣本空間重數」處理。</div>
+<h3 class="sec" id="L5-sci">科學班・教甄專區（19 題）</h3>
+<div class="note">來源：北一女中 113 科學班、嘉義高中 113／114／115 科學班（官網 PDF 有文字層，附參考答案）；關西高中 112、嘉義女中 112、台中一中 101／109、彰化女中 106、嘉義高中 109 教師甄選（掃描卷以 Windows 內建 OCR 讀出後逐題重打）。<b>答案全部重新解過並經電腦窮舉驗算</b>；解答手冊算錯的地方直接註明。含條件機率、獨立事件或矩陣的教甄題不收；「已知前面發生了什麼」的題只用「縮小樣本空間重數」處理。另收 114 年新竹高中、臺中二中、華江高中教甄的改編題（換數字，答案重新驗算）。</div>
 
 <div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">n 顆骰子點數和 S=1000 與 S=2024 機率相等：用對稱，每顆 x→7−x 把 S 送到 7n−S，且和的機率離中心越遠越小</span><span class="src">北一女中 113 科學班 填 D</span></div>
 <div class="fxq">小綠有 $n$ 顆公正骰子，一次擲出所有骰子，將朝上的所有點數和記為 $S$。若 $S=1000$ 與 $S=2024$ 的機率相等，則 $n=$？</div>
@@ -795,6 +795,52 @@ $72^2-72-1152=5184-1224=3960$。</div></div>
 四色可用：$3^8+3=6564$。其中只用到某三色（$C^4_3=4$ 個子集）：$2^8+2=258$ 各；只用到某兩色（$C^4_2=6$ 個子集）：$1+1=2$ 各。<br>
 恰用四色（取捨）：$6564-4\cdot258+6\cdot2=6564-1032+12=5544$。<br>
 <span class="note-sm"><span class="lbl-note">注意</span>坊間解答本寫 $6564-258-2=6306$，是把「三色子集」只扣了一次；程式窮舉 $4^8$ 種塗法得 $5544$。教甄常在這種地方看你扣得夠不夠。</span></div></div>
+
+<div class="fx" id="L5-S16"><div class="fxh"><span class="no">S16</span><span class="kw"><span class="lbl-note">補充</span>取到第 $8$ 顆紅球才停：次數 $=20-$（排在最後一顆紅球後面的白球數），每顆白球落在 $9$ 個空隙的最後一格，機率 $\frac19$</span><span class="src">改編自 新竹高中 114 教甄 填 13</span></div>
+<div class="fxq">箱中有 $8$ 顆紅球、$12$ 顆白球。每次從箱中隨機取出一球、取後不放回，直到取出第 $8$ 顆紅球為止。求停止時共取了幾次的期望值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{56}{3}$</div>
+<div class="fxs"><div class="move">做法：把 $20$ 顆球全部取完的順序想成一個隨機排列，停止的位置就是「最後一顆紅球」的位置。次數 $=20-W$，$W$ 是排在最後一顆紅球後面的白球數。</div>
+$8$ 顆紅球把排列切出 $9$ 個空隙（最前、中間 $7$ 個、最後）。單看某一顆白球和 $8$ 顆紅球的前後順序，這顆白球落在 $9$ 個位置的機會都一樣，落在「最後」的機率是 $\dfrac19$。<br>
+$W$ 是 $12$ 顆白球各自「在不在最後」的個數相加，期望值的線性（不需要各顆白球互不影響）：$W$ 的期望值 $=12\times\dfrac19=\dfrac43$。<br>
+停止次數的期望值 $=20-\dfrac43=\dfrac{56}{3}$。<br>
+<span class="note-sm">直接算也可以：第 $n$ 次停止 ⟺ 第 $n$ 個是紅球、前 $n-1$ 個裡有 $7$ 顆紅球，機率 $\dfrac{C^{n-1}_7}{C^{20}_8}$；$\displaystyle\sum_{n=8}^{20}n\cdot\frac{C^{n-1}_7}{C^{20}_8}=\frac{56}{3}$（電腦逐項加總驗算）。空隙法是期望值線性的用法之一，課本沒有寫，所以標「補充」。</span></div></div>
+
+<div class="fx" id="L5-S17"><div class="fxh"><span class="no">S17</span><span class="kw">偶數個元素的子集乘積和：$\frac12\left[\prod(1+x_k)+\prod(1-x_k)\right]$ 挑出偶數次項，兩個乘積都會連鎖相消</span><span class="src">改編自 臺中二中 114 教甄 計算 E</span></div>
+<div class="fxq">以 $|S|$ 表示集合 $S$ 的元素個數。設 $S=\left\{\dfrac12,\dfrac13,\dfrac14,\ldots,\dfrac1{99}\right\}$，$T$ 是 $S$ 的所有「元素個數為正偶數」的子集所成的集合。<br>(1) 求 $|T|$。(2) 對 $T$ 中每一個子集，把它的所有元素相乘；求這些乘積的總和 $M$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $2^{97}-1$　(2) $M=\dfrac{4753}{198}$</div>
+<div class="fxs"><div class="move">做法：展開 $\prod(1+x_k)$，每一項對應一個子集；再用 $\prod(1-x_k)$ 把奇數個元素的子集抵消掉。</div>
+$S$ 有 $99-2+1=98$ 個元素。<br>
+(1) $(1+1)^{98}=\sum C^{98}_j$、$(1-1)^{98}=\sum(-1)^jC^{98}_j=0$，相加除以 $2$：偶數個元素的子集（含空集合）有 $2^{97}$ 個；去掉空集合，$|T|=2^{97}-1$。<br>
+(2) 令 $x_k=\dfrac1k$（$k=2,\ldots,99$）。$\prod(1+x_k)$ 展開後是所有子集的乘積之和（空集合算 $1$）；$\prod(1-x_k)$ 展開後，奇數個元素的子集前面帶負號。所以<br>
+$M=\dfrac12\left[\prod_{k=2}^{99}\left(1+\frac1k\right)+\prod_{k=2}^{99}\left(1-\frac1k\right)\right]-1$。<br>
+$\displaystyle\prod_{k=2}^{99}\frac{k+1}{k}=\frac32\cdot\frac43\cdots\frac{100}{99}=\frac{100}{2}=50$；$\displaystyle\prod_{k=2}^{99}\frac{k-1}{k}=\frac12\cdot\frac23\cdots\frac{98}{99}=\frac1{99}$。<br>
+$M=\dfrac12\left(50+\dfrac1{99}\right)-1=\dfrac{4951}{198}-1=\dfrac{4753}{198}$。<br>
+<span class="note-sm">小規模驗證：$S=\left\{\frac12,\ldots,\frac17\right\}$ 時逐一窮舉偶數元子集的乘積和，與公式 $\frac12\left(4+\frac17\right)-1$ 相同。</span></div></div>
+
+<div class="fx" id="L5-S18"><div class="fxh"><span class="no">S18</span><span class="kw">乘積是完全平方數：每個數只看「去掉平方因數後剩下的部分」，四個數的剩下部分乘起來要是平方</span><span class="src">改編自 臺中二中 114 教甄 填 3</span></div>
+<div class="fxq">從 $1,2,3,\ldots,10$ 中隨機取出四個相異的數，求這四個數的乘積為完全平方數的機率。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{8}{105}$</div>
+<div class="fxs"><div class="move">做法：質因數 $2,3,5$ 的次數要全部是偶數。每個數去掉平方因數後分類，只看剩下的部分。</div>
+$7$ 只出現在 $7$ 本身，選了 $7$ 乘積就不可能是平方，所以不能選。其餘九個數分類：<br>
+剩 $1$（平方數）：$\{1,4,9\}$；剩 $2$：$\{2,8\}$；剩 $3$：$\{3\}$；剩 $5$：$\{5\}$；剩 $6$：$\{6\}$；剩 $10$：$\{10\}$。<br>
+四個數的「剩下部分」相乘要是平方，分三種情形：<br>
+① 兩個平方數 ＋ $2,8$：$C^3_2=3$ 種。<br>
+② 一個平方數 ＋ 三個乘起來是平方的：$2\cdot3\cdot6$ 型（「剩 $2$」選 $2$ 或 $8$）有 $2$ 種、$2\cdot5\cdot10$ 型也有 $2$ 種；再乘平方數的 $3$ 種選法：$(2+2)\times3=12$ 種。<br>
+③ 沒有平方數：$3\cdot5\cdot6\cdot10=900=30^2$，$1$ 種（$2,8$ 兩個都選的話，剩下兩個必須同類，辦不到）。<br>
+共 $3+12+1=16$ 種，$C^{10}_4=210$，機率 $\dfrac{16}{210}=\dfrac{8}{105}$。<br>
+<span class="note-sm">程式窮舉 $210$ 組，乘積為平方數的恰 $16$ 組 ✔。三個平方數加一個非平方數不可能，四個平方數也湊不出來（只有三個）。</span></div></div>
+
+<div class="fx" id="L5-S19"><div class="fxh"><span class="no">S19</span><span class="kw">$B$ 的最小數大於 $A$ 的最大數：先選出 $A\cup B$ 的 $k$ 個數，排好後在中間切一刀，$k-1$ 種切法</span><span class="src">改編自 華江高中 114 教甄 填 7</span></div>
+<div class="fxq">設 $I=\{1,2,3,4,5,6\}$。從 $I$ 的子集中選出兩個非空集合 $A$、$B$，使得 $B$ 中最小的數大於 $A$ 中最大的數。共有幾種選法？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$129$</div>
+<div class="fxs"><div class="move">做法：$A$ 與 $B$ 沒有交集，而且 $A$ 的數全部比 $B$ 小。只要決定 $A\cup B$ 這一組數，再決定「從哪裡切開」就好。</div>
+設 $A\cup B$ 有 $k$ 個數（$k\ge2$），由小排到大，在相鄰兩數之間切一刀：前面是 $A$、後面是 $B$，有 $k-1$ 種切法，而且每一種 $(A,B)$ 恰好對應一個切法。<br>
+$\displaystyle\sum_{k=2}^{6}C^6_k(k-1)=15\cdot1+20\cdot2+15\cdot3+6\cdot4+1\cdot5=15+40+45+24+5=129$。<br>
+<span class="note-sm">一般公式：$\displaystyle\sum_{k}(k-1)C^n_k=n\cdot2^{n-1}-2^n+1=(n-2)2^{n-1}+1$，$n=6$ 得 $4\cdot32+1=129$ ✔（程式窮舉 $63\times63$ 對也得 $129$）。</span></div></div>
 </section>
 
 <div class="ch-nav">

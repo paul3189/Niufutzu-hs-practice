@@ -718,7 +718,7 @@ $a+b+c+d=-9+7-\dfrac{17}2+\dfrac{13}2=-2-2=-4$。<br>
 <h2><span class="tag">L5</span>補充：大考壓軸、經典難題與科學班・教甄專區</h2>
 <div class="goal">
   <div><b>對象</b>數理志向、想看「這一章能走多遠」的同學；不列入通過標準。</div>
-  <div><b>目標</b>6 題壓軸 ＋ 專區 13 題（教甄與科學班）。每題都只用本章的工具解完：列運算保解、行列式與面積、二階反方陣、旋轉與鏡射的合成、轉移方陣。</div>
+  <div><b>目標</b>6 題壓軸 ＋ 專區 15 題（教甄與科學班）。每題都只用本章的工具解完：列運算保解、行列式與面積、二階反方陣、旋轉與鏡射的合成、轉移方陣。</div>
   <div><b>通過標準</b>無。能講出每題的關鍵一步就很好了。</div>
 </div>
 
@@ -815,8 +815,8 @@ $ade+bcf$ 為奇數 ⟺ 兩項<b>一奇一偶</b>。而「三數乘積為奇數 
 ・其餘情形：兩組各至少含一個偶數 ⟹ $ade$、$bcf$ 皆為偶 ⟹ 和為偶 ✗<br>
 兩類不會重疊，共 $72$ 種 ⟹ 機率 $=\dfrac{72}{720}=\dfrac1{10}$，選 (2)。<span class="note-sm">$1\sim6$ 裡奇數只有三個，而每一項剛好要三個因子，所以「三個奇數都在同一項」是唯一的可能，本題就是靠這一點設計的。若換成 $1\sim8$ 排進更大的方陣，這個做法就要重新想過。</span></div></div>
 
-<h3 class="sec" id="L5-sci">科學班・教甄專區（13 題）</h3>
-<div class="note">本專區取材自各校教師甄選試題（含代理教師甄選），皆逐字重打並獨立驗算。難度明顯高於段考，但用的全部是本章的工具：行列式與面積、二階反方陣、旋轉與鏡射的合成、轉移方陣每行和為 $1$、把條件翻成線性組合。</div>
+<h3 class="sec" id="L5-sci">科學班・教甄專區（15 題）</h3>
+<div class="note">本專區取材自各校教師甄選試題（含代理教師甄選），皆逐字重打並獨立驗算。難度明顯高於段考，但用的全部是本章的工具：行列式與面積、二階反方陣、旋轉與鏡射的合成、轉移方陣每行和為 $1$、把條件翻成線性組合。另收 114 年華江高中、新竹高中教甄的改編題（換數字，答案重新驗算）。</div>
 
 <div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">轉移方陣＋$\det(2A)=$ 某數：先用 $\det(2A)=4\det A$ 把行列式挖出來，再把「每一行的和是 $1$」代進去；四個未知數會縮成 $y+z$ 一個整體</span><span class="src">屏東女中 112 代理教甄 單 2</span></div>
 <div class="fxq">若 $A=\begin{bmatrix}x&z\\y&u\end{bmatrix}$ 為轉移方陣，且 $\det(2A)=2.4$，則 $y+z$ 之值為何？<br>
@@ -1012,6 +1012,30 @@ $A=\begin{bmatrix}\cos^2\theta&\sin\theta\cos\theta\\\sin\theta\cos\theta&\sin^2
 於是 $A^3=A^2A=AA=A$，依此類推 ⟹ $A^n=A$ 對所有正整數 $n$ 成立 ⟹ $A^{112}=A$。<br>
 （$\theta\ne90^\circ$ 時也可寫成 $A=\dfrac1{1+\tan^2\theta}\begin{bmatrix}1&\tan\theta\\\tan\theta&\tan^2\theta\end{bmatrix}$。）<span class="note-sm">$\det A=\cos^2\theta\sin^2\theta-\sin^2\theta\cos^2\theta=0$ ⟹ 投影方陣<b>沒有反方陣</b>，這完全合理：整個平面被壓成一條直線之後，已經分不出原來的點在哪裡了。所有滿足 $A^2=A$ 的方陣（零方陣與單位方陣除外）都是這種「壓扁」型。</span></div></div>
 
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">專區 14</span><span class="kw">兩條遞迴互相代入，整理成 $a_{n+1}=a_n+3b_n$、$b_{n+1}=a_n-b_n$；係數矩陣 $M$ 滿足 $M^2=4I$</span><span class="src">改編自 華江高中 114 教甄 填 11</span></div>
+<div class="fxq">數列 $a_1,a_2,\ldots,a_{10}$ 與 $b_1,b_2,\ldots,b_{10}$ 滿足 $a_{n+1}=4a_n-3b_{n+1}$、$b_{n+1}=a_{n+1}-4b_n$（$n=1,2,\ldots,9$）。已知 $a_9=768$、$b_{10}=512$，求 $(a_1,b_1)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a_1,b_1)=(3,1)$</div>
+<div class="fxs"><div class="move">做法：先把「下一項用下一項表示」的式子解開，變成標準的 $\begin{bmatrix}a_{n+1}\\b_{n+1}\end{bmatrix}=M\begin{bmatrix}a_n\\b_n\end{bmatrix}$。</div>
+第二式代入第一式：$a_{n+1}=4a_n-3a_{n+1}+12b_n$ ⟹ $a_{n+1}=a_n+3b_n$；再代回：$b_{n+1}=a_n+3b_n-4b_n=a_n-b_n$。<br>
+$M=\begin{bmatrix}1&3\\1&-1\end{bmatrix}$，$M^2=\begin{bmatrix}1+3&3-3\\1-1&3+1\end{bmatrix}=4I$。<br>
+$\begin{bmatrix}a_9\\b_9\end{bmatrix}=M^8\begin{bmatrix}a_1\\b_1\end{bmatrix}=(4I)^4\begin{bmatrix}a_1\\b_1\end{bmatrix}=256\begin{bmatrix}a_1\\b_1\end{bmatrix}$。<br>
+$b_9$ 由 $b_{10}=a_9-b_9$ 求：$b_9=768-512=256$。<br>
+$(a_1,b_1)=\dfrac1{256}(768,256)=(3,1)$。<br>
+<span class="note-sm">正向驗算：由 $(3,1)$ 依序算到 $a_9=768$、$b_{10}=512$，而且每一步都滿足原來兩條式子 ✔。</span></div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">專區 15</span><span class="kw">右邊的常數是「係數 $\times(7,11,5)$」：第三式減第二式得 $x+y+z$，再令 $(x,y,z)=(7,11,5)+(u,v,w)$</span><span class="src">改編自 新竹高中 114 教甄 填 2</span></div>
+<div class="fxq">解聯立方程式 $\begin{cases}5x+6y+7z=146\\7x+11y+5z=7^2+11^2+5^2\\27x+31y+25z=27\cdot7+31\cdot11+25\cdot5\end{cases}$，求 $(x,y,z)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(x,y,z)=(1,13,9)$</div>
+<div class="fxs"><div class="move">做法：第二、三式的右邊都是「左邊係數代 $(7,11,5)$」的值，而且第三式的係數比第二式多了 $(20,20,20)$。</div>
+第三式減第二式：$20(x+y+z)=20(7+11+5)$ ⟹ $x+y+z=23$。<br>
+令 $x=7+u$、$y=11+v$、$z=5+w$：$u+v+w=0$，第二式變成 $7u+11v+5w=0$。<br>
+$u=-v-w$ 代入：$-7v-7w+11v+5w=0$ ⟹ $4v=2w$ ⟹ $w=2v$、$u=-3v$。<br>
+第一式：$5(7-3v)+6(11+v)+7(5+2v)=136+5v=146$ ⟹ $v=2$。<br>
+$(x,y,z)=(7-6,\ 11+2,\ 5+4)=(1,13,9)$。<br>
+<span class="note-sm">代回：$5+78+63=146$、$7+143+45=195=49+121+25$、$27+403+225=655=189+341+125$ ✔。</span></div></div>
 </section>
 
 <div class="ch-nav">

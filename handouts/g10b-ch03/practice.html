@@ -603,7 +603,7 @@ $r=\dfrac18\sum X'Y'=\dfrac{0.2+2.4+0+0+3+0-0.2-0.2}{8}=\dfrac{5.2}{8}=0.65$。<
 <h2><span class="tag">L5</span>補充專區：經典題、科學班與教甄</h2>
 <div class="goal">
   <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
-  <div><b>目標</b>8 題經典壓軸＋15 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>目標</b>8 題經典壓軸＋16 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
   <div><b>通過標準</b>沒有標準，會一題算一題。</div>
 </div>
 
@@ -667,8 +667,8 @@ $\sum e_i^2=\sum[(y_i-\bar y)-a(x_i-\bar x)]^2+2c\sum[(y_i-\bar y)-a(x_i-\bar x)
 <div class="fxs"><div class="move">做法：$a_1=S_1=12$，$n\ge2$ 時 $a_n=12n-8$；$b_1=10$，$n\ge2$ 時 $b_n=9n-5$。逐項比較：$a_n=\dfrac43 b_n+\dfrac43$（$n\ge2$：$\frac43(9n-5)+\frac43=12n-\frac{20}{3}+\frac43=12n-\frac{16}{3}$，不對。）</div>
 正確做法：直接看 $a_n-\dfrac43b_n$：$n\ge2$ 時 $12n-8-\dfrac43(9n-5)=-8+\dfrac{20}{3}=-\dfrac43$；$n=1$ 時 $12-\dfrac43(10)=-\dfrac43$。所以<b>每一項</b>都有 $a_n=\dfrac43b_n-\dfrac43$（含脫隊的首項）⟹ $\sigma_a=\dfrac43\sigma_b$。<span class="note-sm">（出題者故意讓兩個首項都脫隊，但脫隊的方式仍維持同一個線性關係。若只用 $n\ge2$ 的公式硬算 $\sigma$，前 $100$ 項的比值也恰為 $\frac43$，經程式驗算兩種算法一致。）</span></div></div>
 
-<h3 class="sec" id="L5-sci">科學班・教甄專區（15 題）</h3>
-<div class="note">教甄題來自各校 101–112 年試卷（掃描檔經 OCR 找頁、逐字重打），科學班題來自嘉義高中 114 年科學班甄選（含官方參考答案）。每一題都重解並用程式驗算；含條件機率、常態分布、母體與樣本標準差的題目不收。</div>
+<h3 class="sec" id="L5-sci">科學班・教甄專區（16 題）</h3>
+<div class="note">教甄題來自各校 101–112 年試卷（掃描檔經 OCR 找頁、逐字重打），科學班題來自嘉義高中 114 年科學班甄選（含官方參考答案）。每一題都重解並用程式驗算；含條件機率、常態分布、母體與樣本標準差的題目不收。另收 114 年臺中二中教甄的改編題（換數字，答案重新驗算）。</div>
 
 <div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">絕對偏差和 vs 平方偏差和：Σ|x−c| 在中位數最小、Σ(x−c)² 在平均最小，且離開最小點就單調上升</span><span class="src">陽明高中 101 教甄 選 3</span></div>
 <div class="fxq">$19$ 項資料由小到大為 $x_1\le x_2\le\cdots\le x_{19}$，$M=\dfrac1{19}\sum x_i$，且 $x_{10}\le M\le k\le x_{11}$。令 $a=\sum|x_i-M|$、$b=\sum|x_i-k|$、$c=\sum|x_i-x_{11}|$、$p=\sum(x_i-M)^2$、$q=\sum(x_i-k)^2$、$t=\sum(x_i-x_{11})^2$。哪些正確？<br>(A) $\sum(x_i-M)=0$　(B) $a\ge b\ge c$　(C) $a\le b\le c$　(D) $p\ge q\ge t$　(E) $p\le q\le t$</div>
@@ -779,6 +779,17 @@ $ac\gt0$ 時 $\dfrac{ac}{|ac|}=1$，$ac\lt0$ 時 $=-1$。$\blacksquare$</div></d
 若 $k=32$ 則 $b=c=32$ 不可能（$a=110-10-96=4\lt10$）⟹ $b=c=32$ 且 $a+k=36$。<br>
 $k\to k+10$ 後中位數是 $k+10$ ⟹ $k+10\lt32$（若 $\ge32$ 中位數會是 $32$）。$k\to k-8$ 後中位數是 $k-4$：新資料 $10,a,k-8,32,32$ 的中位數只能是 $a$ 或 $k-8$，而 $k-8\ne k-4$ ⟹ 中位數 $=a=k-4$ ⟹ $a+k=2k-4=36$ ⟹ $k=20$、$a=16$。<br>
 檢查：$10,16,20,32,32$（平均 $22$ ✓、眾數 $32$ ✓）；$10,16,30,32,32$（平均 $24$、中位數 $30=k+10$ ✓）；$10,12,16,32,32$（中位數 $16=k-4$ ✓）。官方參考答案 $20$ ✓。</div></div>
+
+<div class="fx" id="L5-S16"><div class="fxh"><span class="no">專區 16</span><span class="kw"><span class="lbl-note">補充</span>總分的標準差：展開 $\sigma_{X+Y}^2=\sigma_X^2+\sigma_Y^2+2r\sigma_X\sigma_Y$（先推導）</span><span class="src">改編自 臺中二中 114 教甄 填 2</span></div>
+<div class="fxq">某班數學科段考的選擇題分數 $X$ 的標準差為 $8$、非選擇題分數 $Y$ 的標準差為 $6$，每位同學的總分 $X+Y$ 的標準差為 $12$。求 $X$ 與 $Y$ 的相關係數（最簡分數）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$r=\dfrac{11}{24}$</div>
+<div class="fxs"><div class="move">做法：總分的偏差 ＝ 兩科偏差相加，平方展開後的交叉項就是相關係數的分子。</div>
+設 $n$ 位同學，平均 $\mu_X$、$\mu_Y$，總分的平均是 $\mu_X+\mu_Y$。<br>
+$\sigma_{X+Y}^2=\dfrac1n\sum\left[(x_i-\mu_X)+(y_i-\mu_Y)\right]^2=\sigma_X^2+\sigma_Y^2+\dfrac2n\sum(x_i-\mu_X)(y_i-\mu_Y)$。<br>
+相關係數 $r=\dfrac{\sum(x_i-\mu_X)(y_i-\mu_Y)}{\sqrt{\sum(x_i-\mu_X)^2}\sqrt{\sum(y_i-\mu_Y)^2}}$，分子分母同除以 $n$ 得 $\dfrac1n\sum(x_i-\mu_X)(y_i-\mu_Y)=r\sigma_X\sigma_Y$。<br>
+所以 $\sigma_{X+Y}^2=\sigma_X^2+\sigma_Y^2+2r\sigma_X\sigma_Y$：$144=64+36+2r\cdot8\cdot6$ ⟹ $96r=44$ ⟹ $r=\dfrac{11}{24}$。<br>
+<span class="note-sm">課本沒有直接給這條公式，推導只用到標準差與相關係數的定義，所以標「補充」。看一下合理性：$r\gt0$ 表示兩部分分數同高同低，總分的標準差 $12$ 比「不相關」時的 $\sqrt{64+36}=10$ 大 ✔。</span></div></div>
 </section>
 
 <div class="ch-nav">
