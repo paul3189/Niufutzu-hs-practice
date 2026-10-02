@@ -1573,6 +1573,469 @@
   CONTRAST['L3.tanPairProd'] = { f: function (p) { return p.t; }, why: '和是 $\\dfrac{\\pi}{4}$ 型（$\\tan=1$）配 $(1+\\tan\\alpha)(1+\\tan\\beta)$，和是 $\\dfrac{3\\pi}{4}$ 型（$\\tan=-1$）配 $(1-\\tan\\alpha)(1-\\tan\\beta)$，乘開後都等於 $2$。' };
   CONTRAST['L3.quadCosRoots'] = { f: function (p) { return p.ans.join(''); }, why: '兩個根的 $\\cos$ 值換了，落在哪個區間就跟著換；先確認根在 $[-1,1]$ 內，再和 $1,\\ \\dfrac12,\\ 0,\\ -\\dfrac12,\\ -1$ 比大小。' };
 
+  /* ══════════════════════════════════════════════════════════
+     2026-10-02　附圖題（讀圖型）：圖由產生器依亂數參數即時畫成 inline SVG，放在 q 裡，圖跟著數字變
+     共用畫圖小工具 fig*()：扇形／弓形、坐標軸＋正弦型曲線、單位圓與角、方格紙上的角。
+     規則：坐標一律由參數算（不目測）；圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
+           要給驗算器讀的元素帶 data-k（驗算器從圖上的坐標與標籤文字代回，不看 p）。
+     L1 4 型、L2 4 型、L3 4 型（L3-19～L3-22 的類似題）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     ══════════════════════════════════════════════════════════ */
+  var FIGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#b03a55', soft: '#8a7378', grid: '#ddd2d5', fill: 'rgba(176,58,85,.2)' };
+  var MINUS = '−';
+  function n1(v) { var s = (Math.round(v * 10) / 10).toFixed(1); if (s === '-0.0') s = '0.0'; return s.replace(/\.0$/, ''); }
+  function n2(v) { var s = (Math.round(v * 100) / 100).toFixed(2); if (s === '-0.00') s = '0.00'; return s.replace(/\.?0+$/, ''); }
+  function figAttr(o) { var s = ''; for (var k in o) { if (o[k] !== undefined && o[k] !== null && o[k] !== false) s += ' ' + k + '="' + o[k] + '"'; } return s; }
+  function figSvg(w, h, label, body) { return '<svg class="qfig" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" role="img" aria-label="' + label + '">' + body + '</svg>'; }
+  function figLine(x1, y1, x2, y2, o) { o = o || {}; return '<line' + figAttr({ 'data-k': o.k, x1: n2(x1), y1: n2(y1), x2: n2(x2), y2: n2(y2), stroke: o.c || FIGC.line, 'stroke-width': o.w || 1.6, 'stroke-dasharray': o.dash ? '4 3' : null, 'stroke-linecap': 'round' }) + '/>'; }
+  function figText(x, y, s, o) { o = o || {}; return '<text' + figAttr({ 'data-k': o.k, x: n1(x), y: n1(y), 'font-size': o.fs || 14, fill: o.c || FIGC.ink, 'text-anchor': o.anchor || 'middle', 'font-style': o.it ? 'italic' : null }) + '>' + s + '</text>'; }
+  function figPath(d, o) { o = o || {}; return '<path' + figAttr({ 'data-k': o.k, d: d, fill: o.fill || 'none', stroke: o.c === 'none' ? null : (o.c || FIGC.line), 'stroke-width': o.c === 'none' ? null : (o.w || 1.8), 'stroke-linejoin': 'round' }) + '/>'; }
+  function figDot(x, y, o) { o = o || {}; return '<circle' + figAttr({ 'data-k': o.k, cx: n2(x), cy: n2(y), r: o.r || 3, fill: o.c || FIGC.line }) + '/>'; }
+  function figCircle(cx, cy, R, k) { return '<circle' + figAttr({ 'data-k': k, cx: n2(cx), cy: n2(cy), r: n2(R), fill: 'none', stroke: FIGC.line, 'stroke-width': 1.8 }) + '/>'; }
+  function figPt(cx, cy, R, a) { return [cx + R * Math.cos(a), cy - R * Math.sin(a)]; }       /* 數學角 a（逆時針）→ 像素點 */
+  function ptS(p) { return n2(p[0]) + ' ' + n2(p[1]); }
+
+  /* 標籤值：字串（整數、θ、30°…）或 { neg, num, den }（直式分數）。 */
+  function labFr(x) { return x.d === 1 ? (x.n < 0 ? MINUS + (-x.n) : String(x.n)) : { neg: x.n < 0, num: String(Math.abs(x.n)), den: String(x.d) }; }
+  function labPi(k, d) { var f = F(k, d); if (f.n === 0) return '0'; var m = Math.abs(f.n), num = (m === 1 ? '' : m) + 'π'; return f.d === 1 ? (f.n < 0 ? MINUS : '') + num : { neg: f.n < 0, num: num, den: String(f.d) }; }
+  function labSurd(c, r, d) { if (c === 0) return '0'; var s = simpSqrt(r); c *= s.c; r = s.r; var g = gcd(Math.abs(c), d); c /= g; d /= g; var m = Math.abs(c), num = r === 1 ? String(m) : (m === 1 ? '' : m) + '√' + r; return d === 1 ? (c < 0 ? MINUS : '') + num : { neg: c < 0, num: num, den: String(d) }; }
+  function labTxt(v) { return typeof v === 'string' ? v : (v.neg ? MINUS : '') + v.num + '/' + v.den; }
+  function labW(v, fs) { fs = fs || 14; if (typeof v === 'string') return v.length * fs * 0.58; return Math.max(v.num.length, v.den.length) * fs * 0.58 + 4 + (v.neg ? fs * 0.7 : 0); }
+  /* 在 (x, yc) 畫標籤值，yc 是垂直中心；anchor：middle（預設）／start／end */
+  function figVal(x, yc, v, o) {
+    o = o || {}; var fs = o.fs || 14, w = labW(v, fs), x0 = o.anchor === 'start' ? x : o.anchor === 'end' ? x - w : x - w / 2;
+    if (typeof v === 'string') return figText(x0 + w / 2, yc + fs * 0.36, v, { fs: fs, c: o.c, k: o.k, it: o.it });
+    var sw = v.neg ? fs * 0.7 : 0, cx = x0 + sw + (w - sw) / 2, s = '<g' + figAttr({ 'data-k': o.k }) + '>';
+    if (v.neg) s += figText(x0 + fs * 0.3, yc + fs * 0.36, MINUS, { fs: fs, c: o.c });
+    s += figText(cx, yc - 3.5, v.num, { fs: fs, c: o.c }) + figLine(cx - (w - sw) / 2 + 1, yc, cx + (w - sw) / 2 - 1, yc, { c: o.c || FIGC.ink, w: 1 }) + figText(cx, yc + fs * 0.92, v.den, { fs: fs, c: o.c });
+    return s + '</g>';
+  }
+  /* 圓弧（圓心、半徑為像素；a0→a1 為數學角、逆時針、a1>a0）。cont=true 時只給 A 指令（接在前一點後面） */
+  function figArcD(cx, cy, R, a0, a1, cont) {
+    return (cont ? '' : 'M ' + ptS(figPt(cx, cy, R, a0)) + ' ') + 'A ' + n2(R) + ' ' + n2(R) + ' 0 ' + (a1 - a0 > Math.PI ? 1 : 0) + ' 0 ' + ptS(figPt(cx, cy, R, a1));
+  }
+  /* 角的小弧＋標籤（lab 為 null 就不標） */
+  function figAngle(cx, cy, a0, a1, lab, o) {
+    o = o || {}; var rr = o.r || 16, la = o.la === undefined ? (a0 + a1) / 2 : o.la, p = figPt(cx, cy, o.lr || rr + 13, la);
+    var s = figPath(figArcD(cx, cy, rr, a0, a1), { c: FIGC.soft, w: 1.3, k: o.k });
+    if (lab !== null && lab !== undefined) s += figVal(p[0], p[1], lab, { fs: o.fs || 14, k: o.lk, it: lab === 'θ' });
+    return s;
+  }
+  function figArrow(x1, y1, x2, y2, o) {
+    o = o || {}; var a = Math.atan2(y2 - y1, x2 - x1), L = 8, wv = 3.2, c = o.c || FIGC.ink, bx = x2 - L * Math.cos(a), by = y2 - L * Math.sin(a);
+    return figLine(x1, y1, bx, by, { c: c, w: o.w || 1.2, k: o.k }) + '<path d="M ' + n2(x2) + ' ' + n2(y2) + ' L ' + n2(bx - wv * Math.sin(a)) + ' ' + n2(by + wv * Math.cos(a)) + ' L ' + n2(bx + wv * Math.sin(a)) + ' ' + n2(by - wv * Math.cos(a)) + ' Z" fill="' + c + '"/>';
+  }
+  /* 坐標框：數學坐標 ↔ 像素。o = { w, h, l, r, t, b（四邊留白）, x0, x1, y0, y1 } */
+  function figFrame(o) {
+    var sx = (o.w - o.l - o.r) / (o.x1 - o.x0), sy = (o.h - o.t - o.b) / (o.y1 - o.y0);
+    return { w: o.w, h: o.h, x0: o.x0, x1: o.x1, y0: o.y0, y1: o.y1, sx: sx, sy: sy, X: function (x) { return o.l + (x - o.x0) * sx; }, Y: function (y) { return o.h - o.b - (y - o.y0) * sy; } };
+  }
+  /* 坐標軸（x 軸畫在 y=0、y 軸畫在 x=0）。o.xl／o.yl：軸名（預設 x、y；帶單位的中文軸名靠右／靠左排）；o.O=false 不標原點 */
+  function figAxes(fr, o) {
+    o = o || {}; var X0 = fr.X(0), Y0 = fr.Y(0), xe = fr.X(fr.x1), yt = fr.Y(fr.y1);
+    var s = figArrow(fr.X(fr.x0) - (fr.x0 < 0 ? 0 : 6), Y0, xe + 14, Y0, { k: 'xaxis' }) + figArrow(X0, fr.Y(fr.y0) + (fr.y0 < 0 ? 0 : 5), X0, yt - 12, { k: 'yaxis' });
+    s += o.xl ? figText(xe + 30, Y0 + 17, o.xl, { fs: 13, anchor: 'end' }) : figText(xe + 12, Y0 + 15, 'x', { fs: 14, it: 1 });
+    s += o.yl ? figText(X0 + 8, yt - 8, o.yl, { fs: 13, anchor: 'start' }) : figText(X0 - 11, yt - 2, 'y', { fs: 14, it: 1 });
+    if (o.O !== false) s += figText(X0 - 9, Y0 + 14, 'O', { fs: 13, it: 1 });
+    return s;
+  }
+  function figCurve(fr, f, xa, xb, o) {
+    o = o || {}; var n = o.n || 160, pts = [];
+    for (var i = 0; i <= n; i++) { var x = xa + (xb - xa) * i / n; pts.push(n1(fr.X(x)) + ',' + n1(fr.Y(f(x)))); }
+    return '<polyline' + figAttr({ 'data-k': o.k || 'curve', points: pts.join(' '), fill: 'none', stroke: o.c || FIGC.hot, 'stroke-width': o.w || 2.2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }) + '/>';
+  }
+  /* x 軸上的刻度＋標籤，避開曲線：曲線在上方就標在下方（反之亦然）；曲線剛好穿過 x 軸時標在下方、往曲線不在的那一側挪 */
+  function figXLab(fr, x, v, f, o) {
+    o = o || {}; var fs = o.fs || 13, px = fr.X(x), py = fr.Y(0), dy = typeof v === 'string' ? 14 : 20, eps = 6 / fr.sx;
+    var tick = figLine(px, py - 3, px, py + 3, { c: FIGC.ink, w: 1.2, k: 'xtick' }), y = f ? f(x) : 1, l = f ? f(x - eps) : 1, r2 = f ? f(x + eps) : 1;
+    if (Math.abs(fr.Y(y) - py) >= 16) return tick + figVal(px, y > 0 ? py + dy : py - dy, v, { fs: fs, k: 'xt' });
+    if (l >= y && r2 >= y) return tick + figVal(px, py + dy, v, { fs: fs, k: 'xt' });
+    if (l <= y && r2 <= y) return tick + figVal(px, py - dy, v, { fs: fs, k: 'xt' });
+    return tick + figVal(px + (r2 > l ? 1 : -1) * (labW(v, fs) / 2 + 4), py + dy, v, { fs: fs, k: 'xt' });
+  }
+  function figYLab(fr, y, v, o) { o = o || {}; var px = fr.X(0), py = fr.Y(y); return figLine(px - 3, py, px + 3, py, { c: FIGC.ink, w: 1.2, k: 'ytick' }) + figVal(px - 7, py, v, { fs: o.fs || 13, anchor: 'end', k: 'yt' }); }
+  /* 正弦型曲線圖：f 畫在 [0, xEnd]；xt／yt = [[值, 標籤值], …]；o.guides：水平虛線；o.minor：只畫短刻度不標數字 */
+  function figWave(f, xEnd, ylo, yhi, xt, yt, o) {
+    o = o || {}; var fr = figFrame({ w: 320, h: o.h || 190, l: 36, r: 26, t: 20, b: 20, x0: 0, x1: xEnd, y0: ylo, y1: yhi }), s = '';
+    (o.guides || []).forEach(function (y) { s += figLine(fr.X(0), fr.Y(y), fr.X(xEnd), fr.Y(y), { c: FIGC.soft, w: 1, dash: 1 }); });
+    s += figAxes(fr) + figCurve(fr, f, 0, xEnd);
+    (o.minor || []).forEach(function (x) { s += figLine(fr.X(x), fr.Y(0) - 2.5, fr.X(x), fr.Y(0) + 2.5, { c: FIGC.ink, w: 1 }); });
+    xt.forEach(function (t) { s += figXLab(fr, t[0], t[1], f); });
+    yt.forEach(function (t) { s += figYLab(fr, t[0], t[1]); });
+    return figSvg(320, o.h || 190, o.label || '函數圖形', s);
+  }
+  /* 曲線上標出一個點：到兩軸的虛線、兩軸上的刻度與標籤、點（k＝H／L）、點名（可省略）。
+     回傳 SVG；x 標籤放在「點的另一側」（點在軸上：最高點標上方、最低點標下方）。 */
+  function figMark(fr, x, y, xLab, yLab, k, name) {
+    var px = fr.X(x), py = fr.Y(y), X0 = fr.X(0), Y0 = fr.Y(0), s = '', below = y > 0 || (y === 0 && k === 'L'), dy = typeof xLab === 'string' ? 14 : 20;
+    if (y !== 0) s += figLine(px, py, px, Y0, { c: FIGC.soft, w: 1, dash: 1 }) + figLine(px, py, X0, py, { c: FIGC.soft, w: 1, dash: 1 });
+    s += figLine(px, Y0 - 3, px, Y0 + 3, { c: FIGC.ink, w: 1.2, k: 'xtick' }) + figVal(px, below ? Y0 + dy : Y0 - dy, xLab, { fs: 13, k: 'xt' });
+    if (y !== 0) s += figYLab(fr, y, yLab);
+    s += figDot(px, py, { k: k, c: FIGC.hot, r: 3.2 });
+    if (name) { var close = Math.abs(py - Y0) < 22; s += figText(px + (close ? 12 : 9), k === 'H' ? (close && !below ? py + 16 : py - 6) : (close && below ? py - 9 : py + 15), name, { fs: 14, it: 1 }); }   /* 點名避開軸上的標籤 */
+    return s;
+  }
+  function intLab(v) { return v < 0 ? MINUS + (-v) : String(v); }
+  function figDiff(M, m) { return m === 0 ? String(M) : M + '-' + negP(String(m)); }                /* 提示用的 M−m、M+m（m=0 時不寫 -0、+0） */
+  function figSum(M, m) { return m === 0 ? String(M) : M + '+' + negP(String(m)); }
+  function figOpt(i, t) { return '<span class="qopt">(' + i + ') ' + t + '</span>'; }                    /* 圖後面的選項：每個選項自成一塊，不從中間斷行 */
+
+  /* ────────── L1　1-4 讀圖：扇形、振幅與週期、單位圓、認函數 ────────── */
+  /* 扇形圖：th 是實際弧度（照比例畫）；rLab 半徑、aLab 圓心角、sLab 弧長（null 不標） */
+  function figSectorSvg(th, rLab, aLab, sLab) {
+    var W = 300, a0 = th <= Math.PI ? 0 : (Math.PI - th) / 2, a1 = a0 + th, xs = [0, Math.cos(a0), Math.cos(a1)], ys = [0, Math.sin(a0), Math.sin(a1)], q;
+    for (q = Math.ceil(a0 / (Math.PI / 2)); q * Math.PI / 2 <= a1; q++) { xs.push(Math.cos(q * Math.PI / 2)); ys.push(Math.sin(q * Math.PI / 2)); }
+    var xmin = Math.min.apply(null, xs), xmax = Math.max.apply(null, xs), ymin = Math.min.apply(null, ys), ymax = Math.max.apply(null, ys);
+    var mx = 40, my = 28, R = Math.min((W - 2 * mx) / (xmax - xmin), 150 / (ymax - ymin), 150), H = Math.ceil((ymax - ymin) * R + 2 * my);
+    var cx = (W - (xmax - xmin) * R) / 2 - xmin * R, cy = my + ymax * R, mid = (a0 + a1) / 2;
+    var rho = Math.min(Math.max(35, 17 / Math.sin(th / 2)), R * 0.62);
+    var s = figPath('M ' + n2(cx) + ' ' + n2(cy) + ' L ' + ptS(figPt(cx, cy, R, a0)) + ' ' + figArcD(cx, cy, R, a0, a1, true) + ' Z', { fill: FIGC.fill, w: 2, k: 'sector' });
+    s += figAngle(cx, cy, a0, a1, aLab, { r: 12, lr: rho, lk: 'ang' });
+    var M = figPt(cx, cy, R / 2, a0), N = figPt(M[0], M[1], 13, a0 - Math.PI / 2), Op = figPt(cx, cy, 12, mid + Math.PI);
+    s += figVal(N[0], N[1], rLab, { k: 'rad', fs: 14 });
+    if (sLab) { var S = figPt(cx, cy, R + 15, mid); s += figVal(S[0], S[1], sLab, { k: 'arc', fs: 14 }); }
+    s += figText(Op[0], Op[1] + 4, 'O', { fs: 13, it: 1 });
+    return figSvg(W, H, '扇形：半徑 ' + labTxt(rLab) + (sLab ? '，弧長 ' + labTxt(sLab) : '，圓心角 ' + labTxt(aLab)), s);
+  }
+  L1.figSector = function (r) {
+    var mode = r.pick(['rad', 'rad', 'deg', 'deg', 'arc']);
+    if (mode === 'arc') {
+      var thF = r.pick([F(1), F(2), F(3), F(1, 2), F(3, 2), F(5, 2)]), rad = thF.d === 2 ? 2 * r.int(1, 6) : r.int(2, 10), arc = rad * thF.n / thF.d, area = F(rad * arc, 2);
+      return { q: '如圖，扇形的半徑與弧長標示在圖上，求圓心角 ' + T('\\theta') + '（弧度）與扇形面積。' + figSectorSvg(thF.n / thF.d, String(rad), 'θ', String(arc)),
+        a: '圓心角 ' + T(Fr.tex(thF)) + '，面積 ' + T(Fr.tex(area)),
+        h: '從圖上讀出 $r=' + rad + '$、弧長 $s=' + arc + '$：$\\theta=\\dfrac sr=\\dfrac{' + arc + '}{' + rad + '}$；面積用 $\\dfrac12rs=\\dfrac12\\times' + rad + '\\times' + arc + '$ 最快。', p: { mode: mode, r: rad, arc: arc, th: [thF.n, thF.d] } };
+    }
+    var rr = r.int(2, 12), K = r.pick([2, 3, 4, 6, 8, 9, 10, 12, 14, 15, 16, 18]), arcF = F(rr * K, 12), areaF = F(rr * rr * K, 24);
+    return { q: '如圖，扇形的半徑與圓心角標示在圖上，求弧長與面積。' + figSectorSvg(K * Math.PI / 12, String(rr), mode === 'deg' ? 15 * K + '°' : labPi(K, 12), null),
+      a: '弧長 ' + T(coefPi(arcF)) + '，面積 ' + T(coefPi(areaF)),
+      h: (mode === 'deg' ? '圖上的角是度數，先換成弧度：$' + 15 * K + '^\\circ=' + piTex(K, 12) + '$。' : '') + '$s=r\\theta=' + rr + '\\times' + piTex(K, 12) + '$、$A=\\dfrac12r^2\\theta=\\dfrac12\\times' + rr + '^2\\times' + piTex(K, 12) + '$。', p: { mode: mode, r: rr, K: K } };
+  };
+
+  /* 看圖讀 y=a sin bx／a cos bx 的振幅與週期 */
+  L1.figAmpPeriod = function (r) {
+    var fn = r.pick(['sin', 'cos']), a = r.int(1, 5), bF = r.pick([F(1, 2), F(1), F(2), F(3), F(4), F(2, 3)]), b = bF.n / bF.d, perF = Fr.div(F(2), bF), P = 2 * Math.PI / b, per = piTex(perF.n, perF.d);
+    var f = function (x) { return a * Math[fn](b * x); };
+    var xt = [1, 2, 3].map(function (i) { return [i * P / 2, labPi(perF.n * i, perF.d * 2)]; });
+    var svg = figWave(f, 1.62 * P, -1.3 * a, 1.3 * a, xt, [[a, String(a)], [-a, MINUS + a]], { guides: [a, -a], minor: [P / 4, 3 * P / 4, 5 * P / 4], label: '正弦型函數的部分圖形，兩軸上標有刻度' });
+    return { q: '下圖是 ' + T('y=a\\' + fn + ' bx') + '（' + T('a\\gt0,\\ b\\gt0') + '）的部分圖形，求振幅、週期與數對 ' + T('(a,b)') + '。' + svg,
+      a: '振幅 ' + T(a) + '，週期 ' + T(per) + '，' + T('(a,b)=\\left(' + a + ',' + Fr.tex(bF) + '\\right)'),
+      h: '最高點的 $y$ 坐標是 $' + a + '$ ⟹ 振幅 $' + a + '$；' + (fn === 'sin' ? '從原點出發，一個完整的波在 $x=' + per + '$ 結束' : '相鄰兩個最高點在 $x=0$ 與 $x=' + per + '$') + ' ⟹ 週期 $' + per + '$，再用 $b=\\dfrac{2\\pi}{\\text{週期}}$。',
+      p: { fn: fn, a: a, b: [bF.n, bF.d] } };
+  };
+
+  /* 單位圓上的點 */
+  var UC_SPECIAL = [30, 45, 60, 120, 135, 150, 210, 225, 240, 300, 315, 330];
+  function ucPoint(r) {
+    var o;
+    if (r() < 0.6) { var t = r.pick(TRIPLES), sx = r.sign(), sy = r.sign(); o = { cos: { c: sx * t[1], r: 1, d: t[2] }, sin: { c: sy * t[0], r: 1, d: t[2] }, tan: { c: sx * sy * t[0], r: 1, d: t[1] } }; }
+    else { var v = tv(r.pick(UC_SPECIAL)); o = { cos: v.cos, sin: v.sin, tan: v.tan }; }
+    o.qd = o.cos.c > 0 ? (o.sin.c > 0 ? 1 : 4) : (o.sin.c > 0 ? 2 : 3);
+    return o;
+  }
+  /* 點坐標標籤 P( v1 , v2 )；anchor：start／end；v1、v2 各帶 data-k = k+'x'、k+'y' */
+  function figCoord(x, yc, name, v1, v2, anchor, k) {
+    var fs = 14, parts = [[name, name.length * fs * 0.8], ['(', fs * 0.36], [v1, labW(v1, fs)], [',', fs * 0.55], [v2, labW(v2, fs)], [')', fs * 0.4]], w = 0, s = '';
+    parts.forEach(function (p) { w += p[1]; });
+    var cur = anchor === 'end' ? x - w : x;
+    parts.forEach(function (p, i) { s += figVal(cur + p[1] / 2, yc, p[0], { fs: fs, k: i === 2 ? k + 'x' : i === 4 ? k + 'y' : null, it: i === 0 || p[0] === 'x' || p[0] === 'y' }); cur += p[1]; });
+    return s;
+  }
+  function figUnitSvg(pt, mode) {
+    var W = 320, H = 212, cx = 160, cy = 106, R = 66, x = vNum(pt.cos), y = vNum(pt.sin), ang = Math.atan2(y, x); if (ang < 0) ang += 2 * Math.PI;
+    var px = cx + R * x, py = cy - R * y;
+    var s = figArrow(cx - 94, cy, cx + 96, cy, { k: 'xaxis' }) + figArrow(cx, cy + 94, cx, cy - 96, { k: 'yaxis' }) + figText(cx + 101, cy + (pt.qd === 4 ? -7 : 15), 'x', { fs: 14, it: 1 }) + figText(cx - 11, cy - 90, 'y', { fs: 14, it: 1 });
+    s += figCircle(cx, cy, R, 'uc');
+    var la = ang / 2; [Math.PI / 2, Math.PI].forEach(function (ax) { if (Math.abs(la - ax) < 0.3) la = ax - 0.3; });
+    s += figAngle(cx, cy, 0, ang, 'θ', { r: 15, la: la, lr: ang < 1.2 ? Math.min(58, Math.max(29, 9 / Math.sin(ang / 2))) : 29 });
+    s += figLine(cx, cy, px, py, { c: FIGC.hot, w: 2, k: 'OP' }) + figDot(px, py, { k: 'P', c: FIGC.hot, r: 3.4 });
+    s += figCoord(px + (x >= 0 ? 9 : -9), py + (y > 0 ? -15 : 15), 'P', mode === 'y' ? 'x' : labSurd(pt.cos.c, pt.cos.r, pt.cos.d), mode === 'x' ? 'y' : labSurd(pt.sin.c, pt.sin.r, pt.sin.d), x >= 0 ? 'start' : 'end', 'P');
+    s += figText(cx + R + 7, cy + (pt.qd === 4 ? -6 : 14), '1', { fs: 13 }) + figText(cx - 8, cy - R - 4, '1', { fs: 13 });
+    if (pt.qd !== 4) s += figText(cx + (pt.qd === 3 ? 9 : -9), cy + 14, 'O', { fs: 13, it: 1 });
+    return figSvg(W, H, '單位圓上一點 P 與角 θ，P 在第' + QN[pt.qd] + '象限', s);
+  }
+  function vSq(v) { return Fr.tex(F(v.c * v.c * v.r, v.d * v.d)); }                              /* (c√r/d)² */
+  L1.figUnitCircle = function (r) {
+    var pt = ucPoint(r), mode = r.pick(['both', 'both', 'x', 'y']), cT = vTex(pt.cos), sT = vTex(pt.sin), tT = vTex(pt.tan);
+    var h = mode === 'both' ? '單位圓上的點 $P(x,y)$ 就是 $(\\cos\\theta,\\sin\\theta)$：圖上 $x=' + cT + '$、$y=' + sT + '$，再用 $\\tan\\theta=\\dfrac yx$。'
+      : mode === 'x' ? '$P$ 在單位圓上 ⟹ $x^2+y^2=1$，$y^2=1-\\left(' + cT + '\\right)^2$；圖上 $P$ 在第' + QN[pt.qd] + '象限，$y$ 取' + (pt.sin.c > 0 ? '正' : '負') + '。之後 $\\cos\\theta=x$、$\\sin\\theta=y$、$\\tan\\theta=\\dfrac yx$。'
+        : '$P$ 在單位圓上 ⟹ $x^2+y^2=1$，$x^2=1-\\left(' + sT + '\\right)^2$；圖上 $P$ 在第' + QN[pt.qd] + '象限，$x$ 取' + (pt.cos.c > 0 ? '正' : '負') + '。之後 $\\cos\\theta=x$、$\\sin\\theta=y$、$\\tan\\theta=\\dfrac yx$。';
+    return { q: '如圖，' + T('P') + ' 是單位圓上的點，' + T('\\theta') + ' 是以 ' + T('x') + ' 軸正向為始邊、' + T('\\overline{OP}') + ' 為終邊的角' + (mode === 'both' ? '' : '（圖上只標出 ' + T('P') + ' 的一個坐標）') + '，求 ' + T('\\sin\\theta') + '、' + T('\\cos\\theta') + '、' + T('\\tan\\theta') + '。' + figUnitSvg(pt, mode),
+      a: T('\\sin\\theta=' + sT) + '，' + T('\\cos\\theta=' + cT) + '，' + T('\\tan\\theta=' + tT), h: h,
+      p: { mode: mode, qd: pt.qd, cos: [pt.cos.c, pt.cos.r, pt.cos.d], sin: [pt.sin.c, pt.sin.r, pt.sin.d], tan: [pt.tan.c, pt.tan.r, pt.tan.d] } };
+  };
+
+  /* 看圖判斷是哪一個函數：y = A sin(Bx)／A cos(Bx)，A ∈ {±1, ±2}，B ∈ {1/2, 1, 2}（B2 = 2B） */
+  function wfTex(A, B2, fn) { return (A === 1 ? '' : A === -1 ? '-' : A) + '\\' + fn + (B2 === 2 ? ' x' : B2 === 4 ? ' 2x' : '\\dfrac{x}{2}'); }
+  function wfPer(B2) { return B2 === 1 ? '4\\pi' : B2 === 2 ? '2\\pi' : '\\pi'; }
+  function wfStart(A, fn) { return fn === 'sin' ? ' $y=0$，接著往' + (A > 0 ? '上' : '下') + '走 ⟹ $\\sin$ 型、係數為' + (A > 0 ? '正' : '負') : '在最' + (A > 0 ? '高' : '低') + '點 ⟹ $\\cos$ 型、係數為' + (A > 0 ? '正' : '負'); }
+  L1.figWhichFunc = function (r) {
+    var fn = r.pick(['sin', 'cos']), A = r.pick([1, -1, 2, -2]), B2 = r.pick([2, 2, 4, 4, 1]), o2 = fn === 'sin' ? 'cos' : 'sin';
+    var cands = r.shuffle([[-A, B2, fn], [A, B2, o2], [-A, B2, o2], [A, B2 === 2 ? r.pick([4, 1]) : 2, fn], [A > 0 ? 3 - A : -3 - A, B2, fn]]).slice(0, 3);
+    var opts = r.shuffle([[A, B2, fn]].concat(cands)), idx = 0;
+    opts.forEach(function (o, i) { if (o[0] === A && o[1] === B2 && o[2] === fn) idx = i + 1; });
+    var b = B2 / 2, f = function (x) { return A * Math[fn](b * x); }, xEnd = B2 === 1 ? 4 * Math.PI : 2 * Math.PI, st = xEnd / 4, amp = Math.abs(A);
+    var xt = [1, 2, 3, 4].map(function (i) { return [i * st, labPi(i * (B2 === 1 ? 2 : 1), 2)]; });
+    var svg = figWave(f, xEnd * 1.08, -2.5, 2.5, xt, [[1, '1'], [2, '2'], [-1, MINUS + '1'], [-2, MINUS + '2']], { h: 200, label: '某個三角函數的部分圖形，兩軸上標有刻度' });
+    return { q: '下圖是下列哪一個函數的部分圖形？' + svg + opts.map(function (o, i) { return figOpt(i + 1, T('y=' + wfTex(o[0], o[1], o[2]))); }).join('　'),
+      a: '(' + idx + ') ' + T('y=' + wfTex(A, B2, fn)),
+      h: '看三件事。高度：最高到 $' + amp + '$ ⟹ 係數的絕對值是 $' + amp + '$。週期：一個完整的波長 $' + wfPer(B2) + '$ ⟹ $x$ 的係數是 $\\dfrac{2\\pi}{' + wfPer(B2) + '}$。起點：$x=0$ 時' + wfStart(A, fn) + '。',
+      p: { fn: fn, A: A, B2: B2, idx: idx, opts: opts } };
+  };
+
+  L1_H1.figSector = '這是「看圖求扇形」：先從圖上讀出半徑與圓心角（或弧長）；角如果標的是度數要先換成弧度，再套弧長、面積公式。';
+  L1_H1.figAmpPeriod = '這是「看圖讀振幅與週期」：振幅看最高點離 $x$ 軸多高，週期看一個完整的波在 $x$ 軸上佔多長。';
+  L1_H1.figUnitCircle = '這是「單位圓上的點」：單位圓上的點坐標就是 $(\\cos\\theta,\\sin\\theta)$；少一個坐標時用 $x^2+y^2=1$ 補，正負看圖上的象限。';
+  L1_H1.figWhichFunc = '這是「看圖認函數」：依序看高度（振幅）、一個波多長（週期）、起點（$x=0$ 時在哪裡、往哪邊走）。';
+  L1_SOL.figSector = function (p) {
+    if (p.mode === 'arc') {
+      return ['從圖上讀出：半徑 $r=' + p.r + '$，弧長 $s=' + p.arc + '$。', '$s=r\\theta$ ⟹ $\\theta=\\dfrac sr=\\dfrac{' + p.arc + '}{' + p.r + '}=' + Fr.tex(F(p.th[0], p.th[1])) + '$（弧度）。',
+        '面積 $A=\\dfrac12rs=\\dfrac12\\times' + p.r + '\\times' + p.arc + '=' + Fr.tex(F(p.r * p.arc, 2)) + '$。'];
+    }
+    var th = piTex(p.K, 12), dg2 = 15 * p.K;
+    return [p.mode === 'deg' ? '從圖上讀出：半徑 $r=' + p.r + '$，圓心角 $' + dg2 + '^\\circ$。公式要用弧度，先換：$' + dg2 + '^\\circ=' + dg2 + '\\times\\dfrac{\\pi}{180}=' + th + '$。' : '從圖上讀出：半徑 $r=' + p.r + '$，圓心角 $\\theta=' + th + '$（已經是弧度）。',
+      '弧長 $s=r\\theta=' + p.r + '\\times' + th + '=' + coefPi(F(p.r * p.K, 12)) + '$。', '面積 $A=\\dfrac12r^2\\theta=\\dfrac12\\times' + p.r + '^2\\times' + th + '=' + coefPi(F(p.r * p.r * p.K, 24)) + '$。'];
+  };
+  L1_SOL.figAmpPeriod = function (p) {
+    var bF = F(p.b[0], p.b[1]), perF = Fr.div(F(2), bF), per = piTex(perF.n, perF.d);
+    return ['圖形最高到 $y=' + p.a + '$、最低到 $y=-' + p.a + '$ ⟹ 振幅 $=' + p.a + '$；題目說 $a\\gt0$，所以 $a=' + p.a + '$。',
+      (p.fn === 'sin' ? '從原點出發，走完一個完整的波（上去、下來、再回到 $x$ 軸）時 $x=' + per + '$' : '相鄰兩個最高點在 $x=0$ 與 $x=' + per + '$') + ' ⟹ 週期 $=' + per + '$。',
+      '週期 $=\\dfrac{2\\pi}{b}$ ⟹ $b=' + (perF.d === 1 ? '\\dfrac{2\\pi}{' + per + '}' : '2\\pi\\div' + per) + '=' + Fr.tex(bF) + '$，所以 $(a,b)=\\left(' + p.a + ',' + Fr.tex(bF) + '\\right)$。'];
+  };
+  L1_SOL.figUnitCircle = function (p) {
+    var C = { c: p.cos[0], r: p.cos[1], d: p.cos[2] }, S = { c: p.sin[0], r: p.sin[1], d: p.sin[2] }, cT = vTex(C), sT = vTex(S), tT = vTex({ c: p.tan[0], r: p.tan[1], d: p.tan[2] }), out = [];
+    if (p.mode === 'x') out.push('$P$ 在單位圓上 ⟹ $x^2+y^2=1$。圖上 $x=' + cT + '$，所以 $y^2=1-\\left(' + cT + '\\right)^2=' + vSq(S) + '$。', '由圖，$P$ 在第' + QN[p.qd] + '象限，$y' + (S.c > 0 ? '\\gt' : '\\lt') + '0$ ⟹ $y=' + sT + '$。');
+    if (p.mode === 'y') out.push('$P$ 在單位圓上 ⟹ $x^2+y^2=1$。圖上 $y=' + sT + '$，所以 $x^2=1-\\left(' + sT + '\\right)^2=' + vSq(C) + '$。', '由圖，$P$ 在第' + QN[p.qd] + '象限，$x' + (C.c > 0 ? '\\gt' : '\\lt') + '0$ ⟹ $x=' + cT + '$。');
+    out.push('單位圓上的點 $P(x,y)$ 就是 $(\\cos\\theta,\\sin\\theta)$ ⟹ $\\cos\\theta=' + cT + '$，$\\sin\\theta=' + sT + '$。');
+    out.push('$\\tan\\theta=\\dfrac{\\sin\\theta}{\\cos\\theta}=' + negP(sT) + '\\div' + negP(cT) + '=' + tT + '$。');
+    return out;
+  };
+  L1_SOL.figWhichFunc = function (p) {
+    var amp = Math.abs(p.A), bT = p.B2 === 1 ? '\\dfrac12' : p.B2 === 2 ? '1' : '2';
+    return ['高度：圖形最高到 $' + amp + '$、最低到 $-' + amp + '$ ⟹ 振幅是 $' + amp + '$，選項裡係數的絕對值要是 $' + amp + '$。',
+      '週期：對照 $x$ 軸的刻度，一個完整的波長 $' + wfPer(p.B2) + '$ ⟹ $x$ 的係數是 $\\dfrac{2\\pi}{' + wfPer(p.B2) + '}=' + bT + '$。',
+      '起點：$x=0$ 時' + wfStart(p.A, p.fn) + '。', '三件事都符合的是 $y=' + wfTex(p.A, p.B2, p.fn) + '$，選 (' + p.idx + ')。'];
+  };
+  META_L1.push(['figSector', '看圖求弧長與扇形面積'], ['figAmpPeriod', '看圖讀振幅與週期'], ['figUnitCircle', '看單位圓上的點求 sin、cos、tan'], ['figWhichFunc', '看圖判斷是哪個函數']);
+
+  /* ────────── L2　1-4 讀圖：弓形與葉形、圖形反求參數、方格紙上的角、週期現象 ────────── */
+  /* 圓與弦：minor（塗弦與劣弧之間）／major（塗弦與優弧之間）／chord（給弦長，塗劣弓形）；圓心角 = Kπ/12 */
+  function figSegSvg(kind, K, rLab, aLab, cLab) {
+    var W = 300, H = 196, cx = 150, cy = 98, R = 72, th = K * Math.PI / 12, a0 = Math.PI / 2 - th / 2, a1 = Math.PI / 2 + th / 2, A = figPt(cx, cy, R, a1), B = figPt(cx, cy, R, a0);
+    var s = figPath((kind === 'major' ? figArcD(cx, cy, R, a1, a0 + 2 * Math.PI) : figArcD(cx, cy, R, a0, a1)) + ' Z', { fill: FIGC.fill, c: 'none', k: 'shade' });
+    s += figCircle(cx, cy, R, 'circ') + figLine(A[0], A[1], B[0], B[1], { w: 1.8, k: 'chord' }) + figLine(cx, cy, A[0], A[1], { w: 1.3 }) + figLine(cx, cy, B[0], B[1], { w: 1.3 });
+    s += figDot(cx, cy, { k: 'O', r: 2.6 }) + figDot(A[0], A[1], { k: 'A', r: 2.6 }) + figDot(B[0], B[1], { k: 'B', r: 2.6 });
+    var LA = figPt(cx, cy, R + 12, a1), LB = figPt(cx, cy, R + 12, a0), M = figPt(cx, cy, R / 2, a0), N = figPt(M[0], M[1], 12, a0 - Math.PI / 2);
+    s += figText(LA[0], LA[1] + 4, 'A', { fs: 14, it: 1 }) + figText(LB[0], LB[1] + 4, 'B', { fs: 14, it: 1 }) + figText(cx, cy + 15, 'O', { fs: 13, it: 1 });
+    s += figVal(N[0], N[1], rLab, { k: 'rad', fs: 14 });
+    if (aLab) {
+      var w = 56 + labW(aLab, 14), x0 = cx - w / 2;
+      s += figPath(figArcD(cx, cy, 11, a0, a1), { c: FIGC.soft, w: 1.3 }) + figText(x0 + 52, cy + 41, '∠AOB =', { fs: 14, anchor: 'end' }) + figVal(x0 + 56, cy + 36, aLab, { k: 'ang', fs: 14, anchor: 'start' });
+    }
+    if (cLab) s += figVal(cx, cy - R * Math.cos(th / 2) + 13, cLab, { k: 'chordlen', fs: 14 });
+    return figSvg(W, H, '圓 O 與弦 AB，' + (kind === 'major' ? '弦與優弧之間塗色' : '弦與劣弧之間塗色'), s);
+  }
+  function figLensSvg(dLab) {
+    var W = 300, H = 176, R = 62, cy = 88, c1 = 119, c2 = 181, hy = R * Math.sqrt(3) / 2;
+    var s = figPath('M ' + n2(150) + ' ' + n2(cy + hy) + ' ' + figArcD(c1, cy, R, -Math.PI / 3, Math.PI / 3, true) + ' ' + figArcD(c2, cy, R, 2 * Math.PI / 3, 4 * Math.PI / 3, true) + ' Z', { fill: FIGC.fill, c: 'none', k: 'shade' });
+    s += figCircle(c1, cy, R, 'c1') + figCircle(c2, cy, R, 'c2') + figLine(c1, cy, c2, cy, { w: 1.3, k: 'cc' }) + figDot(c1, cy, { k: 'O1', r: 2.6 }) + figDot(c2, cy, { k: 'O2', r: 2.6 });
+    s += figText(c1 - 13, cy + 17, 'O<tspan dy="3" font-size="9">1</tspan>', { fs: 13, it: 1 }) + figText(c2 + 13, cy + 17, 'O<tspan dy="3" font-size="9">2</tspan>', { fs: 13, it: 1 });
+    s += figVal(150, cy - 10, dLab, { k: 'dist', fs: 14 });
+    return figSvg(W, H, '兩個半徑相同的圓，圓心各在對方的圓上，重疊區域塗色', s);
+  }
+  function figLeafSvg(sLab) {
+    var W = 300, S = 140, x0 = 80, y0 = 22, H = S + 56, A = [x0, y0 + S], B = [x0 + S, y0 + S], C = [x0 + S, y0], D = [x0, y0];
+    var s = figPath('M ' + ptS(B) + ' ' + figArcD(A[0], A[1], S, 0, Math.PI / 2, true) + ' ' + figArcD(C[0], C[1], S, Math.PI, 3 * Math.PI / 2, true) + ' Z', { fill: FIGC.fill, w: 1.8, k: 'shade' });
+    s += '<rect' + figAttr({ 'data-k': 'sq', x: n2(x0), y: n2(y0), width: n2(S), height: n2(S), fill: 'none', stroke: FIGC.line, 'stroke-width': 1.8 }) + '/>';
+    s += figText(A[0] - 10, A[1] + 13, 'A', { fs: 14, it: 1 }) + figText(B[0] + 10, B[1] + 13, 'B', { fs: 14, it: 1 }) + figText(C[0] + 10, C[1] - 3, 'C', { fs: 14, it: 1 }) + figText(D[0] - 10, D[1] - 3, 'D', { fs: 14, it: 1 });
+    s += figVal(x0 + S / 2, y0 + S + 15, sLab, { k: 'side', fs: 14 });
+    return figSvg(W, H, '正方形 ABCD，以 A、C 為圓心、邊長為半徑的兩段弧所圍的葉形塗色', s);
+  }
+  L2.figSegment = function (r) {
+    var kind = r.pick(['minor', 'minor', 'major', 'major', 'chord', 'lens', 'leaf']), rad = r.int(2, 10), r2 = rad * rad;
+    if (kind === 'lens') return { q: '如圖，兩圓的半徑相同，圓心 ' + T('O_1') + '、' + T('O_2') + ' 各在對方的圓上，' + T('\\overline{O_1 O_2}') + ' 的長標示在圖上，求兩圓重疊（塗色）區域的面積。' + figLensSvg(String(rad)),
+      a: T(coefPi(F(2 * r2, 3)) + '-' + surdOver(r2, 3, 2)),
+      h: '把 $O_1$、$O_2$ 和兩個交點連起來：每條線段都等於半徑 $' + rad + '$，是兩個正三角形，所以公共弦在每個圓上所對的圓心角是 $\\dfrac{2\\pi}{3}$。重疊區域是兩個一樣的弓形：$2\\times\\left(\\dfrac12\\times' + rad + '^2\\times\\dfrac{2\\pi}{3}-\\dfrac12\\times' + rad + '^2\\times\\dfrac{\\sqrt3}{2}\\right)$。', p: { kind: kind, r: rad } };
+    if (kind === 'leaf') return { q: '如圖，正方形 ' + T('ABCD') + ' 的邊長標示在圖上，分別以 ' + T('A') + '、' + T('C') + ' 為圓心、邊長為半徑畫弧，求兩弧所圍（塗色）區域的面積。' + figLeafSvg(String(rad)),
+      a: T(coefPi(F(r2, 2)) + '-' + r2),
+      h: '連對角線 $\\overline{BD}$，葉形分成兩個一樣的弓形，每個是「四分之一圓減等腰直角三角形」：$2\\times\\left(\\dfrac14\\pi\\times' + rad + '^2-\\dfrac12\\times' + rad + '^2\\right)$。', p: { kind: kind, r: rad } };
+    var K = kind === 'chord' ? r.pick([4, 6, 8]) : kind === 'minor' ? r.pick([4, 6, 8, 9, 10]) : r.pick([2, 3, 4, 6, 8, 9, 10]), unit = kind === 'chord' ? null : r.pick(['rad', 'deg']);
+    var sec = F(r2 * K, 24), sv = tv(15 * K).sin, tri = surdOver(r2 * sv.c, sv.r, 2 * sv.d), th = piTex(K, 12);
+    var ans = kind === 'major' ? coefPi(Fr.sub(F(r2), sec)) + '+' + tri : coefPi(sec) + '-' + tri;
+    var cc = { 4: 1, 6: 2, 8: 3 }[K], svg = figSegSvg(kind, K, String(rad), kind === 'chord' ? null : unit === 'deg' ? 15 * K + '°' : labPi(K, 12), kind === 'chord' ? labSurd(rad, cc, 1) : null);
+    var h = (kind === 'chord' ? '先求圓心角 $\\theta$：半弦除以半徑是 $\\sin\\dfrac{\\theta}{2}$，得 $\\theta=' + th + '$。' : unit === 'deg' ? '圖上的角是度數，先換成弧度：$' + 15 * K + '^\\circ=' + th + '$。' : '') +
+      '弦與劣弧之間的弓形 $=$ 扇形 $-$ 三角形 $=\\dfrac12\\times' + rad + '^2\\times' + th + '-\\dfrac12\\times' + rad + '^2\\times' + vTex(sv) + '$' +
+      (kind === 'major' ? '；圖上塗的是弦的另一側（優弧那一塊），用整個圓 $' + coefPi(F(r2)) + '$ 去減。' : '。');
+    return { q: (kind === 'chord' ? '如圖，圓 ' + T('O') + ' 的半徑與弦 ' + T('\\overline{AB}') + ' 的長標示在圖上，求塗色區域的面積。' : '如圖，圓 ' + T('O') + ' 的半徑與圓心角 ' + T('\\angle AOB') + ' 標示在圖上，求塗色區域的面積。') + svg,
+      a: T(ans), h: h, p: { kind: kind, r: rad, K: K, unit: unit } };
+  };
+
+  /* 由圖形（相鄰的最高點、最低點）反求 y=a sin(bx+c)+d */
+  L2.figParamFit = function (r) {
+    var a = r.int(1, 4), bF = r.pick([F(1, 2), F(1), F(2), F(3)]), cF = r.pick([F(1, 6), F(1, 3), F(2, 3), F(5, 6), F(1, 4), F(3, 4)]), d = r.int(-a - 1, a + 1);
+    var b = bF.n / bF.d, c = cF.n / cF.d * Math.PI, x0F = Fr.div(Fr.sub(F(1, 2), cF), bF), HL = x0F.n > 0, half = Fr.div(F(1), bF);
+    var xH = HL ? x0F : Fr.add(x0F, Fr.div(F(2), bF)), xL = Fr.add(x0F, half), M = d + a, m = d - a;
+    var f = function (x) { return a * Math.sin(b * x + c) + d; }, xEnd = (Math.max(Fr.toNum(xH), Fr.toNum(xL)) + 0.5 / b) * Math.PI, lo = Math.min(0, m), hi = Math.max(0, M), pad = (hi - lo) * 0.14;
+    var fr = figFrame({ w: 320, h: 210, l: 40, r: 26, t: 20, b: 20, x0: 0, x1: xEnd, y0: lo - pad, y1: hi + pad });
+    var nearO = [M, m].some(function (v) { return v < 0 && fr.Y(v) - fr.Y(0) < 24; });
+    var s = figAxes(fr, { O: !nearO }) + figCurve(fr, f, 0, xEnd) + figMark(fr, Fr.toNum(xH) * Math.PI, M, labPi(xH.n, xH.d), intLab(M), 'H') + figMark(fr, Fr.toNum(xL) * Math.PI, m, labPi(xL.n, xL.d), intLab(m), 'L');
+    function xT(fr2) { return piTex(fr2.n, fr2.d); }
+    return { q: '下圖是 ' + T('y=a\\sin(bx+c)+d') + '（' + T('a\\gt0,\\ b\\gt0,\\ 0\\lt c\\lt\\pi') + '）的部分圖形，圖上標出相鄰的最高點與最低點，求 ' + T('(a,b,c,d)') + '。' + figSvg(320, 210, '正弦型函數的部分圖形，標出相鄰的最高點與最低點', s),
+      a: T('(a,b,c,d)=\\left(' + a + ',' + Fr.tex(bF) + ',' + piTex(cF.n, cF.d) + ',' + d + '\\right)'),
+      h: '從圖上讀出最高點 $\\left(' + xT(xH) + ',' + M + '\\right)$、最低點 $\\left(' + xT(xL) + ',' + m + '\\right)$：$a=\\dfrac{' + figDiff(M, m) + '}{2}$、$d=\\dfrac{' + figSum(M, m) + '}{2}$；兩點的水平距離 $' + xT(half) + '$ 是半個週期 $\\dfrac{\\pi}{b}$；最後把最高點代入 $bx+c=\\dfrac{\\pi}{2}+2k\\pi$，在 $0\\lt c\\lt\\pi$ 裡挑 $c$。',
+      p: { a: a, b: [bF.n, bF.d], c: [cF.n, cF.d], d: d, xH: [xH.n, xH.d], xL: [xL.n, xL.d], HL: HL } };
+  };
+
+  /* 方格紙上的角：tan 的和差角。O、A、B 在格子點上，θ=∠AOB */
+  function figGridSvg(mode, p1, q1, p2, q2) {
+    var cols = Math.max(p1, p2) + 2, up = Math.max(q1, mode === 'diff' ? q2 : 0) + 1, down = mode === 'sum' ? q2 + 1 : 1, rows = up + down, c = Math.max(24, Math.min(34, Math.floor(236 / cols), Math.floor(190 / rows))), W = 300, H = rows * c + 28, gx = (W - cols * c) / 2, gy = 14, i, s = '';
+    for (i = 0; i <= cols; i++) s += figLine(gx + i * c, gy, gx + i * c, gy + rows * c, { c: FIGC.grid, w: 1, k: 'gv' });
+    for (i = 0; i <= rows; i++) s += figLine(gx, gy + i * c, gx + cols * c, gy + i * c, { c: FIGC.grid, w: 1, k: 'gh' });
+    var ox = gx + c, oy = gy + up * c, A = [ox + p1 * c, oy - q1 * c], B = [ox + p2 * c, oy + (mode === 'sum' ? q2 : -q2) * c];
+    var aA = Math.atan2(q1, p1), aB = mode === 'sum' ? -Math.atan2(q2, p2) : Math.atan2(q2, p2), th = aA - aB;
+    s += figLine(ox, oy, A[0], A[1], { w: 2, k: 'OA' }) + figLine(ox, oy, B[0], B[1], { w: 2, k: 'OB' });
+    s += figAngle(ox, oy, aB, aA, 'θ', { r: 19, lr: th < 0.6 ? Math.max(34, 10 / Math.sin(th / 2)) : 33 });
+    s += figDot(ox, oy, { k: 'O' }) + figDot(A[0], A[1], { k: 'A' }) + figDot(B[0], B[1], { k: 'B' });
+    var LA = figPt(A[0], A[1], 12, aA), LB = figPt(B[0], B[1], 12, aB);
+    s += figText(ox - 11, oy + 5, 'O', { fs: 14, it: 1 }) + figText(LA[0], LA[1] + 4.5, 'A', { fs: 14, it: 1 }) + figText(LB[0], LB[1] + 4.5, 'B', { fs: 14, it: 1 });
+    return figSvg(W, H, '方格紙上的角 AOB，O、A、B 都在格子點上', s);
+  }
+  L2.figGridTan = function (r) {
+    var mode, p1, q1, p2, q2, num, den, guard = 0, qm;
+    do {
+      mode = r.pick(['sum', 'diff']); qm = mode === 'sum' ? 3 : 4; p1 = r.int(1, 5); q1 = r.int(1, qm); p2 = r.int(1, 5); q2 = r.int(1, qm);
+      if (mode === 'sum') { num = q1 * p2 + q2 * p1; den = p1 * p2 - q1 * q2; } else { num = q1 * p2 - q2 * p1; den = p1 * p2 + q1 * q2; }
+    } while ((gcd(p1, q1) !== 1 || gcd(p2, q2) !== 1 || den === 0 || num <= 0 || (mode === 'diff' && Math.atan2(num, den) < 0.26)) && guard++ < 300);
+    if (guard >= 300) { mode = 'sum'; p1 = 2; q1 = 1; p2 = 3; q2 = 1; num = 5; den = 5; }
+    var ta = Fr.tex(F(q1, p1)), tb = Fr.tex(F(q2, p2));
+    return { q: '如圖，方格紙上每一小格都是邊長 ' + T('1') + ' 的正方形，' + T('O') + '、' + T('A') + '、' + T('B') + ' 都在格子點上，' + T('\\theta=\\angle AOB') + '，求 ' + T('\\tan\\theta') + '。' + figGridSvg(mode, p1, q1, p2, q2),
+      a: T('\\tan\\theta=' + Fr.tex(F(num, den))),
+      h: (mode === 'sum' ? '過 $O$ 的水平格線把 $\\theta$ 分成上、下兩個角 $\\alpha$、$\\beta$。數格子：$\\tan\\alpha=' + ta + '$、$\\tan\\beta=' + tb + '$，$\\theta=\\alpha+\\beta$，用 $\\tan(\\alpha+\\beta)=\\dfrac{\\tan\\alpha+\\tan\\beta}{1-\\tan\\alpha\\tan\\beta}$。'
+        : '設 $\\overline{OA}$、$\\overline{OB}$ 與過 $O$ 的水平格線的夾角是 $\\alpha$、$\\beta$。數格子：$\\tan\\alpha=' + ta + '$、$\\tan\\beta=' + tb + '$，$\\theta=\\alpha-\\beta$，用 $\\tan(\\alpha-\\beta)=\\dfrac{\\tan\\alpha-\\tan\\beta}{1+\\tan\\alpha\\tan\\beta}$。'),
+      p: { mode: mode, p1: p1, q1: q1, p2: p2, q2: q2, num: num, den: den } };
+  };
+
+  /* 週期現象讀圖：圖上標相鄰的最高點 (t1, M)、最低點 (t1+P/2, m)，求週期、振幅與某時刻的值 */
+  var PER_CTX = [
+    { lead: '某港口的水深 $y$（公尺）隨時間 $t$（時）變化', qty: '水深', unit: '公尺', tu: '時', xl: 't（時）', yl: 'y（公尺）', P: [12, 24], a: [2, 3, 4], base: [1, 2, 3] },
+    { lead: '摩天輪上某個車廂離地面的高度 $y$（公尺）隨時間 $t$（分）變化', qty: '高度', unit: '公尺', tu: '分', xl: 't（分）', yl: 'y（公尺）', P: [12, 24, 36], a: [20, 30, 40, 50], base: [2, 4, 5, 10] }
+  ];
+  L2.figPeriodic = function (r) {
+    var cx = r.pick(PER_CTX), P = r.pick(cx.P), a = r.pick(cx.a), d = a + r.pick(cx.base), m1 = r.int(1, 5), j = r.pick([8, 9, 10, 14, 15, 16]);
+    var t1 = P * m1 / 12, t2 = t1 + P / 2, t3 = t1 + P * j / 12, cv = { 8: -1, 9: 0, 10: 1, 14: 1, 15: 0, 16: -1 }[j], val = F(2 * d + cv * a, 2), M = d + a, m = d - a, fracF = F(j, 12);
+    var f = function (t) { return d + a * Math.cos(2 * Math.PI * (t - t1) / P); };
+    var fr = figFrame({ w: 320, h: 200, l: 42, r: 34, t: 22, b: 24, x0: 0, x1: t2 + P / 4, y0: 0, y1: M * 1.2 });
+    var s = figAxes(fr, { xl: cx.xl, yl: cx.yl }) + figCurve(fr, f, 0, fr.x1) + figMark(fr, t1, M, String(t1), String(M), 'H') + figMark(fr, t2, m, String(t2), String(m), 'L');
+    return { q: cx.lead + '，可以用 ' + T('y=a\\sin(bt+c)+d') + ' 型的函數描述。下圖是它的部分圖形，圖上標出相鄰的最高點與最低點。<br>(1) 求週期與振幅。　(2) 求 ' + T('t=' + t3) + ' 時的' + cx.qty + '。' + figSvg(320, 200, cx.qty + '隨時間變化的正弦型曲線，標出相鄰的最高點與最低點', s),
+      a: '(1) 週期 ' + T(P) + ' ' + cx.tu + '，振幅 ' + T(a) + ' ' + cx.unit + '　(2) ' + T(Fr.tex(val)) + ' ' + cx.unit,
+      h: '(1) 最高點到相鄰最低點的水平距離是半個週期：週期 $=2\\times(' + t2 + '-' + t1 + ')$；振幅 $=\\dfrac{' + M + '-' + m + '}{2}$。(2) 中線 $d=\\dfrac{' + M + '+' + m + '}{2}=' + d + '$。$t=' + t3 + '$ 比最高點晚 $' + (t3 - t1) + '$ ' + cx.tu + '，是 $' + Fr.tex(fracF) + '$ 個週期，所以 $y=' + d + '+' + a + '\\cos\\left(2\\pi\\times' + Fr.tex(fracF) + '\\right)$。',
+      p: { P: P, a: a, d: d, t1: t1, t2: t2, t3: t3, j: j } };
+  };
+  META_L2.push(['figSegment', '看圖求弓形與葉形面積'], ['figParamFit', '由圖形反求 (a,b,c,d)'], ['figGridTan', '方格紙上的角求 tan'], ['figPeriodic', '週期現象讀圖求值']);
+
+  /* ────────── L3　L3-19～L3-22 的類似題（附圖） ────────── */
+  /* L3-19　矩形 ABCD 內，以 A 為圓心、AB 與 AD 為半徑的兩段弧。三種邊長比讓 ∠EAD（E 是大弧與 BC 的交點）是 30°、60°、45° */
+  var RECT_SHAPES = [{ hr: 1, Rc: 2, Rr: 1, g: 30 }, { hr: 3, Rc: 2, Rr: 1, g: 60 }, { hr: 1, Rc: 1, Rr: 2, g: 45 }];   /* AB = k√hr，AD = Rc·k√Rr，g = ∠EAD */
+  function figRectArcsSvg(hNum, RNum, g, ask, hLab, RLab) {
+    var W = 300, sc = Math.min(210 / RNum, 150 / hNum), w = RNum * sc, hh = hNum * sc, ax = (W - w) / 2 + 8, y0 = 22, ay = y0 + hh, H = Math.ceil(hh + 54), ga = g * Math.PI / 180;
+    var E = figPt(ax, ay, w, ga), Dp = [ax + w, ay], Bp = [ax, y0], Cp = [ax + w, y0], Fp = [ax + hh, ay];
+    var d = ask === 'between' ? 'M ' + ptS(Bp) + ' L ' + ptS(E) + ' A ' + n2(w) + ' ' + n2(w) + ' 0 0 1 ' + ptS(Dp) + ' L ' + ptS(Fp) + ' ' + figArcD(ax, ay, hh, 0, Math.PI / 2, true) + ' Z'
+      : 'M ' + ptS(E) + ' L ' + ptS(Cp) + ' L ' + ptS(Dp) + ' ' + figArcD(ax, ay, w, 0, ga, true) + ' Z';
+    var s = figPath(d, { fill: FIGC.fill, c: 'none', k: 'shade' });
+    s += '<rect' + figAttr({ 'data-k': 'rect', x: n2(ax), y: n2(y0), width: n2(w), height: n2(hh), fill: 'none', stroke: FIGC.line, 'stroke-width': 1.8 }) + '/>';
+    s += figPath(figArcD(ax, ay, hh, 0, Math.PI / 2), { k: 'arcS' }) + figPath(figArcD(ax, ay, w, 0, ga), { k: 'arcB' });
+    s += figText(ax - 10, ay + 13, 'A', { fs: 14, it: 1 }) + figText(ax - 10, y0 - 3, 'B', { fs: 14, it: 1 }) + figText(ax + w + 10, y0 - 3, 'C', { fs: 14, it: 1 }) + figText(ax + w + 10, ay + 13, 'D', { fs: 14, it: 1 });
+    s += figVal(ax - 9, y0 + hh / 2, hLab, { anchor: 'end', k: 'AB', fs: 14 }) + figVal(ax + w / 2, ay + 15, RLab, { k: 'AD', fs: 14 });
+    return figSvg(W, H, '矩形 ABCD 與以 A 為圓心的兩段圓弧，' + (ask === 'between' ? '兩弧之間塗色' : '大弧外側靠 C 的角落塗色'), s);
+  }
+  L3.figRectArcs = function (r) {
+    var sh = r.int(0, 2), S = RECT_SHAPES[sh], k = r.int(1, 8), ask = r.pick(['between', 'between', 'corner']), k2 = k * k;
+    var hT = surdOver(k, S.hr, 1), RT = surdOver(S.Rc * k, S.Rr, 1), ans;
+    if (ask === 'between') ans = sh === 0 ? coefPi(F(k2, 12)) + '+' + surdOver(k2, 3, 2) : sh === 1 ? surdOver(k2, 3, 2) + '-' + coefPi(F(k2, 12)) : Fr.tex(F(k2, 2));
+    else ans = sh === 0 ? 2 * k2 + '-' + surdOver(k2, 3, 2) + '-' + coefPi(F(k2, 3)) : sh === 1 ? surdOver(3 * k2, 3, 2) + '-' + coefPi(F(2 * k2, 3)) : surdOver(k2, 2, 1) + '-' + Fr.tex(F(k2, 2)) + '-' + coefPi(F(k2, 4));
+    return { q: '如圖，矩形 ' + T('ABCD') + ' 中，' + T('\\overline{AB}') + '、' + T('\\overline{AD}') + ' 的長標示在圖上。以 ' + T('A') + ' 為圓心，分別以 ' + T('\\overline{AB}') + '、' + T('\\overline{AD}') + ' 為半徑畫弧，求塗色區域的面積。' +
+        figRectArcsSvg(k * Math.sqrt(S.hr), S.Rc * k * Math.sqrt(S.Rr), S.g, ask, labSurd(k, S.hr, 1), labSurd(S.Rc * k, S.Rr, 1)),
+      a: T(ans),
+      h: '設大弧交 $\\overline{BC}$ 於 $E$。$\\overline{AE}=' + RT + '$、$\\overline{AB}=' + hT + '$ ⟹ $\\angle BAE=' + (90 - S.g) + '^\\circ$、$\\angle EAD=' + S.g + '^\\circ$。大弧以內、矩形裡面的部分 $=\\triangle ABE+$ 扇形 $AED$（半徑 $' + RT + '$、圓心角 $' + piTex(S.g, 180) + '$）；' + (ask === 'between' ? '再扣掉半徑 $' + hT + '$ 的四分之一圓。' : '塗色的是它外面的角落，用矩形面積去減。'),
+      p: { sh: sh, k: k, ask: ask } };
+  };
+
+  /* L3-20　由 f(x)=a cos(bx−c)+d 的圖形（相鄰最高點 A、最低點 B）判斷五個敘述（多選） */
+  L3.figCosProps = function (r) {
+    var a = r.pick([2, 4]), bF = r.pick([F(1, 2), F(1), F(2), F(3)]), k = r.pick([2, 3, 4, 6, 8, 9, 10]), cF = F(k, 6), d = r.int(-1, 2), cv = { 2: 1, 3: 0, 4: -1, 6: -2, 8: -1, 9: 0, 10: 1 }[k];
+    var perF = Fr.div(F(2), bF), half = Fr.div(F(1), bF), xA = Fr.div(cF, bF), xB = Fr.add(xA, half), mid = Fr.div(Fr.add(xA, xB), F(2)), M = d + a, m = d - a, f0 = d + a * cv / 2;
+    function pT(x) { return piTex(x.n, x.d); }
+    function isInt(x) { return x.d === 1; }
+    var makers = [
+      function (t) { var v = t ? a : (d !== 0 ? M : 2 * a); return ['$a=' + v + '$', v === a]; },
+      function (t) { var v = t ? bF : (Fr.eq(bF, F(1)) ? F(2) : Fr.div(F(1), bF)); return ['$b=' + Fr.tex(v) + '$', Fr.eq(v, bF)]; },
+      function (t) { var v = t ? perF : half; return ['$f(x)$ 的週期為 $' + pT(v) + '$', Fr.eq(v, perF)]; },
+      function (t) { var v = t ? d : M; return ['$d=' + v + '$', v === d]; },
+      function (t) { var v = t ? cF : (Fr.eq(bF, F(1)) ? Fr.div(cF, F(2)) : xA); return ['$c=' + pT(v) + '$', Fr.eq(v, cF)]; },
+      function (t) { var v = t ? xA : (Fr.eq(bF, F(1)) ? Fr.div(cF, F(2)) : cF); return ['把 $y=a\\cos bx+d$ 的圖形向右平移 $' + pT(v) + '$ 單位，可得 $y=f(x)$ 的圖形', isInt(Fr.div(Fr.sub(v, xA), perF))]; },
+      function (t) { var v = t ? f0 : (f0 !== d ? d : M); return ['$f(0)=' + v + '$', v === f0]; },
+      function (t) { var v = t ? xB : mid; return ['圖形對稱於直線 $x=' + pT(v) + '$', isInt(Fr.div(Fr.sub(v, xA), half))]; },
+      function (t) { var v = t ? d : (d !== 0 ? 0 : M); return ['圖形對稱於點 $\\left(' + pT(mid) + ',' + v + '\\right)$', v === d]; }
+    ];
+    var sts, ans, guard = 0;
+    do { sts = r.shuffle(makers).slice(0, 5).map(function (mk) { return mk(r() < 0.5); }); ans = []; sts.forEach(function (s2, i) { if (s2[1]) ans.push(i + 1); }); } while ((ans.length === 0 || ans.length === 5) && guard++ < 50);
+    var b = bF.n / bF.d, c = cF.n / cF.d * Math.PI, f = function (x) { return a * Math.cos(b * x - c) + d; }, xEnd = (Fr.toNum(xB) + 0.5 / b) * Math.PI, lo = Math.min(0, m), hi = Math.max(0, M), pad = (hi - lo) * 0.14;
+    var fr = figFrame({ w: 320, h: 210, l: 40, r: 26, t: 20, b: 20, x0: 0, x1: xEnd, y0: lo - pad, y1: hi + pad });
+    var nearO = m < 0 && fr.Y(m) - fr.Y(0) < 24;
+    var s = figAxes(fr, { O: !nearO }) + figCurve(fr, f, 0, xEnd) + figMark(fr, Fr.toNum(xA) * Math.PI, M, labPi(xA.n, xA.d), intLab(M), 'H', 'A') + figMark(fr, Fr.toNum(xB) * Math.PI, m, labPi(xB.n, xB.d), intLab(m), 'L', 'B');
+    return { q: '下圖是函數 ' + T('f(x)=a\\cos(bx-c)+d') + '（' + T('a\\gt0,\\ b\\gt0,\\ 0\\lt c\\lt2\\pi') + '）的部分圖形，' + T('A') + '、' + T('B') + ' 是相鄰的最高點與最低點，坐標標示在兩軸上。選出正確的選項：' + figSvg(320, 210, '餘弦型函數的部分圖形，標出相鄰的最高點 A 與最低點 B', s) +
+        sts.map(function (s2, i) { return figOpt(i + 1, s2[0]); }).join('　'),
+      a: ans.map(function (i) { return '(' + i + ')'; }).join(''),
+      h: '先從圖讀出 $A\\left(' + pT(xA) + ',' + M + '\\right)$、$B\\left(' + pT(xB) + ',' + m + '\\right)$：$a=\\dfrac{' + figDiff(M, m) + '}{2}$、$d=\\dfrac{' + figSum(M, m) + '}{2}$，兩點的水平距離 $' + pT(half) + '$ 是半個週期；最高點代入 $bx-c=2k\\pi$ 求 $c$。寫出 $f(x)$ 之後再逐項檢查。',
+      p: { a: a, b: [bF.n, bF.d], c: [cF.n, cF.d], d: d, ans: ans } };
+  };
+
+  /* L3-21　高 CD 把 ∠ACB 分成兩塊（D 在 AB 上：相加；D 在 AB 的延長線上：相減） */
+  function figSailSvg(mode, p, q, h) {
+    var W = 300, tot = mode === 'in' ? p + q : p, sc = Math.min(230 / tot, 150 / h), x0 = (W - tot * sc) / 2, yb = 24 + h * sc, H = Math.ceil(yb + 44);
+    var A = [x0, yb], D = [x0 + p * sc, yb], B = mode === 'in' ? [x0 + (p + q) * sc, yb] : [x0 + (p - q) * sc, yb], C = [D[0], yb - h * sc];
+    var s = figPath('M ' + ptS(A) + ' L ' + ptS(B) + ' L ' + ptS(C) + ' Z', { fill: FIGC.fill, w: 2, k: 'tri' });
+    if (mode === 'out') s += figLine(B[0], B[1], D[0], D[1], { c: FIGC.soft, w: 1.3, dash: 1 });
+    s += figLine(C[0], C[1], D[0], D[1], { c: FIGC.soft, w: 1.3, dash: 1, k: 'alt' });
+    s += '<polyline' + figAttr({ points: n2(D[0] - 8) + ',' + n2(yb) + ' ' + n2(D[0] - 8) + ',' + n2(yb - 8) + ' ' + n2(D[0]) + ',' + n2(yb - 8), fill: 'none', stroke: FIGC.soft, 'stroke-width': 1.2 }) + '/>';
+    var aCA = Math.atan2(C[1] - A[1], A[0] - C[0]), aCB = Math.atan2(C[1] - B[1], B[0] - C[0]);       /* 由 C 看 A、B 的數學角（都朝下，為負） */
+    s += figPath(figArcD(C[0], C[1], 17, Math.min(aCA, aCB), Math.max(aCA, aCB)), { c: FIGC.hot, w: 1.4 });
+    s += figDot(A[0], A[1], { k: 'A', r: 2.6 }) + figDot(B[0], B[1], { k: 'B', r: 2.6 }) + figDot(C[0], C[1], { k: 'C', r: 2.6 }) + figDot(D[0], D[1], { k: 'D', r: 2.6 });
+    s += figText(A[0] - 2, yb + 15, 'A', { fs: 14, it: 1 }) + figText(B[0] + (mode === 'in' ? 2 : 0), yb + 15, 'B', { fs: 14, it: 1 }) + figText(D[0] + (mode === 'in' ? 0 : 2), yb + 15, 'D', { fs: 14, it: 1 }) + figText(C[0], C[1] - 8, 'C', { fs: 14, it: 1 });
+    if (mode === 'in') s += figVal((A[0] + D[0]) / 2, yb + 30, String(p), { k: 'AD', fs: 14 }) + figVal((D[0] + B[0]) / 2, yb + 30, String(q), { k: 'DB', fs: 14 });
+    else s += figVal((A[0] + B[0]) / 2, yb + 30, String(p - q), { k: 'AB', fs: 14 }) + figVal((B[0] + D[0]) / 2, yb + 30, String(q), { k: 'BD', fs: 14 });
+    var left = mode === 'in' && p > q;
+    s += figVal(D[0] + (left ? -8 : 8), (C[1] + yb) / 2 + 6, String(h), { k: 'CD', fs: 14, anchor: left ? 'end' : 'start' });
+    return figSvg(W, H, '三角形 ABC 與 C 到直線 AB 的垂線 CD，' + (mode === 'in' ? 'D 在 A、B 之間' : 'D 在 AB 的延長線上'), s);
+  }
+  L3.figSailTan = function (r) {
+    var mode, p, q, h, num, den, tot, guard = 0;
+    do {
+      mode = r.pick(['in', 'in', 'out']); h = r.int(2, 9); q = r.int(1, 6); p = mode === 'in' ? r.int(1, 6) : q + r.int(1, 5);
+      if (mode === 'in') { num = h * (p + q); den = h * h - p * q; tot = p + q; } else { num = h * (p - q); den = h * h + p * q; tot = p; }
+    } while ((den === 0 || tot / h < 0.45 || tot / h > 2.6) && guard++ < 300);
+    if (guard >= 300) { mode = 'in'; p = 2; q = 3; h = 5; num = 25; den = 19; }
+    var ta = Fr.tex(F(p, h)), tb = Fr.tex(F(q, h));
+    return { q: '如圖，' + T('\\overline{CD}') + ' 垂直直線 ' + T('AB') + ' 於 ' + T('D') + '，各線段的長標示在圖上，求 ' + T('\\tan\\angle ACB') + '。' + figSailSvg(mode, p, q, h),
+      a: T('\\tan\\angle ACB=' + Fr.tex(F(num, den))),
+      h: mode === 'in' ? '$\\overline{CD}$ 把 $\\angle ACB$ 分成 $\\angle ACD$、$\\angle BCD$ 兩個角：$\\tan\\angle ACD=' + ta + '$、$\\tan\\angle BCD=' + tb + '$。$\\angle ACB$ 是兩角的和，用 $\\tan$ 的和角公式。'
+        : '$D$ 在 $\\overline{AB}$ 的延長線上，$\\overline{AD}=' + (p - q) + '+' + q + '=' + p + '$：$\\tan\\angle ACD=' + ta + '$、$\\tan\\angle BCD=' + tb + '$。$\\angle ACB=\\angle ACD-\\angle BCD$，用 $\\tan$ 的差角公式。',
+      p: { mode: mode, p: p, q: q, h: h, num: num, den: den } };
+  };
+
+  /* L3-22　交流電 I(t)=a sin(bt+c)：頻率 n 赫茲（週期 1/n 秒），最高點在 t = m/(12n) */
+  L3.figCurrent = function (r) {
+    var n = r.pick([20, 25, 40, 50, 60, 100]), a = r.pick([5, 8, 10, 12, 15, 20]), m = r.pick([1, 2, 3, 10, 11]), HL = m <= 3, cK = ((6 - 2 * m) % 24 + 24) % 24;
+    var tH = F(m, 12 * n), tL = F(HL ? m + 6 : m - 6, 12 * n), c = cK * Math.PI / 12, f = function (t) { return a * Math.sin(2 * Math.PI * n * t + c); };
+    var fr = figFrame({ w: 320, h: 206, l: 40, r: 30, t: 22, b: 20, x0: 0, x1: 1.2 / n, y0: -1.38 * a, y1: 1.38 * a });
+    var s = figAxes(fr, { xl: 't（秒）', yl: 'I' }) + figCurve(fr, f, 0, fr.x1) + figMark(fr, tH.n / tH.d, a, labFr(tH), String(a), 'H') + figMark(fr, tL.n / tL.d, -a, labFr(tL), MINUS + a, 'L');
+    var hT = Fr.tex(tH), lT = Fr.tex(tL);
+    return { q: '下圖是交流電的電流 ' + T('I(t)=a\\sin(bt+c)') + '（' + T('a\\gt0,\\ b\\gt0,\\ 0\\le c\\lt\\pi') + '，' + T('t') + ' 的單位是秒）的部分圖形，圖上標出相鄰的最高點與最低點，求 ' + T('(a,b,c)') + '。' + figSvg(320, 206, '電流隨時間變化的正弦曲線，標出相鄰的最高點與最低點', s),
+      a: T('(a,b,c)=\\left(' + a + ',' + 2 * n + '\\pi,' + piTex(cK, 12) + '\\right)'),
+      h: '最高點的高度就是 $a=' + a + '$。相鄰最高、最低點的水平距離是半個週期：$\\dfrac T2=' + (HL ? lT + '-' + hT : hT + '-' + lT) + '=' + Fr.tex(F(1, 2 * n)) + '$，$T=' + Fr.tex(F(1, n)) + '$，$b=\\dfrac{2\\pi}{T}$。最高點 $t=' + hT + '$ 代入 $bt+c=\\dfrac{\\pi}{2}' + (HL ? '' : '+2\\pi') + '$ 求 $c$。',
+      p: { n: n, a: a, m: m, cK: cK } };
+  };
+  META_L3.push(['figRectArcs', '矩形內兩段圓弧之間的面積（附圖）'], ['figCosProps', '由圖形判斷 a cos(bx−c)+d 的性質（多選）'], ['figSailTan', '高把角分成兩塊：tan 的和差角（附圖）'], ['figCurrent', '交流電的圖形反求 (a,b,c)']);
+  L3_FIX['L3-19'] = 'figRectArcs'; L3_FIX['L3-20'] = 'figCosProps'; L3_FIX['L3-21'] = 'figSailTan'; L3_FIX['L3-22'] = 'figCurrent';
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

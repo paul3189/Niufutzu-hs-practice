@@ -1090,7 +1090,7 @@ $\dfrac{P_1}{P_2}=\dfrac{18}{8}=\dfrac94$。<span class="note-sm">常數數列�
       render(card);
     }
     card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
-    card.querySelector('.hint').onclick = function () { if (cur.h1 && hl === 0) showHint(); else card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.hint').onclick = function () { if (!cur.h1 || hl === 0) showHint(); else card.querySelector('.gh').classList.toggle('on'); };
     card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
     card.querySelector('.steps').onclick = function () { card.querySelector('.gs').classList.toggle('on'); };
     var cb = card.querySelector('.contrast'); if (cb) cb.onclick = function () { var gc = card.querySelector('.gc'); if (gc.classList.contains('on') && !gc.getAttribute('data-stale')) { gc.classList.remove('on'); return; } buildContrast(gc, tier, key, seed); };
