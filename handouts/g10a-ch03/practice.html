@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js?v=20260929c"></script>
+<script src="practice-gen.js?v=20261002p3"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -207,6 +207,11 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 .diag .fixset{margin-top:6px}
 .myrec .mr-file{display:none}
 @media print{.gcard .gc,.diag{display:none!important}}
+/* ── 附圖題（2026-10-02）：題目的圖是 inline SVG，class="qfig"；手機寬自動縮小，列印照印 ── */
+.qfig,.qfig-sol{display:block;max-width:100%;height:auto;margin:8px auto 4px;font-family:KaTeX_Main,KaTeX_Math,"Times New Roman","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+.qfig text[font-style="italic"],.qfig tspan[font-style="italic"],.qfig-sol text[font-style="italic"],.qfig-sol tspan[font-style="italic"]{font-family:KaTeX_Math,KaTeX_Main,"Times New Roman",serif}
+.qopt{display:inline-block}
+@media print{.qfig,.qfig-sol{break-inside:avoid}}
 </style>
 <link rel="stylesheet" href="../../assets/theme-cow.css">
 </head>
@@ -236,7 +241,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字與做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（18,500 題抽樣）；固定題全數人工＋電腦重算。本章不用超出高一上的工具：三次方程式只用勘根與因式分解，一次近似只用「除以 $(x-h)$ 兩次」。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（20,900 題抽樣）；L1、L2 的<b>讀圖題</b>每次換題，圖會跟著新的數字重畫，圖上標的數字就是題目的條件；固定題全數人工＋電腦重算。本章不用超出高一上的工具：三次方程式只用勘根與因式分解，一次近似只用「除以 $(x-h)$ 兩次」。</li>
   </ol>
 </div>
 
@@ -263,7 +268,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練到熟</h2>
 <div class="goal">
   <div><b>對象</b>綜合除法會漏補 $0$、看到「餘式」就想長除法、配方常算錯的同學。</div>
-  <div><b>目標</b>28 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>31 個基本型（含 3 型讀圖題），每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
@@ -285,7 +290,13 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fadeset" data-tier="L1" data-keys="cubicCenter,linApprox,quadIneq,cubicIneq,fracIneq,shiftExpand" data-seed="7301"></div>
 <div class="fixset" data-tier="L1" data-keys="cubicCenter,linApprox,quadIneq,cubicIneq,fracIneq,shiftExpand" data-seed="4301"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 28 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">3-4 讀圖題：看拋物線判斷正負、由頂點與一點寫二次函數、看三次函數的圖形解不等式</h3>
+<div class="must">先要會：<b>條件畫在圖上時，先把圖上的資訊讀出來，再套公式</b>；<b>拋物線：開口定 $a$、頂點在 $y$ 軸哪一邊定 $b$、與 $y$ 軸的交點定 $c$、與 $x$ 軸的交點個數定 $b^2-4ac$</b>；<b>$a+b+c=f(1)$、$a-b+c=f(-1)$，看圖上那一點在 $x$ 軸的上方還是下方</b>；<b>圖上標了頂點就設頂點式 $a(x-h)^2+k$，再代另一點求 $a$</b>；<b>$f(x)\gt0$ 的解就是圖形在 $x$ 軸上方的那些 $x$，$f(x)\lt0$ 是下方；含等號時交點也要取</b>。本章的段考原題大約每十題有一題附圖，集中在二次函數與三次函數的圖形（大約每六題一題）。按「新題」時，圖會跟著數字重畫；函數圖形的兩軸單位長不一定相同，數值以圖上標的為準。</div>
+<div class="gen-grid" data-tier="L1" data-keys="figQuadSigns,figQuadVertex,figCubicSign"></div>
+<div class="fadeset" data-tier="L1" data-keys="figQuadSigns,figQuadVertex,figCubicSign" data-seed="7401"></div>
+<div class="fixset" data-tier="L1" data-keys="figQuadSigns,figQuadVertex,figCubicSign" data-seed="4401" data-n="6"></div>
+
+<h3 class="sec">L1 混合檢測 12 題（全章 31 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -294,7 +305,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>22 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 128 份高一段考卷重新統計，補了 5 型；2026-09-29 補含絕對值的二次函數 1 型），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>25 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 128 份高一段考卷重新統計，補了 5 型；2026-09-29 補含絕對值的二次函數 1 型；2026-10-02 補讀圖題 3 型），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
@@ -307,10 +318,14 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="gen-grid" data-tier="L2" data-keys="quadFromCond,quadThreePts,intervalParam,alwaysPosCount,lineBelowParab,profit,quadSignExpr,fenceArea,absQuadParam"></div>
 
 <h3 class="sec">3-3 三次函數與高次不等式、由解反推</h3>
-<div class="must">128 份高一段考卷中<b>一次近似 51 卷、高次不等式 48 卷、三次函數 46 卷、由不等式的解反推係數 43 卷、對稱中心 39 卷</b>。解題要點：<b>知道中心就設 $a(x-h)^3+p(x-h)+k$，兩點解 $a,p$</b>；<b>平移只改 $h,k$，$a,p$ 不變</b>；<b>近似值＝$f(c)+f'(c)\cdot\varepsilon$，兩個數都靠綜合除法連除</b>；<b>偶次重根不變號：嚴格不等式要挖洞、含等號是孤立解</b>；<b>由解區間反推：端點就是根，常數項定 $a$，最右邊的正負核對 $a$ 的符號</b>；<b>二次不等式反推：解在兩根之間 ⟹ $a\lt0$，把 $b,c$ 用 $a$ 表示，代進新式子後提出 $a$（$a\lt0$ 要反向）</b>。</div>
+<div class="must">128 份高一段考卷中<b>一次近似 51 卷、高次不等式 48 卷、三次函數 46 卷、由不等式的解反推係數 43 卷、對稱中心 39 卷</b>。解題要點：<b>知道中心就設 $a(x-h)^3+p(x-h)+k$，兩點解 $a,p$</b>；<b>平移只改 $h,k$，$a,p$ 不變</b>；<b>近似值＝$f(c)+m\cdot\varepsilon$（$m$ 是 $x=c$ 附近一次近似的斜率），$f(c)$ 與 $m$ 都靠綜合除法連除</b>；<b>偶次重根不變號：嚴格不等式要挖洞、含等號是孤立解</b>；<b>由解區間反推：端點就是根，常數項定 $a$，最右邊的正負核對 $a$ 的符號</b>；<b>二次不等式反推：解在兩根之間 ⟹ $a\lt0$，把 $b,c$ 用 $a$ 表示，代進新式子後提出 $a$（$a\lt0$ 要反向）</b>。</div>
 <div class="gen-grid" data-tier="L2" data-keys="cubicCenterPts,cubicShift,linApproxVal,highIneq,ineqFromSol,quadIneqRev"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 22 型打亂・可列印・可換組）</h3>
+<h3 class="sec">讀圖題：由圖形寫三次函數、看對稱中心與係數的正負、兩圖形的上下關係</h3>
+<div class="must">本章的段考原題約一成附圖，各節差很多：<b>三次函數的圖形約 18%、一次與二次函數約 16%、多項式不等式約 11%</b>，除法原理幾乎沒有。解題要點：<b>圖形和 $x$ 軸的交點就是根：穿過去的因式寫一次、碰到就折回的寫兩次，設 $a(x-r_1)(x-r_2)(x-r_3)$ 再代圖上另一點求 $a$</b>；<b>$y=a(x-h)^3+p(x-h)+k$：最右邊往上 $a\gt0$、往下 $a\lt0$；對稱中心就是 $(h,k)$；對稱中心附近圖形像直線 $y=p(x-h)+k$，那裡上升 $p\gt0$、下降 $p\lt0$（有一高一低時 $a$、$p$ 異號）</b>；<b>$f(x)\gt g(x)$ 的解就是 $y=f(x)$ 的圖形在 $y=g(x)$ 上方的那些 $x$：用交點把 $x$ 軸分段，逐段看誰在上面，不必求出式子</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="figCubicFit,figCubicCenter,figAboveBelow"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 25 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -319,8 +334,8 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>19 題各校段考中後段常見題：每題附「關鍵字：做法」，練到一看到關鍵字就知道怎麼做；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>19 題全部能獨立完成，且說得出每題的做法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>21 題各校段考中後段常見題（最後 2 題是附圖題）：每題附「關鍵字：做法」，練到一看到關鍵字就知道怎麼做；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>21 題全部能獨立完成，且說得出每題的做法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
 <div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字或問法。答案與詳解皆重新驗算過（L3-5 原卷等號兩側用了同一組字母 $a,b$，會自相矛盾，本書右式改用 $p,q,r$）。</div>
 
@@ -495,7 +510,36 @@ $x\lt-1$ 時：$y=(x+1)(-x-1-6)=-(x+1)(x+7)=-(x+4)^2+9$，頂點 $(-4,9)$ 是山
 所以 $-9\lt k\lt 9$。<br>
 <span class="note-sm">原題是 $y=(x-2)(|x-2|-2)$，答案 $-1\lt k\lt 1$。$y=(x-h)(|x-h|-c)$ 的圖形對點 $(h,0)$ 對稱，山峰和山谷一樣高（都是 $\dfrac{c^2}{4}$），所以恰有 $3$ 個交點的答案總是 $-\dfrac{c^2}{4}\lt k\lt\dfrac{c^2}{4}$。</span></div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（19 型打亂，可換組）</h3>
+<!-- figq:L3 -->
+<div class="note">以下 2 題（L3-20、L3-21）是<b>附圖題</b>：開口方向、交點、高點低點的位置都只畫在圖上，先把圖讀清楚再判斷。圖依原題條件重新繪製。本章的段考原題裡，二次函數與三次函數的題大約每六題有一題附圖，多項式不等式大約每九題一題。</div>
+
+<div class="fx" id="L3-20" data-gen="figQuadMulti"><div class="fxh"><span class="no">L3-20</span><span class="kw">拋物線＋一個交點＋對稱軸：用對稱找另一個交點，設成 a(x+2)(x−4)，把 b、c 都用 a 表示再逐項判斷</span><span class="src">北一女中 113上 多選</span></div>
+<div class="fxq">設 $a$、$b$、$c$ 均為實數，$y=f(x)=ax^2+2bx+c$ 的圖形如下圖，已知此圖形交 $x$ 軸於 $(-2,0)$，且對稱軸為直線 $x-1=0$。選出正確的敘述：<svg class="qfig" viewBox="0 0 300 200" width="300" height="200" role="img" aria-label="開口向下的拋物線，與 x 軸的一個交點標為 (−2, 0)，頂點在 y 軸右邊"><line data-k="xaxis" x1="8" y1="136.97" x2="280" y2="136.97" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 288 136.97 L 280 140.17 L 280 133.77 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="125.71" y1="194" x2="125.71" y2="18" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 125.71 10 L 128.91 18 L 122.51 18 Z" fill="#3a2a2e"/><polyline data-k="curve" points="55.5,186 56,184.5 57.6,179.8 59.2,175.1 60.8,170.5 62.4,166 64,161.6 65.6,157.2 67.2,152.9 68.8,148.7 70.4,144.6 72,140.6 73.6,136.7 75.2,132.8 76.8,129 78.4,125.3 80,121.7 81.6,118.1 83.2,114.6 84.8,111.2 86.4,107.9 88,104.7 89.6,101.6 91.2,98.5 92.8,95.5 94.4,92.6 96,89.7 97.6,87 99.2,84.3 100.8,81.7 102.4,79.2 104,76.8 105.6,74.4 107.2,72.2 108.8,70 110.4,67.9 112,65.8 113.6,63.9 115.2,62 116.8,60.2 118.4,58.5 120,56.9 121.6,55.3 123.2,53.9 124.8,52.5 126.4,51.2 128,49.9 129.6,48.8 131.2,47.7 132.8,46.7 134.4,45.8 136,45 137.6,44.2 139.2,43.5 140.8,43 142.4,42.4 144,42 145.6,41.7 147.2,41.4 148.8,41.2 150.4,41.1 152,41.1 153.6,41.1 155.2,41.2 156.8,41.4 158.4,41.7 160,42.1 161.6,42.5 163.2,43.1 164.8,43.7 166.4,44.4 168,45.1 169.6,46 171.2,46.9 172.8,47.9 174.4,49 176,50.2 177.6,51.4 179.2,52.7 180.8,54.2 182.4,55.6 184,57.2 185.6,58.9 187.2,60.6 188.8,62.4 190.4,64.3 192,66.2 193.6,68.3 195.2,70.4 196.8,72.6 198.4,74.9 200,77.3 201.6,79.7 203.2,82.3 204.8,84.9 206.4,87.6 208,90.3 209.6,93.2 211.2,96.1 212.8,99.1 214.4,102.2 216,105.4 217.6,108.6 219.2,111.9 220.8,115.3 222.4,118.8 224,122.4 225.6,126 227.2,129.8 228.8,133.6 230.4,137.5 232,141.4 233.6,145.5 235.2,149.6 236.8,153.8 238.4,158.1 240,162.5 241.6,166.9 243.2,171.4 244.8,176 246.4,180.7 248,185.5 248.2,186" fill="none" stroke="#b03a55" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle data-k="root" cx="73.47" cy="136.97" r="3" fill="#7a2e3c"/><text data-k="rt" x="46.4" y="129.5" font-size="13" fill="#3a2a2e" text-anchor="middle">(−2, 0)</text><text x="293" y="153.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="115.7" y="19.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><text x="115.7" y="153.5" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg>
+<span class="qopt">(1) $ac\gt0$</span>　<span class="qopt">(2) $a+b\gt0$</span>　<span class="qopt">(3) $a+2b+c=0$</span>　<span class="qopt">(4) $f(-1)\lt0$</span>　<span class="qopt">(5) $f(5)=f(-3)$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5)</div>
+<div class="fxs"><div class="move">做法：先讀圖。開口向下，所以 $a\lt0$；$(-2,0)$ 對直線 $x=1$ 的對稱點 $(4,0)$ 是另一個交點，$f(x)=a(x+2)(x-4)$。</div>
+展開：$f(x)=a(x^2-2x-8)=ax^2-2ax-8a$。和 $ax^2+2bx+c$ 比較：$2b=-2a$ ⟹ $b=-a$；$c=-8a$。注意題目的一次項係數是 $2b$，不是 $b$。<br>
+(1) $ac=a\cdot(-8a)=-8a^2\lt0$ ✘<br>
+(2) $a+b=a-a=0$，不是正的 ✘<br>
+(3) $a+2b+c=f(1)$，是頂點的高度。從圖上看頂點在 $x$ 軸上方，$f(1)=a\cdot3\cdot(-3)=-9a\gt0$，不是 $0$ ✘<br>
+(4) $f(-1)=a\cdot1\cdot(-5)=-5a\gt0$；從圖上看，$x=-1$ 在兩個交點 $-2$、$4$ 之間，圖形在 $x$ 軸上方 ✘<br>
+(5) $5$ 和 $-3$ 的中點是 $1$，兩點離對稱軸一樣遠，函數值相等 ✔</div></div>
+
+<div class="fx" id="L3-21" data-gen="figCubicMulti"><div class="fxh"><span class="no">L3-21</span><span class="kw">三次函數的圖：最右邊的走向定 a；有一高一低，a、p 異號；對稱中心 (h,k) 在高點和低點的正中間；−ah³−ph+k 就是 f(0)</span><span class="src">台中女中 113上 多選</span></div>
+<div class="fxq">三次函數 $y=f(x)=a(x-h)^3+p(x-h)+k$ 的圖形如下圖。下列選項哪些是正確的？<svg class="qfig" viewBox="0 0 300 210" width="300" height="210" role="img" aria-label="三次函數的圖形：最右邊往下，低點和高點都在第一象限，與 y 軸交在 x 軸上方"><line data-k="xaxis" x1="8" y1="152.34" x2="280" y2="152.34" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 288 152.34 L 280 155.54 L 280 149.14 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="65.63" y1="204" x2="65.63" y2="18" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 65.63 10 L 68.83 18 L 62.43 18 Z" fill="#3a2a2e"/><polyline data-k="curve" points="19.1,24 19.2,24.5 20.8,30.1 22.4,35.6 24,40.8 25.6,46 27.2,50.9 28.8,55.7 30.4,60.3 32,64.7 33.6,69 35.2,73.2 36.8,77.1 38.4,81 40,84.6 41.6,88.2 43.2,91.6 44.8,94.8 46.4,97.9 48,100.8 49.6,103.7 51.2,106.4 52.8,108.9 54.4,111.3 56,113.6 57.6,115.8 59.2,117.8 60.8,119.8 62.4,121.6 64,123.3 65.6,124.9 67.2,126.3 68.8,127.7 70.4,128.9 72,130.1 73.6,131.1 75.2,132.1 76.8,132.9 78.4,133.6 80,134.3 81.6,134.9 83.2,135.3 84.8,135.7 86.4,136 88,136.3 89.6,136.4 91.2,136.5 92.8,136.4 94.4,136.4 96,136.2 97.6,136 99.2,135.7 100.8,135.3 102.4,134.9 104,134.5 105.6,133.9 107.2,133.3 108.8,132.7 110.4,132 112,131.3 113.6,130.5 115.2,129.7 116.8,128.8 118.4,127.9 120,127 121.6,126 123.2,125 124.8,123.9 126.4,122.9 128,121.8 129.6,120.7 131.2,119.5 132.8,118.4 134.4,117.2 136,116 137.6,114.8 139.2,113.6 140.8,112.4 142.4,111.2 144,110 145.6,108.8 147.2,107.6 148.8,106.4 150.4,105.2 152,104 153.6,102.8 155.2,101.6 156.8,100.5 158.4,99.3 160,98.2 161.6,97.1 163.2,96.1 164.8,95 166.4,94 168,93 169.6,92.1 171.2,91.2 172.8,90.3 174.4,89.5 176,88.7 177.6,88 179.2,87.3 180.8,86.7 182.4,86.1 184,85.5 185.6,85.1 187.2,84.7 188.8,84.3 190.4,84 192,83.8 193.6,83.6 195.2,83.6 196.8,83.5 198.4,83.6 200,83.7 201.6,84 203.2,84.3 204.8,84.7 206.4,85.1 208,85.7 209.6,86.4 211.2,87.1 212.8,87.9 214.4,88.9 216,89.9 217.6,91.1 219.2,92.3 220.8,93.7 222.4,95.1 224,96.7 225.6,98.4 227.2,100.2 228.8,102.2 230.4,104.2 232,106.4 233.6,108.7 235.2,111.1 236.8,113.6 238.4,116.3 240,119.2 241.6,122.1 243.2,125.2 244.8,128.4 246.4,131.8 248,135.4 249.6,139 251.2,142.9 252.8,146.8 254.4,151 256,155.3 257.6,159.7 259.2,164.3 260.8,169.1 262.4,174 264,179.2 265.6,184.4 267.2,189.9 268.8,195.5 268.9,196" fill="none" stroke="#b03a55" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><text x="293" y="168.8" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="55.6" y="19.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><text x="55.6" y="168.8" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg>
+<span class="qopt">(1) $a\lt0$</span>　<span class="qopt">(2) $p\gt0$</span>　<span class="qopt">(3) $h\lt0$</span>　<span class="qopt">(4) $k\gt0$</span>　<span class="qopt">(5) $-ah^3-ph+k\gt0$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(4)(5)</div>
+<div class="fxs"><div class="move">做法：四個字母各看圖上的一件事：$a$ 看最右邊往上還是往下；$p$ 看有沒有高低起伏；$(h,k)$ 是對稱中心；最後一個式子是 $f(0)$。</div>
+(1) 圖形最右邊往下（$x$ 很大時 $y$ 是很大的負數），所以 $a\lt0$ ✔<br>
+(2) 圖形有一個低點和一個高點。$y=a(x-h)^3+p(x-h)+k$ 有高低起伏時 $a$、$p$ 異號，$a\lt0$ 所以 $p\gt0$ ✔<br>
+<span class="note-sm">另一個看法：在對稱中心附近，圖形很像直線 $y=p(x-h)+k$。中心在低點和高點之間，那一段由左到右是上升的，所以 $p\gt0$。</span><br>
+(3)(4) 對稱中心 $(h,k)$ 在低點和高點的正中間。圖上低點、高點都在 $y$ 軸右邊、$x$ 軸上方，中點也在第一象限，所以 $h\gt0$、$k\gt0$。(3) ✘　(4) ✔<br>
+(5) 把 $x=0$ 代入：$f(0)=a(-h)^3+p(-h)+k=-ah^3-ph+k$，就是圖形和 $y$ 軸交點的高度。圖上這個交點在 $x$ 軸上方，所以 $f(0)\gt0$ ✔</div></div>
+<!-- /figq:L3 -->
+
+<h3 class="sec">L3 混合檢測 10 題（21 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -508,8 +552,8 @@ $x\lt-1$ 時：$y=(x+1)(-x-1-6)=-(x+1)(x+7)=-(x+4)^2+9$，頂點 $(-4,9)$ 是山
 <h2><span class="tag">L4</span>頂尖程度：第一志願段考、模考、大考的難題</h2>
 <div class="goal">
   <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
-  <div><b>目標</b>12 題：每題都要把兩個以上的做法串起來，或一個不常見的觀察。</div>
-  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+  <div><b>目標</b>14 題：每題都要把兩個以上的做法串起來，或一個不常見的觀察；L4-13、L4-14 是附圖題。</div>
+  <div><b>通過標準</b>限時 105 分鐘做完 14 題，對 10 題以上。</div>
 </div>
 
 <div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">f(1)=f(−1)=1：f(x)−1 含 (x−1)(x+1)，剩下一次式用另外兩點定</span><span class="src">北一女中 112上期末 填 10</span></div>
@@ -613,6 +657,42 @@ $k^2-8k+19=(k-4)^2+3$ 在 $0\le k\le3$ 遞減，$k=3$ 時最小 $=1+3=4$。</div
 <div class="fxs"><div class="move">做法：$k\lt0$ ⟹ 兩根之積 $\dfrac5k\lt0$，兩根異號 ⟹ $a\lt0\lt b$，$3|a|=|b|$ 就是 $b=-3a$。</div>
 兩根和 $a+b=1$ ⟹ $-2a=1$ ⟹ $a=-\dfrac12$、$b=\dfrac32$。<br>
 兩根積 $ab=-\dfrac34=\dfrac5k$ ⟹ $k=-\dfrac{20}3$。</div></div>
+<!-- figq:L4 -->
+<div class="note">以下 2 題（L4-13、L4-14）是<b>附圖題</b>。圖依題目條件重新繪製，交點的坐標、對稱軸都標在圖上；題目沒有給式子，要自己從圖寫出來。</div>
+
+<div class="fx" id="L4-13"><div class="fxh"><span class="no">L4-13</span><span class="kw">九個式子判斷正負：兩個交點寫成 a(x+0.5)(x−1.5)，b、c 用 a 表示；係數湊成的式子改寫成某個 f(t)，看 t 在兩個交點之間還是之外</span><span class="src">台中女中 112上期末 單選</span></div>
+<div class="fxq">設 $f(x)=ax^2+bx+c$ 的圖形如下圖。下列 $9$ 個式子中，共有幾個的值是負的？<svg class="qfig" viewBox="0 0 300 200" width="300" height="200" role="img" aria-label="開口向下的拋物線，交 x 軸於 (−0.5, 0)、(1.5, 0)，對稱軸是直線 x = 0.5"><line data-k="xaxis" x1="8" y1="98.77" x2="280" y2="98.77" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 288 98.77 L 280 101.97 L 280 95.57 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="115.56" y1="194" x2="115.56" y2="18" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 115.56 10 L 118.76 18 L 112.36 18 Z" fill="#3a2a2e"/><polyline data-k="curve" points="49.7,186 51.2,181.6 52.8,177 54.4,172.6 56,168.2 57.6,163.9 59.2,159.7 60.8,155.5 62.4,151.5 64,147.5 65.6,143.6 67.2,139.8 68.8,136 70.4,132.4 72,128.8 73.6,125.3 75.2,121.8 76.8,118.5 78.4,115.2 80,112 81.6,108.9 83.2,105.9 84.8,102.9 86.4,100 88,97.2 89.6,94.5 91.2,91.9 92.8,89.3 94.4,86.8 96,84.4 97.6,82.1 99.2,79.8 100.8,77.7 102.4,75.6 104,73.6 105.6,71.6 107.2,69.8 108.8,68 110.4,66.3 112,64.7 113.6,63.2 115.2,61.7 116.8,60.3 118.4,59 120,57.8 121.6,56.7 123.2,55.6 124.8,54.6 126.4,53.7 128,52.9 129.6,52.1 131.2,51.4 132.8,50.9 134.4,50.3 136,49.9 137.6,49.6 139.2,49.3 140.8,49.1 142.4,49 144,48.9 145.6,49 147.2,49.1 148.8,49.3 150.4,49.6 152,49.9 153.6,50.3 155.2,50.9 156.8,51.4 158.4,52.1 160,52.9 161.6,53.7 163.2,54.6 164.8,55.6 166.4,56.7 168,57.8 169.6,59 171.2,60.3 172.8,61.7 174.4,63.2 176,64.7 177.6,66.3 179.2,68 180.8,69.8 182.4,71.6 184,73.6 185.6,75.6 187.2,77.7 188.8,79.8 190.4,82.1 192,84.4 193.6,86.8 195.2,89.3 196.8,91.9 198.4,94.5 200,97.2 201.6,100 203.2,102.9 204.8,105.9 206.4,108.9 208,112 209.6,115.2 211.2,118.5 212.8,121.8 214.4,125.3 216,128.8 217.6,132.4 219.2,136 220.8,139.8 222.4,143.6 224,147.5 225.6,151.5 227.2,155.5 228.8,159.7 230.4,163.9 232,168.2 233.6,172.6 235.2,177 236.8,181.6 238.3,186" fill="none" stroke="#b03a55" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><line data-k="sym" x1="144" y1="158.58" x2="144" y2="27.99" stroke="#8a7378" stroke-width="1.2" stroke-dasharray="4 3" stroke-linecap="round"/><circle data-k="Adot" cx="87.11" cy="98.77" r="3" fill="#7a2e3c"/><text data-k="A" x="56" y="91.3" font-size="13" fill="#3a2a2e" text-anchor="middle">(−0.5, 0)</text><circle data-k="Bdot" cx="200.89" cy="98.77" r="3" fill="#7a2e3c"/><text data-k="B" x="227" y="91.3" font-size="13" fill="#3a2a2e" text-anchor="middle">(1.5, 0)</text><text data-k="symlab" x="171.5" y="38.5" font-size="13" fill="#3a2a2e" text-anchor="middle"><tspan font-style="italic">x</tspan> = 0.5</text><text x="293" y="115.3" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="105.6" y="19.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><text x="105.6" y="115.3" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg>
+<span class="qopt">(A) $a$</span>　<span class="qopt">(B) $b$</span>　<span class="qopt">(C) $c$</span>　<span class="qopt">(D) $b^2-4ac$</span>　<span class="qopt">(E) $a-b+c$</span>　<span class="qopt">(F) $16a+4b+c$</span>　<span class="qopt">(G) $2a+b$</span>　<span class="qopt">(H) $a+b$</span>　<span class="qopt">(I) $a+3b+9c$</span><br>
+<span class="qopt">(1) $7$ 個</span>　<span class="qopt">(2) $6$ 個</span>　<span class="qopt">(3) $5$ 個</span>　<span class="qopt">(4) $4$ 個</span>　<span class="qopt">(5) $3$ 個</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4)（$4$ 個：$a$、$a-b+c$、$16a+4b+c$、$2a+b$）</div>
+<div class="fxs"><div class="move">做法：從圖讀出開口向下、兩個交點 $-0.5$ 與 $1.5$，寫成 $f(x)=a(x+0.5)(x-1.5)$；開口向下的拋物線，在兩個交點之間是正的、之外是負的。</div>
+展開：$f(x)=a\left(x^2-x-\dfrac34\right)$，所以 $b=-a$、$c=-\dfrac34a$，其中 $a\lt0$。<br>
+(A) $a\lt0$，負。　(B) $b=-a\gt0$。　(C) $c=-\dfrac34a\gt0$（也可以直接看：圖形和 $y$ 軸交在 $x$ 軸上方）。<br>
+(D) 圖形和 $x$ 軸有兩個交點，$b^2-4ac\gt0$。<br>
+(E) $a-b+c=f(-1)$，$-1$ 在兩個交點之外，負。<br>
+(F) $16a+4b+c=f(4)$，$4$ 在兩個交點之外，負。<br>
+(G) 對稱軸 $x=-\dfrac{b}{2a}=0.5$ ⟹ $b=-a$，$2a+b=a\lt0$，負。<br>
+(H) $a+b=a-a=0$，不是負的。<br>
+(I) $a+3b+9c=9\left(\dfrac19a+\dfrac13b+c\right)=9f\left(\dfrac13\right)$，$\dfrac13$ 在兩個交點之間，正。<br>
+負的有 (A)(E)(F)(G) 共 $4$ 個，選 (4)。<br>
+<span class="note-sm">檢查：$a+3b+9c=a-3a-\dfrac{27}{4}a=-\dfrac{35}{4}a\gt0$，和上面一致。</span></div></div>
+
+<div class="fx" id="L4-14"><div class="fxh"><span class="no">L4-14</span><span class="kw">三次函數的圖給三個交點：寫成 a(x+3)(x−1)(x−4)，最右邊往下所以 a&lt;0；f(x−2) 的根各加 2；偶次方的因式要另外看等號</span><span class="src">師大附中 112上期末 單選 2</span></div>
+<div class="fxq">下圖為三次實係數多項式函數 $y=f(x)$ 的圖形，它與 $x$ 軸交於 $A(-3,0)$、$B(1,0)$、$C(4,0)$ 三點。不等式 $(x+1)^3f(x-2)\ge0$ 的整數解有多少個？<svg class="qfig" viewBox="0 0 300 200" width="300" height="200" role="img" aria-label="三次函數的圖形，交 x 軸於 A(−3, 0)、B(1, 0)、C(4, 0)，最右邊往下"><line data-k="xaxis" x1="8" y1="92.63" x2="280" y2="92.63" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 288 92.63 L 280 95.83 L 280 89.43 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="135.93" y1="194" x2="135.93" y2="18" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 135.93 10 L 139.13 18 L 132.73 18 Z" fill="#3a2a2e"/><polyline data-k="curve" points="52,24 52.8,28.4 54.4,37.1 56,45.5 57.6,53.5 59.2,61.2 60.8,68.5 62.4,75.4 64,82.1 65.6,88.4 67.2,94.3 68.8,100 70.4,105.3 72,110.3 73.6,115.1 75.2,119.5 76.8,123.6 78.4,127.5 80,131.1 81.6,134.4 83.2,137.4 84.8,140.2 86.4,142.7 88,145 89.6,147.1 91.2,148.9 92.8,150.5 94.4,151.8 96,153 97.6,153.9 99.2,154.6 100.8,155.1 102.4,155.5 104,155.6 105.6,155.6 107.2,155.4 108.8,155 110.4,154.5 112,153.8 113.6,153 115.2,152 116.8,150.9 118.4,149.6 120,148.3 121.6,146.8 123.2,145.2 124.8,143.4 126.4,141.6 128,139.7 129.6,137.7 131.2,135.6 132.8,133.5 134.4,131.3 136,129 137.6,126.6 139.2,124.2 140.8,121.8 142.4,119.3 144,116.8 145.6,114.2 147.2,111.7 148.8,109.1 150.4,106.5 152,103.9 153.6,101.3 155.2,98.7 156.8,96.1 158.4,93.6 160,91 161.6,88.6 163.2,86.1 164.8,83.7 166.4,81.3 168,79 169.6,76.8 171.2,74.6 172.8,72.6 174.4,70.5 176,68.6 177.6,66.8 179.2,65.1 180.8,63.5 182.4,61.9 184,60.6 185.6,59.3 187.2,58.2 188.8,57.2 190.4,56.3 192,55.6 193.6,55 195.2,54.7 196.8,54.4 198.4,54.4 200,54.5 201.6,54.8 203.2,55.3 204.8,56 206.4,56.9 208,58 209.6,59.4 211.2,60.9 212.8,62.7 214.4,64.7 216,67 217.6,69.5 219.2,72.2 220.8,75.2 222.4,78.5 224,82.1 225.6,85.9 227.2,90 228.8,94.4 230.4,99.1 232,104 233.6,109.3 235.2,114.9 236.8,120.9 238.4,127.1 240,133.7 241.6,140.6 243.2,147.9 244.8,155.5 246.4,163.5 248,171.8 249.6,180.5 250.6,186" fill="none" stroke="#b03a55" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle data-k="Adot" cx="66.74" cy="92.63" r="3" fill="#7a2e3c"/><text data-k="A" x="36.8" y="110.1" font-size="13" fill="#3a2a2e" text-anchor="middle"><tspan font-style="italic">A</tspan>(−3, 0)</text><circle data-k="Bdot" cx="158.99" cy="92.63" r="3" fill="#7a2e3c"/><text data-k="B" x="183.9" y="110.1" font-size="13" fill="#3a2a2e" text-anchor="middle"><tspan font-style="italic">B</tspan>(1, 0)</text><circle data-k="Cdot" cx="228.18" cy="92.63" r="3" fill="#7a2e3c"/><text data-k="C" x="253.1" y="85.1" font-size="13" fill="#3a2a2e" text-anchor="middle"><tspan font-style="italic">C</tspan>(4, 0)</text><text x="293" y="109.1" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="125.9" y="19.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><text x="125.9" y="109.1" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg>
+<span class="qopt">(1) $0$ 個</span>　<span class="qopt">(2) $4$ 個</span>　<span class="qopt">(3) $5$ 個</span>　<span class="qopt">(4) $8$ 個</span>　<span class="qopt">(5) 無限多個</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)（$5$ 個：$x=-1,\ 3,\ 4,\ 5,\ 6$）</div>
+<div class="fxs"><div class="move">做法：從圖寫出 $f(x)=a(x+3)(x-1)(x-4)$，圖形最右邊往下，所以 $a\lt0$。再把 $x$ 換成 $x-2$。</div>
+$f(x-2)=a(x-2+3)(x-2-1)(x-2-4)=a(x+1)(x-3)(x-6)$。把 $x$ 換成 $x-2$，每個根都加 $2$：$-3,1,4$ 變成 $-1,3,6$。<br>
+原式 $=(x+1)^3\cdot a(x+1)(x-3)(x-6)=a(x+1)^4(x-3)(x-6)\ge0$。<br>
+兩邊同除以負數 $a$，不等號反向：$(x+1)^4(x-3)(x-6)\le0$。<br>
+$(x+1)^4\ge0$ 不會改變正負：<br>
+・$x=-1$ 時整個式子等於 $0$，符合「$\le0$」，是一個解。<br>
+・$x\ne-1$ 時 $(x+1)^4\gt0$，只要 $(x-3)(x-6)\le0$，也就是 $3\le x\le6$。<br>
+所以解是 $x=-1$ 或 $3\le x\le6$，整數解有 $-1,3,4,5,6$ 共 $5$ 個，選 (3)。<br>
+<span class="note-sm">容易漏掉 $x=-1$：偶次方的因式不會讓式子變號，但含等號時它等於 $0$ 的那個點要另外收進來。</span></div></div>
+<!-- /figq:L4 -->
 </section>
 
 <!-- ═══════════════════════ L5 ═══════════════════════ -->
@@ -620,7 +700,7 @@ $k^2-8k+19=(k-4)^2+3$ 在 $0\le k\le3$ 遞減，$k=3$ 時最小 $=1+3=4$。</div
 <h2><span class="tag">L5</span>補充專區：經典題、科學班與教甄</h2>
 <div class="goal">
   <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
-  <div><b>目標</b>6 題經典壓軸＋19 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>目標</b>6 題經典壓軸＋19 題科學班・教甄專區＋3 題附圖題（L5-7～L5-9，放在最後），每題都要能講出「為什麼這樣想」。</div>
   <div><b>通過標準</b>沒有標準，會一題算一題。</div>
 </div>
 
@@ -862,6 +942,50 @@ $y\ne a$ 時是二次方程式，有實根 ⟺ $16-4(y-a)(y-b)\ge0$ ⟺ $(y-a)(y
 所以所有可能的值就是 $y^2-(a+b)y+(ab-4)\le0$ 的解，也就是 $[3,7]$，$3$ 與 $7$ 是 $y^2-(a+b)y+(ab-4)=0$ 的兩根：<br>
 $a+b=10$、$ab-4=21$ ⟹ $ab=25$ ⟹ $a,b$ 是 $z^2-10z+25=(z-5)^2=0$ 的兩根，$a=b=5$。<br>
 <span class="note-sm">驗：$\dfrac{5x^2+4x+5}{x^2+1}=5+\dfrac{4x}{x^2+1}$，$x=1$ 時 $7$、$x=-1$ 時 $3$，而 $\left|\dfrac{4x}{x^2+1}\right|\le2$（因為 $x^2+1\ge2|x|$）✔。</span></div></div>
+<!-- figq:L5 -->
+<h3 class="sec">附圖題（3 題）</h3>
+<div class="note">以下 3 題（L5-7～L5-9）是<b>附圖題</b>，都是高一上的段考原題。圖依題目條件重新繪製；L5-8、L5-9 兩軸用同一個單位長，圖上的直角、路徑的形狀都照比例。</div>
+
+<div class="fx" id="L5-7"><div class="fxh"><span class="no">L5-7</span><span class="kw">圖形在 x=1 只碰到 x 軸、在 x=3 穿過去：f(x)=a(x−1)²(x−3)，a&gt;0；把三個因式全部分解，奇次方留一次、偶次方另外看等號</span><span class="src">雄中 113上 第三次 填充</span></div>
+<div class="fxq">設三次多項式函數 $y=f(x)$ 的圖形與 $x$ 軸恰交於 $(1,0)$ 和 $(3,0)$，其部分圖形的示意圖如下。求 $(1-x^3)(x^2-5x+6)\,f(x)\ge0$ 的解。<svg class="qfig" viewBox="0 0 300 170" width="300" height="170" role="img" aria-label="三次函數的部分圖形（只畫 x 軸）：在 x = 1 碰到 x 軸後折回下方，在 x = 3 穿過 x 軸往上"><line data-k="xaxis" x1="14" y1="59.4" x2="278" y2="59.4" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 286 59.4 L 278 62.6 L 278 56.2 Z" fill="#3a2a2e"/><polyline data-k="curve" points="30,144.8 31.4,139.2 32.9,133.9 34.3,128.8 35.8,123.9 37.2,119.2 38.6,114.7 40.1,110.5 41.5,106.4 42.9,102.5 44.4,98.8 45.8,95.3 47.3,92 48.7,88.9 50.1,86 51.6,83.2 53,80.6 54.4,78.2 55.9,75.9 57.3,73.8 58.8,71.9 60.2,70.1 61.6,68.4 63.1,67 64.5,65.6 65.9,64.4 67.4,63.4 68.8,62.4 70.3,61.6 71.7,61 73.1,60.4 74.6,60 76,59.7 77.4,59.5 78.9,59.4 80.3,59.4 81.8,59.6 83.2,59.8 84.6,60.1 86.1,60.5 87.5,61 88.9,61.6 90.4,62.3 91.8,63 93.2,63.9 94.7,64.8 96.1,65.7 97.6,66.8 99,67.8 100.4,69 101.9,70.2 103.3,71.5 104.7,72.8 106.2,74.1 107.6,75.5 109.1,76.9 110.5,78.4 111.9,79.9 113.4,81.4 114.8,82.9 116.2,84.5 117.7,86.1 119.1,87.7 120.6,89.3 122,90.9 123.4,92.5 124.9,94.1 126.3,95.7 127.8,97.3 129.2,98.9 130.6,100.5 132.1,102 133.5,103.5 134.9,105.1 136.4,106.5 137.8,108 139.3,109.4 140.7,110.8 142.1,112.1 143.6,113.4 145,114.6 146.4,115.8 147.9,116.9 149.3,118 150.8,119 152.2,119.9 153.6,120.8 155.1,121.6 156.5,122.3 157.9,122.9 159.4,123.5 160.8,123.9 162.3,124.3 163.7,124.6 165.1,124.7 166.6,124.8 168,124.8 169.4,124.7 170.9,124.4 172.3,124 173.8,123.6 175.2,123 176.6,122.2 178.1,121.4 179.5,120.4 180.9,119.3 182.4,118 183.8,116.6 185.2,115 186.7,113.3 188.1,111.5 189.6,109.4 191,107.3 192.4,104.9 193.9,102.4 195.3,99.7 196.8,96.9 198.2,93.8 199.6,90.6 201.1,87.2 202.5,83.7 203.9,79.9 205.4,75.9 206.8,71.7 208.2,67.4 209.7,62.8 211.1,58 212.6,53 214,47.8 215.4,42.4 216.9,36.7 218.3,30.8 219.8,24.7 221.2,18.4 221.3,18" fill="none" stroke="#b03a55" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle data-k="root" cx="79.29" cy="59.4" r="3" fill="#7a2e3c"/><text data-k="rt" x="79.3" y="76.4" font-size="14" fill="#3a2a2e" text-anchor="middle">1</text><circle data-k="root" cx="210.71" cy="59.4" r="3" fill="#7a2e3c"/><text data-k="rt" x="219.7" y="76.4" font-size="14" fill="#3a2a2e" text-anchor="middle">3</text><text x="291" y="75.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1\le x\le2$ 或 $x=3$</div>
+<div class="fxs"><div class="move">做法：先從圖寫出 $f(x)$。在 $x=1$ 圖形碰到 $x$ 軸就折回去（兩側都在 $x$ 軸下方），$(x-1)$ 出現兩次；在 $x=3$ 穿過 $x$ 軸，$(x-3)$ 出現一次；最右邊往上，首項係數是正的。</div>
+$f(x)=a(x-1)^2(x-3)$，$a\gt0$。<br>
+另外兩個因式：$1-x^3=-(x-1)(x^2+x+1)$，$x^2-5x+6=(x-2)(x-3)$。<br>
+其中 $x^2+x+1=\left(x+\dfrac12\right)^2+\dfrac34\gt0$ 恆成立，不影響正負。<br>
+全部乘起來：$-a\,(x^2+x+1)\,(x-1)^3(x-2)(x-3)^2\ge0$。<br>
+$a\gt0$、$x^2+x+1\gt0$，同除以 $-a(x^2+x+1)$（負的）要反向：$(x-1)^3(x-2)(x-3)^2\le0$。<br>
+・$(x-3)^2\ge0$ 不改變正負；$x=3$ 時式子等於 $0$，是一個解。<br>
+・$(x-1)^3$ 和 $(x-1)$ 同號，所以 $x\ne3$ 時只要 $(x-1)(x-2)\le0$，也就是 $1\le x\le2$。<br>
+合起來：$1\le x\le2$ 或 $x=3$。<br>
+<span class="note-sm">檢查：$x=1.5$ 時 $1-x^3\lt0$、$x^2-5x+6=0.75\gt0$、$f(1.5)=a\cdot0.25\cdot(-1.5)\lt0$，乘積是正的 ✔；$x=2.5$ 時三個因式依序是負、負、負，乘積是負的，不在解裡 ✔。</span></div></div>
+
+<div class="fx" id="L5-8"><div class="fxh"><span class="no">L5-8</span><span class="kw">直角三角形 ACB 的斜邊在 x 軸上、C 在 y 軸上：先算斜邊，用面積求斜邊上的高 OC，再用畢氏定理求 OA、OB，三個點的坐標就出來了</span><span class="src">高雄女中 110上 填充</span></div>
+<div class="fxq">如圖，設實係數二次函數 $f(x)$ 的圖形與 $x$ 軸交於 $A$、$B$ 兩點，與 $y$ 軸交於 $C$ 點。若 $\overline{AC}=3\sqrt{13}$，$\overline{BC}=2\sqrt{13}$，$\angle ACB=90^\circ$，求 $f(10)$。<svg class="qfig" viewBox="0 0 300 203" width="300" height="203" role="img" aria-label="開口向下的拋物線，交 x 軸於 A（負向）、B（正向），交 y 軸正向於 C；連 AC、BC，角 ACB 是直角"><line data-k="xaxis" x1="9" y1="144" x2="280" y2="144" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 288 144 L 280 147.2 L 280 140.8 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="182" y1="197" x2="182" y2="18" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 182 10 L 185.2 18 L 178.8 18 Z" fill="#3a2a2e"/><polyline data-k="curve" points="28.1,189 28.2,188.8 29.7,184.7 31.3,180.6 32.9,176.7 34.5,172.7 36.1,168.9 37.7,165.1 39.3,161.3 40.9,157.6 42.5,154 44.1,150.4 45.7,146.9 47.3,143.4 48.9,140 50.5,136.6 52.1,133.3 53.7,130.1 55.3,126.9 56.8,123.7 58.4,120.7 60,117.7 61.6,114.7 63.2,111.8 64.8,108.9 66.4,106.1 68,103.4 69.6,100.7 71.2,98.1 72.8,95.5 74.4,93 76,90.6 77.6,88.2 79.2,85.8 80.8,83.5 82.3,81.3 83.9,79.1 85.5,77 87.1,75 88.7,72.9 90.3,71 91.9,69.1 93.5,67.3 95.1,65.5 96.7,63.8 98.3,62.1 99.9,60.5 101.5,58.9 103.1,57.5 104.7,56 106.3,54.6 107.8,53.3 109.4,52 111,50.8 112.6,49.7 114.2,48.6 115.8,47.5 117.4,46.5 119,45.6 120.6,44.7 122.2,43.9 123.8,43.1 125.4,42.4 127,41.8 128.6,41.2 130.2,40.7 131.8,40.2 133.3,39.8 134.9,39.4 136.5,39.1 138.1,38.8 139.7,38.6 141.3,38.5 142.9,38.4 144.5,38.4 146.1,38.4 147.7,38.5 149.3,38.6 150.9,38.8 152.5,39.1 154.1,39.4 155.7,39.8 157.3,40.2 158.8,40.7 160.4,41.2 162,41.8 163.6,42.4 165.2,43.1 166.8,43.9 168.4,44.7 170,45.6 171.6,46.5 173.2,47.5 174.8,48.6 176.4,49.7 178,50.8 179.6,52 181.2,53.3 182.8,54.6 184.3,56 185.9,57.5 187.5,58.9 189.1,60.5 190.7,62.1 192.3,63.8 193.9,65.5 195.5,67.3 197.1,69.1 198.7,71 200.3,72.9 201.9,75 203.5,77 205.1,79.1 206.7,81.3 208.3,83.5 209.8,85.8 211.4,88.2 213,90.6 214.6,93 216.2,95.5 217.8,98.1 219.4,100.7 221,103.4 222.6,106.1 224.2,108.9 225.8,111.8 227.4,114.7 229,117.7 230.6,120.7 232.2,123.7 233.8,126.9 235.3,130.1 236.9,133.3 238.5,136.6 240.1,140 241.7,143.4 243.3,146.9 244.9,150.4 246.5,154 248.1,157.6 249.7,161.3 251.3,165.1 252.9,168.9 254.5,172.7 256.1,176.7 257.7,180.6 259.3,184.7 260.8,188.8 260.9,189" fill="none" stroke="#b03a55" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><line data-k="AC" x1="47" y1="144" x2="182" y2="54" stroke="#7a2e3c" stroke-width="1.4" stroke-linecap="round"/><line data-k="BC" x1="242" y1="144" x2="182" y2="54" stroke="#7a2e3c" stroke-width="1.4" stroke-linecap="round"/><polyline data-k="right" points="174.51,58.99 179.5,66.48 186.99,61.49" fill="none" stroke="#8a7378" stroke-width="1.2"/><circle data-k="Adot" cx="47" cy="144" r="2.8" fill="#7a2e3c"/><text data-k="A" x="36" y="138.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><circle data-k="Bdot" cx="242" cy="144" r="2.8" fill="#7a2e3c"/><text data-k="B" x="253" y="138.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><circle data-k="Cdot" cx="182" cy="54" r="2.8" fill="#7a2e3c"/><text data-k="C" x="193" y="49.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="293" y="160.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="172" y="19.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><text x="172" y="160.5" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$f(10)=-19$</div>
+<div class="fxs"><div class="move">做法：題目沒有給任何坐標，要從直角三角形 $ACB$ 算出來。$\overline{AB}$ 在 $x$ 軸上、$C$ 在 $y$ 軸上，所以 $\overline{OC}$ 是斜邊 $\overline{AB}$ 上的高。</div>
+斜邊：$\overline{AB}=\sqrt{(3\sqrt{13})^2+(2\sqrt{13})^2}=\sqrt{117+52}=13$。<br>
+斜邊上的高：三角形面積算兩次，$\dfrac12\cdot3\sqrt{13}\cdot2\sqrt{13}=\dfrac12\cdot13\cdot\overline{OC}$ ⟹ $\overline{OC}=\dfrac{78}{13}=6$。<br>
+$\overline{OA}=\sqrt{117-36}=9$，$\overline{OB}=\sqrt{52-36}=4$（驗：$9+4=13$ ✔）。<br>
+對照圖：$A$ 在原點左邊、$B$ 在右邊、$C$ 在 $x$ 軸上方，所以 $A(-9,0)$、$B(4,0)$、$C(0,6)$。<br>
+設 $f(x)=a(x+9)(x-4)$，代 $C$：$6=a\cdot9\cdot(-4)$ ⟹ $a=-\dfrac16$（開口向下，和圖一致）。<br>
+$f(10)=-\dfrac16\cdot19\cdot6=-19$。</div></div>
+
+<div class="fx" id="L5-9"><div class="fxh"><span class="no">L5-9</span><span class="kw">路徑對中間點對稱：中間點就是對稱中心，設 a(x−3)³+p(x−3)+1；「一次項係數為 0」和「過 (0,0)」是兩個條件，剛好解 a、p</span><span class="src">成功高中 112上期末 填 10</span></div>
+<div class="fxq">假設某飛機由起飛點 $(0,0)$ 起飛的路徑，恰好與由起降點降落的路徑相同，差別只在於起飛與降落是沿著相反的方向進行。三次函數 $y=f(x)$ 的圖形在這一段剛好與飛行路徑一致（如圖），且飛行路徑的中間點 $(3,1)$ 剛好是這個三次函數圖形的對稱中心。為了讓起飛更安全，進一步要求 $f(x)$ 的一次項係數為 $0$。<svg class="qfig" viewBox="0 0 300 152" width="300" height="152" role="img" aria-label="飛行路徑：從起飛點 (0, 0) 沿一條平滑的 S 形曲線上升，經過中間點 (3, 1)，到右上方的起降點；起飛點與起降點附近的路徑接近水平"><line data-k="xaxis" x1="43.2" y1="116.4" x2="280" y2="116.4" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 288 116.4 L 280 119.6 L 280 113.2 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="53.2" y1="126.4" x2="53.2" y2="16" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 53.2 8 L 56.4 16 L 50 16 Z" fill="#3a2a2e"/><line data-k="top" x1="53.2" y1="44.4" x2="283.24" y2="44.4" stroke="#8a7378" stroke-width="1.1" stroke-dasharray="4 3" stroke-linecap="round"/><polyline data-k="curve" points="53.2,116.4 55,116.39 56.8,116.34 58.6,116.27 60.4,116.17 62.2,116.04 64,115.88 65.8,115.69 67.6,115.48 69.4,115.25 71.2,114.98 73,114.7 74.81,114.38 76.61,114.05 78.41,113.69 80.21,113.31 82.01,112.9 83.81,112.47 85.61,112.03 87.41,111.56 89.21,111.07 91.01,110.56 92.81,110.03 94.61,109.48 96.41,108.91 98.21,108.33 100.01,107.72 101.81,107.11 103.61,106.47 105.41,105.82 107.21,105.15 109.01,104.47 110.81,103.77 112.61,103.06 114.41,102.34 116.21,101.6 118.01,100.85 119.81,100.09 121.61,99.31 123.41,98.53 125.21,97.73 127.01,96.93 128.81,96.11 130.62,95.29 132.42,94.46 134.22,93.62 136.02,92.77 137.82,91.92 139.62,91.06 141.42,90.19 143.22,89.32 145.02,88.44 146.82,87.56 148.62,86.67 150.42,85.78 152.22,84.89 154.02,83.99 155.82,83.1 157.62,82.2 159.42,81.3 161.22,80.4 163.02,79.5 164.82,78.6 166.62,77.7 168.42,76.81 170.22,75.91 172.02,75.02 173.82,74.13 175.62,73.24 177.42,72.36 179.22,71.48 181.02,70.61 182.82,69.74 184.62,68.88 186.43,68.03 188.23,67.18 190.03,66.34 191.83,65.51 193.63,64.69 195.43,63.87 197.23,63.07 199.03,62.27 200.83,61.49 202.63,60.71 204.43,59.95 206.23,59.2 208.03,58.46 209.83,57.74 211.63,57.03 213.43,56.33 215.23,55.65 217.03,54.98 218.83,54.33 220.63,53.69 222.43,53.08 224.23,52.47 226.03,51.89 227.83,51.32 229.63,50.77 231.43,50.24 233.23,49.73 235.03,49.24 236.83,48.77 238.63,48.33 240.43,47.9 242.24,47.49 244.04,47.11 245.84,46.75 247.64,46.42 249.44,46.1 251.24,45.82 253.04,45.55 254.84,45.32 256.64,45.11 258.44,44.92 260.24,44.76 262.04,44.63 263.84,44.53 265.64,44.46 267.44,44.41 269.24,44.4" fill="none" stroke="#b03a55" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><line data-k="xtick" x1="161.22" y1="113.4" x2="161.22" y2="119.4" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><line data-k="ytick" x1="50.2" y1="80.4" x2="56.2" y2="80.4" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><circle data-k="Sdot" cx="53.2" cy="116.4" r="3" fill="#7a2e3c"/><circle data-k="Mdot" cx="161.22" cy="80.4" r="3" fill="#7a2e3c"/><circle data-k="Edot" cx="269.24" cy="44.4" r="3" fill="#7a2e3c"/><text data-k="xt" x="161.2" y="133.9" font-size="13" fill="#3a2a2e" text-anchor="middle">3</text><text data-k="yt" x="43.2" y="84.9" font-size="13" fill="#3a2a2e" text-anchor="middle">1</text><text data-k="M" x="185.2" y="93.9" font-size="13" fill="#3a2a2e" text-anchor="middle">(3, 1)</text><text data-k="S" x="27.2" y="108.9" font-size="13" fill="#3a2a2e" text-anchor="middle">起飛點</text><text data-k="E" x="267.2" y="35.9" font-size="13" fill="#3a2a2e" text-anchor="middle">起降點</text><text data-k="O" x="43.2" y="133.9" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><text x="292" y="133.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="63.2" y="17.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text></svg>
+(1) 求起降點的坐標。　(2) 求 $f(x)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $(6,2)$　(2) $f(x)=-\dfrac{1}{54}x^3+\dfrac16x^2$</div>
+<div class="fxs"><div class="move">做法：(1) 起飛點和起降點對對稱中心 $(3,1)$ 對稱。(2) 知道對稱中心，設 $f(x)=a(x-3)^3+p(x-3)+1$，剩下 $a$、$p$ 兩個未知數，用兩個條件解。</div>
+(1) 設起降點 $(s,t)$。$(3,1)$ 是 $(0,0)$ 和 $(s,t)$ 的中點：$\dfrac{0+s}{2}=3$、$\dfrac{0+t}{2}=1$ ⟹ 起降點是 $(6,2)$，和圖上的位置一致。<br>
+(2) 展開 $a(x-3)^3=a(x^3-9x^2+27x-27)$，所以 $f(x)$ 的一次項係數是 $27a+p$。<br>
+一次項係數為 $0$：$27a+p=0$ ⟹ $p=-27a$。<br>
+過 $(0,0)$：$f(0)=-27a-3p+1=0$，代入 $p=-27a$ 得 $-27a+81a+1=0$ ⟹ $a=-\dfrac1{54}$，$p=\dfrac12$。<br>
+$f(x)=-\dfrac1{54}(x-3)^3+\dfrac12(x-3)+1=-\dfrac1{54}x^3+\dfrac16x^2-\dfrac12x+\dfrac12+\dfrac12x-\dfrac32+1=-\dfrac{1}{54}x^3+\dfrac16x^2$。<br>
+<span class="note-sm">檢查：$f(3)=-\dfrac{27}{54}+\dfrac96=1$ ✔、$f(6)=-4+6=2$ ✔。$f(x)=x^2\left(\dfrac16-\dfrac{x}{54}\right)$ 含因式 $x^2$，圖形在原點和 $x$ 軸相切，所以起飛時路徑貼著地面慢慢離開；由對稱性，降落時也一樣貼著高度 $2$ 的水平線。</span></div></div>
+<!-- /figq:L5 -->
 </section>
 
 <div class="ch-nav">

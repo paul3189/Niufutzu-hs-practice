@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js?v=20260929c"></script>
+<script src="practice-gen.js?v=20261002s1"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -207,6 +207,11 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 .diag .fixset{margin-top:6px}
 .myrec .mr-file{display:none}
 @media print{.gcard .gc,.diag{display:none!important}}
+/* ── 附圖題（2026-10-02）：題目的圖是 inline SVG，class="qfig"；手機寬自動縮小，列印照印 ── */
+.qfig,.qfig-sol{display:block;max-width:100%;height:auto;margin:8px auto 4px;font-family:KaTeX_Main,KaTeX_Math,"Times New Roman","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+.qfig text[font-style="italic"],.qfig-sol text[font-style="italic"]{font-family:KaTeX_Math,KaTeX_Main,"Times New Roman",serif}
+.qopt{display:inline-block}
+@media print{.qfig,.qfig-sol{break-inside:avoid}}
 </style>
 <link rel="stylesheet" href="../../assets/theme-cow.css">
 </head>
@@ -236,7 +241,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（18,000 題抽樣）；固定題全數人工＋電腦重算。本章只用有限項的等差、等比、遞迴、Σ 公式與數學歸納法；無窮多項的相加（無窮等比級數）是高三選修的內容，本書一律不碰。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（20,100 題抽樣）；L1、L2 的<b>讀圖題</b>每次換題，圖會跟著重畫，規律要從圖上讀；固定題全數人工＋電腦重算。本章只用有限項的等差、等比、遞迴、Σ 公式與數學歸納法；無窮多項的相加（無窮等比級數）是高三選修的內容，本書一律不碰。</li>
   </ol>
 </div>
 
@@ -263,7 +268,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>$a_n$ 與 $S_n$ 分不清、遞迴式看到就想「代到底」、Σ 公式背了不會拆的同學。</div>
-  <div><b>目標</b>28 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>30 個基本型（含 2 型讀圖題），每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
@@ -291,7 +296,13 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fadeset" data-tier="L1" data-keys="inductionStep,divisible" data-seed="7401"></div>
 <div class="fixset" data-tier="L1" data-keys="inductionStep,divisible" data-seed="6301" data-n="6"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 28 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">4 讀圖題：火柴棒與地磚的規律、分割塗色</h3>
+<div class="must">先要會：<b>題目說「如圖」時，規律畫在圖上，先數出圖 $1$、圖 $2$、圖 $3$ 各有幾個</b>、<b>再回到圖上看「多一個單位要補幾個」：補的個數固定，就是等差數列，$a_n=a_1+(n-1)d$</b>、<b>相鄰兩格共用的那一根只算一次</b>、<b>分割塗色的圖：從圖 $1$ 讀出分成幾塊、塗幾塊；再看圖 $2$ 新塗的部分是前一次的幾分之幾，那個倍數就是公比</b>、<b>第 $n$ 次新塗的面積是等比數列的第 $n$ 項，塗色的總面積是前 $n$ 項的和</b>。本章的段考原題大約每十題有一題附圖，多半是圖形規律和圖形裡的等比。按「新題」時，圖會跟著題目重畫。</div>
+<div class="gen-grid" data-tier="L1" data-keys="figChain,figShade"></div>
+<div class="fadeset" data-tier="L1" data-keys="figChain,figShade" data-seed="7501"></div>
+<div class="fixset" data-tier="L1" data-keys="figChain,figShade" data-seed="6401" data-n="8"></div>
+
+<h3 class="sec">L1 混合檢測 12 題（全章 30 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -300,7 +311,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>21 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 26 份高一段考卷重新統計，補了 5 型），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>24 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 26 份高一段考卷重新統計，補了 5 型；最後 3 型是 2026-10-02 補的讀圖題），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
@@ -312,7 +323,11 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="must">26 份高一段考卷中<b>等比級數 21 卷、等差級數 15 卷、平方和與立方和 13 卷、圖形規律 11 卷、複利／年金／分期付款 10 卷、$S_n$ 最大與正負判斷 10 卷、裂項 10 卷</b>。解題要點：<b>等差 $\times$ 等差＝二次式，套三個公式</b>；<b>$|a_n|$ 和：先因式分解找負段</b>；<b>$\lfloor k/m\rfloor$：每 $m$ 個一群，最後一群數個數</b>；<b>分群數列先問「前面幾群共幾項」</b>；<b>$\sum\frac{k}{2^k}=2-\frac{n+2}{2^n}$（錯位相減推一次）</b>；<b>裂項反求 $n$：化成 $\frac{n}{2n+1}$ 直接比對</b>；<b>年金：每一筆各自滾幾年，是等比級數</b>；<b>等比取 $\log$ 變等差</b>；<b>$S_{2k-1}=(2k-1)a_k$、$S_{2k}=k(a_k+a_{k+1})$：由 $S_n$ 的正負找出變號的那一項</b>；<b>分期付款：借款和每一期的還款都滾到最後一期再比較</b>；<b>圖形規律：先寫出第 $k$ 層（第 $k$ 個圖）的個數，再用 $\sum$ 加起來</b>。</div>
 <div class="gen-grid" data-tier="L2" data-keys="prodAP,absQuad,floorSum,groupSeq,kOver2k,telescopeN,annuity,logGP,arSignSn,loanPay,figStack"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 21 型打亂・可列印・可換組）</h3>
+<h3 class="sec">讀圖題：點陣的個數、一層一層往內接的圖形、堆積木</h3>
+<div class="must">本章的段考附圖題裡，<b>圖形規律（火柴棒、點陣、地磚、堆疊）約佔六成，圖形裡的等比（內接、分割塗色）約兩成</b>，其餘是數表與填格。解題要點：<b>點陣的個數通常不是等差：先數前三個，再從圖上看圖 $n$ 變成圖 $n+1$ 時多了哪一排或哪一圈，寫出 $a_{n+1}-a_n$，最後疊縮相加</b>；<b>一層一層往內接的圖形：相鄰兩個的邊長比固定，面積比是邊長比的平方；斜放的正方形，邊長用畢氏定理算</b>；<b>堆積木：先寫出由上往下第 $k$ 層有幾塊，再把各層加起來</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="figDots,figNested,figBlocks"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 24 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -321,8 +336,8 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>20 題各校段考中後段常見題（最後 2 題是附圖題）：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>20 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
 <div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字或問法。答案與詳解皆重新驗算過（L3-3 的官方答案有誤，見該題）。</div>
 
@@ -466,7 +481,31 @@ $n=21$：$S=231$，$250-231=19$，在 $1$ 到 $21$ 之間，符合。<br>
 $n=22$：$S=253$，已經超過 $250$，不可能。<br>
 所以 $n=21$，多加的是 $19$，正確的和是 $231$。</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
+<!-- figq:L3 -->
+<div class="note">以下 2 題（L3-19、L3-20）是<b>附圖題</b>：規律要從圖上讀，題幹不會把每一步都寫出來。圖都依題目條件重新繪製、照比例畫。本章的段考原題大約每十題有一題附圖，幾乎都是「圖形規律」和「圖形裡的等比」這兩類。</div>
+
+<div class="fx" id="L3-19" data-gen="figSqChain"><div class="fxh"><span class="no">L3-19</span><span class="kw">45° 的斜線下一個接一個的正方形：每個的邊長＝它左邊那條邊到 A 的距離，邊長成公比 2 的等比</span><span class="src">明倫高中 104下 計算 1</span></div>
+<div class="fxq">如圖，已知 $\angle A=45^\circ$、$\overline{AB}=1$，$T_1$、$T_2$、$T_3$、…… 都是正方形。(1) 求 $T_1$ 的周長。(2) 求 $T_2$ 的周長。(3) 求前 $8$ 個正方形的周長總和。<svg class="qfig" viewBox="0 0 320 202" width="320" height="202" role="img" aria-label="45 度角的一邊上，從 B 點開始一個接一個的正方形 T1、T2，左上角都在角的另一邊上；AB 長 1"><line x1="30" y1="178" x2="310.4" y2="178" stroke="#3a2a2e" stroke-width="1.4" stroke-linecap="round"/><line x1="30" y1="178" x2="197.9" y2="10.1" stroke="#3a2a2e" stroke-width="1.4" stroke-linecap="round"/><polygon points="93.6,178 157.2,178 157.2,114.4 93.6,114.4" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><text x="123.4" y="151.2" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">T<tspan dy="3.5" font-size="10" font-style="normal">1</tspan></text><polygon points="157.2,178 284.4,178 284.4,50.8 157.2,50.8" fill="rgba(176,58,85,.2)" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><text x="218.8" y="119.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">T<tspan dy="3.5" font-size="10" font-style="normal">2</tspan></text><text x="299.4" y="118.4" font-size="15" fill="#3a2a2e" text-anchor="middle">⋯</text><circle cx="30" cy="178" r="2.4" fill="#7a2e3c"/><circle cx="93.6" cy="178" r="2.4" fill="#7a2e3c"/><text x="19" y="183" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="97.6" y="195" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="61.8" y="194" font-size="14" fill="#3a2a2e" text-anchor="middle">1</text><path d="M 47 178 A 17 17 0 0 0 42.02 165.98" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><text x="64.34" y="169.61" font-size="13" fill="#3a2a2e" text-anchor="middle">45°</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $4$　(2) $8$　(3) $1020$</div>
+<div class="fxs"><div class="move">做法：先從圖上讀出正方形怎麼擺：底邊從 $B$ 開始一個接一個排在角的一邊上，左上角的頂點都在角的另一邊上。$45^\circ$ 的斜線上，每一點的高度都等於它到 $A$ 的水平距離，所以每個正方形的邊長就是「它左邊那條邊到 $A$ 的距離」。</div>
+(1) $T_1$ 的左邊過 $B$，到 $A$ 的距離是 $1$，所以 $T_1$ 的邊長是 $1$、周長 $4$。<br>
+(2) $T_2$ 的左邊到 $A$ 的距離是 $1+1=2$，所以 $T_2$ 的邊長是 $2$、周長 $8$。<br>
+(3) 設 $T_k$ 的邊長是 $s_k$。$T_{k+1}$ 的左邊到 $A$ 的距離，等於 $T_k$ 的左邊到 $A$ 的距離（就是 $s_k$）再加上 $T_k$ 的邊長 $s_k$，所以 $s_{k+1}=2s_k$。邊長是首項 $1$、公比 $2$ 的等比數列，周長是首項 $4$、公比 $2$ 的等比數列。<br>
+前 $8$ 個的周長總和 $=\dfrac{4(2^8-1)}{2-1}=4\times255=1020$。<br>
+<span class="note-sm">圖上只畫了 $T_1$、$T_2$，可以自己接著畫 $T_3$ 檢查：它的左邊到 $A$ 的距離是 $1+1+2=4$，邊長 $4$，確實是 $T_2$ 的 $2$ 倍。如果角不是 $45^\circ$，高度和水平距離的比就不是 $1$，公比也會跟著變（按「類似題」可以練到）。</span></div></div>
+
+<div class="fx" id="L3-20" data-gen="figCentered"><div class="fxh"><span class="no">L3-20</span><span class="kw">1、6、16 顆星星：從圖上看每次多一圈、一圈多 5 顆，寫出 $a_{n+1}-a_n=5n$ 再疊縮相加</span><span class="src">北一女中 112上（高三）單 1</span></div>
+<div class="fxq">星野愛隨意塗鴉畫星星，如圖（一）有 $1$ 顆星星，圖（二）有 $6$ 顆星星，圖（三）有 $16$ 顆星星，以此類推。試問圖（十）會有多少顆星星？<svg class="qfig" viewBox="0 0 325 154" width="325" height="154" role="img" aria-label="星星由內往外一圈一圈排成的圖（一）、圖（二）、圖（三），分別有 1、6、16 顆"><polygon points="28.17,104.45 25.58,111.38 18.18,111.71 23.98,116.31 22,123.45 28.17,119.36 34.34,123.45 32.36,116.31 38.16,111.71 30.76,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><text x="28.17" y="146.45" font-size="13" fill="#3a2a2e" text-anchor="middle">圖（一）</text><polygon points="118.45,84.23 115.86,91.16 108.46,91.48 114.25,96.09 112.28,103.22 118.45,99.14 124.62,103.22 122.64,96.09 128.43,91.48 121.04,91.16" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="118.45,59.23 115.86,66.16 108.46,66.48 114.25,71.09 112.28,78.22 118.45,74.14 124.62,78.22 122.64,71.09 128.43,66.48 121.04,66.16" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="94.67,76.5 92.08,83.43 84.68,83.76 90.48,88.36 88.5,95.49 94.67,91.41 100.84,95.49 98.86,88.36 104.66,83.76 97.26,83.43" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="103.75,104.45 101.16,111.38 93.77,111.71 99.56,116.31 97.58,123.45 103.75,119.36 109.92,123.45 107.95,116.31 113.74,111.71 106.34,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="133.14,104.45 130.55,111.38 123.16,111.71 128.95,116.31 126.97,123.45 133.14,119.36 139.31,123.45 137.34,116.31 143.13,111.71 135.73,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="142.22,76.5 139.63,83.43 132.24,83.76 138.03,88.36 136.05,95.49 142.22,91.41 148.4,95.49 146.42,88.36 152.21,83.76 144.82,83.43" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><text x="118.45" y="146.45" font-size="13" fill="#3a2a2e" text-anchor="middle">圖（二）</text><polygon points="252.78,64 250.18,70.93 242.79,71.26 248.58,75.86 246.6,82.99 252.78,78.91 258.95,82.99 256.97,75.86 262.76,71.26 255.37,70.93" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="252.78,39 250.18,45.93 242.79,46.26 248.58,50.86 246.6,57.99 252.78,53.91 258.95,57.99 256.97,50.86 262.76,46.26 255.37,45.93" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="229,56.27 226.41,63.21 219.01,63.53 224.81,68.14 222.83,75.27 229,71.18 235.17,75.27 233.19,68.14 238.99,63.53 231.59,63.21" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="238.08,84.23 235.49,91.16 228.1,91.48 233.89,96.09 231.91,103.22 238.08,99.14 244.25,103.22 242.28,96.09 248.07,91.48 240.67,91.16" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="267.47,84.23 264.88,91.16 257.48,91.48 263.28,96.09 261.3,103.22 267.47,99.14 273.64,103.22 271.67,96.09 277.46,91.48 270.06,91.16" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="276.55,56.27 273.96,63.21 266.57,63.53 272.36,68.14 270.38,75.27 276.55,71.18 282.72,75.27 280.75,68.14 286.54,63.53 279.14,63.21" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="252.78,14 250.18,20.93 242.79,21.26 248.58,25.86 246.6,32.99 252.78,28.91 258.95,32.99 256.97,25.86 262.76,21.26 255.37,20.93" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="229,31.27 226.41,38.21 219.01,38.53 224.81,43.14 222.83,50.27 229,46.18 235.17,50.27 233.19,43.14 238.99,38.53 231.59,38.21" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="205.22,48.55 202.63,55.48 195.24,55.8 201.03,60.41 199.05,67.54 205.22,63.46 211.4,67.54 209.42,60.41 215.21,55.8 207.82,55.48" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="214.31,76.5 211.71,83.43 204.32,83.76 210.11,88.36 208.13,95.49 214.31,91.41 220.48,95.49 218.5,88.36 224.29,83.76 216.9,83.43" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="223.39,104.45 220.8,111.38 213.4,111.71 219.19,116.31 217.22,123.45 223.39,119.36 229.56,123.45 227.58,116.31 233.37,111.71 225.98,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="252.78,104.45 250.18,111.38 242.79,111.71 248.58,116.31 246.6,123.45 252.78,119.36 258.95,123.45 256.97,116.31 262.76,111.71 255.37,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="282.17,104.45 279.57,111.38 272.18,111.71 277.97,116.31 275.99,123.45 282.17,119.36 288.34,123.45 286.36,116.31 292.15,111.71 284.76,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="291.25,76.5 288.66,83.43 281.26,83.76 287.05,88.36 285.08,95.49 291.25,91.41 297.42,95.49 295.44,88.36 301.23,83.76 293.84,83.43" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="300.33,48.55 297.74,55.48 290.34,55.8 296.14,60.41 294.16,67.54 300.33,63.46 306.5,67.54 304.52,60.41 310.32,55.8 302.92,55.48" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="276.55,31.27 273.96,38.21 266.57,38.53 272.36,43.14 270.38,50.27 276.55,46.18 282.72,50.27 280.75,43.14 286.54,38.53 279.14,38.21" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><text x="252.78" y="146.45" font-size="13" fill="#3a2a2e" text-anchor="middle">圖（三）</text></svg><span class="qopt">(1) $181$</span>　<span class="qopt">(2) $226$</span>　<span class="qopt">(3) $276$</span>　<span class="qopt">(4) $331$</span>　<span class="qopt">(5) $391$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)　$226$ 顆</div>
+<div class="fxs"><div class="move">做法：只有三個數 $1$、$6$、$16$ 不夠決定規律，要回到圖上看「多出來的是什麼」。每往後一個圖，外面多一圈排成正五邊形的星星。</div>
+設圖 $n$ 有 $a_n$ 顆。圖（二）比圖（一）多一圈 $5$ 顆（正五邊形的 $5$ 個頂點）；圖（三）比圖（二）再多一圈 $10$ 顆（$5$ 個頂點，加上每邊中間各 $1$ 顆）。新的一圈每邊都比前一圈多 $1$ 顆，所以一圈比一圈多 $5$ 顆：$a_{n+1}-a_n=5n$。<br>
+疊縮相加：$a_{10}=a_1+(5+10+\cdots+45)=1+5(1+2+\cdots+9)=1+5\times45=226$，選 (2)。<br>
+<span class="note-sm">檢查：$a_2=1+5=6$、$a_3=6+10=16$，和題目給的一樣。一般項是 $a_n=1+\dfrac{5n(n-1)}{2}$。只看數字 $1$、$6$、$16$ 的人可能會猜「差每次乘 $2$」而得到別的答案，所以規律要從圖上確認。</span></div></div>
+<!-- /figq:L3 -->
+
+<h3 class="sec">L3 混合檢測 10 題（20 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -479,8 +518,8 @@ $n=22$：$S=253$，已經超過 $250$，不可能。<br>
 <h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
 <div class="goal">
   <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
-  <div><b>目標</b>12 題：每題都要把兩個以上的方法接起來用，或需要一個不常見的觀察。</div>
-  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+  <div><b>目標</b>14 題：每題都要把兩個以上的方法接起來用，或需要一個不常見的觀察；L4-13、L4-14 是附圖題。</div>
+  <div><b>通過標準</b>限時 105 分鐘做完 14 題，對 10 題以上。</div>
 </div>
 
 <div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">a₁&gt;0 且 $S_m$&lt;0：等差看公差、等比看「1−rᵐ 與 1−r 異號」；每個選項找反例</span><span class="src">北一女中 113下 多 6</span></div>
@@ -571,6 +610,33 @@ $\displaystyle\sum_{k=1}^{5}12\left(\dfrac23\right)^{k-1}=12\cdot\dfrac{1-\left(
 <div class="fxa">(5)</div>
 <div class="fxs"><div class="move">做法：$T_2=b_1(1+r)$、$T_3=b_1(1+r+r^2)$，而 $1+r+r^2=\left(r+\frac12\right)^2+\frac34\gt0$ 恆成立 ⟹ $T_2T_3=b_1^2(1+r)(1+r+r^2)$ 的正負只由 $1+r$ 決定。</div>
 (1) $5,3,1$：$S_1\lt S_2$ ✘。(2) $-5,1,7$：$S_1\lt0$ 但 $d\gt0$ ✘。(3) $T_{100}\gt T_{99}$ 只說 $b_{100}=b_1r^{99}\gt0$；$b_1=-2,r=-3$ 也成立 ✘。(4) $b_1=2,r=-\frac12$：$T_n=\frac43\left[1-\left(-\frac12\right)^n\right]\gt0$ 但 $r\lt0$ ✘。(5) $T_2T_3\lt0$ ⟹ $1+r\lt0$ ⟹ $r\lt-1$ ✔。</div></div>
+<!-- figq:L4 -->
+<div class="note">以下 2 題（L4-13、L4-14）是<b>附圖題</b>：兩題都要先從圖上看出地磚是怎麼排的，再把個數或面積寫成 $n$ 的式子。圖依原題重新繪製。</div>
+
+<div class="fx" id="L4-13"><div class="fxh"><span class="no">L4-13</span><span class="kw">黑白三角形地磚求黑色面積：黑磚有兩種大小不好數，改數白磚，再用「全部 − 白色」</span><span class="src">武陵高中 112下 填 16</span></div>
+<div class="fxq">用黑、白兩種顏色的正三角形地磚，依照如下的規則拼成若干圖形，用 $a_n$ 表示第 $n$ 個圖白色地磚的總面積，用 $b_n$ 表示第 $n$ 個圖黑色地磚的總面積。已知每個白色三角形地磚大小皆相等，黑色則有兩種規格，且 $a_1=3$、$b_1=1$，試求 $b_{10}$。<svg class="qfig" viewBox="0 0 360 157" width="360" height="157" role="img" aria-label="黑白兩色正三角形地磚拼成的第 1、2、3 圖：大三角形的邊長依序是小白磚的 2、4、6 倍，黑磚有大小兩種"><polygon points="14,128.32 58,128.32 36,90.21" fill="#fff" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="36,128.32 25,109.26 47,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><text x="36" y="149.32" font-size="13" fill="#3a2a2e" text-anchor="middle">第 1 圖</text><polygon points="92,128.32 180,128.32 136,52.11" fill="#fff" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="114,128.32 103,109.26 125,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="136,90.21 125,71.16 147,71.16" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="158,128.32 147,109.26 169,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="136,128.32 114,90.21 158,90.21" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><text x="136" y="149.32" font-size="13" fill="#3a2a2e" text-anchor="middle">第 2 圖</text><polygon points="214,128.32 346,128.32 280,14" fill="#fff" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="236,128.32 225,109.26 247,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="258,90.21 247,71.16 269,71.16" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="280,52.11 269,33.05 291,33.05" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="280,128.32 269,109.26 291,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="302,90.21 291,71.16 313,71.16" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="324,128.32 313,109.26 335,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="258,128.32 236,90.21 280,90.21" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="280,90.21 258,52.11 302,52.11" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="302,128.32 280,90.21 324,90.21" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><text x="280" y="149.32" font-size="13" fill="#3a2a2e" text-anchor="middle">第 3 圖</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$b_{10}=235$</div>
+<div class="fxs"><div class="move">做法：第 $1$ 圖有 $3$ 塊白磚、$a_1=3$，所以一塊白磚的面積是 $1$；小黑磚和白磚一樣大，面積也是 $1$。黑磚有大有小不好數，白磚只有一種，先數白磚，再用整個大三角形的面積去減。</div>
+從圖上看：第 $n$ 圖是由「第 $1$ 圖那樣的小單元」排成的，由上往下第 $k$ 排有 $k$ 個小單元，共 $1+2+\cdots+n=\dfrac{n(n+1)}{2}$ 個；每個小單元有 $3$ 塊白磚，所以 $a_n=\dfrac{3n(n+1)}{2}$。<br>
+第 $n$ 圖的大三角形邊長是白磚邊長的 $2n$ 倍，面積是白磚的 $(2n)^2=4n^2$ 倍，也就是 $4n^2$。<br>
+$b_n=4n^2-\dfrac{3n(n+1)}{2}=\dfrac{5n^2-3n}{2}$，所以 $b_{10}=\dfrac{500-30}{2}=235$。<br>
+<span class="note-sm">檢查：$b_1=1$、$b_2=7$、$b_3=18$，和圖上數的一樣（第 $3$ 圖有 $6$ 塊小黑磚、$3$ 塊大黑磚，$6+3\times4=18$）。直接數黑磚也可以：小黑磚 $\dfrac{n(n+1)}{2}$ 塊，大黑磚 $\dfrac{n(n-1)}{2}$ 塊、每塊面積 $4$，加起來一樣是 $\dfrac{5n^2-3n}{2}$。</span></div></div>
+
+<div class="fx" id="L4-14"><div class="fxh"><span class="no">L4-14</span><span class="kw">六邊形與三角形地磚的多選題：$a_n$ 是三角形數；$b_n$ 用「大三角形切成 $(2n+1)^2$ 個小三角形，扣掉六邊形佔的」來算</span><span class="src">雄中 113上 多 3</span></div>
+<div class="fxq">用白色的正六邊形與黑色的正三角形地磚依照如下的規律拼成大三角形，其中第 $1$ 個圖由 $1$ 個正六邊形與 $3$ 個正三角形所形成；第 $2$ 個圖由 $3$ 個正六邊形與 $7$ 個正三角形所形成；…依此類推。設第 $n$ 個圖由 $a_n$ 個正六邊形地磚與 $b_n$ 個正三角形地磚所拼成，請選出正確的選項。<svg class="qfig" viewBox="0 0 347 146" width="347" height="146" role="img" aria-label="白色正六邊形與黑色正三角形地磚拼成的大三角形：圖 1 有 1 個六邊形、3 個三角形，圖 2 有 3 個六邊形、7 個三角形，圖 3 有 6 個六邊形、13 個三角形"><polygon points="14,117.06 65,117.06 39.5,72.89" fill="#8a7378" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="56.5,102.33 48,87.61 31,87.61 22.5,102.33 31,117.06 48,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><text x="39.5" y="138.06" font-size="13" fill="#3a2a2e" text-anchor="middle">圖 1</text><polygon points="97,117.06 182,117.06 139.5,43.44" fill="#8a7378" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="139.5,102.33 131,87.61 114,87.61 105.5,102.33 114,117.06 131,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="156.5,72.89 148,58.17 131,58.17 122.5,72.89 131,87.61 148,87.61" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="173.5,102.33 165,87.61 148,87.61 139.5,102.33 148,117.06 165,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><text x="139.5" y="138.06" font-size="13" fill="#3a2a2e" text-anchor="middle">圖 2</text><polygon points="214,117.06 333,117.06 273.5,14" fill="#8a7378" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="256.5,102.33 248,87.61 231,87.61 222.5,102.33 231,117.06 248,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="273.5,72.89 265,58.17 248,58.17 239.5,72.89 248,87.61 265,87.61" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="290.5,43.44 282,28.72 265,28.72 256.5,43.44 265,58.17 282,58.17" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="290.5,102.33 282,87.61 265,87.61 256.5,102.33 265,117.06 282,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="307.5,72.89 299,58.17 282,58.17 273.5,72.89 282,87.61 299,87.61" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="324.5,102.33 316,87.61 299,87.61 290.5,102.33 299,117.06 316,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><text x="273.5" y="138.06" font-size="13" fill="#3a2a2e" text-anchor="middle">圖 3</text></svg><span class="qopt">(1) $b_6=43$</span><br><span class="qopt">(2) $a_{11}=65$</span><br><span class="qopt">(3) $a_{n+1}-a_n=n$ 對所有的正整數 $n$ 都成立</span><br><span class="qopt">(4) $b_n=2a_n+1$ 對所有的正整數 $n$ 都成立</span><br><span class="qopt">(5) $b_n\gt n^2+1$ 對所有的正整數 $n$ 都成立</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(4)(5)</div>
+<div class="fxs"><div class="move">做法：先從圖上把 $a_n$、$b_n$ 寫成 $n$ 的式子，再逐一檢查選項。六邊形好數；三角形散在各處，改用面積來算。</div>
+六邊形：由上往下第 $k$ 排有 $k$ 個，$a_n=1+2+\cdots+n=\dfrac{n(n+1)}{2}$，而且 $a_{n+1}-a_n=n+1$（多出最下面一排）。<br>
+三角形：把一塊黑色三角形地磚的面積當作 $1$。第 $n$ 個圖的大三角形每邊是 $2n+1$ 塊地磚的邊長，面積是 $(2n+1)^2$；一個正六邊形可以切成 $6$ 個小三角形，面積是 $6$。所以 $b_n=(2n+1)^2-6\cdot\dfrac{n(n+1)}{2}=4n^2+4n+1-3n^2-3n=n^2+n+1$。（檢查：$b_1=3$、$b_2=7$、$b_3=13$，和圖上一樣。）<br>
+(1) $b_6=36+6+1=43$。✔<br>
+(2) $a_{11}=\dfrac{11\times12}{2}=66$，不是 $65$。✘<br>
+(3) $a_{n+1}-a_n=n+1$，不是 $n$（例如 $a_2-a_1=2$）。✘<br>
+(4) $2a_n+1=n(n+1)+1=n^2+n+1=b_n$。✔<br>
+(5) $b_n-(n^2+1)=n\gt0$。✔<br>
+<span class="note-sm">$b_n$ 也可以直接看階差：$3$、$7$、$13$ 相差 $4$、$6$，從圖上看每次多出的三角形比前一次多 $2$ 個，$b_{n+1}-b_n=2n+2$，疊縮相加一樣得到 $n^2+n+1$。</span></div></div>
+<!-- /figq:L4 -->
 </section>
 
 <!-- ═══════════════════════ L5 ═══════════════════════ -->
@@ -578,7 +644,7 @@ $\displaystyle\sum_{k=1}^{5}12\left(\dfrac23\right)^{k-1}=12\cdot\dfrac{1-\left(
 <h2><span class="tag">L5</span>補充專區：經典題與教甄</h2>
 <div class="goal">
   <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
-  <div><b>目標</b>6 題經典壓軸＋18 題科學班・教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>目標</b>6 題經典壓軸＋18 題科學班・教甄專區＋1 題附圖題（L5-7，放在最後），每題都要能講出「為什麼這樣想」。</div>
   <div><b>通過標準</b>沒有硬性標準，會一題算一題。</div>
 </div>
 
@@ -779,6 +845,22 @@ $(\sqrt6+\sqrt7)^{2026}=p^{1013}=a_{1013}-q^{1013}$，而 $0\lt q^{1013}\lt1$ �
 只看個位數：$a_n\equiv6a_{n-1}-a_{n-2}\pmod{10}$，從 $a_0$ 起依序為 $2,6,4,8,4,6,2,6,\ldots$，每 $6$ 項循環（$a_6$、$a_7$ 又回到 $2,6$）。<br>
 $1013=6\times168+5$，所以 $a_{1013}$ 的個位數與 $a_5$ 相同，是 $6$；整數部分的個位數是 $6-1=5$。<br>
 <span class="note-sm">$a_2=674$、$a_3=17498$、$a_4=454274$、$a_5=11793626$，個位數 $4,8,4,6$ ✔。這題用到二階遞迴，課綱以一階為主，所以放在 L5。</span></div></div>
+<!-- figq:L5 -->
+<h3 class="sec" id="L5-fig">附圖題（1 題）</h3>
+<div class="note">L5-7 是大考的<b>附圖題</b>：正五邊形陣列怎麼排，題幹沒有用文字說，要從圖上讀出來。圖依原題重新繪製。</div>
+
+<div class="fx" id="L5-7"><div class="fxh"><span class="no">L5-7</span><span class="kw">三角形、正方形、五邊形陣列的鋼珠數：三角形數、平方數好寫，五邊形陣列要從圖上看「每大一圈多幾顆」</span><span class="src">97 指考 數甲 選填 A</span></div>
+<div class="fxq">用大小一樣的鋼珠可以排成正三角形、正方形與正五邊形陣列，其排列的規律如下圖所示。已知 $m$ 個鋼珠恰好可以排成每邊 $n$ 個鋼珠的正三角形陣列與正方形陣列各一個；且知若用這 $m$ 個鋼珠去排成每邊 $n$ 個鋼珠的正五邊形陣列時，就會多出 $9$ 個鋼珠。求 $n$ 與 $m$。<svg class="qfig" viewBox="0 0 340 244" width="340" height="244" role="img" aria-label="鋼珠排成的正三角形、正方形、正五邊形陣列對照表：每邊 1 到 4 個鋼珠"><line x1="3" y1="6" x2="337" y2="6" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="28" x2="337" y2="28" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="48" x2="337" y2="48" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="89.54" x2="337" y2="89.54" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="152.63" x2="337" y2="152.63" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="237.26" x2="337" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="6" x2="3" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="91" y1="6" x2="91" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="173" y1="6" x2="173" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="255" y1="6" x2="255" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="337" y1="6" x2="337" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><text x="132" y="22" font-size="13" fill="#3a2a2e" text-anchor="middle">正三角形陣列</text><text x="214" y="22" font-size="13" fill="#3a2a2e" text-anchor="middle">正方形陣列</text><text x="296" y="22" font-size="13" fill="#3a2a2e" text-anchor="middle">正五邊形陣列</text><text x="47" y="42.5" font-size="13" fill="#3a2a2e" text-anchor="middle">每邊 1 個鋼珠</text><circle cx="132" cy="38" r="3.3" fill="#7a2e3c"/><circle cx="214" cy="38" r="3.3" fill="#7a2e3c"/><circle cx="296" cy="38" r="3.3" fill="#7a2e3c"/><text x="47" y="73.27" font-size="13" fill="#3a2a2e" text-anchor="middle">每邊 2 個鋼珠</text><polygon points="125,74.83 139,74.83 132,62.71" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="125" cy="74.83" r="3.3" fill="#7a2e3c"/><circle cx="139" cy="74.83" r="3.3" fill="#7a2e3c"/><circle cx="132" cy="62.71" r="3.3" fill="#7a2e3c"/><polygon points="207,75.77 221,75.77 221,61.77 207,61.77" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="207" cy="75.77" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="75.77" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="61.77" r="3.3" fill="#7a2e3c"/><circle cx="207" cy="61.77" r="3.3" fill="#7a2e3c"/><polygon points="289,79.54 303,79.54 307.33,66.23 296,58 284.67,66.23" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="289" cy="79.54" r="3.3" fill="#7a2e3c"/><circle cx="303" cy="79.54" r="3.3" fill="#7a2e3c"/><circle cx="307.33" cy="66.23" r="3.3" fill="#7a2e3c"/><circle cx="296" cy="58" r="3.3" fill="#7a2e3c"/><circle cx="284.67" cy="66.23" r="3.3" fill="#7a2e3c"/><text x="47" y="125.59" font-size="13" fill="#3a2a2e" text-anchor="middle">每邊 3 個鋼珠</text><polygon points="118,133.21 132,133.21 125,121.09" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="118,133.21 146,133.21 132,108.96" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="118" cy="133.21" r="3.3" fill="#7a2e3c"/><circle cx="132" cy="133.21" r="3.3" fill="#7a2e3c"/><circle cx="125" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="146" cy="133.21" r="3.3" fill="#7a2e3c"/><circle cx="139" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="132" cy="108.96" r="3.3" fill="#7a2e3c"/><polygon points="200,135.09 214,135.09 214,121.09 200,121.09" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="200,135.09 228,135.09 228,107.09 200,107.09" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="200" cy="135.09" r="3.3" fill="#7a2e3c"/><circle cx="214" cy="135.09" r="3.3" fill="#7a2e3c"/><circle cx="214" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="200" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="228" cy="135.09" r="3.3" fill="#7a2e3c"/><circle cx="228" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="228" cy="107.09" r="3.3" fill="#7a2e3c"/><circle cx="214" cy="107.09" r="3.3" fill="#7a2e3c"/><circle cx="200" cy="107.09" r="3.3" fill="#7a2e3c"/><polygon points="282,142.63 296,142.63 300.33,129.32 289,121.09 277.67,129.32" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="282,142.63 310,142.63 318.65,116 296,99.54 273.35,116" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="282" cy="142.63" r="3.3" fill="#7a2e3c"/><circle cx="296" cy="142.63" r="3.3" fill="#7a2e3c"/><circle cx="300.33" cy="129.32" r="3.3" fill="#7a2e3c"/><circle cx="289" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="277.67" cy="129.32" r="3.3" fill="#7a2e3c"/><circle cx="310" cy="142.63" r="3.3" fill="#7a2e3c"/><circle cx="314.33" cy="129.32" r="3.3" fill="#7a2e3c"/><circle cx="318.65" cy="116" r="3.3" fill="#7a2e3c"/><circle cx="307.33" cy="107.77" r="3.3" fill="#7a2e3c"/><circle cx="296" cy="99.54" r="3.3" fill="#7a2e3c"/><circle cx="284.67" cy="107.77" r="3.3" fill="#7a2e3c"/><circle cx="273.35" cy="116" r="3.3" fill="#7a2e3c"/><text x="47" y="199.45" font-size="13" fill="#3a2a2e" text-anchor="middle">每邊 4 個鋼珠</text><polygon points="111,213.13 125,213.13 118,201.01" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="111,213.13 139,213.13 125,188.88" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="111,213.13 153,213.13 132,176.76" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="111" cy="213.13" r="3.3" fill="#7a2e3c"/><circle cx="125" cy="213.13" r="3.3" fill="#7a2e3c"/><circle cx="118" cy="201.01" r="3.3" fill="#7a2e3c"/><circle cx="139" cy="213.13" r="3.3" fill="#7a2e3c"/><circle cx="132" cy="201.01" r="3.3" fill="#7a2e3c"/><circle cx="125" cy="188.88" r="3.3" fill="#7a2e3c"/><circle cx="153" cy="213.13" r="3.3" fill="#7a2e3c"/><circle cx="146" cy="201.01" r="3.3" fill="#7a2e3c"/><circle cx="139" cy="188.88" r="3.3" fill="#7a2e3c"/><circle cx="132" cy="176.76" r="3.3" fill="#7a2e3c"/><polygon points="193,215.95 207,215.95 207,201.95 193,201.95" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="193,215.95 221,215.95 221,187.95 193,187.95" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="193,215.95 235,215.95 235,173.95 193,173.95" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="193" cy="215.95" r="3.3" fill="#7a2e3c"/><circle cx="207" cy="215.95" r="3.3" fill="#7a2e3c"/><circle cx="207" cy="201.95" r="3.3" fill="#7a2e3c"/><circle cx="193" cy="201.95" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="215.95" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="201.95" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="187.95" r="3.3" fill="#7a2e3c"/><circle cx="207" cy="187.95" r="3.3" fill="#7a2e3c"/><circle cx="193" cy="187.95" r="3.3" fill="#7a2e3c"/><circle cx="235" cy="215.95" r="3.3" fill="#7a2e3c"/><circle cx="235" cy="201.95" r="3.3" fill="#7a2e3c"/><circle cx="235" cy="187.95" r="3.3" fill="#7a2e3c"/><circle cx="235" cy="173.95" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="173.95" r="3.3" fill="#7a2e3c"/><circle cx="207" cy="173.95" r="3.3" fill="#7a2e3c"/><circle cx="193" cy="173.95" r="3.3" fill="#7a2e3c"/><polygon points="275,227.26 289,227.26 293.33,213.95 282,205.72 270.67,213.95" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="275,227.26 303,227.26 311.65,200.63 289,184.18 266.35,200.63" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="275,227.26 317,227.26 329.98,187.32 296,162.63 262.02,187.32" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="275" cy="227.26" r="3.3" fill="#7a2e3c"/><circle cx="289" cy="227.26" r="3.3" fill="#7a2e3c"/><circle cx="293.33" cy="213.95" r="3.3" fill="#7a2e3c"/><circle cx="282" cy="205.72" r="3.3" fill="#7a2e3c"/><circle cx="270.67" cy="213.95" r="3.3" fill="#7a2e3c"/><circle cx="303" cy="227.26" r="3.3" fill="#7a2e3c"/><circle cx="307.33" cy="213.95" r="3.3" fill="#7a2e3c"/><circle cx="311.65" cy="200.63" r="3.3" fill="#7a2e3c"/><circle cx="300.33" cy="192.4" r="3.3" fill="#7a2e3c"/><circle cx="289" cy="184.18" r="3.3" fill="#7a2e3c"/><circle cx="277.67" cy="192.4" r="3.3" fill="#7a2e3c"/><circle cx="266.35" cy="200.63" r="3.3" fill="#7a2e3c"/><circle cx="317" cy="227.26" r="3.3" fill="#7a2e3c"/><circle cx="321.33" cy="213.95" r="3.3" fill="#7a2e3c"/><circle cx="325.65" cy="200.63" r="3.3" fill="#7a2e3c"/><circle cx="329.98" cy="187.32" r="3.3" fill="#7a2e3c"/><circle cx="318.65" cy="179.09" r="3.3" fill="#7a2e3c"/><circle cx="307.33" cy="170.86" r="3.3" fill="#7a2e3c"/><circle cx="296" cy="162.63" r="3.3" fill="#7a2e3c"/><circle cx="284.67" cy="170.86" r="3.3" fill="#7a2e3c"/><circle cx="273.35" cy="179.09" r="3.3" fill="#7a2e3c"/><circle cx="262.02" cy="187.32" r="3.3" fill="#7a2e3c"/></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$n=9$、$m=126$</div>
+<div class="fxs"><div class="move">做法：把三種陣列「每邊 $n$ 個」時的鋼珠數都寫成 $n$ 的式子。正三角形陣列是 $1+2+\cdots+n$，正方形陣列是 $n^2$；正五邊形陣列要從圖上數前幾個，再看每大一圈多幾顆。</div>
+正三角形陣列：$\dfrac{n(n+1)}{2}$ 個；正方形陣列：$n^2$ 個。<br>
+正五邊形陣列：從圖上數，每邊 $1$、$2$、$3$、$4$ 個時共有 $1$、$5$、$12$、$22$ 個，相鄰相差 $4$、$7$、$10$。看圖找原因：每邊從 $k$ 個變成 $k+1$ 個時，外面多套一個大一號的五邊形，它和原來的陣列共用左下角的頂點與兩條邊的方向，新增的鋼珠在另外三條邊上（連同兩條共用邊各自延長出去的那一顆），共 $3k+1$ 個。<br>
+所以每邊 $n$ 個的正五邊形陣列有 $1+4+7+\cdots+(3n-2)=\dfrac{n(1+3n-2)}{2}=\dfrac{n(3n-1)}{2}$ 個。<br>
+依題意 $m=\dfrac{n(n+1)}{2}+n^2$，且 $m=\dfrac{n(3n-1)}{2}+9$。兩式相等：$\dfrac{3n^2+n}{2}=\dfrac{3n^2-n}{2}+9$ ⟹ $n=9$。<br>
+$m=\dfrac{9\times10}{2}+81=45+81=126$。<br>
+<span class="note-sm">檢查：每邊 $9$ 個的正五邊形陣列有 $\dfrac{9\times26}{2}=117$ 個，$126-117=9$ ✔。$1$、$5$、$12$、$22$、… 叫做五邊形數；這一題不需要事先背它，從圖上的階差 $4$、$7$、$10$ 就能寫出來。</span></div></div>
+<!-- /figq:L5 -->
 </section>
 
 <div class="ch-nav">

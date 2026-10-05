@@ -1554,6 +1554,386 @@
   CONTRAST['L2.detRowOp'] = { f: function (p) { return !!p.rev; }, why: '新行列式 $=$ 係數行列式 $\\times$ 原行列式：由原求新用乘的，由新反求原用除的。' };
   CONTRAST['L2.cevianLen'] = { f: function (p) { return p.t; }, why: '兩題都是 $\\overrightarrow{AD}$ 用分點公式寫開再平方；差別只在 $\\overrightarrow{AB}\\cdot\\overrightarrow{AC}$ 怎麼來：給夾角用 $bc\\cos A$，給三邊用 $\\dfrac{b^2+c^2-a^2}{2}$。' };
   CONTRAST['L2.perpToAngle'] = { f: function (p) { return p.t; }, why: '同一條「垂直 ⟹ 內積為 $0$」展開：知道長度比就解出 $\\cos\\theta$；知道夾角就解出長度比。未知數不同，式子一樣。' };
+  /* ══════════════════════════════════════════════════════════
+     2026-10-02　附圖題（讀圖型）：圖由產生器依亂數參數即時畫成 inline SVG，放在 q 裡，圖跟著數字變
+     共用畫圖小工具 fig*()（樣式與 g11a-ch01、g10b-ch04 同一套）：方格、向量箭頭、向量名（字母上加小箭頭）、多邊形、點與點名。
+     規則：坐標一律由參數算（不目測）、圖照比例畫；圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
+           要給驗算器讀的元素帶 data-k（驗算器從圖上的坐標與標籤文字代回，不看 p）。
+     L1 3 型、L2 3 型、L3 3 型（L3-19～L3-21 的類似題）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     ══════════════════════════════════════════════════════════ */
+  var FIGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#b03a55', soft: '#8a7378', grid: '#ddd2d5', blue: '#1f5fa8', green: '#4e7a34', fill: 'rgba(176,58,85,.07)' };
+  function fgN(v) { var s = (Math.round(v * 100) / 100).toFixed(2); if (s === '-0.00') s = '0.00'; return s.replace(/\.?0+$/, ''); }
+  function figAttr(o) { var s = ''; for (var k in o) { if (o[k] !== undefined && o[k] !== null && o[k] !== false) s += ' ' + k + '="' + o[k] + '"'; } return s; }
+  function figSvg(w, h, label, body) { return '<svg class="qfig" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" role="img" aria-label="' + label + '">' + body + '</svg>'; }
+  function figLine(x1, y1, x2, y2, o) { o = o || {}; return '<line' + figAttr({ 'data-k': o.k, x1: fgN(x1), y1: fgN(y1), x2: fgN(x2), y2: fgN(y2), stroke: o.c || FIGC.line, 'stroke-width': o.w || 1.6, 'stroke-dasharray': o.dash ? '4 3' : null, 'stroke-linecap': 'round' }) + '/>'; }
+  function figSeg(p, q, o) { return figLine(p[0], p[1], q[0], q[1], o); }
+  function figText(x, y, s, o) { o = o || {}; return '<text' + figAttr({ 'data-k': o.k, x: fgN(x), y: fgN(y), 'font-size': o.fs || 14, fill: o.c || FIGC.ink, 'text-anchor': o.anchor || 'middle', 'font-style': o.it ? 'italic' : null }) + '>' + s + '</text>'; }
+  function figDot(p, o) { o = o || {}; return '<circle' + figAttr({ 'data-k': o.k, cx: fgN(p[0]), cy: fgN(p[1]), r: o.r || 3, fill: o.c || FIGC.line }) + '/>'; }
+  function ptS(p) { return fgN(p[0]) + ' ' + fgN(p[1]); }
+  function figPoly(P, o) { o = o || {}; return '<path' + figAttr({ 'data-k': o.k, d: 'M ' + P.map(ptS).join(' L ') + ' Z', fill: o.fill || 'none', stroke: o.c || FIGC.line, 'stroke-width': o.w || 1.8, 'stroke-linejoin': 'round' }) + '/>'; }
+  function figPt(cx, cy, R, a) { return [cx + R * Math.cos(a), cy - R * Math.sin(a)]; }       /* 數學角 a（逆時針）→ 像素點 */
+  function figLen(p, q) { return Math.sqrt((p[0] - q[0]) * (p[0] - q[0]) + (p[1] - q[1]) * (p[1] - q[1])); }
+  function figUnit(p, q) { var L = figLen(p, q) || 1; return [(q[0] - p[0]) / L, (q[1] - p[1]) / L]; }
+  function figMid(p, q) { return [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2]; }
+  function figOff(p, d, k) { return [p[0] + d[0] * k, p[1] + d[1] * k]; }
+  function figCen(P) { var x = 0, y = 0; P.forEach(function (p) { x += p[0]; y += p[1]; }); return [x / P.length, y / P.length]; }
+  function figLerp(p, q, t) { return [p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t]; }
+  function figSegD(p, a, b) {                                                                   /* 點到線段的距離 */
+    var L2 = (b[0] - a[0]) * (b[0] - a[0]) + (b[1] - a[1]) * (b[1] - a[1]), t = L2 ? Math.max(0, Math.min(1, ((p[0] - a[0]) * (b[0] - a[0]) + (p[1] - a[1]) * (b[1] - a[1])) / L2)) : 0;
+    return figLen(p, [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])]);
+  }
+  /* 候選位置裡，離「線段 segs」與「已放的標籤 pts」最遠的那一個 */
+  function figBest(cands, segs, pts) {
+    var best = cands[0], bv = -1;
+    cands.forEach(function (c) {
+      var m = Infinity;
+      segs.forEach(function (sg) { m = Math.min(m, figSegD(c, sg[0], sg[1])); });
+      pts.forEach(function (q) { m = Math.min(m, figLen(c, q)); });
+      if (m > bv + 1e-9) { bv = m; best = c; }
+    });
+    return best;
+  }
+  /* 向量箭頭：線段從 p 畫到箭頭底部；箭頭是實心三角形，尖端在 q。data-k：線段 k（x1,y1 是起點）、箭頭 k-h（path 的第一個點是尖端） */
+  function figVec(p, q, o) {
+    o = o || {}; var d = figUnit(p, q), L = 10, wv = 4, c = o.c || FIGC.hot, b = figOff(q, d, -L), b2 = figOff(q, d, -L + 2);
+    return figLine(p[0], p[1], b2[0], b2[1], { c: c, w: o.w || 2.2, k: o.k }) +
+      '<path' + figAttr({ 'data-k': o.k ? o.k + '-h' : null, d: 'M ' + ptS(q) + ' L ' + fgN(b[0] - wv * d[1]) + ' ' + fgN(b[1] + wv * d[0]) + ' L ' + fgN(b[0] + wv * d[1]) + ' ' + fgN(b[1] - wv * d[0]) + ' Z', fill: c }) + '/>';
+  }
+  /* 坐標軸用的細箭頭 */
+  function figAxis(x1, y1, x2, y2, k) {
+    var d = figUnit([x1, y1], [x2, y2]), b = figOff([x2, y2], d, -8);
+    return figLine(x1, y1, b[0], b[1], { c: FIGC.ink, w: 1.2, k: k }) + '<path d="M ' + fgN(x2) + ' ' + fgN(y2) + ' L ' + fgN(b[0] - 3.2 * d[1]) + ' ' + fgN(b[1] + 3.2 * d[0]) + ' L ' + fgN(b[0] + 3.2 * d[1]) + ' ' + fgN(b[1] - 3.2 * d[0]) + ' Z" fill="' + FIGC.ink + '"/>';
+  }
+  /* 向量名：斜體字母，上面加一個小箭頭；(cx, cy) 是整個標籤的中心 */
+  function figVecName(cx, cy, s, o) {
+    o = o || {}; var c = o.c || FIGC.ink, yy = cy - 7.5;
+    return figText(cx, cy + 5.5, s, { fs: 15, it: 1, c: c, k: o.k }) + figLine(cx - 5, yy, cx + 3.5, yy, { c: c, w: 1 }) +
+      '<path d="M ' + fgN(cx + 6) + ' ' + fgN(yy) + ' L ' + fgN(cx + 2.4) + ' ' + fgN(yy - 2.3) + ' L ' + fgN(cx + 2.4) + ' ' + fgN(yy + 2.3) + ' Z" fill="' + c + '"/>';
+  }
+  function figName(p, s, o) { o = o || {}; return figText(p[0], p[1] + 4.8, s, { fs: o.fs || 14, it: 1, c: o.c, k: o.k }); }      /* 點名：p 是字的中心 */
+  function figNum(p, s, o) { o = o || {}; return figText(p[0], p[1] + 4.8, s, { fs: 14, k: o.k || 'len' }); }                      /* 長度標籤：p 是字的中心 */
+  function figAway(p, c, d) { var u = figUnit(c, p); return figOff(p, u, d); }                                                    /* 從 c 往 p 的方向再走 d */
+  function figNormOut(p, q, c) { var d = figUnit(p, q), n = [-d[1], d[0]], m = figMid(p, q); return n[0] * (c[0] - m[0]) + n[1] * (c[1] - m[1]) > 0 ? [-n[0], -n[1]] : n; }      /* 線段 pq 的單位法向量，指向離 c 遠的那一側 */
+  function figGrid(gx, gy, nx, ny, c) {
+    var s = '', i;
+    for (i = 0; i <= nx; i++) s += figLine(gx + i * c, gy, gx + i * c, gy + ny * c, { c: FIGC.grid, w: 1, k: 'gv' });
+    for (i = 0; i <= ny; i++) s += figLine(gx, gy + i * c, gx + nx * c, gy + i * c, { c: FIGC.grid, w: 1, k: 'gh' });
+    return s;
+  }
+  /* 數學坐標（y 向上）等比例放進寬 W、圖形最高 maxH 的框；回傳換算函數 M、比例尺 sc、畫布寬高 */
+  function figFit(pts, o) {
+    var x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    pts.forEach(function (p) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); });
+    var W = o.W || 300, l = o.l || 34, rr = o.r || 34, t = o.t || 24, b = o.b || 28;
+    var k = Math.min((W - l - rr) / (x1 - x0 || 1), (o.maxH || 160) / (y1 - y0 || 1)), ox = l + ((W - l - rr) - (x1 - x0) * k) / 2;
+    return { M: function (p) { return [ox + (p[0] - x0) * k, t + (y1 - p[1]) * k]; }, sc: k, W: W, H: Math.ceil(t + (y1 - y0) * k + b) };
+  }
+  function figOpt(i, t) { return '<span class="qopt">(' + i + ') ' + t + '</span>'; }
+  function figWalk(v) {                                                                          /* 「往右 3 格、往下 2 格」 */
+    var a = [];
+    if (v[0] !== 0) a.push((v[0] > 0 ? '往右 ' : '往左 ') + T(String(Math.abs(v[0]))) + ' 格');
+    if (v[1] !== 0) a.push((v[1] > 0 ? '往上 ' : '往下 ') + T(String(Math.abs(v[1]))) + ' 格');
+    return a.join('、') + (v[0] === 0 ? '（左右沒有移動）' : v[1] === 0 ? '（上下沒有移動）' : '');
+  }
+
+  /* ────────── L1　讀圖題：方格上的向量（線性組合與長度、內積與夾角）、正六邊形上的箭頭 ────────── */
+  /* 方格 9×6：a 畫在左半（第 0～4 行）、b 畫在右半（第 5～9 行）；ta、tb 是起點的格子坐標（左下角為 (0,0)） */
+  function figTwoVecSvg(a, ta, b, tb) {
+    var nx = 9, ny = 6, c = 28, gx = 16, gy = 14, W = gx * 2 + nx * c, H = gy * 2 + ny * c, s = figGrid(gx, gy, nx, ny, c);
+    function P(i, j) { return [gx + i * c, gy + (ny - j) * c]; }
+    [[a, ta, 'a', FIGC.hot, 2], [b, tb, 'b', FIGC.blue, 7]].forEach(function (it) {
+      var p = P(it[1][0], it[1][1]), q = P(it[1][0] + it[0][0], it[1][1] + it[0][1]), m = figMid(p, q), n = figNormOut(p, q, P(it[4], 3));
+      n = [-n[0], -n[1]];                                                                         /* 名字放在靠自己那一半中心的一側 */
+      s += figDot(p, { c: it[3], r: 2.6 }) + figVec(p, q, { c: it[3], k: 'v' + it[2] }) + figVecName(m[0] + n[0] * 14, m[1] + n[1] * 14, it[2], { c: it[3], k: 'n' + it[2] });
+    });
+    return figSvg(W, H, '方格紙上的兩個向量 a 與 b', s);
+  }
+  function figRandVec(r) { var v; do { v = [r.int(-4, 4), r.int(-4, 4)]; } while (Math.max(Math.abs(v[0]), Math.abs(v[1])) < 2); return v; }
+  function figTail(r, v, x0, wd, ht) { return [x0 + r.int(Math.max(0, -v[0]), wd - Math.max(0, v[0])), r.int(Math.max(0, -v[1]), ht - Math.max(0, v[1]))]; }
+  L1.figGridVec = function (r) {
+    var a, b, m, n, w, g = 0;
+    do { a = figRandVec(r); b = figRandVec(r); m = r.pick([1, 2, 2, 3]); n = r.pick([-2, -1, -1, 1, 2]); w = add(sc(m, a), sc(n, b)); }
+    while (((w[0] === 0 && w[1] === 0) || (a[0] === b[0] && a[1] === b[1])) && g++ < 60);
+    var ta = figTail(r, a, 0, 4, 6), tb = figTail(r, b, 5, 4, 6), expr = comb(m, vec('a'), true) + comb(n, vec('b'), false);
+    return { q: '如圖，方格紙上每一小格的邊長都是 ' + T('1') + '，以向右為 ' + T('x') + ' 軸正向、向上為 ' + T('y') + ' 軸正向。向量 ' + T(vec('a')) + '、' + T(vec('b')) + ' 如圖所示，求 ' + T(expr) + ' 的坐標表示與長度。' + figTwoVecSvg(a, ta, b, tb),
+      a: T(expr + '=' + vt(w)) + '，長度 ' + T(sqrtTex(n2(w))),
+      h: '向量只看「從起點到終點，橫向走幾格、直向走幾格」，和它畫在哪裡無關。圖上的 ' + T(vec('a')) + ' 是' + figWalk(a) + '，所以 ' + T(vec('a') + '=' + vt(a)) + '（往左、往下是負的）；' + T(vec('b')) + ' 照樣讀。再把係數乘進分量、對應分量相加算出 ' + T(expr) + '，最後用 $\\sqrt{x^2+y^2}$ 算長度。',
+      p: { a: a, b: b, ta: ta, tb: tb, m: m, n: n, ans: { w: w, len2: n2(w) } } };
+  };
+  function figCosTex(d, N) { if (d === 0) return '0'; var s = simpSqrt(N); return s.r === 1 ? Fr.tex(F(d, s.c)) : radTex(d, s.r, s.c * s.r); }      /* d/√N 的最簡寫法 */
+  L1.figGridDot = function (r) {
+    var a, b, g = 0;
+    do { a = figRandVec(r); b = figRandVec(r); } while (cross(a, b) === 0 && g++ < 60);
+    var ta = figTail(r, a, 0, 4, 6), tb = figTail(r, b, 5, 4, 6), d = dot(a, b);
+    return { q: '如圖，方格紙上每一小格的邊長都是 ' + T('1') + '。向量 ' + T(vec('a')) + '、' + T(vec('b')) + ' 如圖所示，兩向量的夾角為 ' + T('\\theta') + '，求 ' + T(vec('a') + '\\cdot' + vec('b')) + ' 與 ' + T('\\cos\\theta') + '。' + figTwoVecSvg(a, ta, b, tb),
+      a: T(vec('a') + '\\cdot' + vec('b') + '=' + d) + '，' + T('\\cos\\theta=' + figCosTex(d, n2(a) * n2(b))),
+      h: '兩個向量的起點不同沒有關係，向量可以平移。以向右、向上為正，圖上的 ' + T(vec('a')) + ' 是' + figWalk(a) + '，所以 ' + T(vec('a') + '=' + vt(a)) + '；' + T(vec('b')) + ' 照樣讀。內積是「對應分量相乘再相加」，再代 $\\cos\\theta=\\dfrac{\\vec a\\cdot\\vec b}{|\\vec a||\\vec b|}$，其中 ' + T('|' + vec('a') + '|=' + hsq(a) + '=' + sqrtTex(n2(a))) + '（分母有根號要有理化）。',
+      p: { a: a, b: b, ta: ta, tb: tb, ans: { dot: d, N: n2(a) * n2(b) } } };
+  };
+
+  /* 正六邊形：頂點 A～F 從數學角 k0·60° 起，依 dir（1 逆時針、−1 順時針）排；O 是中心 */
+  var FHEX_N = ['A', 'B', 'C', 'D', 'E', 'F'];
+  var FHEX_SEG = ['AB', 'BC', 'CD', 'DE', 'EF', 'FA', 'OA', 'OB', 'OC', 'OD', 'OE', 'OF'];
+  function figHexV(s) { return sub(HEX[s.charAt(1)], HEX[s.charAt(0)]); }                      /* 以 AB、AF 為單位的坐標 */
+  function figHexPts(cx, cy, Rp, k0, dir) { var o = { O: [cx, cy] }; FHEX_N.forEach(function (nm, i) { o[nm] = figPt(cx, cy, Rp, (k0 + dir * i) * Math.PI / 3); }); return o; }
+  function figHexBase(cx, cy, Rp, k0, dir, diag) {
+    var V = figHexPts(cx, cy, Rp, k0, dir), s = figPoly(FHEX_N.map(function (nm) { return V[nm]; }), { k: 'hex', w: 1.6, fill: FIGC.fill }), i;
+    if (diag) for (i = 0; i < 3; i++) s += figSeg(V[FHEX_N[i]], V[FHEX_N[i + 3]], { c: FIGC.grid, w: 1.2, k: 'diag' });
+    FHEX_N.forEach(function (nm, j) { s += figName(figPt(cx, cy, Rp + 13, (k0 + dir * j) * Math.PI / 3), nm); });
+    return { V: V, s: s };
+  }
+  /* 版面：O 的名字、a 與 b 的名字放哪裡。ok＝兩個向量名都離「別的箭頭」夠遠（不會分不清是誰的名字） */
+  function figHexLay(k0, dir, aS, bS, tS) {
+    var cx = 140, cy = 104, Rp = 72, V = figHexPts(cx, cy, Rp, k0, dir), oc = [], j;
+    function sg(nm) { return [V[nm.charAt(0)], V[nm.charAt(1)]]; }
+    var A = sg(aS), B = sg(bS), Tg = sg(tS), names = FHEX_N.map(function (nm, i) { return figPt(cx, cy, Rp + 13, (k0 + dir * i) * Math.PI / 3); });
+    for (j = 0; j < 6; j++) oc.push(figPt(cx, cy, 14, (k0 + 0.5 + j) * Math.PI / 3));
+    var oP = figBest(oc, [A, B, Tg], []);
+    function lab(S, others, placed) {
+      var d = figUnit(S[0], S[1]), c = [];
+      [0.5, 0.36, 0.64].forEach(function (t) { var m = figLerp(S[0], S[1], t); c.push([m[0] - d[1] * 14, m[1] + d[0] * 14], [m[0] + d[1] * 14, m[1] - d[0] * 14]); });
+      var best = figBest(c, others, placed), clr = Infinity;
+      others.forEach(function (o) { clr = Math.min(clr, figSegD(best, o[0], o[1])); }); placed.forEach(function (q) { clr = Math.min(clr, figLen(best, q) + 4); });
+      return { p: best, clr: clr };
+    }
+    var la = lab(A, [B, Tg], names.concat([oP])), lb = lab(B, [A, Tg], names.concat([oP, la.p]));
+    return { V: V, A: A, B: B, Tg: Tg, oP: oP, la: la.p, lb: lb.p, ok: la.clr >= 18 && lb.clr >= 18 };
+  }
+  function figHexArrowSvg(k0, dir, aS, bS, tS) {
+    var W = 280, H = 208, cx = 140, cy = 104, Rp = 72, s = figHexBase(cx, cy, Rp, k0, dir, true).s, ly = figHexLay(k0, dir, aS, bS, tS);
+    s += figVec(ly.Tg[0], ly.Tg[1], { c: FIGC.ink, w: 1.8, k: 'vt' }) + figVec(ly.A[0], ly.A[1], { c: FIGC.hot, k: 'va' }) + figVec(ly.B[0], ly.B[1], { c: FIGC.blue, k: 'vb' });
+    s += figDot([cx, cy], { r: 2.6, c: FIGC.ink, k: 'O' }) + figName(ly.oP, 'O');
+    s += figVecName(ly.la[0], ly.la[1], 'a', { c: FIGC.hot, k: 'na' }) + figVecName(ly.lb[0], ly.lb[1], 'b', { c: FIGC.blue, k: 'nb' });
+    return figSvg(W, H, '正六邊形 ABCDEF 與中心 O，圖上有向量 a、b 與第三個向量的箭頭', s);
+  }
+  L1.figHexArrow = function (r) {
+    var aS, bS, X, Y, u, v, w, D, x, y, g = 0, pts = ['A', 'B', 'C', 'D', 'E', 'F', 'O'];
+    function seg() { var t = r.pick(FHEX_SEG); return r() < 0.5 ? t.charAt(1) + t.charAt(0) : t; }
+    do {
+      aS = seg(); bS = seg(); X = r.pick(pts); Y = r.pick(pts);
+      u = figHexV(aS); v = figHexV(bS); w = sub(HEX[Y], HEX[X]); D = cross(u, v);
+      x = D ? cross(w, v) / D : 0; y = D ? cross(u, w) / D : 0;
+    } while ((D === 0 || X === Y || x === 0 || y === 0 || aS.charAt(1) === bS.charAt(1) || aS.charAt(1) === Y || bS.charAt(1) === Y || !figHexLay(0, 1, aS, bS, X + Y).ok) && g++ < 900);      /* 三個箭頭的尖端不落在同一點；向量名不會分不清是誰的 */
+    var k0 = r.int(0, 5), dir = r.pick([1, -1]);
+    return { q: '如圖，正六邊形 ' + T('ABCDEF') + ' 的中心為 ' + T('O') + '，圖上標著 ' + T(vec('a')) + '、' + T(vec('b')) + ' 的兩個箭頭是已知向量，另一個箭頭是 ' + T(ov(X + Y)) + '。若 ' + T(ov(X + Y) + '=x' + vec('a') + '+y' + vec('b')) + '，求 ' + T('(x,y)') + '。' + figHexArrowSvg(k0, dir, aS, bS, X + Y),
+      a: T('(x,y)=(' + x + ',' + y + ')'),
+      h: '先從圖上認出每個箭頭「從哪一點指到哪一點」，方向不能看反。三條對角線把正六邊形切成六個正三角形，所以每個頂點都能用 ' + T(ov('AB')) + '、' + T(ov('AF')) + ' 表示（中心 ' + T('O') + ' 滿足 ' + T(ov('AO') + '=' + ov('AB') + '+' + ov('AF')) + '）。本題要表示的 ' + T(ov(X + Y) + '=' + hexComb(w)) + '；把 ' + T(vec('a')) + '、' + T(vec('b')) + ' 也改寫成這兩個向量的組合，再比較係數解 ' + T('x,y') + '。',
+      p: { k0: k0, dir: dir, a: aS, b: bS, X: X, Y: Y, ans: [x, y] } };
+  };
+
+  L1_H1.figGridVec = '這是「方格上讀向量」：先數格子讀出每個向量的坐標表示（只看起點到終點橫向、直向各走幾格），再做坐標運算。';
+  L1_H1.figGridDot = '這是「方格上讀向量求內積與夾角」：先數格子讀出兩個向量的坐標表示，內積用分量算，再除以兩個長度得到 $\\cos\\theta$。';
+  L1_H1.figHexArrow = '這是「正六邊形上的線性組合」：先從圖上認出每個箭頭的起點和終點，再把三個向量都改用同一組向量（例如 $\\overrightarrow{AB}$、$\\overrightarrow{AF}$）表示，比較係數。';
+  L1_SOL.figGridVec = function (p, o) {
+    var a = p.a, b = p.b, u = sc(p.m, a), v = sc(p.n, b), w = p.ans.w, expr = comb(p.m, vec('a'), true) + comb(p.n, vec('b'), false);
+    return ['讀圖：' + T(vec('a')) + ' 從起點到終點是' + figWalk(a) + '，所以 ' + T(vec('a') + '=' + vt(a)) + '；' + T(vec('b')) + ' 是' + figWalk(b) + '，所以 ' + T(vec('b') + '=' + vt(b)) + '。向量畫在哪裡不影響它的坐標表示。',
+      '係數乘進分量：' + T(comb(p.m, vec('a'), true) + '=' + vt(u)) + '、' + T(comb(p.n, vec('b'), true) + '=' + vt(v)) + '。對應分量相加：' + T(expr + '=' + parT(u[0] + sgT(v[0]) + ',\\ ' + u[1] + sgT(v[1])) + '=' + vt(w)) + '。',
+      '長度用畢氏定理：' + T(hsq(w) + '=' + sqrtTex(p.ans.len2)) + '。答案：' + o.a + '。'];
+  };
+  L1_SOL.figGridDot = function (p, o) {
+    var a = p.a, b = p.b, d = p.ans.dot;
+    return ['讀圖：' + T(vec('a')) + ' 從起點到終點是' + figWalk(a) + '，所以 ' + T(vec('a') + '=' + vt(a)) + '；' + T(vec('b')) + ' 是' + figWalk(b) + '，所以 ' + T(vec('b') + '=' + vt(b)) + '。',
+      '內積是對應分量相乘再相加：' + T(vec('a') + '\\cdot' + vec('b') + '=' + hdot(a, b) + '=' + d) + '。',
+      '兩個長度：' + T('|' + vec('a') + '|=' + hsq(a) + '=' + sqrtTex(n2(a))) + '、' + T('|' + vec('b') + '|=' + hsq(b) + '=' + sqrtTex(n2(b))) + '。',
+      (d === 0 ? '內積是 $0$，兩向量垂直，' + T('\\cos\\theta=0') : T('\\cos\\theta=\\dfrac{' + d + '}{' + sqrtTex(n2(a)) + '\\times ' + sqrtTex(n2(b)) + '}=' + figCosTex(d, p.ans.N)) + (d < 0 ? '（內積是負的，夾角是鈍角）' : '')) + '。答案：' + o.a + '。'];
+  };
+  L1_SOL.figHexArrow = function (p, o) {
+    var u = figHexV(p.a), v = figHexV(p.b), w = sub(HEX[p.Y], HEX[p.X]), t = ov(p.X + p.Y);
+    return ['讀圖：標著 ' + T(vec('a')) + ' 的箭頭從 ' + T(p.a.charAt(0)) + ' 指到 ' + T(p.a.charAt(1)) + '，所以 ' + T(vec('a') + '=' + ov(p.a)) + '；標著 ' + T(vec('b')) + ' 的箭頭從 ' + T(p.b.charAt(0)) + ' 指到 ' + T(p.b.charAt(1)) + '，所以 ' + T(vec('b') + '=' + ov(p.b)) + '。',
+      '全部改用 ' + T(ov('AB')) + '、' + T(ov('AF')) + ' 表示（' + T(ov('AO') + '=' + ov('AB') + '+' + ov('AF')) + '，平行且等長的線段是同一個向量）：' + T(vec('a') + '=' + hexComb(u)) + '、' + T(vec('b') + '=' + hexComb(v)) + '、' + T(t + '=' + hexComb(w)) + '。',
+      '設 ' + T(t + '=x' + vec('a') + '+y' + vec('b')) + '。比較 ' + T(ov('AB')) + ' 的係數：' + T(lin2('x', 'y', u[0], v[0]) + '=' + w[0]) + '；比較 ' + T(ov('AF')) + ' 的係數：' + T(lin2('x', 'y', u[1], v[1]) + '=' + w[1]) + '。',
+      '解聯立得 ' + T('x=' + p.ans[0]) + '、' + T('y=' + p.ans[1]) + '。答案：' + o.a + '。'];
+  };
+  META_L1.push(['figGridVec', '§4 方格上讀向量：線性組合與長度'], ['figGridDot', '§4 方格上讀向量：內積與夾角'], ['figHexArrow', '§4 正六邊形上的箭頭：線性組合']);
+
+  /* ────────── L2　讀圖題：斜格上讀係數與長度、等分點圖的交點與面積比、長方形圖上的內積與面積 ────────── */
+  /* 斜格：a 水平向右（長 pl）、b 與 a 夾 th 度（長 ql）；格線範圍 i0～i1、j0～j1；P = x a + y b */
+  function figSkewSvg(pl, ql, th, x, y, rg) {
+    var t = th * Math.PI / 180, i, j, s = '';
+    function Lp(u, v) { return [u * pl + v * ql * Math.cos(t), v * ql * Math.sin(t)]; }
+    var ft = figFit([Lp(rg[0], rg[2]), Lp(rg[1], rg[2]), Lp(rg[0], rg[3]), Lp(rg[1], rg[3])], { W: 300, maxH: 168, l: 30, r: 30, t: 26, b: 28 });
+    function M(u, v) { return ft.M(Lp(u, v)); }
+    for (j = rg[2]; j <= rg[3]; j++) s += figSeg(M(rg[0], j), M(rg[1], j), { c: '#c9bbbf', w: 1.1, k: 'ga' });
+    for (i = rg[0]; i <= rg[1]; i++) s += figSeg(M(i, rg[2]), M(i, rg[3]), { c: '#c9bbbf', w: 1.1, k: 'gb' });
+    var O = M(0, 0), A = M(1, 0), B = M(0, 1), P = M(x, y), ah = [1, 0], bh = figUnit(O, B), od = th === 60 ? figUnit([0, 0], [ah[0] - bh[0], ah[1] - bh[1]]) : figUnit([0, 0], [-ah[0] - bh[0], -ah[1] - bh[1]]);
+    s += figVec(O, A, { c: FIGC.hot, k: 'va' }) + figVec(O, B, { c: FIGC.blue, k: 'vb' });
+    var oL = figOff(O, od, 13), aL = [(O[0] + A[0]) / 2 + (th === 60 ? 4 : 0), O[1] - 13], bn = [bh[1], -bh[0]];
+    if (bn[0] * ah[0] + bn[1] * ah[1] > 0) bn = [-bn[0], -bn[1]];
+    var bL = figOff(figMid(O, B), bn, 13);
+    var pd = th === 60 ? figUnit([0, 0], [ah[0] - bh[0], ah[1] - bh[1]]) : figUnit([0, 0], [ah[0] + bh[0], ah[1] + bh[1]]);
+    var pL = figBest([figOff(P, pd, 14), figOff(P, pd, -14)], [[O, A], [O, B]], [oL, aL, bL]);
+    s += figDot(O, { c: FIGC.ink, r: 3, k: 'O' }) + figDot(P, { c: FIGC.ink, r: 3.4, k: 'P' }) + figName(oL, 'O') + figName(pL, 'P');
+    s += figVecName(aL[0], aL[1], 'a', { c: FIGC.hot, k: 'na' }) + figVecName(bL[0], bL[1], 'b', { c: FIGC.blue, k: 'nb' });
+    return figSvg(ft.W, ft.H, '兩組平行線畫成的平行四邊形格子，O 與 P 在格線交點上，向量 a、b 是從 O 出發的一個格子的兩邊', s);
+  }
+  L2.figSkewGrid = function (r) {
+    var pq, th, x, y, rg, wU, hU, k, g = 0;
+    do {
+      pq = r.pick([[1, 1], [1, 2], [2, 1], [2, 3], [3, 2], [2, 2], [3, 4], [4, 3]]); th = r.pick([60, 120]); x = r.nz(-2, 3); y = r.nz(-1, 2);
+      rg = [Math.min(0, x), Math.max(1, x), Math.min(0, y), Math.max(1, y)]; if (rg[1] - rg[0] < 2) rg[1]++; if (rg[3] - rg[2] < 2) rg[3]++;
+      wU = (rg[1] - rg[0]) * pq[0] + (rg[3] - rg[2]) * pq[1] * 0.5; hU = (rg[3] - rg[2]) * pq[1] * Math.sqrt(3) / 2; k = Math.min(240 / wU, 168 / hU);
+    } while ((pq[0] * k < 36 || pq[1] * k * 0.866 < 34) && g++ < 300);
+    var sg = th === 60 ? 1 : -1, n = x * x * pq[0] * pq[0] + y * y * pq[1] * pq[1] + sg * x * y * pq[0] * pq[1];
+    return { q: '如圖，兩組平行線把平面分成全等的平行四邊形格子，' + T('O') + '、' + T('P') + ' 都在格線的交點上，從 ' + T('O') + ' 出發的兩個箭頭 ' + T(vec('a')) + '、' + T(vec('b')) + ' 是一個格子的兩邊。已知 ' + T('|' + vec('a') + '|=' + pq[0]) + '、' + T('|' + vec('b') + '|=' + pq[1]) + '，' + T(vec('a')) + ' 與 ' + T(vec('b')) + ' 的夾角為 ' + T(th + '^\\circ') + '。(1) 若 ' + T(ov('OP') + '=x' + vec('a') + '+y' + vec('b')) + '，求 ' + T('(x,y)') + '　(2) 求 ' + T('|' + ov('OP') + '|') + '。' + figSkewSvg(pq[0], pq[1], th, x, y, rg),
+      a: '(1) ' + T('(x,y)=(' + x + ',' + y + ')') + '　(2) ' + T(sqrtTex(n)),
+      h: '(1) 從 ' + T('O') + ' 沿著格線走到 ' + T('P') + '：沿 ' + T(vec('a')) + ' 的方向走幾格、沿 ' + T(vec('b')) + ' 的方向走幾格，順著箭頭走是正的、逆著箭頭走是負的。(2) 長度先平方再展開：$|x\\vec a+y\\vec b|^2=x^2|\\vec a|^2+2xy\\,\\vec a\\cdot\\vec b+y^2|\\vec b|^2$，其中 ' + T(vec('a') + '\\cdot' + vec('b') + '=' + pq[0] + '\\times ' + pq[1] + '\\times\\cos' + th + '^\\circ=' + Fr.tex(F(sg * pq[0] * pq[1], 2))) + '。',
+      p: { pl: pq[0], ql: pq[1], th: th, x: x, y: y, rg: rg, ans: { xy: [x, y], len2: n } } };
+  };
+
+  /* 等分點圖：AB 分成 m 等分取第 i 個分點 D、AC 分成 n 等分取第 j 個分點 E，BE 與 CD 交於 P */
+  var FCEV_SH = [[[1.5, 3.1], [0, 0], [4.3, 0]], [[2.7, 3.2], [0, 0], [4.1, 0]], [[0.9, 3], [0, 0], [4.4, 0]], [[2.1, 3.3], [0, 0], [4.2, 0]]];
+  function figCevSvg(sh, flip, m, i, n, j) {
+    var pts = FCEV_SH[sh].map(function (p) { return flip ? [-p[0], p[1]] : p; }), ft = figFit(pts, { W: 290, maxH: 172, l: 38, r: 38, t: 28, b: 30 });
+    var A = ft.M(pts[0]), B = ft.M(pts[1]), C = ft.M(pts[2]), c = figCen([A, B, C]), D = figLerp(A, B, i / m), E = figLerp(A, C, j / n), d = i / m, e = j / n, k, s;
+    var x = d * (1 - e) / (1 - d * e), y = e * (1 - d) / (1 - d * e), P = [A[0] + x * (B[0] - A[0]) + y * (C[0] - A[0]), A[1] + x * (B[1] - A[1]) + y * (C[1] - A[1])];
+    s = figPoly([A, B, C], { k: 'tri', w: 2, fill: FIGC.fill }) + figSeg(B, E, { c: FIGC.hot, w: 1.5, k: 'BE' }) + figSeg(C, D, { c: FIGC.hot, w: 1.5, k: 'CD' });
+    for (k = 1; k < m; k++) s += figDot(figLerp(A, B, k / m), { c: FIGC.line, r: 2.5, k: 'tAB' });
+    for (k = 1; k < n; k++) s += figDot(figLerp(A, C, k / n), { c: FIGC.line, r: 2.5, k: 'tAC' });
+    s += figDot(D, { c: FIGC.hot, r: 3.6, k: 'D' }) + figDot(E, { c: FIGC.hot, r: 3.6, k: 'E' }) + figDot(P, { c: FIGC.ink, r: 3, k: 'P' });
+    s += figName(figAway(A, c, 13), 'A') + figName(figAway(B, c, 13), 'B') + figName(figAway(C, c, 13), 'C');
+    s += figName(figOff(D, figNormOut(A, B, c), 13), 'D') + figName(figOff(E, figNormOut(A, C, c), 13), 'E');
+    var u1 = figUnit(P, B), u2 = figUnit(P, C);
+    s += figName(figOff(P, figUnit([0, 0], [u1[0] + u2[0], u1[1] + u2[1]]), 14), 'P');
+    return figSvg(ft.W, ft.H, '三角形 ABC，AB 與 AC 上有等分點，D 在 AB 上、E 在 AC 上，BE 與 CD 交於 P', s);
+  }
+  L2.figCevian = function (r) {
+    var m, i, n, j, g = 0;
+    do { m = r.int(2, 5); n = r.int(2, 5); i = r.int(1, m - 1); j = r.int(1, n - 1); } while (m === 2 && n === 2 && g++ < 20);
+    var sh = r.int(0, 3), flip = r() < 0.5, d = F(i, m), e = F(j, n), one = F(1), den = Fr.sub(one, Fr.mul(d, e));
+    var x = Fr.div(Fr.mul(d, Fr.sub(one, e)), den), y = Fr.div(Fr.mul(e, Fr.sub(one, d)), den), rest = Fr.sub(Fr.sub(one, x), y);
+    return { q: '如圖，' + T('\\triangle ABC') + ' 中，' + T('\\overline{AB}') + ' 上的小圓點把 ' + T('\\overline{AB}') + ' 分成 ' + T(String(m)) + ' 等分，' + T('\\overline{AC}') + ' 上的小圓點把 ' + T('\\overline{AC}') + ' 分成 ' + T(String(n)) + ' 等分，' + T('D') + '、' + T('E') + ' 的位置如圖，' + T('\\overline{BE}') + ' 與 ' + T('\\overline{CD}') + ' 交於 ' + T('P') + '。(1) 若 ' + T(ov('AP') + '=x' + ov('AB') + '+y' + ov('AC')) + '，求 ' + T('(x,y)') + '　(2) 求 ' + T('\\triangle PBC') + ' 與 ' + T('\\triangle ABC') + ' 的面積比。' + figCevSvg(sh, flip, m, i, n, j),
+      a: '(1) ' + T('(x,y)=' + vtF([x, y])) + '　(2) ' + T('\\triangle PBC:\\triangle ABC=' + rest.n + ':' + rest.d),
+      h: '先從圖上數出 ' + T('D') + '、' + T('E') + ' 各是從 ' + T('A') + ' 數來第幾個分點：' + T(ov('AD') + '=' + Fr.tex(d) + ov('AB')) + '、' + T(ov('AE') + '=' + Fr.tex(e) + ov('AC')) + '。' + T('P') + ' 在 ' + T('\\overline{BE}') + ' 上 ⟹ ' + T(ov('AP') + '=(1-t)' + ov('AB') + '+t' + ov('AE')) + '；' + T('P') + ' 在 ' + T('\\overline{CD}') + ' 上 ⟹ ' + T(ov('AP') + '=s' + ov('AD') + '+(1-s)' + ov('AC')) + '。兩式的 ' + T(ov('AB')) + '、' + T(ov('AC')) + ' 係數分別相等，解 ' + T('s,t') + '。面積比：' + T('\\triangle PBC:\\triangle ABC=(1-x-y):1') + '。',
+      p: { sh: sh, flip: flip, m: m, i: i, n: n, j: j, ans: { x: fr2(x), y: fr2(y), rest: fr2(rest) } } };
+  };
+
+  /* 長方形 ABCD：A 在左下（flip 時在右下）、AB＝w、AD＝h、E 在 BC 上 BE＝e、F 在 CD 上 DF＝f */
+  function figRectSvg(w, h, e, f, flip) {
+    function fx(p) { return flip ? [-p[0], p[1]] : p; }
+    var ft = figFit([[0, 0], [w, 0], [w, h], [0, h]].map(fx), { W: 300, maxH: 150, l: 50, r: 50, t: 36, b: 36 });
+    var A = ft.M(fx([0, 0])), B = ft.M(fx([w, 0])), C = ft.M(fx([w, h])), D = ft.M(fx([0, h])), E = ft.M(fx([w, e])), Fp = ft.M(fx([f, h])), c = figCen([A, B, C, D]), sx = flip ? -1 : 1;
+    var s = figPoly([A, B, C, D], { k: 'rect', w: 2, fill: FIGC.fill }) + figVec(A, E, { c: FIGC.hot, k: 'vAE' }) + figVec(A, Fp, { c: FIGC.blue, k: 'vAF' });
+    s += figDot(E, { c: FIGC.ink, r: 2.8, k: 'E' }) + figDot(Fp, { c: FIGC.ink, r: 2.8, k: 'F' });
+    s += figName(figAway(A, c, 13), 'A') + figName(figAway(B, c, 13), 'B') + figName(figAway(C, c, 13), 'C') + figName(figAway(D, c, 13), 'D');
+    s += figName([E[0] + sx * 12, E[1] - 3], 'E') + figName([Fp[0] + sx * 3, Fp[1] - 12], 'F');
+    s += figNum([(A[0] + B[0]) / 2, A[1] + 14], String(w)) + figNum([A[0] - sx * (8 + String(h).length * 4), (A[1] + D[1]) / 2], String(h));
+    s += figNum([B[0] + sx * (8 + String(e).length * 4), (B[1] + E[1]) / 2 + 3], String(e)) + figNum([(D[0] + Fp[0]) / 2 - sx * 3, D[1] - 12], String(f));
+    return figSvg(ft.W, ft.H, '長方形 ABCD，E 在 BC 上、F 在 CD 上，AB、AD、BE、DF 的長標示在圖上，並畫出向量 AE 與 AF', s);
+  }
+  L2.figRectDot = function (r) {
+    var w, h, e, f, k, g = 0;
+    do { w = r.int(4, 10); h = r.int(3, 8); e = r.int(1, h - 1); f = r.int(1, w - 1); k = Math.min(200 / w, 150 / h); }
+    while ((w / h < 0.8 || w / h > 2.2 || e * k < 36 || f * k < 36 || (h - e) * k < 24 || (w - f) * k < 24) && g++ < 400);
+    var flip = r() < 0.5, d = w * f + e * h, ar = w * h - e * f;
+    return { q: '如圖，長方形 ' + T('ABCD') + ' 中，' + T('E') + ' 在 ' + T('\\overline{BC}') + ' 上、' + T('F') + ' 在 ' + T('\\overline{CD}') + ' 上，' + T('\\overline{AB}') + '、' + T('\\overline{AD}') + '、' + T('\\overline{BE}') + '、' + T('\\overline{DF}') + ' 的長標示在圖上。求 (1) ' + T(ov('AE') + '\\cdot' + ov('AF')) + '　(2) ' + T('\\triangle AEF') + ' 的面積。' + figRectSvg(w, h, e, f, flip),
+      a: '(1) ' + T(String(d)) + '　(2) ' + T(Fr.tex(F(ar, 2))),
+      h: '長方形的兩邊互相垂直，適合建坐標：以 ' + T('A') + ' 為原點、' + T(ov('AB')) + ' 的方向為 ' + T('x') + ' 軸正向、' + T(ov('AD')) + ' 的方向為 ' + T('y') + ' 軸正向。從圖上的數字讀出 ' + T('E') + '、' + T('F') + ' 的坐標：' + T('E') + ' 要沿 ' + T('\\overline{AB}') + ' 走 ' + T(String(w)) + '、再沿 ' + T('\\overline{BE}') + ' 走 ' + T(String(e)) + '，所以 ' + T(ov('AE') + '=' + pt(w, e)) + '；' + T(ov('AF')) + ' 照樣讀。內積用分量算，面積用 $\\dfrac12|a_1b_2-a_2b_1|$。',
+      p: { w: w, h: h, e: e, f: f, flip: flip, ans: { dot: d, area: fr2(F(ar, 2)) } } };
+  };
+  META_L2.push(['figSkewGrid', '§4 斜格上讀係數與長度（附圖）'], ['figCevian', '§4 等分點圖：兩線交點與面積比（附圖）'], ['figRectDot', '§4 長方形圖上的內積與面積（附圖）']);
+
+  /* ────────── L3　附圖固定題 L3-19～L3-21 的類似題 ────────── */
+  /* L3-19　方格 13×5 上三個向量 AB、CD、EF（各佔一個 3 行寬的區塊），EF = x AB + y CD */
+  function figGridLCSvg(vs, tails) {
+    var nx = 13, ny = 5, c = 22, gx = 22, gy = 22, W = gx * 2 + nx * c, H = gy * 2 + ny * c, s = figGrid(gx, gy, nx, ny, c), nm = ['AB', 'CD', 'EF'], col = [FIGC.hot, FIGC.green, FIGC.blue];
+    function P(i, j) { return [gx + i * c, gy + (ny - j) * c]; }
+    vs.forEach(function (v, k) {
+      var p = P(tails[k][0], tails[k][1]), q = P(tails[k][0] + v[0], tails[k][1] + v[1]), d = figUnit(p, q);
+      s += figDot(p, { c: col[k], r: 2.6 }) + figVec(p, q, { c: col[k], k: 'v' + nm[k] }) + figName(figOff(p, d, -12), nm[k].charAt(0)) + figName(figOff(q, d, 12), nm[k].charAt(1));
+    });
+    return figSvg(W, H, '方格紙上的三個向量 AB、CD、EF', s);
+  }
+  L3.figGridLC = function (r) {
+    var u, v, w, D, x, y, g = 0;
+    function rv() { var t; do { t = [r.int(-3, 3), r.int(-4, 4)]; } while (t[0] * t[0] + t[1] * t[1] < 4); return t; }
+    do { u = rv(); v = rv(); w = rv(); D = cross(u, v); if (D) { x = F(cross(w, v), D); y = F(cross(u, w), D); } }
+    while ((D === 0 || Math.abs(D) > 10 || x.n === 0 || y.n === 0) && g++ < 800);
+    var ord = r.shuffle([0, 1, 2]), tails = [u, v, w].map(function (t, k) { return figTail(r, t, ord[k] * 5, 3, 5); });
+    return { q: '如圖，方格紙上每一小格都是正方形。若 ' + T(ov('EF') + '=x' + ov('AB') + '+y' + ov('CD')) + '，求 ' + T('(x,y)') + '。' + figGridLCSvg([u, v, w], tails),
+      a: T('(x,y)=' + vtF([x, y])),
+      h: '向量只看起點到終點「橫向幾格、直向幾格」。設一小格的邊長是 ' + T('1') + '、向右向上為正，從圖上讀出三個向量的坐標表示，例如 ' + T('A') + ' 到 ' + T('B') + ' 是' + figWalk(u) + '，' + T(ov('AB') + '=' + vt(u)) + '；' + T(ov('CD')) + '、' + T(ov('EF')) + ' 照樣讀。把 ' + T(ov('EF') + '=x' + ov('AB') + '+y' + ov('CD')) + ' 拆成 ' + T('x') + ' 分量、' + T('y') + ' 分量兩條方程式，解聯立。',
+      p: { u: u, v: v, w: w, tails: tails, ans: [fr2(x), fr2(y)] } };
+  };
+
+  /* L3-20　正六邊形（邊長標在圖上）：五個內積比大小 */
+  function figHexDotK(s1, s2) { var u = figHexV(s1), v = figHexV(s2); return 2 * (u[0] * v[0] + u[1] * v[1]) - (u[0] * v[1] + u[1] * v[0]); }      /* 內積 = 邊長² × k/2 */
+  function figHexDotSvg(k0, dir, side, ei) {
+    var W = 280, H = 208, cx = 140, cy = 104, Rp = 70, hb = figHexBase(cx, cy, Rp, k0, dir, false), V = hb.V, p = V[FHEX_N[ei]], q = V[FHEX_N[(ei + 1) % 6]];
+    return figSvg(W, H, '正六邊形 ABCDEF，邊長標示在圖上', hb.s + figNum(figOff(figMid(p, q), figNormOut(p, q, [cx, cy]), 12), String(side)));
+  }
+  L3.figHexDot = function (r) {
+    var side = r.pick([1, 2, 2, 3, 4, 6]), mode = r.pick(['min', 'max']), opts, ks, ext, cnt, g = 0, S, seen, s1, s2, key, dist;
+    function rs(from) { var a = from || r.pick(FHEX_N), b; do { b = r.pick(FHEX_N); } while (b === a); return a + b; }
+    do {
+      S = r.pick(FHEX_N); opts = []; seen = {};
+      while (opts.length < 5) {
+        s1 = rs(r() < 0.75 ? S : null); s2 = (r() < 0.15 && !seen.sq) ? s1 : rs(r() < 0.5 ? S : null); key = s1 < s2 ? s1 + s2 : s2 + s1;
+        if (seen[key]) continue;
+        seen[key] = 1; if (s1 === s2) seen.sq = 1; opts.push([s1, s2]);
+      }
+      ks = opts.map(function (o) { return figHexDotK(o[0], o[1]); });
+      ext = mode === 'min' ? Math.min.apply(null, ks) : Math.max.apply(null, ks); cnt = ks.filter(function (k) { return k === ext; }).length;
+      dist = {}; ks.forEach(function (k) { dist[k] = 1; });
+    } while ((cnt !== 1 || (mode === 'min' && ext >= 0) || Object.keys(dist).length < 3) && g++ < 500);
+    var idx = ks.indexOf(ext) + 1, word = mode === 'min' ? '最小' : '最大';
+    return { q: '如圖，正六邊形 ' + T('ABCDEF') + ' 的邊長標示在圖上。下列五個內積中，哪一個的值' + word + '？並求出這個值。' + figHexDotSvg(r.int(0, 5), r.pick([1, -1]), side, r.int(0, 5)) + opts.map(function (o, i) { return figOpt(i + 1, T(ov(o[0]) + '\\cdot' + ov(o[1]))); }).join('　'),
+      a: '(' + idx + ')，值為 ' + T(Fr.tex(F(side * side * ext, 2))),
+      h: '把兩個向量平移到同一個起點再看夾角。邊長 ' + T(String(side)) + ' 的正六邊形：隔一個頂點的對角線長 ' + T(sqrtTex(3 * side * side)) + '，對面頂點的對角線長 ' + T(String(2 * side)) + '；相鄰兩邊夾 ' + T('120^\\circ') + '。也可以建坐標：以中心為原點，六個頂點在半徑 ' + T(String(side)) + ' 的圓上，每隔 ' + T('60^\\circ') + ' 一個。' + (mode === 'min' ? '找最小值，先看哪幾組的兩個向量指向大致相反（夾角是鈍角，內積是負的）。' : '找最大值，先看哪幾組的兩個向量方向接近、長度又長。'),
+      p: { side: side, mode: mode, opts: opts, ans: { idx: idx, k: ext } } };
+  };
+
+  /* L3-21　坐標平面上的格子點：v·OP>0 且 v·OQ>0 ⟹ 與哪些向量的內積一定小於 0 */
+  function figDotSignPos(pt) {                                                                    /* 像素位置與點名位置（N=5、c=22、gx=30、gy=22） */
+    var N = 5, c = 22, gx = 30, gy = 22, ox = gx + N * c, oy = gy + N * c, p = [ox + pt[0] * c, oy - pt[1] * c], L = Math.sqrt(pt[0] * pt[0] + pt[1] * pt[1]);
+    var lb = pt[0] === 0 ? [p[0] + 12, p[1]] : pt[1] === 0 ? [p[0], p[1] + 13] : [p[0] + pt[0] / L * 13, p[1] - pt[1] / L * 13];
+    return { p: p, lb: lb };
+  }
+  function figDotSignSvg(P, Q, C) {
+    var N = 5, c = 22, gx = 30, gy = 22, W = 2 * gx + 2 * N * c, H = 2 * gy + 2 * N * c, ox = gx + N * c, oy = gy + N * c, s = figGrid(gx, gy, 2 * N, 2 * N, c);
+    s += figAxis(gx - 8, oy, gx + 2 * N * c + 16, oy, 'xaxis') + figAxis(ox, gy + 2 * N * c + 8, ox, gy - 14, 'yaxis');
+    s += figText(gx + 2 * N * c + 14, oy + 15, 'x', { it: 1 }) + figText(ox + 11, gy - 7, 'y', { it: 1 }) + figText(ox - 9, oy + 15, 'O', { it: 1 });
+    [['P', P], ['Q', Q]].concat(C.map(function (pt, i) { return [FHEX_N[i], pt]; })).forEach(function (it) {
+      var ps = figDotSignPos(it[1]), hot = it[0] === 'P' || it[0] === 'Q';
+      s += figDot(ps.p, { c: hot ? FIGC.hot : FIGC.blue, r: 3.4, k: it[0] }) + figName(ps.lb, it[0]);
+    });
+    return figSvg(W, H, '坐標平面與方格，O 是原點，A、B、C、D、E、P、Q 都在格子點上', s);
+  }
+  L3.figDotSign = function (r) {
+    var P, Q, D, cs, C, ans, g = 0, ok, all, cone, non, k, used, i, j, pos, sN, tN, t, X, pool;
+    function big(t) { return Math.max(Math.abs(t[0]), Math.abs(t[1])) >= 2; }
+    function far(t, lst) { return lst.every(function (u) { return Math.max(Math.abs(t[0] - u[0]), Math.abs(t[1] - u[1])) >= 2; }); }
+    do {
+      ok = false;
+      do { P = [r.int(-4, 4), r.int(-4, 4)]; Q = [r.int(-4, 4), r.int(-4, 4)]; } while (!big(P) || !big(Q));
+      D = cross(P, Q); cs = dot(P, Q) / Math.sqrt(n2(P) * n2(Q));
+      if (D === 0 || cs > 0.9 || cs < -0.35 || !far(P, [Q])) continue;
+      cone = []; non = [];
+      for (i = -4; i <= 4; i++) for (j = -4; j <= 4; j++) {
+        X = [i, j]; if (!big(X)) continue;
+        sN = -cross(X, Q) * (D > 0 ? 1 : -1); tN = -cross(P, X) * (D > 0 ? 1 : -1);
+        if ((sN === 0 && tN >= 0) || (tN === 0 && sN >= 0)) continue;                              /* 邊界上的點不出 */
+        (sN > 0 && tN > 0 ? cone : non).push(X);
+      }
+      k = r.int(1, 2); C = []; used = [P, Q];
+      pool = r.shuffle(cone); for (i = 0; i < pool.length && C.length < k; i++) if (far(pool[i], used)) { C.push(pool[i]); used.push(pool[i]); }
+      if (C.length < k) continue;
+      pool = r.shuffle(non); for (i = 0; i < pool.length && C.length < 5; i++) if (far(pool[i], used)) { C.push(pool[i]); used.push(pool[i]); }
+      if (C.length < 5) continue;
+      if (!C.slice(k).some(function (t) { return dot(t, P) < 0 || dot(t, Q) < 0; })) continue;       /* 至少一個「只和其中一個反向」的點 */
+      C = r.shuffle(C);
+      pos = [P, Q].concat(C).map(figDotSignPos); ok = true;
+      for (i = 0; i < pos.length && ok; i++) for (j = 0; j < pos.length && ok; j++) if (i !== j) { if (figLen(pos[i].lb, pos[j].lb) < 17 && i < j) ok = false; if (figLen(pos[i].lb, pos[j].p) < 11) ok = false; }
+    } while (!ok && g++ < 2000);
+    ans = [];
+    C.forEach(function (t, i) { var s1 = -cross(t, Q) * (D > 0 ? 1 : -1), t1 = -cross(P, t) * (D > 0 ? 1 : -1); if (s1 > 0 && t1 > 0) ans.push(i + 1); });
+    return { q: '如圖，坐標平面上的 ' + T('A,B,C,D,E,P,Q') + ' 七個點都在格子點上（每一小格的邊長是 ' + T('1') + '），' + T('O') + ' 為原點。若向量 ' + T(vec('v')) + ' 滿足 ' + T(vec('v') + '\\cdot' + ov('OP') + '>0') + ' 且 ' + T(vec('v') + '\\cdot' + ov('OQ') + '>0') + '，則 ' + T(vec('v')) + ' 與下列哪些向量的內積一定小於 ' + T('0') + '？' + figDotSignSvg(P, Q, C) + FHEX_N.slice(0, 5).map(function (nm, i) { return figOpt(i + 1, T(ov('O' + nm))); }).join('　'),
+      a: ans.map(function (i) { return '(' + i + ')'; }).join(''),
+      h: '本題 ' + T(ov('OP') + '=' + vt(P)) + '、' + T(ov('OQ') + '=' + vt(Q)) + '。在圖上把 ' + T(ov('OP')) + '、' + T(ov('OQ')) + ' 反向延長成兩條射線（分別通過 ' + T(vt(sc(-1, P))) + '、' + T(vt(sc(-1, Q))) + '）。如果 ' + T('X') + ' 落在這兩條反向射線所夾的角裡，就有 ' + T(ov('OX') + '=-(s' + ov('OP') + '+t' + ov('OQ') + ')') + '（' + T('s,t\\ge0') + '），內積 ' + T(vec('v') + '\\cdot' + ov('OX') + '=-(s\\,' + vec('v') + '\\cdot' + ov('OP') + '+t\\,' + vec('v') + '\\cdot' + ov('OQ') + ')') + ' 一定是負的。落在這個角外面的點，都找得到一個符合條件的 ' + T(vec('v')) + ' 讓內積不是負的（例如取 ' + T(vec('v')) + ' 很靠近與 ' + T(ov('OP')) + ' 或 ' + T(ov('OQ')) + ' 垂直的方向）。',
+      p: { P: P, Q: Q, C: C, ans: ans } };
+  };
+  META_L3.push(['figGridLC', '方格上三個向量：解線性組合（附圖）'], ['figHexDot', '正六邊形的內積比大小（附圖）'], ['figDotSign', '內積一定為負的方向（附圖）']);
+  L3_FIX['L3-19'] = 'figGridLC'; L3_FIX['L3-20'] = 'figHexDot'; L3_FIX['L3-21'] = 'figDotSign';
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

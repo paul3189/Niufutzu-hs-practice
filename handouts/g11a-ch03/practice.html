@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js?v=20260929c"></script>
+<script src="practice-gen.js?v=20261002v3"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -207,6 +207,11 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 .diag .fixset{margin-top:6px}
 .myrec .mr-file{display:none}
 @media print{.gcard .gc,.diag{display:none!important}}
+/* ── 附圖題（2026-10-02）：題目的圖是 inline SVG，class="qfig"；手機寬自動縮小，列印照印 ── */
+.qfig,.qfig-sol{display:block;max-width:100%;height:auto;margin:8px auto 4px;font-family:KaTeX_Main,KaTeX_Math,"Times New Roman","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+.qfig text[font-style="italic"],.qfig-sol text[font-style="italic"]{font-family:KaTeX_Math,KaTeX_Main,"Times New Roman",serif}
+.qopt{display:inline-block}
+@media print{.qfig,.qfig-sol{break-inside:avoid}}
 </style>
 <link rel="stylesheet" href="../../assets/theme-cow.css">
 </head>
@@ -236,7 +241,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（18,250 題抽樣）；固定題全數人工＋電腦重算。本章只用平面向量、二階行列式與高二上第一章的三角比；空間向量、矩陣與複數平面都留給後面的課程。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（20,950 題抽樣）；L1、L2 的<b>讀圖題</b>每次換題，圖會跟著新的數字重畫，條件要從圖上讀；固定題全數人工＋電腦重算。本章只用平面向量、二階行列式與高二上第一章的三角比；空間向量、矩陣與複數平面都留給後面的課程。</li>
   </ol>
 </div>
 
@@ -263,7 +268,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>分點公式老是配反、「係數和 $=1$」還不會用、內積與長度混在一起的同學。</div>
-  <div><b>目標</b>27 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>30 個基本型（含 3 型讀圖題），每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
@@ -297,7 +302,13 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fadeset" data-tier="L1" data-keys="detCalc,orthDecomp,cauchyLinear" data-seed="7401"></div>
 <div class="fixset" data-tier="L1" data-keys="detCalc,orthDecomp,cauchyLinear" data-seed="5401"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 27 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">讀圖題：方格上的向量、正六邊形上的箭頭</h3>
+<div class="must">本章的段考原題大約每六題有一題附圖，向量的起點、終點要自己從圖上讀。先要會：<b>向量只看「起點到終點橫向走幾格、直向走幾格」，往左、往下是負的，和它畫在哪裡無關</b>；<b>兩個向量起點不同也能算內積，先各自讀成坐標</b>；<b>箭頭的方向不能看反：$\overrightarrow{AB}$ 是從 $A$ 指到 $B$</b>；<b>正六邊形的每條邊、每條「中心到頂點」的線段都一樣長，平行且等長的線段是同一個向量</b>。按「新題」時，圖會跟著數字重畫。</div>
+<div class="gen-grid" data-tier="L1" data-keys="figGridVec,figGridDot,figHexArrow"></div>
+<div class="fadeset" data-tier="L1" data-keys="figGridVec,figGridDot,figHexArrow" data-seed="7601"></div>
+<div class="fixset" data-tier="L1" data-keys="figGridVec,figGridDot,figHexArrow" data-seed="5601" data-n="6"></div>
+
+<h3 class="sec">L1 混合檢測 12 題（全章 30 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -306,7 +317,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>23 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 12 份高二段考卷重新統計，補了 6 型；2026-09-29 補直線的參數式 2 型），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>26 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 12 份高二段考卷重新統計，補了 6 型；2026-09-29 補直線的參數式 2 型；2026-10-02 補讀圖題 3 型），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
@@ -318,7 +329,11 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="must">12 份高二段考卷中<b>行列式與面積 10 卷、長度平方展開 10 卷、垂直 10 卷、內積 8 卷、夾角 8 卷、正射影 7 卷、柯西 5 卷、外心與垂心 3 卷</b>。解題要點：<b>「$|\vec u|=k|\vec v|=|a\vec u+b\vec v|$」設 $|\vec v|=t$ 全部平方，$t^2$ 約掉</b>；<b>柯西橢圓型：等號在 $(ax,by)\parallel(p,q)$</b>；<b>係數行列式＝面積伸縮率</b>；<b>圓上動點內積：拆成圓心＋半徑方向</b>；<b>拋物線上的內積：設 $C(x,\frac{x^2}k)$ 配方</b>；<b>外心在原點 ⟹ $\overrightarrow{OH}=\overrightarrow{OA}+\overrightarrow{OB}+\overrightarrow{OC}$</b>；<b>三向量和的下界看「圍不圍得成三角形」</b>；<b>行列式的列運算：新行列式＝係數行列式 × 原行列式</b>；<b>分點到頂點的距離：分點公式寫開再平方</b>；<b>由垂直條件求夾角：內積為 $0$ 展開，設 $|\vec a|=s$ 讓 $s^2$ 約掉</b>；<b>外心：$\overrightarrow{AO}\cdot\overrightarrow{AB}=\frac12\overline{AB}^2$</b>。</div>
 <div class="gen-grid" data-tier="L2" data-keys="cosFromLen,projLen,cauchyEllipse,detScale,circleDot,dotParabola,orthocenter,sumRange,tripleT,detRowOp,cevianLen,perpToAngle,circumDot"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 23 型打亂・可列印・可換組）</h3>
+<h3 class="sec">讀圖題：斜格上讀係數、等分點圖的交點與面積比、長方形圖上的內積</h3>
+<div class="must">本章的段考原題約 16% 附圖，各類差很多：<b>線性組合與面積比各約四成、正六邊形過半、正射影近兩成、內積一成多</b>。解題要點：<b>斜格上 $\overrightarrow{OP}=x\vec a+y\vec b$：從 $O$ 沿格線走到 $P$，順著箭頭走是正、逆著走是負</b>；<b>斜的基準向量算長度：平方展開，交叉項是 $2xy\,\vec a\cdot\vec b$</b>；<b>等分點圖先數出 $D$、$E$ 是第幾個分點，交點用「兩線各設一個參數、係數比對」，$\triangle PBC:\triangle ABC=1-x-y$</b>；<b>長方形、正方形的圖適合建坐標：邊長標在圖上，讀成點的坐標，內積用分量算、面積用 $\dfrac12|a_1b_2-a_2b_1|$</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="figSkewGrid,figCevian,figRectDot"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 26 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -327,8 +342,8 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>21 題各校段考中後段常見題（最後 3 題是附圖題）：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>21 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
 <div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字。答案與詳解皆重新驗算過。</div>
 
@@ -471,7 +486,43 @@ $D=(2,5)\pm(6,-8)=(8,-3)$ 或 $(-4,13)$。<br>
 $3(\overrightarrow{OQ}-\overrightarrow{OA})=4(\overrightarrow{OQ}-\overrightarrow{OB})$ ⟹ $\overrightarrow{OQ}=-3\overrightarrow{OA}+4\overrightarrow{OB}$（$Q$ 在直線 $AB$ 上、線段外）。<br>
 $\overrightarrow{OP}\cdot\overrightarrow{OQ}=\dfrac14\cdot(-3)\,\overline{OA}^2+\dfrac34\cdot4\,\overline{OB}^2=-\dfrac34\overline{OA}^2+3\overline{OB}^2=0$ ⟹ $\overline{OA}^2=4\overline{OB}^2$ ⟹ $\dfrac{\overline{OA}}{\overline{OB}}=2$。</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
+<!-- figq:L3 -->
+<div class="note">以下 3 題（L3-19～L3-21）是<b>附圖題</b>：向量的起點、終點和點的位置，都要從圖上讀。圖依題目條件重新繪製、照比例畫。本章的段考原題大約每六題有一題附圖，方格上的向量、正六邊形、三角形的分點圖這幾類最常見。</div>
+
+<div class="fx" id="L3-19" data-gen="figGridLC"><div class="fxh"><span class="no">L3-19</span><span class="kw">方格上的向量：數格子讀出坐標表示，線性組合拆成兩個分量解聯立</span><span class="src">台中女中 112上 填 10</span></div>
+<div class="fxq">如圖，方格紙上每一小格都是正方形。若 $\overrightarrow{EF}=x\overrightarrow{AB}+y\overrightarrow{CD}$，求 $(x,y)$。<svg class="qfig" viewBox="0 0 274 198" width="274" height="198" role="img" aria-label="七格寬、五格高的方格紙上有三個向量 AB、CD、EF"><line x1="32" y1="172" x2="32" y2="22" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="62" y1="172" x2="62" y2="22" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="92" y1="172" x2="92" y2="22" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="122" y1="172" x2="122" y2="22" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="152" y1="172" x2="152" y2="22" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="182" y1="172" x2="182" y2="22" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="212" y1="172" x2="212" y2="22" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="242" y1="172" x2="242" y2="22" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="32" y1="172" x2="242" y2="172" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="32" y1="142" x2="242" y2="142" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="32" y1="112" x2="242" y2="112" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="32" y1="82" x2="242" y2="82" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="32" y1="52" x2="242" y2="52" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="32" y1="22" x2="242" y2="22" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><circle cx="32" cy="82" r="2.6" fill="#b03a55"/><line x1="32" y1="82" x2="86.34" y2="136.34" stroke="#b03a55" stroke-width="2.2" stroke-linecap="round"/><path d="M 92 142 L 82.1 137.76 L 87.76 132.1 Z" fill="#b03a55"/><circle cx="152" cy="82" r="2.6" fill="#4e7a34"/><line x1="152" y1="82" x2="234.41" y2="54.53" stroke="#4e7a34" stroke-width="2.2" stroke-linecap="round"/><path d="M 242 52 L 233.78 58.96 L 231.25 51.37 Z" fill="#4e7a34"/><circle cx="212" cy="112" r="2.6" fill="#1f5fa8"/><line x1="212" y1="112" x2="128.66" y2="167.56" stroke="#1f5fa8" stroke-width="2.2" stroke-linecap="round"/><path d="M 122 172 L 128.1 163.12 L 132.54 169.78 Z" fill="#1f5fa8"/><text x="20" y="87" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="88" y="159" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="149" y="100" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="254" y="54" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="221" y="104" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><text x="119" y="189" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">F</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(x,y)=\left(\dfrac38,\ -\dfrac54\right)$</div>
+<div class="fxs"><div class="move">做法：向量只看起點到終點「橫向幾格、直向幾格」，和它畫在哪裡無關。設一小格的邊長為 $1$、向右向上為正，把三個向量都讀成坐標，再比較兩個分量。</div>
+讀圖：$A$ 到 $B$ 往右 $2$ 格、往下 $2$ 格，$\overrightarrow{AB}=(2,-2)$；$C$ 到 $D$ 往右 $3$ 格、往上 $1$ 格，$\overrightarrow{CD}=(3,1)$；$E$ 到 $F$ 往左 $3$ 格、往下 $2$ 格，$\overrightarrow{EF}=(-3,-2)$。<br>
+$(-3,-2)=x(2,-2)+y(3,1)$ ⟹ $2x+3y=-3$、$-2x+y=-2$。<br>
+兩式相加：$4y=-5$，$y=-\dfrac54$；代回第二式：$-2x=-2+\dfrac54=-\dfrac34$，$x=\dfrac38$。<br>
+<span class="note-sm">檢查：$\dfrac38(2,-2)-\dfrac54(3,1)=\left(\dfrac34-\dfrac{15}4,\ -\dfrac34-\dfrac54\right)=(-3,-2)$ ✔。常見的錯是把箭頭方向看反，例如把 $\overrightarrow{EF}$ 讀成 $(3,2)$。</span></div></div>
+
+<div class="fx" id="L3-20" data-gen="figHexDot"><div class="fxh"><span class="no">L3-20</span><span class="kw">正六邊形的內積比大小：先看夾角是銳角、直角還是鈍角，負的只會出現在鈍角</span><span class="src">明倫高中 102上 單 2</span></div>
+<div class="fxq">如圖，$ABCDEF$ 為一正六邊形，下列向量內積中何者最小？<svg class="qfig" viewBox="0 0 260 176" width="260" height="176" role="img" aria-label="正六邊形 ABCDEF，A 在左下，依逆時針方向排列"><path d="M 96 145.78 L 164 145.78 L 198 86.89 L 164 28 L 96 28 L 62 86.89 Z" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><text x="89.5" y="161.84" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="170.5" y="161.84" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="211" y="91.69" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="170.5" y="21.54" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="89.5" y="21.54" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><text x="49" y="91.69" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">F</text></svg><span class="qopt">(1) $\overrightarrow{AB}\cdot\overrightarrow{AC}$</span>　<span class="qopt">(2) $\overrightarrow{AC}\cdot\overrightarrow{AC}$</span>　<span class="qopt">(3) $\overrightarrow{AC}\cdot\overrightarrow{AE}$</span>　<span class="qopt">(4) $\overrightarrow{AC}\cdot\overrightarrow{FA}$</span>　<span class="qopt">(5) $\overrightarrow{AB}\cdot\overrightarrow{DA}$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5)</div>
+<div class="fxs"><div class="move">做法：設邊長為 $1$。從圖上讀出每個向量的長度與夾角：隔一個頂點的對角線 $\overline{AC}=\overline{AE}=\sqrt3$，對面頂點的對角線 $\overline{AD}=2$；$\angle BAC=30^\circ$、$\angle BAD=60^\circ$、$\angle CAE=60^\circ$、$\angle CAF=90^\circ$。</div>
+(1) $\overrightarrow{AB}\cdot\overrightarrow{AC}=1\cdot\sqrt3\cdot\cos30^\circ=\dfrac32$。(2) $\overrightarrow{AC}\cdot\overrightarrow{AC}=\left(\sqrt3\right)^2=3$。(3) $\overrightarrow{AC}\cdot\overrightarrow{AE}=\sqrt3\cdot\sqrt3\cdot\cos60^\circ=\dfrac32$。<br>
+(4) $\overrightarrow{FA}=-\overrightarrow{AF}$，而 $\overrightarrow{AC}\perp\overrightarrow{AF}$，內積為 $0$。<br>
+(5) $\overrightarrow{DA}=-\overrightarrow{AD}$，$\overrightarrow{AB}\cdot\overrightarrow{DA}=-\overrightarrow{AB}\cdot\overrightarrow{AD}=-1\cdot2\cdot\cos60^\circ=-1$。<br>
+只有 (5) 是負的，所以 (5) 最小。<br>
+<span class="note-sm">比大小時不必五個都算完：先找「兩個向量指向大致相反」的選項。$\overrightarrow{DA}$ 是從 $D$ 指回 $A$，和 $\overrightarrow{AB}$ 夾 $120^\circ$，內積一定是負的。</span></div></div>
+
+<div class="fx" id="L3-21" data-gen="figDotSign"><div class="fxh"><span class="no">L3-21</span><span class="kw">內積「一定」小於 0：把 OP、OQ 反向延長，落在兩條反向射線所夾的角裡的點才算</span><span class="src">台中女中 112上 多 8</span></div>
+<div class="fxq">如圖，坐標平面上有 $O$（原點）與 $A,B,C,D,E,P,Q$ 七個點。若向量 $\vec v$ 滿足 $\vec v\cdot\overrightarrow{OP}\gt0$ 且 $\vec v\cdot\overrightarrow{OQ}\gt0$，則 $\vec v$ 與下列哪些向量的內積一定小於 $0$？<svg class="qfig" viewBox="0 0 286 249" width="286" height="249" role="img" aria-label="坐標平面上的點：A 在 y 軸正向上，B 在第二象限靠近 x 軸，C 在 x 軸負向上，D 在第三象限，E、Q 在第四象限，P 在第一象限靠近 x 軸"><line x1="18.1" y1="137.9" x2="253.7" y2="137.9" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 261.7 137.9 L 253.7 141.1 L 253.7 134.7 Z" fill="#3a2a2e"/><line x1="139.9" y1="232.4" x2="139.9" y2="24.1" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 139.9 16.1 L 143.1 24.1 L 136.7 24.1 Z" fill="#3a2a2e"/><text x="263.7" y="152.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="150.9" y="20.1" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><text x="129.9" y="152.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><circle cx="139.9" cy="43.4" r="3.4" fill="#1f5fa8"/><text x="152.9" y="49.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><circle cx="55.9" cy="112.7" r="3.4" fill="#1f5fa8"/><text x="44.9" y="104.7" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><circle cx="34.9" cy="137.9" r="3.4" fill="#1f5fa8"/><text x="32.9" y="156.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><circle cx="114.7" cy="213.5" r="3.4" fill="#1f5fa8"/><text x="110.7" y="231.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><circle cx="190.3" cy="200.9" r="3.4" fill="#1f5fa8"/><text x="201.3" y="214.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><circle cx="238.6" cy="119" r="3.4" fill="#b03a55"/><text x="247.6" y="108" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text><circle cx="211.3" cy="177.8" r="3.4" fill="#b03a55"/><text x="224.3" y="185.8" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">Q</text></svg><span class="qopt">(1) $\overrightarrow{OA}$</span>　<span class="qopt">(2) $\overrightarrow{OB}$</span>　<span class="qopt">(3) $\overrightarrow{OC}$</span>　<span class="qopt">(4) $\overrightarrow{OD}$</span>　<span class="qopt">(5) $\overrightarrow{OE}$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)</div>
+<div class="fxs"><div class="move">做法：把 $\overrightarrow{OP}$、$\overrightarrow{OQ}$ 反向延長成兩條射線（下圖的虛線）。點 $X$ 落在這兩條虛線所夾的角裡（塗色的部分，含邊上），$\vec v\cdot\overrightarrow{OX}$ 才一定是負的。</div>
+<svg class="qfig-sol" viewBox="0 0 286 249" width="286" height="249" role="img" aria-label="坐標平面上的點：A 在 y 軸正向上，B 在第二象限靠近 x 軸，C 在 x 軸負向上，D 在第三象限，E、Q 在第四象限，P 在第一象限靠近 x 軸；塗色的角是 OP、OQ 反向延長所夾的範圍"><path d="M 139.9 137.9 L 24.4 160.02 L 44.57 84.63 Z" fill="rgba(176,58,85,.13)" stroke-linejoin="round"/><line x1="139.9" y1="137.9" x2="24.4" y2="160.02" stroke="#b03a55" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/><line x1="139.9" y1="137.9" x2="44.57" y2="84.63" stroke="#b03a55" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/><line x1="139.9" y1="137.9" x2="230.74" y2="120.5" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><path d="M 238.6 119 L 229.53 124.81 L 228.03 116.95 Z" fill="#b03a55"/><line x1="139.9" y1="137.9" x2="204.32" y2="173.9" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><path d="M 211.3 177.8 L 200.62 176.41 L 204.52 169.43 Z" fill="#b03a55"/><line x1="18.1" y1="137.9" x2="253.7" y2="137.9" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 261.7 137.9 L 253.7 141.1 L 253.7 134.7 Z" fill="#3a2a2e"/><line x1="139.9" y1="232.4" x2="139.9" y2="24.1" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 139.9 16.1 L 143.1 24.1 L 136.7 24.1 Z" fill="#3a2a2e"/><text x="263.7" y="152.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="150.9" y="20.1" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><text x="129.9" y="152.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><circle cx="139.9" cy="43.4" r="3.4" fill="#1f5fa8"/><text x="152.9" y="49.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><circle cx="55.9" cy="112.7" r="3.4" fill="#1f5fa8"/><text x="44.9" y="104.7" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><circle cx="34.9" cy="137.9" r="3.4" fill="#1f5fa8"/><text x="32.9" y="156.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><circle cx="114.7" cy="213.5" r="3.4" fill="#1f5fa8"/><text x="110.7" y="231.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><circle cx="190.3" cy="200.9" r="3.4" fill="#1f5fa8"/><text x="201.3" y="214.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><circle cx="238.6" cy="119" r="3.4" fill="#b03a55"/><text x="247.6" y="108" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text><circle cx="211.3" cy="177.8" r="3.4" fill="#b03a55"/><text x="224.3" y="185.8" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">Q</text></svg>
+為什麼：$X$ 在塗色的角裡 ⟹ $\overrightarrow{OX}=-(s\overrightarrow{OP}+t\overrightarrow{OQ})$，其中 $s,t\ge0$ 且不同時為 $0$ ⟹ $\vec v\cdot\overrightarrow{OX}=-\left(s\,\vec v\cdot\overrightarrow{OP}+t\,\vec v\cdot\overrightarrow{OQ}\right)\lt0$。<br>
+由圖，$B$、$C$ 在塗色的角裡，所以 (2)(3) 一定是負的。<br>
+$A$、$D$、$E$ 在角外面，各找一個符合條件的 $\vec v$ 當反例：取 $\vec v$ 指向 $x$ 軸正向再稍微偏上，它和 $\overrightarrow{OP}$、$\overrightarrow{OQ}$ 都夾銳角，和 $\overrightarrow{OA}$ 也夾銳角，$\vec v\cdot\overrightarrow{OA}\gt0$；取 $\vec v$ 指向右下方（例如 $(1,-1)$ 的方向），它和 $\overrightarrow{OP}$、$\overrightarrow{OQ}$ 都夾銳角，和 $\overrightarrow{OD}$、$\overrightarrow{OE}$ 也夾銳角，內積都是正的。所以 (1)(4)(5) 不一定。<br>
+<span class="note-sm">$C$ 在 $x$ 軸負向上，$\overrightarrow{OC}$ 和 $\vec v$ 的夾角不一定是 $180^\circ$，但它落在塗色的角裡就夠了。只看「和 $\overrightarrow{OP}$ 方向相反」是不夠的：$D$ 在第三象限，卻不在塗色的角裡。</span></div></div>
+<!-- /figq:L3 -->
+
+<h3 class="sec">L3 混合檢測 10 題（21 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -484,8 +535,8 @@ $\overrightarrow{OP}\cdot\overrightarrow{OQ}=\dfrac14\cdot(-3)\,\overline{OA}^2+
 <h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
 <div class="goal">
   <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
-  <div><b>目標</b>12 題：每題都要把兩個以上的方法接起來用，或需要一個不常見的觀察。</div>
-  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+  <div><b>目標</b>16 題：每題都要把兩個以上的方法接起來用，或需要一個不常見的觀察；L4-13～L4-16 是附圖題。</div>
+  <div><b>通過標準</b>限時 120 分鐘做完 16 題，對 12 題以上。</div>
 </div>
 
 <div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">正六邊形給 A、C 求 E：A、C、E 是正三角形，E = A + AC 旋轉 ±60°</span><span class="src">北一女中 112下 填 12</span></div>
@@ -586,6 +637,57 @@ $\overrightarrow{AC}\cdot\overrightarrow{AB}=45$：$45r-38s=45$；$\overrightarr
 比對：$1-t=\frac s2$、$\frac35t=1-s$ ⟹ $t=\frac57$、$s=\frac47$ ⟹ $\overrightarrow{AP}=\frac27\overrightarrow{AB}+\frac37\overrightarrow{AC}$，$\overrightarrow{CP}=\frac47\overrightarrow{CD}$ ⟹ (1)(2) ✘。<br>
 (3) $\cos A=\dfrac{36+25-16}{2\cdot6\cdot5}=\dfrac34$ ✔。(4) $\triangle ABC=\frac12\cdot6\cdot5\cdot\frac{\sqrt7}4=\frac{15\sqrt7}4$，$\triangle ACP=\frac27\triangle ABC=\frac{15\sqrt7}{14}$（係數 $\frac27$ 是到 $AC$ 的距離比）✔。<br>
 (5) $\overrightarrow{AP}\cdot\overrightarrow{AC}=\frac27\cdot\frac{45}2+\frac37\cdot25=\frac{45}7+\frac{75}7=\frac{120}7$ ✔。</div></div>
+<!-- figq:L4 -->
+<div class="note">以下 4 題（L4-13～L4-16）是<b>附圖題</b>：往哪邊轉、點的前後順序、哪兩條線相交，題目沒有用文字寫出來，要自己從圖上讀。圖依題目條件重新繪製。</div>
+
+<div class="fx" id="L4-13"><div class="fxh"><span class="no">L4-13</span><span class="kw">折線上的點：每一段寫成「長度 ×（cos 方向角, sin 方向角）」，往左轉還是往右轉要看圖</span><span class="src">北一女中 112上 填 6</span></div>
+<div class="fxq">如圖，坐標平面上 $O$ 為原點，$A$ 在 $x$ 軸正向上，$\overline{OA}=2$、$\overline{AB}=4$、$\overline{BC}=\overline{CD}=2$，且 $\angle OAB=\angle ABC=120^\circ$、$\angle BCD=90^\circ$。求 $3\overrightarrow{OB}+\overrightarrow{OC}-3\overrightarrow{OD}$。<svg class="qfig" viewBox="0 0 241 251" width="241" height="251" role="img" aria-label="坐標平面上的折線：A 在 x 軸正向上，由 A 往右上到 B，再往左上到 C，再往左下到 D；各段長標示在圖上"><line x1="29.1" y1="205.1" x2="207.1" y2="205.1" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 215.1 205.1 L 207.1 208.3 L 207.1 201.9 Z" fill="#3a2a2e"/><line x1="53.9" y1="223.7" x2="53.9" y2="27.1" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 53.9 19.1 L 57.1 27.1 L 50.7 27.1 Z" fill="#3a2a2e"/><text x="217.1" y="220.1" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="64.9" y="23.1" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><text x="43.9" y="220.1" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><line x1="115.9" y1="205.1" x2="177.9" y2="97.71" stroke="#1f5fa8" stroke-width="2.2" stroke-linecap="round"/><line x1="177.9" y1="97.71" x2="146.9" y2="44.02" stroke="#1f5fa8" stroke-width="2.2" stroke-linecap="round"/><line x1="146.9" y1="44.02" x2="93.21" y2="75.02" stroke="#1f5fa8" stroke-width="2.2" stroke-linecap="round"/><circle cx="115.9" cy="205.1" r="4.2" fill="#fff" stroke="#1f5fa8" stroke-width="1.4"/><circle cx="115.9" cy="205.1" r="1.8" fill="#1f5fa8"/><circle cx="177.9" cy="97.71" r="4.2" fill="#fff" stroke="#1f5fa8" stroke-width="1.4"/><circle cx="177.9" cy="97.71" r="1.8" fill="#1f5fa8"/><circle cx="146.9" cy="44.02" r="4.2" fill="#fff" stroke="#1f5fa8" stroke-width="1.4"/><circle cx="146.9" cy="44.02" r="1.8" fill="#1f5fa8"/><circle cx="93.21" cy="75.02" r="4.2" fill="#fff" stroke="#1f5fa8" stroke-width="1.4"/><circle cx="93.21" cy="75.02" r="1.8" fill="#1f5fa8"/><text x="115.9" y="225.1" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="191.9" y="101.71" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="152.9" y="34.02" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="81.21" y="71.02" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="84.9" y="222.1" font-size="14" fill="#3a2a2e" text-anchor="middle">2</text><text x="158.9" y="159.41" font-size="14" fill="#3a2a2e" text-anchor="middle">4</text><text x="173.4" y="67.87" font-size="14" fill="#3a2a2e" text-anchor="middle">2</text><text x="115.05" y="50.52" font-size="14" fill="#3a2a2e" text-anchor="middle">2</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\left(6+3\sqrt3,\ 3\right)$</div>
+<div class="fxs"><div class="move">做法：一段一段算位移，每一段寫成「長度 $\times(\cos\theta,\sin\theta)$」，$\theta$ 是這一段的方向角（從 $x$ 軸正向逆時針量）。夾角 $120^\circ$ 表示行進方向轉了 $60^\circ$，夾角 $90^\circ$ 表示轉了 $90^\circ$；由圖，三次都是向左轉。</div>
+$A(2,0)$。$\overline{OA}$ 的方向角是 $0^\circ$，在 $A$ 向左轉 $60^\circ$：$\overrightarrow{AB}=4(\cos60^\circ,\sin60^\circ)=(2,2\sqrt3)$ ⟹ $B(4,\ 2\sqrt3)$。<br>
+在 $B$ 再向左轉 $60^\circ$，方向角 $120^\circ$：$\overrightarrow{BC}=2(\cos120^\circ,\sin120^\circ)=(-1,\sqrt3)$ ⟹ $C(3,\ 3\sqrt3)$。<br>
+在 $C$ 向左轉 $90^\circ$，方向角 $210^\circ$：$\overrightarrow{CD}=2(\cos210^\circ,\sin210^\circ)=(-\sqrt3,-1)$ ⟹ $D(3-\sqrt3,\ 3\sqrt3-1)$。<br>
+$3\overrightarrow{OB}+\overrightarrow{OC}-3\overrightarrow{OD}=(12,6\sqrt3)+(3,3\sqrt3)-(9-3\sqrt3,\ 9\sqrt3-3)=(6+3\sqrt3,\ 3)$。<br>
+<span class="note-sm">只看文字，每個夾角都有「向左轉」和「向右轉」兩種畫法，答案會不一樣，所以要對圖：$B$ 在 $A$ 的右上方、$C$ 在 $B$ 的左上方、$D$ 在 $C$ 的左下方。</span></div></div>
+
+<div class="fx" id="L4-14"><div class="fxh"><span class="no">L4-14</span><span class="kw">垂足＋中點的圖：內積看夾角（先移成同一個起點）、正射影看垂足</span><span class="src">華江高中 102上 多 8</span></div>
+<div class="fxq">如圖，銳角 $\triangle ABC$ 中，$\overline{AE}\perp\overline{BC}$，且 $E$ 為 $\overline{CD}$ 的中點。下列哪些正確？<svg class="qfig" viewBox="0 0 278 165" width="278" height="165" role="img" aria-label="銳角三角形 ABC，底邊 BC 上由左到右依序是 B、D、E、C，AE 垂直 BC，另連 AD"><path d="M 172 26 L 40 138.2 L 238 138.2 Z" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><line x1="172" y1="26" x2="106" y2="138.2" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="172" y1="26" x2="172" y2="138.2" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><polyline points="180,138.2 180,130.2 172,130.2" fill="none" stroke="#8a7378" stroke-width="1.2"/><text x="172" y="18" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="32" y="155.2" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="106" y="155.2" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="172" y="155.2" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><text x="246" y="155.2" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text></svg><span class="qopt">(1) $\overrightarrow{AB}-\overrightarrow{AE}=\overrightarrow{EB}$</span>　<span class="qopt">(2) $\overrightarrow{AD}\cdot\overrightarrow{DE}\gt0$</span>　<span class="qopt">(3) $\overrightarrow{AD}+\overrightarrow{AC}=2\overrightarrow{AE}$</span>　<span class="qopt">(4) $\overrightarrow{AB}\cdot\overrightarrow{AE}\gt\overrightarrow{AC}\cdot\overrightarrow{AE}$</span>　<span class="qopt">(5) $\overrightarrow{CA}$ 在 $\overrightarrow{DB}$ 方向的正射影為 $\overrightarrow{CE}$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)(5)</div>
+<div class="fxs"><div class="move">做法：由圖，$B$、$D$、$E$、$C$ 依序在同一條直線上。$\overline{AE}$ 垂直平分 $\overline{CD}$，所以 $\overline{AD}=\overline{AC}$，$\triangle ADC$ 是等腰三角形。</div>
+(1) 同一個起點的兩個向量相減，等於「從後面那個的終點指到前面那個的終點」：$\overrightarrow{AB}-\overrightarrow{AE}=\overrightarrow{EB}$ ✔。<br>
+(2) 把兩個向量移成同一個起點 $D$：$\overrightarrow{AD}=-\overrightarrow{DA}$。$\angle ADE$ 是等腰 $\triangle ADC$ 的底角，是銳角，$\overrightarrow{DA}\cdot\overrightarrow{DE}\gt0$，所以 $\overrightarrow{AD}\cdot\overrightarrow{DE}\lt0$ ✘。<br>
+(3) $E$ 是 $\overline{CD}$ 的中點 ⟹ $\overrightarrow{AE}=\dfrac12\left(\overrightarrow{AD}+\overrightarrow{AC}\right)$ ✔。<br>
+(4) $B$、$C$ 在 $\overline{AE}$ 上的垂足都是 $E$，所以 $\overrightarrow{AB}\cdot\overrightarrow{AE}=\overrightarrow{AC}\cdot\overrightarrow{AE}=\overline{AE}^2$，兩者相等 ✘。<br>
+(5) $\overrightarrow{DB}$ 在直線 $BC$ 上。$C$ 本來就在這條直線上，$A$ 的垂足是 $E$，所以 $\overrightarrow{CA}$ 的正射影是 $\overrightarrow{CE}$ ✔。<br>
+<span class="note-sm">(2) 最容易錯：$\overrightarrow{AD}$ 和 $\overrightarrow{DE}$ 是「頭接尾」，夾角不是 $\angle ADE$，而是它的補角。(5) 的正射影只和直線的方向有關，$\overrightarrow{DB}$ 指向左邊不影響結果。</span></div></div>
+
+<div class="fx" id="L4-15"><div class="fxh"><span class="no">L4-15</span><span class="kw">讀圖列出一次式條件 x+3y=24，再用柯西不等式求 x²+9y² 的最小值</span><span class="src">北一女中 112上 混合 14～16</span></div>
+<div class="fxq">某張海報上的標誌由兩個圓組成，如圖（示意圖）：大圓缺了一個 $60^\circ$ 的扇形，小圓嵌在缺口裡，與缺口的兩條半徑都相切；整個標誌的寬度（小圓最左端到大圓最右端）恰為 $24$ 單位。大圓部分的顏料每平方單位 $12$ 元，小圓的顏料每平方單位 $90$ 元。設大圓半徑為 $x$、小圓半徑為 $y$。<br>(1) 用 $x$、$y$ 表示顏料的總費用　(2) 寫出 $x$、$y$ 滿足的關係式　(3) 求總費用的最小值，以及此時的 $x$、$y$。<svg class="qfig" viewBox="0 0 281 252" width="281" height="252" role="img" aria-label="缺了 60° 角的大圓（缺口朝左），缺口裡嵌著一個與缺口兩邊相切的小圓；從小圓最左端到大圓最右端的總寬是 24"><path d="M 70.54 66.3 A 96.6 96.6 0 1 1 70.54 162.9 L 154.2 114.6 Z" fill="rgba(176,58,85,.10)" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><circle cx="71.4" cy="114.6" r="41.4" fill="rgba(31,95,168,.10)" stroke="#1f5fa8" stroke-width="2"/><line x1="30" y1="223.2" x2="30" y2="235.2" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><line x1="250.8" y1="223.2" x2="250.8" y2="235.2" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><line x1="124.4" y1="229.2" x2="39" y2="229.2" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 31 229.2 L 39 226 L 39 232.4 Z" fill="#3a2a2e"/><line x1="156.4" y1="229.2" x2="241.8" y2="229.2" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 249.8 229.2 L 241.8 232.4 L 241.8 226 Z" fill="#3a2a2e"/><text x="140.4" y="234.2" font-size="14" fill="#3a2a2e" text-anchor="middle">24</text><path d="M 144.67 109.1 A 11 11 0 0 0 144.67 120.1" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><text x="128.2" y="119.1" font-size="12" fill="#8a7378" text-anchor="middle">60°</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $10\pi\left(x^2+9y^2\right)$ 元　(2) $x+3y=24$　(3) 最小值 $2880\pi$ 元，此時 $x=12$、$y=4$</div>
+<div class="fxs"><div class="move">做法：(1) 算兩塊面積。(2) 看圖找「寬度」由哪幾段組成：關鍵是兩個圓心的距離。(3) 條件是一次式、要求的是平方和，用柯西不等式。</div>
+<svg class="qfig-sol" viewBox="0 0 281 252" width="281" height="252" role="img" aria-label="缺了 60° 角的大圓（缺口朝左），缺口裡嵌著一個與缺口兩邊相切的小圓；從小圓最左端到大圓最右端的總寬是 24；虛線標出大圓半徑 x、小圓半徑 y，O 是大圓圓心、S 是小圓圓心"><path d="M 70.54 66.3 A 96.6 96.6 0 1 1 70.54 162.9 L 154.2 114.6 Z" fill="rgba(176,58,85,.10)" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><circle cx="71.4" cy="114.6" r="41.4" fill="rgba(31,95,168,.10)" stroke="#1f5fa8" stroke-width="2"/><line x1="30" y1="223.2" x2="30" y2="235.2" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><line x1="250.8" y1="223.2" x2="250.8" y2="235.2" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><line x1="124.4" y1="229.2" x2="39" y2="229.2" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 31 229.2 L 39 226 L 39 232.4 Z" fill="#3a2a2e"/><line x1="156.4" y1="229.2" x2="241.8" y2="229.2" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 249.8 229.2 L 241.8 232.4 L 241.8 226 Z" fill="#3a2a2e"/><text x="140.4" y="234.2" font-size="14" fill="#3a2a2e" text-anchor="middle">24</text><line x1="154.2" y1="114.6" x2="71.4" y2="114.6" stroke="#b03a55" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/><line x1="71.4" y1="114.6" x2="92.1" y2="78.75" stroke="#b03a55" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/><polyline points="97.3,81.75 94.3,86.94 89.1,83.94" fill="none" stroke="#8a7378" stroke-width="1.2"/><line x1="154.2" y1="114.6" x2="250.8" y2="114.6" stroke="#b03a55" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/><line x1="71.4" y1="114.6" x2="30" y2="114.6" stroke="#b03a55" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/><circle cx="154.2" cy="114.6" r="2.6" fill="#3a2a2e"/><circle cx="71.4" cy="114.6" r="2.6" fill="#3a2a2e"/><text x="161.2" y="106.6" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><text x="63.4" y="129.6" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">S</text><text x="50.7" y="108.6" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><text x="202.5" y="108.6" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="72.75" y="93.67" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text></svg>
+(1) 大圓部分是圓心角 $300^\circ$ 的扇形，面積 $\dfrac{300}{360}\pi x^2=\dfrac56\pi x^2$，費用 $12\times\dfrac56\pi x^2=10\pi x^2$；小圓費用 $90\pi y^2$。合計 $10\pi\left(x^2+9y^2\right)$ 元。<br>
+(2) 設大圓圓心 $O$、小圓圓心 $S$。小圓與缺口的兩邊相切，所以 $S$ 在缺口的角平分線上，$S$ 到缺口邊的距離是 $y$，而角平分線與邊的夾角是 $30^\circ$ ⟹ $\overline{OS}=\dfrac{y}{\sin30^\circ}=2y$。<br>
+最左端是小圓的最左點，到 $O$ 的距離是 $2y+y=3y$；最右端到 $O$ 的距離是 $x$。寬度 $x+3y=24$。<br>
+(3) 柯西不等式：$\left(x^2+(3y)^2\right)\left(1^2+1^2\right)\ge(x+3y)^2=576$ ⟹ $x^2+9y^2\ge288$。等號成立在 $\dfrac x1=\dfrac{3y}1$，即 $x=3y=12$，$x=12$、$y=4$。<br>
+最小費用 $10\pi\times288=2880\pi$ 元。<br>
+<span class="note-sm">不用柯西也可以：$x=24-3y$ 代入，$x^2+9y^2=18y^2-144y+576=18(y-4)^2+288$，$y=4$ 時最小。配方和柯西的答案一樣。</span></div></div>
+
+<div class="fx" id="L4-16"><div class="fxh"><span class="no">L4-16</span><span class="kw">地圖上的兩條路相交：選兩個向量當基準，交點用「兩線各設一個參數、係數比對」</span><span class="src">明倫高中 101上（理組）計算 2</span></div>
+<div class="fxq">新生入學的阿草要研究如何上學，在網路上找到下圖這張電子地圖。中正路上的公園和超商相距 $900$ 公尺，市場到公園的距離等於市場到超商的距離；學校位於中山路上，距離超商 $750$ 公尺，且郵局到學校的距離是郵局到超商距離的兩倍；超商位於中山路和中正路的交叉路口，這兩條路的夾角為 $120^\circ$。依電子地圖的圖示，學校到捷運站的距離為多少公尺？<svg class="qfig" viewBox="0 0 329 272" width="329" height="272" role="img" aria-label="電子地圖：中山路由學校經郵局到超商，中正路由超商經市場到公園，兩條路在超商夾 120 度；另有學校到市場、公園到郵局兩條路，交叉處是捷運站"><line x1="40" y1="235.83" x2="198.8" y2="207.83" stroke="#7a2e3c" stroke-width="2" stroke-linecap="round"/><line x1="198.8" y1="207.83" x2="264.98" y2="26" stroke="#7a2e3c" stroke-width="2" stroke-linecap="round"/><line x1="40" y1="235.83" x2="231.89" y2="116.92" stroke="#7a2e3c" stroke-width="2" stroke-linecap="round"/><line x1="264.98" y1="26" x2="145.87" y2="217.16" stroke="#7a2e3c" stroke-width="2" stroke-linecap="round"/><path d="M 202.22 198.43 A 10 10 0 0 0 188.95 209.57" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><text x="185.8" y="190.83" font-size="12" fill="#8a7378" text-anchor="middle">120°</text><circle cx="198.8" cy="207.83" r="5" fill="#fff" stroke="#7a2e3c" stroke-width="1.6"/><circle cx="264.98" cy="26" r="5" fill="#fff" stroke="#7a2e3c" stroke-width="1.6"/><circle cx="231.89" cy="116.92" r="5" fill="#fff" stroke="#7a2e3c" stroke-width="1.6"/><circle cx="40" cy="235.83" r="5" fill="#fff" stroke="#7a2e3c" stroke-width="1.6"/><circle cx="145.87" cy="217.16" r="5" fill="#fff" stroke="#7a2e3c" stroke-width="1.6"/><circle cx="193.51" cy="140.7" r="5" fill="#fff" stroke="#7a2e3c" stroke-width="1.6"/><text x="34" y="257.83" font-size="13" fill="#3a2a2e" text-anchor="middle">學校</text><text x="145.87" y="239.16" font-size="13" fill="#3a2a2e" text-anchor="middle">郵局</text><text x="212.8" y="227.83" font-size="13" fill="#3a2a2e" text-anchor="middle">超商</text><text x="257.89" y="121.92" font-size="13" fill="#3a2a2e" text-anchor="middle">市場</text><text x="290.98" y="29" font-size="13" fill="#3a2a2e" text-anchor="middle">公園</text><text x="163.51" y="131.7" font-size="13" fill="#3a2a2e" text-anchor="middle">捷運站</text><text x="92.93" y="246.5" font-size="12" fill="#8a7378" text-anchor="middle">中山路</text><text x="245.35" y="168.37" font-size="12" fill="#8a7378" text-anchor="middle">中正路</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$840$ 公尺</div>
+<div class="fxs"><div class="move">做法：由圖，捷運站是「學校到市場」與「公園到郵局」兩條路的交點。以超商為起點，設 $\vec a$ 是超商到學校的向量、$\vec b$ 是超商到公園的向量：$|\vec a|=750$、$|\vec b|=900$、$\vec a\cdot\vec b=750\times900\times\cos120^\circ=-337500$。</div>
+讀圖：市場在超商與公園的正中間，超商到市場是 $\dfrac12\vec b$；郵局在中山路上，到學校的距離是到超商的兩倍，超商到郵局是 $\dfrac13\vec a$。<br>
+設超商到捷運站的向量為 $\vec p$。捷運站在「學校到市場」上：$\vec p=(1-s)\vec a+\dfrac s2\vec b$；在「公園到郵局」上：$\vec p=\dfrac t3\vec a+(1-t)\vec b$。<br>
+比對係數：$1-s=\dfrac t3$、$\dfrac s2=1-t$ ⟹ $t=\dfrac35$、$s=\dfrac45$。所以學校到捷運站的距離是學校到市場的 $\dfrac45$。<br>
+學校到市場的向量是 $\dfrac12\vec b-\vec a$：$\left|\dfrac12\vec b-\vec a\right|^2=\dfrac14\cdot900^2-\vec a\cdot\vec b+750^2=202500+337500+562500=1102500$，長度 $1050$。<br>
+學校到捷運站：$\dfrac45\times1050=840$ 公尺。<br>
+<span class="note-sm">$1102500=1050^2$：先提出 $150^2$，$202500+337500+562500=150^2(9+15+25)=150^2\times49$。這題的圖決定了「哪兩條路相交在捷運站」，文字裡沒有寫。</span></div></div>
+<!-- /figq:L4 -->
 </section>
 
 <!-- ═══════════════════════ L5 ═══════════════════════ -->
@@ -593,7 +695,7 @@ $\overrightarrow{AC}\cdot\overrightarrow{AB}=45$：$45r-38s=45$；$\overrightarr
 <h2><span class="tag">L5</span>補充專區：經典題與教甄</h2>
 <div class="goal">
   <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
-  <div><b>目標</b>6 題經典壓軸＋16 題教甄專區，每題都要能講出「為什麼這樣想」。</div>
+  <div><b>目標</b>6 題經典壓軸＋16 題教甄專區＋3 題附圖的大考題（L5-7～L5-9，放在最後），每題都要能講出「為什麼這樣想」。</div>
   <div><b>通過標準</b>沒有標準，會一題算一題。</div>
 </div>
 
@@ -779,6 +881,43 @@ $\overrightarrow{AM}\cdot\overrightarrow{AN}=\dfrac{(\vec u+\vec v)\cdot(3\vec u
 算幾不等式：$3c^2+b^2\ge2\sqrt{3c^2b^2}=2\sqrt3\,bc=24\sqrt3$，所以 $\overrightarrow{AM}\cdot\overrightarrow{AN}\ge\dfrac{24\sqrt3-24}8=3\sqrt3-3$。<br>
 等號在 $3c^2=b^2$，即 $b=\sqrt3c$；配 $bc=12$ 得 $c^2=4\sqrt3$，取得到。最小值 $3\sqrt3-3$。<br>
 <span class="note-sm">坐標驗算：$c=\sqrt{4\sqrt3}$、$b=\frac{12}c$、$\angle A=120^\circ$ 直接算出 $M$、$N$ 坐標，內積 $=3\sqrt3-3\approx2.196$ ✔。</span></div></div>
+<!-- figq:L5 -->
+<h3 class="sec" id="L5-fig">附圖的大考題（3 題）</h3>
+<div class="note">以下 3 題（L5-7～L5-9）是<b>附圖的大考題</b>，照原題收錄，圖依題目條件重新繪製。向量指到哪個頂點、圓在三角形的哪一側，都要看圖。</div>
+
+<div class="fx" id="L5-7"><div class="fxh"><span class="no">L5-7</span><span class="kw">用圖上的兩個向量當基準：把 a+b 寫成頂點坐標的一次式 √3p+5q，再比 12 個頂點</span><span class="src">100 指考 數甲 第 3 題</span></div>
+<div class="fxq">將一圓的六個等分點分成兩組相間的三點，它們所構成的兩個正三角形扣除內部六條線段後可以形成一正六角星。如圖所示的正六角星是以原點 $O$ 為中心，其中 $\vec x$、$\vec y$ 分別為原點 $O$ 到兩個頂點的向量。若將原點 $O$ 到正六角星 $12$ 個頂點的向量，都寫成 $a\vec x+b\vec y$ 的形式，則 $a+b$ 的最大值為何？<svg class="qfig" viewBox="0 0 280 218" width="280" height="218" role="img" aria-label="以 O 為中心的正六角星，尖端朝正上方與正下方；向量 x 由 O 指向正右方的凹頂點，向量 y 由 O 指向左上方的尖端"><path d="M 188.5 108 L 212.75 66 L 164.25 66 L 140 24 L 115.75 66 L 67.25 66 L 91.5 108 L 67.25 150 L 115.75 150 L 140 192 L 164.25 150 L 212.75 150 Z" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><line x1="140" y1="108" x2="180.5" y2="108" stroke="#b03a55" stroke-width="2.2" stroke-linecap="round"/><path d="M 188.5 108 L 178.5 112 L 178.5 104 Z" fill="#b03a55"/><line x1="140" y1="108" x2="74.18" y2="70" stroke="#1f5fa8" stroke-width="2.2" stroke-linecap="round"/><path d="M 67.25 66 L 77.91 67.54 L 73.91 74.46 Z" fill="#1f5fa8"/><circle cx="140" cy="108" r="2.8" fill="#3a2a2e"/><text x="145" y="125" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><text x="167.25" y="99.5" font-size="15" fill="#b03a55" text-anchor="middle" font-style="italic">x</text><line x1="162.25" y1="86.5" x2="170.75" y2="86.5" stroke="#b03a55" stroke-width="1" stroke-linecap="round"/><path d="M 173.25 86.5 L 169.65 84.2 L 169.65 88.8 Z" fill="#b03a55"/><text x="122.04" y="85.8" font-size="15" fill="#1f5fa8" text-anchor="middle" font-style="italic">y</text><line x1="117.04" y1="72.8" x2="125.54" y2="72.8" stroke="#1f5fa8" stroke-width="1" stroke-linecap="round"/><path d="M 128.04 72.8 L 124.44 70.5 L 124.44 75.1 Z" fill="#1f5fa8"/></svg><span class="qopt">(1) $2$</span>　<span class="qopt">(2) $3$</span>　<span class="qopt">(3) $4$</span>　<span class="qopt">(4) $5$</span>　<span class="qopt">(5) $6$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4)</div>
+<div class="fxs"><div class="move">做法：由圖，六角星的尖端朝正上方與正下方；$\vec x$ 指向正右方的凹頂點，$\vec y$ 指向左上方的尖端。建坐標，把「頂點 $=a\vec x+b\vec y$」解出 $a$、$b$，$a+b$ 就變成頂點坐標 $(p,q)$ 的一次式。</div>
+<svg class="qfig-sol" viewBox="0 0 280 218" width="280" height="218" role="img" aria-label="以 O 為中心的正六角星，尖端朝正上方與正下方；向量 x 由 O 指向正右方的凹頂點，向量 y 由 O 指向左上方的尖端；正上方的尖端標出 a+b=5"><path d="M 188.5 108 L 212.75 66 L 164.25 66 L 140 24 L 115.75 66 L 67.25 66 L 91.5 108 L 67.25 150 L 115.75 150 L 140 192 L 164.25 150 L 212.75 150 Z" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><line x1="140" y1="108" x2="140" y2="24" stroke="#8a7378" stroke-width="1.3" stroke-dasharray="4 3" stroke-linecap="round"/><circle cx="140" cy="24" r="3.6" fill="#4e7a34"/><text x="174" y="26" font-size="12" fill="#4e7a34" text-anchor="middle">a+b=5</text><line x1="140" y1="108" x2="180.5" y2="108" stroke="#b03a55" stroke-width="2.2" stroke-linecap="round"/><path d="M 188.5 108 L 178.5 112 L 178.5 104 Z" fill="#b03a55"/><line x1="140" y1="108" x2="74.18" y2="70" stroke="#1f5fa8" stroke-width="2.2" stroke-linecap="round"/><path d="M 67.25 66 L 77.91 67.54 L 73.91 74.46 Z" fill="#1f5fa8"/><circle cx="140" cy="108" r="2.8" fill="#3a2a2e"/><text x="145" y="125" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><text x="167.25" y="99.5" font-size="15" fill="#b03a55" text-anchor="middle" font-style="italic">x</text><line x1="162.25" y1="86.5" x2="170.75" y2="86.5" stroke="#b03a55" stroke-width="1" stroke-linecap="round"/><path d="M 173.25 86.5 L 169.65 84.2 L 169.65 88.8 Z" fill="#b03a55"/><text x="122.04" y="85.8" font-size="15" fill="#1f5fa8" text-anchor="middle" font-style="italic">y</text><line x1="117.04" y1="72.8" x2="125.54" y2="72.8" stroke="#1f5fa8" stroke-width="1" stroke-linecap="round"/><path d="M 128.04 72.8 L 124.44 70.5 L 124.44 75.1 Z" fill="#1f5fa8"/></svg>
+設尖端到 $O$ 的距離為 $1$。正三角形的三邊到 $O$ 的距離是 $\dfrac12$，凹頂點是兩個正三角形的邊的交點，到 $O$ 的距離是 $\dfrac{1/2}{\cos30^\circ}=\dfrac1{\sqrt3}$，所以 $\vec x=\left(\dfrac{\sqrt3}3,\ 0\right)$；$\vec y$ 的方向角是 $150^\circ$，$\vec y=(\cos150^\circ,\sin150^\circ)=\left(-\dfrac{\sqrt3}2,\ \dfrac12\right)$。<br>
+頂點 $(p,q)=a\vec x+b\vec y$ ⟹ $q=\dfrac b2$、$p=\dfrac{\sqrt3}3a-\dfrac{\sqrt3}2b$ ⟹ $b=2q$、$a=\sqrt3\,p+3q$，所以 $a+b=\sqrt3\,p+5q$。<br>
+$q$ 的係數大，先看上半部的頂點：$90^\circ$ 的尖端 $(0,1)$ 得 $5$；$30^\circ$ 的尖端 $\left(\dfrac{\sqrt3}2,\dfrac12\right)$ 得 $\dfrac32+\dfrac52=4$；$60^\circ$ 的凹頂點 $\left(\dfrac{\sqrt3}6,\dfrac12\right)$ 得 $\dfrac12+\dfrac52=3$。其餘頂點的值都不超過 $2$。<br>
+最大值 $5$，選 (4)；這時 $(a,b)=(3,2)$，也就是正上方的尖端 $=3\vec x+2\vec y$。<br>
+<span class="note-sm">驗算：$3\left(\dfrac{\sqrt3}3,0\right)+2\left(-\dfrac{\sqrt3}2,\dfrac12\right)=(0,1)$ ✔。$\vec x$ 是到凹頂點、$\vec y$ 是到尖端，兩個向量的長度不一樣，要先對圖。</span></div></div>
+
+<div class="fx" id="L5-8"><div class="fxh"><span class="no">L5-8</span><span class="kw">梯形對角線上的分點：全部改成從 A 出發，先用 AC、AD 表示 AB</span><span class="src">110 指考 數甲 選填 C</span></div>
+<div class="fxq">考慮一梯形 $ABCD$，其中 $\overline{AB}$ 與 $\overline{DC}$ 平行。已知點 $E$、$F$ 分別在對角線 $\overline{AC}$、$\overline{BD}$ 上，且 $\overline{AB}=\dfrac25\overline{DC}$、$\overline{AE}=\dfrac32\overline{EC}$、$\overline{BF}=\dfrac23\overline{FD}$，如圖所示。若將向量 $\overrightarrow{FE}$ 表示成 $\alpha\overrightarrow{AC}+\beta\overrightarrow{AD}$，求實數 $\alpha$、$\beta$。（化成最簡分數）<svg class="qfig" viewBox="0 0 308 153" width="308" height="153" role="img" aria-label="梯形 ABCD，上底 AB、下底 DC；E 在對角線 AC 上、F 在對角線 BD 上，連 FE"><path d="M 110.8 26 L 206.8 26 L 274 124.4 L 34 124.4 Z" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><line x1="110.8" y1="26" x2="274" y2="124.4" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="206.8" y1="26" x2="34" y2="124.4" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="137.68" y1="65.36" x2="208.72" y2="85.04" stroke="#b03a55" stroke-width="2" stroke-linecap="round"/><circle cx="208.72" cy="85.04" r="2.6" fill="#7a2e3c"/><circle cx="137.68" cy="65.36" r="2.6" fill="#7a2e3c"/><text x="101.8" y="19" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="215.8" y="19" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="284" y="139.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="24" y="139.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="217.72" y="78.04" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><text x="127.68" y="60.36" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">F</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\alpha=\dfrac9{25}$、$\beta=-\dfrac4{25}$</div>
+<div class="fxs"><div class="move">做法：$\overrightarrow{FE}=\overrightarrow{AE}-\overrightarrow{AF}$，所以把 $E$、$F$ 都寫成從 $A$ 出發、用 $\overrightarrow{AC}$、$\overrightarrow{AD}$ 表示。缺的是 $\overrightarrow{AB}$：由圖，$\overrightarrow{AB}$ 與 $\overrightarrow{DC}$ 同向。</div>
+$\overrightarrow{AB}=\dfrac25\overrightarrow{DC}=\dfrac25\left(\overrightarrow{AC}-\overrightarrow{AD}\right)$。<br>
+$\overline{AE}:\overline{EC}=3:2$ ⟹ $\overrightarrow{AE}=\dfrac35\overrightarrow{AC}$。<br>
+$\overline{BF}:\overline{FD}=2:3$ ⟹ $\overrightarrow{AF}=\dfrac35\overrightarrow{AB}+\dfrac25\overrightarrow{AD}=\dfrac6{25}\left(\overrightarrow{AC}-\overrightarrow{AD}\right)+\dfrac25\overrightarrow{AD}=\dfrac6{25}\overrightarrow{AC}+\dfrac4{25}\overrightarrow{AD}$。<br>
+$\overrightarrow{FE}=\dfrac35\overrightarrow{AC}-\dfrac6{25}\overrightarrow{AC}-\dfrac4{25}\overrightarrow{AD}=\dfrac9{25}\overrightarrow{AC}-\dfrac4{25}\overrightarrow{AD}$。<br>
+<span class="note-sm">分點公式的係數要交叉配：$F$ 離 $B$ 比較近（$2:3$），所以 $\overrightarrow{AB}$ 的係數是 $\dfrac35$。</span></div></div>
+
+<div class="fx" id="L5-9"><div class="fxh"><span class="no">L5-9</span><span class="kw">圓外一點到圓的兩條切線段等長：先求 D 把 BC 分成幾比幾，再用分點公式</span><span class="src">105 指考 數甲 非選擇一</span></div>
+<div class="fxq">如圖，已知圓 $O$ 與直線 $BC$、直線 $AC$、直線 $AB$ 均相切，且分別相切於 $D$、$E$、$F$。又 $\overline{BC}=4$、$\overline{AC}=5$、$\overline{AB}=6$。<br>(1) 假設 $\overline{BF}=x$，試利用 $x$ 分別表示 $\overline{BD}$、$\overline{CD}$ 以及 $\overline{AE}$，並求出 $x$ 之值。<br>(2) 若將 $\overrightarrow{AD}$ 表示成 $\alpha\overrightarrow{AB}+\beta\overrightarrow{AC}$，則 $\alpha$、$\beta$ 之值為何？<svg class="qfig" viewBox="0 0 313 202" width="313" height="202" role="img" aria-label="三角形 ABC 與圓 O：圓在三角形外面，與邊 BC 相切於 D、與 AC 的延長線相切於 E、與 AB 的延長線相切於 F"><line x1="26" y1="175.5" x2="291" y2="175.5" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="26" y1="175.5" x2="204.12" y2="18.41" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="176" y1="175.5" x2="119.75" y2="92.82" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><circle cx="213.5" cy="104.63" r="70.87" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="1.8"/><circle cx="154.91" cy="144.5" r="2.6" fill="#7a2e3c"/><circle cx="166.62" cy="51.48" r="2.6" fill="#7a2e3c"/><circle cx="213.5" cy="175.5" r="2.6" fill="#7a2e3c"/><circle cx="213.5" cy="104.63" r="2.2" fill="#3a2a2e"/><text x="16" y="189.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="173" y="192.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="108.75" y="87.82" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="143.91" y="153.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="156.62" y="44.48" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><text x="217.5" y="192.5" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">F</text><text x="224.5" y="109.63" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\overline{BD}=x$、$\overline{CD}=4-x$、$\overline{AE}=9-x$，$x=\dfrac32$　(2) $\alpha=\dfrac58$、$\beta=\dfrac38$</div>
+<div class="fxs"><div class="move">做法：由圖，圓在 $\triangle ABC$ 的外面，切點 $E$、$F$ 在 $\overline{AC}$、$\overline{AB}$ 的延長線上，$D$ 在 $\overline{BC}$ 上。同一點到圓的兩條切線段等長：$B$ 看 $F$、$D$，$C$ 看 $D$、$E$，$A$ 看 $E$、$F$。</div>
+(1) $\overline{BD}=\overline{BF}=x$；$\overline{CD}=\overline{BC}-\overline{BD}=4-x$；$\overline{CE}=\overline{CD}=4-x$，$\overline{AE}=\overline{AC}+\overline{CE}=5+(4-x)=9-x$。<br>
+$\overline{AF}=\overline{AB}+\overline{BF}=6+x$，而 $\overline{AE}=\overline{AF}$ ⟹ $9-x=6+x$ ⟹ $x=\dfrac32$。<br>
+(2) $\overline{BD}=\dfrac32$、$\overline{DC}=\dfrac52$，$\overline{BD}:\overline{DC}=3:5$。分點公式（交叉配）：$\overrightarrow{AD}=\dfrac58\overrightarrow{AB}+\dfrac38\overrightarrow{AC}$，所以 $\alpha=\dfrac58$、$\beta=\dfrac38$。<br>
+<span class="note-sm">如果把圓看成內切圓，會列成 $\overline{AE}=5-(4-x)$，算出 $x=\dfrac52$，就錯了。圖上的圓在三角形外面，$\overline{AE}$ 比 $\overline{AC}$ 長。</span></div></div>
+<!-- /figq:L5 -->
 </section>
 
 <div class="ch-nav">

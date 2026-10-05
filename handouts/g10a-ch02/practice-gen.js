@@ -1733,6 +1733,493 @@
   CONTRAST['L2.triCenters'] = { f: function (p) { return p.t; }, why: '外心用中垂線（到三頂點等距），垂心用高（過頂點、垂直對邊）；兩種都是兩條直線聯立，差在直線怎麼寫。' };
   CONTRAST['L3.slopeRangeCross'] = { f: function (p) { return p.t === 2 ? 1 : 0; }, why: '線段跨過鉛直線時，相交（含端點）是 $m\\le$ 小的、$m\\ge$ 大的兩段；不相交是中間那一段，而且不含端點。' };
 
+  /* ══════════════════════════════════════════════════════════
+     2026-10-02　附圖題（讀圖型）：圖由產生器依亂數參數即時畫成 inline SVG，放在 q 裡，圖跟著數字變
+     共用畫圖小工具 fig*()（與 g11a-ch01、g10b-ch04 同一套樣式）：坐標平面（可帶方格）、直線、圓、點與標籤。
+     規則：坐標一律由參數算（不目測）、圖照比例畫（x、y 同一個比例尺）；圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
+           要給驗算器讀的元素帶 data-k（驗算器從圖上的像素坐標與標籤文字代回，不看 p）。
+     L1 3 型、L2 3 型、L3 3 型（L3-19～L3-21 的類似題）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     ══════════════════════════════════════════════════════════ */
+  var FIGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#b03a55', soft: '#8a7378', grid: '#ddd2d5', fill: 'rgba(176,58,85,.2)' };
+  var FIG_MINUS = '−';
+  function figN1(v) { var s = (Math.round(v * 10) / 10).toFixed(1); if (s === '-0.0') s = '0.0'; return s.replace(/\.0$/, ''); }
+  function figN2(v) { var s = (Math.round(v * 100) / 100).toFixed(2); if (s === '-0.00') s = '0.00'; return s.replace(/\.?0+$/, ''); }
+  function figAttr(o) { var s = ''; for (var k in o) { if (o[k] !== undefined && o[k] !== null && o[k] !== false) s += ' ' + k + '="' + o[k] + '"'; } return s; }
+  function figSvg(w, h, label, body) { return '<svg class="qfig" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" role="img" aria-label="' + label + '">' + body + '</svg>'; }
+  function figLine(x1, y1, x2, y2, o) { o = o || {}; return '<line' + figAttr({ 'data-k': o.k, x1: figN2(x1), y1: figN2(y1), x2: figN2(x2), y2: figN2(y2), stroke: o.c || FIGC.line, 'stroke-width': o.w || 1.6, 'stroke-dasharray': o.dash ? '5 4' : null, 'stroke-linecap': 'round' }) + '/>'; }
+  function figText(x, y, s, o) { o = o || {}; return '<text' + figAttr({ 'data-k': o.k, x: figN1(x), y: figN1(y), 'font-size': o.fs || 14, fill: o.c || FIGC.ink, 'text-anchor': o.anchor || 'middle', 'font-style': o.it ? 'italic' : null }) + '>' + s + '</text>'; }
+  function figPath(d, o) { o = o || {}; return '<path' + figAttr({ 'data-k': o.k, d: d, fill: o.fill || 'none', stroke: o.c === 'none' ? null : (o.c || FIGC.line), 'stroke-width': o.c === 'none' ? null : (o.w || 1.8), 'stroke-dasharray': o.dash ? '5 4' : null, 'stroke-linejoin': 'round' }) + '/>'; }
+  function figDot(x, y, o) { o = o || {}; return '<circle' + figAttr({ 'data-k': o.k, cx: figN2(x), cy: figN2(y), r: o.r || 3.2, fill: o.c || FIGC.line }) + '/>'; }
+  function figRing(x, y, o) { o = o || {}; return '<circle' + figAttr({ 'data-k': o.k, cx: figN2(x), cy: figN2(y), r: o.r || 3.2, fill: '#fff', stroke: o.c || FIGC.hot, 'stroke-width': 1.5 }) + '/>'; }
+  function figCircle(cx, cy, R, k) { return '<circle' + figAttr({ 'data-k': k, cx: figN2(cx), cy: figN2(cy), r: figN2(R), fill: 'none', stroke: FIGC.line, 'stroke-width': 1.9 }) + '/>'; }
+  function figArrow(x1, y1, x2, y2, o) {
+    o = o || {}; var a = Math.atan2(y2 - y1, x2 - x1), L = 8, wv = 3.2, c = o.c || FIGC.ink, bx = x2 - L * Math.cos(a), by = y2 - L * Math.sin(a);
+    return figLine(x1, y1, bx, by, { c: c, w: o.w || 1.2, k: o.k }) + '<path d="M ' + figN2(x2) + ' ' + figN2(y2) + ' L ' + figN2(bx - wv * Math.sin(a)) + ' ' + figN2(by + wv * Math.cos(a)) + ' L ' + figN2(bx + wv * Math.sin(a)) + ' ' + figN2(by - wv * Math.cos(a)) + ' Z" fill="' + c + '"/>';
+  }
+  function figSub(base, n) { return base + '<tspan font-size="10" dy="3" font-style="normal">' + n + '</tspan>'; }      /* L₁ 這類帶下標的名字 */
+  function figNum(v) { return v < 0 ? FIG_MINUS + (-v) : String(v); }                                                  /* 圖上的負數用真正的負號 */
+  function figRightPx(v, p, q, sz) {                                                                                   /* 直角記號（像素點） */
+    sz = sz || 7; function tw(a, b) { var dx = b[0] - a[0], dy = b[1] - a[1], L = Math.sqrt(dx * dx + dy * dy) || 1; return [a[0] + dx / L * sz, a[1] + dy / L * sz]; }
+    var u = tw(v, p), w = tw(v, q), m = [u[0] + w[0] - v[0], u[1] + w[1] - v[1]];
+    return '<polyline' + figAttr({ points: figN2(u[0]) + ',' + figN2(u[1]) + ' ' + figN2(m[0]) + ',' + figN2(m[1]) + ' ' + figN2(w[0]) + ',' + figN2(w[1]), fill: 'none', stroke: FIGC.soft, 'stroke-width': 1.2 }) + '/>';
+  }
+  /* 坐標平面：數學範圍 [x0,x1]×[y0,y1]、每單位 c 像素（x、y 同比例）。o.grid 畫方格。回傳底圖 s 與換算函式 X()、Y() */
+  function figPlane(x0, x1, y0, y1, c, o) {
+    o = o || {}; var pl = o.l || 16, pr = o.r || 26, pt = o.t || 22, pb = o.b || 16, i, s = '';
+    function X(x) { return pl + (x - x0) * c; }
+    function Y(y) { return pt + (y1 - y) * c; }
+    if (o.grid) {
+      for (i = x0; i <= x1; i++) s += figLine(X(i), Y(y0), X(i), Y(y1), { c: FIGC.grid, w: 1, k: 'gv' });
+      for (i = y0; i <= y1; i++) s += figLine(X(x0), Y(i), X(x1), Y(i), { c: FIGC.grid, w: 1, k: 'gh' });
+    }
+    s += figArrow(X(x0) - 8, Y(0), X(x1) + 16, Y(0), { k: 'xaxis' }) + figArrow(X(0), Y(y0) + 8, X(0), Y(y1) - 14, { k: 'yaxis' });
+    s += figText(X(x1) + 17, Y(0) + 15, 'x', { it: 1 }) + figText(X(0) + 11, Y(y1) - 8, 'y', { it: 1 });
+    return { s: s, X: X, Y: Y, c: c, x0: x0, x1: x1, y0: y0, y1: y1, W: Math.ceil(pl + (x1 - x0) * c + pr), H: Math.ceil(pt + (y1 - y0) * c + pb) };
+  }
+  /* 在點 P（數學坐標）四周 16 個方向、距離 dist 像素處，挑「離直線、坐標軸、圓、其他點、已放好的名字」最遠的位置。
+     av＝{ lines: [[a,b,c]…], circs: [[h,k,r]…], pts: [[x,y]…], labs: [[x,y]…] }；pref＝偏好的方向（數學坐標的向量，可省略） */
+  function figBestDir(pl, P, av, dist, pref) {
+    var lines = (av.lines || []).concat([[1, 0, 0], [0, 1, 0]]), pn = pref ? (Math.sqrt(pref[0] * pref[0] + pref[1] * pref[1]) || 1) : 1, best = null, i;
+    for (i = 0; i < 16; i++) {
+      var t = i * Math.PI / 8, ux = Math.cos(t), uy = Math.sin(t), x = P[0] + ux * dist / pl.c, y = P[1] + uy * dist / pl.c, cl = 40;
+      if (x < pl.x0 - 0.35 || x > pl.x1 + 0.35 || y < pl.y0 - 0.35 || y > pl.y1 + 0.35) continue;
+      lines.forEach(function (L) { cl = Math.min(cl, pl.c * Math.abs(L[0] * x + L[1] * y + L[2]) / Math.sqrt(L[0] * L[0] + L[1] * L[1])); });
+      (av.circs || []).forEach(function (C) { cl = Math.min(cl, pl.c * Math.abs(Math.sqrt((x - C[0]) * (x - C[0]) + (y - C[1]) * (y - C[1])) - C[2])); });
+      (av.pts || []).forEach(function (Q) { if (Q[0] !== P[0] || Q[1] !== P[1]) cl = Math.min(cl, pl.c * Math.sqrt((x - Q[0]) * (x - Q[0]) + (y - Q[1]) * (y - Q[1])) - 4); });
+      (av.labs || []).forEach(function (Q) { cl = Math.min(cl, pl.c * Math.sqrt((x - Q[0]) * (x - Q[0]) + (y - Q[1]) * (y - Q[1])) - 9); });
+      var sc = Math.min(cl, 11) + (pref ? 2.5 * (ux * pref[0] + uy * pref[1]) / pn : 0);
+      if (!best || sc > best.sc + 1e-9) best = { sc: sc, cl: cl, x: x, y: y };
+    }
+    return best;
+  }
+  /* 點名（或線名）：放好之後把位置記進 av.labs，後面的名字會避開它 */
+  function figPlace(pl, P, name, k, av, o) {
+    o = o || {}; var b = figBestDir(pl, P, av, o.dist || 13, o.pref);
+    av.labs = (av.labs || []).concat([[b.x, b.y]]);
+    return figText(pl.X(b.x), pl.Y(b.y) + 4.8, name, { it: 1, k: k, fs: o.fs });
+  }
+  /* 原點的名字 O：最後放；近處放不下就往外挪（先試左下） */
+  function figOLabel(pl, av) {
+    av = av || {}; var radii = [13, 18, 24, 31], best = null, i, b;
+    for (i = 0; i < radii.length; i++) { b = figBestDir(pl, [0, 0], av, radii[i], [-1, -1]); if (b && (!best || b.cl > best.cl)) best = b; if (b && b.cl >= 7.5) { best = b; break; } }
+    return figText(pl.X(best.x), pl.Y(best.y) + 4.6, 'O', { fs: 13, it: 1 });
+  }
+  /* 直線 ax+by+c=0 落在方框 [x0,x1]×[y0,y1] 裡的那一段（兩個端點，左邊的在前）；沒有交到回傳 null */
+  function figClip(L, x0, x1, y0, y1) {
+    var a = L[0], b = L[1], c = L[2], pts = [], e = 1e-9;
+    function add(x, y) { if (x > x0 - e && x < x1 + e && y > y0 - e && y < y1 + e && !pts.some(function (p) { return Math.abs(p[0] - x) + Math.abs(p[1] - y) < 1e-6; })) pts.push([x, y]); }
+    if (b !== 0) { add(x0, -(a * x0 + c) / b); add(x1, -(a * x1 + c) / b); }
+    if (a !== 0) { add(-(b * y0 + c) / a, y0); add(-(b * y1 + c) / a, y1); }
+    pts.sort(function (p, q) { return p[0] - q[0] || p[1] - q[1]; });
+    return pts.length >= 2 ? [pts[0], pts[pts.length - 1]] : null;
+  }
+  function figLineOf(P, Q) { return normLine.apply(null, lineThrough(P, Q)); }
+  function figXY(P) { return '(' + P[0] + ',' + P[1] + ')'; }
+  function figSlopeTex(m) { var s = Fr.tex(m); return s === '1' ? '' : (s === '-1' ? '-' : s); }                       /* 點斜式裡的斜率：±1 省略 */
+
+  /* ────────── L1　2-6 讀圖題：比斜率、由方格寫直線、由方格寫圓 ────────── */
+  /* 幾條直線比斜率。th：直線與 x 軸正向的夾角（度，0～165）、d：原點到直線的有向距離；圖上只畫半徑 3.7 的圓盤內那一段 */
+  var FSL_ANG = [15, 30, 45, 60, 75, 105, 120, 135, 150, 165], FSL_R = 3.7;
+  function figSlopeGeo(th, d) {
+    var t = th * Math.PI / 180, ux = Math.cos(t), uy = Math.sin(t), px = -d * uy, py = d * ux, hc = Math.sqrt(FSL_R * FSL_R - d * d);
+    return { e0: [px - hc * ux, py - hc * uy], e1: [px + hc * ux, py + hc * uy], lab: [px + (hc + 0.5) * ux, py + (hc + 0.5) * uy], abc: [uy, -ux, -(uy * px - ux * py)] };
+  }
+  function figSlopeLabOk(ths, ds) {                                                    /* 直線的名字彼此、與 x、y 兩個軸名都不能擠在一起 */
+    var labs = ths.map(function (th, i) { return figSlopeGeo(th, ds[i]).lab; }).concat([[4.8, -0.5], [0.4, 4.5]]), i, j;
+    for (i = 0; i < ths.length; i++) for (j = i + 1; j < labs.length; j++) if (Math.abs(labs[i][0] - labs[j][0]) < 1.0 && Math.abs(labs[i][1] - labs[j][1]) < 0.75) return false;
+    for (i = 0; i < ths.length; i++) for (j = 0; j < ths.length; j++) if (i !== j && figSegDist(labs[i], figSlopeGeo(ths[j], ds[j])) < 0.8) return false;      /* 名字離別的線至少 0.8 單位，才看得出它是誰的名字 */
+    return true;
+  }
+  function figSegDist(P, g) {                                                          /* 點到線段 g.e0–g.e1 的距離 */
+    var dx = g.e1[0] - g.e0[0], dy = g.e1[1] - g.e0[1], t = Math.max(0, Math.min(1, ((P[0] - g.e0[0]) * dx + (P[1] - g.e0[1]) * dy) / (dx * dx + dy * dy))), qx = g.e0[0] + t * dx - P[0], qy = g.e0[1] + t * dy - P[1];
+    return Math.sqrt(qx * qx + qy * qy);
+  }
+  function figSlopeSvg(ths, ds) {
+    var pl = figPlane(-4.2, 4.2, -4.2, 4.2, 28), s = pl.s, abc = [];
+    ths.forEach(function (th, i) {
+      var g = figSlopeGeo(th, ds[i]);
+      s += figLine(pl.X(g.e0[0]), pl.Y(g.e0[1]), pl.X(g.e1[0]), pl.Y(g.e1[1]), { w: 2, k: 'L' + (i + 1) });
+      s += figText(pl.X(g.lab[0]), pl.Y(g.lab[1]) + 4.8, figSub('L', i + 1), { it: 1, k: 'lab' + (i + 1) });
+      abc.push(g.abc);
+    });
+    return figSvg(pl.W, pl.H, '坐標平面上的 ' + ths.length + ' 條直線', s + figOLabel(pl, { lines: abc }));
+  }
+  function figSlopeKey(th) { return th > 90 ? th - 180 : th; }                          /* 斜角（−90°～90°）：斜角越大斜率越大 */
+  function figLn(i) { return 'L_' + i; }
+  L1.figSlopeOrder = function (r) {
+    var mode, n, ths, ds, guard = 0, ok;
+    do {
+      mode = r() < 0.5 ? 0 : 1; n = r.pick([3, 4, 4]);
+      ths = r.shuffle(mode === 0 ? FSL_ANG : FSL_ANG.concat([0])).slice(0, n);
+      ds = ths.map(function (th) { return mode === 0 ? 0 : (th === 0 ? r.pick([1.2, 1.8, -1.5, -2]) : r.pick([-1.4, -0.7, 0.7, 1.4])); });
+      ok = ths.some(function (t) { return t > 0 && t < 90; }) && ths.some(function (t) { return t > 90; }) && figSlopeLabOk(ths, ds);
+    } while (!ok && guard++ < 300);
+    if (!ok) { mode = 0; n = 3; ths = [30, 60, 120]; ds = [0, 0, 0]; }
+    var idx = ths.map(function (t, i) { return i; }).sort(function (i, j) { return figSlopeKey(ths[i]) - figSlopeKey(ths[j]); }), order = idx.map(function (i) { return i + 1; });
+    var names = ths.map(function (t, i) { return T(figLn(i + 1)); }).join('、'), ms = ths.map(function (t, i) { return T('m_' + (i + 1)); }).join('、');
+    return { q: '如圖，' + (mode === 0 ? '通過原點的' : '') + ['', '', '', '三', '四'][n] + '條直線 ' + names + ' 的斜率分別是 ' + ms + '。把這些斜率由小到大排列。' + figSlopeSvg(ths, ds),
+      a: T(order.map(function (i) { return 'm_' + i; }).join('\\lt ')),
+      h: '先分正負：往右上的直線斜率是正的，往右下的是負的' + (ths.indexOf(0) >= 0 ? '，水平線是 $0$' : '') + '。同樣是正的，越陡斜率越大；同樣是負的，越陡斜率越小（負得越多）。直線的位置（有沒有通過原點）不影響斜率。',
+      p: { mode: mode, th: ths, d: ds, ans: order } };
+  };
+
+  /* 方格上的直線：通過格子點 A、B（mode 1：A、B 剛好是兩軸上的截距點） */
+  function figGridLineSvg(A, B) {
+    var pl = figPlane(-5, 5, -5, 5, 24, { grid: 1 }), L = figLineOf(A, B), e = figClip(L, -5, 5, -5, 5), s = pl.s, av = { lines: [L], pts: [A, B] };
+    s += figLine(pl.X(e[0][0]), pl.Y(e[0][1]), pl.X(e[1][0]), pl.Y(e[1][1]), { w: 2, k: 'L' }) + figDot(pl.X(A[0]), pl.Y(A[1]), { k: 'A' }) + figDot(pl.X(B[0]), pl.Y(B[1]), { k: 'B' });
+    s += figPlace(pl, A, 'A', 'labA', av) + figPlace(pl, B, 'B', 'labB', av);
+    var dx = e[1][0] - e[0][0], dy = e[1][1] - e[0][1], len = Math.sqrt(dx * dx + dy * dy), E1 = [e[1][0] - dx / len * 0.7, e[1][1] - dy / len * 0.7], E0 = [e[0][0] + dx / len * 0.7, e[0][1] + dy / len * 0.7];
+    var b1 = figBestDir(pl, E1, av, 12), b0 = figBestDir(pl, E0, av, 12);                 /* 線名放在比較空的那一端 */
+    s += figPlace(pl, b1.cl >= 9 || b1.cl >= b0.cl ? E1 : E0, 'L', 'labL', av, { dist: 12 });
+    return figSvg(pl.W, pl.H, '方格紙上的坐標平面，直線 L 通過格子點 A、B', s + figOLabel(pl, av));
+  }
+  L1.figLineGrid = function (r) {
+    var mode = r() < 0.3 ? 1 : 0, A, B, guard = 0, dx, dy, bad, t;
+    do {
+      if (mode === 1) { A = [r.nz(-4, 4), 0]; B = [0, r.nz(-4, 4)]; }
+      else { A = [r.int(-4, 4), r.int(-4, 4)]; B = [r.int(-4, 4), r.int(-4, 4)]; }
+      dx = B[0] - A[0]; dy = B[1] - A[1];
+      bad = dx === 0 || dy === 0 || Math.abs(dx) + Math.abs(dy) < 3 || (A[0] === 0 && A[1] === 0) || (B[0] === 0 && B[1] === 0) || (mode === 0 && A[0] * A[1] === 0 && B[0] * B[1] === 0);
+      if (!bad) { t = figLineOf(A, B); bad = Math.max(Math.abs(t[0]), Math.abs(t[1])) > 5 || Math.abs(t[2]) > 20; }
+      if (!bad) { t = figClip(t, -5, 5, -5, 5); bad = Math.sqrt((t[1][0] - t[0][0]) * (t[1][0] - t[0][0]) + (t[1][1] - t[0][1]) * (t[1][1] - t[0][1])) < 7; }
+    } while (bad && guard++ < 300);
+    if (bad) { A = [-2, -1]; B = [2, 1 + 2]; mode = 0; }
+    if (A[0] > B[0]) { t = A; A = B; B = t; }
+    dx = B[0] - A[0]; dy = B[1] - A[1];
+    var L = figLineOf(A, B), m = F(dy, dx);
+    return { q: '如圖，方格紙上每一小格的邊長都是 ' + T('1') + '，直線 ' + T('L') + ' 通過格子點 ' + T('A') + '、' + T('B') + '。求直線 ' + T('L') + ' 的方程式（一般式）。' + figGridLineSvg(A, B),
+      a: T(lineTex(L[0], L[1], L[2])),
+      h: '先數格子讀坐標：$A' + figXY(A) + '$、$B' + figXY(B) + '$。斜率 $m=\\dfrac{' + hdif(B[1], A[1]) + '}{' + hdif(B[0], A[0]) + '}$，再用點斜式過 $A$，整理成一般式。' + (mode === 1 ? '這題的 $A$、$B$ 剛好在兩軸上，$x$ 截距 $' + (A[1] === 0 ? A[0] : B[0]) + '$、$y$ 截距 $' + (A[0] === 0 ? A[1] : B[1]) + '$，也可以用截距式 $\\dfrac{x}{' + (A[1] === 0 ? A[0] : B[0]) + '}+\\dfrac{y}{' + (A[0] === 0 ? A[1] : B[1]) + '}=1$。' : ''),
+      p: { mode: mode, A: A, B: B, m: [m.n, m.d], ans: L } };
+  };
+
+  /* 方格上的圓：圓心 C 與圓上一點 P 都在格子點上 */
+  var FCG_OFF = [[1, 2], [2, 1], [2, 2], [1, 3], [3, 1], [2, 3], [3, 2]];
+  function figGridBox(xs, ys) {                                                          /* 把要畫的東西和原點都包進來、四周留一格；回傳整數範圍與格子大小 */
+    var x0 = Math.min(-1, Math.floor(Math.min.apply(null, xs) - 1 + 1e-9)), x1 = Math.max(1, Math.ceil(Math.max.apply(null, xs) + 1 - 1e-9));
+    var y0 = Math.min(-1, Math.floor(Math.min.apply(null, ys) - 1 + 1e-9)), y1 = Math.max(1, Math.ceil(Math.max.apply(null, ys) + 1 - 1e-9));
+    return { x0: x0, x1: x1, y0: y0, y1: y1, c: Math.min(30, Math.floor(258 / (x1 - x0)), Math.floor(258 / (y1 - y0))) };
+  }
+  function figGridCircSvg(h, k, off) {
+    var rad = Math.sqrt(off[0] * off[0] + off[1] * off[1]), P = [h + off[0], k + off[1]], bx = figGridBox([h - rad, h + rad], [k - rad, k + rad]);
+    var pl = figPlane(bx.x0, bx.x1, bx.y0, bx.y1, bx.c, { grid: 1 }), s = pl.s;
+    s += figCircle(pl.X(h), pl.Y(k), rad * bx.c, 'circ') + figDot(pl.X(h), pl.Y(k), { k: 'C' }) + figDot(pl.X(P[0]), pl.Y(P[1]), { k: 'P', c: FIGC.hot });
+    var av = { circs: [[h, k, rad]], pts: [[h, k], P] };
+    s += figPlace(pl, P, 'P', 'labP', av, { pref: off }) + figPlace(pl, [h, k], 'C', 'labC', av, { dist: 12, pref: [-off[0], -off[1]] });      /* P 的名字放在圓外，C 的名字放在 P 的反方向 */
+    return figSvg(pl.W, pl.H, '方格紙上的坐標平面，圓心 C 與圓上一點 P 都在格子點上', s + figOLabel(pl, av));
+  }
+  L1.figCircGrid = function (r) {
+    var mode = r() < 0.45 ? 0 : 1, h, k, off, guard = 0, bad, rad, t;
+    do {
+      h = r.int(-2, 2); k = r.int(-2, 2);
+      if (mode === 0) { rad = r.int(2, 3); off = r.pick([[rad, 0], [-rad, 0], [0, rad], [0, -rad]]); }
+      else { t = r.pick(FCG_OFF); off = [r.sign() * t[0], r.sign() * t[1]]; }
+      bad = (h === 0 && k === 0) || (h + off[0] === 0 && k + off[1] === 0) || (h === 0 && off[0] === 0) || (k === 0 && off[1] === 0);
+    } while (bad && guard++ < 300);
+    if (bad) { h = 1; k = -1; off = [2, 1]; mode = 1; }
+    var r2 = off[0] * off[0] + off[1] * off[1], P = [h + off[0], k + off[1]];
+    return { q: '如圖，方格紙上每一小格的邊長都是 ' + T('1') + '。圓心 ' + T('C') + ' 與圓上一點 ' + T('P') + ' 都在格子點上，求這個圓的方程式（標準式）。' + figGridCircSvg(h, k, off),
+      a: T(stdTex(h, k, r2)),
+      h: '先數格子讀坐標：圓心 $C' + figXY([h, k]) + '$、$P' + figXY(P) + '$。半徑就是 $\\overline{CP}$：' + (off[0] === 0 || off[1] === 0 ? '$C$、$P$ 在同一條' + (off[1] === 0 ? '橫' : '直') + '線上，直接數格子' : '從 $C$ 到 $P$ 橫向差 $' + Math.abs(off[0]) + '$ 格、縱向差 $' + Math.abs(off[1]) + '$ 格，$r^2=' + Math.abs(off[0]) + '^2+' + Math.abs(off[1]) + '^2$') + '。代入標準式 $(x-h)^2+(y-k)^2=r^2$，括號裡是「減掉圓心的坐標」。',
+      p: { mode: mode, C: [h, k], P: P, r2: r2, ans: [h, k, r2] } };
+  };
+
+  L1_H1.figSlopeOrder = '這是「看圖比斜率」：先把直線分成往右上（斜率正）、水平（斜率 $0$）、往右下（斜率負）三類，再在同一類裡比誰比較陡。';
+  L1_H1.figLineGrid = '這是「看圖寫直線方程式」：先在方格上讀出直線通過的兩個格子點的坐標，再用兩點算斜率、寫點斜式。';
+  L1_H1.figCircGrid = '這是「看圖寫圓方程式」：先在方格上讀出圓心的坐標，再找圓上的一個格子點算半徑，最後代入標準式。';
+  L1_SOL.figSlopeOrder = function (p) {
+    var pos = [], neg = [], zero = [], i, st = [];
+    p.ans.forEach(function (i) { var th = p.th[i - 1]; (th === 0 ? zero : th < 90 ? pos : neg).push(i); });      /* 已經照斜率由小到大排好 */
+    function nm(a) { return a.map(function (i) { return T(figLn(i)); }).join('、'); }
+    function ch(a) { return T(a.map(function (i) { return 'm_' + i; }).join('\\lt ')); }
+    st.push('看每條直線「往右走」是上升還是下降：' + nm(pos) + ' 往右上，斜率是正的；' + nm(neg) + ' 往右下，斜率是負的' + (zero.length ? '；' + nm(zero) + ' 是水平線，斜率是 $0$' : '') + '。');
+    st.push(pos.length > 1 ? '斜率是正的幾條比誰陡：越陡，斜率越大。由圖，從最平的排到最陡的是 ' + nm(pos) + '，所以 ' + ch(pos) + '。' : '斜率是正的只有 ' + nm(pos) + '，它的斜率最大。');
+    st.push(neg.length > 1 ? '斜率是負的幾條也比誰陡，但是越陡負得越多，斜率反而越小。由圖，從最陡的排到最平的是 ' + nm(neg) + '，所以 ' + ch(neg) + '。' : '斜率是負的只有 ' + nm(neg) + '，它的斜率最小。');
+    st.push('負的都比 $0$ 小，正的都比 $0$ 大，接起來：' + ch(p.ans) + '。' + (p.mode === 1 ? '這幾條直線沒有通過同一點也沒關係，斜率只看傾斜的方向與程度。' : ''));
+    return st;
+  };
+  L1_SOL.figLineGrid = function (p) {
+    var A = p.A, B = p.B, dx = B[0] - A[0], dy = B[1] - A[1], m = F(dy, dx), L = p.ans, mt = figSlopeTex(m), rhs = mt === '' ? mnT('x', A[0]) : (mt === '-' ? '-\\left(' + mnT('x', A[0]) + '\\right)' : mt + '\\left(' + mnT('x', A[0]) + '\\right)');
+    if (A[0] === 0) rhs = (mt === '' ? '' : mt) + 'x';
+    return ['數格子讀坐標（原點往右、往上是正的，往左、往下是負的）：$A' + figXY(A) + '$、$B' + figXY(B) + '$。',
+      '斜率 $m=\\dfrac{' + difT(B[1], A[1]) + '}{' + difT(B[0], A[0]) + '}=\\dfrac{' + dy + '}{' + dx + '}' + (Fr.tex(m) === '\\dfrac{' + dy + '}{' + dx + '}' ? '' : '=' + Fr.tex(m)) + '$。圖上的直線往右' + (dy * dx > 0 ? '上，斜率是正的' : '下，斜率是負的') + '，方向對。',
+      '點斜式過 $A$：$' + mnT('y', A[1]) + '=' + rhs + '$。',
+      (m.d === 1 ? '移項' : '兩邊同乘 $' + m.d + '$ 去分母，再移項') + '整理成一般式：$' + lineTex(L[0], L[1], L[2]) + '$。把 $B$ 代進去檢查：$' + subT(L[0], L[1], L[2], B[0], B[1]) + '=0$。'];
+  };
+  L1_SOL.figCircGrid = function (p) {
+    var C = p.C, P = p.P, dx = P[0] - C[0], dy = P[1] - C[1], st = ['數格子讀坐標：圓心 $C' + figXY(C) + '$，圓上的格子點 $P' + figXY(P) + '$。'];
+    if (dx === 0 || dy === 0) st.push('$C$、$P$ 在同一條' + (dy === 0 ? '橫' : '直') + '線上，半徑直接數格子：$r=' + Math.abs(dx + dy) + '$，$r^2=' + p.r2 + '$。');
+    else st.push('半徑是 $\\overline{CP}$。從 $C$ 到 $P$ 橫向差 $' + Math.abs(dx) + '$ 格、縱向差 $' + Math.abs(dy) + '$ 格，用畢氏定理：$r^2=' + Math.abs(dx) + '^2+' + Math.abs(dy) + '^2=' + p.r2 + '$（$r^2$ 不必開根號）。');
+    st.push('代入標準式 $(x-h)^2+(y-k)^2=r^2$，其中 $(h,k)=' + figXY(C) + '$：$' + stdTex(C[0], C[1], p.r2) + '$。' + (C[0] < 0 || C[1] < 0 ? '圓心的坐標是負的，「減掉負數」變成加號。' : '') + (C[0] === 0 || C[1] === 0 ? '圓心有一個坐標是 $0$，那一項不用寫括號。' : ''));
+    return st;
+  };
+  META_L1.push(['figSlopeOrder', '§6 看圖比斜率'], ['figLineGrid', '§6 由方格上的兩個格子點寫直線方程式'], ['figCircGrid', '§6 由方格讀圓心與半徑寫圓方程式']);
+
+  /* ────────── L2　讀圖題：由圖判斷係數正負、由區域寫不等式、方格上的切線段長與弦長 ────────── */
+  /* 直線 y = (mn/md)x + k 在圓盤（半徑 3.8）裡的那一段 */
+  function figCoefGeo(ln) {                                                              /* ln = [mn, md, k]：兩個端點與名字的位置（名字放在往上的那一端外面） */
+    var R = 3.8, m = ln[0] / ln[1], kk = ln[2], n = Math.sqrt(1 + m * m), ux = 1 / n, uy = m / n, d = kk / n, px = -d * uy, py = d * ux, hc = Math.sqrt(R * R - d * d);
+    var e0 = [px - hc * ux, py - hc * uy], e1 = [px + hc * ux, py + hc * uy], up = m > 0 ? e1 : e0, sg = m > 0 ? 1 : -1;
+    return { e0: e0, e1: e1, lab: [up[0] + sg * 0.5 * ux, up[1] + sg * 0.5 * uy], abc: [m, -1, kk] };
+  }
+  function figCoefLabOk(lines) {                                                         /* 名字彼此、與 x、y 兩個軸名都不能擠在一起 */
+    var labs = lines.map(function (ln) { return figCoefGeo(ln).lab; }).concat([[4.8, -0.5], [0.4, 4.5]]), i, j;
+    for (i = 0; i < lines.length; i++) for (j = i + 1; j < labs.length; j++) if (Math.abs(labs[i][0] - labs[j][0]) < 1.0 && Math.abs(labs[i][1] - labs[j][1]) < 0.75) return false;
+    for (i = 0; i < lines.length; i++) {
+      var xi = Math.abs(lines[i][2] * lines[i][1] / lines[i][0]);                         /* x 截距的絕對值 */
+      if (Math.abs(labs[i][0]) < 0.5 || Math.abs(labs[i][1]) < 0.5 || xi < 0.7 || xi > 3.3 || Math.abs(lines[i][2]) / Math.sqrt(1 + lines[i][0] * lines[i][0] / (lines[i][1] * lines[i][1])) < 0.8) return false;      /* 直線離原點至少 0.8 單位，O 才有地方放 */
+    }
+    return true;
+  }
+  function figCoefSvg(lines) {                                                           /* 一條時名字是 L，兩條時是 L1、L2 */
+    var pl = figPlane(-4.2, 4.2, -4.2, 4.2, 28), s = pl.s, abc = [];
+    lines.forEach(function (ln, i) {
+      var g = figCoefGeo(ln), name = lines.length === 1 ? 'L' : figSub('L', i + 1);
+      s += figLine(pl.X(g.e0[0]), pl.Y(g.e0[1]), pl.X(g.e1[0]), pl.Y(g.e1[1]), { w: 2, k: 'L' + (i + 1) }) + figText(pl.X(g.lab[0]), pl.Y(g.lab[1]) + 4.8, name, { it: 1, k: 'lab' + (i + 1) });
+      abc.push(g.abc);
+    });
+    return figSvg(pl.W, pl.H, lines.length === 1 ? '坐標平面上的一條直線 L，不通過原點' : '坐標平面上的兩條直線', s + figOLabel(pl, { lines: abc }));
+  }
+  var FCO_M = [[1, 2], [2, 3], [1, 1], [3, 2], [2, 1]], FCO_K = [1, 1.5, 2, 2.5];
+  function figSgn(name, s) { return name + (s > 0 ? '\\gt0' : '\\lt0'); }
+  L2.figCoefSign = function (r) {
+    var mode = r() < 0.5 ? 0 : 1, guard = 0, ok, m1, k1, m2, k2, t;
+    if (mode === 0) {
+      do { t = r.pick(FCO_M); m1 = [r.sign() * t[0], t[1]]; k1 = r.sign() * r.pick(FCO_K); ok = figCoefLabOk([[m1[0], m1[1], k1]]); } while (!ok && guard++ < 200);
+      if (!ok) { m1 = [1, 1]; k1 = 2; }
+      var sm = m1[0] > 0 ? 1 : -1, sk = k1 > 0 ? 1 : -1, sab = -sm, sbc = -sk, sac = sm * sk;
+      return { q: '如圖，直線 ' + T('L:ax+by+c=0') + ' 不通過原點。判斷 ' + T('ab') + '、' + T('bc') + '、' + T('ac') + ' 的正負。' + figCoefSvg([[m1[0], m1[1], k1]]),
+        a: T(figSgn('ab', sab)) + '、' + T(figSgn('bc', sbc)) + '、' + T(figSgn('ac', sac)),
+        h: '由圖讀兩件事：直線往右' + (sm > 0 ? '上，斜率是正的' : '下，斜率是負的') + '；直線和 $y$ 軸交在原點的' + (sk > 0 ? '上方，$y$ 截距是正的' : '下方，$y$ 截距是負的') + '。把 $L$ 寫成 $y=-\\dfrac{a}{b}x-\\dfrac{c}{b}$：斜率 $-\\dfrac ab$ 的正負看 $ab$，$y$ 截距 $-\\dfrac cb$ 的正負看 $bc$。$ac$ 可以再看 $x$ 截距 $-\\dfrac ca$（由圖在原點的' + (-sk * sm > 0 ? '右邊' : '左邊') + '），或用 $ab$、$bc$ 相乘（同號得正、異號得負）。',
+        p: { mode: 0, lines: [[m1[0], m1[1], k1]], ans: [sab, sbc, sac] } };
+    }
+    do {
+      t = r.pick(FCO_M); m1 = [r.sign() * t[0], t[1]]; t = r.pick(FCO_M); m2 = [r.sign() * t[0], t[1]]; k1 = r.sign() * r.pick(FCO_K); k2 = r.sign() * r.pick(FCO_K);
+      var v1 = m1[0] / m1[1], v2 = m2[0] / m2[1];
+      ok = (v1 * v2 < 0 || Math.max(Math.abs(v1), Math.abs(v2)) / Math.min(Math.abs(v1), Math.abs(v2)) >= 1.9) && Math.abs(k1 - k2) >= 1;
+      ok = ok && figCoefLabOk([[m1[0], m1[1], k1], [m2[0], m2[1], k2]]);
+    } while (!ok && guard++ < 300);
+    if (!ok) { m1 = [2, 1]; k1 = -1; m2 = [-1, 2]; k2 = 2; }
+    var A = m1[0] / m1[1], C = m2[0] / m2[1];
+    return { q: '如圖，直線 ' + T('L_1:y=ax+b') + ' 與 ' + T('L_2:y=cx+d') + '。判斷 ' + T('a') + '、' + T('b') + '、' + T('c') + '、' + T('d') + ' 的正負，並比較 ' + T('a') + ' 與 ' + T('c') + '、' + T('b') + ' 與 ' + T('d') + ' 的大小。' + figCoefSvg([[m1[0], m1[1], k1], [m2[0], m2[1], k2]]),
+      a: T(figSgn('a', A)) + '、' + T(figSgn('b', k1)) + '、' + T(figSgn('c', C)) + '、' + T(figSgn('d', k2)) + '；' + T('a' + (A > C ? '\\gt ' : '\\lt ') + 'c') + '、' + T('b' + (k1 > k2 ? '\\gt ' : '\\lt ') + 'd'),
+      h: '$y=ax+b$ 的 $a$ 是斜率、$b$ 是 $y$ 截距（直線和 $y$ 軸交點的高度）。斜率看直線往右是上升（正）還是下降（負）；$y$ 截距看交點在原點的上方（正）還是下方（負）。比大小時，' + (A * C < 0 ? '兩個斜率一正一負，正的比較大' : (A > 0 ? '兩個斜率都是正的，比較陡的比較大' : '兩個斜率都是負的，比較陡的反而比較小')) + '；$b$、$d$ 就比兩個交點在 $y$ 軸上誰比較高。',
+      p: { mode: 1, lines: [[m1[0], m1[1], k1], [m2[0], m2[1], k2]], ans: [A > 0 ? 1 : -1, k1 > 0 ? 1 : -1, C > 0 ? 1 : -1, k2 > 0 ? 1 : -1, A > C ? 1 : -1, k1 > k2 ? 1 : -1] } };
+  };
+
+  /* 頂點在格子點上的三角形：係數小、不要太扁。回傳逆時針的三個頂點 V 與三邊 E（E[i] 是 V[i]、V[i+1] 那條邊，對面的頂點是 V[i+2]） */
+  function figTriPick(r, lim) {
+    var A, B, C, tw, ok, guard = 0, E, mx;
+    function side2(P, Q) { return (P[0] - Q[0]) * (P[0] - Q[0]) + (P[1] - Q[1]) * (P[1] - Q[1]); }
+    do {
+      A = [r.int(-lim, lim), r.int(-lim, lim)]; B = [r.int(-lim, lim), r.int(-lim, lim)]; C = [r.int(-lim, lim), r.int(-lim, lim)];
+      tw = (B[0] - A[0]) * (C[1] - A[1]) - (C[0] - A[0]) * (B[1] - A[1]);
+      ok = Math.abs(tw) >= 10;
+      if (ok) {
+        E = [figLineOf(A, B), figLineOf(B, C), figLineOf(C, A)]; mx = Math.max(side2(A, B), side2(B, C), side2(C, A));
+        ok = Math.abs(tw) / mx >= 0.3 && E.every(function (e) { return Math.max(Math.abs(e[0]), Math.abs(e[1])) <= 3 && Math.abs(e[2]) <= 12 && !(e[2] === 0 && (e[0] === 0 || e[1] === 0)); });
+      }
+    } while (!ok && guard++ < 3000);
+    if (!ok) { A = [-3, -2]; B = [3, -1]; C = [0, 3]; tw = 27; }
+    if (tw < 0) { var t = B; B = C; C = t; }
+    return { V: [A, B, C], E: [figLineOf(A, B), figLineOf(B, C), figLineOf(C, A)], tw: Math.abs(tw) };
+  }
+  function figEdgeSign(tri, i) { var e = tri.E[i], P = tri.V[(i + 2) % 3]; return e[0] * P[0] + e[1] * P[1] + e[2] > 0 ? 1 : -1; }      /* 對面頂點代入的正負＝區域那一側 */
+  function figIneqRow(e, sgn, strict) { return lhsTex(e[0], e[1], e[2]) + (sgn > 0 ? (strict ? '\\gt0' : '\\ge0') : (strict ? '\\lt0' : '\\le0')); }
+  function figPolyD(pl, V) { return 'M ' + V.map(function (P) { return figN2(pl.X(P[0])) + ' ' + figN2(pl.Y(P[1])); }).join(' L ') + ' Z'; }
+  function figRegionSvg(tri, dash) {
+    var pl = figPlane(-5, 5, -5, 5, 24, { grid: 1 }), s = pl.s, V = tri.V, i;
+    s += figPath(figPolyD(pl, V), { k: 'tri', c: 'none', fill: FIGC.fill });
+    for (i = 0; i < 3; i++) { var P = V[i], Q = V[(i + 1) % 3]; s += figLine(pl.X(P[0]), pl.Y(P[1]), pl.X(Q[0]), pl.Y(Q[1]), { w: 2, k: 'e' + i, dash: i === dash }); }
+    for (i = 0; i < 3; i++) s += figDot(pl.X(V[i][0]), pl.Y(V[i][1]), { k: 'V', r: 2.8 });
+    return figSvg(pl.W, pl.H, '方格紙上的坐標平面，塗色的三角形區域三個頂點都在格子點上' + (dash >= 0 ? '，其中一條邊界是虛線' : ''), s + figOLabel(pl, { lines: tri.E, pts: V }));
+  }
+  L2.figRegionIneq = function (r) {
+    var tri = figTriPick(r, 4), dash = r() < 0.3 ? r.int(0, 2) : -1, rows = [], sg = [], i;
+    for (i = 0; i < 3; i++) { sg.push(figEdgeSign(tri, i)); rows.push(figIneqRow(tri.E[i], sg[i], i === dash)); }
+    var V = tri.V;
+    return { q: '如圖，方格紙上每一小格的邊長都是 ' + T('1') + '，塗色的三角形區域三個頂點都在格子點上' + (dash >= 0 ? '；實線的邊界算在區域內，虛線的邊界不算' : '（含邊界）') + '。寫出表示這個區域的聯立不等式。' + figRegionSvg(tri, dash),
+      a: T('\\begin{cases}' + rows.join('\\\\ ') + '\\end{cases}'),
+      h: '先數格子讀三個頂點：$' + figXY(V[0]) + '$、$' + figXY(V[1]) + '$、$' + figXY(V[2]) + '$。每條邊用兩個頂點寫出直線方程式（一般式），再把「不在這條邊上的第三個頂點」代進左式看正負：正的就取 $\\ge0$，負的就取 $\\le0$' + (dash >= 0 ? '；虛線那條邊不含邊界，等號要拿掉' : '') + '。',
+      p: { V: V, E: tri.E, sg: sg, dash: dash } };
+  };
+
+  /* 方格上的圓：圓外一點的切線段長（tan）／過兩個格子點的直線截出的弦長（chord） */
+  function figTanChordSvg(o) {
+    var h = o.C[0], k = o.C[1], rad = o.rad, xs = [h - rad, h + rad], ys = [k - rad, k + rad], s, pl, bx;
+    (o.mode === 'tan' ? [o.P] : [o.A, o.B]).forEach(function (Q) { xs.push(Q[0]); ys.push(Q[1]); });
+    bx = figGridBox(xs, ys); pl = figPlane(bx.x0, bx.x1, bx.y0, bx.y1, bx.c, { grid: 1 }); s = pl.s + figCircle(pl.X(h), pl.Y(k), rad * bx.c, 'circ');
+    function px(Q) { return [pl.X(Q[0]), pl.Y(Q[1])]; }
+    if (o.mode === 'tan') {
+      var P = o.P, Tp = o.T, c = px([h, k]), p = px(P), t = px(Tp);
+      s += figLine(c[0], c[1], t[0], t[1], { c: FIGC.soft, w: 1.3, dash: 1, k: 'CT' }) + figLine(p[0], p[1], t[0], t[1], { c: FIGC.hot, w: 2, k: 'PT' }) + figRightPx(t, c, p);
+      s += figDot(c[0], c[1], { k: 'C' }) + figDot(p[0], p[1], { k: 'P' }) + figDot(t[0], t[1], { k: 'T', c: FIGC.hot, r: 2.8 });
+      var av = { circs: [[h, k, rad]], lines: [figLineOfF(P, Tp), figLineOfF([h, k], Tp)], pts: [[h, k], P, Tp] };
+      s += figPlace(pl, Tp, 'T', 'labT', av, { dist: 12, pref: [Tp[0] - h + (Tp[0] - P[0]) * 0.5, Tp[1] - k + (Tp[1] - P[1]) * 0.5] }) + figPlace(pl, P, 'P', 'labP', av, { pref: [P[0] - h, P[1] - k] }) + figPlace(pl, [h, k], 'C', 'labC', av, { dist: 12, pref: [h - Tp[0], k - Tp[1]] });
+      return figSvg(pl.W, pl.H, '方格紙上的坐標平面：圓心 C、圓外的格子點 P，PT 切圓於 T', s + figOLabel(pl, av));
+    }
+    var L = figLineOf(o.A, o.B), e = figClip(L, bx.x0, bx.x1, bx.y0, bx.y1), a = px(o.A), b = px(o.B), m = px(o.M), n = px(o.N);
+    s += figLine(pl.X(e[0][0]), pl.Y(e[0][1]), pl.X(e[1][0]), pl.Y(e[1][1]), { w: 2, k: 'L' });
+    s += figDot(pl.X(h), pl.Y(k), { k: 'C' }) + figDot(a[0], a[1], { k: 'A' }) + figDot(b[0], b[1], { k: 'B' }) + figRing(m[0], m[1], { k: 'M' }) + figRing(n[0], n[1], { k: 'N' });
+    var sC = L[0] * h + L[1] * k + L[2] > 0 ? 1 : -1;                                     /* 圓心在直線的哪一側：A、B、M、N 的名字放另一側 */
+    var av2 = { circs: [[h, k, rad]], lines: [L], pts: [[h, k], o.A, o.B, o.M, o.N] }, out = [-sC * L[0], -sC * L[1]];
+    s += figPlace(pl, o.M, 'M', 'labM', av2, { pref: out }) + figPlace(pl, o.N, 'N', 'labN', av2, { pref: out }) + figPlace(pl, o.A, 'A', 'labA', av2, { pref: out }) + figPlace(pl, o.B, 'B', 'labB', av2, { pref: out });
+    s += figPlace(pl, [h, k], 'C', 'labC', av2, { dist: 12, pref: [-out[0], -out[1]] });
+    return figSvg(pl.W, pl.H, '方格紙上的坐標平面：圓心 C，直線 L 通過格子點 A、B，交圓於 M、N', s + figOLabel(pl, av2));
+  }
+  function figLineOfF(P, Q) { return [Q[1] - P[1], P[0] - Q[0], -((Q[1] - P[1]) * P[0] + (P[0] - Q[0]) * P[1])]; }      /* 端點不是整數時用（不約分） */
+  var FTC_DIR = [[1, 0], [0, 1], [1, 1], [1, -1], [1, 2], [2, 1], [1, -2], [2, -1]];
+  L2.figTanChord = function (r) {
+    var mode = r() < 0.5 ? 'tan' : 'chord', h, k, rad, guard = 0, ok, dx, dy, d2, P, bx;
+    function d2of(U, W) { return (U[0] - W[0]) * (U[0] - W[0]) + (U[1] - W[1]) * (U[1] - W[1]); }
+    if (mode === 'tan') {
+      do {
+        h = r.int(-2, 2); k = r.int(-2, 2); rad = r.int(2, 3); dx = r.int(-rad - 3, rad + 3); dy = r.int(-rad - 3, rad + 3); d2 = dx * dx + dy * dy; P = [h + dx, k + dy];
+        ok = d2 - rad * rad >= 2 && !(h === 0 && k === 0) && !(P[0] === 0 && P[1] === 0) && Math.sqrt(d2) - rad >= 0.9;
+        if (ok) { bx = figGridBox([h - rad, h + rad, P[0]], [k - rad, k + rad, P[1]]); ok = bx.c >= 20; }
+        if (ok) {                                                                        /* 切線不要剛好疊在坐標軸上（兩個切點都查，哪一個會被畫出來由後面的亂數決定） */
+          var tt = d2 - rad * rad, ff = rad * rad / d2, gg = rad * Math.sqrt(tt) / d2;
+          [1, -1].forEach(function (sn) { var tx = h + ff * dx - sn * gg * dy, ty = k + ff * dy + sn * gg * dx; if ((P[1] === 0 && Math.abs(ty) < 1e-9) || (P[0] === 0 && Math.abs(tx) < 1e-9)) ok = false; });
+        }
+      } while (!ok && guard++ < 500);
+      if (!ok) { h = 1; k = 1; rad = 2; dx = -4; dy = -2; d2 = 20; P = [-3, -1]; }
+      var t2 = d2 - rad * rad, sg = r.sign(), f = rad * rad / d2, g = sg * rad * Math.sqrt(t2) / d2, Tp = [h + f * dx - g * dy, k + f * dy + g * dx];
+      return { q: '如圖，方格紙上每一小格的邊長都是 ' + T('1') + '，圓心 ' + T('C') + ' 與圓外一點 ' + T('P') + ' 都在格子點上，圓的半徑是整數。' + T('\\overline{PT}') + ' 切圓於 ' + T('T') + '，求切線段 ' + T('\\overline{PT}') + ' 的長。' + figTanChordSvg({ mode: 'tan', C: [h, k], rad: rad, P: P, T: Tp }),
+        a: T('\\overline{PT}=' + sqrtTex(t2)),
+        h: '先數格子讀出 $C' + figXY([h, k]) + '$、$P' + figXY(P) + '$，半徑從圓心往右數到圓上是 $' + rad + '$ 格。切線垂直過切點的半徑，所以 $\\triangle CTP$ 是直角三角形（直角在 $T$）：$\\overline{PT}^2=\\overline{CP}^2-r^2$，從 $C$ 到 $P$ 橫向差 $' + Math.abs(dx) + '$ 格、縱向差 $' + Math.abs(dy) + '$ 格，$\\overline{CP}^2=' + Math.abs(dx) + '^2+' + Math.abs(dy) + '^2$。$T$ 的坐標不必算。',
+        p: { mode: 'tan', C: [h, k], rad: rad, P: P, sg: sg, ans: t2 } };
+    }
+    var A, B, dir, mm, L, kk, s2, N, hc, M1, N1, ux, uy, foot;
+    do {
+      h = r.int(-2, 2); k = r.int(-2, 2); rad = r.int(2, 3); dir = r.pick(FTC_DIR); mm = r.int(1, 3);
+      A = [r.int(h - rad - 1, h + rad + 1), r.int(k - rad - 1, k + rad + 1)]; B = [A[0] + mm * dir[0], A[1] + mm * dir[1]];
+      L = figLineOf(A, B); kk = L[0] * h + L[1] * k + L[2]; s2 = L[0] * L[0] + L[1] * L[1]; N = rad * rad * s2 - kk * kk;
+      ok = kk !== 0 && N > 0 && N / s2 >= 0.75 && d2of(A, B) >= 4 && !(h === 0 && k === 0) && !(A[0] === 0 && A[1] === 0) && !(B[0] === 0 && B[1] === 0) &&
+        Math.abs(B[0] - h) <= rad + 2 && Math.abs(B[1] - k) <= rad + 2 && !(A[0] === h && A[1] === k) && !(B[0] === h && B[1] === k);
+      if (ok) {
+        hc = Math.sqrt(N / s2); foot = [h - L[0] * kk / s2, k - L[1] * kk / s2]; ux = -L[1] / Math.sqrt(s2); uy = L[0] / Math.sqrt(s2);
+        M1 = [foot[0] - hc * ux, foot[1] - hc * uy]; N1 = [foot[0] + hc * ux, foot[1] + hc * uy]; if (M1[0] > N1[0] || (Math.abs(M1[0] - N1[0]) < 1e-9 && M1[1] > N1[1])) { var tq = M1; M1 = N1; N1 = tq; }
+        ok = [A, B].every(function (Q) { return d2of(Q, M1) >= 0.6 && d2of(Q, N1) >= 0.6; });
+        if (ok) { bx = figGridBox([h - rad, h + rad, A[0], B[0]], [k - rad, k + rad, A[1], B[1]]); ok = bx.c >= 20; }
+      }
+    } while (!ok && guard++ < 2000);
+    if (!ok) { h = 1; k = 1; rad = 3; A = [-1, 2]; B = [1, 4]; L = figLineOf(A, B); kk = L[0] * h + L[1] * k + L[2]; s2 = 2; N = rad * rad * s2 - kk * kk; hc = Math.sqrt(N / s2); foot = [h - L[0] * kk / s2, k - L[1] * kk / s2]; ux = -L[1] / Math.sqrt(s2); uy = L[0] / Math.sqrt(s2); M1 = [foot[0] - hc * ux, foot[1] - hc * uy]; N1 = [foot[0] + hc * ux, foot[1] + hc * uy]; if (M1[0] > N1[0]) { var tq2 = M1; M1 = N1; N1 = tq2; } }
+    if (A[0] > B[0] || (A[0] === B[0] && A[1] > B[1])) { var ta = A; A = B; B = ta; }
+    var sq = simpSqrt(N * s2), fr = F(2 * sq.c, s2), dS = distSimp(Math.abs(kk), s2);
+    return { q: '如圖，方格紙上每一小格的邊長都是 ' + T('1') + '，圓心 ' + T('C') + ' 在格子點上，圓的半徑是整數。直線 ' + T('L') + ' 通過格子點 ' + T('A') + '、' + T('B') + '，交圓於 ' + T('M') + '、' + T('N') + ' 兩點。求弦 ' + T('\\overline{MN}') + ' 的長。' + figTanChordSvg({ mode: 'chord', C: [h, k], rad: rad, A: A, B: B, M: M1, N: N1 }),
+      a: T('\\overline{MN}=' + surdFrac(fr.n, fr.d, sq.r)),
+      h: '先數格子讀出 $C' + figXY([h, k]) + '$、半徑 $' + rad + '$，以及 $A' + figXY(A) + '$、$B' + figXY(B) + '$。用 $A$、$B$ 寫出 $L:' + lineTex(L[0], L[1], L[2]) + '$。圓心到 $L$ 的距離 $d=\\dfrac{\\left|' + hsub(L[0], L[1], L[2], h, k) + '\\right|}{\\sqrt{' + s2 + '}}=' + dS.tex + '$。半弦、弦心距、半徑是直角三角形：$\\overline{MN}=2\\sqrt{r^2-d^2}$。$M$、$N$ 的坐標不必算。',
+      p: { mode: 'chord', C: [h, k], rad: rad, A: A, B: B, L: L, ans: [fr.n, fr.d, sq.r] } };
+  };
+  META_L2.push(['figCoefSign', '§6 由圖判斷直線係數的正負'], ['figRegionIneq', '§6 由區域圖寫聯立不等式'], ['figTanChord', '§6 方格上的切線段長與弦長']);
+
+  /* ────────── L3　附圖題 L3-19～L3-21 的類似題 ────────── */
+  /* L3-19　給三條直線與圖上的三角形區域，寫成聯立不等式（圖上沒有方格，用原點或頂點當測試點） */
+  function figRegionSideLabs(tri, perm) {                                               /* 三個線名的位置（數學坐標）與「清楚程度」：離別的線、別的名字、軸名、原點、頂點都要夠遠 */
+    var V = tri.V, ends = [], j, best = null, cand = [[], [], []], fixed = [[5.7, -0.6], [0.45, 5.35], [0, 0]].concat(V);
+    for (j = 0; j < 3; j++) ends.push(figClip(tri.E[perm[j]], -5, 5, -5, 5));
+    for (j = 0; j < 3; j++) {                                                            /* 每條線的候選：兩端各往內 0.55／1.3／2.1，再往法線兩側挪 12 像素 */
+      var e = ends[j], dx = e[1][0] - e[0][0], dy = e[1][1] - e[0][1], len = Math.sqrt(dx * dx + dy * dy), nx = -dy / len, ny = dx / len;
+      [0.55, 1.3, 2.1].forEach(function (inn) { [0, 1].forEach(function (w) { [1, -1].forEach(function (sd) {
+        var base = w ? [e[1][0] - dx / len * inn, e[1][1] - dy / len * inn] : [e[0][0] + dx / len * inn, e[0][1] + dy / len * inn], q = [base[0] + sd * nx * 0.5, base[1] + sd * ny * 0.5], sc = Infinity, jj, t;
+        if (Math.abs(q[0]) > 5.3 || Math.abs(q[1]) > 5.3) return;
+        for (jj = 0; jj < fixed.length; jj++) sc = Math.min(sc, Math.max(Math.abs(q[0] - fixed[jj][0]), Math.abs(q[1] - fixed[jj][1]) * 1.3));
+        for (jj = 0; jj < 3; jj++) if (jj !== j) { t = tri.E[perm[jj]]; sc = Math.min(sc, 1.5 * Math.abs(t[0] * q[0] + t[1] * q[1] + t[2]) / Math.sqrt(t[0] * t[0] + t[1] * t[1])); }
+        sc = Math.min(sc, 1.6 * Math.abs(q[0]), 1.6 * Math.abs(q[1]));                     /* 也不要壓到坐標軸 */
+        cand[j].push([q, sc]);
+      }); }); });
+    }
+    cand[0].forEach(function (a) { cand[1].forEach(function (b) { cand[2].forEach(function (c) {
+      var m = Math.min(a[1], b[1], c[1]);
+      [[a, b], [a, c], [b, c]].forEach(function (pr) { m = Math.min(m, Math.max(Math.abs(pr[0][0][0] - pr[1][0][0]), Math.abs(pr[0][0][1] - pr[1][0][1]) * 1.3)); });
+      if (!best || m > best.sc + 1e-9) best = { sc: m, labs: [a[0], b[0], c[0]] };
+    }); }); });
+    return { ends: ends, labs: best.labs, sc: best.sc };
+  }
+  function figRegionSideSvg(tri, perm) {                                                 /* perm[j]＝名字 L_{j+1} 對應的邊編號 */
+    var pl = figPlane(-5, 5, -5, 5, 24), s = pl.s, V = tri.V, j, lay = figRegionSideLabs(tri, perm);
+    s += figPath(figPolyD(pl, V), { k: 'tri', c: 'none', fill: FIGC.fill });
+    for (j = 0; j < 3; j++) { var e = lay.ends[j]; s += figLine(pl.X(e[0][0]), pl.Y(e[0][1]), pl.X(e[1][0]), pl.Y(e[1][1]), { w: 1.9, k: 'L' + (j + 1) }); }
+    for (j = 0; j < 3; j++) s += figText(pl.X(lay.labs[j][0]), pl.Y(lay.labs[j][1]) + 4.8, figSub('L', j + 1), { it: 1, k: 'lab' + (j + 1) });
+    return figSvg(pl.W, pl.H, '坐標平面上三條直線圍成的塗色三角形區域', s + figOLabel(pl, { lines: tri.E, pts: V, labs: lay.labs }));
+  }
+  L3.figRegionSide = function (r) {
+    var tri, perm, guard = 0;
+    do { tri = figTriPick(r, 4); perm = r.shuffle([0, 1, 2]); } while (figRegionSideLabs(tri, perm).sc < 0.95 && guard++ < 40);      /* 線名放不清楚就換一個三角形 */
+    var V = tri.V, rows = [], sg = [], j, eqs = [];
+    for (j = 0; j < 3; j++) { var e = tri.E[perm[j]]; sg.push(figEdgeSign(tri, perm[j])); rows.push(figIneqRow(e, sg[j], false)); eqs.push(T('L_' + (j + 1) + ':' + lineTex(e[0], e[1], e[2]))); }
+    var inO = tri.E.every(function (e, i) { return e[2] !== 0 && (e[2] > 0 ? 1 : -1) === figEdgeSign(tri, i); }), hint;
+    if (inO) hint = '由圖，原點在三角形的內部，拿 $(0,0)$ 當測試點最快：代進每條直線的左式，只剩常數項。常數項是正的就取 $\\ge0$，是負的就取 $\\le0$。';
+    else {
+      var opp = [0, 1, 2].map(function (jx) { return V[(perm[jx] + 2) % 3]; });
+      hint = '由圖，原點不在三角形內部（或剛好在邊上），不能拿來測。改用頂點：每條直線都拿「不在它上面的那個頂點」代進左式。$L_2$、$L_3$ 的交點是 $' + figXY(opp[0]) + '$，代進 $L_1$ 的左式得 $' + hsub(tri.E[perm[0]][0], tri.E[perm[0]][1], tri.E[perm[0]][2], opp[0][0], opp[0][1]) + '$，是' + (sg[0] > 0 ? '正' : '負') + '的，所以取 $' + (sg[0] > 0 ? '\\ge0' : '\\le0') + '$；另外兩條同樣做（$L_1$、$L_3$ 交於 $' + figXY(opp[1]) + '$，$L_1$、$L_2$ 交於 $' + figXY(opp[2]) + '$）。';
+    }
+    return { q: '如圖，塗色的三角形區域（含邊界）三邊分別在直線 ' + eqs.join('、') + ' 上。用聯立不等式表示這個三角形區域。' + figRegionSideSvg(tri, perm),
+      a: T('\\begin{cases}' + rows.join('\\\\ ') + '\\end{cases}'),
+      h: '每條直線把平面分成兩側，三角形在其中一側。' + hint + '含邊界，所以三個不等式都有等號。',
+      p: { V: V, E: [tri.E[perm[0]], tri.E[perm[1]], tri.E[perm[2]]], sg: sg, inO: inO } };
+  };
+
+  /* L3-20　四個頂點都在坐標軸上的四邊形：A(p,0)、B(0,q)、C(−rr,0)、D(0,−ss)，比四邊的斜率 */
+  function figQuadSvg(p, q, rr, ss) {
+    var c = Math.min(22, Math.floor(196 / (p + rr + 1.6)), Math.floor(206 / (q + ss + 1.6))), pl = figPlane(-rr - 0.8, p + 0.8, -ss - 0.8, q + 0.8, c, { l: 50, r: 54, t: 24, b: 20 }), s = pl.s;
+    var V = [[p, 0], [0, q], [-rr, 0], [0, -ss]], nm = ['A', 'B', 'C', 'D'], i;
+    s += figPath(figPolyD(pl, V), { k: 'quad', w: 2, fill: 'rgba(176,58,85,.07)' });
+    function lab(i, x, y, anchor) { return '<text' + figAttr({ 'data-k': 'lab' + nm[i], x: figN1(x), y: figN1(y), 'font-size': 13, fill: FIGC.ink, 'text-anchor': anchor }) + '><tspan font-style="italic">' + nm[i] + '</tspan>(' + figNum(V[i][0]) + ', ' + figNum(V[i][1]) + ')</text>'; }
+    for (i = 0; i < 4; i++) s += figDot(pl.X(V[i][0]), pl.Y(V[i][1]), { k: nm[i] });
+    s += lab(0, pl.X(p) + 4, pl.Y(0) - 8, 'start') + lab(1, pl.X(0) + 8, pl.Y(q) - 4, 'start') + lab(2, pl.X(-rr) - 4, pl.Y(0) - 8, 'end') + lab(3, pl.X(0) + 8, pl.Y(-ss) + 13, 'start');
+    s += figText(pl.X(0) - 9, pl.Y(0) + 14, 'O', { fs: 13, it: 1 });
+    return figSvg(pl.W, pl.H, '坐標平面上的四邊形 ABCD，四個頂點都在坐標軸上，坐標標示在圖上', s);
+  }
+  L3.figQuadSlopes = function (r) {
+    var p, q, rr, ss, guard = 0, ok, ar;
+    do {
+      p = r.int(1, 6); q = r.int(1, 6); rr = r.int(1, 6); ss = r.int(1, 6); ar = (p + rr) / (q + ss);
+      ok = q * p !== ss * rr && q * rr !== ss * p && !(p === rr && q === ss) && ar >= 0.55 && ar <= 1.8 && p + rr >= 4 && q + ss >= 4;
+    } while (!ok && guard++ < 300);
+    if (!ok) { p = 4; q = 2; rr = 4; ss = 6; }
+    var sl = [['AB', F(-q, p)], ['BC', F(q, rr)], ['CD', F(-ss, rr)], ['DA', F(ss, p)]], mx = sl[0], mn = sl[0], sum = F(0, 1);
+    sl.forEach(function (x) { if (Fr.lt(mx[1], x[1])) mx = x; if (Fr.lt(x[1], mn[1])) mn = x; sum = Fr.add(sum, x[1]); });
+    return { q: '如圖，四邊形 ' + T('ABCD') + ' 的四個頂點都在坐標軸上，坐標標示在圖上。設 ' + T('\\overline{AB}') + '、' + T('\\overline{BC}') + '、' + T('\\overline{CD}') + '、' + T('\\overline{DA}') + ' 的斜率分別是 ' + T('m_{AB}') + '、' + T('m_{BC}') + '、' + T('m_{CD}') + '、' + T('m_{DA}') + '。(1) 四個斜率中最大的與最小的各是哪一個、值是多少？　(2) 求四個斜率的總和。' + figQuadSvg(p, q, rr, ss),
+      a: '(1) 最大 ' + T('m_{' + mx[0] + '}=' + Fr.tex(mx[1])) + '，最小 ' + T('m_{' + mn[0] + '}=' + Fr.tex(mn[1])) + '　(2) ' + T(Fr.tex(sum)),
+      h: '從圖上讀出四個頂點的坐標，四個斜率都用 $\\dfrac{y_2-y_1}{x_2-x_1}$ 算：$m_{AB}=\\dfrac{' + hdif(q, 0) + '}{' + hdif(0, p) + '}$、$m_{BC}=\\dfrac{' + hdif(0, q) + '}{' + hdif(-rr, 0) + '}$、$m_{CD}=\\dfrac{' + hdif(-ss, 0) + '}{' + hdif(0, -rr) + '}$、$m_{DA}=\\dfrac{' + hdif(0, -ss) + '}{' + hdif(p, 0) + '}$。先看圖檢查正負：$\\overline{BC}$、$\\overline{DA}$ 往右上是正的，$\\overline{AB}$、$\\overline{CD}$ 往右下是負的。最大的在兩個正的裡面挑，最小的在兩個負的裡面挑。',
+      p: { p: p, q: q, r: rr, s: ss, ans: { max: [mx[0], mx[1].n, mx[1].d], min: [mn[0], mn[1].n, mn[1].d], sum: [sum.n, sum.d] } } };
+  };
+
+  /* L3-21　圓拱：弦 PQ（寬 2a）、拱高 AB＝h、離中點 x 處的鉛直線段 CD；半徑 R、弦心距 kk，(a,kk)、(x,y) 都是 R 的畢氏數組 */
+  var FARCH = (function () {
+    var out = [];
+    [5, 13, 17, 25, 37, 65].forEach(function (R) {
+      var legs = [], u, v;
+      for (u = 1; u < R; u++) { v = Math.round(Math.sqrt(R * R - u * u)); if (v > 0 && u * u + v * v === R * R) legs.push([u, v]); }
+      legs.forEach(function (ak) { legs.forEach(function (xy) { var a = ak[0], x = xy[0], h = R - ak[1]; if (x < a && x / a >= 0.28 && x / a <= 0.84 && h / a >= 0.3 && h / a <= 0.95) out.push([R, a, ak[1], x, xy[1]]); }); });
+    });
+    return out;
+  }());
+  var FARCH_MUL = { 5: [2, 3, 4, 6], 13: [1, 2, 3, 5], 17: [1, 2, 3], 25: [1, 2, 4], 37: [1, 2], 65: [1] };
+  var FARCH_SCENE = [['手提袋的圓拱形提把', '公分'], ['圓弧形的窗框上緣', '公分'], ['圓弧形的拱門', '公分']];
+  function figArchSvg(a, kk, x, y, side, wLab, hLab, xLab) {
+    var W = 300, sc = 224 / (2 * a), R = Math.sqrt(a * a + kk * kk), hh = R - kk, top = 24, y0 = top + hh * sc, cx = W / 2, H = Math.ceil(y0 + 54), s = '';
+    var P = [cx - a * sc, y0], Q = [cx + a * sc, y0], A = [cx, y0], B = [cx, y0 - hh * sc], C = [cx + side * x * sc, y0], D = [cx + side * x * sc, y0 - (y - kk) * sc];
+    s += figPath('M ' + figN2(P[0]) + ' ' + figN2(P[1]) + ' A ' + figN2(R * sc) + ' ' + figN2(R * sc) + ' 0 0 1 ' + figN2(Q[0]) + ' ' + figN2(Q[1]), { k: 'arc', w: 2.2 });
+    s += figLine(P[0], P[1], Q[0], Q[1], { w: 2, k: 'PQ' }) + figLine(A[0], A[1], B[0], B[1], { c: FIGC.hot, w: 1.6, k: 'AB' }) + figLine(C[0], C[1], D[0], D[1], { c: FIGC.hot, w: 1.6, k: 'CD' });
+    s += figRightPx(A, B, side > 0 ? P : Q, 6) + figRightPx(C, D, side > 0 ? Q : P, 6);
+    s += figText(P[0] - 9, y0 + 5, 'P', { it: 1 }) + figText(Q[0] + 9, y0 + 5, 'Q', { it: 1 }) + figText(A[0], y0 + 16, 'A', { it: 1 }) + figText(B[0], B[1] - 7, 'B', { it: 1 }) + figText(C[0], y0 + 16, 'C', { it: 1 }) + figText(D[0] + side * 9, D[1] - 5, 'D', { it: 1 });
+    var dy = y0 + 31;                                                                    /* 寬度的尺寸線 */
+    s += figLine(P[0], dy, Q[0], dy, { c: FIGC.soft, w: 1.1, k: 'dim' }) + figLine(P[0], dy - 4, P[0], dy + 4, { c: FIGC.soft, w: 1.1 }) + figLine(Q[0], dy - 4, Q[0], dy + 4, { c: FIGC.soft, w: 1.1 });
+    s += figText(cx, dy + 15, wLab, { k: 'w' }) + figText(A[0] - side * 7, (A[1] + B[1]) / 2 + 5, hLab, { k: 'h', anchor: side > 0 ? 'end' : 'start' }) + figText((A[0] + C[0]) / 2, y0 - 6, xLab, { k: 'x' });
+    return figSvg(W, H, '圓弧形的拱：寬 PQ、拱高 AB 與 AC 的長標示在圖上，CD 垂直 PQ', s);
+  }
+  L3.figArch = function (r) {
+    var t = r.pick(FARCH), m = r.pick(FARCH_MUL[t[0]]), side = r.sign(), sc = r.pick(FARCH_SCENE), R = t[0] * m, a = t[1] * m, kk = t[2] * m, x = t[3] * m, y = t[4] * m, h = R - kk, len = y - kk;
+    return { q: '如圖，' + sc[0] + '是圓的一段弧，兩端是 ' + T('P') + '、' + T('Q') + '；' + T('A') + ' 是 ' + T('\\overline{PQ}') + ' 的中點，' + T('B') + '、' + T('D') + ' 在弧上，' + T('\\overline{AB}') + '、' + T('\\overline{CD}') + ' 都與 ' + T('\\overline{PQ}') + ' 垂直。寬度 ' + T('\\overline{PQ}') + '、拱高 ' + T('\\overline{AB}') + ' 與 ' + T('\\overline{AC}') + ' 的長都標示在圖上（單位：' + sc[1] + '）。求 (1) 這段弧所在圓的半徑　(2) ' + T('\\overline{CD}') + ' 的長。' + figArchSvg(t[1], t[2], t[3], t[4], side, String(2 * a), String(h), String(x)),
+      a: '(1) ' + T(String(R)) + ' ' + sc[1] + '　(2) ' + T(String(len)) + ' ' + sc[1],
+      h: '從圖上讀出 $\\overline{PQ}=' + 2 * a + '$（半弦 $' + a + '$）、$\\overline{AB}=' + h + '$、$\\overline{AC}=' + x + '$。設半徑 $r$，圓心在 $A$ 的正下方 $r-' + h + '$ 處。半弦、弦心距、半徑是直角三角形：$' + a + '^2+(r-' + h + ')^2=r^2$，平方項消掉後是一次方程式，解出 $r$。再看 $D$：它到圓心的水平距離是 $' + x + '$，所以比圓心高 $\\sqrt{r^2-' + x + '^2}$，扣掉弦心距就是 $\\overline{CD}$。',
+      p: { R: R, a: a, k: kk, x: x, y: y, side: side, ans: [R, len] } };
+  };
+  META_L3.push(['figRegionSide', '三條直線圍成的區域：寫成聯立不等式（附圖）'], ['figQuadSlopes', '頂點在坐標軸上的四邊形：比四邊的斜率（附圖）'], ['figArch', '圓拱：半弦、弦心距、半徑（附圖）']);
+  L3_FIX['L3-19'] = 'figRegionSide'; L3_FIX['L3-20'] = 'figQuadSlopes'; L3_FIX['L3-21'] = 'figArch';
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

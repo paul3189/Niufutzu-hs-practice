@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js?v=20260929c"></script>
+<script src="practice-gen.js?v=20261002t4"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -210,6 +210,11 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 /* 手機：長算式在自己的框裡橫捲（position:relative 是為了關住 .katex-mathml） */
 @media(max-width:640px){.gcard .gq,.gcard .ga,.gcard .gh,.gcard .gs,.gcard .gs li,.fixset li,.fadeset li,.simbox,.fxq,.fxa,.fxs,.ctr,.diag li{overflow-x:auto;overflow-y:hidden;max-width:100%;position:relative}}
 @media(max-width:820px){.gen-grid{grid-template-columns:minmax(0,1fr)}.gcard{min-width:0;position:relative}.gcard .ctrbox,.gcard .cbox{overflow-x:auto;max-width:100%;position:relative}}  /* 格線欄位別被內容的 min-content 撐寬 */
+/* ── 附圖題（2026-10-02）：題目的圖是 inline SVG，class="qfig"；手機寬自動縮小，列印照印 ── */
+.qfig,.qfig-sol{display:block;max-width:100%;height:auto;margin:8px auto 4px;font-family:KaTeX_Main,KaTeX_Math,"Times New Roman","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+.qfig text[font-style="italic"],.qfig-sol text[font-style="italic"]{font-family:KaTeX_Math,KaTeX_Main,"Times New Roman",serif}
+.qopt{display:inline-block}
+@media print{.qfig,.qfig-sol{break-inside:avoid}}
 </style>
 <link rel="stylesheet" href="../../assets/theme-cow.css">
 </head>
@@ -239,7 +244,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（14,500 題抽樣，全部用分數與根式精確重算一次）；固定題全數人工＋電腦重算。角度一律用「度」；<b>弧度、和差角、倍角、半角、疊合都是高二上的內容</b>，本書全部不用。需要 $\sin75°$、$\tan15°$ 的地方，一律改用餘弦定理或 $15°$-$75°$-$90°$ 直角三角形的邊長比。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（17,800 題抽樣，全部用分數與根式精確重算一次）；L1、L2 的<b>讀圖題</b>每次換題，圖會跟著新的數字重畫，圖上標的數字就是題目的條件；固定題全數人工＋電腦重算。角度一律用「度」；<b>弧度、和差角、倍角、半角、疊合都是高二上的內容</b>，本書全部不用。需要 $\sin75°$、$\tan15°$ 的地方，一律改用餘弦定理或 $15°$-$75°$-$90°$ 直角三角形的邊長比。</li>
   </ol>
 </div>
 
@@ -266,7 +271,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>三個比值會搞混、看到 $210°$ 不知道往哪個象限畫、餘弦定理三個平方項不知道哪個要減的同學。</div>
-  <div><b>目標</b>35 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>39 個基本型（含 4 型讀圖題），每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
@@ -300,7 +305,13 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fadeset" data-tier="L1" data-keys="projLen,projTheorem,cuboid,pyramid" data-seed="7501"></div>
 <div class="fixset" data-tier="L1" data-keys="projLen,projTheorem,cuboid,pyramid" data-seed="9501"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 35 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">6 讀圖題：直角三角形、仰角俯角、兩邊夾角、方格上的角</h3>
+<div class="must">先要會：<b>條件畫在圖上時，先把圖上的數字讀出來，再套公式</b>；<b>直角三角形先認邊：直角對面是斜邊，沒碰到 $\theta$ 的股是對邊，夾出 $\theta$ 的股是鄰邊</b>，圖轉了方向也一樣；<b>仰角、俯角都從水平線量起</b>，俯角和地面上的角是內錯角；<b>圖上標的角如果正好是兩條已知邊的夾角，第三邊用餘弦定理、面積用 $\dfrac12ab\sin C$</b>；<b>方格紙上的角先數格子讀出終邊上那一點的坐標</b>，再算 $r$。本章的段考原題大約每五題有一題附圖，直角三角形的三角比約三成、正餘弦定理與測量約三成。按「新題」時，圖會跟著數字重畫。</div>
+<div class="gen-grid" data-tier="L1" data-keys="figRightTri,figElev,figSAS,figGridPoint"></div>
+<div class="fadeset" data-tier="L1" data-keys="figRightTri,figElev,figSAS,figGridPoint" data-seed="7601"></div>
+<div class="fixset" data-tier="L1" data-keys="figRightTri,figElev,figSAS,figGridPoint" data-seed="9601" data-n="8"></div>
+
+<h3 class="sec">L1 混合檢測 12 題（全章 39 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -309,7 +320,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
-  <div><b>目標</b>23 個段考主力型，依段考卷的出現率選出。2026-09-28 用題庫 14 份高一段考卷（另參考 12 份舊課綱高二上的三角卷）重新統計，補了 6 型：三角形的唯一性（7 卷）、弦長 $=2R\sin$ 的外接圓題（6 卷）、餘弦定理配最值（5 卷）、面積拆兩塊（4 卷）、以 $k$ 表示廣義角的三角比（4 卷）、平方關係化成二次方程（4 卷）。原本的統計依 25 份段考卷（餘弦定理 21 卷、正弦定理 21、極坐標 18、廣義角 17、三角形面積 15、同界角 13、外接圓 13、誘導公式 12、仰角 11、平方關係 10、海龍 10、解三角形 9、圓內接四邊形 9、三角測量 8、方位角 7、角平分線 7、面積比 7）。</div>
+  <div><b>目標</b>27 個段考主力型（最後 4 型是 2026-10-02 補的讀圖題），依段考卷的出現率選出。2026-09-28 用題庫 14 份高一段考卷（另參考 12 份舊課綱高二上的三角卷）重新統計，補了 6 型：三角形的唯一性（7 卷）、弦長 $=2R\sin$ 的外接圓題（6 卷）、餘弦定理配最值（5 卷）、面積拆兩塊（4 卷）、以 $k$ 表示廣義角的三角比（4 卷）、平方關係化成二次方程（4 卷）。原本的統計依 25 份段考卷（餘弦定理 21 卷、正弦定理 21、極坐標 18、廣義角 17、三角形面積 15、同界角 13、外接圓 13、誘導公式 12、仰角 11、平方關係 10、海龍 10、解三角形 9、圓內接四邊形 9、三角測量 8、方位角 7、角平分線 7、面積比 7）。</div>
   <div><b>通過標準</b>固定 12 題限時 40 分鐘做完，對 10 題以上。</div>
 </div>
 
@@ -329,7 +340,11 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="must">段考 25 卷中<b>仰角 11 卷、三角測量 8 卷、方位角 7 卷、直角三角形 7 卷</b>。解題要點：<b>三點共線＋中點 ⟹ 塔底到三點的距離 $\dfrac h{\tan}$，用中線長公式接起來</b>；<b>方位角 ⟹ 先畫俯視圖，把「北 $\theta$ 東」翻成三角形內角，正弦定理求水平距離，再乘 $\tan$（仰角）得高</b>；<b>正四角錐 ⟹ 兩個直角三角形：（體高、半邊長、斜高）與（體高、半對角線、側稜）</b>。</div>
 <div class="gen-grid" data-tier="L2" data-keys="elevMedian,bearingHeight,pyramidSolve"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 23 型打亂・可列印・可換組）</h3>
+<h3 class="sec">讀圖題：圓內接四邊形、兩棟樓的仰角俯角、圓周角與弦、共用一個角的面積比</h3>
+<div class="must">本章的段考原題約兩成附圖，各類差很多：<b>求正切的題八成有圖，圓周角、等腰三角形、正方形的題六到八成，面積比五成，外接圓三成</b>。解題要點：<b>圓內接四邊形 ⟹ 對角互補，同一條對角線在兩個三角形各寫一次餘弦定理</b>；<b>從樓頂同時看仰角與俯角 ⟹ 過樓頂的水平線把對面那棟樓切成兩段，各在一個直角三角形裡</b>；<b>圓周角對的是「不含頂點」的那條弦，弦長 $=2R\sin$（圓周角）</b>，先在圖上認清每個角對哪條弦；<b>兩個三角形共用一個角 ⟹ 面積比 $=$ 夾這個角的兩邊乘積的比</b>，圖上標的是一段一段的長，整條邊要自己加起來。</div>
+<div class="gen-grid" data-tier="L2" data-keys="figCyclic,figTwoBldg,figChord,figShare"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 27 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -338,8 +353,8 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>18 題各校段考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>21 題各校段考中後段常見題（最後 3 題是附圖題）：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>21 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
 <div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字或問法。答案與詳解皆用程式重新驗算過。</div>
 
@@ -480,7 +495,43 @@ $\triangle ADC$：$5^2=(2k)^2+(5k)^2-2\cdot2k\cdot5k\cos\beta=29k^2-20k^2\cos\be
 $\overline{PQ}^2=(6\sqrt3)^2+18^2-2\cdot6\sqrt3\cdot18\cos30°=108+324-324=108$ ⟹ $\overline{PQ}=6\sqrt3$。<br>
 <span class="note-sm">原題寫「西 $30°$ 南」，意思是從正西往南轉 $30°$，和這裡的「南 $60°$ 西」是同一個方向。</span></div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
+<!-- figq:L3 -->
+<div class="note">以下 3 題（L3-19～L3-21）是<b>附圖題</b>：點的位置、哪個角在哪裡，要從圖上讀。圖都依題目條件重新繪製、照比例畫。本章的段考原題大約每五題有一題附圖，直角三角形、正方形、圓上的角這幾類特別多。</div>
+
+<div class="fx" id="L3-19" data-gen="figTangentFoot"><div class="fxh"><span class="no">L3-19</span><span class="kw">切線垂直半徑＋垂足：大小兩個直角三角形共用 ∠O，先在大的算 cos，再用到小的</span><span class="src">成功高中 113下 填 13</span></div>
+<div class="fxq">如圖（只畫出圓的一段弧），圓 $O$ 的半徑為 $72$，$\overline{CD}$ 切圓 $O$ 於 $D$ 點且 $\overline{CD}=30$，$\overline{OC}$ 交圓 $O$ 於 $A$ 點，$B$ 為 $A$ 點到 $\overline{OD}$ 的垂足。求 $\overline{OB}$。（化為最簡分數）<svg class="qfig" viewBox="0 0 285 214" width="285" height="214" role="img" aria-label="圓 O 的一段弧、切線段 CD（切點 D）、OC 與圓的交點 A，以及 A 到 OD 的垂足 B"><path d="M 234.24 189.07 A 208.8 208.8 0 0 0 196.76 20" fill="none" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><line x1="30" y1="145.66" x2="238.8" y2="145.66" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="238.8" y1="145.66" x2="238.8" y2="58.66" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="30" y1="145.66" x2="238.8" y2="58.66" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="222.74" y1="65.35" x2="222.74" y2="145.66" stroke="#b03a55" stroke-width="1.6" stroke-linecap="round"/><polyline points="230.8,145.66 230.8,137.66 238.8,137.66" fill="none" stroke="#8a7378" stroke-width="1.2"/><polyline points="215.74,145.66 215.74,138.66 222.74,138.66" fill="none" stroke="#8a7378" stroke-width="1.2"/><circle cx="30" cy="145.66" r="2.6" fill="#7a2e3c"/><circle cx="222.74" cy="65.35" r="2.6" fill="#7a2e3c"/><text x="19" y="150.66" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><text x="219.74" y="161.66" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="249.8" y="159.66" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="249.8" y="60.66" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="208.74" y="61.35" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{864}{13}$</div>
+<div class="fxs"><div class="move">做法：圖上有兩個直角三角形 $ODC$ 與 $OBA$，它們共用 $\angle O$。大的三角形三邊都算得出來，先求 $\cos\angle O$，再拿到小的三角形用。</div>
+切線垂直過切點的半徑 ⟹ $\angle ODC=90°$。$\overline{OD}=72$、$\overline{CD}=30$ ⟹ $\overline{OC}=\sqrt{72^2+30^2}=\sqrt{6084}=78$。<br>
+$\cos\angle COD=\dfrac{\overline{OD}}{\overline{OC}}=\dfrac{72}{78}=\dfrac{12}{13}$。<br>
+$A$ 在圓上 ⟹ $\overline{OA}=72$。直角三角形 $OBA$ 中，$\overline{OB}=\overline{OA}\cos\angle AOB=72\times\dfrac{12}{13}=\dfrac{864}{13}$。<br>
+<span class="note-sm">$72:30=12:5$，是 $5$-$12$-$13$ 直角三角形放大 $6$ 倍，斜邊 $13\times6=78$，不必硬開根號。圖上 $A$ 離 $C$ 很近，因為 $\overline{AC}=78-72=6$。</span></div></div>
+
+<div class="fx" id="L3-20" data-gen="figSquareIsos"><div class="fxh"><span class="no">L3-20</span><span class="kw">正方形外接等腰三角形求 DE：∠DAE=90°+∠EAB，cos(90°+α)=−sinα，再用餘弦定理</span><span class="src">板橋高中 113下 填 11</span></div>
+<div class="fxq">如圖，正方形 $ABCD$ 的邊長為 $6$，以 $\overline{AB}$ 為底邊，向外作一個腰長為 $5$ 的等腰三角形 $ABE$。求 $\overline{DE}$ 的長度。<svg class="qfig" viewBox="0 0 288 250" width="288" height="250" role="img" aria-label="正方形 ABCD 與以 AB 為底邊、向外作的等腰三角形 ABE"><path d="M 84 104 L 204 104 L 144 24 Z" fill="rgba(176,58,85,.12)" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><path d="M 84 104 L 204 104 L 204 224 L 84 224 Z" fill="none" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><text x="74" y="108" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="214" y="108" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="214" y="237" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="74" y="237" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="144" y="16" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\sqrt{109}$</div>
+<div class="fxs"><div class="move">做法：$\overline{DE}$ 在 $\triangle ADE$ 裡，$\overline{AD}=6$、$\overline{AE}=5$ 都知道，缺的是夾角 $\angle DAE$。由圖，$E$ 在正方形外面，所以 $\angle DAE=90°+\angle EAB$。</div>
+<svg class="qfig-sol" viewBox="0 0 288 250" width="288" height="250" role="img" aria-label="正方形 ABCD 與以 AB 為底邊、向外作的等腰三角形 ABE；虛線是 DE 與 E 到 AB 的高 EM"><path d="M 84 104 L 204 104 L 144 24 Z" fill="rgba(176,58,85,.12)" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><path d="M 84 104 L 204 104 L 204 224 L 84 224 Z" fill="none" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><text x="74" y="108" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="214" y="108" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="214" y="237" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="74" y="237" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="144" y="16" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><line x1="84" y1="224" x2="144" y2="24" stroke="#b03a55" stroke-width="1.6" stroke-dasharray="4 3" stroke-linecap="round"/><line x1="144" y1="24" x2="144" y2="104" stroke="#8a7378" stroke-width="1.3" stroke-dasharray="4 3" stroke-linecap="round"/><polyline points="137,104 137,97 144,97" fill="none" stroke="#8a7378" stroke-width="1.2"/><text x="153" y="119" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">M</text><path d="M 99 104 A 15 15 0 0 0 93 92" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><text x="113" y="58" font-size="13" fill="#3a2a2e" text-anchor="middle">5</text><text x="133" y="118" font-size="13" fill="#3a2a2e" text-anchor="middle">3</text><text x="153" y="64" font-size="13" fill="#3a2a2e" text-anchor="middle">4</text><text x="74" y="169" font-size="13" fill="#3a2a2e" text-anchor="middle">6</text></svg>
+作 $\overline{EM}\perp\overline{AB}$ 於 $M$。等腰三角形的高平分底邊 ⟹ $\overline{AM}=3$，$\overline{EM}=\sqrt{5^2-3^2}=4$，所以 $\sin\angle EAB=\dfrac45$。<br>
+$\cos\angle DAE=\cos(90°+\angle EAB)=-\sin\angle EAB=-\dfrac45$。<br>
+餘弦定理：$\overline{DE}^2=6^2+5^2-2\cdot6\cdot5\cdot\left(-\dfrac45\right)=36+25+48=109$ ⟹ $\overline{DE}=\sqrt{109}$。<br>
+<span class="note-sm">檢查：把 $\overline{EM}$ 往下延長到 $\overline{CD}$，$E$ 比 $D$ 高 $4+6=10$、往右 $3$，$\overline{DE}=\sqrt{10^2+3^2}=\sqrt{109}$，一樣。如果 $E$ 畫在正方形裡面，夾角變成 $90°-\angle EAB$，答案就不同，所以要看圖。</span></div></div>
+
+<div class="fx" id="L3-21" data-gen="figGridAngle"><div class="fxh"><span class="no">L3-21</span><span class="kw">方格紙上的角：三邊用畢氏定理、餘弦定理求 cos，再換成 tan</span><span class="src">板橋高中 103上（高二）填 2</span></div>
+<div class="fxq">下圖中的方格都是邊長為 $1$ 的小正方形，$A$、$B$、$C$ 都在格子點上。求 $\tan\angle ABC$。<svg class="qfig" viewBox="0 0 300 144" width="300" height="144" role="img" aria-label="三格寬、兩格高的方格紙，A 在左上角、C 在右上角、B 在底邊由左數來第一個格子點"><line x1="84" y1="114" x2="84" y2="26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="128" y1="114" x2="128" y2="26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="172" y1="114" x2="172" y2="26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="216" y1="114" x2="216" y2="26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="84" y1="114" x2="216" y2="114" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="84" y1="70" x2="216" y2="70" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="84" y1="26" x2="216" y2="26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="128" y1="114" x2="84" y2="26" stroke="#7a2e3c" stroke-width="2" stroke-linecap="round"/><line x1="128" y1="114" x2="216" y2="26" stroke="#7a2e3c" stroke-width="2" stroke-linecap="round"/><path d="M 139.31 102.69 A 16 16 0 0 0 120.84 99.69" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><circle cx="84" cy="26" r="3" fill="#7a2e3c"/><circle cx="128" cy="114" r="3" fill="#7a2e3c"/><circle cx="216" cy="26" r="3" fill="#7a2e3c"/><text x="73" y="22" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="128" y="132" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="227" y="22" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3$</div>
+<div class="fxs"><div class="move">做法：格子點之間的距離都可以用畢氏定理算。把 $\triangle ABC$ 的三邊算出來，用餘弦定理求 $\cos\angle ABC$，再換成 $\tan$。</div>
+數格子：$A$ 到 $B$ 是橫 $1$ 格、直 $2$ 格，$\overline{AB}=\sqrt{1^2+2^2}=\sqrt5$；$B$ 到 $C$ 是橫 $2$ 格、直 $2$ 格，$\overline{BC}=\sqrt{2^2+2^2}=2\sqrt2$；$A$、$C$ 在同一條橫線上，$\overline{AC}=3$。<br>
+$\cos\angle ABC=\dfrac{5+8-9}{2\cdot\sqrt5\cdot2\sqrt2}=\dfrac{4}{4\sqrt{10}}=\dfrac{\sqrt{10}}{10}$。<br>
+$\sin\angle ABC=\sqrt{1-\dfrac{1}{10}}=\dfrac{3\sqrt{10}}{10}$（三角形的內角，正弦取正）。<br>
+$\tan\angle ABC=\dfrac{\sin\angle ABC}{\cos\angle ABC}=3$。<br>
+<span class="note-sm">這是舊課綱高二上的段考題，當時可以用正切的和角公式；這裡只用高一下學過的畢氏定理與餘弦定理。</span></div></div>
+<!-- /figq:L3 -->
+
+<h3 class="sec">L3 混合檢測 10 題（21 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -493,8 +544,8 @@ $\overline{PQ}^2=(6\sqrt3)^2+18^2-2\cdot6\sqrt3\cdot18\cos30°=108+324-324=108$ 
 <h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
 <div class="goal">
   <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
-  <div><b>目標</b>12 題：每題都要把兩個以上的方法接起來用，或需要一個不常見的觀察。</div>
-  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+  <div><b>目標</b>16 題：每題都要把兩個以上的方法接起來用，或需要一個不常見的觀察；L4-13～L4-16 是附圖題。</div>
+  <div><b>通過標準</b>限時 120 分鐘做完 16 題，對 12 題以上。</div>
 </div>
 
 <div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">直角三角形＋3cosA+5cosB=5：cosB=sinA 化成同一個角，代平方關係解二次方程；s=1 是退化解</span><span class="src">北一女中 113下 填 7</span></div>
@@ -586,6 +637,56 @@ $16=\overline{OA}^2+\overline{OB}^2-2\,\overline{OA}\cdot\overline{OB}\cos30°\g
 <div class="fxa">$\dfrac{3\sqrt{55}+3\sqrt7}{2}$</div>
 <div class="fxs"><div class="move">做法：弦心距 $d$ ⟹ 弦長 $2\sqrt{R^2-d^2}$：$\overline{AB}=2\sqrt{55}$、$\overline{BC}=2\sqrt{28}=4\sqrt7$。圓心角是圓周角的兩倍，弦心距把圓心角平分 ⟹ $\cos C=\dfrac38$（$\overline{AB}$ 的對角）、$\cos A=\dfrac68=\dfrac34$（$\overline{BC}$ 的對角）。</div>
 投影定理：$\overline{AC}=\overline{AB}\cos A+\overline{BC}\cos C=2\sqrt{55}\cdot\dfrac34+4\sqrt7\cdot\dfrac38=\dfrac{3\sqrt{55}}2+\dfrac{3\sqrt7}2$。<span class="note-sm">用正弦定理走 $\overline{AC}=2R\sin B$ 會需要 $\sin(A+C)$，那是高二的和角公式；本章用投影定理。$102$ 學測填 G（$R=8$、弦心距 $2$、$7$）是同一題型，答案 $4\sqrt{15}$。</span></div></div>
+<!-- figq:L4 -->
+<div class="note">以下 4 題（L4-13～L4-16）是<b>附圖題</b>。圖都依題目條件重新繪製、照比例畫；點落在哪裡、哪兩個角相等，要從圖上判斷。</div>
+
+<div class="fx" id="L4-13"><div class="fxh"><span class="no">L4-13</span><span class="kw">角內一點到兩邊的垂足：四邊形 OAPB 有兩個直角，四點共圓、OP 是直徑；AB 用餘弦定理，OP＝AB÷sin60°</span><span class="src">北一女中 113下 多選 3</span></div>
+<div class="fxq">如圖，$\angle XOY=60°$，$P$ 到 $OX$ 的垂足為 $A$ 且 $\overline{PA}=1$，$P$ 到 $OY$ 的垂足為 $B$ 且 $\overline{PB}=4$。下列敘述哪些正確？<svg class="qfig" viewBox="0 0 302 217" width="302" height="217" role="img" aria-label="角 XOY 內部一點 P，P 到 OX 的垂足 A、到 OY 的垂足 B"><line x1="34" y1="188.12" x2="268" y2="188.12" stroke="#7a2e3c" stroke-width="2" stroke-linecap="round"/><line x1="34" y1="188.12" x2="127.6" y2="26" stroke="#7a2e3c" stroke-width="2" stroke-linecap="round"/><line x1="221.06" y1="152.12" x2="221.06" y2="188.12" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="221.06" y1="152.12" x2="96.35" y2="80.12" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><polyline points="214.06,188.12 214.06,181.12 221.06,181.12" fill="none" stroke="#8a7378" stroke-width="1.2"/><polyline points="92.85,86.18 98.92,89.68 102.42,83.62" fill="none" stroke="#8a7378" stroke-width="1.2"/><circle cx="221.06" cy="152.12" r="3.2" fill="#b03a55"/><text x="22" y="196.12" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><text x="280" y="193.12" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">X</text><text x="125.6" y="18" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">Y</text><text x="221.06" y="205.12" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="84.35" y="77.12" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="233.06" y="153.12" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text></svg><span class="qopt">(1) $\angle APB=120°$</span>　<span class="qopt">(2) $\overline{AB}=\sqrt{17}$</span>　<span class="qopt">(3) $\overline{OP}=2\sqrt6$</span>　<span class="qopt">(4) $\overline{OA}=3\sqrt3$</span>　<span class="qopt">(5) $\overline{OB}=2\sqrt3$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(4)(5)</div>
+<div class="fxs"><div class="move">做法：四邊形 $OAPB$ 有兩個直角（$\angle OAP=\angle OBP=90°$），所以另外兩個角互補，而且 $O$、$A$、$P$、$B$ 四點在同一個圓上，$\overline{OP}$ 是直徑。</div>
+(1) 四邊形內角和 $360°$：$\angle APB=360°-90°-90°-60°=120°$，正確。<br>
+(2) 在 $\triangle APB$ 用餘弦定理：$\overline{AB}^2=1^2+4^2-2\cdot1\cdot4\cos120°=17+4=21$，$\overline{AB}=\sqrt{21}$，錯誤（$\sqrt{17}$ 是把夾角當成直角）。<br>
+(3) $\overline{OP}$ 是 $\triangle OAB$ 外接圓的直徑，正弦定理：$\overline{OP}=\dfrac{\overline{AB}}{\sin\angle AOB}=\dfrac{\sqrt{21}}{\sin60°}=\sqrt{21}\times\dfrac{2}{\sqrt3}=2\sqrt7$，錯誤。<br>
+(4) 直角三角形 $OAP$：$\overline{OA}=\sqrt{\overline{OP}^2-\overline{PA}^2}=\sqrt{28-1}=3\sqrt3$，正確。<br>
+(5) 直角三角形 $OBP$：$\overline{OB}=\sqrt{28-16}=2\sqrt3$，正確。</div></div>
+
+<div class="fx" id="L4-14"><div class="fxh"><span class="no">L4-14</span><span class="kw">半圓上兩弦的交角：直徑對直角，∠CED＝90°−∠CDB；弦 BC＝2R sin∠CDB</span><span class="src">竹科實中 113下 填 6</span></div>
+<div class="fxq">如圖，半圓上有四點 $A,B,C,D$，其中 $\overline{AD}$ 為直徑，$\overline{AC}$ 與 $\overline{BD}$ 交於點 $E$。若 $\overline{BC}=5$、$\overline{AD}=8$，求 $\sin\angle CED$ 之值。<svg class="qfig" viewBox="0 0 296 164" width="296" height="164" role="img" aria-label="以 AD 為直徑的半圓，B、C 在半圓上，弦 AC 與 BD 交於 E"><path d="M 264 140 A 116 116 0 0 0 32 140" fill="none" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><line x1="32" y1="140" x2="264" y2="140" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="32" y1="140" x2="61.8" y2="62.38" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="61.8" y1="62.38" x2="204.88" y2="38.9" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="204.88" y1="38.9" x2="264" y2="140" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="32" y1="140" x2="204.88" y2="38.9" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="61.8" y1="62.38" x2="264" y2="140" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><circle cx="123.94" cy="86.24" r="2.6" fill="#7a2e3c"/><text x="21" y="149" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="275" y="149" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="51.8" y="57.38" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="212.88" y="31.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="123.94" y="77.24" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{\sqrt{39}}{8}$</div>
+<div class="fxs"><div class="move">做法：$\angle CED$ 在 $\triangle ECD$ 裡。$\overline{AD}$ 是直徑，所以 $\angle ACD=90°$，$\triangle ECD$ 是直角三角形，$\angle CED$ 和 $\angle CDE$ 互餘。而 $\angle CDE$ 就是弦 $\overline{BC}$ 所對的圓周角。</div>
+直徑所對的圓周角是直角 ⟹ $\angle ACD=90°$，也就是 $\angle ECD=90°$，所以 $\angle CED=90°-\angle CDE$。<br>
+$E$ 在 $\overline{BD}$ 上，$\angle CDE=\angle CDB$，它是弦 $\overline{BC}$ 所對的圓周角。圓的半徑 $R=4$：$\overline{BC}=2R\sin\angle CDB$ ⟹ $5=8\sin\angle CDB$，$\sin\angle CDB=\dfrac58$。<br>
+$\sin\angle CED=\sin(90°-\angle CDB)=\cos\angle CDB=\sqrt{1-\dfrac{25}{64}}=\dfrac{\sqrt{39}}{8}$（$\angle CDB$ 是直角三角形 $ECD$ 的銳角，餘弦取正）。<br>
+<span class="note-sm">題目沒有說 $B$、$C$ 在半圓上的確切位置，只知道 $\overline{BC}=5$。算出來的答案和位置無關，因為弦長固定，圓周角就固定。</span></div></div>
+
+<div class="fx" id="L4-15"><div class="fxh"><span class="no">L4-15</span><span class="kw">長方形裡兩個角相等：把 FE 延長到與直線 CD 相交，等角變成等腰三角形，再用相似三角形列方程</span><span class="src">武陵高中 113下 填 11</span></div>
+<div class="fxq">如圖，長方形 $ABCD$ 中 $\overline{AB}=3$、$\overline{BC}=2$。$E$、$F$ 分別為 $\overline{AD}$、$\overline{AB}$ 上的點，滿足 $\overline{AE}=2\overline{ED}$ 且 $\angle EFC=\angle DCF$。求 $\tan\angle AFE$。<svg class="qfig" viewBox="0 0 294 194" width="294" height="194" role="img" aria-label="長方形 ABCD，E 在 AD 上、F 在 AB 上，連 EF、FC"><path d="M 44 26 L 254 26 L 254 166 L 44 166 Z" fill="none" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><line x1="44" y1="119.33" x2="219" y2="26" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="219" y1="26" x2="254" y2="166" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><circle cx="44" cy="119.33" r="2.6" fill="#7a2e3c"/><circle cx="219" cy="26" r="2.6" fill="#7a2e3c"/><path d="M 205.76 33.06 A 15 15 0 0 0 222.64 40.55" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><path d="M 249.88 149.51 A 17 17 0 0 0 237 166" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><text x="34" y="23" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="264" y="23" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="264" y="179" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="34" y="179" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="33" y="122.33" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><text x="219" y="18" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">F</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{8}{15}$</div>
+<div class="fxs"><div class="move">做法：$\tan\angle AFE=\dfrac{\overline{AE}}{\overline{AF}}$，$\overline{AE}=\dfrac43$ 已經知道，只缺 $\overline{AF}$。兩個相等的角 $\angle EFC$、$\angle DCF$ 不在同一個三角形裡；把 $\overline{FE}$ 延長到與直線 $CD$ 交於 $G$，它們就變成 $\triangle GFC$ 的兩個底角。</div>
+<svg class="qfig-sol" viewBox="0 0 331 174" width="331" height="174" role="img" aria-label="長方形 ABCD，E 在 AD 上、F 在 AB 上，連 EF、FC；虛線把 FE 延長到與直線 CD 交於 G"><path d="M 111 26 L 291 26 L 291 146 L 111 146 Z" fill="none" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><line x1="111" y1="106" x2="261" y2="26" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="261" y1="26" x2="291" y2="146" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><circle cx="111" cy="106" r="2.6" fill="#7a2e3c"/><circle cx="261" cy="26" r="2.6" fill="#7a2e3c"/><path d="M 247.76 33.06 A 15 15 0 0 0 264.64 40.55" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><path d="M 286.88 129.51 A 17 17 0 0 0 274 146" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><text x="101" y="23" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="301" y="23" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="301" y="159" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="108" y="161" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="100" y="109" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><text x="261" y="18" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">F</text><line x1="36" y1="146" x2="111" y2="106" stroke="#8a7378" stroke-width="1.3" stroke-dasharray="4 3" stroke-linecap="round"/><line x1="36" y1="146" x2="111" y2="146" stroke="#8a7378" stroke-width="1.3" stroke-dasharray="4 3" stroke-linecap="round"/><circle cx="36" cy="146" r="2.6" fill="#7a2e3c"/><text x="32" y="162" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">G</text></svg>
+$\overline{AD}=2$、$\overline{AE}=2\overline{ED}$ ⟹ $\overline{AE}=\dfrac43$、$\overline{ED}=\dfrac23$。設 $\overline{AF}=x$。<br>
+延長 $\overline{FE}$ 交直線 $CD$ 於 $G$（$G$ 在 $D$ 的左邊）。$\angle GFC=\angle EFC$、$\angle GCF=\angle DCF$，兩角相等 ⟹ $\overline{GF}=\overline{GC}$。<br>
+$\triangle GDE$ 與 $\triangle FAE$ 相似（對頂角相等、都有直角），相似比 $\overline{DE}:\overline{AE}=1:2$ ⟹ $\overline{GD}=\dfrac x2$、$\overline{GE}=\dfrac12\overline{EF}$。<br>
+$\overline{GC}=\overline{GD}+\overline{DC}=\dfrac x2+3$；$\overline{GF}=\dfrac32\overline{EF}=\dfrac32\sqrt{x^2+\dfrac{16}{9}}$。<br>
+$\overline{GF}=\overline{GC}$ 兩邊平方：$\dfrac94\left(x^2+\dfrac{16}{9}\right)=\left(\dfrac x2+3\right)^2$ ⟹ $\dfrac94x^2+4=\dfrac{x^2}{4}+3x+9$ ⟹ $2x^2-3x-5=0$ ⟹ $(2x-5)(x+1)=0$，$x=\dfrac52$（在 $0$ 到 $3$ 之間，合）。<br>
+$\tan\angle AFE=\dfrac{\overline{AE}}{\overline{AF}}=\dfrac43\div\dfrac52=\dfrac{8}{15}$。</div></div>
+
+<div class="fx" id="L4-16"><div class="fxh"><span class="no">L4-16</span><span class="kw">正方形裡的 ∠PAQ：設邊長 20，面積給 AP·AQ·sin、餘弦定理給 AP·AQ·cos，兩式相除得 tan</span><span class="src">台中一中 103上（高二）選填 B</span></div>
+<div class="fxq">如圖，正方形 $ABCD$ 中，$P$、$Q$ 分別在 $\overline{BC}$ 與 $\overline{CD}$ 邊上，且 $\overline{BP}:\overline{PC}=1:3$、$\overline{CQ}:\overline{QD}=3:2$。求 $\tan\angle PAQ$。<svg class="qfig" viewBox="0 0 300 210" width="300" height="210" role="img" aria-label="正方形 ABCD，P 在 BC 上、Q 在 CD 上，連 AP、AQ"><path d="M 70 184 L 230 184 L 230 24 L 70 24 Z" fill="none" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><line x1="70" y1="184" x2="230" y2="144" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="70" y1="184" x2="134" y2="24" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><path d="M 87.46 179.63 A 18 18 0 0 0 76.69 167.29" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><circle cx="230" cy="144" r="2.6" fill="#7a2e3c"/><circle cx="134" cy="24" r="2.6" fill="#7a2e3c"/><text x="60" y="197" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="240" y="197" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="240" y="21" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="60" y="21" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="241" y="149" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text><text x="134" y="16" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">Q</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{18}{13}$</div>
+<div class="fxs"><div class="move">做法：設邊長為 $20$（$4$ 和 $5$ 的公倍數，每一段都是整數）。$\triangle APQ$ 的面積可以用「正方形減掉三個直角三角形」算，它等於 $\dfrac12\overline{AP}\cdot\overline{AQ}\sin\angle PAQ$；餘弦定理則給出 $\overline{AP}\cdot\overline{AQ}\cos\angle PAQ$。兩式相除，$\overline{AP}\cdot\overline{AQ}$ 約掉，剩下 $\tan$。</div>
+<svg class="qfig-sol" viewBox="0 0 300 210" width="300" height="210" role="img" aria-label="正方形 ABCD，P 在 BC 上、Q 在 CD 上，連 AP、AQ；虛線是 PQ，各段長以邊長 20 標出"><path d="M 70 184 L 230 184 L 230 24 L 70 24 Z" fill="none" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><line x1="70" y1="184" x2="230" y2="144" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="70" y1="184" x2="134" y2="24" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><path d="M 87.46 179.63 A 18 18 0 0 0 76.69 167.29" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><circle cx="230" cy="144" r="2.6" fill="#7a2e3c"/><circle cx="134" cy="24" r="2.6" fill="#7a2e3c"/><text x="60" y="197" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="240" y="197" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="240" y="21" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="60" y="21" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="241" y="149" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text><text x="134" y="16" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">Q</text><line x1="230" y1="144" x2="134" y2="24" stroke="#b03a55" stroke-width="1.6" stroke-dasharray="4 3" stroke-linecap="round"/><text x="239" y="169" font-size="13" fill="#3a2a2e" text-anchor="middle">5</text><text x="242" y="89" font-size="13" fill="#3a2a2e" text-anchor="middle">15</text><text x="182" y="18" font-size="13" fill="#3a2a2e" text-anchor="middle">12</text><text x="102" y="18" font-size="13" fill="#3a2a2e" text-anchor="middle">8</text><text x="150" y="199" font-size="13" fill="#3a2a2e" text-anchor="middle">20</text><text x="58" y="109" font-size="13" fill="#3a2a2e" text-anchor="middle">20</text></svg>
+$\overline{BP}=5$、$\overline{PC}=15$、$\overline{CQ}=12$、$\overline{QD}=8$。<br>
+面積：$\triangle APQ=20^2-\dfrac12\cdot20\cdot5-\dfrac12\cdot15\cdot12-\dfrac12\cdot8\cdot20=400-50-90-80=180$，所以 $\overline{AP}\cdot\overline{AQ}\sin\angle PAQ=360$。<br>
+三邊的平方：$\overline{AP}^2=20^2+5^2=425$、$\overline{AQ}^2=20^2+8^2=464$、$\overline{PQ}^2=15^2+12^2=369$。<br>
+餘弦定理：$2\,\overline{AP}\cdot\overline{AQ}\cos\angle PAQ=425+464-369=520$，所以 $\overline{AP}\cdot\overline{AQ}\cos\angle PAQ=260$。<br>
+$\tan\angle PAQ=\dfrac{360}{260}=\dfrac{18}{13}$。<br>
+<span class="note-sm">這是舊課綱高二上的段考題，當時可以用正切的差角公式；這裡用高一下的面積公式與餘弦定理。題庫裡這一題的圖檔對不上題目，圖是依題意重畫的。</span></div></div>
+<!-- /figq:L4 -->
 </section>
 
 <!-- ═══════════════════════ L5 ═══════════════════════ -->
@@ -593,7 +694,7 @@ $16=\overline{OA}^2+\overline{OB}^2-2\,\overline{OA}\cdot\overline{OB}\cos30°\g
 <h2><span class="tag">L5</span>補充：大考壓軸、經典證明與科學班・教甄專區</h2>
 <div class="goal">
   <div><b>對象</b>數理志向、想看「這一章能走多遠」的同學；不列入通過標準。</div>
-  <div><b>目標</b>8 題大考經典 ＋ 專區 18 題（教甄 15、科學班 3）。每題都只用本章的工具解完：需要半角、和角的地方，本書都改用「補角等腰三角形」、「投影定理」這些課綱內的方法。</div>
+  <div><b>目標</b>8 題大考經典 ＋ 專區 18 題（教甄 15、科學班 3）＋ 3 題附圖題（L5-9～L5-11，放在最後）。每題都只用本章的工具解完：需要半角、和角的地方，本書都改用「補角等腰三角形」、「投影定理」這些課綱內的方法。</div>
   <div><b>通過標準</b>無。能講出每題的關鍵一步就很好了。</div>
 </div>
 
@@ -810,6 +911,48 @@ $\overline{AC}=\sqrt{\dfrac{21}2}=\dfrac{\sqrt{42}}2$ 時最大，$S^2+T^2=\dfra
 兩個實數的立方相等，這兩個數就相等：$1+3\cos\theta=2+\sin\theta$ ⟹ $\sin\theta=3\cos\theta-1$。<br>
 代入 $\sin^2\theta+\cos^2\theta=1$：$(3\cos\theta-1)^2+\cos^2\theta=1$ ⟹ $10\cos^2\theta-6\cos\theta=0$ ⟹ $\cos\theta=0$ 或 $\dfrac35$。<br>
 $\theta$ 是銳角，$\cos\theta=0$ 不合（此時 $\sin\theta=-1$）；$\cos\theta=\dfrac35$、$\sin\theta=\dfrac45$，$\tan^2\theta=\dfrac{16}9$。</div></div>
+<!-- figq:L5 -->
+<h3 class="sec">附圖題（3 題）</h3>
+<div class="note">以下 3 題（L5-9～L5-11）是<b>附圖題</b>，都是高一下的段考原題。圖依題目條件重新繪製、照比例畫。</div>
+
+<div class="fx" id="L5-9"><div class="fxh"><span class="no">L5-9</span><span class="kw">半徑 1 的半圓：每個選項都找出含 θ 的直角三角形，把線段寫成 θ 的三角比</span><span class="src">北一女中 110下 多選 1</span></div>
+<div class="fxq">如圖，有一個半圓，半徑為 $1$、圓心為 $C$，$\overline{AB}$ 為直徑，$D$、$E$ 在半圓上，$H$、$G$ 在射線 $CD$ 上，且 $\overline{CE}$、$\overline{FD}$、$\overline{BG}$ 皆垂直直徑 $\overline{AB}$，$\overline{EH}$ 平行 $\overline{AB}$。設 $\angle DCB=\theta$，下列哪些選項的值與 $\cos\theta$ 相等？<svg class="qfig" viewBox="0 0 288 221" width="288" height="221" role="img" aria-label="半圓（圓心 C、直徑 AB），D、E 在半圓上，射線 CD 上有 H、G 兩點，F 是 D 在 AB 上的垂足"><path d="M 248 192.43 A 104 104 0 0 0 40 192.43" fill="none" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><line x1="40" y1="192.43" x2="248" y2="192.43" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="144" y1="192.43" x2="144" y2="88.43" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="144" y1="88.43" x2="208.99" y2="88.43" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="144" y1="192.43" x2="248" y2="26" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="199.11" y1="104.24" x2="199.11" y2="192.43" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="248" y1="192.43" x2="248" y2="26" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><polyline points="192.11,192.43 192.11,185.43 199.11,185.43" fill="none" stroke="#8a7378" stroke-width="1.2"/><polyline points="241,192.43 241,185.43 248,185.43" fill="none" stroke="#8a7378" stroke-width="1.2"/><polyline points="144,95.43 151,95.43 151,88.43" fill="none" stroke="#8a7378" stroke-width="1.2"/><path d="M 161 192.43 A 17 17 0 0 0 153.01 178.02" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><text x="169.36" y="183.42" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">θ</text><circle cx="40" cy="192.43" r="2.6" fill="#7a2e3c"/><circle cx="248" cy="192.43" r="2.6" fill="#7a2e3c"/><circle cx="144" cy="192.43" r="2.6" fill="#7a2e3c"/><circle cx="199.11" cy="104.24" r="2.6" fill="#7a2e3c"/><circle cx="144" cy="88.43" r="2.6" fill="#7a2e3c"/><circle cx="199.11" cy="192.43" r="2.6" fill="#7a2e3c"/><circle cx="248" cy="26" r="2.6" fill="#7a2e3c"/><circle cx="208.99" cy="88.43" r="2.6" fill="#7a2e3c"/><text x="36" y="209.43" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="252" y="209.43" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="140" y="209.43" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="199.11" y="209.43" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">F</text><text x="138" y="80.43" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><text x="205.99" y="79.43" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">H</text><text x="211.11" y="106.24" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="259" y="28" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">G</text></svg><span class="qopt">(1) $\overline{CF}$</span>　<span class="qopt">(2) $\dfrac{\overline{EH}}{\overline{CH}}$</span>　<span class="qopt">(3) $\dfrac{1}{\overline{BG}}$</span>　<span class="qopt">(4) $\dfrac{1}{\overline{CH}}$</span>　<span class="qopt">(5) $\dfrac{1}{\overline{CG}}$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(5)</div>
+<div class="fxs"><div class="move">做法：半徑是 $1$，所以 $\overline{CD}=\overline{CE}=\overline{CB}=1$。圖上有三個含 $\theta$ 的直角三角形：$\triangle CFD$、$\triangle CBG$、$\triangle CEH$，每個選項各在其中一個裡面。</div>
+(1) 直角三角形 $CFD$（直角在 $F$）：斜邊 $\overline{CD}=1$，$\overline{CF}=\overline{CD}\cos\theta=\cos\theta$，相等。<br>
+(2) 直角三角形 $CEH$（直角在 $E$）：$\overline{EH}$ 平行 $\overline{AB}$，內錯角相等，$\angle EHC=\theta$，所以 $\dfrac{\overline{EH}}{\overline{CH}}=\cos\theta$，相等。<br>
+(3) 直角三角形 $CBG$（直角在 $B$）：$\overline{CB}=1$，$\overline{BG}=\tan\theta$，$\dfrac1{\overline{BG}}=\dfrac1{\tan\theta}$，不相等。<br>
+(4) 在 $\triangle CEH$ 中 $\overline{CE}=1$ 是 $\angle EHC=\theta$ 的對邊：$\sin\theta=\dfrac{1}{\overline{CH}}$，所以 $\dfrac1{\overline{CH}}=\sin\theta$，不相等。<br>
+(5) 在 $\triangle CBG$ 中 $\cos\theta=\dfrac{\overline{CB}}{\overline{CG}}=\dfrac{1}{\overline{CG}}$，相等。<br>
+<span class="note-sm">$\dfrac1{\tan\theta}$、$\sin\theta$ 只有在特別的角度才會剛好等於 $\cos\theta$，題目問的是對圖上一般的 $\theta$ 都成立的選項。原題只寫「$D$ 在半圓上」，$E$ 在半圓上是從原圖讀出來的，這裡寫進題幹。</span></div></div>
+
+<div class="fx" id="L5-10"><div class="fxh"><span class="no">L5-10</span><span class="kw">共頂點、底邊共線的三個小三角形：面積用「兩邊夾角」和「底×高」各寫一次，未知的邊長全部約掉</span><span class="src">建國中學 113下 填 14</span></div>
+<div class="fxq">如圖，$\triangle ABC$ 中，已知 $\angle C=90°$，$D$、$E$ 在斜邊 $\overline{AB}$ 上，且 $\overline{BD}:\overline{DE}:\overline{EA}=3:1:4$。設 $\angle BCD=\alpha$、$\angle DCE=\beta$、$\angle ECA=\gamma$，求 $\dfrac{\sin\alpha\cdot\sin\gamma}{\sin\beta}$ 之值。<svg class="qfig" viewBox="0 0 302 220" width="302" height="220" role="img" aria-label="直角三角形 ABC（直角在 C），斜邊 AB 上由 B 往 A 依序是 D、E，連 CD、CE"><path d="M 88 194 L 214 26 L 214 194 Z" fill="none" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><line x1="214" y1="194" x2="166.75" y2="89" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><line x1="214" y1="194" x2="151" y2="110" stroke="#7a2e3c" stroke-width="1.8" stroke-linecap="round"/><polyline points="206,194 206,186 214,186" fill="none" stroke="#8a7378" stroke-width="1.2"/><circle cx="166.75" cy="89" r="2.6" fill="#7a2e3c"/><circle cx="151" cy="110" r="2.6" fill="#7a2e3c"/><text x="77" y="202" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="218" y="18" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="225" y="202" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="155.75" y="87" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="140" y="108" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac32$</div>
+<div class="fxs"><div class="move">做法：三個小三角形 $BCD$、$DCE$、$ECA$ 的頂點都是 $C$，底邊都在 $\overline{AB}$ 上，所以高相同。每個小三角形的面積寫兩次：一次用 $\dfrac12\times$ 兩邊 $\times\sin$（夾角），一次用 $\dfrac12\times$ 底 $\times$ 高。</div>
+設 $\overline{BD}=3k$、$\overline{DE}=k$、$\overline{EA}=4k$，$C$ 到 $\overline{AB}$ 的距離為 $h$。<br>
+$\triangle BCD$：$\dfrac12\overline{CB}\cdot\overline{CD}\sin\alpha=\dfrac12\cdot3k\cdot h$ ⟹ $\sin\alpha=\dfrac{3kh}{\overline{CB}\cdot\overline{CD}}$。<br>
+$\triangle DCE$：$\sin\beta=\dfrac{kh}{\overline{CD}\cdot\overline{CE}}$。$\triangle ECA$：$\sin\gamma=\dfrac{4kh}{\overline{CE}\cdot\overline{CA}}$。<br>
+$\dfrac{\sin\alpha\cdot\sin\gamma}{\sin\beta}=\dfrac{3kh}{\overline{CB}\cdot\overline{CD}}\cdot\dfrac{4kh}{\overline{CE}\cdot\overline{CA}}\cdot\dfrac{\overline{CD}\cdot\overline{CE}}{kh}=\dfrac{12kh}{\overline{CB}\cdot\overline{CA}}$。<br>
+最後用直角：$\triangle ABC$ 的面積 $=\dfrac12\overline{CB}\cdot\overline{CA}=\dfrac12\cdot\overline{AB}\cdot h=\dfrac12\cdot8k\cdot h$ ⟹ $\overline{CB}\cdot\overline{CA}=8kh$。<br>
+所求 $=\dfrac{12kh}{8kh}=\dfrac32$。<br>
+<span class="note-sm">兩股的長沒有給，答案也和它們無關。圖上畫的是兩股 $3$ 與 $4$ 的情形。</span></div></div>
+
+<div class="fx" id="L5-11"><div class="fxh"><span class="no">L5-11</span><span class="kw">坡上兩次俯角 30°、15°：BC 平分 ∠ABD，分比 AC:CD＝2:1 給 BA＝2BD，不必算 15° 的三角比</span><span class="src">建國中學 113下 填 13</span></div>
+<div class="fxq">如圖，小建從傾斜角為 $\theta$ 之坡路的最高點 $A$，測得地面上 $B$ 點的俯角為 $30°$。已知坡長 $\overline{AD}$ 為 $60$ 公尺，當他從 $A$ 點下坡走 $40$ 公尺至 $C$ 點後，再測得同一點 $B$ 的俯角為 $15°$。求 $\tan\theta$ 之值。<svg class="qfig" viewBox="0 0 303 194" width="303" height="194" role="img" aria-label="坡 AD 與水平地面，C 在坡上，B 在地面上、坡腳 D 的外側，連 AB"><line x1="30" y1="163.98" x2="268.99" y2="163.98" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><line x1="167.98" y1="163.98" x2="268.99" y2="26" stroke="#7a2e3c" stroke-width="2.6" stroke-linecap="round"/><line x1="268.99" y1="26" x2="268.99" y2="163.98" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="30" y1="163.98" x2="268.99" y2="26" stroke="#b03a55" stroke-width="1.6" stroke-linecap="round"/><polyline points="261.99,163.98 261.99,156.98 268.99,156.98" fill="none" stroke="#8a7378" stroke-width="1.2"/><path d="M 182.98 163.98 A 15 15 0 0 0 176.84 151.88" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><text x="192.06" y="156.81" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">θ</text><circle cx="268.99" cy="26" r="2.6" fill="#7a2e3c"/><circle cx="201.65" cy="117.99" r="2.6" fill="#7a2e3c"/><circle cx="30" cy="163.98" r="2.6" fill="#7a2e3c"/><circle cx="167.98" cy="163.98" r="2.6" fill="#7a2e3c"/><text x="270.99" y="17" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="189.65" y="115.99" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="26" y="180.98" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="165.98" y="180.98" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{\sqrt3+1}{2}$</div>
+<div class="fxs"><div class="move">做法：俯角是從水平線往下量的角，它和地面上的角是內錯角：$\angle ABD=30°$、$\angle CBD=15°$。所以 $\overline{BC}$ 剛好平分 $\angle ABD$，可以用角平分線的分比。</div>
+<svg class="qfig-sol" viewBox="0 0 303 194" width="303" height="194" role="img" aria-label="坡 AD 與水平地面，C 在坡上，B 在地面上、坡腳 D 的外側，連 AB；虛線是 BC，它平分角 ABD"><line x1="30" y1="163.98" x2="268.99" y2="163.98" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><line x1="167.98" y1="163.98" x2="268.99" y2="26" stroke="#7a2e3c" stroke-width="2.6" stroke-linecap="round"/><line x1="268.99" y1="26" x2="268.99" y2="163.98" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="30" y1="163.98" x2="268.99" y2="26" stroke="#b03a55" stroke-width="1.6" stroke-linecap="round"/><polyline points="261.99,163.98 261.99,156.98 268.99,156.98" fill="none" stroke="#8a7378" stroke-width="1.2"/><path d="M 182.98 163.98 A 15 15 0 0 0 176.84 151.88" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><text x="192.06" y="156.81" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">θ</text><circle cx="268.99" cy="26" r="2.6" fill="#7a2e3c"/><circle cx="201.65" cy="117.99" r="2.6" fill="#7a2e3c"/><circle cx="30" cy="163.98" r="2.6" fill="#7a2e3c"/><circle cx="167.98" cy="163.98" r="2.6" fill="#7a2e3c"/><text x="270.99" y="17" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="189.65" y="115.99" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="26" y="180.98" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="165.98" y="180.98" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><line x1="30" y1="163.98" x2="201.65" y2="117.99" stroke="#b03a55" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/><text x="272.99" y="180.98" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">H</text><text x="92" y="158.98" font-size="12" fill="#3a2a2e" text-anchor="middle">15°</text><text x="88" y="141.98" font-size="12" fill="#3a2a2e" text-anchor="middle">15°</text></svg>
+由圖，$B$ 在坡腳 $D$ 的外側，$C$ 在 $\overline{AD}$ 上，$\overline{AC}=40$、$\overline{CD}=20$。<br>
+$\angle ABC=30°-15°=15°=\angle CBD$ ⟹ $\overline{BC}$ 是 $\triangle ABD$ 中 $\angle B$ 的角平分線，$\overline{BA}:\overline{BD}=\overline{AC}:\overline{CD}=2:1$。設 $\overline{BD}=x$、$\overline{BA}=2x$。<br>
+設 $A$ 的正下方是 $H$。直角三角形 $ABH$（$\angle ABH=30°$）：$\overline{AH}=2x\sin30°=x$，$\overline{BH}=2x\cos30°=\sqrt3x$。<br>
+$\overline{DH}=\overline{BH}-\overline{BD}=(\sqrt3-1)x$。<br>
+$\tan\theta=\dfrac{\overline{AH}}{\overline{DH}}=\dfrac{x}{(\sqrt3-1)x}=\dfrac{1}{\sqrt3-1}=\dfrac{\sqrt3+1}{2}$。<br>
+<span class="note-sm">坡長 $60$ 只用到 $\overline{AC}:\overline{CD}=40:20$ 這個比。$\tan\theta\approx1.37$，$\theta$ 大約 $54°$，和圖上的坡度相符。</span></div></div>
+<!-- /figq:L5 -->
 </section>
 
 <div class="ch-nav">

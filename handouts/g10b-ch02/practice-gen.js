@@ -2122,6 +2122,461 @@
   CONTRAST['L3.derangeDoor'] = { f: function (p) { return p.v; }, why: '「指定幾個人都不回原位」只對那幾個人做取捨；「恰有 $r$ 人回原位」先選那 $r$ 人，其餘做錯排；「至少一人回原位」用全部扣掉錯排。三題都靠同一個取捨式。' };
   CONTRAST['L3.divisorIE'] = { f: function (p) { return p.v; }, why: '正因數裡「是 $M$ 的倍數」的個數，就是每個指數至少到 $M$ 的那一份再相乘。「$A$ 或 $B$」要扣兩者的最小公倍數；「都不是」用全部去扣；「是 $C$ 的倍數但都不是」則在 $C$ 的倍數裡面做同樣的取捨。' };
 
+  /* ══════════════════════════════════════════════════════════
+     2026-10-02　附圖題（讀圖型）：圖由產生器依亂數參數即時畫成 inline SVG，放在 q 裡，圖跟著數字變
+     共用畫圖小工具 fg*()：棋盤街道（可缺路段、可挖公園）、小正方形拼成的圖形、路線圖、長方形分區、轉盤、座位。
+     規則：坐標一律由參數算（不目測）；圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
+           要給驗算器讀的元素帶 data-k（驗算器從圖上的線段、方塊、標籤代回窮舉，不看 p）。
+     L1 4 型、L2 4 型、L3 4 型（L3-19～L3-22 的類似題）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     ══════════════════════════════════════════════════════════ */
+  var FGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#b03a55', soft: '#8a7378', fill: 'rgba(176,58,85,.2)' };
+  function fgN(v) { var s = (Math.round(v * 100) / 100).toFixed(2); if (s === '-0.00') s = '0.00'; return s.replace(/\.?0+$/, ''); }
+  function fgAttr(o) { var s = ''; for (var k in o) { if (o[k] !== undefined && o[k] !== null && o[k] !== false) s += ' ' + k + '="' + o[k] + '"'; } return s; }
+  function fgSvg(w, h, label, body) { return '<svg class="qfig" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" role="img" aria-label="' + label + '">' + body + '</svg>'; }
+  function fgLine(x1, y1, x2, y2, o) { o = o || {}; return '<line' + fgAttr({ 'data-k': o.k, x1: fgN(x1), y1: fgN(y1), x2: fgN(x2), y2: fgN(y2), stroke: o.c || FGC.line, 'stroke-width': o.w || 1.6, 'stroke-dasharray': o.dash ? '4 3' : null, 'stroke-linecap': 'round' }) + '/>'; }
+  function fgText(x, y, s, o) { o = o || {}; return '<text' + fgAttr({ 'data-k': o.k, x: fgN(x), y: fgN(y), 'font-size': o.fs || 14, fill: o.c || FGC.ink, 'text-anchor': o.anchor || 'middle', 'font-style': o.it ? 'italic' : null }) + '>' + s + '</text>'; }
+  function fgDot(x, y, o) { o = o || {}; return '<circle' + fgAttr({ 'data-k': o.k, cx: fgN(x), cy: fgN(y), r: o.r || 3.8, fill: o.fill || o.c || FGC.hot, stroke: o.stroke, 'stroke-width': o.stroke ? (o.w || 1.6) : null }) + '/>'; }
+  function fgRect(x, y, w, h, o) { o = o || {}; return '<rect' + fgAttr({ 'data-k': o.k, x: fgN(x), y: fgN(y), width: fgN(w), height: fgN(h), fill: o.fill || 'none', stroke: o.c === 'none' ? null : (o.c || FGC.line), 'stroke-width': o.c === 'none' ? null : (o.w || 1.8) }) + '/>'; }
+  function fgOpt(i, t) { return '<span class="qopt">(' + i + ') ' + t + '</span>'; }                 /* 圖後面的選項：每個選項自成一塊，不從中間斷行 */
+
+  /* 棋盤街道：向右 R 格、向上 U 格，路口 (i,j)＝從左下角向右 i 格、向上 j 格。
+     o.skip：缺的路段 { 'h,i,j': 1（(i,j)→(i+1,j)）, 'v,i,j': 1（(i,j)→(i,j+1)） }
+     o.pts：[[點名, i, j], …]；o.lake：[i, j]（以這個路口為中心、2×2 格的公園）；o.nums：{ 'i,j': 數字 }（詳解的累加圖） */
+  function fgGridGeo(R, U, big) {
+    var c = Math.min(big ? 44 : 38, Math.floor(250 / R), Math.floor((big ? 230 : 160) / U)), x0 = (300 - R * c) / 2, y0 = 26;
+    return { c: c, W: 300, H: U * c + y0 + 28, X: function (i) { return x0 + i * c; }, Y: function (j) { return y0 + (U - j) * c; } };
+  }
+  function fgGrid(R, U, o) {
+    o = o || {}; var g = fgGridGeo(R, U, o.big), s = '', i, j, skip = o.skip || {};
+    if (o.lake) s += fgRect(g.X(o.lake[0] - 1), g.Y(o.lake[1] + 1), 2 * g.c, 2 * g.c, { k: 'lake', fill: FGC.fill, c: 'none' }) + fgText(g.X(o.lake[0]), g.Y(o.lake[1]) + 5, '公園', { fs: 13 });
+    for (j = 0; j <= U; j++) for (i = 0; i < R; i++) if (!skip['h,' + i + ',' + j]) s += fgLine(g.X(i), g.Y(j), g.X(i + 1), g.Y(j), { k: 'e' });
+    for (i = 0; i <= R; i++) for (j = 0; j < U; j++) if (!skip['v,' + i + ',' + j]) s += fgLine(g.X(i), g.Y(j), g.X(i), g.Y(j + 1), { k: 'e' });
+    (o.pts || []).forEach(function (p) {
+      var x = g.X(p[1]), y = g.Y(p[2]), lx = p[1] === 0 && p[2] === 0 ? x - 11 : p[1] === R && p[2] === U ? x + 11 : x - 10, ly = p[1] === 0 && p[2] === 0 ? y + 16 : y - 8;
+      if (o.nums) { lx = p[1] === 0 && p[2] === 0 ? x - 12 : x + 12; ly = p[1] === 0 && p[2] === 0 ? y + 16 : p[1] === R && p[2] === U ? y - 6 : y + 15; }
+      s += fgDot(x, y, { k: p[0] }) + fgText(lx, ly, p[0], { fs: 15, it: 1, k: 'n' + p[0] });
+    });
+    if (o.nums) for (var key in o.nums) { var ij = key.split(','); s += fgText(g.X(+ij[0]) - 4, g.Y(+ij[1]) - 4, String(o.nums[key]), { fs: 11, c: FGC.hot, anchor: 'end' }); }
+    return fgSvg(g.W, g.H, o.label || '棋盤式街道', s);
+  }
+  /* 只向右、向上，從 a 到 b 的走法數（逐點累加）；skip 是缺的路段、ban 是不能經過的路口 */
+  function fgDP(skip, a, b, ban) {
+    var f = {}, i, j, v;
+    for (i = a[0]; i <= b[0]; i++) for (j = a[1]; j <= b[1]; j++) {
+      v = (i === a[0] && j === a[1]) ? 1 : 0;
+      if (i > a[0] && !skip['h,' + (i - 1) + ',' + j]) v += f[(i - 1) + ',' + j];
+      if (j > a[1] && !skip['v,' + i + ',' + (j - 1)]) v += f[i + ',' + (j - 1)];
+      if (ban && ban[0] === i && ban[1] === j) v = 0;
+      f[i + ',' + j] = v;
+    }
+    return f[b[0] + ',' + b[1]];
+  }
+  function fgPath(a, b) { return C(b[0] - a[0] + b[1] - a[1], b[1] - a[1]); }                        /* 完整棋盤上 a→b 的走法數 */
+  function fgPathT(a, b) { return cT(b[0] - a[0] + b[1] - a[1], Math.min(b[0] - a[0], b[1] - a[1])); }
+  function fgCntT(a, b) { var v = fgPath(a, b); return v === 1 ? T('1') : T(fgPathT(a, b) + '=' + v); }             /* 提示用：走法數（只有 1 種時不寫 C） */
+  function fgWhere(i, j) { return (i ? '向右 ' + i + ' 格' : '') + (i && j ? '、' : '') + (j ? '向上 ' + j + ' 格' : ''); }
+
+  /* 小正方形拼成的圖形：cols×rows 格，has(i,j) 回傳這一格在不在（i 由左而右、j 由下而上）。
+     o.blk：[x0, y0, w, h] 合併成一大格的區塊（裡面的格線不畫，塗色並標 A）；o.shade：[[i,j],…] 塗色格；o.texts：[[i, j, 字],…]；o.thick：[[x1,y1,x2,y2],…] 粗線 */
+  function fgCells(cols, rows, has, o) {
+    o = o || {}; var c = o.c || Math.min(36, Math.floor(250 / cols), Math.floor(170 / rows)), x0 = (300 - cols * c) / 2, y0 = 14, H = rows * c + 28, s = '', i, j;
+    function X(i) { return x0 + i * c; } function Y(j) { return y0 + (rows - j) * c; }
+    function inB(i, j) { return o.blk && i >= o.blk[0] && i < o.blk[0] + o.blk[2] && j >= o.blk[1] && j < o.blk[1] + o.blk[3]; }
+    function cell(i, j) { return i >= 0 && i < cols && j >= 0 && j < rows && has(i, j); }
+    (o.shade || []).forEach(function (q) { s += fgRect(X(q[0]), Y(q[1] + 1), c, c, { k: 'sh', fill: FGC.fill, c: 'none' }); });
+    if (o.blk) s += fgRect(X(o.blk[0]), Y(o.blk[1] + o.blk[3]), o.blk[2] * c, o.blk[3] * c, { k: 'blk', fill: FGC.fill, c: 'none' }) + fgText(X(o.blk[0] + o.blk[2] / 2), Y(o.blk[1] + o.blk[3] / 2) + 5, 'A', { fs: 15, it: 1 });
+    for (j = 0; j <= rows; j++) for (i = 0; i < cols; i++) if ((cell(i, j - 1) || cell(i, j)) && !(inB(i, j - 1) && inB(i, j))) s += fgLine(X(i), Y(j), X(i + 1), Y(j), { k: 'e' });
+    for (i = 0; i <= cols; i++) for (j = 0; j < rows; j++) if ((cell(i - 1, j) || cell(i, j)) && !(inB(i - 1, j) && inB(i, j))) s += fgLine(X(i), Y(j), X(i), Y(j + 1), { k: 'e' });
+    (o.thick || []).forEach(function (t) { s += fgLine(X(t[0]), Y(t[1]), X(t[2]), Y(t[3]), { w: 3.4, k: 'tk' }); });
+    (o.texts || []).forEach(function (t) { s += fgText(X(t[0] + 0.5), Y(t[1] + 0.5) + 5.5, t[2], { fs: 16, k: 'ct' }); });
+    return fgSvg(300, H, o.label || '由小正方形拼成的圖形', s);
+  }
+  function fgRectN(m, n) { return m > 0 && n > 0 ? C(m + 1, 2) * C(n + 1, 2) : 0; }                    /* m×n 方格裡的矩形數 */
+  function fgSqN(m, n) { var v = 0, k; for (k = 1; k <= Math.min(m, n); k++) v += (m - k + 1) * (n - k + 1); return v; }
+
+  /* 長方形分區：6×4 的長方形沿整數格線切成 n 個小長方形 [x, y, w, h]（y 向下），依「由上而下、由左而右」命名 A、B、C… */
+  function fgDissect(r, n) {
+    var rs = [[0, 0, 6, 4]], guard = 0, idx, q, vert, t, big;
+    while (rs.length < n && guard++ < 80) {
+      big = 0; rs.forEach(function (x, i) { if (x[2] * x[3] > rs[big][2] * rs[big][3]) big = i; });
+      idx = r() < 0.6 ? big : r.int(0, rs.length - 1); q = rs[idx];
+      if (q[2] < 2 && q[3] < 2) continue;
+      vert = q[2] >= 2 && q[3] >= 2 ? (q[2] > q[3] ? r() < 0.75 : q[3] > q[2] ? r() < 0.25 : r() < 0.5) : q[2] >= 2;
+      if (vert) { t = r.int(1, q[2] - 1); rs.splice(idx, 1, [q[0], q[1], t, q[3]], [q[0] + t, q[1], q[2] - t, q[3]]); }
+      else { t = r.int(1, q[3] - 1); rs.splice(idx, 1, [q[0], q[1], q[2], t], [q[0], q[1] + t, q[2], q[3] - t]); }
+    }
+    rs.sort(function (a, b) { return a[1] - b[1] || a[0] - b[0]; });
+    return rs;
+  }
+  function fgAdj(rs) {                                                                               /* 有一段共同邊界才算相鄰（只碰到一個點不算） */
+    var n = rs.length, adj = [], i, j, a, b, ox, oy;
+    for (i = 0; i < n; i++) { adj.push([]); for (j = 0; j < n; j++) adj[i].push(false); }
+    for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) {
+      a = rs[i]; b = rs[j];
+      ox = Math.min(a[0] + a[2], b[0] + b[2]) - Math.max(a[0], b[0]); oy = Math.min(a[1] + a[3], b[1] + b[3]) - Math.max(a[1], b[1]);
+      if (((a[0] + a[2] === b[0] || b[0] + b[2] === a[0]) && oy > 0) || ((a[1] + a[3] === b[1] || b[1] + b[3] === a[1]) && ox > 0)) adj[i][j] = adj[j][i] = true;
+    }
+    return adj;
+  }
+  /* 塗色順序：從 start 開始，每次挑「已塗好的鄰居最多」的區。回傳 { ord, cnt（輪到它時已塗好的鄰居數）, nb（那些鄰居）, ok（那些鄰居兩兩相鄰 ⟹ 一定不同色，可用乘法） } */
+  function fgOrder(n, adj, start) {
+    var ord = start.slice(), cnt = [], nb = [], ok = true, v, u, best, bc, c, t, e, x, y;
+    while (ord.length < n) {
+      best = -1; bc = -1;
+      for (v = 0; v < n; v++) { if (ord.indexOf(v) >= 0) continue; c = 0; for (u = 0; u < ord.length; u++) if (adj[v][ord[u]]) c++; if (c > bc) { bc = c; best = v; } }
+      ord.push(best);
+    }
+    for (t = 0; t < n; t++) {
+      e = []; for (u = 0; u < t; u++) if (adj[ord[t]][ord[u]]) e.push(ord[u]);
+      cnt.push(e.length); nb.push(e);
+      for (x = 0; x < e.length; x++) for (y = x + 1; y < e.length; y++) if (!adj[e[x]][e[y]]) ok = false;
+    }
+    return { ord: ord, cnt: cnt, nb: nb, ok: ok };
+  }
+  function fgBrute(n, adj, k) {                                                                      /* 逐區窮舉的塗法數 */
+    var col = [], tot = 0;
+    (function go(v) { if (v === n) { tot++; return; } for (var c = 0; c < k; c++) { var ok = true; for (var u = 0; u < v; u++) if (adj[v][u] && col[u] === c) { ok = false; break; } if (ok) { col[v] = c; go(v + 1); } } })(0);
+    return tot;
+  }
+  var FG_NAME = 'ABCDEFGH';
+  function fgMapSvg(rs) {
+    var u = 40, x0 = 30, y0 = 14, s = '';
+    rs.forEach(function (q, i) { s += fgRect(x0 + q[0] * u, y0 + q[1] * u, q[2] * u, q[3] * u, { k: 'rg' }) + fgText(x0 + (q[0] + q[2] / 2) * u, y0 + (q[1] + q[3] / 2) * u + 5, FG_NAME.charAt(i), { fs: 15, it: 1, k: 'rn' }); });
+    return fgSvg(300, 4 * u + 28, '一個長方形分成 ' + rs.length + ' 區，各區標有字母', s);
+  }
+  function fgProdT(k, cnt) { var f = []; cnt.forEach(function (c) { f.push(k - c); }); return f.join('\\times'); }
+  function fgProd(k, cnt) { var v = 1; cnt.forEach(function (c) { v *= (k - c); }); return v; }
+  function fgNames(list) { return list.map(function (v) { return T(FG_NAME.charAt(v)); }).join('、'); }
+  /* fig helpers end */
+
+  /* ────────── L1　6 讀圖題：路線圖、棋盤街道、分區塗色、轉盤 ────────── */
+  /* 路線圖：兩地之間畫幾條線就是幾條路 */
+  function fgRoads(p1, p2, n, k) {
+    var s = '', dx = p2[0] - p1[0], dy = p2[1] - p1[1], L = Math.sqrt(dx * dx + dy * dy), nx = -dy / L, ny = dx / L, i, off;
+    for (i = 0; i < n; i++) { off = (i - (n - 1) / 2) * 26; s += '<path' + fgAttr({ 'data-k': k, d: 'M ' + fgN(p1[0]) + ' ' + fgN(p1[1]) + ' Q ' + fgN((p1[0] + p2[0]) / 2 + nx * off) + ' ' + fgN((p1[1] + p2[1]) / 2 + ny * off) + ' ' + fgN(p2[0]) + ' ' + fgN(p2[1]), fill: 'none', stroke: FGC.line, 'stroke-width': 1.8 }) + '/>'; }
+    return s;
+  }
+  function fgTown(p, name, k) { return fgDot(p[0], p[1], { k: k, r: 14, fill: '#fffaf6', stroke: FGC.line }) + fgText(p[0], p[1] + 5, name, { fs: 14 }); }
+  function fgRouteSvg(kind, n) {
+    var s = '', A, B, Cc, D;
+    if (kind === 'line') {
+      A = [36, 78]; B = [150, 78]; Cc = [264, 78];
+      s += fgRoads(A, B, n[0], 'r01') + fgRoads(B, Cc, n[1], 'r12');
+      if (n[2] >= 1) s += '<path' + fgAttr({ 'data-k': 'r02', d: 'M 36 78 Q 150 198 264 78', fill: 'none', stroke: FGC.line, 'stroke-width': 1.8 }) + '/>';
+      if (n[2] >= 2) s += '<path' + fgAttr({ 'data-k': 'r02', d: 'M 36 78 Q 150 -42 264 78', fill: 'none', stroke: FGC.line, 'stroke-width': 1.8 }) + '/>';
+      s += fgTown(A, '甲', 't0') + fgTown(B, '乙', 't1') + fgTown(Cc, '丙', 't2');
+      return fgSvg(300, 156, '甲、乙、丙三地之間的道路圖', s);
+    }
+    A = [36, 78]; B = [150, 28]; Cc = [150, 128]; D = [264, 78];
+    s += fgRoads(A, B, n[0], 'r01') + fgRoads(B, D, n[1], 'r13') + fgRoads(A, Cc, n[2], 'r02') + fgRoads(Cc, D, n[3], 'r23');
+    s += fgTown(A, '甲', 't0') + fgTown(B, '乙', 't1') + fgTown(Cc, '丙', 't2') + fgTown(D, '丁', 't3');
+    return fgSvg(300, 156, '甲、乙、丙、丁四地之間的道路圖', s);
+  }
+  L1.figRoutes = function (r) {
+    var kind = r.pick(['line', 'diamond']), n, ans;
+    if (kind === 'line') {
+      n = [r.int(2, 4), r.int(2, 4), r.int(0, 2)]; ans = n[0] * n[1] + n[2];
+      return { q: '如圖，甲、乙、丙三地之間的道路都畫在圖上（每一條線是一條路）。從甲地走到丙地，同一個地方不經過兩次，共有幾種走法？' + fgRouteSvg(kind, n),
+        a: T(n[0] + '\\times' + n[1] + (n[2] ? '+' + n[2] : '') + '=' + ans) + ' 種',
+        h: '先從圖上數：甲到乙 ' + n[0] + ' 條、乙到丙 ' + n[1] + ' 條' + (n[2] ? '、甲直達丙 ' + n[2] + ' 條' : '、沒有甲直達丙的路') + '。經過乙地是分步（乘）：' + T(n[0] + '\\times' + n[1] + '=' + n[0] * n[1]) + (n[2] ? '；直達是另一類（加）：再加 ' + T(String(n[2])) + '。' : '。'),
+        p: { kind: kind, n: n } };
+    }
+    n = [r.int(1, 3), r.int(1, 3), r.int(1, 3), r.int(1, 3)]; ans = n[0] * n[1] + n[2] * n[3];
+    return { q: '如圖，甲、乙、丙、丁四地之間的道路都畫在圖上（每一條線是一條路）。從甲地走到丁地，同一個地方不經過兩次，共有幾種走法？' + fgRouteSvg(kind, n),
+      a: T(n[0] + '\\times' + n[1] + '+' + n[2] + '\\times' + n[3] + '=' + ans) + ' 種',
+      h: '乙、丙之間沒有路，所以只有「經過乙」和「經過丙」兩類。從圖上數：甲到乙 ' + n[0] + ' 條、乙到丁 ' + n[1] + ' 條；甲到丙 ' + n[2] + ' 條、丙到丁 ' + n[3] + ' 條。每一類裡面分步（乘），兩類再相加：' + T(n[0] + '\\times' + n[1] + '+' + n[2] + '\\times' + n[3]) + '。',
+      p: { kind: kind, n: n } };
+  };
+
+  /* 棋盤街道：格數與 P 的位置都要從圖上數 */
+  L1.figGridVia = function (r) {
+    var R = r.int(3, 6), U = r.int(2, 4), px = r.int(1, R - 1), py = r.int(1, U - 1);
+    var toP = fgPath([0, 0], [px, py]), toB = fgPath([px, py], [R, U]), tot = C(R + U, U), via = toP * toB;
+    return { q: '如圖的棋盤式街道，從 ' + T('A') + ' 走到 ' + T('B') + '，每一步只能向右或向上。(1) 共有幾種走法？(2) 其中經過路口 ' + T('P') + ' 的走法有幾種？' + fgGrid(R, U, { pts: [['A', 0, 0], ['B', R, U], ['P', px, py]], label: '棋盤式街道，A 在左下角、B 在右上角，P 是中間的一個路口' }),
+      a: '(1) ' + T(cT(R + U, U) + '=' + tot) + ' 種　(2) ' + T(toP + '\\times' + toB + '=' + via) + ' 種',
+      h: '先從圖上數格子：' + T('A') + ' 到 ' + T('B') + ' 要向右 ' + R + ' 格、向上 ' + U + ' 格，(1) 就是 ' + (R + U) + ' 步裡選 ' + U + ' 步向上。(2) ' + T('P') + ' 在 ' + T('A') + ' 的' + fgWhere(px, py) + '處，拆成 ' + T('A\\to P') + '、' + T('P\\to B') + ' 兩段相乘：' + T(fgPathT([0, 0], [px, py]) + '\\times' + fgPathT([px, py], [R, U])) + '。',
+      p: { R: R, U: U, px: px, py: py } };
+  };
+
+  /* 分區塗色（可以一路用乘法的圖）：相鄰關係要自己從圖上看 */
+  L1.figColorMap = function (r) {
+    var n, rs, adj, od, k, guard = 0, deg, st, i, j;
+    do {
+      n = r.pick([4, 4, 5]); rs = fgDissect(r, n); if (rs.length !== n) continue;
+      adj = fgAdj(rs); st = 0; deg = [];
+      for (i = 0; i < n; i++) { deg.push(0); for (j = 0; j < n; j++) if (adj[i][j]) deg[i]++; if (deg[i] > deg[st]) st = i; }
+      od = fgOrder(n, adj, [st]);
+      if (od.ok) break;
+    } while (guard++ < 200);
+    if (!od || !od.ok) { rs = [[0, 0, 6, 2], [0, 2, 2, 2], [2, 2, 4, 2]]; n = 3; adj = fgAdj(rs); od = fgOrder(n, adj, [0]); }
+    k = r.int(Math.max(3, Math.max.apply(null, od.cnt) + 1), 6);
+    var ans = fgProd(k, od.cnt), steps = od.ord.map(function (v, t) { return T(FG_NAME.charAt(v)) + (t === 0 ? '（' + k + ' 種）' : '（和 ' + fgNames(od.nb[t]) + ' 相鄰，' + (k - od.cnt[t]) + ' 種）'); });
+    return { q: '如圖，一個長方形分成 ' + n + ' 區。用 ' + T(String(k)) + ' 種顏色塗色，每區塗一種顏色、顏色可以重複使用，但相鄰的兩區（有一段共同的邊界）不同色；只在一個點相接的兩區不算相鄰。共有幾種塗法？' + fgMapSvg(rs),
+      a: T(fgProdT(k, od.cnt) + '=' + ans) + ' 種',
+      h: '先從圖上看清楚誰和誰相鄰，再從相鄰最多的 ' + T(FG_NAME.charAt(od.ord[0])) + ' 開始依序塗：' + steps.join('、') + '。每一步要避開的鄰居彼此也都相鄰（顏色一定不同），所以可以直接相乘。',
+      p: { rs: rs, k: k, ord: od.ord, cnt: od.cnt, nb: od.nb } };
+  };
+
+  /* 轉盤：每格機會相同，格子上的數字是獎金 */
+  function fgWheelSvg(vals) {
+    var n = vals.length, cx = 150, cy = 104, Rr = 72, s = '', i, a;
+    s += '<circle' + fgAttr({ 'data-k': 'rim', cx: cx, cy: cy, r: Rr, fill: '#fffaf6', stroke: FGC.line, 'stroke-width': 1.8 }) + '/>';
+    for (i = 0; i < n; i++) { a = Math.PI / 2 + Math.PI / n - i * 2 * Math.PI / n; s += fgLine(cx, cy, cx + Rr * Math.cos(a), cy - Rr * Math.sin(a), { k: 'sp', w: 1.5 }); }
+    for (i = 0; i < n; i++) { a = Math.PI / 2 - i * 2 * Math.PI / n; s += fgText(cx + 46 * Math.cos(a), cy - 46 * Math.sin(a) + 5, String(vals[i]), { fs: 14, k: 'sv' }); }
+    s += fgDot(cx, cy, { r: 4, c: FGC.ink }) + '<path d="M 150 36 L 143 16 L 157 16 Z" fill="' + FGC.hot + '"/>';
+    return fgSvg(300, 190, '等分成 ' + n + ' 格的轉盤，每格標有獎金', s);
+  }
+  L1.figSpinner = function (r) {
+    var n = r.pick([4, 5, 6, 8]), pool = r.shuffle([0, 10, 20, 30, 40, 50, 60, 80, 100]), m = r.int(2, 3), vals = pool.slice(0, m), i, X, cnt = 0, sum = 0;
+    while (vals.length < n) vals.push(pool[r.int(0, m - 1)]);
+    vals = r.shuffle(vals); X = r.pick(vals);
+    for (i = 0; i < n; i++) { sum += vals[i]; if (vals[i] === X) cnt++; }
+    return { q: '如圖，轉盤被等分成數格，格子上的數字是獎金（元）。轉一次，指針停在每一格的機會相同（停在線上就重轉）。(1) 得到 ' + T(String(X)) + ' 元的機率是多少？(2) 轉一次所得獎金的期望值是多少元？' + fgWheelSvg(vals),
+      a: '(1) ' + T(Fr.tex(F(cnt, n))) + '　(2) ' + T(Fr.tex(F(sum, n))) + ' 元',
+      h: '先數格子：轉盤共 ' + n + ' 格，每格的機率都是 ' + T('\\dfrac{1}{' + n + '}') + '。(1) 標 ' + X + ' 的有 ' + cnt + ' 格。(2) 期望值＝每一格的獎金乘以 ' + T('\\dfrac{1}{' + n + '}') + ' 再相加，也就是 ' + n + ' 格獎金的平均：' + T('\\dfrac{' + vals.join('+') + '}{' + n + '}') + '。',
+      p: { vals: vals, X: X } };
+  };
+
+  L1_H1.figRoutes = '這是「看路線圖數走法」：先從圖上數每兩地之間有幾條路；一段接一段是分步（乘），不同的走法類別是分類（加）。';
+  L1_H1.figGridVia = '這是「看圖走棋盤捷徑」：先從圖上數要向右幾格、向上幾格；必須經過某個路口，就拆成前後兩段相乘。';
+  L1_H1.figColorMap = '這是「看圖塗色」：先從圖上看清楚哪些區相鄰，從相鄰最多的區開始依序塗，每區避開已經塗好又和它相鄰的顏色。';
+  L1_H1.figSpinner = '這是「看轉盤求機率與期望值」：先數轉盤等分成幾格，每格機率相同；期望值是「獎金 × 機率」相加。';
+  L1_SOL.figRoutes = function (p, o) {
+    var n = p.n;
+    if (p.kind === 'line') {
+      return ['從圖上數每兩地之間的線：甲、乙之間 ' + n[0] + ' 條，乙、丙之間 ' + n[1] + ' 條，' + (n[2] ? '甲、丙之間直接相連的 ' + n[2] + ' 條。' : '甲、丙之間沒有直接相連的路。'),
+        '經過乙地：先甲→乙、再乙→丙，是分步，' + T(n[0] + '\\times' + n[1] + '=' + n[0] * n[1]) + ' 種。',
+        n[2] ? '不經過乙地：只能走直達的路，' + T(String(n[2])) + ' 種。兩類沒有重疊，相加得 ' + T(n[0] * n[1] + '+' + n[2] + '=' + (n[0] * n[1] + n[2])) + ' 種。' + solFin(o) : '沒有別的走法，所以共 ' + T(String(n[0] * n[1])) + ' 種。' + solFin(o)];
+    }
+    return ['從圖上數每兩地之間的線：甲、乙 ' + n[0] + ' 條，乙、丁 ' + n[1] + ' 條，甲、丙 ' + n[2] + ' 條，丙、丁 ' + n[3] + ' 條；乙、丙之間沒有路。',
+      '經過乙地：甲→乙→丁，' + T(n[0] + '\\times' + n[1] + '=' + n[0] * n[1]) + ' 種；經過丙地：甲→丙→丁，' + T(n[2] + '\\times' + n[3] + '=' + n[2] * n[3]) + ' 種。',
+      '兩類沒有重疊，相加得 ' + T(n[0] * n[1] + '+' + n[2] * n[3] + '=' + (n[0] * n[1] + n[2] * n[3])) + ' 種。' + solFin(o)];
+  };
+  L1_SOL.figGridVia = function (p, o) {
+    var R = p.R, U = p.U, a = [0, 0], q = [p.px, p.py], b = [R, U], toP = fgPath(a, q), toB = fgPath(q, b);
+    return ['從圖上數格子：' + T('A') + ' 到 ' + T('B') + ' 要向右 ' + R + ' 格、向上 ' + U + ' 格，共 ' + (R + U) + ' 步。',
+      '(1) 一種走法就是在 ' + (R + U) + ' 步裡決定哪 ' + U + ' 步向上：' + T(cT(R + U, U) + '=' + C(R + U, U)) + ' 種。',
+      '(2) 從圖上數：' + T('P') + ' 在 ' + T('A') + ' 的' + fgWhere(p.px, p.py) + '處，所以 ' + T('A\\to P') + ' 有 ' + T(fgPathT(a, q) + '=' + toP) + ' 種；' + T('P') + ' 到 ' + T('B') + ' 還要' + fgWhere(R - p.px, U - p.py) + '，有 ' + T(fgPathT(q, b) + '=' + toB) + ' 種。',
+      '兩段是分步，相乘：' + T(toP + '\\times' + toB + '=' + toP * toB) + ' 種。' + solFin(o)];
+  };
+  L1_SOL.figColorMap = function (p, o) {
+    var out = ['先從圖上看相鄰關係（有一段共同邊界才算）。從相鄰最多的 ' + T(FG_NAME.charAt(p.ord[0])) + ' 開始塗：' + p.k + ' 種。'];
+    p.ord.forEach(function (v, t) {
+      if (t === 0) return;
+      out.push('塗 ' + T(FG_NAME.charAt(v)) + '：它和已經塗好的 ' + fgNames(p.nb[t]) + ' 相鄰' + (p.cnt[t] >= 2 ? '（這 ' + p.cnt[t] + ' 區彼此也相鄰，顏色一定不同）' : '') + '，要避開 ' + p.cnt[t] + ' 種顏色，剩 ' + T(p.k + '-' + p.cnt[t] + '=' + (p.k - p.cnt[t])) + ' 種。');
+    });
+    out.push('乘法原理：' + T(fgProdT(p.k, p.cnt) + '=' + fgProd(p.k, p.cnt)) + ' 種。' + solFin(o));
+    return out;
+  };
+  L1_SOL.figSpinner = function (p, o) {
+    var n = p.vals.length, cnt = 0, sum = 0;
+    p.vals.forEach(function (v) { sum += v; if (v === p.X) cnt++; });
+    return ['從圖上數：轉盤等分成 ' + n + ' 格，指針停在每一格的機率都是 ' + T('\\dfrac{1}{' + n + '}') + '。',
+      '(1) 標著 ' + p.X + ' 的格子有 ' + cnt + ' 格，機率 ' + T(solFrac(cnt, n)) + '。',
+      '(2) 期望值＝每一格的獎金 × 機率，再相加：' + T('\\dfrac{' + p.vals.join('+') + '}{' + n + '}=' + solFrac(sum, n)) + ' 元。' + solFin(o)];
+  };
+  META_L1.push(['figRoutes', '§6 看路線圖數走法'], ['figGridVia', '§6 看圖走棋盤捷徑'], ['figColorMap', '§6 看圖塗色：依序相乘'], ['figSpinner', '§6 轉盤的機率與期望值']);
+
+  /* ────────── L2　讀圖題：缺一段路的棋盤、缺角圖形裡的矩形、座位圖、方格塗色的機率 ────────── */
+  L2.figGridBlock = function (r) {
+    var kind = r.pick(['seg', 'seg', 'lake', 'lake', 'segP']), R = r.int(4, 6), U = r.int(3, 4), A = [0, 0], B = [R, U], tot = C(R + U, U), skip = {}, s, e, thru, ans, mx, my, cand = [], i, j, pk;
+    if (kind === 'lake') {
+      mx = r.int(1, R - 1); my = r.int(1, U - 1);
+      skip['h,' + (mx - 1) + ',' + my] = skip['h,' + mx + ',' + my] = skip['v,' + mx + ',' + (my - 1)] = skip['v,' + mx + ',' + my] = 1;
+      thru = fgPath(A, [mx, my]) * fgPath([mx, my], B); ans = tot - thru;
+      return { q: '如圖的棋盤式街道，中間塗色的區域是公園，不能穿越（公園四周的路可以走）。從 ' + T('A') + ' 走到 ' + T('B') + '，每一步只能向右或向上，共有幾種走法？' + fgGrid(R, U, { skip: skip, lake: [mx, my], pts: [['A', 0, 0], ['B', R, U]], label: '棋盤式街道，中間有一塊兩格見方的公園不能穿越' }),
+        a: T(tot + '-' + thru + '=' + ans) + ' 種',
+        h: '公園只擋住正中央那一個路口（' + T('A') + ' 的' + fgWhere(mx, my) + '處）：不能走的路都接在這個路口上。所以答案＝全部 − 經過這個路口的。全部 ' + T(cT(R + U, U) + '=' + tot) + '；經過的 ' + T(fgPathT(A, [mx, my]) + '\\times' + fgPathT([mx, my], B) + '=' + thru) + '。',
+        p: { kind: kind, R: R, U: U, m: [mx, my] } };
+    }
+    for (j = 1; j < U; j++) for (i = 0; i < R; i++) cand.push(['h', i, j]);
+    for (i = 1; i < R; i++) for (j = 0; j < U; j++) cand.push(['v', i, j]);
+    if (kind === 'seg') {
+      pk = r.pick(cand); s = [pk[1], pk[2]]; e = pk[0] === 'h' ? [pk[1] + 1, pk[2]] : [pk[1], pk[2] + 1]; skip[pk.join(',')] = 1;
+      thru = fgPath(A, s) * fgPath(e, B); ans = tot - thru;
+      return { q: '如圖的棋盤式街道，其中有一段路正在施工（圖上缺的那一段），不能通行。從 ' + T('A') + ' 走到 ' + T('B') + '，每一步只能向右或向上，共有幾種走法？' + fgGrid(R, U, { skip: skip, pts: [['A', 0, 0], ['B', R, U]], label: '棋盤式街道，中間缺了一小段路' }),
+        a: T(tot + '-' + thru + '=' + ans) + ' 種',
+        h: '答案＝全部 − 會走到缺的那一段的。缺的那一段從「' + T('A') + ' 的' + fgWhere(s[0], s[1]) + '處」' + (pk[0] === 'h' ? '向右' : '向上') + '一格：走到它的起點有 ' + fgCntT(A, s) + ' 種，從它的終點到 ' + T('B') + ' 有 ' + fgCntT(e, B) + ' 種，相乘得 ' + thru + '；全部 ' + T(cT(R + U, U) + '=' + tot) + '。',
+        p: { kind: kind, R: R, U: U, seg: pk } };
+    }
+    var px, py, Pp, ok, guard = 0, before, viaP;
+    do {
+      px = r.int(1, R - 1); py = r.int(1, U - 1); Pp = [px, py]; pk = r.pick(cand); s = [pk[1], pk[2]]; e = pk[0] === 'h' ? [pk[1] + 1, pk[2]] : [pk[1], pk[2] + 1];
+      before = e[0] <= px && e[1] <= py; ok = before || (s[0] >= px && s[1] >= py);
+    } while (!ok && guard++ < 200);
+    if (!ok) { px = 1; py = 1; Pp = [1, 1]; pk = ['h', 1, 1]; s = [1, 1]; e = [2, 1]; before = false; }
+    skip[pk.join(',')] = 1; viaP = fgPath(A, Pp) * fgPath(Pp, B);
+    thru = before ? fgPath(A, s) * fgPath(e, Pp) * fgPath(Pp, B) : fgPath(A, Pp) * fgPath(Pp, s) * fgPath(e, B); ans = viaP - thru;
+    return { q: '如圖的棋盤式街道，其中有一段路正在施工（圖上缺的那一段），不能通行。從 ' + T('A') + ' 走到 ' + T('B') + '，途中要經過路口 ' + T('P') + '，每一步只能向右或向上，共有幾種走法？' + fgGrid(R, U, { skip: skip, pts: [['A', 0, 0], ['B', R, U], ['P', px, py]], label: '棋盤式街道，中間缺了一小段路，另標出路口 P' }),
+      a: T(viaP + '-' + thru + '=' + ans) + ' 種',
+      h: '先當作路沒有缺：經過 ' + T('P') + ' 的有 ' + T(fgPath(A, Pp) + '\\times' + fgPath(Pp, B) + '=' + viaP) + ' 種。缺的那一段在 ' + T('P') + ' 的' + (before ? '前面（' + T('A\\to P') + ' 這一段路上）' : '後面（' + T('P\\to B') + ' 這一段路上）') + '，把會走到它的扣掉：' + (before ? T(mulT([fgPath(A, s), fgPath(e, Pp)]) + '\\times' + fgPath(Pp, B) + '=' + thru) : T(fgPath(A, Pp) + '\\times' + mulT([fgPath(Pp, s), fgPath(e, B)]) + '=' + thru)) + '（缺的路段前後各自數，再乘上另一半）。',
+      p: { kind: kind, R: R, U: U, seg: pk, P: Pp, before: before } };
+  };
+
+  /* 缺一個角的方格圖形：矩形與正方形的個數 */
+  L2.figRectL = function (r) {
+    var a = r.int(3, 6), b = r.int(3, 5), c = r.int(1, a - 1), d = r.int(1, b - 1), cor = r.pick(['右上', '左上', '右下', '左下']);
+    function has(i, j) { var inX = cor.charAt(0) === '右' ? i >= a - c : i < c, inY = cor.charAt(1) === '上' ? j >= b - d : j < d; return !(inX && inY); }
+    var r1 = fgRectN(a, b - d), r2 = fgRectN(a - c, b), r3 = fgRectN(a - c, b - d), s1 = fgSqN(a, b - d), s2 = fgSqN(a - c, b), s3 = fgSqN(a - c, b - d);
+    return { q: '下圖是由全等的小正方形拼成的圖形（一個大長方形缺了一個角）。(1) 圖中共有幾個矩形（正方形也算矩形）？(2) 其中正方形有幾個？' + fgCells(a, b, has, { label: '由全等小正方形拼成、缺了' + cor + '角的圖形' }),
+      a: '(1) ' + T(r1 + '+' + r2 + '-' + r3 + '=' + (r1 + r2 - r3)) + ' 個　(2) ' + T(s1 + '+' + s2 + '-' + s3 + '=' + (s1 + s2 - s3)) + ' 個',
+      h: '把圖形看成兩個互相重疊的長方形：橫的（' + a + ' 格寬、' + (b - d) + ' 格高）和直的（' + (a - c) + ' 格寬、' + b + ' 格高），重疊的部分是 ' + (a - c) + ' 格寬、' + (b - d) + ' 格高。圖中的每個矩形一定整個落在其中一個長方形裡，所以用取捨：橫的 ＋ 直的 − 重疊的。(1) 矩形＝選兩條直線、兩條橫線：' + T(cT(a + 1, 2) + cT(b - d + 1, 2) + '+' + cT(a - c + 1, 2) + cT(b + 1, 2) + '-' + cT(a - c + 1, 2) + cT(b - d + 1, 2)) + '。(2) 正方形依邊長 ' + T('1,2,\\cdots') + ' 逐一數，同樣用取捨。',
+      p: { a: a, b: b, c: c, d: d, cor: cor } };
+  };
+
+  /* 座位圖：已經有人的座位畫在圖上 */
+  function fgSeatSvg(n, occ) {
+    var s = '', c = Math.min(24, Math.floor(276 / n)), x0 = (300 - n * c) / 2, y0 = 12, i, on;
+    for (i = 1; i <= n; i++) {
+      on = occ.indexOf(i) >= 0;
+      s += fgRect(x0 + (i - 1) * c, y0, c, c, { k: 'seat', fill: on ? FGC.fill : 'none', w: 1.6 });
+      if (on) s += fgDot(x0 + (i - 0.5) * c, y0 + c / 2, { k: 'occ', r: c * 0.24, c: FGC.hot });
+      s += fgText(x0 + (i - 0.5) * c, y0 + c + 15, String(i), { fs: 12, k: 'sn' });
+    }
+    return fgSvg(300, y0 + c + 24, '一排 ' + n + ' 個有編號的座位，塗色的座位已經有人', s);
+  }
+  function fgSeatSegs(n, occ) {                                                                       /* 劃掉有人的座位和它的左右鄰座後，剩下的連續空位各有幾個 */
+    var segs = [], run = 0, i;
+    for (i = 1; i <= n + 1; i++) { if (i <= n && occ.indexOf(i) < 0 && occ.indexOf(i - 1) < 0 && occ.indexOf(i + 1) < 0) run++; else { if (run) segs.push(run); run = 0; } }
+    return segs;
+  }
+  function fgSeatPick(segs, k) {                                                                      /* 各段裡選互不相鄰的座位，總共選 k 個 */
+    var ways = [1], i, j, t, nw;
+    for (i = 0; i < segs.length; i++) { nw = []; for (j = 0; j <= k; j++) { nw.push(0); for (t = 0; t <= j; t++) nw[j] += ways[j - t] === undefined ? 0 : ways[j - t] * C(segs[i] - t + 1, t); } ways = nw; }
+    return ways[k] || 0;
+  }
+  L2.figSeats = function (r) {
+    var n, occ, k, segs, S, guard = 0;
+    do {
+      n = r.int(8, 12); occ = [r.int(2, n - 1)];
+      if (n >= 10 && r() < 0.45) { var o2 = r.int(1, n); if (Math.abs(o2 - occ[0]) >= 3) occ.push(o2); occ.sort(function (x, y) { return x - y; }); }
+      k = r.pick([2, 2, 3]); segs = fgSeatSegs(n, occ); S = fgSeatPick(segs, k);
+    } while (S < 2 && guard++ < 200);
+    var who = people(k), ans = S * fact(k);
+    return { q: '如圖，一排有編號的座位，塗色的座位已經有人坐了。現在' + who + ' ' + k + ' 人要入座，規定任何兩個人（包含原本就坐著的人）都不能相鄰，共有幾種坐法？' + fgSeatSvg(n, occ),
+      a: T(S + '\\times' + k + '!=' + ans) + ' 種',
+      h: '從圖上看：' + occ.join('、') + ' 號已經有人，它' + (occ.length > 1 ? '們' : '') + '左右兩邊的座位也不能坐。劃掉之後，可以坐的座位分成連續的 ' + segs.join('、') + ' 個' + (segs.length > 1 ? '（共 ' + segs.length + ' 段，不同段的座位一定不相鄰）' : '') + '。一段連續 ' + T('m') + ' 個座位選 ' + T('j') + ' 個互不相鄰的有 ' + T('C^{m-j+1}_{j}') + ' 種；' + (segs.length > 1 ? '依各段坐幾人分類，' : '') + '選座位共 ' + S + ' 種，再讓 ' + k + ' 人排進去（' + T(k + '!') + '）。',
+      p: { n: n, occ: occ, k: k } };
+  };
+
+  /* 方格裡塗了幾格：任選 2 格的機率（塗色格的位置要看圖） */
+  var FG_SHK = { adj: ['有公共邊', '相鄰（有公共邊）'], row: ['在同一橫列', '在同一橫列'], col: ['在同一直行', '在同一直行'] };
+  L2.figShadeProb = function (r) {
+    var m, n, N, sn, cells, kind, c2, guard = 0, i, j, a, b;
+    do {
+      m = r.pick([3, 4]); n = r.pick([3, 4, 5]); N = m * n; sn = r.int(3, Math.min(6, N - 3)); kind = r.pick(['adj', 'row', 'col']);
+      cells = r.shuffle(l3range(0, N - 1)).slice(0, sn).sort(l3asc).map(function (t) { return [t % n, Math.floor(t / n)]; });
+      c2 = 0;
+      for (i = 0; i < sn; i++) for (j = i + 1; j < sn; j++) {
+        a = cells[i]; b = cells[j];
+        if (kind === 'adj' ? Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) === 1 : kind === 'row' ? a[1] === b[1] : a[0] === b[0]) c2++;
+      }
+    } while (c2 === 0 && guard++ < 200);
+    var den = C(N, 2), c1 = C(sn, 2);
+    return { q: '如圖，方格中有幾格塗了顏色。從所有的格子中任選 ' + T('2') + ' 格（每一種選法的機會相同）。(1) 選到的 ' + T('2') + ' 格都是塗色格的機率是多少？(2) 選到的 ' + T('2') + ' 格都是塗色格、而且' + FG_SHK[kind][0] + '的機率是多少？' +
+        fgCells(n, m, function () { return true; }, { c: 32, shade: cells, label: m + ' 列 ' + n + ' 行的方格，其中有幾格塗色' }),
+      a: '(1) ' + T(solFrac(c1, den)) + '　(2) ' + T(solFrac(c2, den)),
+      h: '先從圖上數：共 ' + N + ' 格，塗色的有 ' + sn + ' 格。樣本空間是「' + N + ' 格選 ' + 2 + ' 格」' + T(cT(N, 2) + '=' + den) + ' 種。(1) 分子是 ' + T(cT(sn, 2) + '=' + c1) + '。(2) 在圖上把' + FG_SHK[kind][1] + '的塗色格一對一對找出來，共 ' + c2 + ' 對。',
+      p: { m: m, n: n, cells: cells, kind: kind } };
+  };
+  META_L2.push(['figGridBlock', '讀圖 棋盤缺一段路或有公園'], ['figRectL', '讀圖 缺角圖形裡的矩形與正方形'], ['figSeats', '讀圖 座位圖：都不相鄰'], ['figShadeProb', '讀圖 方格塗色的機率']);
+
+  /* ────────── L3　附圖固定題 L3-19～L3-22 的類似題 ────────── */
+  /* L3-19　棋盤上兩個路口 C、D：五個敘述（多選） */
+  L3.figGridCD = function (r) {
+    var R = r.int(4, 6), U = r.int(3, 4), cx = r.int(1, R - 2), dx = r.int(cx + 1, R - 1), cy = r.int(0, U - 2), dy = r.int(cy + 1, U - 1), A = [0, 0], B = [R, U], Cc = [cx, cy], D = [dx, dy];
+    var tot = fgPath(A, B), ac = fgPath(A, Cc), cb = fgPath(Cc, B), ad = fgPath(A, D), db = fgPath(D, B), cd = fgPath(Cc, D), viaC = ac * cb, viaD = ad * db, both = ac * cd * db;
+    var mk = [
+      ['從 $A$ 到 $B$ 共有 $', '$ 種走法', tot, C(R + U, U - 1)],
+      ['從 $C$ 到 $B$ 共有 $', '$ 種走法', cb, ac === cb ? cb + 1 : ac],
+      ['經過 $C$ 的走法有 $', '$ 種', viaC, ac + cb],
+      ['不經過 $D$ 的走法有 $', '$ 種', tot - viaD, viaD],
+      ['經過 $C$ 也經過 $D$ 的走法有 $', '$ 種', both, ac * db],
+      ['經過 $C$ 但不經過 $D$ 的走法有 $', '$ 種', viaC - both, Math.abs(viaC - viaD)],
+      ['$C$、$D$ 都不經過的走法有 $', '$ 種', tot - viaC - viaD + both, tot - viaC - viaD]
+    ];
+    var sts, ans, guard = 0;
+    do {
+      sts = r.shuffle(mk).slice(0, 5).map(function (x) { var t = r() < 0.55 || x[3] === x[2] || x[3] < 0; return [x[0] + (t ? x[2] : x[3]) + x[1], t]; });
+      ans = []; sts.forEach(function (s2, i) { if (s2[1]) ans.push(i + 1); });
+    } while (ans.length === 0 && guard++ < 50);
+    return { q: '如圖的棋盤式街道，從 ' + T('A') + ' 走到 ' + T('B') + '，每一步只能向右或向上，' + T('C') + '、' + T('D') + ' 是圖上的兩個路口。選出正確的選項：' + fgGrid(R, U, { pts: [['A', 0, 0], ['B', R, U], ['C', cx, cy], ['D', dx, dy]], label: '棋盤式街道，A 在左下角、B 在右上角，C、D 是中間的兩個路口' }) +
+        sts.map(function (s2, i) { return fgOpt(i + 1, s2[0]); }).join('　'),
+      a: ans.map(function (i) { return '(' + i + ')'; }).join(''),
+      h: '先從圖上數格子，把幾段路各自算好：' + T('A\\to B') + ' 有 ' + tot + ' 種、' + T('A\\to C') + ' 有 ' + ac + ' 種、' + T('C\\to B') + ' 有 ' + cb + ' 種、' + T('A\\to D') + ' 有 ' + ad + ' 種、' + T('D\\to B') + ' 有 ' + db + ' 種、' + T('C\\to D') + ' 有 ' + cd + ' 種。「經過」＝前後兩段相乘；「不經過」＝全部減掉經過的；「兩個都不經過」用取捨：' + T(tot + '-' + viaC + '-' + viaD + '+' + both) + '。',
+      p: { R: R, U: U, C: Cc, D: D, ans: ans } };
+  };
+
+  /* L3-20　分區塗色：有一對不相鄰的區「同色／不同色」要分開算 */
+  function fgMerge(n, adj, x, y) {                                                                    /* 把 y 併進 x：回傳新的相鄰表與「新編號 → 原編號」 */
+    var keep = [], i, j, na = [];
+    for (i = 0; i < n; i++) if (i !== y) keep.push(i);
+    for (i = 0; i < keep.length; i++) { na.push([]); for (j = 0; j < keep.length; j++) na[i].push(i !== j && (adj[keep[i]][keep[j]] || (keep[i] === x && adj[y][keep[j]]) || (keep[j] === x && adj[y][keep[i]]))); }
+    return { adj: na, keep: keep };
+  }
+  function fgSplit(n, adj) {                                                                          /* 找一對不相鄰的區 (x,y)：併成一區、或補成相鄰之後，都能一路用乘法 */
+    var x, y, m, o1, o2, a2, i;
+    for (x = 0; x < n; x++) for (y = x + 1; y < n; y++) {
+      if (adj[x][y]) continue;
+      m = fgMerge(n, adj, x, y); o1 = fgOrder(n - 1, m.adj, [m.keep.indexOf(x)]); if (!o1.ok) continue;
+      a2 = adj.map(function (row) { return row.slice(); }); a2[x][y] = a2[y][x] = true; o2 = fgOrder(n, a2, [x, y]); if (!o2.ok) continue;
+      return { x: x, y: y, keep: m.keep, o1: o1, o2: o2 };
+    }
+    return null;
+  }
+  L3.figColorSplit = function (r) {
+    var n, rs, adj, sp, k, guard = 0, st, i, j, deg, od;
+    do {
+      n = r.pick([5, 5, 6]); rs = fgDissect(r, n); sp = null; if (rs.length !== n) continue;
+      adj = fgAdj(rs); st = 0; deg = [];
+      for (i = 0; i < n; i++) { deg.push(0); for (j = 0; j < n; j++) if (adj[i][j]) deg[i]++; if (deg[i] > deg[st]) st = i; }
+      od = fgOrder(n, adj, [st]); if (od.ok) continue;                                               /* 能一路相乘的留給 L1 */
+      sp = fgSplit(n, adj);
+    } while (!sp && guard++ < 400);
+    if (!sp) { rs = [[0, 0, 3, 2], [3, 0, 3, 2], [0, 2, 3, 2], [3, 2, 3, 2]]; n = 4; adj = fgAdj(rs); sp = fgSplit(n, adj); }
+    k = r.int(Math.max(4, Math.max.apply(null, sp.o2.cnt.concat(sp.o1.cnt)) + 1), 6);
+    var same = fgProd(k, sp.o1.cnt), diff = fgProd(k, sp.o2.cnt), X = T(FG_NAME.charAt(sp.x)), Y = T(FG_NAME.charAt(sp.y));
+    var ord1 = sp.o1.ord.map(function (v) { var w = sp.keep[v]; return w === sp.x ? X + '（連同 ' + Y + '）' : T(FG_NAME.charAt(w)); }).join('、');
+    return { q: '如圖，一個長方形分成 ' + n + ' 區。用 ' + T(String(k)) + ' 種顏色塗色，每區塗一種顏色、顏色可以重複使用，但相鄰的兩區（有一段共同的邊界）不同色；只在一個點相接的兩區不算相鄰。共有幾種塗法？' + fgMapSvg(rs),
+      a: T(same + '+' + diff + '=' + (same + diff)) + ' 種',
+      h: '從圖上看相鄰關係：' + X + '、' + Y + ' 不相鄰，可能同色也可能不同色，要分兩類。同色：把 ' + Y + ' 當成和 ' + X + ' 同一區，依 ' + ord1 + ' 的順序塗，' + T(fgProdT(k, sp.o1.cnt) + '=' + same) + '；不同色：依 ' + fgNames(sp.o2.ord) + ' 的順序塗，' + T(fgProdT(k, sp.o2.cnt) + '=' + diff) + '。每一步要避開的顏色個數＝已塗好又和它相鄰的區數（分類之後，這些區的顏色一定兩兩不同）。',
+      p: { rs: rs, k: k, x: sp.x, y: sp.y } };
+  };
+
+  /* L3-21　含有 A 那一塊的矩形 */
+  L3.figRectContain = function (r) {
+    var a = r.int(4, 7), b = r.int(3, 5), w = r.pick([1, 1, 2]), h = r.pick([1, 2]), x0 = r.int(0, a - w), y0 = r.int(0, b - h);
+    var L = x0 + 1, Rt = a - x0 - w + 1, Dn = y0 + 1, Up = b - y0 - h + 1, ans = L * Rt * Dn * Up;
+    return { q: '下圖的方格中，塗色的那一塊標為 ' + T('A') + '。圖中的矩形（正方形也算）裡，把 ' + T('A') + ' 整塊包含在內的共有幾個？（' + T('A') + ' 本身也算）' + fgCells(a, b, function () { return true; }, { blk: [x0, y0, w, h], label: a + ' 行 ' + b + ' 列的方格，其中一塊塗色並標為 A' }),
+      a: T(mulT([L, Rt]) + '\\times' + mulT([Up, Dn]) + '=' + ans) + ' 個',
+      h: '一個矩形由左、右兩條直線和上、下兩條橫線決定。要把 ' + T('A') + ' 包在裡面：左邊的直線選在 ' + T('A') + ' 的左緣或更左（' + L + ' 種）、右邊的直線選在右緣或更右（' + Rt + ' 種）、上面的橫線 ' + Up + ' 種、下面的橫線 ' + Dn + ' 種，四個選擇互不影響，相乘。',
+      p: { a: a, b: b, blk: [x0, y0, w, h] } };
+  };
+
+  /* L3-22　方格中任選幾格：同行、同列的機率 */
+  var FG_CP = { col: '不在同一直行', row: '不在同一橫列', neither: '既不在同一橫列、也不在同一直行', same: '在同一橫列或同一直行' };
+  L3.figCellPair = function (r) {
+    var m, n, N, kind, guard = 0;
+    do { m = r.int(2, 6); n = r.int(2, 6); N = m * n; kind = r.pick(['col', 'row', 'neither', 'same', 'three']); } while ((N < 6 || N > 30 || (kind === 'three' && (m < 3 || n < 3))) && guard++ < 200);
+    if (N < 6 || (kind === 'three' && (m < 3 || n < 3))) { m = 4; n = 4; N = 16; kind = 'col'; }
+    var svg = fgCells(n, m, function () { return true; }, { c: Math.min(32, Math.floor(170 / m)), label: m + ' 列 ' + n + ' 行的空白方格' }), head = '如圖的方格中（橫的一排叫「列」、直的一排叫「行」），隨機選取', den, num, a, h;
+    var sameCol = n * C(m, 2), sameRow = m * C(n, 2);
+    if (kind === 'three') {
+      den = C(N, 3); num = C(m, 3) * C(n, 3) * 6;
+      return { q: head + ' ' + T('3') + ' 個格子（每一種選法的機會相同）。選出的 ' + T('3') + ' 格任兩格都不在同一橫列、也不在同一直行的機率是多少？' + svg,
+        a: T(solFrac(num, den)),
+        h: '先從圖上數：' + m + ' 列、' + n + ' 行，共 ' + N + ' 格，' + T('n(S)=' + cT(N, 3) + '=' + den) + '。分子：三格分別在三個不同的列、三個不同的行 ⟹ 先選 ' + T('3') + ' 列（' + T(cT(m, 3)) + '）、再選 ' + T('3') + ' 行（' + T(cT(n, 3)) + '），最後決定哪一列配哪一行（' + T('3!') + '）：' + T(C(m, 3) + '\\times' + C(n, 3) + '\\times6=' + num) + '。',
+        p: { m: m, n: n, kind: kind } };
+    }
+    den = C(N, 2);
+    num = kind === 'col' ? den - sameCol : kind === 'row' ? den - sameRow : kind === 'same' ? sameCol + sameRow : den - sameCol - sameRow;
+    h = '先從圖上數：' + m + ' 列、' + n + ' 行，共 ' + N + ' 格，' + T('n(S)=' + cT(N, 2) + '=' + den) + '。在同一直行的選法：' + n + ' 行、每行 ' + m + ' 格選 ' + T('2') + ' 格，' + T(n + '\\times' + cT(m, 2) + '=' + sameCol) + '；在同一橫列的選法：' + T(m + '\\times' + cT(n, 2) + '=' + sameRow) + '。' +
+      (kind === 'col' ? '用餘事件：' + T('1-' + Fr.tex(F(sameCol, den)) + '=' + Fr.tex(F(num, den))) + '。' : kind === 'row' ? '用餘事件：' + T('1-' + Fr.tex(F(sameRow, den)) + '=' + Fr.tex(F(num, den))) + '。' : kind === 'same' ? '兩格不可能既同列又同行，兩類直接相加：' + T(sameCol + '+' + sameRow + '=' + num) + '。' : '兩格不可能既同列又同行，從全部扣掉這兩類：' + T(den + '-' + sameCol + '-' + sameRow + '=' + num) + '。');
+    return { q: head + '兩個格子（每一種選法的機會相同）。選出的兩個格子' + FG_CP[kind] + '的機率是多少？' + svg, a: T(solFrac(num, den)), h: h, p: { m: m, n: n, kind: kind } };
+  };
+  META_L3.push(['figGridCD', '棋盤上兩個路口：經過與不經過（多選・附圖）'], ['figColorSplit', '看圖塗色：同色／不同色分類'], ['figRectContain', '包含指定方塊的矩形個數（附圖）'], ['figCellPair', '方格中選格子：同行同列的機率（附圖）']);
+  L3_FIX['L3-19'] = 'figGridCD'; L3_FIX['L3-20'] = 'figColorSplit'; L3_FIX['L3-21'] = 'figRectContain'; L3_FIX['L3-22'] = 'figCellPair';
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

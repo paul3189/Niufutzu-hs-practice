@@ -2292,6 +2292,452 @@
   CONTRAST['L1.linePlaneAngleDeg'] = { f: function (p) { return p.deg === 0 ? 0 : (p.deg === 90 ? 2 : 1); }, why: '三種情形都先算 $\\vec d\\cdot\\vec n$：等於 $0$ 是 $0^\\circ$（平行或在平面上，要代點分辨）；$\\vec d$ 與 $\\vec n$ 平行是 $90^\\circ$；其他就算出 $\\sin\\theta$，再對照 $\\frac12$、$\\frac{\\sqrt2}{2}$、$\\frac{\\sqrt3}{2}$。' };
   CONTRAST['L2.linePlaneAngleParam'] = { f: function (p) { return p.mode; }, why: '未知數在方向向量裡，它會出現在 $\\vec d\\cdot\\vec n$ 與 $\\left|\\vec d\\right|^2$；未知數在平面的係數裡，它會出現在 $\\vec d\\cdot\\vec n$ 與 $\\left|\\vec n\\right|^2$。兩種都是把正弦公式平方，得到一元二次方程式。' };
   CONTRAST['L3.linePlaneTrig'] = { f: function (p) { return p.ask; }, why: '公式算出來的永遠是 $\\sin\\theta$：問 $\\cos\\theta$ 就用 $\\sqrt{1-\\sin^2\\theta}$，問 $\\tan\\theta$ 就再除一次，$\\tan\\theta=\\dfrac{\\sin\\theta}{\\cos\\theta}$。' };
+  /* ══════════════════════════════════════════════════════════
+     2026-10-02　附圖題（讀圖型）：圖由產生器依亂數參數即時畫成 inline SVG，放在 q 裡，圖跟著數字變
+     立體圖一律用同一個斜投影：x 軸朝觀察者（畫面上往左下）、y 軸向右、z 軸向上；
+       x 方向每 1 單位在畫面上往左 FG_AX、往下 FG_AY 單位，y、z 方向不縮短。
+     凸多面體的稜：相鄰兩面都背對觀察者 ⟹ 被遮住，畫虛線；其他線段落在看得見的面上畫實線，否則畫虛線。
+     規則：坐標一律由參數算（不目測）；圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
+           給驗算器讀的元素帶 data-k（驗算器從圖上的坐標與標籤文字代回，不看 p）。
+     立體圖工具（fg*）沿用同冊第一章練習本的同一套。L1 3 型、L2 3 型、L3 2 型（L3-20、L3-21 的類似題）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     ══════════════════════════════════════════════════════════ */
+  /* <fig3d-tools> */
+  var FGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#c8324f', soft: '#8a7378', fill: 'rgba(176,58,85,.16)' };
+  var FG_AX = 0.5, FG_AY = 0.3, FGM = '−';
+  function fgN(v) { var s = (Math.round(v * 100) / 100).toFixed(2); if (s === '-0.00') s = '0.00'; return s.replace(/\.?0+$/, ''); }
+  function fgAttr(o) { var s = '', k; for (k in o) { if (o[k] !== undefined && o[k] !== null && o[k] !== false) s += ' ' + k + '="' + o[k] + '"'; } return s; }
+  function fgP(P) { return [P[1] - FG_AX * P[0], P[2] - FG_AY * P[0]]; }                      /* 三維點 → 畫面方向（y 向上） */
+  function fgSub(u, v) { return [u[0] - v[0], u[1] - v[1], u[2] - v[2]]; }
+  function fgDot(u, v) { return u[0] * v[0] + u[1] * v[1] + u[2] * v[2]; }
+  function fgCross(u, v) { return [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]]; }
+  function fgMix(P, Q, t) { return [P[0] + (Q[0] - P[0]) * t, P[1] + (Q[1] - P[1]) * t, P[2] + (Q[2] - P[2]) * t]; }
+  function fgInt(v) { return v < 0 ? FGM + (-v) : String(v); }
+  function fgSegD(p, s) {                                                                    /* 畫面上點到線段的距離 */
+    var ax = s.a[0], ay = s.a[1], dx = s.b[0] - ax, dy = s.b[1] - ay, L = dx * dx + dy * dy, t = L ? ((p[0] - ax) * dx + (p[1] - ay) * dy) / L : 0;
+    t = Math.max(0, Math.min(1, t)); return Math.sqrt(Math.pow(p[0] - ax - t * dx, 2) + Math.pow(p[1] - ay - t * dy, 2));
+  }
+  /* 場景：o = { pts:{名:[x,y,z]}, faces:[[名…]]（凸多面體的面）, extra:[[x,y,z]…]（算外框用）, W, H, pad:[左,右,上,下], maxU, minW } */
+  function fgScene(o) {
+    var S = { pts: o.pts || {}, faces: o.faces || [], segs: [], dots: [], names: [], lens: [], under: '', over: '' };
+    var W = o.W || 300, Hm = o.H || 196, pad = o.pad || [26, 26, 22, 22], k, all = [], xs = [], ys = [], c3 = [0, 0, 0], n = 0;
+    for (k in S.pts) { all.push(S.pts[k]); c3 = [c3[0] + S.pts[k][0], c3[1] + S.pts[k][1], c3[2] + S.pts[k][2]]; n++; }
+    c3 = [c3[0] / (n || 1), c3[1] / (n || 1), c3[2] / (n || 1)];
+    (o.extra || []).forEach(function (p) { all.push(p); });
+    all.forEach(function (p) { var u = fgP(p); xs.push(u[0]); ys.push(u[1]); });
+    var x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs), y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys);
+    var u = Math.min((W - pad[0] - pad[1]) / (x1 - x0), (Hm - pad[2] - pad[3]) / (y1 - y0), o.maxU || 40);
+    S.u = u; S.W = Math.max(o.minW || 150, Math.ceil((x1 - x0) * u + pad[0] + pad[1])); S.H = Math.ceil((y1 - y0) * u + pad[2] + pad[3]);
+    var ox = pad[0] + (S.W - pad[0] - pad[1] - (x1 - x0) * u) / 2 - x0 * u, oy = pad[2] + y1 * u;
+    S.p3 = function (P) { return typeof P === 'string' ? S.pts[P] : P; };
+    S.at = function (P) { var q = fgP(S.p3(P)); return [ox + q[0] * u, oy - q[1] * u]; };
+    var cs = S.at(c3);
+    var VIEW = [1, FG_AX, FG_AY];
+    S.fv = S.faces.map(function (f) {
+      var p0 = S.pts[f[0]], nn = fgCross(fgSub(S.pts[f[1]], p0), fgSub(S.pts[f[2]], p0));
+      if (fgDot(nn, fgSub(p0, c3)) < 0) nn = [-nn[0], -nn[1], -nn[2]];
+      return { n: nn, p0: p0, vis: fgDot(nn, VIEW) > 1e-9, len: Math.sqrt(fgDot(nn, nn)) };
+    });
+    S.onVis = function (P, Q) {                                                               /* 兩點是否同在某個看得見的面上 */
+      P = S.p3(P); Q = S.p3(Q);
+      return S.fv.some(function (f) { return f.vis && Math.abs(fgDot(f.n, fgSub(P, f.p0))) < 1e-7 * f.len * 10 + 1e-9 && Math.abs(fgDot(f.n, fgSub(Q, f.p0))) < 1e-7 * f.len * 10 + 1e-9; });
+    };
+    S.seg = function (P, Q, q) {
+      q = q || {}; var a = S.at(P), b = S.at(Q), dash = q.dash !== undefined ? q.dash : (S.faces.length ? !S.onVis(P, Q) : false);
+      S.segs.push({ a: a, b: b, svg: '<line' + fgAttr({ 'data-k': q.k || 'seg', x1: fgN(a[0]), y1: fgN(a[1]), x2: fgN(b[0]), y2: fgN(b[1]), stroke: q.c || FGC.line, 'stroke-width': q.w || 1.6, 'stroke-dasharray': dash ? '4 3' : null, 'stroke-linecap': 'round' }) + '/>' });
+      return S;
+    };
+    S.edges = function () {
+      var seen = {};
+      S.faces.forEach(function (f) { f.forEach(function (nm, i) { var m = f[(i + 1) % f.length], key = nm < m ? nm + '|' + m : m + '|' + nm; if (!seen[key]) { seen[key] = 1; S.seg(nm, m, { k: 'edge', w: 1.7 }); } }); });
+      return S;
+    };
+    S.poly = function (list, q) {                                                             /* 塗色的多邊形（畫在最底層） */
+      q = q || {}; S.under += '<polygon' + fgAttr({ 'data-k': q.k || 'shade', points: list.map(function (P) { var a = S.at(P); return fgN(a[0]) + ',' + fgN(a[1]); }).join(' '), fill: q.fill || FGC.fill, stroke: 'none' }) + '/>';
+      return S;
+    };
+    S.dot = function (P, q) { q = q || {}; var a = S.at(P); S.dots.push({ a: a, svg: '<circle' + fgAttr({ 'data-k': q.k || 'pt', cx: fgN(a[0]), cy: fgN(a[1]), r: q.r || 2.7, fill: q.c || FGC.line }) + '/>' }); return S; };
+    S.name = function (P, txt, q) { q = q || {}; S.names.push({ a: S.at(P), t: txt === undefined ? P : txt, it: q.it !== false, dir: q.dir, k: q.k || 'nm', fs: q.fs || 15, d: q.d || 12, c: q.c }); return S; };
+    S.len = function (P, Q, txt, q) { q = q || {}; S.lens.push({ a: S.at(P), b: S.at(Q), t: String(txt), k: q.k || 'len', fs: q.fs || 14, side: q.side, c: q.c }); return S; };
+    S.arrow = function (P, Q, q) {                                                            /* 帶箭頭的線（坐標軸）：Q 端有箭頭 */
+      q = q || {}; var a = S.at(P), b = S.at(Q), ang = Math.atan2(b[1] - a[1], b[0] - a[0]), L = 8, wv = 3.2, c = q.c || FGC.ink, bx = b[0] - L * Math.cos(ang), by = b[1] - L * Math.sin(ang);
+      S.segs.push({ a: a, b: b, svg: '<line' + fgAttr({ 'data-k': q.k || 'ax', x1: fgN(a[0]), y1: fgN(a[1]), x2: fgN(bx), y2: fgN(by), stroke: c, 'stroke-width': q.w || 1.2, 'stroke-linecap': 'round' }) + '/><path d="M ' + fgN(b[0]) + ' ' + fgN(b[1]) + ' L ' + fgN(bx - wv * Math.sin(ang)) + ' ' + fgN(by + wv * Math.cos(ang)) + ' L ' + fgN(bx + wv * Math.sin(ang)) + ' ' + fgN(by - wv * Math.cos(ang)) + ' Z" fill="' + c + '"/>' });
+      return S;
+    };
+    S.render = function (label) {
+      var placed = [], out = '';
+      function boxOf(c, t, fs) { return { c: c, hw: Math.max(4.5, String(t).length * fs * 0.29), hh: fs * 0.42 }; }
+      function cost(bx, skip, anchor) {
+        var pen = 0, samp = [bx.c, [bx.c[0] - Math.max(0, bx.hw - 4), bx.c[1]], [bx.c[0] + Math.max(0, bx.hw - 4), bx.c[1]]];
+        S.segs.forEach(function (s) { if (s === skip) return; var d = Math.min(fgSegD(samp[0], s), fgSegD(samp[1], s), fgSegD(samp[2], s)); if (d < 8.5) pen += (8.5 - d) * 3; });
+        S.dots.forEach(function (dt) { if (anchor && Math.abs(dt.a[0] - anchor[0]) + Math.abs(dt.a[1] - anchor[1]) < 0.5) return; var d = Math.min.apply(null, samp.map(function (p) { return Math.sqrt(Math.pow(p[0] - dt.a[0], 2) + Math.pow(p[1] - dt.a[1], 2)); })); if (d < 14) pen += (14 - d) * 3; });
+        if (anchor) Object.keys(S.pts).forEach(function (k) {                                  /* 點名不要靠近別的頂點（會看成那個頂點的名字） */
+          var q = S.at(k); if (Math.abs(q[0] - anchor[0]) + Math.abs(q[1] - anchor[1]) < 0.5) return;
+          var d = Math.min.apply(null, samp.map(function (p) { return Math.sqrt(Math.pow(p[0] - q[0], 2) + Math.pow(p[1] - q[1], 2)); })); if (d < 15) pen += (15 - d) * 2.5;
+        });
+        placed.forEach(function (b) { if (Math.abs(b.c[0] - bx.c[0]) < b.hw + bx.hw + 1.5 && Math.abs(b.c[1] - bx.c[1]) < b.hh + bx.hh + 1) pen += 40; });
+        if (bx.c[0] - bx.hw < 2 || bx.c[0] + bx.hw > S.W - 2 || bx.c[1] - bx.hh < 2 || bx.c[1] + bx.hh > S.H - 2) pen += 60;
+        return pen;
+      }
+      function put(c, t, fs, it, k, col) { return '<text' + fgAttr({ 'data-k': k, x: fgN(c[0]), y: fgN(c[1] + fs * 0.35), 'font-size': fs, fill: col || FGC.ink, 'text-anchor': 'middle', 'font-style': it ? 'italic' : null }) + '>' + t + '</text>'; }
+      var texts = '';
+      S.lens.forEach(function (l) {                                                           /* 長度標籤：線段中點的外側 */
+        var m = [(l.a[0] + l.b[0]) / 2, (l.a[1] + l.b[1]) / 2], dx = l.b[0] - l.a[0], dy = l.b[1] - l.a[1], L = Math.sqrt(dx * dx + dy * dy) || 1, nx = -dy / L, ny = dx / L, best = null;
+        var me = null; S.segs.forEach(function (s) { if (Math.abs(s.a[0] - l.a[0]) + Math.abs(s.a[1] - l.a[1]) + Math.abs(s.b[0] - l.b[0]) + Math.abs(s.b[1] - l.b[1]) < 0.5) me = s; });
+        [1, -1].forEach(function (sd) {
+          [11, 14].forEach(function (d) {
+            var hw = Math.max(4.5, l.t.length * l.fs * 0.29), dd = d + Math.abs(nx) * Math.max(0, hw - 6), c = [m[0] + sd * nx * dd, m[1] + sd * ny * dd], bx = boxOf(c, l.t, l.fs);
+            var out2 = (c[0] - cs[0]) * (m[0] - cs[0]) + (c[1] - cs[1]) * (m[1] - cs[1]) > (m[0] - cs[0]) * (m[0] - cs[0]) + (m[1] - cs[1]) * (m[1] - cs[1]);
+            var pen = cost(bx, me) + (out2 ? 0 : 6) + (d - 11) * 0.3 + (l.side !== undefined && l.side !== sd ? 100 : 0);
+            if (!best || pen < best.pen) best = { pen: pen, bx: bx };
+          });
+        });
+        placed.push(best.bx); texts += put(best.bx.c, l.t, l.fs, false, l.k, l.c);
+      });
+      S.names.forEach(function (nm) {                                                         /* 點名：繞一圈找離線段、點、其他標籤最遠的位置，偏好朝外 */
+        var best = null, th0 = Math.atan2(-(nm.a[1] - cs[1]), nm.a[0] - cs[0]), i;
+        for (i = 0; i < 24; i++) {
+          var th = nm.dir !== undefined ? nm.dir * Math.PI / 180 : i * Math.PI / 12, hw = Math.max(4.5, String(nm.t).length * nm.fs * 0.29);
+          var d = nm.d + Math.abs(Math.cos(th)) * Math.max(0, hw - 5), c = [nm.a[0] + d * Math.cos(th), nm.a[1] - d * Math.sin(th)], bx = boxOf(c, nm.t, nm.fs);
+          var pen = cost(bx, null, nm.a) + (1 - Math.cos(th - th0)) * 2.5;
+          if (!best || pen < best.pen - 1e-9) best = { pen: pen, bx: bx };
+          if (nm.dir !== undefined) break;
+        }
+        placed.push(best.bx); texts += put(best.bx.c, nm.t, nm.fs, nm.it, nm.k, nm.c);
+      });
+      out = S.under + S.segs.map(function (s) { return s.svg; }).join('') + S.dots.map(function (d) { return d.svg; }).join('') + S.over + texts;
+      return '<svg class="qfig" viewBox="0 0 ' + S.W + ' ' + S.H + '" width="' + S.W + '" height="' + S.H + '" role="img" aria-label="' + label + '">' + out + '</svg>';
+    };
+    return S;
+  }
+  /* 長方體／平行六面體的頂點命名：一圈四個角（前左、前右、後右、後左）從第 st 個起、依 dir 方向繞，
+     top=1 時這一圈在頂面；另一圈（第 5～8 個字母）在正對面。回傳 名稱 → 角的 0／1 坐標 [x,y,z]。 */
+  var FG_RING = [[1, 0], [1, 1], [0, 1], [0, 0]];
+  function fgBoxNames(st, dir, top, names) {
+    var m = {}, i, c; names = names || 'ABCDEFGH';
+    for (i = 0; i < 4; i++) { c = FG_RING[((st + dir * i) % 4 + 4) % 4]; m[names.charAt(i)] = [c[0], c[1], top ? 1 : 0]; m[names.charAt(i + 4)] = [c[0], c[1], top ? 0 : 1]; }
+    return m;
+  }
+  function fgCorner(nm, i, j, k) { for (var n in nm) if (nm[n][0] === i && nm[n][1] === j && nm[n][2] === k) return n; return null; }
+  function fgBoxFaces(nm) {
+    var out = [], t, v, ord = [[0, 0], [0, 1], [1, 1], [1, 0]];
+    for (t = 0; t < 3; t++) for (v = 0; v < 2; v++) {
+      out.push(ord.map(function (c) { var q = [0, 0, 0]; q[t] = v; q[(t + 1) % 3] = c[0]; q[(t + 2) % 3] = c[1]; return fgCorner(nm, q[0], q[1], q[2]); }));
+    }
+    return out;
+  }
+  /* 平行六面體（長方體是特例）：角 (i,j,k) 的位置 = i·e1 + j·e2 + k·e3；回傳已畫好 12 條稜的場景 */
+  function fgPara(e1, e2, e3, nm, o) {
+    var pts = {}, n, c;
+    for (n in nm) { c = nm[n]; pts[n] = [c[0] * e1[0] + c[1] * e2[0] + c[2] * e3[0], c[0] * e1[1] + c[1] * e2[1] + c[2] * e3[1], c[0] * e1[2] + c[1] * e2[2] + c[2] * e3[2]]; }
+    o = o || {}; o.pts = pts; o.faces = fgBoxFaces(nm);
+    return fgScene(o).edges();
+  }
+  function fgBox(a, b, c, nm, o) { return fgPara([a, 0, 0], [0, b, 0], [0, 0, c], nm, o); }
+  /* 在輪廓上標三個稜長：前下（y 方向）、右下（x 方向）、前左直立（z 方向） */
+  function fgBoxDims(S, nm, a, b, c) {
+    return S.len(fgCorner(nm, 1, 0, 0), fgCorner(nm, 1, 1, 0), b).len(fgCorner(nm, 1, 1, 0), fgCorner(nm, 0, 1, 0), a).len(fgCorner(nm, 1, 0, 0), fgCorner(nm, 1, 0, 1), c);
+  }
+  /* 圖上的點 P（三維）是否清楚：離不經過它的線段都至少 lim 像素（避免剛好疊在別的稜上） */
+  function fgClear(S, P, lim, U, V) {                                                         /* U、V：P 所在線段的兩端（那一條不算） */
+    var a = S.at(P), u = S.at(U), v = S.at(V), near = function (p, q) { return Math.abs(p[0] - q[0]) + Math.abs(p[1] - q[1]) < 0.5; };
+    return S.segs.every(function (s) { return (near(s.a, u) && near(s.b, v)) || (near(s.a, v) && near(s.b, u)) || fgSegD(a, s) >= lim; });
+  }
+  /* 長方體的稜長：避開畫出來會有兩條稜（幾乎）重疊的比例 */
+  function fgBoxOK(a, b, c) {
+    var u = Math.min(230 / (b + FG_AX * a), 140 / (c + FG_AY * a), 40);                       /* 大約的比例尺（像素／單位） */
+    return Math.abs(b - FG_AX * a) * u >= 12 && Math.abs(c - FG_AY * a) * u >= 12 && Math.abs(FG_AY * b - FG_AX * c) / Math.sqrt(FG_AX * FG_AX + FG_AY * FG_AY) * u >= 12;
+  }
+  function fgDims(r, lo, hi) { var d; do { d = [r.int(lo[0], hi[0]), r.int(lo[1], hi[1]), r.int(lo[2], hi[2])]; } while (!fgBoxOK(d[0], d[1], d[2])); return d; }
+  function fgNameAll(S, list) { (list || Object.keys(S.pts)).forEach(function (n) { S.name(n); }); return S; }
+  /* 示意用的平行六面體形狀（不照比例） */
+  var FG_SKEW = [[2.3, 0, 0], [0, 3.6, 0], [0, 1.1, 2.4]];
+  /* </fig3d-tools> */
+
+  function fgOpt(i, t) { return '<span class="qopt">(' + i + ') ' + t + '</span>'; }           /* 圖後面的選項：每個選項自成一塊，不從中間斷行 */
+  function fgSeg(X, Y) { return '\\overline{' + X + Y + '}'; }
+  function fgVecD(nm, X, Y, dims) { return [0, 1, 2].map(function (t) { return (nm[Y][t] - nm[X][t]) * dims[t]; }); }   /* 向量 XY（以角 000 為原點、三稜為軸） */
+  function fgNb(nm, X, t) { var q = nm[X].slice(); q[t] = 1 - q[t]; return fgCorner(nm, q[0], q[1], q[2]); }           /* X 沿第 t 個方向的鄰點 */
+  function fgLay(r) { return [r.int(0, 3), r.pick([1, -1]), r.int(0, 1)]; }
+  var FG_V = 'ABCDEFGH'.split('');
+
+  function fgNice(n, d) { if (n === 0) return true; var g = gcd(n, d); n /= g; d /= g; var s = simpSqrt(n * d); return s.r <= 30 && d / gcd(s.c, d) <= 40; }   /* √(n/d) 化簡後根號內 ≤30、分母 ≤40 */
+  function fgMax(v) { return Math.max(Math.abs(v[0]), Math.abs(v[1]), Math.abs(v[2])); }
+  function fgLcm(a, b) { a = Math.abs(a); b = Math.abs(b); return a * b / (gcd(a, b) || 1); }
+  function fgCo(nm, X, dims) { return [nm[X][0] * dims[0], nm[X][1] * dims[1], nm[X][2] * dims[2]]; }   /* 以角 000 為原點、三稜為軸時 X 的坐標 */
+  function fgTri(S, tri, q) {                                    /* 塗色的三角形（截面）與它的三邊 */
+    q = q || {}; S.poly(tri);
+    [[0, 1], [1, 2], [2, 0]].forEach(function (e) { S.seg(tri[e[0]], tri[e[1]], { k: 'tri', c: q.c || FGC.hot, w: q.w || 2 }); });
+    return S;
+  }
+  function fgTriOK(S, tri, lim) {                                 /* 畫出來的三角形不能太扁（截面幾乎側對著觀察者時看不出是哪個面）：最短的高至少 lim 像素 */
+    var a = S.at(tri[0]), b = S.at(tri[1]), c = S.at(tri[2]), ar = Math.abs((b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1]));
+    var L = Math.max(Math.pow(b[0] - a[0], 2) + Math.pow(b[1] - a[1], 2), Math.pow(c[0] - b[0], 2) + Math.pow(c[1] - b[1], 2), Math.pow(a[0] - c[0], 2) + Math.pow(a[1] - c[1], 2));
+    return ar / Math.sqrt(L) >= (lim || 18);
+  }
+  function fgFar(S, P, Q, lim) { var a = S.at(P), b = S.at(Q); return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2)) >= lim; }   /* 圖上兩點至少相距 lim 像素（標籤才不會擠在一起） */
+  function fgPtList(names, co) { return names.map(function (X, i) { return T(X + vt(co[i])); }).join('、'); }
+  /* 坐標系中的長方體 OABC-DEFG：O 在原點、三稜在坐標軸正向；sw=1 時 A 在 y 軸上、C 在 x 軸上 */
+  function fgAxNames(sw) { return sw ? { O: [0, 0, 0], A: [0, 1, 0], B: [1, 1, 0], C: [1, 0, 0], D: [0, 0, 1], E: [0, 1, 1], F: [1, 1, 1], G: [1, 0, 1] } : { O: [0, 0, 0], A: [1, 0, 0], B: [1, 1, 0], C: [0, 1, 0], D: [0, 0, 1], E: [1, 0, 1], F: [1, 1, 1], G: [0, 1, 1] }; }
+  function fgAxBox(a, b, c, nm, o) {                              /* 軸從稜的端點畫出去 */
+    o = o || {}; o.extra = [[a + 1.5, 0, 0], [0, b + 1.3, 0], [0, 0, c + 1.2]]; o.pad = o.pad || [26, 26, 22, 22];
+    var S = fgBox(a, b, c, nm, o);
+    S.arrow([a, 0, 0], [a + 1.5, 0, 0], { k: 'ax' }).arrow([0, b, 0], [0, b + 1.3, 0], { k: 'ax' }).arrow([0, 0, c], [0, 0, c + 1.2], { k: 'ax' });
+    S.name([a + 1.5, 0, 0], 'x', { k: 'axn', d: 10 }).name([0, b + 1.3, 0], 'y', { k: 'axn', d: 10 }).name([0, 0, c + 1.2], 'z', { k: 'axn', d: 10 });
+    return S;
+  }
+  var FG_AXV = 'OABCDEFG'.split('');
+  function fgAxSort(list) { return list.slice().sort(function (x, y) { return FG_AXV.indexOf(x) - FG_AXV.indexOf(y); }); }
+  function fgAxRead(sw, dims) {                                   /* 步驟第一句：從圖上讀稜長 */
+    var xa = sw ? 'C' : 'A', ya = sw ? 'A' : 'C';
+    return '從圖上讀出：' + T(xa) + ' 在 ' + T('x') + ' 軸上、' + T('\\overline{O' + xa + '}=' + dims[0]) + '；' + T(ya) + ' 在 ' + T('y') + ' 軸上、' + T('\\overline{O' + ya + '}=' + dims[1]) + '；' + T('D') + ' 在 ' + T('z') + ' 軸上、' + T('\\overline{OD}=' + dims[2]) + '（對面的稜一樣長）。';
+  }
+
+  /* ────────── L1　6 讀圖題：軸上三個交點決定的平面、坐標系中的長方體（三頂點的平面、兩點的直線） ────────── */
+  /* 平面與三個坐標軸的交點畫在圖上：讀出三點，寫平面方程式、求原點到平面的距離 */
+  function fgAxisScene(I) {
+    var O = [0, 0, 0], Pt = [[I[0], 0, 0], [0, I[1], 0], [0, 0, I[2]]], ends = [], t, lo, hi;
+    for (t = 0; t < 3; t++) { lo = [0, 0, 0]; hi = [0, 0, 0]; lo[t] = I[t] < 0 ? I[t] - 0.9 : 0; hi[t] = Math.max(1.6, I[t] + 1.5); ends.push([lo, hi]); }
+    var S = fgScene({ pts: { O: O }, extra: Pt.concat(ends.map(function (e) { return e[0]; }), ends.map(function (e) { return e[1]; })), pad: [24, 24, 22, 22], maxU: 30, W: 300, H: 220 });
+    S.poly(Pt);
+    ends.forEach(function (e, i) { S.arrow(e[0], e[1], { k: 'ax' }).name(e[1], AXES[i], { k: 'axn', d: 10 }); });
+    [[0, 1], [1, 2], [2, 0]].forEach(function (e) { S.seg(Pt[e[0]], Pt[e[1]], { k: 'tri', c: FGC.hot, w: 2, dash: false }); });
+    Pt.forEach(function (P, i) { S.dot(P, { k: 'ft', c: FGC.hot, r: 2.8 }); });
+    Pt.forEach(function (P, i) { S.name(P, fgInt(I[i]), { it: false, k: 'tk' }); });
+    Pt.forEach(function (P, i) { S.name(P, 'ABC'.charAt(i)); });
+    S.name(O, 'O', { k: 'nmO' });
+    S.tri3 = Pt; return S;
+  }
+  L1.figAxisPlane = function (r) {
+    r();
+    var I, pl, N, S, guard = 0, j;
+    do {
+      I = [r.int(2, 6), r.int(2, 6), r.int(2, 6)];
+      if (r() < 0.35) { j = r.int(1, 2); I[j] = -I[j]; }                           /* 負的只放 y 或 z（x 軸負向在圖的後方，三角形會和坐標軸疊在一起） */
+      pl = normPlane([I[1] * I[2], I[0] * I[2], I[0] * I[1], I[0] * I[1] * I[2]]); N = pl[0] * pl[0] + pl[1] * pl[1] + pl[2] * pl[2]; guard++;
+      S = fgAxisScene(I);
+    } while ((fgMax(pl) > 12 || !fgNice(pl[3] * pl[3], N) || !fgTriOK(S, S.tri3, 16)) && guard < 400);
+    var neg = I[0] < 0 || I[1] < 0 || I[2] < 0;
+    return { q: '如圖，平面 ' + T('E') + ' 與 ' + T('x') + ' 軸、' + T('y') + ' 軸、' + T('z') + ' 軸分別交於 ' + T('A') + '、' + T('B') + '、' + T('C') + ' 三點，軸上標的數字是交點在該軸上的坐標。(1) 求 ' + T('E') + ' 的方程式（化為最簡整數係數）。(2) 求原點 ' + T('O') + ' 到 ' + T('E') + ' 的距離。' + S.render('坐標空間中，平面與三個坐標軸交於 A、B、C 三點，軸上標出交點的坐標'),
+      a: '(1) ' + T('E:' + planeTex(pl)) + '　(2) ' + T(sqrtFracTex(pl[3] * pl[3], N)),
+      h: '從圖上讀出 ' + T('A' + vt([I[0], 0, 0])) + '、' + T('B' + vt([0, I[1], 0])) + '、' + T('C' + vt([0, 0, I[2]])) + (neg ? '（交點在軸的負向那一側，坐標是負的）' : '') + '。設 ' + T('E:ax+by+cz=d') + '，三點各代一次：' + T(term(I[0], 'a', true) + '=d') + '、' + T(term(I[1], 'b', true) + '=d') + '、' + T(term(I[2], 'c', true) + '=d') + '；取 ' + T('d=' + fgLcm(fgLcm(I[0], I[1]), I[2])) + ' 就能把 ' + T('a,b,c') + ' 都解成整數。(2) 原點代入左式是 ' + T('0') + '，距離 ' + T('=\\dfrac{|0-d|}{\\sqrt{a^2+b^2+c^2}}') + '。',
+      p: { I: I } };
+  };
+
+  /* 坐標系中的長方體：讀三個頂點的坐標，求它們決定的平面 */
+  L1.figBoxPlane = function (r) {
+    r();
+    var sw = r.int(0, 1), nm = fgAxNames(sw), dims, tri, co, n, nr, S, guard = 0;
+    do {
+      dims = fgDims(r, [2, 3, 2], [6, 6, 6]); tri = fgAxSort(r.shuffle(FG_AXV).slice(0, 3));
+      co = tri.map(function (X) { return fgCo(nm, X, dims); });
+      n = cross(sub(co[1], co[0]), sub(co[2], co[0])); nr = redPos(n); guard++;
+      S = fgAxBox(dims[0], dims[1], dims[2], nm);
+    } while ((nzc(n) < 2 || fgMax(nr) > 12 || !fgTriOK(S, tri)) && guard < 400);
+    var pl = planeOf(nr, co[0]), pn = tri.join('');
+    fgBoxDims(S, nm, dims[0], dims[1], dims[2]); fgTri(S, tri); fgNameAll(S);
+    return { q: '如圖，長方體 ' + T('OABC') + '-' + T('DEFG') + ' 的頂點 ' + T('O') + ' 在原點，三條稜分別在三個坐標軸的正向上，稜長標示在圖上。(1) 寫出 ' + T(tri[0]) + '、' + T(tri[1]) + '、' + T(tri[2]) + ' 的坐標。(2) 求平面 ' + T(pn) + '（塗色的三角形所在的平面）的方程式（化為最簡整數係數）。' + S.render('坐標空間中的長方體 OABC-DEFG，O 在原點，稜長標示在圖上，三個頂點連成的三角形塗色'),
+      a: '(1) ' + fgPtList(tri, co) + '　(2) ' + T(planeTex(pl)),
+      h: '先看每個頂點在哪個位置：在哪一條軸上、或是在哪個頂點的正上方，從 ' + T('O') + ' 沿三個軸各走多少就是坐標。再做兩個邊向量 ' + T(ov(tri[0] + tri[1]) + '=' + vt(sub(co[1], co[0]))) + '、' + T(ov(tri[0] + tri[2]) + '=' + vt(sub(co[2], co[0]))) + '，法向量取外積 ' + T(vt(n)) + '（化成首項為正的最簡整數 ' + T(vt(nr)) + '），最後代 ' + T(tri[0]) + ' 定常數。',
+      p: { a: dims[0], b: dims[1], c: dims[2], sw: sw, tri: tri } };
+  };
+
+  /* 坐標系中的長方體：讀圖上兩點（頂點或稜的中點）的坐標，寫直線的參數式 */
+  L1.figBoxLine = function (r) {
+    r();
+    var sw = r.int(0, 1), nm = fgAxNames(sw), dims, P, Q, U, V, mid, S, d2v, M3, guard = 0, ok, e;
+    do {
+      dims = fgDims(r, [2, 3, 2], [6, 6, 6]); mid = r() < 0.45; P = r.pick(FG_AXV); U = V = null; guard++;
+      S = fgAxBox(dims[0], dims[1], dims[2], nm);
+      if (mid) {
+        U = r.pick(FG_AXV); V = fgNb(nm, U, r.int(0, 2)); e = fgAxSort([U, V]); U = e[0]; V = e[1]; Q = 'M';
+        d2v = [0, 1, 2].map(function (s) { return (nm[U][s] + nm[V][s] - 2 * nm[P][s]) * dims[s]; });   /* 2×(M−P) */
+        M3 = fgMix(S.pts[U], S.pts[V], 0.5);
+        ok = U !== P && V !== P && nzc(d2v) >= 2 && fgClear(S, M3, 7, U, V);
+      } else {
+        Q = r.pick(FG_AXV); e = fgAxSort([P, Q]); P = e[0]; Q = e[1];
+        d2v = [0, 1, 2].map(function (s) { return 2 * (nm[Q][s] - nm[P][s]) * dims[s]; }); ok = nzc(d2v) >= 2;
+      }
+    } while (!ok && guard < 400);
+    var Pc = fgCo(nm, P, dims), d = red(d2v), Qf = mid ? [0, 1, 2].map(function (s) { return F((nm[U][s] + nm[V][s]) * dims[s], 2); }) : fgCo(nm, Q, dims).map(function (x) { return F(x); });
+    var QT = Qf.every(function (f) { return f.d === 1; }) ? vt(Qf.map(function (f) { return f.n; })) : vtF(Qf);
+    fgBoxDims(S, nm, dims[0], dims[1], dims[2]);
+    S.seg(P, mid ? M3 : Q, { k: 'hot', c: FGC.hot, w: 2.4 });
+    fgNameAll(S);
+    if (mid) S.dot(M3, { k: 'pM', c: FGC.hot }).name(M3, 'M');
+    return { q: '如圖，長方體 ' + T('OABC') + '-' + T('DEFG') + ' 的頂點 ' + T('O') + ' 在原點，三條稜分別在三個坐標軸的正向上，稜長標示在圖上' + (mid ? '，' + T('M') + ' 是 ' + T(fgSeg(U, V)) + ' 的中點' : '') + '。(1) 寫出 ' + T(P) + '、' + T(Q) + ' 的坐標。(2) 求直線 ' + T(P + Q) + '（粗線）的參數式。' + S.render('坐標空間中的長方體 OABC-DEFG，O 在原點，稜長標示在圖上，一條直線用粗線標出' + (mid ? '，M 是一條稜的中點' : '')),
+      a: '(1) ' + T(P + vt(Pc)) + '、' + T(Q + QT) + '　(2) ' + T(paramTex(Pc, d, 't')),
+      h: '先從圖上讀出兩個點的坐標（從 ' + T('O') + ' 沿三個軸各走多少' + (mid ? '；中點是兩個端點坐標的平均' : '') + '）。方向向量用終點減起點：' + T(ov(P + Q) + '=' + QT + '-' + vt(Pc)) + '，可以乘或除一個數化成最簡整數 ' + T(vt(d)) + '（同一條直線）。參數式寫成「起點的坐標＋' + T('t') + '×方向向量」，起點用 ' + T(P) + ' 或 ' + T(Q) + ' 都可以。',
+      p: { a: dims[0], b: dims[1], c: dims[2], sw: sw, P: P, Q: Q, U: U, V: V } };
+  };
+
+  L1_H1.figAxisPlane = '這是「看圖寫出平面方程式」：平面與坐標軸的交點，有兩個坐標是 $0$；把三個交點從圖上讀出來，代進 $ax+by+cz=d$ 就能定出係數。';
+  L1_H1.figBoxPlane = '這是「坐標系中的長方體：三個頂點的平面」：頂點的坐標由「沿三個軸各走多少」決定，圖上的稜長就是要走的距離；三點決定平面，法向量取兩個邊向量的外積。';
+  L1_H1.figBoxLine = '這是「坐標系中的長方體：兩點的直線」：先從圖上讀出兩個點的坐標，方向向量用終點減起點，再寫成「起點＋$t$×方向向量」。';
+  L1_SOL.figAxisPlane = function (p, o) {
+    var I = p.I, L = fgLcm(fgLcm(I[0], I[1]), I[2]), co = [L / I[0], L / I[1], L / I[2]], pl = normPlane([co[0], co[1], co[2], L]), N = pl[0] * pl[0] + pl[1] * pl[1] + pl[2] * pl[2];
+    var neg = I[0] < 0 || I[1] < 0 || I[2] < 0;
+    return ['從圖上讀出三個交點：' + T('A' + vt([I[0], 0, 0])) + '、' + T('B' + vt([0, I[1], 0])) + '、' + T('C' + vt([0, 0, I[2]])) + '（在哪一條軸上，就只有那個坐標不是 ' + T('0') + (neg ? '；交點在軸的負向那一側，坐標是負的' : '') + '）。',
+      '(1) 設 ' + T('E:ax+by+cz=d') + '。代 ' + T('A') + ' 得 ' + T(term(I[0], 'a', true) + '=d') + '，代 ' + T('B') + ' 得 ' + T(term(I[1], 'b', true) + '=d') + '，代 ' + T('C') + ' 得 ' + T(term(I[2], 'c', true) + '=d') + '。',
+      '取 ' + T('d=' + L) + '（三個坐標的最小公倍數）：' + T('a=' + co[0]) + '、' + T('b=' + co[1]) + '、' + T('c=' + co[2]) + '，得 ' + (co[0] < 0 ? T(lhsTex(co[0], co[1], co[2]) + '=' + L) + '；兩邊同乘 ' + T('-1') + ' 讓首項為正，' : '') + T('E:' + planeTex(pl)) + '。',
+      '(2) 原點代入左式得 ' + T('0') + '，距離 ' + T('=' + solDistT('0-' + solNeg(pl[3]), N) + '=' + sqrtFracTex(pl[3] * pl[3], N)) + '。' + solFin(o)];
+  };
+  L1_SOL.figBoxPlane = function (p, o) {
+    var nm = fgAxNames(p.sw), dims = [p.a, p.b, p.c], tri = p.tri, co = tri.map(function (X) { return fgCo(nm, X, dims); });
+    var u = sub(co[1], co[0]), v = sub(co[2], co[0]), n = cross(u, v), nr = redPos(n), pl = planeOf(nr, co[0]), same = n[0] === nr[0] && n[1] === nr[1] && n[2] === nr[2];
+    return [fgAxRead(p.sw, dims),
+      '(1) 從 ' + T('O') + ' 走到各個頂點，沿三個軸各走的距離就是坐標：' + fgPtList(tri, co) + '。',
+      '(2) 兩個邊向量 ' + T(ov(tri[0] + tri[1]) + '=' + vt(u)) + '、' + T(ov(tri[0] + tri[2]) + '=' + vt(v)) + '，法向量取外積：' + T(ov(tri[0] + tri[1]) + '\\times' + ov(tri[0] + tri[2]) + '=' + vt(n)) + (same ? '。' : '，化成最簡整數、首項為正得 ' + T(vec('n') + '=' + vt(nr)) + '。'),
+      '把 ' + T(tri[0] + vt(co[0])) + ' 代入 ' + T(lhsTex(nr[0], nr[1], nr[2]) + '=d') + '：' + T(subTex(nr, co[0]) + '=' + pl[3]) + '，所以平面 ' + T(tri.join('') + ':' + planeTex(pl)) + '。' + solFin(o)];
+  };
+  L1_SOL.figBoxLine = function (p, o) {
+    var nm = fgAxNames(p.sw), dims = [p.a, p.b, p.c], P = p.P, Q = p.Q, mid = Q === 'M', Pc = fgCo(nm, P, dims);
+    var Qf = mid ? [0, 1, 2].map(function (s) { return F((nm[p.U][s] + nm[p.V][s]) * dims[s], 2); }) : fgCo(nm, Q, dims).map(function (x) { return F(x); });
+    var isInt = function (v) { return v.every(function (f) { return f.d === 1; }); }, tx = function (v) { return isInt(v) ? vt(v.map(function (f) { return f.n; })) : vtF(v); };
+    var dv = Qf.map(function (f, i) { return Fr.sub(f, F(Pc[i])); }), d = red(dv.map(function (f) { return f.n * 2 / f.d; })), same = isInt(dv) && dv.every(function (f, i) { return f.n === d[i]; });
+    return [fgAxRead(p.sw, dims),
+      '(1) 從 ' + T('O') + ' 走到各點，沿三個軸各走的距離就是坐標：' + T(P + vt(Pc)) + (mid ? '；' + T(p.U + vt(fgCo(nm, p.U, dims))) + '、' + T(p.V + vt(fgCo(nm, p.V, dims))) + ' 的中點是 ' + T('M' + tx(Qf)) : '、' + T(Q + tx(Qf))) + '。',
+      '(2) 方向向量用終點減起點：' + T(ov(P + Q) + '=' + tx(dv)) + (same ? '（三個分量已經是沒有公因數的整數）。' : '，乘或除一個數化成最簡整數，取 ' + T(vec('d') + '=' + vt(d)) + '（同一條直線）。'),
+      '以 ' + T(P) + ' 為起點：' + T(paramTex(Pc, d, 't')) + '（' + T('t') + ' 為實數）。' + solFin(o)];
+  };
+  META_L1.push(['figAxisPlane', '§6 看圖寫平面方程式：與三軸的交點'], ['figBoxPlane', '§6 坐標系中的長方體：三頂點的平面'], ['figBoxLine', '§6 坐標系中的長方體：兩點的直線']);
+
+  /* ────────── L2　讀圖題：長方體上（頂點怎麼排只畫在圖上）稜上的點到截面的距離、截面與一個面的夾角、直線與截面的夾角 ────────── */
+  /* 提示的開頭：照圖放坐標。以角 000（左後下方的頂點）為原點，三條稜依序是 x、y、z 軸 */
+  function fgFrameH(nm, dims, cube) {
+    var O0 = fgCorner(nm, 0, 0, 0), N = [0, 1, 2].map(function (s) { return fgNb(nm, O0, s); });
+    return '照圖放坐標：以 ' + T(O0) + ' 為原點，' + T(ov(O0 + N[0])) + '、' + T(ov(O0 + N[1])) + '、' + T(ov(O0 + N[2])) + ' 的方向為 ' + T('x') + '、' + T('y') + '、' + T('z') + ' 軸的正向'
+      + (cube ? '' : '（從圖上讀出 ' + T(fgSeg(O0, N[0]) + '=' + dims[0]) + '、' + T(fgSeg(O0, N[1]) + '=' + dims[1]) + '、' + T(fgSeg(O0, N[2]) + '=' + dims[2]) + '，對面的稜一樣長）');
+  }
+  function fgPlaneH(tri, co, n, nr, pl) {                         /* 提示的中段：三點的平面 */
+    var same = n[0] === nr[0] && n[1] === nr[1] && n[2] === nr[2];
+    return '法向量取 ' + T(ov(tri[0] + tri[1]) + '\\times' + ov(tri[0] + tri[2]) + '=' + vt(sub(co[1], co[0])) + '\\times' + vt(sub(co[2], co[0])) + '=' + vt(n)) + (same ? '' : '，化成首項為正的最簡整數 ' + T(vt(nr))) + '，平面 ' + T(tri.join('') + ':' + planeTex(pl));
+  }
+  function fgFaceName(nm, t, v) {                                 /* 第 t 個坐標等於 v 的那個面：四個頂點依序一圈，從字母最小的開始 */
+    var f = fgBoxFaces(nm)[2 * t + v], i = f.indexOf(f.slice().sort()[0]), g = [f[i], f[(i + 1) % 4], f[(i + 2) % 4], f[(i + 3) % 4]];
+    return g[1] < g[3] ? g.join('') : [g[0], g[3], g[2], g[1]].join('');
+  }
+  function fgTriPick(r) { return r.shuffle(FG_V).slice(0, 3).sort(); }
+
+  /* 稜上的一點到截面（三個頂點的平面）的距離 */
+  L2.figBoxPtPlane = function (r) {
+    r();
+    var lay = fgLay(r), nm = fgBoxNames(lay[0], lay[1], lay[2]), dims, tri, co, n, nr, U, V, t, k, Pc, num, N, S, P3, ok, guard = 0;
+    do {
+      dims = fgDims(r, [3, 2, 2], [8, 8, 8]); tri = fgTriPick(r);
+      co = tri.map(function (X) { return fgCo(nm, X, dims); }); n = cross(sub(co[1], co[0]), sub(co[2], co[0])); nr = redPos(n);
+      U = r.pick(FG_V); t = r.int(0, 2); V = fgNb(nm, U, t); k = r.int(1, dims[t] - 1);
+      Pc = fgCo(nm, U, dims); Pc[t] += (nm[V][t] - nm[U][t]) * k;
+      num = Math.abs(dot(nr, sub(Pc, co[0]))); N = n2(nr); guard++;
+      ok = nzc(n) >= 2 && fgMax(nr) <= 24 && num !== 0 && fgNice(num * num, N);
+      if (ok) { S = fgBox(dims[0], dims[1], dims[2], nm); fgTri(S, tri); P3 = fgMix(S.pts[U], S.pts[V], k / dims[t]); ok = fgTriOK(S, tri) && fgClear(S, P3, 7, U, V) && fgFar(S, P3, U, 20) && fgFar(S, P3, V, 20); }
+    } while (!ok && guard < 800);
+    var pl = planeOf(nr, co[0]), pn = tri.join('');
+    fgBoxDims(S, nm, dims[0], dims[1], dims[2]); fgNameAll(S);
+    S.dot(P3, { k: 'pP', c: FGC.hot }).name(P3, 'P');
+    return { q: '如圖，長方體的三個稜長標示在圖上，' + T('P') + ' 點在稜 ' + T(fgSeg(U, V)) + ' 上（位置如圖），' + T(fgSeg(U, 'P') + '=' + k) + '。求 ' + T('P') + ' 到平面 ' + T(pn) + '（塗色的三角形所在的平面）的距離。' + S.render('長方體，三個稜長標示在圖上，三個頂點連成的三角形塗色，P 點在一條稜上'),
+      a: T(sqrtFracTex(num * num, N)),
+      h: fgFrameH(nm, dims) + '：' + fgPtList(tri, co) + '；' + T('P') + ' 在 ' + T(fgSeg(U, V)) + ' 上、離 ' + T(U) + ' 是 ' + T(k) + '，所以 ' + T('P' + vt(Pc)) + '。' + fgPlaneH(tri, co, n, nr, pl) + '。' + T('P') + ' 到平面的距離 ' + T('=\\dfrac{\\left|' + subTex(nr, Pc) + '-' + solNeg(pl[3]) + '\\right|}{\\sqrt{' + N + '}}') + '，再化簡。',
+      p: { a: dims[0], b: dims[1], c: dims[2], lay: lay, tri: tri, U: U, V: V, k: k } };
+  };
+
+  /* 截面與長方體的一個面的夾角 */
+  L2.figBoxDihedral = function (r) {
+    r();
+    var lay = fgLay(r), nm = fgBoxNames(lay[0], lay[1], lay[2]), dims, tri, co, n, nr, t, v, N, S, ok, guard = 0;
+    do {
+      dims = fgDims(r, [3, 2, 2], [8, 8, 8]); tri = fgTriPick(r);
+      co = tri.map(function (X) { return fgCo(nm, X, dims); }); n = cross(sub(co[1], co[0]), sub(co[2], co[0])); nr = redPos(n);
+      t = r.int(0, 2); v = r.int(0, 1); N = n2(nr); guard++;
+      ok = nzc(n) >= 2 && fgMax(nr) <= 24 && nr[t] !== 0 && fgNice(nr[t] * nr[t], N);
+      if (ok) { S = fgBox(dims[0], dims[1], dims[2], nm); ok = fgTriOK(S, tri); }
+    } while (!ok && guard < 800);
+    var pl = planeOf(nr, co[0]), pn = tri.join(''), fn = fgFaceName(nm, t, v), e = [0, 0, 0]; e[t] = 1;
+    fgTri(S, tri); fgBoxDims(S, nm, dims[0], dims[1], dims[2]); fgNameAll(S);
+    return { q: '如圖，長方體的三個稜長標示在圖上。求平面 ' + T(pn) + '（塗色的三角形所在的平面）與平面 ' + T(fn) + ' 的夾角 ' + T('\\theta') + ' 的餘弦值（取銳角）。' + S.render('長方體，三個稜長標示在圖上，三個頂點連成的三角形塗色'),
+      a: T('\\cos\\theta=' + sqrtFracTex(nr[t] * nr[t], N)),
+      h: fgFrameH(nm, dims) + '：' + fgPtList(tri, co) + '。' + fgPlaneH(tri, co, n, nr, pl) + '。平面 ' + T(fn) + ' 上每一點的 ' + T(AXES[t]) + ' 坐標都相同，它的法向量取 ' + T(vt(e)) + '。兩平面的夾角看兩個法向量：' + T('\\cos\\theta=\\dfrac{\\left|' + vec('n_1') + '\\cdot' + vec('n_2') + '\\right|}{\\left|' + vec('n_1') + '\\right|\\left|' + vec('n_2') + '\\right|}=\\dfrac{' + Math.abs(nr[t]) + '}{\\sqrt{' + N + '}}') + '，再化簡。',
+      p: { a: dims[0], b: dims[1], c: dims[2], lay: lay, tri: tri, t: t, v: v } };
+  };
+
+  /* 直線（兩個頂點的連線）與截面的夾角 */
+  L2.figBoxLinePlane = function (r) {
+    r();
+    var lay = fgLay(r), nm = fgBoxNames(lay[0], lay[1], lay[2]), dims, tri, co, n, nr, P, Q, d, dv, N, e, S, ok, guard = 0;
+    do {
+      dims = fgDims(r, [3, 2, 2], [8, 8, 8]); tri = fgTriPick(r);
+      co = tri.map(function (X) { return fgCo(nm, X, dims); }); n = cross(sub(co[1], co[0]), sub(co[2], co[0])); nr = redPos(n);
+      e = [r.pick(FG_V), r.pick(FG_V)].sort(); P = e[0]; Q = e[1];
+      d = sub(fgCo(nm, Q, dims), fgCo(nm, P, dims)); dv = dot(d, nr); N = n2(nr); guard++;
+      ok = nzc(n) >= 2 && fgMax(nr) <= 24 && nzc(d) >= 2 && dv !== 0 && fgNice(dv * dv, n2(d) * N);
+      if (ok) { S = fgBox(dims[0], dims[1], dims[2], nm); ok = fgTriOK(S, tri); }
+    } while (!ok && guard < 800);
+    var pl = planeOf(nr, co[0]), pn = tri.join(''), ex = [P, Q].filter(function (X) { return tri.indexOf(X) < 0; });
+    fgTri(S, tri, { c: FGC.line, w: 1.5 }); S.seg(P, Q, { k: 'hot', c: FGC.hot, w: 2.6 });
+    fgBoxDims(S, nm, dims[0], dims[1], dims[2]); fgNameAll(S);
+    return { q: '如圖，長方體的三個稜長標示在圖上。求直線 ' + T(P + Q) + '（粗線）與平面 ' + T(pn) + '（塗色的三角形所在的平面）的夾角 ' + T('\\theta') + ' 的正弦值。' + S.render('長方體，三個稜長標示在圖上，三個頂點連成的三角形塗色，另有一條頂點連線用粗線標出'),
+      a: T('\\sin\\theta=' + sqrtFracTex(dv * dv, n2(d) * N)),
+      h: fgFrameH(nm, dims) + '：' + fgPtList(tri.concat(ex), tri.concat(ex).map(function (X) { return fgCo(nm, X, dims); })) + '。' + fgPlaneH(tri, co, n, nr, pl) + '。直線的方向 ' + T(ov(P + Q) + '=' + vt(d)) + '。線與面的夾角用正弦：' + T('\\sin\\theta=\\dfrac{\\left|' + vec('d') + '\\cdot' + vec('n') + '\\right|}{\\left|' + vec('d') + '\\right|\\left|' + vec('n') + '\\right|}=\\dfrac{' + Math.abs(dv) + '}{\\sqrt{' + n2(d) + '}\\sqrt{' + N + '}}') + '，再化簡。',
+      p: { a: dims[0], b: dims[1], c: dims[2], lay: lay, tri: tri, P: P, Q: Q } };
+  };
+  META_L2.push(['figBoxPtPlane', '§6 看圖求稜上的點到截面的距離'], ['figBoxDihedral', '§6 看圖求截面與一個面的夾角'], ['figBoxLinePlane', '§6 看圖求直線與截面的夾角']);
+
+  /* ────────── L3　附圖固定題 L3-20、L3-21 的類似題 ────────── */
+  /* ══ L3-20　正立方體的頂點到截面的距離：頂點怎麼排要看圖，照圖放坐標再用公式 ══ */
+  L3.figCubeDist = function (r) {
+    r();
+    var lay = fgLay(r), nm = fgBoxNames(lay[0], lay[1], lay[2]), e = r.pick([1, 2, 3, 4, 6]), dims = [e, e, e], tri, W, co, n, nr, num, N, S, ok, guard = 0;
+    do {
+      tri = fgTriPick(r); W = r.pick(FG_V.filter(function (X) { return tri.indexOf(X) < 0; }));
+      co = tri.map(function (X) { return fgCo(nm, X, dims); }); n = cross(sub(co[1], co[0]), sub(co[2], co[0])); nr = redPos(n);
+      num = Math.abs(dot(nr, sub(fgCo(nm, W, dims), co[0]))); N = n2(nr); guard++;
+      ok = nzc(n) >= 2 && num !== 0;
+      if (ok) { S = fgBox(3, 3, 3, nm); ok = fgTriOK(S, tri); }
+    } while (!ok && guard < 400);
+    var pl = planeOf(nr, co[0]), pn = tri.join(''), Wc = fgCo(nm, W, dims);
+    fgTri(S, tri); fgNameAll(S); S.dot(W, { k: 'pW', c: FGC.hot, r: 3.2 });
+    return { q: '如圖，' + T('ABCDEFGH') + ' 為稜長 ' + T(e) + ' 的正立方體。求點 ' + T(W) + ' 到平面 ' + T(pn) + '（塗色的三角形所在的平面）的距離。' + S.render('正立方體，三個頂點連成的三角形塗色，另有一個頂點用圓點標出'),
+      a: T(sqrtFracTex(num * num, N)),
+      h: fgFrameH(nm, dims, true) + '，稜長 ' + T(e) + '：' + fgPtList(tri.concat([W]), co.concat([Wc])) + '。' + fgPlaneH(tri, co, n, nr, pl) + '。' + T(W) + ' 到平面的距離 ' + T('=\\dfrac{\\left|' + subTex(nr, Wc) + '-' + solNeg(pl[3]) + '\\right|}{\\sqrt{' + N + '}}') + '，再化簡。',
+      p: { e: e, lay: lay, tri: tri, W: W } };
+  };
+
+  /* ══ L3-21　長方體的截面上一點：把三條稜的係數當坐標，截面上的點滿足一個一次式 ══ */
+  var FG_FR = [[1, 2], [1, 3], [2, 3], [1, 4], [3, 4], [1, 6], [5, 6], [2, 5], [3, 5], [1, 5], [4, 5]];
+  L3.figBoxCoplanar = function (r) {
+    r();
+    var lay = fgLay(r), nm = fgBoxNames(lay[0], lay[1], lay[2]), dims = fgDims(r, [3, 3, 2], [5, 6, 4]), V, nb, perm, tri, pts, n, nr, pl, u, cs, a, S, ok, guard = 0, i, rest;
+    do {
+      V = r.pick(FG_V); tri = fgTriPick(r); u = r.int(0, 2); guard++;
+      nb = [0, 1, 2].map(function (s) { return fgNb(nm, V, s); });
+      perm = [0, 1, 2].sort(function (x, y) { return nb[x] < nb[y] ? -1 : 1; });               /* 三條稜依另一端的字母排，係數就照這個順序當坐標 */
+      pts = tri.map(function (X) { return perm.map(function (s) { return Math.abs(nm[X][s] - nm[V][s]); }); });
+      n = cross(sub(pts[1], pts[0]), sub(pts[2], pts[0])); nr = redPos(n); pl = planeOf(nr, pts[0]);
+      cs = [0, 1, 2].map(function () { var f = r.pick(FG_FR); return F(f[0], f[1]); });
+      ok = nzc(n) >= 2 && pl[u] !== 0 && !Fr.eq(cs[(u + 1) % 3], cs[(u + 2) % 3]);
+      if (ok) {
+        rest = F(pl[3]);
+        for (i = 0; i < 3; i++) if (i !== u) rest = Fr.sub(rest, Fr.mul(F(pl[i]), cs[i]));
+        S = fgBox(dims[0], dims[1], dims[2], nm);
+        a = Fr.div(rest, F(pl[u])); ok = fgTriOK(S, tri) && a.n !== 0 && a.d <= 12 && Math.abs(a.n) <= 2 * a.d && !(a.d === 1 && Math.abs(a.n) === 1 && nzc(nr) < 3);
+      }
+    } while (!ok && guard < 800);
+    var names = perm.map(function (s) { return nb[s]; }), pn = tri.join('');
+    var coefT = function (k) { return k === u ? 'a' : Fr.tex(cs[k]); }, sum = '', lhs = '';
+    for (i = 0; i < 3; i++) sum += (i ? '+' : '') + coefT(i) + ov(V + names[i]);
+    for (i = 0; i < 3; i++) {
+      if (pl[i] === 0) continue;
+      if (i === u) lhs += term(pl[i], 'a', lhs === '');
+      else { var f = Fr.mul(F(pl[i]), cs[i]); lhs += (f.n < 0 ? '-' : (lhs === '' ? '' : '+')) + Fr.tex(F(Math.abs(f.n), f.d), true); }
+    }
+    fgTri(S, tri); fgNameAll(S);
+    return { q: '如圖，' + T('ABCD') + '-' + T('EFGH') + ' 為一長方體。若平面 ' + T(pn) + '（塗色的三角形所在的平面）上一點 ' + T('P') + ' 滿足 ' + T(ov(V + 'P') + '=' + sum) + '，求實數 ' + T('a') + '。' + S.render('長方體 ABCD-EFGH，三個頂點連成的三角形塗色'),
+      a: T('a=' + Fr.tex(a)),
+      h: '把 ' + T(ov(V + 'P') + '=x' + ov(V + names[0]) + '+y' + ov(V + names[1]) + '+z' + ov(V + names[2])) + ' 的係數 ' + T('(x,y,z)') + ' 當作 ' + T('P') + ' 的坐標（' + T(V) + ' 是原點，三條稜各當 ' + T('1') + ' 個單位；共平面只看係數，與稜長無關）。從圖上看每個頂點要沿哪幾條稜走：' + fgPtList(tri, pts) + '。設平面 ' + T(pn + ':px+qy+rz=d') + '，三點代入解得 ' + T(planeTex(pl)) + '。' + T('P') + ' 的坐標是 ' + T('\\left(' + [0, 1, 2].map(coefT).join(',\\ ') + '\\right)') + '，代入：' + T(lhs + '=' + pl[3]) + ' ⟹ ' + T('a=' + Fr.tex(a)) + '。',
+      p: { lay: lay, dims: dims, V: V, tri: tri, u: u, cs: cs.map(function (f) { return [f.n, f.d]; }) } };
+  };
+  META_L3.push(['figCubeDist', '正立方體的頂點到截面的距離（附圖）'], ['figBoxCoplanar', '長方體截面上一點的向量係數（附圖）']);
+  L3_FIX['L3-20'] = 'figCubeDist'; L3_FIX['L3-21'] = 'figBoxCoplanar';
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

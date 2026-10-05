@@ -2076,6 +2076,353 @@
   CONTRAST['L1.linearBack'] = { f: function (p) { return p.kind; }, why: '反推原始平均數與標準差的方法相同；第 (2) 小題一題問「調整後不低於原始」（解不等式 $ax+b\\ge x$），一題問某個調整後分數的原始分數（解方程式 $ax+b=y_0$）。' };
   CONTRAST['L1.fitThroughPt'] = { f: function (p) { return p.kind === 1; }, why: '兩題都用「最適直線過重心」與「斜率 $=r\\dfrac{\\sigma_y}{\\sigma_x}$」：一題給直線上另一點，先用兩點算斜率再反推 $\\sigma$；一題給 $\\sigma_y$ 與 $\\sigma_x$ 的倍數關係，先算斜率再從重心出發求那一點。' };
   CONTRAST['L2.stdPairSum'] = { f: function (p) { return p.kind >= 2; }, why: '同一條式子 $\\sum(x_i\'\\pm y_i\')^2=2n(1\\pm r)$ 的兩個方向：一題給 $r$ 求平方和，一題給平方和反求 $r$。關鍵都是標準化後 $\\sum x_i\'^2=\\sum y_i\'^2=n$、$\\sum x_i\'y_i\'=nr$。' };
+  /* ══════════════════════════════════════════════════════════
+     2026-10-02　附圖題（讀圖型）：圖由產生器依亂數參數即時畫成 inline SVG，放在 q 裡，圖跟著數字變
+     共用畫圖小工具 fig*()（與 g11a-ch01、g10b-ch04 同一套樣式）：方格坐標平面、散布圖的點、最適直線、長條圖。
+     規則：資料點一律落在格子點上、坐標由參數算（不目測）；圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
+           要給驗算器讀的元素帶 data-k（驗算器從圖上的格線、刻度數字與點的位置代回，不看 p）。
+     L1 3 型（散布圖讀點算 r、三張散布圖判斷相關類型、長條圖算平均數與標準差）
+     L2 2 型（去掉一點後 r 怎麼變、由圖讀最適直線再用重心反推缺的一筆）
+     L3 2 型（L3-19、L3-20 的類似題：幾張散布圖排 r 的大小）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     ══════════════════════════════════════════════════════════ */
+  var FIGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#b03a55', soft: '#8a7378', grid: '#ddd2d5', fill: 'rgba(176,58,85,.26)' };
+  var MINUS = '−';
+  function n1(v) { var s = (Math.round(v * 10) / 10).toFixed(1); if (s === '-0.0') s = '0.0'; return s.replace(/\.0$/, ''); }
+  function n2(v) { var s = (Math.round(v * 100) / 100).toFixed(2); if (s === '-0.00') s = '0.00'; return s.replace(/\.?0+$/, ''); }
+  function figAttr(o) { var s = ''; for (var k in o) { if (o[k] !== undefined && o[k] !== null && o[k] !== false) s += ' ' + k + '="' + o[k] + '"'; } return s; }
+  function figSvg(w, h, label, body) { return '<svg class="qfig" viewBox="0 0 ' + n1(w) + ' ' + n1(h) + '" width="' + n1(w) + '" height="' + n1(h) + '" role="img" aria-label="' + label + '">' + body + '</svg>'; }
+  function figLine(x1, y1, x2, y2, o) { o = o || {}; return '<line' + figAttr({ 'data-k': o.k, x1: n2(x1), y1: n2(y1), x2: n2(x2), y2: n2(y2), stroke: o.c || FIGC.line, 'stroke-width': o.w || 1.6, 'stroke-dasharray': o.dash ? '4 3' : null, 'stroke-linecap': 'round' }) + '/>'; }
+  function figText(x, y, s, o) { o = o || {}; return '<text' + figAttr({ 'data-k': o.k, x: n1(x), y: n1(y), 'font-size': o.fs || 14, fill: o.c || FIGC.ink, 'text-anchor': o.anchor || 'middle', 'font-style': o.it ? 'italic' : null }) + '>' + s + '</text>'; }
+  function figDot(x, y, o) { o = o || {}; return '<circle' + figAttr({ 'data-k': o.k, cx: n2(x), cy: n2(y), r: o.r || 3.6, fill: o.hollow ? '#fff' : (o.c || FIGC.line), stroke: o.hollow ? (o.c || FIGC.hot) : null, 'stroke-width': o.hollow ? 1.6 : null }) + '/>'; }
+  function figArrow(x1, y1, x2, y2, o) {
+    o = o || {}; var a = Math.atan2(y2 - y1, x2 - x1), L = 8, wv = 3.2, c = o.c || FIGC.ink, bx = x2 - L * Math.cos(a), by = y2 - L * Math.sin(a);
+    return figLine(x1, y1, bx, by, { c: c, w: o.w || 1.2, k: o.k }) + '<path d="M ' + n2(x2) + ' ' + n2(y2) + ' L ' + n2(bx - wv * Math.sin(a)) + ' ' + n2(by + wv * Math.cos(a)) + ' L ' + n2(bx + wv * Math.sin(a)) + ' ' + n2(by - wv * Math.cos(a)) + ' Z" fill="' + c + '"/>';
+  }
+  function figOpt(i, t) { return '<span class="qopt">(' + i + ') ' + t + '</span>'; }
+  function figTick(v) { return v < 0 ? MINUS + (-v) : String(v); }
+  /* 坐標平面的幾何：資料範圍 x0..x1、y0..y1，一格 cell 像素；ax、ay 是兩軸所在的位置（預設在左下角）。X()、Y() 把資料坐標換成像素 */
+  function figGeo(o) {
+    var g = { x0: o.x0, x1: o.x1, y0: o.y0, y1: o.y1, cell: o.cell, ax: o.ax === undefined ? o.x0 : o.ax, ay: o.ay === undefined ? o.y0 : o.ay,
+              ox: o.ox || 0, oy: o.oy || 0, L: o.L === undefined ? 26 : o.L, T: o.T === undefined ? 26 : o.T, R: o.R === undefined ? 26 : o.R, B: o.B === undefined ? 24 : o.B };
+    g.X = function (v) { return g.ox + g.L + (v - g.x0) * g.cell; };
+    g.Y = function (v) { return g.oy + g.T + (g.y1 - v) * g.cell; };
+    g.w = g.L + (g.x1 - g.x0) * g.cell + g.R; g.h = g.T + (g.y1 - g.y0) * g.cell + g.B;
+    return g;
+  }
+  /* 方格＋兩軸＋刻度數字。o.grid=false 不畫方格；o.gs 方格間隔；o.xt／o.yt：要標數字的刻度（陣列；false 不標；預設每格都標）；o.O=false 不標原點 */
+  function figAxes(g, o) {
+    o = o || {}; var s = '', v, ext = o.ext === undefined ? 10 : o.ext, fs = o.fs || 13, gs = o.gs || 1, xt = o.xt, yt = o.yt;
+    if (o.grid !== false) {
+      for (v = g.x0; v <= g.x1; v += gs) s += figLine(g.X(v), g.Y(g.y0), g.X(v), g.Y(g.y1), { c: FIGC.grid, w: 1, k: 'gv' });
+      for (v = g.y0; v <= g.y1; v += gs) s += figLine(g.X(g.x0), g.Y(v), g.X(g.x1), g.Y(v), { c: FIGC.grid, w: 1, k: 'gh' });
+    }
+    s += figArrow(g.X(g.x0), g.Y(g.ay), g.X(g.x1) + ext, g.Y(g.ay), { k: 'axx' }) + figArrow(g.X(g.ax), g.Y(g.y0), g.X(g.ax), g.Y(g.y1) - ext, { k: 'axy' });
+    s += figText(g.X(g.x1) + ext + 7, g.Y(g.ay) + 4.5, 'x', { fs: fs + 1, it: 1 }) + figText(g.X(g.ax), g.Y(g.y1) - ext - 5, 'y', { fs: fs + 1, it: 1 });
+    if (xt === undefined) { xt = []; for (v = g.x0; v <= g.x1; v++) if (v !== g.ax) xt.push(v); }
+    if (yt === undefined) { yt = []; for (v = g.y0; v <= g.y1; v++) if (v !== g.ay) yt.push(v); }
+    if (xt) xt.forEach(function (t) { s += figText(g.X(t), g.Y(g.ay) + fs + 2, figTick(t), { fs: fs, k: 'xt' }); if (o.grid === false) s += figLine(g.X(t), g.Y(g.ay) - 2.5, g.X(t), g.Y(g.ay) + 2.5, { c: FIGC.ink, w: 1 }); });
+    if (yt) yt.forEach(function (t) { s += figText(g.X(g.ax) - 5, g.Y(t) + fs * 0.35, figTick(t), { fs: fs, k: 'yt', anchor: 'end' }); if (o.grid === false) s += figLine(g.X(g.ax) - 2.5, g.Y(t), g.X(g.ax) + 2.5, g.Y(t), { c: FIGC.ink, w: 1 }); });
+    if (o.O !== false) s += figText(g.X(g.ax) - 7, g.Y(g.ay) + fs + 1, 'O', { fs: fs, it: 1 });
+    return s;
+  }
+  function figPts(g, pts, o) { o = o || {}; return pts.map(function (p) { return figDot(g.X(p[0]), g.Y(p[1]), { k: o.k || 'pt', r: o.r, c: o.c, hollow: o.hollow }); }).join(''); }
+  /* 直線 y = a x + b，裁在方格範圍內（四周各留 pad 格） */
+  function figFitLine(g, a, b, o) {
+    o = o || {}; var pad = o.pad === undefined ? 0.4 : o.pad, xa = g.x0 - (g.ax === g.x0 ? 0 : pad), xb = g.x1 + pad, ya = g.y0 - (g.ay === g.y0 ? 0 : pad), yb = g.y1 + pad, u, v;
+    if (a !== 0) { u = (ya - b) / a; v = (yb - b) / a; if (u > v) { var t = u; u = v; v = t; } xa = Math.max(xa, u); xb = Math.min(xb, v); }
+    return figLine(g.X(xa), g.Y(a * xa + b), g.X(xb), g.Y(a * xb + b), { c: o.c || FIGC.hot, w: o.w || 1.8, k: o.k || 'fit', dash: o.dash });
+  }
+  /* r 加下標（圖的標題用）：字母斜體、下標數字正體 */
+  function figCapR(x, y, i) { return '<text' + figAttr({ 'data-k': 'cap', x: n1(x), y: n1(y), 'font-size': 15, fill: FIGC.ink, 'text-anchor': 'middle', 'font-style': 'italic' }) + '>r<tspan dy="3.5" font-size="11" font-style="normal">' + i + '</tspan></text>'; }
+  /* 一張小散布圖（不標刻度數字，靠數格子）：0..N 的方格；cap 是圖下方的標題（字串，或 { r: i } 表示 r 加下標） */
+  function figMini(ox, oy, N, cell, pts, cap) {
+    var g = figGeo({ ox: ox, oy: oy, x0: 0, x1: N, y0: 0, y1: N, cell: cell, L: 8, T: 21, R: 17, B: 24 });
+    var s = '<g data-k="panel">' + figAxes(g, { xt: false, yt: false, O: false, ext: 6, fs: 12 }) + figPts(g, pts, { r: cell >= 17 ? 3.6 : 3.2 });
+    s += typeof cap === 'string' ? figText(g.X(N / 2), oy + g.h - 5, cap, { fs: 13, k: 'cap' }) : figCapR(g.X(N / 2), oy + g.h - 8, cap.r);
+    return { s: s + '</g>', w: g.w, h: g.h };
+  }
+  /* 幾張小散布圖排成 cols 欄 */
+  function figMinis(N, cell, sets, caps, cols, label) {
+    var m = figMini(0, 0, N, cell, sets[0], caps[0]), s = '', i, gap = 6, nc = Math.min(cols, sets.length);
+    for (i = 0; i < sets.length; i++) s += figMini((i % cols) * (m.w + gap), Math.floor(i / cols) * m.h, N, cell, sets[i], caps[i]).s;
+    return figSvg(m.w * nc + gap * (nc - 1), m.h * Math.ceil(sets.length / cols), label, s);
+  }
+  /* fig helpers end */
+
+  /* n·Sxx、n·Syy、n·Sxy（都是整數）與相關係數：rat 表示 r 是有理數（r 存成分數），val 是近似值 */
+  function figStat(pts) {
+    var n = pts.length, sx = 0, sy = 0, sxx = 0, syy = 0, sxy = 0, i;
+    for (i = 0; i < n; i++) { sx += pts[i][0]; sy += pts[i][1]; sxx += pts[i][0] * pts[i][0]; syy += pts[i][1] * pts[i][1]; sxy += pts[i][0] * pts[i][1]; }
+    var A = n * sxx - sx * sx, B = n * syy - sy * sy, C = n * sxy - sx * sy, q = Math.round(Math.sqrt(A * B)), rat = A > 0 && B > 0 && q * q === A * B;
+    return { n: n, sx: sx, sy: sy, A: A, B: B, C: C, rat: rat, r: rat ? F(C, q) : null, val: A > 0 && B > 0 ? C / Math.sqrt(A * B) : NaN };
+  }
+  function figAppr(v) { var s = (Math.round(v * 100) / 100).toFixed(2); return s === '-0.00' ? '0.00' : s; }
+  /* r 的精確值；不是有理數時把分母有理化，再附兩位近似值 */
+  function figRTex(st) {
+    if (st.rat) return dec(st.r);
+    if (st.C === 0) return '0';
+    var s = simpSqrt(st.A * st.B), num = Math.abs(st.C) * s[0], den = st.A * st.B, g = gcd(num, den); num /= g; den /= g;      /* C/√(AB) = C·c√rad/(AB) */
+    return (st.C < 0 ? '-' : '') + (den === 1 ? '' : '\\dfrac{') + (num === 1 ? '' : num) + '\\sqrt{' + s[1] + '}' + (den === 1 ? '' : '}{' + den + '}') + '\\approx' + figAppr(st.val);
+  }
+  function figRandPts(r, n, lo, hi) {
+    var pts = [], used = {}, x, y, key;
+    while (pts.length < n) { x = r.int(lo, hi); y = r.int(lo, hi); key = x + ',' + y; if (!used[key]) { used[key] = 1; pts.push([x, y]); } }
+    return pts;
+  }
+  function figSortPts(pts) { return pts.slice().sort(function (p, q) { return p[0] - q[0] || p[1] - q[1]; }); }
+  function figPairs(pts) { return pts.map(function (p) { return '(' + p[0] + ',' + p[1] + ')'; }).join(',\\ '); }
+  function figHas(pts, x, y) { for (var i = 0; i < pts.length; i++) if (pts[i][0] === x && pts[i][1] === y) return true; return false; }
+  function figDistinctX(pts) { var o = {}, c = 0; pts.forEach(function (p) { if (!o[p[0]]) { o[p[0]] = 1; c++; } }); return c; }
+  /* 單張大散布圖（有刻度數字）：回傳幾何與底圖 */
+  function figBig(nx, ny, cell) {
+    var g = figGeo({ x0: 0, x1: nx, y0: 0, y1: ny, cell: cell, L: 26, T: 28, R: 28, B: 24 });
+    return { g: g, s: figAxes(g, { fs: cell >= 20 ? 13 : 12 }) };
+  }
+
+  /* ────────── L1　3 讀圖題：散布圖讀點算 r、三張散布圖判斷相關類型、長條圖算平均數與標準差 ────────── */
+  /* 散布圖（4～6 個格子點）讀坐標算相關係數：兩個平均都是整數、Sxx·Syy 是完全平方 ⟹ r 是分母不超過 10 的分數 */
+  L1.figScatterR = function (r) {
+    var n, pts, st, ok, guard = 0;
+    do {
+      n = r.pick([4, 5, 5, 5, 6]); pts = figRandPts(r, n, 1, 6); st = figStat(pts);
+      ok = st.sx % n === 0 && st.sy % n === 0 && st.rat && st.C !== 0 && Math.abs(st.val) < 1 && Math.abs(st.val) >= 0.45 && st.r.d <= 10 && figDistinctX(pts) >= 3;
+    } while (!ok && guard++ < 80000);
+    if (!ok) { pts = [[1, 2], [2, 1], [3, 3], [4, 5], [5, 4]]; n = 5; st = figStat(pts); }
+    pts = figSortPts(pts);
+    var mx = st.sx / n, my = st.sy / n, dx = pts.map(function (p) { return p[0] - mx; }), dy = pts.map(function (p) { return p[1] - my; });
+    var sxx = st.A / n, syy = st.B / n, sxy = st.C / n, b = figBig(7, 7, 24);
+    var svg = figSvg(b.g.w, b.g.h, '坐標平面上的散布圖，共 ' + n + ' 個點，都在格子點上', b.s + figPts(b.g, pts));
+    return { q: '下圖是 ' + T(String(n)) + ' 筆二維資料 ' + T('(x,y)') + ' 的散布圖，每個點都在格子點上。求 ' + T('x') + ' 與 ' + T('y') + ' 的相關係數 ' + T('r') + '。' + svg,
+      a: '讀出資料 ' + T(figPairs(pts)) + '；' + T('\\mu_x=' + mx + '、\\mu_y=' + my) + '；' + T('S_{xx}=' + sxx + '、S_{yy}=' + syy + '、S_{xy}=' + sxy) + ' ⟹ ' + T('r=\\dfrac{' + sxy + '}{\\sqrt{' + sxx + '\\times' + syy + '}}=' + dec(st.r)),
+      h: '先把每個點的坐標讀出來（橫的讀 $x$、直的讀 $y$，由左到右寫才不會漏）：' + T(figPairs(pts)) + '。兩個平均 ' + T('\\mu_x=' + mx) + '、' + T('\\mu_y=' + my) + '；' + T('x') + ' 的偏差 ' + T(listTex(dx)) + '、' + T('y') + ' 的偏差 ' + T(listTex(dy)) + '，再套 ' + T('r=\\dfrac{S_{xy}}{\\sqrt{S_{xx}S_{yy}}}') + '。',
+      p: { n: n, pts: pts, ans: fr2(st.r) } };
+  };
+
+  /* 三張小散布圖，各判斷是哪一種相關。A 完全正相關、B 正相關、C 零相關、D 負相關、E 完全負相關 */
+  var FCT_NAME = { A: '完全正相關', B: '正相關', C: '零相關', D: '負相關', E: '完全負相關' };
+  var FCT_ZERO = [[[1, 3], [2, 2], [3, 1], [4, 2], [5, 3]], [[1, 2], [2, 3], [3, 4], [4, 3], [5, 2]], [[1, 1], [1, 4], [4, 1], [4, 4]], [[2, 1], [2, 5], [4, 1], [4, 5]], [[1, 2], [1, 4], [5, 2], [5, 4]],
+                  [[3, 1], [1, 3], [5, 3], [3, 5]], [[3, 1], [1, 3], [5, 3], [3, 5], [3, 3]], [[1, 4], [2, 1], [3, 3], [4, 1], [5, 4]], [[2, 3], [3, 2], [4, 3], [3, 4]], [[1, 1], [1, 5], [5, 1], [5, 5], [3, 3]],
+                  [[1, 3], [2, 4], [3, 4], [4, 3], [2, 2], [3, 2]], [[1, 2], [2, 4], [3, 5], [4, 4], [5, 2]], [[2, 2], [2, 4], [4, 2], [4, 4], [3, 3]], [[1, 5], [2, 2], [3, 1], [4, 2], [5, 5]]];
+  function fctLine(r, sg) {                                        /* 同一條直線上的 3～5 個格子點（斜率 ±1、±2、±1/2） */
+    var st = r.pick([[1, 1], [1, 1], [1, 2], [2, 1]]), dx = st[0], dy = st[1], ts, x0 = 1, y0 = 1;
+    if (dx === 1 && dy === 1) ts = r.pick([[0, 1, 2, 3, 4], [0, 1, 2, 3], [1, 2, 3, 4], [0, 1, 3, 4], [0, 2, 3, 4], [0, 1, 2, 4]]);
+    else { ts = [0, 1, 2]; if (dx === 1) x0 = r.int(1, 3); if (dy === 1) y0 = r.int(1, 3); }
+    return ts.map(function (t) { return [x0 + dx * t, sg > 0 ? y0 + dy * t : 6 - (y0 + dy * t)]; });
+  }
+  function fctZero(r) {                                            /* 相關係數恰為 0（對稱的排法）；不取「全部同高」那種標準差為 0、r 沒有定義的 */
+    var pts, st, tr, fl, guard = 0;
+    do {
+      pts = r.pick(FCT_ZERO); tr = r() < 0.5; fl = r() < 0.5;
+      pts = pts.map(function (p) { var x = p[0], y = p[1], t; if (tr) { t = x; x = y; y = t; } if (fl) y = 6 - y; return [x, y]; }); st = figStat(pts);
+    } while (!(st.A > 0 && st.B > 0 && st.C === 0) && guard++ < 50);
+    return pts;
+  }
+  function fctMod(r, sg, n, lo, hi) {                              /* 有明顯趨勢但不共線：0.5 ≤ |r| ≤ 0.92 */
+    var pts, st, guard = 0, ok;
+    do { pts = figRandPts(r, n, lo, hi); st = figStat(pts); ok = st.A > 0 && st.B > 0 && st.val >= 0.5 && st.val <= 0.92 && figDistinctX(pts) >= 4 && figDistinctX(pts.map(function (p) { return [p[1], p[0]]; })) >= 4; } while (!ok && guard++ < 40000);      /* 橫向、直向都至少用到 4 條格線，看起來才像一個趨勢 */
+    if (!ok) pts = [[1, 1], [2, 3], [3, 2], [4, 4], [5, 5]];
+    return sg > 0 ? pts : pts.map(function (p) { return [p[0], lo + hi - p[1]]; });
+  }
+  function fctMake(r, ty) { return ty === 'A' ? fctLine(r, 1) : ty === 'E' ? fctLine(r, -1) : ty === 'C' ? fctZero(r) : fctMod(r, ty === 'B' ? 1 : -1, 5, 1, 5); }
+  function fctWhy(ty, st) {
+    if (ty === 'A') return '所有點都在同一條左下到右上的直線上，' + T('r=1');
+    if (ty === 'E') return '所有點都在同一條左上到右下的直線上，' + T('r=-1');
+    if (ty === 'C') return '點的排法對稱，偏差乘積正負剛好相消，' + T('S_{xy}=0') + '、' + T('r=0');
+    return '點大致由' + (ty === 'B' ? '左下往右上' : '左上往右下') + '，但不在同一條直線上，' + T('r=' + figRTex(st));
+  }
+  L1.figCorrType = function (r) {
+    var types = r.shuffle(['A', 'B', 'C', 'D', 'E']).slice(0, 3), sets = types.map(function (ty) { return figSortPts(fctMake(r, ty)); });
+    var svg = figMinis(6, 17, sets, ['(1)', '(2)', '(3)'], 2, '三張散布圖，點都在格子點上');
+    var opts = ['A', 'B', 'C', 'D', 'E'].map(function (c) { return '<span class="qopt">' + c + ' ' + FCT_NAME[c] + '</span>'; }).join('　');
+    var why = types.map(function (ty, i) { return '(' + (i + 1) + ') ' + fctWhy(ty, figStat(sets[i])) + ' ⟹ ' + FCT_NAME[ty]; });
+    return { q: '下面三張散布圖的點都在格子點上。判斷各圖中 ' + T('x') + ' 與 ' + T('y') + ' 的關係，從下列代號選出最符合的。' + svg + opts,
+      a: types.map(function (ty, i) { return '(' + (i + 1) + ') ' + ty + ' ' + FCT_NAME[ty]; }).join('　'),
+      h: '「完全」相關要所有點都在同一條斜的直線上才算，只要有一點偏出去就只是正相關或負相關。' + why.join('；') + '。',
+      p: { types: types, sets: sets, ans: types } };
+  };
+
+  /* 長條圖讀次數，算平均數與標準差（平均數是整數） */
+  var FBS_CTX = [['某班同學一次小考的得分', '得分（分）', 0, 6, '人數（人）', '位同學'], ['某球隊每位球員上一場比賽的進球數', '進球數（球）', 0, 3, '人數（人）', '位球員'], ['某班同學上週運動的天數', '運動天數（天）', 0, 3, '人數（人）', '位同學'],
+                 ['某社團成員每人借書的本數', '借書本數（本）', 1, 4, '人數（人）', '位成員'], ['某次射擊練習每位選手命中的發數', '命中發數（發）', 3, 6, '人數（人）', '位選手']];
+  function figBars(vals, cnts, xn, yn) {
+    var nb = vals.length, top = Math.max.apply(null, cnts) + 1, cw = 34, g = figGeo({ x0: 0, x1: nb, y0: 0, y1: top, cell: 18, L: 30, T: 30, R: 14, B: 42 }), s = '', i, v;
+    g.X = function (u) { return g.ox + g.L + u * cw; }; g.w = g.L + nb * cw + g.R;
+    for (v = 0; v <= top; v++) { s += figLine(g.X(0), g.Y(v), g.X(nb), g.Y(v), { c: FIGC.grid, w: 1, k: 'gh' }) + figText(g.X(0) - 5, g.Y(v) + 4.5, String(v), { fs: 13, k: 'yt', anchor: 'end' }); }
+    for (i = 0; i < nb; i++) {
+      s += '<rect' + figAttr({ 'data-k': 'bar', x: n2(g.X(i) + 7), y: n2(g.Y(cnts[i])), width: cw - 14, height: n2(g.Y(0) - g.Y(cnts[i])), fill: FIGC.fill, stroke: FIGC.line, 'stroke-width': 1.5 }) + '/>';
+      s += figText(g.X(i + 0.5), g.Y(0) + 15, String(vals[i]), { fs: 13, k: 'xt' });
+    }
+    s += figLine(g.X(0), g.Y(0), g.X(nb), g.Y(0), { c: FIGC.ink, w: 1.3, k: 'axx' }) + figLine(g.X(0), g.Y(0), g.X(0), g.Y(top), { c: FIGC.ink, w: 1.3, k: 'axy' });
+    s += figText(g.X(nb / 2), g.Y(0) + 33, xn, { fs: 13 }) + figText(g.X(0) - 24, g.Y(top) - 11, yn, { fs: 13, anchor: 'start' });
+    return figSvg(g.w, g.h, '長條圖：橫軸是' + xn + '，縱軸是' + yn, s);
+  }
+  L1.figBarStats = function (r) {
+    var ctx = r.pick(FBS_CTX), nb, b, vals, cnts, n, s1, mu, ss, i, guard = 0, ok;
+    do {
+      nb = r.pick([4, 5, 5]); b = r.int(ctx[2], ctx[3]); vals = []; cnts = []; n = 0; s1 = 0;
+      for (i = 0; i < nb; i++) { vals.push(b + i); cnts.push(r.int(1, 6)); n += cnts[i]; s1 += vals[i] * cnts[i]; }
+      ok = s1 % n === 0 && n >= 8 && n <= 22;
+      if (ok) { mu = s1 / n; ss = 0; for (i = 0; i < nb; i++) ss += cnts[i] * (vals[i] - mu) * (vals[i] - mu); ok = [1, 2, 4, 5, 10].indexOf(F(ss, n).d) >= 0; }
+    } while (!ok && guard++ < 20000);
+    if (!ok) { vals = [1, 2, 3, 4, 5]; cnts = [1, 2, 4, 2, 1]; nb = 5; n = 10; s1 = 30; }
+    mu = s1 / n; ss = 0; for (i = 0; i < nb; i++) ss += cnts[i] * (vals[i] - mu) * (vals[i] - mu);
+    var va = F(ss, n), prods = vals.map(function (v, j) { return v + '\\times' + cnts[j]; }), sqs = vals.map(function (v, j) { return (v - mu) * (v - mu) + '\\times' + cnts[j]; });
+    return { q: '下圖是' + ctx[0] + '的長條圖。求這組資料的 (1) 算術平均數　(2) 標準差。' + figBars(vals, cnts, ctx[1], ctx[4]),
+      a: '(1) 共 ' + T(String(n)) + ' 筆，' + T('\\mu=\\dfrac{' + s1 + '}{' + n + '}=' + mu) + '　(2) ' + T('\\sigma^2=\\dfrac{' + ss + '}{' + n + '}=' + dec(va)) + '、' + T('\\sigma=' + sqrtBoth(va)),
+      h: '長條的高度是次數，不是資料本身。先讀出每一條的高度：' + T(listTex(cnts)) + '，加起來共 ' + T(String(n)) + ' 筆；總和 ' + T('=' + prods.join('+') + '=' + s1) + ' ⟹ ' + T('\\mu=' + mu) + '。偏差平方也要乘上次數：' + T(sqs.join('+') + '=' + ss) + '，再除以 ' + T(String(n)) + ' 開根號。',
+      p: { vals: vals, cnts: cnts, ans: { n: n, mu: mu, var: fr2(va) } } };
+  };
+
+  L1_H1.figScatterR = '這是「由散布圖算相關係數」：先把圖上每個點的坐標讀成數對列出來，再照「兩個平均、兩排偏差、三個和」的步驟算。';
+  L1_H1.figCorrType = '這是「看散布圖判斷相關的類型」：先看點是往右上還是往右下；再看是不是全部落在同一條直線上，全部共線才叫「完全」相關；左右或上下對稱、正負相消的是零相關。';
+  L1_H1.figBarStats = '這是「由長條圖算平均數與標準差」：橫軸是資料的值、長條的高度是這個值出現幾次，所以算總和與偏差平方和時，每一項都要乘上次數。';
+  L1_SOL.figScatterR = function (p, o) {
+    var n = p.n, st = figStat(p.pts), mx = st.sx / n, my = st.sy / n, dx = p.pts.map(function (q) { return q[0] - mx; }), dy = p.pts.map(function (q) { return q[1] - my; });
+    return ['讀圖：由左到右把每個點的坐標寫下來，' + T(figPairs(p.pts)) + '，共 ' + T(String(n)) + ' 筆。',
+      '兩個平均：' + T('\\mu_x=\\dfrac{' + st.sx + '}{' + n + '}=' + mx) + '、' + T('\\mu_y=\\dfrac{' + st.sy + '}{' + n + '}=' + my) + '。',
+      '兩排偏差：' + T('x') + ' 的偏差 ' + T(listTex(dx)) + '，' + T('y') + ' 的偏差 ' + T(listTex(dy)) + '（兩排的總和都是 $0$）。',
+      '三個和：' + T('S_{xx}=' + st.A / n) + '、' + T('S_{yy}=' + st.B / n) + '、' + T('S_{xy}=' + st.C / n) + '。',
+      '代進公式 ' + T('r=\\dfrac{S_{xy}}{\\sqrt{S_{xx}S_{yy}}}=\\dfrac{' + st.C / n + '}{\\sqrt{' + st.A / n + '\\times' + st.B / n + '}}=' + dec(st.r)) + '。' + solFin(o)];
+  };
+  L1_SOL.figCorrType = function (p, o) {
+    var st = ['判斷的順序：先看方向（往右上是正、往右下是負），再看是不是所有點都在同一條斜的直線上（是才叫「完全」）；看不出方向時，檢查是不是對稱到正負相消。'];
+    p.types.forEach(function (ty, i) { st.push('圖 (' + (i + 1) + ')：' + fctWhy(ty, figStat(p.sets[i])) + '，選 ' + ty + '（' + FCT_NAME[ty] + '）。'); });
+    st[st.length - 1] += solFin(o);
+    return st;
+  };
+  L1_SOL.figBarStats = function (p, o) {
+    var n = p.ans.n, mu = p.ans.mu, va = solF(p.ans.var), s1 = 0, ss = 0, i;
+    for (i = 0; i < p.vals.length; i++) { s1 += p.vals[i] * p.cnts[i]; ss += p.cnts[i] * (p.vals[i] - mu) * (p.vals[i] - mu); }
+    return ['讀圖：值 ' + T(listTex(p.vals)) + ' 的次數依序是 ' + T(listTex(p.cnts)) + '，總筆數 ' + T('n=' + p.cnts.join('+') + '=' + n) + '。',
+      '總和要「值乘次數」：' + T(p.vals.map(function (v, j) { return v + '\\times' + p.cnts[j]; }).join('+') + '=' + s1) + '，平均數 ' + T('\\mu=\\dfrac{' + s1 + '}{' + n + '}=' + mu) + '。',
+      '偏差 ' + T(listTex(p.vals.map(function (v) { return v - mu; }))) + '，偏差平方乘次數再加起來：' + T(p.vals.map(function (v, j) { return (v - mu) * (v - mu) + '\\times' + p.cnts[j]; }).join('+') + '=' + ss) + '。',
+      '變異數 ' + T('\\sigma^2=\\dfrac{' + ss + '}{' + n + '}=' + dec(va)) + '，標準差 ' + T('\\sigma=' + sqrtBoth(va)) + '。' + solFin(o)];
+  };
+  META_L1.push(['figScatterR', '§3 看散布圖讀點算相關係數'], ['figCorrType', '§3 看散布圖判斷相關的類型'], ['figBarStats', '§3 看長條圖算平均數與標準差']);
+
+  /* ────────── L2　讀圖題：去掉一點後 r 怎麼變、由圖讀最適直線再反推缺的一筆 ────────── */
+  /* 去掉 P 之後的相關係數 r′，並與原來的 r 比大小。
+     line：其餘的點共線（r′=±1），P 在線外；lever：其餘的點排成長方形（r′=0），P 在遠處；cent：P 剛好是其餘各點的重心（r 不變） */
+  L2.figDropPoint = function (r) {
+    var kind = r.pick(['line', 'line', 'lever', 'cent']), rest, P, all, stAll, stRest, guard = 0, ok = false, sg = 1, i, hh, cmp;
+    if (kind === 'line') {
+      do {
+        var sl = r.pick([[1, 1], [1, 1], [2, 1], [1, 2]]), dx = sl[0], dy = sl[1], m = dx === 1 && dy === 1 ? r.pick([4, 5]) : 4, x0 = r.int(1, 7 - dx * (m - 1)), y0 = r.int(1, 7 - dy * (m - 1));
+        sg = r.sign(); rest = [];
+        for (i = 0; i < m; i++) rest.push([x0 + dx * i, sg > 0 ? y0 + dy * i : y0 + dy * (m - 1 - i)]);
+        P = [r.int(1, 7), r.int(1, 7)];
+        if (figHas(rest, P[0], P[1]) || (P[0] - rest[0][0]) * (rest[1][1] - rest[0][1]) === (P[1] - rest[0][1]) * (rest[1][0] - rest[0][0])) continue;
+        stAll = figStat(rest.concat([P])); ok = stAll.C * sg > 0 && Math.abs(stAll.val) >= 0.35 && Math.abs(stAll.val) <= 0.93;
+      } while (!ok && guard++ < 3000);
+      if (!ok) { rest = [[1, 1], [2, 2], [3, 3], [4, 4]]; P = [5, 2]; sg = 1; }
+    } else if (kind === 'lever') {
+      var w = r.pick([1, 2]), h = r.pick([1, 2]), a = r.int(1, 2), b = r.int(1, 2), fx = r() < 0.5, fy = r() < 0.5;
+      rest = [[a, b], [a + w, b], [a, b + h], [a + w, b + h]]; if (w === 2 && h === 2 && r() < 0.5) rest.push([a + 1, b + 1]);
+      P = [r.int(6, 7), r.int(6, 7)];
+      rest = rest.map(function (p) { return [fx ? 8 - p[0] : p[0], fy ? 8 - p[1] : p[1]]; }); P = [fx ? 8 - P[0] : P[0], fy ? 8 - P[1] : P[1]];
+    } else {
+      do {
+        rest = figRandPts(r, 4, 1, 7); stRest = figStat(rest);
+        ok = stRest.sx % 4 === 0 && stRest.sy % 4 === 0 && stRest.rat && Math.abs(stRest.val) >= 0.4 && Math.abs(stRest.val) < 1 && stRest.r.d <= 10 && !figHas(rest, stRest.sx / 4, stRest.sy / 4) && figDistinctX(rest) >= 3;
+      } while (!ok && guard++ < 80000);
+      if (!ok) rest = [[1, 2], [3, 1], [5, 5], [7, 4]];
+      stRest = figStat(rest); P = [stRest.sx / 4, stRest.sy / 4];
+    }
+    rest = figSortPts(rest); all = rest.concat([P]); stAll = figStat(all); stRest = figStat(rest);
+    var n = all.length, b2 = figBig(8, 8, 22), g = b2.g, lx = 9, ly = -8, best = -1;
+    [[9, -8], [-9, -8], [9, 17], [-9, 17], [13, 5], [-13, 5]].forEach(function (c) {                      /* P 的名字放在離其他點最遠的那一側 */
+      var ux = P[0] + c[0] / 22, uy = P[1] - (c[1] - 5) / 22, dmin = 99;
+      rest.forEach(function (q) { dmin = Math.min(dmin, Math.sqrt((q[0] - ux) * (q[0] - ux) + (q[1] - uy) * (q[1] - uy))); });
+      if (ux > 0.45 && ux < 8.4 && uy > 0.45 && dmin > best + 1e-9) { best = dmin; lx = c[0]; ly = c[1]; }
+    });
+    var svg = figSvg(g.w, g.h, '坐標平面上的散布圖，共 ' + n + ' 個點，其中一點標為 P', b2.s + figPts(g, rest) + figDot(g.X(P[0]), g.Y(P[1]), { k: 'pt', c: FIGC.hot, r: 4 }) + figText(g.X(P[0]) + lx, g.Y(P[1]) + ly, 'P', { fs: 14, it: 1, k: 'P', c: FIGC.hot }));
+    var rp = figRTex(stRest), ra = figRTex(stAll);
+    cmp = Math.abs(stAll.val - stRest.val) < 1e-12 ? 0 : (stAll.val < stRest.val ? -1 : 1);
+    if (kind === 'line') hh = '用手把 $P$ 蓋住：剩下的 $' + (n - 1) + '$ 個點 ' + T(figPairs(rest)) + ' 都在同一條' + (sg > 0 ? '左下到右上' : '左上到右下') + '的直線上，所以 ' + T("r'=" + (sg > 0 ? '1' : '-1')) + '。原來多了一個不在線上的 $P$，$|r|$ 一定小於 $1$（實際算是 ' + T('r=' + ra) + '）。' + (sg > 0 ? '' : '注意 $-1$ 是相關係數的最小值：去掉 $P$ 之後負相關變強，$r$ 的值反而變小。');
+    else if (kind === 'lever') hh = '用手把 $P$ 蓋住：剩下的點 ' + T(figPairs(rest)) + ' 排成上下、左右都對稱的長方形，偏差乘積正負相消，' + T('S_{xy}=0') + ' ⟹ ' + T("r'=0") + '。$P$ 離其他點很遠、在' + (stAll.C > 0 ? '同時偏大或同時偏小的方向（右上或左下）' : '一個偏大、一個偏小的方向（左上或右下）') + '，光靠它一點就讓 ' + T('S_{xy}') + ' 變成' + (stAll.C > 0 ? '正' : '負') + '的，原來 ' + T('r=' + ra) + '。';
+    else hh = '先算其餘四點 ' + T(figPairs(rest)) + ' 的平均：' + T('\\mu_x=' + P[0] + '、\\mu_y=' + P[1]) + '，剛好就是 $P$ 的坐標。去掉（或加上）重心那一筆，其餘各點的偏差都不變，' + T('S_{xx}') + '、' + T('S_{yy}') + '、' + T('S_{xy}') + ' 也都不變，所以相關係數不變；用四個點算 ' + T("r'=\\dfrac{" + stRest.C / 4 + '}{\\sqrt{' + stRest.A / 4 + '\\times' + stRest.B / 4 + '}}=' + rp) + '。';
+    return { q: '如圖，散布圖上有 ' + T(String(n)) + ' 筆資料（都在格子點上），其中一筆是 ' + T('P') + ' 點。這 ' + T(String(n)) + ' 筆資料的相關係數是 ' + T('r') + '；把 ' + T('P') + ' 這一筆去掉，剩下 ' + T(String(n - 1)) + ' 筆的相關係數是 ' + T("r'") + '。(1) 求 ' + T("r'") + '。　(2) ' + T('r') + ' 與 ' + T("r'") + ' 哪一個大，還是一樣大？' + svg,
+      a: '(1) ' + T("r'=" + rp) + '　(2) ' + T(cmp === 0 ? "r=r'" : cmp < 0 ? "r\\lt r'" : "r\\gt r'") + (cmp === 0 ? '' : '（原來 ' + T('r=' + ra) + '）'),
+      h: hh,
+      p: { kind: kind, rest: rest, P: P, ans: { cmp: cmp } } };
+  };
+
+  /* 由圖讀最適直線（過兩個格子點 A、B），再用「必過重心」反推沒畫出來的那一筆。
+     資料：x = mx + k·i（i=-2..2），y = my + m·i + e_i，e 與 i、與常數都垂直 ⟹ 最適直線斜率恰為 m/k、過 (mx,my) */
+  var FFR_E = [[-1, 2, 0, -2, 1], [1, -2, 0, 2, -1], [1, 0, -2, 0, 1], [-1, 0, 2, 0, -1], [1, -1, 0, -1, 1], [-1, 1, 0, 1, -1]];
+  L2.figFitRead = function (r) {
+    var guard = 0, ok, k, m, e, mx, my, xs, ys, dv, lo, i, hid, shown, nx, ny, gg, pp, q, cand, t, X, Y, A, B, ia, ib;
+    do {
+      ok = true; var sl = r.pick([[1, 1], [1, -1], [2, 1], [2, -1], [1, 2], [1, -2]]); k = sl[0]; m = sl[1]; e = r.pick(FFR_E);
+      dv = []; for (i = 0; i < 5; i++) dv.push(m * (i - 2) + e[i]); lo = Math.min.apply(null, dv);
+      mx = r.int(2 * k + 1, 2 * k + 2); my = r.int(1 - lo, 2 - lo); xs = []; ys = [];
+      for (i = 0; i < 5; i++) { xs.push(mx + k * (i - 2)); ys.push(my + dv[i]); }
+      hid = r.int(0, 4); shown = []; for (i = 0; i < 5; i++) if (i !== hid) shown.push([xs[i], ys[i]]);
+      nx = Math.max(7, xs[4] + 1); ny = Math.max(7, Math.max.apply(null, ys) + 1);
+      gg = gcd(Math.abs(m), k); pp = m / gg; q = k / gg; cand = [];
+      for (t = -8; t <= 8; t++) { X = mx + q * t; Y = my + pp * t; if (X >= 1 && X <= nx && Y >= 1 && Y <= ny && !figHas(shown, X, Y) && !(X === xs[hid] && Y === ys[hid])) cand.push([X, Y]); }
+      if (cand.length < 2 || ny > 12) { ok = false; continue; }
+      ia = r.int(0, cand.length - 2); ib = r.int(ia + 1, cand.length - 1); A = cand[ia]; B = cand[ib];
+    } while (!ok && guard++ < 500);
+    var slope = F(m, k), icpt = Fr.sub(F(my), Fr.mul(slope, F(mx))), cell = (nx > 9 || ny > 9) ? 18 : 20, bg = figBig(nx, ny, cell), g = bg.g, s = bg.s;
+    function nameAt(pt, nm) {                                      /* A、B 的名字放在直線的上方或下方，避開資料點 */
+      var up = m > 0 ? [-9, -7] : [9, -7], dn = m > 0 ? [9, 15] : [-9, 15], use = up;
+      if (figHas(shown, pt[0] + (up[0] > 0 ? 1 : -1), pt[1] + 1) || figHas(shown, pt[0], pt[1] + 1) || figHas(shown, pt[0] + (up[0] > 0 ? 1 : -1), pt[1])) use = dn;
+      return figText(g.X(pt[0]) + use[0], g.Y(pt[1]) + use[1], nm, { fs: 14, it: 1, k: 'nm' });
+    }
+    var la = m / k, lb = my - la * mx, ytop = ny + 0.3, xtop = la > 0 ? Math.min(nx + 0.3, (ytop - lb) / la) : Math.max(0, (ytop - lb) / la), top = la * xtop + lb >= ytop - 1e-9;   /* 直線在圖上較高的那一端：L 標在旁邊 */
+    s += figText(g.X(xtop) + (top || la < 0 ? 10 : -5), g.Y(la * xtop + lb) + (top ? (la > 0 ? 12 : 8) : -7), 'L', { fs: 14, it: 1, c: FIGC.hot });
+    s += figFitLine(g, m / k, my - m / k * mx, { pad: 0.3 }) + figPts(g, shown) +figDot(g.X(A[0]), g.Y(A[1]), { k: 'A', hollow: 1, r: 3.8 }) + figDot(g.X(B[0]), g.Y(B[1]), { k: 'B', hollow: 1, r: 3.8 }) + nameAt(A, 'A') + nameAt(B, 'B');
+    var sumX = xs[0] + xs[1] + xs[2] + xs[3] + xs[4] - xs[hid], sumY = shown[0][1] + shown[1][1] + shown[2][1] + shown[3][1];
+    var svg = figSvg(g.w, g.h, '坐標平面上四個資料點與一條直線 L，L 通過空心的格子點 A、B', s);
+    var slTex = '\\dfrac{' + B[1] + '-' + l3par(A[1]) + '}{' + B[0] + '-' + l3par(A[0]) + '}=' + dec(slope);
+    return { q: '如圖，直線 ' + T('L') + ' 是五筆資料 ' + T('y') + ' 對 ' + T('x') + ' 的最適直線，' + T('L') + ' 通過格子點 ' + T('A') + '、' + T('B') + '（空心點，不是資料）。五筆資料有四筆畫在圖上（實心點，都在格子點上），還有一筆 ' + T('(' + xs[hid] + ',t)') + ' 沒有畫出來。(1) 求 ' + T('L') + ' 的方程式。　(2) 求 ' + T('t') + '。' + svg,
+      a: '(1) ' + T(lineTex(slope, icpt)) + '　(2) ' + T('t=' + ys[hid]),
+      h: '(1) 讀出 ' + T('A(' + A[0] + ',' + A[1] + ')') + '、' + T('B(' + B[0] + ',' + B[1] + ')') + '，斜率 ' + T('=' + slTex) + '，再代一點得 ' + T(lineTex(slope, icpt)) + '。(2) 最適直線必過重心：五筆的 ' + T('\\mu_x=\\dfrac{' + sumX + '+' + xs[hid] + '}{5}=' + mx) + '，代入 ' + T('L') + ' 得 ' + T('\\mu_y=' + my) + '，所以五個 ' + T('y') + ' 的總和是 ' + T(String(5 * my)) + '；扣掉圖上四筆的 ' + T('y') + '（和為 ' + T(String(sumY)) + '）就是 ' + T('t') + '。',
+      p: { k: k, m: m, e: e, mx: mx, my: my, hid: hid, A: A, B: B, ans: { a: fr2(slope), b: fr2(icpt), t: ys[hid] } } };
+  };
+  META_L2.push(['figDropPoint', '§2 看散布圖：去掉一點後 r 怎麼變'], ['figFitRead', '§2 由圖讀最適直線，用重心反推缺的一筆']);
+
+  /* ────────── L3　L3-19、L3-20 的類似題：幾張散布圖的相關係數排大小 ────────── */
+  /* 相關係數由大到小（或由小到大）接成一串；vals 是 { v: 近似值, f: 分數或 null }，相等才寫等號 */
+  function figRankTex(vals, asc) {
+    var idx = vals.map(function (v, i) { return i; }).sort(function (p, q) { return asc ? vals[p].v - vals[q].v || p - q : vals[q].v - vals[p].v || p - q; }), s = 'r_' + (idx[0] + 1), i;
+    for (i = 1; i < idx.length; i++) s += (Math.abs(vals[idx[i]].v - vals[idx[i - 1]].v) < 1e-9 ? '=' : (asc ? '\\lt ' : '\\gt ')) + 'r_' + (idx[i] + 1);
+    return s;
+  }
+  var FR3_P3 = [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]];
+  var FR3_P4 = [[1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4], [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1],
+                [3, 1, 2, 4], [3, 1, 4, 2], [3, 2, 1, 4], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3], [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]];
+  /* L3-19　四張圖各 3 點（或 4 點），x 都是 1,2,3(,4)、y 是 1,2,3(,4) 的排列：Sxx、Syy 四張都一樣，只要比 Sxy */
+  L3.figRank3 = function (r) {
+    var n = r.pick([3, 3, 4]), perms = r.shuffle(n === 3 ? FR3_P3 : FR3_P4).slice(0, 4), sets, sts, vals, guard = 0;
+    while (n === 4 && guard++ < 40) {                               /* 四點型：至少三種不同的值，才有東西可排 */
+      var seen = {}, c = 0; perms.forEach(function (pm) { var v = figStat(pm.map(function (y, i) { return [i + 1, y]; })).C; if (!seen[v]) { seen[v] = 1; c++; } });
+      if (c >= 3) break; perms = r.shuffle(FR3_P4).slice(0, 4);
+    }
+    sets = perms.map(function (pm) { return pm.map(function (y, i) { return [i + 1, y]; }); }); sts = sets.map(figStat); vals = sts.map(function (st) { return { v: st.val, f: st.r }; });
+    var caps = [{ r: 1 }, { r: 2 }, { r: 3 }, { r: 4 }], svg = n === 3 ? figMinis(4, 22, sets, caps, 2, '四張散布圖，每張 3 個點，都在格子點上') : figMinis(5, 20, sets, caps, 2, '四張散布圖，每張 4 個點，都在格子點上');
+    var sxx = sts[0].A / n, mid = (n + 1) / 2, dxs = sets[0].map(function (p) { return p[0] - mid; });
+    var each = sets.map(function (st, i) { return '圖 ' + (i + 1) + ' 的 ' + T('y') + ' 依序是 ' + T(perms[i].join(',')) + '，' + T('S_{xy}=' + dec(F(sts[i].C, n))) + '、' + T('r_' + (i + 1) + '=' + dec(sts[i].r)); });
+    return { q: '下列四個散布圖的點都在格子點上，相關係數分別為 ' + T('r_1,r_2,r_3,r_4') + '。寫出四個相關係數的大小關係。' + svg,
+      a: T(figRankTex(vals, false)) + '（' + T(sts.map(function (st, i) { return 'r_' + (i + 1) + '=' + dec(st.r); }).join(',\\ ')) + '）',
+      h: '以格線為單位讀點：四張圖的 ' + T('x') + ' 都是 ' + T(sets[0].map(function (p) { return p[0]; }).join(',')) + '，' + T('y') + ' 都是同一組數的排列，所以 ' + T('\\mu_x=\\mu_y=' + dec(F(n + 1, 2))) + '、' + T('S_{xx}=S_{yy}=' + dec(F(sts[0].A, n))) + ' 四張都一樣，只要比 ' + T('S_{xy}') + '（' + T('x') + ' 的偏差 ' + T(dxs.map(function (d) { return dec(F(Math.round(d * 2), 2)); }).join(',')) + ' 乘上 ' + T('y') + ' 的偏差再加起來）。' + each.join('；') + '。',
+      p: { n: n, perms: perms, ans: figRankTex(vals, false) } };
+  };
+  /* L3-20　四張圖：完全共線（±1）、對稱（0）、有趨勢但不共線（正、負）各一種以內，不必把每個 r 算出來就能排 */
+  L3.figRank6 = function (r) {
+    var kinds = r.shuffle(r.shuffle(['A', 'B', 'C', 'D', 'E']).slice(0, 4)), sets = kinds.map(function (ty) { return figSortPts(ty === 'B' || ty === 'D' ? fctMod(r, ty === 'B' ? 1 : -1, 6, 1, 5) : fctMake(r, ty)); });
+    var sts = sets.map(figStat), vals = sts.map(function (st) { return { v: st.val, f: st.r }; }), asc = r() < 0.6;
+    var svg = figMinis(6, 17, sets, [{ r: 1 }, { r: 2 }, { r: 3 }, { r: 4 }], 2, '四張散布圖，點都在格子點上');
+    var each = kinds.map(function (ty, i) { return '圖 ' + (i + 1) + '：' + fctWhy(ty, sts[i]); });
+    return { q: '下列四個散布圖的點都在格子點上，相關係數分別為 ' + T('r_1,r_2,r_3,r_4') + '。將 ' + T('r_1,r_2,r_3,r_4') + (asc ? ' 由小到大' : ' 由大到小') + '排列。' + svg,
+      a: T(figRankTex(vals, asc)),
+      h: '不必每張都算：先分出正、負、零，再看有沒有「全部共線」的。' + each.join('；') + '。完全共線的是 ' + T('\\pm1') + '，是相關係數的最大、最小值；對稱的是 ' + T('0') + '，夾在正與負中間。',
+      p: { kinds: kinds, sets: sets, asc: asc, ans: figRankTex(vals, asc) } };
+  };
+  META_L3.push(['figRank3', '四張散布圖排 r 的大小：x、y 都是同一組數的排列（附圖）'], ['figRank6', '四張散布圖排 r 的大小：共線、對稱、有趨勢（附圖）']);
+  L3_FIX['L3-19'] = 'figRank3'; L3_FIX['L3-20'] = 'figRank6';
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

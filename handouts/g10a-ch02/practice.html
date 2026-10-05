@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/katex/katex.min.css">
 <script defer src="../../assets/katex/katex.min.js"></script>
 <script defer src="../../assets/katex/auto-render.min.js"></script>
-<script src="practice-gen.js?v=20260929c"></script>
+<script src="practice-gen.js?v=20261002c2"></script>
 <style>
 :root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
   --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
@@ -212,6 +212,12 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 .diag .fixset{margin-top:6px}
 .myrec .mr-file{display:none}
 @media print{.gcard .gc,.diag{display:none!important}}
+/* ── 附圖題（2026-10-02）：題目的圖是 inline SVG，class="qfig"；手機寬自動縮小，列印照印 ── */
+.qfig,.qfig-sol{display:block;max-width:100%;height:auto;margin:8px auto 4px;font-family:KaTeX_Main,KaTeX_Math,"Times New Roman","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+.qfig text[font-style="italic"],.qfig tspan[font-style="italic"],.qfig-sol text[font-style="italic"],.qfig-sol tspan[font-style="italic"]{font-family:KaTeX_Math,KaTeX_Main,"Times New Roman",serif}
+.qfig tspan[font-style="normal"],.qfig-sol tspan[font-style="normal"]{font-family:KaTeX_Main,"Times New Roman",serif}
+.qopt{display:inline-block}
+@media print{.qfig,.qfig-sol{break-inside:avoid}}
 </style>
 <link rel="stylesheet" href="../../assets/theme-cow.css">
 </head>
@@ -241,7 +247,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
     <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
     <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
     <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
-    <li>本書所有生成題的答案都經電腦獨立驗算（17,750 題抽樣）；固定題全數人工＋電腦重算，並修正了一題官方答案的錯誤（L4-6）。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（20,000 題抽樣）；L1、L2 的<b>讀圖題</b>每次換題，圖會跟著新的數字重畫，條件要從圖上讀；固定題全數人工＋電腦重算，並修正了一題官方答案的錯誤（L4-6）。</li>
   </ol>
 </div>
 
@@ -268,7 +274,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
 <div class="goal">
   <div><b>對象</b>看到「求直線方程式」還要想很久、配方法還會漏一半的同學。</div>
-  <div><b>目標</b>27 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>目標</b>30 個基本型（含 3 型讀圖題），每型看到題目 30 秒內知道要做什麼。</div>
   <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
 </div>
 
@@ -302,7 +308,13 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="fadeset" data-tier="L1" data-keys="lineCircPos,chordLen,tangentAtPt,tangentLen" data-seed="7501"></div>
 <div class="fixset" data-tier="L1" data-keys="lineCircPos,chordLen,tangentAtPt,tangentLen" data-seed="2501"></div>
 
-<h3 class="sec">L1 混合檢測 12 題（全章 27 型打亂，練「判斷這是哪一型」）</h3>
+<h3 class="sec">2-6 讀圖題：比斜率、由方格寫直線與圓</h3>
+<div class="must">先要會：<b>條件畫在圖上時，先把圖上的東西讀成數字或正負，再套公式</b>；<b>直線往右上斜率是正的、往右下是負的；同樣是正的越陡越大，同樣是負的越陡越小</b>；<b>方格上的直線，找它通過的兩個格子點讀坐標，再用兩點求斜率、寫點斜式</b>；<b>方格上的圓，先讀圓心，再找圓上的一個格子點算 $r^2$（橫差的平方加縱差的平方），代入標準式</b>。本章的段考原題大約每八題有一題附圖，和斜率有關的題目將近一半有圖。按「新題」時，圖會跟著數字重畫。</div>
+<div class="gen-grid" data-tier="L1" data-keys="figSlopeOrder,figLineGrid,figCircGrid"></div>
+<div class="fadeset" data-tier="L1" data-keys="figSlopeOrder,figLineGrid,figCircGrid" data-seed="7601"></div>
+<div class="fixset" data-tier="L1" data-keys="figSlopeOrder,figLineGrid,figCircGrid" data-seed="2601" data-n="6"></div>
+
+<h3 class="sec">L1 混合檢測 12 題（全章 30 型打亂，練「判斷這是哪一型」）</h3>
 <div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -311,7 +323,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
   <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
-  <div><b>目標</b>21 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 83 份高一段考卷重新統計，補了 5 型），每型都能自己完整寫出過程。</div>
+  <div><b>目標</b>24 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 83 份高一段考卷重新統計，補了 5 型；2026-10-02 再補 3 型讀圖題），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
 
@@ -335,7 +347,11 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <div class="must">83 份高一段考卷中<b>直線與圓的位置 51 卷、切線 48 卷、弦長 42 卷</b>。解題要點：<b>過圓外一點的切線：設斜率令 $d=r$，別忘了鉛直線</b>；<b>弦長反求：先算弦心距，再解「距離＝$d$」的絕對值方程式（兩解）</b>；<b>圓上動點到點／線：$\overline{QC}\pm r$、$d\pm r$</b>；<b>相交／相切／相離：$d\lt r$、$=r$、$\gt r$ 解不等式</b>；<b>已知斜率的切線：設 $ax+by+c=0$，令圓心到它的距離等於 $r$，$c$ 有兩個</b>。</div>
 <div class="gen-grid" data-tier="L2" data-keys="tangentExt,chordParam,circMinMax,circLinePosParam,tangentSlope"></div>
 
-<h3 class="sec">L2 混合檢測 12 題（全 21 型打亂・可列印・可換組）</h3>
+<h3 class="sec">讀圖題：由圖判斷係數的正負、由區域寫不等式、方格上的切線段與弦</h3>
+<div class="must">本章的段考原題約一成三附圖，各類差很多：<b>「由圖判斷係數」的題一定有圖，聯立不等式的區域六成有圖，斜率四成五，圓與直線只有半成</b>。解題要點：<b>$ax+by+c=0$ 寫成 $y=-\dfrac abx-\dfrac cb$，斜率的正負看 $ab$、$y$ 截距的正負看 $bc$</b>；<b>區域寫成不等式：每條邊先寫出直線，再拿「不在這條邊上的頂點」代入左式定方向，實線有等號、虛線沒有</b>；<b>切線段長 $=\sqrt{\overline{CP}^2-r^2}$，弦長 $=2\sqrt{r^2-d^2}$，圓心、半徑、點的坐標都從方格讀</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="figCoefSign,figRegionIneq,figTanChord"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 24 型打亂・可列印・可換組）</h3>
 <div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
 </section>
 
@@ -344,8 +360,8 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
   <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
-  <div><b>目標</b>18 題各校段考、模考中後段常見題：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
-  <div><b>通過標準</b>18 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+  <div><b>目標</b>21 題各校段考、模考中後段常見題（最後 3 題是附圖題）：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>21 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
 </div>
 <div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字或問法。答案與詳解皆重新驗算過。</div>
 
@@ -521,7 +537,58 @@ $a^2+b^2+2a+4b+10=(a+1)^2+(b+2)^2+5=\overline{QR}^2+5$，其中 $R(-1,-2)$。<br
 $R$ 到圓心的距離是 $\sqrt{3^2+4^2}=5\gt4$，$R$ 在圓外，所以 $\overline{QR}$ 最大 $5+4=9$、最小 $5-4=1$。<br>
 最大值 $81+5=86$，最小值 $1+5=6$。</div></div>
 
-<h3 class="sec">L3 混合檢測 10 題（18 型打亂，可換組）</h3>
+<!-- figq:L3 -->
+<div class="note">以下 3 題（L3-19～L3-21）是<b>附圖題</b>：區域在直線的哪一側、頂點在哪裡、哪一段是拱高，都要從圖上讀。圖都依題目條件重新繪製、照比例畫。本章的段考原題大約每八題有一題附圖，集中在斜率的比較、不等式的區域、圓弧與弦這幾類。</div>
+
+<div class="fx" id="L3-19" data-gen="figRegionSide"><div class="fxh"><span class="no">L3-19</span><span class="kw">三條直線圍成的三角形區域寫成不等式：每條直線拿「不在它上面的頂點」代入定方向</span><span class="src">明倫高中 109上 期末</span></div>
+<div class="fxq">如圖所示的三角形區域，其三邊的直線方程式為 $L_1:3x+y-1=0$、$L_2:x+3y-3=0$、$L_3:x-y+5=0$。三角形區域（含邊界）可用下列哪一組不等式表示？<svg class="qfig" viewBox="0 0 260 249" width="260" height="249" role="img" aria-label="坐標平面上，三條直線 L1、L2、L3 圍成的塗色三角形區域，在第二象限"><line data-k="xaxis" x1="8" y1="202.2" x2="241.6" y2="202.2" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 249.6 202.2 L 241.6 205.4 L 241.6 199 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="175.8" y1="240.8" x2="175.8" y2="16" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 175.8 8 L 179 16 L 172.6 16 Z" fill="#3a2a2e"/><text x="250.6" y="217.2" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="186.8" y="14" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><path d="M 175.8 168.2 L 141.8 66.2 L 73.8 134.2 Z" fill="rgba(176,58,85,.2)" stroke-linejoin="round"/><line x1="129.33" y1="28.8" x2="195.07" y2="226" stroke="#7a2e3c" stroke-width="1.9" stroke-linecap="round"/><line x1="22.8" y1="117.2" x2="226.8" y2="185.2" stroke="#7a2e3c" stroke-width="1.9" stroke-linecap="round"/><line x1="22.8" y1="185.2" x2="179.2" y2="28.8" stroke="#7a2e3c" stroke-width="1.9" stroke-linecap="round"/><text x="112.9" y="40.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">L<tspan font-size="10" dy="3" font-style="normal">1</tspan></text><text x="33" y="109.8" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">L<tspan font-size="10" dy="3" font-style="normal">2</tspan></text><text x="44.6" y="189.3" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">L<tspan font-size="10" dy="3" font-style="normal">3</tspan></text><text x="166.8" y="216.2" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg>
+<span class="qopt">(A) $x-y+5\le0,\ x+3y-3\ge0,\ 3x+y-1\le0$</span><br>
+<span class="qopt">(B) $x-y+5\ge0,\ x+3y-3\le0,\ 3x+y-1\ge0$</span><br>
+<span class="qopt">(C) $x-y+5\ge0,\ 3x+y-1\ge0,\ x+3y-3\ge0$</span><br>
+<span class="qopt">(D) $x-y+5\ge0,\ x+3y-3\ge0,\ 3x+y-1\le0$</span><br>
+<span class="qopt">(E) $x-y+5\le0,\ x+3y-3\ge0,\ 3x+y-1\ge0$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(D)</div>
+<div class="fxs"><div class="move">做法：每條直線把平面分成兩側，三角形在其中一側。對每一條直線，拿「不在這條線上的那個頂點」代進左式，看正負就知道不等號的方向。</div>
+先求三個頂點（兩兩聯立）：$L_1$、$L_2$ 交於 $(0,1)$；$L_1$、$L_3$ 交於 $(-1,4)$；$L_2$、$L_3$ 交於 $(-3,2)$。和圖對照：三角形在第二象限，有一個頂點在 $y$ 軸上。<br>
+$L_1$：把 $(-3,2)$ 代入 $3x+y-1$ 得 $-9+2-1=-8\lt0$ ⟹ $3x+y-1\le0$。<br>
+$L_2$：把 $(-1,4)$ 代入 $x+3y-3$ 得 $-1+12-3=8\gt0$ ⟹ $x+3y-3\ge0$。<br>
+$L_3$：把 $(0,1)$ 代入 $x-y+5$ 得 $0-1+5=4\gt0$ ⟹ $x-y+5\ge0$。<br>
+所以是 $x-y+5\ge0,\ x+3y-3\ge0,\ 3x+y-1\le0$，選 (D)。<br>
+<span class="note-sm">檢查：$(-1,2)$ 在三個頂點的中間，是三角形內部的點。代入三個左式得 $3x+y-1=-2$、$x+3y-3=2$、$x-y+5=2$，方向和上面一致。這題的原點在三角形外面，不能直接拿 $(0,0)$ 的結果當答案。</span></div></div>
+
+<div class="fx" id="L3-20" data-gen="figQuadSlopes"><div class="fxh"><span class="no">L3-20</span><span class="kw">由圖讀坐標算四邊的斜率：先看往右上還是往右下定正負，再比大小</span><span class="src">北一女中 108上 第二次段考</span></div>
+<div class="fxq">如圖，四邊形 $ABCD$ 的四個頂點都在坐標軸上，坐標標示在圖上。$\overline{AB}$、$\overline{BC}$、$\overline{CD}$、$\overline{DA}$ 的斜率分別為 $m_{AB}$、$m_{BC}$、$m_{CD}$、$m_{DA}$，下列敘述哪些成立？<svg class="qfig" viewBox="0 0 296 236" width="296" height="236" role="img" aria-label="坐標平面上的四邊形 ABCD，四個頂點都在坐標軸上，坐標標示在圖上"><line data-k="xaxis" x1="42" y1="80" x2="250" y2="80" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 258 80 L 250 83.2 L 250 76.8 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="146" y1="224" x2="146" y2="18" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 146 10 L 149.2 18 L 142.8 18 Z" fill="#3a2a2e"/><text x="259" y="95" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="157" y="16" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><path data-k="quad" d="M 226 80 L 146 40 L 66 80 L 146 200 Z" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><circle data-k="A" cx="226" cy="80" r="3.2" fill="#7a2e3c"/><circle data-k="B" cx="146" cy="40" r="3.2" fill="#7a2e3c"/><circle data-k="C" cx="66" cy="80" r="3.2" fill="#7a2e3c"/><circle data-k="D" cx="146" cy="200" r="3.2" fill="#7a2e3c"/><text data-k="labA" x="230" y="72" font-size="13" fill="#3a2a2e" text-anchor="start"><tspan font-style="italic">A</tspan>(4, 0)</text><text data-k="labB" x="154" y="36" font-size="13" fill="#3a2a2e" text-anchor="start"><tspan font-style="italic">B</tspan>(0, 2)</text><text data-k="labC" x="62" y="72" font-size="13" fill="#3a2a2e" text-anchor="end"><tspan font-style="italic">C</tspan>(−4, 0)</text><text data-k="labD" x="154" y="213" font-size="13" fill="#3a2a2e" text-anchor="start"><tspan font-style="italic">D</tspan>(0, −6)</text><text x="137" y="94" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg>
+<span class="qopt">(1) 四個斜率值中以 $m_{CD}$ 為最大</span><br>
+<span class="qopt">(2) 四個斜率值都介於 $-1$ 與 $1$ 之間</span><br>
+<span class="qopt">(3) 四個斜率的絕對值都大於 $1$</span><br>
+<span class="qopt">(4) 四個斜率值的總和等於 $0$</span><br>
+<span class="qopt">(5) $m_{BC}+m_{CD}\gt0$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4)</div>
+<div class="fxs"><div class="move">做法：從圖上讀出四個頂點的坐標，四個斜率都用 $\dfrac{y_2-y_1}{x_2-x_1}$ 算。算之前先看圖：往右上的邊斜率是正的，往右下的是負的。</div>
+由圖：$A(4,0)$、$B(0,2)$、$C(-4,0)$、$D(0,-6)$。<br>
+$m_{AB}=\dfrac{2-0}{0-4}=-\dfrac12$，$m_{BC}=\dfrac{0-2}{-4-0}=\dfrac12$，$m_{CD}=\dfrac{-6-0}{0-(-4)}=-\dfrac32$，$m_{DA}=\dfrac{0-(-6)}{4-0}=\dfrac32$。<br>
+(1) 最大的是 $m_{DA}=\dfrac32$，不是 $m_{CD}$ ✘。<br>
+(2) $\dfrac32$ 與 $-\dfrac32$ 不在 $-1$ 與 $1$ 之間 ✘。<br>
+(3) $\left|m_{AB}\right|=\dfrac12$，沒有大於 $1$ ✘。<br>
+(4) $-\dfrac12+\dfrac12-\dfrac32+\dfrac32=0$ ✔。<br>
+(5) $m_{BC}+m_{CD}=\dfrac12-\dfrac32=-1\lt0$ ✘。<br>
+<span class="note-sm">不必算也看得出幾件事：$\overline{CD}$ 往右下，斜率是負的，不可能最大；$A$、$C$ 對 $y$ 軸對稱，所以 $\overline{AB}$ 與 $\overline{BC}$、$\overline{CD}$ 與 $\overline{DA}$ 的斜率各差一個負號，四個加起來一定是 $0$。</span></div></div>
+
+<div class="fx" id="L3-21" data-gen="figArch"><div class="fxh"><span class="no">L3-21</span><span class="kw">圓拱的寬與高求半徑：半弦、弦心距、半徑的直角三角形用兩次</span><span class="src">高雄女中 112上 填 12</span></div>
+<div class="fxq">如圖，手提袋上方有一個圓拱形提把。已知圓拱的寬度 $\overline{PQ}=24$ 公分，拱高 $\overline{AB}=8$ 公分，在距離中心 $A$ 點的左右 $5$ 公分處各有一條塑膠條與 $\overline{PQ}$ 垂直，圖中右邊那一條是 $\overline{CD}$。求塑膠條 $\overline{CD}$ 的長度。<svg class="qfig" viewBox="0 0 300 169" width="300" height="169" role="img" aria-label="手提袋上方的圓拱形提把：弦 PQ、拱高 AB，離 A 左右各一段距離處有與 PQ 垂直的塑膠條，右邊那一條是 CD"><rect x="50" y="90.67" width="200" height="66" fill="rgba(176,58,85,.07)" stroke="#8a7378" stroke-width="1.4"/><path d="M 50 90.67 A 108.33 108.33 0 0 1 250 90.67" fill="none" stroke="#7a2e3c" stroke-width="2.2" stroke-linejoin="round"/><line x1="50" y1="90.67" x2="250" y2="90.67" stroke="#7a2e3c" stroke-width="2" stroke-linecap="round"/><line x1="150" y1="90.67" x2="150" y2="24" stroke="#b03a55" stroke-width="1.6" stroke-linecap="round"/><line x1="191.67" y1="90.67" x2="191.67" y2="32.33" stroke="#b03a55" stroke-width="1.6" stroke-linecap="round"/><line x1="108.33" y1="90.67" x2="108.33" y2="32.33" stroke="#b03a55" stroke-width="1.6" stroke-linecap="round"/><polyline points="150,84.67 144,84.67 144,90.67" fill="none" stroke="#8a7378" stroke-width="1.2"/><polyline points="191.67,84.67 197.67,84.67 197.67,90.67" fill="none" stroke="#8a7378" stroke-width="1.2"/><text x="59" y="106.7" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text><text x="241" y="106.7" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">Q</text><text x="150" y="106.7" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="150" y="17" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="191.7" y="106.7" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="200.7" y="27.3" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$7$ 公分</div>
+<div class="fxs"><div class="move">做法：圓拱是圓的一段弧，先把圓找出來。以 $A$ 為原點、$\overline{PQ}$ 放在 $x$ 軸上，圓心在 $\overline{AB}$ 所在的直線（$y$ 軸）上。</div>
+設 $A(0,0)$、$P(-12,0)$、$Q(12,0)$、$B(0,8)$，圓心 $(0,-k)$（$k\gt0$），半徑 $r=8+k$。<br>
+圓通過 $Q$：$12^2+k^2=(8+k)^2\Rightarrow144=64+16k\Rightarrow k=5$，$r=13$。圓方程式 $x^2+(y+5)^2=169$。<br>
+$D$ 的橫坐標是 $5$：$25+(y+5)^2=169\Rightarrow y+5=\pm12$。$D$ 在 $\overline{PQ}$ 上方，取 $y=7$。<br>
+$\overline{CD}=7$ 公分。<br>
+<span class="note-sm">不設坐標也可以：半弦 $12$、弦心距 $r-8$、半徑 $r$ 是直角三角形，$12^2+(r-8)^2=r^2\Rightarrow r=13$，弦心距 $5$。再看 $D$：它到圓心的水平距離 $5$、斜邊 $13$，所以比圓心高 $12$，扣掉弦心距 $5$ 得 $7$。左右兩條塑膠條對稱，一樣長。</span></div></div>
+<!-- /figq:L3 -->
+
+<h3 class="sec">L3 混合檢測 10 題（21 型打亂，可換組）</h3>
 <div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
 
 <h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
@@ -534,8 +601,8 @@ $R$ 到圓心的距離是 $\sqrt{3^2+4^2}=5\gt4$，$R$ 在圓外，所以 $\over
 <h2><span class="tag">L4</span>頂尖程度：第一志願段考、模考、大考的難題</h2>
 <div class="goal">
   <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
-  <div><b>目標</b>12 題：每題都要把兩個以上的方法接起來用，或需要一個不常見的觀察。</div>
-  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+  <div><b>目標</b>14 題：每題都要把兩個以上的方法接起來用，或需要一個不常見的觀察；L4-13、L4-14 是附圖題。</div>
+  <div><b>通過標準</b>限時 105 分鐘做完 14 題，對 10 題以上。</div>
 </div>
 
 <div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">V 形折線與圓「恰切兩點」：對稱軸過圓心，再用一枝相切</span><span class="src">北一女中 113上 填 14</span></div>
@@ -675,6 +742,36 @@ $C:(x-4)^2+(y+3)^2=4$，圓心 $Q(4,-3)$、$r=2$；$\overline{PQ}=4$（$PQ$ 是�
 (4) 設切線 $y=mx-3$，即 $mx-y-3=0$：$\dfrac{|4m+3-3|}{\sqrt{m^2+1}}=2\Rightarrow16m^2=4m^2+4\Rightarrow m=\pm\dfrac{\sqrt3}3$。$m_1=\dfrac{\sqrt3}3$，$L_1:x-\sqrt3y=3\sqrt3$；題給的斜率是 $\sqrt3$ ✘。<br>
 (5) $L_2:y=-\dfrac{\sqrt3}3x-3$，上移 $4$ 得 $y=-\dfrac{\sqrt3}3x+1$，即 $x+\sqrt3y-\sqrt3=0$；$Q$ 到它的距離 $\dfrac{|4-3\sqrt3-\sqrt3|}{2}=2\sqrt3-2\ne2$ ✘。<br>
 <span class="note-sm">$m_1+m_2=0$ 不是巧合：$PQ$ 是水平線，兩切線對它鏡射，斜率互為相反數。$PQ$ 不水平時也一樣：在 $L_1$ 上取一點對直線 $PQ$ 鏡射，連 $P$ 就得到 $L_2$。</span></div></div>
+<!-- figq:L4 -->
+<div class="note">以下 2 題（L4-13、L4-14）是<b>附圖題</b>：哪一條邊對應哪一個不等式、摺過去的弧在切線的哪一側，都要從圖上讀。圖依題目條件重新繪製。</div>
+
+<div class="fx" id="L4-13"><div class="fxh"><span class="no">L4-13</span><span class="kw">由區域圖反推係數的正負：先認出每個不等式是哪一條邊，再用「原點在區域內」定常數項</span><span class="src">高雄女中 110上 第二次段考</span></div>
+<div class="fxq">已知聯立不等式 $\begin{cases}ax+by+a\le0\\ 2x+y+c\le0\\ dx+ey+f\ge0\end{cases}$ 的解的範圍如圖（塗色的三角形區域，含邊界）。判斷下列各敘述是否正確：<svg class="qfig" viewBox="0 0 270 285" width="270" height="285" role="img" aria-label="坐標平面上三條直線圍成的塗色三角形區域：原點在區域內部，最上面的頂點在 y 軸正向，左邊的邊斜率為正且與 x 軸交在負向，右邊的邊斜率為負，下面的邊斜率為正且與 y 軸交在負向"><line data-k="xaxis" x1="8" y1="147.4" x2="252" y2="147.4" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 260 147.4 L 252 150.6 L 252 144.2 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="141.4" y1="277" x2="141.4" y2="16" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 141.4 8 L 144.6 16 L 138.2 16 Z" fill="#3a2a2e"/><text x="261" y="162.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="152.4" y="14" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><path d="M 141.4 71.4 L 179.4 147.4 L 65.4 223.4 Z" fill="rgba(176,58,85,.2)" stroke-linejoin="round"/><line x1="46.4" y1="261.4" x2="162.3" y2="29.6" stroke="#7a2e3c" stroke-width="1.9" stroke-linecap="round"/><line x1="120.5" y1="29.6" x2="236.4" y2="261.4" stroke="#7a2e3c" stroke-width="1.9" stroke-linecap="round"/><line x1="23.6" y1="251.27" x2="236.4" y2="109.4" stroke="#7a2e3c" stroke-width="1.9" stroke-linecap="round"/><text x="131.4" y="162.4" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg>
+<span class="qopt">(1) $a\gt0$</span>　<span class="qopt">(2) $c\lt0$</span>　<span class="qopt">(3) $de\lt0$</span><br>
+<span class="qopt">(4) $a,b,c,d,e,f$ 六個數中恰有三個是正數</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4) 正確；(1) 不正確</div>
+<div class="fxs"><div class="move">做法：分三步。先認出三個不等式各是哪一條邊；再把原點代進去（由圖，原點在區域內部）定出 $a$、$c$、$f$ 的正負；最後用每條邊的斜率與 $y$ 截距的正負定其他係數。</div>
+<b>認邊</b>：$2x+y+c=0$ 的斜率是 $-2$，三條邊裡只有右邊那條往右下，就是它。$ax+by+a=0$ 可以寫成 $a(x+1)+by=0$，不管 $a$、$b$ 是多少都通過 $(-1,0)$；由圖，和 $x$ 軸交在負向的是左邊那條邊。剩下的下面那條邊是 $dx+ey+f=0$。<br>
+<b>代原點</b>：原點在區域內部、不在任何一條邊上，三個不等式代 $(0,0)$ 都成立而且不取等號：$a\lt0$、$c\lt0$、$f\gt0$。<br>
+<b>左邊的邊</b>往右上，斜率 $-\dfrac ab\gt0$；$a\lt0$ ⟹ $b\gt0$。<br>
+<b>下面的邊</b>往右上，斜率 $-\dfrac de\gt0$ ⟹ $de\lt0$；它和 $y$ 軸交在原點下方，$y$ 截距 $-\dfrac fe\lt0$，而 $f\gt0$ ⟹ $e\gt0$，所以 $d\lt0$。<br>
+整理：$a\lt0$、$b\gt0$、$c\lt0$、$d\lt0$、$e\gt0$、$f\gt0$，正數是 $b$、$e$、$f$ 三個。<br>
+(1) ✘　(2) ✔　(3) ✔　(4) ✔。<br>
+<span class="note-sm">圖是照這一組畫的：左邊 $-2x+y-2\le0$（$a=-2$、$b=1$）、右邊 $2x+y-2\le0$（$c=-2$）、下面 $-2x+3y+2\ge0$（$d=-2$、$e=3$、$f=2$），三個頂點是 $(0,2)$、$(1,0)$、$(-2,-2)$。$dx+ey+f\ge0$ 兩邊同乘正數還是同一個不等式，所以 $d$、$e$、$f$ 的大小定不出來，但正負是確定的。</span></div></div>
+
+<div class="fx" id="L4-14"><div class="fxh"><span class="no">L4-14</span><span class="kw">把弧沿弦對摺：摺過去的弧所在的圓是原來的圓對弦的鏡射，弦是兩圓心連線的中垂線</span><span class="src">建國中學 109上 第二次定期考</span></div>
+<div class="fxq">如圖，將圓 $C:x^2+y^2=9$ 上的劣弧 $AB$ 沿弦 $\overline{AB}$ 對摺，摺疊後的弧與直線 $y=-1$ 相切於 $P(-2,-1)$，弧 $APB$ 所在的圓為 $C'$。求：(1) 圓 $C'$ 的方程式（標準式）　(2) 弦 $\overline{AB}$ 的中點坐標　(3) 直線 $AB$ 的方程式（一般式）　(4) 弦 $\overline{AB}$ 的長。<svg class="qfig" viewBox="0 0 309 280" width="309" height="280" role="img" aria-label="圓心在原點的圓與弦 AB；劣弧 AB 沿弦對摺後落在圓內，與水平虛線 y＝−1 相切於 P，P 是摺過去的弧的最低點"><line data-k="xaxis" x1="8" y1="142.9" x2="290.6" y2="142.9" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 298.6 142.9 L 290.6 146.1 L 290.6 139.7 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="136.9" y1="271.8" x2="136.9" y2="16" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 136.9 8 L 140.1 16 L 133.7 16 Z" fill="#3a2a2e"/><text x="299.6" y="157.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="147.9" y="14" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><circle cx="136.9" cy="142.9" r="93" fill="none" stroke="#7a2e3c" stroke-width="1.9"/><line x1="20.65" y1="173.9" x2="276.4" y2="173.9" stroke="#8a7378" stroke-width="1.2" stroke-dasharray="5 4" stroke-linecap="round"/><line x1="163.9" y1="53.9" x2="47.9" y2="169.9" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><path d="M 163.9 53.9 A 93 93 0 0 1 47.9 169.9" fill="none" stroke="#b03a55" stroke-width="2" stroke-linejoin="round"/><circle cx="163.9" cy="53.9" r="3.2" fill="#7a2e3c"/><circle cx="47.9" cy="169.9" r="3.2" fill="#7a2e3c"/><circle cx="74.9" cy="173.9" r="3.2" fill="#b03a55"/><text x="172.9" y="47.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="35.9" y="161.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="75.9" y="190.9" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text><text x="126.9" y="135.9" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><text x="281.05" y="189.9" font-size="13" fill="#3a2a2e" text-anchor="end"><tspan font-style="italic">y</tspan> = −1</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $(x+2)^2+(y-2)^2=9$　(2) $(-1,1)$　(3) $x-y+2=0$　(4) $2\sqrt7$</div>
+<div class="fxs"><div class="move">做法：對摺就是鏡射。摺過去的弧所在的圓 $C'$ 是圓 $C$ 對直線 $AB$ 的鏡射，半徑一樣是 $3$；直線 $AB$ 垂直平分兩個圓心的連線。</div>
+<svg class="qfig-sol" viewBox="0 0 315 290" width="315" height="290" role="img" aria-label="同題目的圖，加上摺過去的弧所在的整個圓（虛線）、它的圓心 O′(−2, 2)，以及 OO′ 與弦 AB 的交點 M"><line data-k="xaxis" x1="8" y1="167.8" x2="296.7" y2="167.8" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 304.7 167.8 L 296.7 171 L 296.7 164.6 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="161.8" y1="281.1" x2="161.8" y2="16" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 161.8 8 L 165 16 L 158.6 16 Z" fill="#3a2a2e"/><text x="305.7" y="182.8" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="172.8" y="14" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><circle cx="107.8" cy="113.8" r="81" fill="none" stroke="#8a7378" stroke-width="1.2" stroke-dasharray="5 4"/><circle cx="161.8" cy="167.8" r="81" fill="none" stroke="#7a2e3c" stroke-width="1.9"/><line x1="60.55" y1="194.8" x2="283.3" y2="194.8" stroke="#8a7378" stroke-width="1.2" stroke-dasharray="5 4" stroke-linecap="round"/><line x1="185.31" y1="90.29" x2="84.29" y2="191.31" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><path d="M 185.31 90.29 A 81 81 0 0 1 84.29 191.31" fill="none" stroke="#b03a55" stroke-width="2" stroke-linejoin="round"/><circle cx="185.31" cy="90.29" r="3.2" fill="#7a2e3c"/><circle cx="84.29" cy="191.31" r="3.2" fill="#7a2e3c"/><circle cx="107.8" cy="194.8" r="3.2" fill="#b03a55"/><text x="194.3" y="84.3" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="72.3" y="183.3" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="108.8" y="211.8" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text><text x="151.8" y="160.8" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><text x="287.35" y="210.8" font-size="13" fill="#3a2a2e" text-anchor="end"><tspan font-style="italic">y</tspan> = −1</text><line x1="161.8" y1="167.8" x2="107.8" y2="113.8" stroke="#8a7378" stroke-width="1.3" stroke-dasharray="5 4" stroke-linecap="round"/><line x1="107.8" y1="113.8" x2="107.8" y2="194.8" stroke="#8a7378" stroke-width="1.3" stroke-dasharray="5 4" stroke-linecap="round"/><circle cx="107.8" cy="113.8" r="2.8" fill="#7a2e3c"/><circle cx="134.8" cy="140.8" r="2.8" fill="#7a2e3c"/><circle cx="161.8" cy="167.8" r="2.4" fill="#7a2e3c"/><text x="101.8" y="106.8" font-size="13" fill="#3a2a2e" text-anchor="end"><tspan font-style="italic">O′</tspan>(−2, 2)</text><text x="141.8" y="155.8" font-size="13" fill="#3a2a2e" text-anchor="start"><tspan font-style="italic">M</tspan></text><polyline points="139.04,145.04 143.29,140.8 139.04,136.56" fill="none" stroke="#8a7378" stroke-width="1.2"/></svg>
+(1) $C'$ 的半徑是 $3$，與 $y=-1$ 相切於 $P(-2,-1)$，圓心在 $P$ 的正上方或正下方 $3$ 單位：$(-2,2)$ 或 $(-2,-4)$。由圖，$P$ 是摺過去那段弧的最低點，弧在直線 $y=-1$ 的上方，所以圓心是 $O'(-2,2)$，$C':(x+2)^2+(y-2)^2=9$。<br>
+(2) $O(0,0)$ 與 $O'(-2,2)$ 對直線 $AB$ 對稱，$\overline{OO'}$ 的中點 $M(-1,1)$ 在直線 $AB$ 上，而且 $\overline{OM}\perp\overline{AB}$。圓心到弦的垂足平分弦，所以 $M(-1,1)$ 就是 $\overline{AB}$ 的中點。<br>
+(3) $\overline{OO'}$ 的斜率是 $\dfrac{2-0}{-2-0}=-1$，直線 $AB$ 與它垂直，斜率 $1$，過 $M$：$y-1=x+1$，即 $x-y+2=0$。<br>
+(4) 弦心距 $\overline{OM}=\sqrt{1^2+1^2}=\sqrt2$，$\overline{AB}=2\sqrt{3^2-(\sqrt2)^2}=2\sqrt7$。<br>
+<span class="note-sm">(3) 也可以把兩個圓的方程式相減：$\left[(x+2)^2+(y-2)^2\right]-\left[x^2+y^2\right]=0\Rightarrow4x-4y+8=0$，一樣是 $x-y+2=0$。如果圓心取 $(-2,-4)$，摺過去的弧會在 $y=-1$ 的下方、$P$ 變成最高點，和圖不合；這一步只能靠圖決定。</span></div></div>
+<!-- /figq:L4 -->
 </section>
 
 <!-- ═══════════════════════ L5 ═══════════════════════ -->
@@ -682,7 +779,7 @@ $C:(x-4)^2+(y+3)^2=4$，圓心 $Q(4,-3)$、$r=2$；$\overline{PQ}=4$（$PQ$ 是�
 <h2><span class="tag">L5</span>補充專區：經典題、科學班與教甄</h2>
 <div class="goal">
   <div><b>對象</b>學有餘力、想參加數學競賽或未來想走數理科系的同學。</div>
-  <div><b>目標</b>6 題經典 ＋ 16 題科學班／教甄：學會把「證明」寫完整、把幾何性質翻譯成方程式，也看看出題老師怎麼想。</div>
+  <div><b>目標</b>6 題經典 ＋ 16 題科學班／教甄 ＋ 3 題附圖題（L5-7～L5-9，放在最後）：學會把「證明」寫完整、把幾何性質翻譯成方程式，也看看出題老師怎麼想。</div>
   <div><b>說明</b>本區不列入段考通過標準。前 6 題是本章經典（含兩題 108 課綱明列「不必涉及」的內容，已標記）；「科學班・教甄專區」16 題來自嘉中科學班與各校教甄，原卷多為掃描影像，以 OCR 讀出後逐題重打、重解、驗算。</div>
 </div>
 
@@ -892,6 +989,48 @@ $x^4-x^2+1=(x^4-2x^2+1)+x^2=(x^2-1)^2+(x-0)^2$。<br>
 直線 $AB$：$y=\dfrac14x+1$，與 $y=x^2$ 聯立得 $4x^2-x-4=0$，$x=\dfrac{1\pm\sqrt{65}}{8}$。取 $x=\dfrac{1-\sqrt{65}}{8}\approx-0.88$（在 $B$ 的左邊，$B$ 夾在中間），等號取得到。<br>
 所以最大值是 $\sqrt{17}$。<br>
 <span class="note-sm">另一個交點 $x=\dfrac{1+\sqrt{65}}8$ 在 $A$、$B$ 之間，那裡 $\overline{PA}+\overline{PB}=\overline{AB}$，差不是最大。電腦掃描 $x\in[-10,10]$ 的最大值 $4.1231\ldots=\sqrt{17}$。</span></div></div>
+<!-- figq:L5 -->
+<h3 class="sec" id="L5-fig">附圖題（3 題）</h3>
+<div class="note">三題段考壓軸題，路徑怎麼走、光線從圓的哪一側擦過、頂點怎麼排，都畫在圖上。圖依題目條件重新繪製、照比例畫。</div>
+
+<div class="fx" id="L5-7"><div class="fxh"><span class="no">L5-7</span><span class="kw">連續碰兩條軸的反彈路徑：兩個端點各對一條軸鏡射，四點共線</span><span class="src">松山高中 109上 第二次段考</span></div>
+<div class="fxq">有一款遊戲利用反射定律設計，如圖。球由 $A(2,6)$ 出發，沿直線朝 $P(0,b)$ 前進，碰撞 $y$ 軸後沿直線朝 $Q(a,0)$ 前進，碰撞 $x$ 軸後再沿直線朝 $B(10,3)$ 前進；其中 $\overline{AP}$、$\overline{PQ}$ 與 $y$ 軸的夾角相同，$\overline{PQ}$、$\overline{QB}$ 與 $x$ 軸的夾角相同。求 $a+b$ 的值。<svg class="qfig" viewBox="0 0 315 223" width="315" height="223" role="img" aria-label="第一象限內的 A、B 兩點，P 在 y 軸正向上、Q 在 x 軸正向上，路徑由 A 到 P、再到 Q、再到 B"><line data-k="xaxis" x1="8" y1="180.4" x2="296.8" y2="180.4" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 304.8 180.4 L 296.8 183.6 L 296.8 177.2 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="42.4" y1="214.8" x2="42.4" y2="16" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 42.4 8 L 45.6 16 L 39.2 16 Z" fill="#3a2a2e"/><text x="305.8" y="195.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="53.4" y="14" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><line x1="86.4" y1="48.4" x2="42.4" y2="81.4" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><line x1="68.8" y1="61.6" x2="68.16" y2="62.08" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><path d="M 61.76 66.88 L 66.24 59.52 L 70.08 64.64 Z" fill="#b03a55"/><line x1="42.4" y1="81.4" x2="174.4" y2="180.4" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><line x1="95.2" y1="121" x2="109.92" y2="132.04" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><path d="M 116.32 136.84 L 108 134.6 L 111.84 129.48 Z" fill="#b03a55"/><line x1="174.4" y1="180.4" x2="262.4" y2="114.4" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><line x1="209.6" y1="154" x2="217.28" y2="148.24" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><path d="M 223.68 143.44 L 219.2 150.8 L 215.36 145.68 Z" fill="#b03a55"/><circle cx="86.4" cy="48.4" r="3.2" fill="#7a2e3c"/><circle cx="42.4" cy="81.4" r="3.2" fill="#7a2e3c"/><circle cx="174.4" cy="180.4" r="3.2" fill="#7a2e3c"/><circle cx="262.4" cy="114.4" r="3.2" fill="#7a2e3c"/><text x="95.4" y="42.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="31.4" y="86.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text><text x="174.4" y="197.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">Q</text><text x="272.4" y="110.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="33.4" y="194.4" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{21}{2}$（$a=6$、$b=\dfrac92$）</div>
+<div class="fxs"><div class="move">做法：碰到軸反彈、兩段與軸的夾角相同，就把端點對那條軸鏡射，折線會拉成直線。$A$ 對 $y$ 軸鏡射，$B$ 對 $x$ 軸鏡射。</div>
+<svg class="qfig-sol" viewBox="0 0 330 266" width="330" height="266" role="img" aria-label="A 對 y 軸的對稱點 A′(−2, 6) 與 B 對 x 軸的對稱點 B′(10, −3) 連成的虛線通過 P、Q"><line data-k="xaxis" x1="8" y1="166" x2="312" y2="166" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 320 166 L 312 169.2 L 312 162.8 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="80" y1="258" x2="80" y2="16" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 80 8 L 83.2 16 L 76.8 16 Z" fill="#3a2a2e"/><text x="321" y="181" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="91" y="14" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><line x1="40" y1="46" x2="280" y2="226" stroke="#8a7378" stroke-width="1.3" stroke-dasharray="5 4" stroke-linecap="round"/><line x1="120" y1="46" x2="80" y2="76" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><line x1="104" y1="58" x2="104" y2="58" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><path d="M 97.6 62.8 L 102.08 55.44 L 105.92 60.56 Z" fill="#b03a55"/><line x1="80" y1="76" x2="200" y2="166" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><line x1="128" y1="112" x2="140.8" y2="121.6" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><path d="M 147.2 126.4 L 138.88 124.16 L 142.72 119.04 Z" fill="#b03a55"/><line x1="200" y1="166" x2="280" y2="106" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><line x1="232" y1="142" x2="238.4" y2="137.2" stroke="#b03a55" stroke-width="1.8" stroke-linecap="round"/><path d="M 244.8 132.4 L 240.32 139.76 L 236.48 134.64 Z" fill="#b03a55"/><circle cx="120" cy="46" r="3.2" fill="#7a2e3c"/><circle cx="80" cy="76" r="3.2" fill="#7a2e3c"/><circle cx="200" cy="166" r="3.2" fill="#7a2e3c"/><circle cx="280" cy="106" r="3.2" fill="#7a2e3c"/><text x="129" y="40" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="69" y="81" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text><text x="200" y="183" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">Q</text><text x="290" y="102" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="71" y="180" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text><circle cx="40" cy="46" r="3.2" fill="#fff" stroke="#b03a55" stroke-width="1.5"/><circle cx="280" cy="226" r="3.2" fill="#fff" stroke="#b03a55" stroke-width="1.5"/><text x="44" y="38" font-size="13" fill="#3a2a2e" text-anchor="middle"><tspan font-style="italic">A′</tspan>(−2, 6)</text><text x="272" y="241" font-size="13" fill="#3a2a2e" text-anchor="end"><tspan font-style="italic">B′</tspan>(10, −3)</text></svg>
+$A(2,6)$ 對 $y$ 軸的對稱點是 $A'(-2,6)$。$\overline{AP}$、$\overline{PQ}$ 與 $y$ 軸的夾角相同 ⟹ $A'$、$P$、$Q$ 在同一條直線上。<br>
+$B(10,3)$ 對 $x$ 軸的對稱點是 $B'(10,-3)$。$\overline{PQ}$、$\overline{QB}$ 與 $x$ 軸的夾角相同 ⟹ $P$、$Q$、$B'$ 在同一條直線上。<br>
+所以 $A'$、$P$、$Q$、$B'$ 四點共線。直線 $A'B'$ 的斜率 $=\dfrac{-3-6}{10-(-2)}=-\dfrac34$，方程式 $y-6=-\dfrac34(x+2)$。<br>
+令 $x=0$：$b=6-\dfrac32=\dfrac92$。令 $y=0$：$-6=-\dfrac34(a+2)\Rightarrow a+2=8\Rightarrow a=6$。<br>
+$a+b=6+\dfrac92=\dfrac{21}{2}$。<br>
+<span class="note-sm">檢查：$\overline{AP}$ 的斜率 $\dfrac{\frac92-6}{0-2}=\dfrac34$、$\overline{PQ}$ 的斜率 $\dfrac{0-\frac92}{6-0}=-\dfrac34$、$\overline{QB}$ 的斜率 $\dfrac{3-0}{10-6}=\dfrac34$。相鄰兩段的斜率差一個負號，正好是對鉛直線、對水平線反彈的樣子。</span></div></div>
+
+<div class="fx" id="L5-8"><div class="fxh"><span class="no">L5-8</span><span class="kw">反射後與圓相切：反射線是過鏡面上那一點的切線，入射線是它對 x 軸的鏡射，光源是兩條入射線的交點</span><span class="src">松山高中 108上 第二次段考</span></div>
+<div class="fxq">設從坐標平面上 $A$（光源）發出的光線，經 $x$ 軸上的鏡面在 $D(-3,0)$ 及 $E(4,0)$ 反射後，分別與圓 $C:x^2+y^2-16x-16y+112=0$ 相切於 $P$、$Q$ 兩點，如圖所示。求：(1) 直線 $DP$ 的方程式　(2) 直線 $EQ$ 的方程式　(3) 點 $A$ 的坐標。<svg class="qfig" viewBox="0 0 314 200" width="314" height="200" role="img" aria-label="光源 A 在第二象限；兩道光分別射到 x 軸上的 D、E，反射後往右上，一道從圓的左上方擦過、切圓於 P，另一道從圓的右下方擦過、切圓於 Q"><line data-k="xaxis" x1="8" y1="166" x2="296" y2="166" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 304 166 L 296 169.2 L 296 162.8 Z" fill="#3a2a2e"/><line data-k="yaxis" x1="152" y1="192" x2="152" y2="16" stroke="#3a2a2e" stroke-width="1.2" stroke-linecap="round"/><path d="M 152 8 L 155.2 16 L 148.8 16 Z" fill="#3a2a2e"/><text x="305" y="181" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">x</text><text x="163" y="14" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">y</text><circle cx="232" cy="86" r="40" fill="none" stroke="#7a2e3c" stroke-width="1.9"/><circle cx="232" cy="86" r="2.4" fill="#7a2e3c"/><line x1="32" y1="46" x2="122" y2="166" stroke="#b03a55" stroke-width="1.7" stroke-linecap="round"/><line x1="68" y1="94" x2="77.6" y2="106.8" stroke="#b03a55" stroke-width="1.7" stroke-linecap="round"/><path d="M 82.4 113.2 L 75.04 108.72 L 80.16 104.88 Z" fill="#b03a55"/><line x1="122" y1="166" x2="224.96" y2="28.72" stroke="#b03a55" stroke-width="1.7" stroke-linecap="round"/><line x1="163.18" y1="111.09" x2="174.86" y2="95.52" stroke="#b03a55" stroke-width="1.7" stroke-linecap="round"/><path d="M 179.66 89.12 L 177.42 97.44 L 172.3 93.6 Z" fill="#b03a55"/><line x1="32" y1="46" x2="192" y2="166" stroke="#7a2e3c" stroke-width="1.7" stroke-linecap="round"/><line x1="96" y1="94" x2="115.2" y2="108.4" stroke="#7a2e3c" stroke-width="1.7" stroke-linecap="round"/><path d="M 121.6 113.2 L 113.28 110.96 L 117.12 105.84 Z" fill="#7a2e3c"/><line x1="192" y1="166" x2="284.8" y2="96.4" stroke="#7a2e3c" stroke-width="1.7" stroke-linecap="round"/><line x1="229.12" y1="138.16" x2="237.57" y2="131.82" stroke="#7a2e3c" stroke-width="1.7" stroke-linecap="round"/><path d="M 243.97 127.02 L 239.49 134.38 L 235.65 129.26 Z" fill="#7a2e3c"/><circle cx="32" cy="46" r="2.8" fill="#7a2e3c"/><circle cx="122" cy="166" r="2.8" fill="#7a2e3c"/><circle cx="192" cy="166" r="2.8" fill="#7a2e3c"/><circle cx="200" cy="62" r="2.8" fill="#7a2e3c"/><circle cx="256" cy="118" r="2.8" fill="#7a2e3c"/><text x="23" y="42" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="119" y="183" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text><text x="194" y="183" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">E</text><text x="190" y="57" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">P</text><text x="262" y="133" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">Q</text><text x="266" y="50" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="161" y="180" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">O</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $4x-3y+12=0$　(2) $3x-4y-12=0$　(3) $A(-12,12)$</div>
+<div class="fxs"><div class="move">做法：反射線 $DP$、$EQ$ 是「過 $x$ 軸上一點、與圓相切」的直線，用圓心到直線的距離等於半徑來求。入射線是反射線對 $x$ 軸的鏡射（把 $y$ 換成 $-y$），光源 $A$ 是兩條入射線的交點。</div>
+配方：$(x-8)^2+(y-8)^2=16$，圓心 $(8,8)$，半徑 $4$。<br>
+(1) 過 $D(-3,0)$ 設 $y=m(x+3)$，即 $mx-y+3m=0$：$\dfrac{|8m-8+3m|}{\sqrt{m^2+1}}=4\Rightarrow(11m-8)^2=16(m^2+1)\Rightarrow105m^2-176m+48=0\Rightarrow(3m-4)(35m-12)=0$，$m=\dfrac43$ 或 $\dfrac{12}{35}$。<br>
+由圖，光線從圓的左上方擦過（$P$ 在圓的左上側），是比較陡的那一條：$m=\dfrac43$，$DP:4x-3y+12=0$。另一條 $m=\dfrac{12}{35}$ 是從圓的右下方擦過。<br>
+(2) 過 $E(4,0)$ 設 $y=m(x-4)$，即 $mx-y-4m=0$：$\dfrac{|8m-8-4m|}{\sqrt{m^2+1}}=4\Rightarrow(4m-8)^2=16(m^2+1)\Rightarrow-64m+64=16\Rightarrow m=\dfrac34$。<br>
+只解出一條，另一條切線是鉛直線 $x=4$（圓心到它的距離 $8-4=4$）。由圖，$EQ$ 往右上、從圓的右下方擦過，所以 $EQ:3x-4y-12=0$。<br>
+(3) 入射線 $AD$ 是 $DP$ 對 $x$ 軸的鏡射：$4x+3y+12=0$；入射線 $AE$ 是 $EQ$ 的鏡射：$3x+4y-12=0$。<br>
+聯立：第一式乘 $4$ 減第二式乘 $3$ 得 $7x+84=0$，$x=-12$，代回得 $y=12$。$A(-12,12)$。<br>
+<span class="note-sm">檢查：$A$ 對 $x$ 軸的對稱點 $A'(-12,-12)$ 要同時在兩條反射線上：$4(-12)-3(-12)+12=0$ ✔，$3(-12)-4(-12)-12=0$ ✔。兩個切點是 $P\left(\dfrac{24}5,\dfrac{52}5\right)$、$Q\left(\dfrac{52}5,\dfrac{24}5\right)$，一個在圓的左上、一個在右下，和圖一致。</span></div></div>
+
+<div class="fx" id="L5-9"><div class="fxh"><span class="no">L5-9</span><span class="kw">圓內切於平行四邊形：每條邊到圓心的距離都等於半徑，相鄰的邊是同一個頂點引出的兩條切線</span><span class="src">台南女中 110上 填 15</span></div>
+<div class="fxq">如圖，圓 $x^2+y^2=9$ 在平行四邊形 $ABCD$ 的內部，且與四個邊都相切。已知 $A$ 點坐標為 $(-5,3)$，$\overline{AD}$ 與 $x$ 軸平行，求 $B$ 點的 $x$ 坐標。<svg class="qfig" viewBox="0 0 300 196" width="300" height="196" role="img" aria-label="平行四邊形 ABCD 與內切的圓：A 在左上、D 在右上、B 在左下、C 在右下，AD 與 BC 是水平的兩邊"><path d="M 40 34 L 110.4 166 L 260 166 L 189.6 34 Z" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="2" stroke-linejoin="round"/><circle cx="150" cy="100" r="66" fill="none" stroke="#7a2e3c" stroke-width="1.9"/><circle cx="40" cy="34" r="2.8" fill="#7a2e3c"/><circle cx="110.4" cy="166" r="2.8" fill="#7a2e3c"/><circle cx="260" cy="166" r="2.8" fill="#7a2e3c"/><circle cx="189.6" cy="34" r="2.8" fill="#7a2e3c"/><text x="28" y="25" font-size="13" fill="#3a2a2e" text-anchor="start"><tspan font-style="italic">A</tspan>(−5, 3)</text><text x="107.4" y="183" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="265" y="183" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">C</text><text x="193.6" y="25" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">D</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-\dfrac95$</div>
+<div class="fxs"><div class="move">做法：圓與四個邊都相切，所以每條邊到圓心（原點）的距離都是 $3$。$\overline{AD}$、$\overline{AB}$ 是過 $A$ 的兩條切線；$\overline{BC}$ 是與 $\overline{AD}$ 平行的另一條切線。</div>
+$\overline{AD}$ 過 $A(-5,3)$ 且平行 $x$ 軸，在直線 $y=3$ 上；它到原點的距離是 $3$，確實相切。<br>
+直線 $AB$：設 $y-3=m(x+5)$，即 $mx-y+5m+3=0$。到原點的距離 $\dfrac{|5m+3|}{\sqrt{m^2+1}}=3\Rightarrow25m^2+30m+9=9m^2+9\Rightarrow16m^2+30m=0$，$m=0$ 或 $-\dfrac{15}8$。$m=0$ 是 $\overline{AD}$，所以 $AB$ 的斜率是 $-\dfrac{15}8$。<br>
+$\overline{BC}$ 與 $\overline{AD}$ 平行又與圓相切，由圖它在圓的下方，在直線 $y=-3$ 上。<br>
+$B$ 是直線 $AB$ 與 $y=-3$ 的交點：$-3-3=-\dfrac{15}8(x+5)\Rightarrow x+5=\dfrac{16}5\Rightarrow x=-\dfrac95$。<br>
+<span class="note-sm">另一個做法是用「同一點引出的兩條切線段等長」：$\overline{AD}$ 切圓於 $(0,3)$，$A$ 的切線段長是 $5$。設 $B(-t,-3)$，$\overline{BC}$ 切圓於 $(0,-3)$，$B$ 的切線段長是 $t$，所以 $\overline{AB}=5+t$。又 $\overline{AB}^2=(5-t)^2+6^2$，$(5+t)^2=(5-t)^2+36\Rightarrow20t=36\Rightarrow t=\dfrac95$。圖上 $B$ 在 $A$ 的右下方，和 $x=-\dfrac95$ 一致。</span></div></div>
+<!-- /figq:L5 -->
 </section>
 
 <div class="ch-nav">

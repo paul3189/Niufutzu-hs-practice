@@ -1716,6 +1716,452 @@
   CONTRAST['L1.shiftExpand'] = { f: function (p) { return p.t; }, why: '要全部的係數就連續綜合除法；只要 $p+q+r+s$ 就代 $x-h=1$，只要 $-p+q-r+s$ 就代 $x-h=-1$，一次代入就好。' };
   CONTRAST['L2.quadIneqRev'] = { f: function (p) { return p.inner; }, why: '$ax^2+bx+c\gt0$ 的解在兩根之間 ⟹ 開口向下、$a\lt0$；在兩根之外 ⟹ $a\gt0$。之後把 $b,c$ 用 $a$ 表示、提出 $a$，$a$ 是負的就要反向。' };
   CONTRAST['L2.fenceArea'] = { f: function (p) { return p.river; }, keep: ['nP'], why: '靠河時沿河那一邊不必圍，限制式是 $x+(n+1)y=L$；不靠河時上下兩邊都要圍，變成 $2x+(n+1)y=L$。面積都是 $xy$，頂點位置跟著變。' };
+  /* ══════════════════════════════════════════════════════════
+     2026-10-02　附圖題（讀圖型）：圖由產生器依亂數參數即時畫成 inline SVG，放在 q 裡，圖跟著數字變
+     共用畫圖小工具 fig*()（樣式與 g11a-ch01、g10b-ch04 同一套）：坐標框、坐標軸、多項式曲線、標籤自動避讓。
+     規則：坐標一律由參數算（不目測）；x 方向照比例，y 方向另取比例（函數圖形，兩軸單位長不同）；
+           圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
+           要給驗算器讀的元素帶 data-k（驗算器從圖上的坐標與標籤文字代回，不看 p）。
+     L1 3 型、L2 3 型、L3 2 型（L3-20、L3-21 的類似題）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     ══════════════════════════════════════════════════════════ */
+  var FIGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#b03a55', soft: '#8a7378', blue: '#1f5fa8' };
+  var MINUS = '−';
+  function n1(v) { var s = (Math.round(v * 10) / 10).toFixed(1); if (s === '-0.0') s = '0.0'; return s.replace(/\.0$/, ''); }
+  function n2(v) { var s = (Math.round(v * 100) / 100).toFixed(2); if (s === '-0.00') s = '0.00'; return s.replace(/\.?0+$/, ''); }
+  function figAttr(o) { var s = ''; for (var k in o) { if (o[k] !== undefined && o[k] !== null && o[k] !== false) s += ' ' + k + '="' + o[k] + '"'; } return s; }
+  function figSvg(w, h, label, body) { return '<svg class="qfig" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" role="img" aria-label="' + label + '">' + body + '</svg>'; }
+  function figLine(x1, y1, x2, y2, o) { o = o || {}; return '<line' + figAttr({ 'data-k': o.k, x1: n2(x1), y1: n2(y1), x2: n2(x2), y2: n2(y2), stroke: o.c || FIGC.line, 'stroke-width': o.w || 1.6, 'stroke-dasharray': o.dash ? '4 3' : null, 'stroke-linecap': 'round' }) + '/>'; }
+  function figText(x, y, s, o) { o = o || {}; return '<text' + figAttr({ 'data-k': o.k, x: n1(x), y: n1(y), 'font-size': o.fs || 14, fill: o.c || FIGC.ink, 'text-anchor': o.anchor || 'middle', 'font-style': o.it ? 'italic' : null }) + '>' + s + '</text>'; }
+  function figDot(x, y, o) { o = o || {}; return '<circle' + figAttr({ 'data-k': o.k, cx: n2(x), cy: n2(y), r: o.r || 3, fill: o.c || FIGC.line }) + '/>'; }
+  function figArrow(x1, y1, x2, y2, o) {
+    o = o || {}; var a = Math.atan2(y2 - y1, x2 - x1), L = 8, wv = 3.2, c = o.c || FIGC.ink, bx = x2 - L * Math.cos(a), by = y2 - L * Math.sin(a);
+    return figLine(x1, y1, bx, by, { c: c, w: o.w || 1.2, k: o.k }) + '<path d="M ' + n2(x2) + ' ' + n2(y2) + ' L ' + n2(bx - wv * Math.sin(a)) + ' ' + n2(by + wv * Math.cos(a)) + ' L ' + n2(bx + wv * Math.sin(a)) + ' ' + n2(by - wv * Math.cos(a)) + ' Z" fill="' + c + '"/>';
+  }
+  function figNum(v) { return v < 0 ? MINUS + (-v) : String(v); }
+  /* 標籤裡的英文字母排斜體（點名、函數名、變數）；數字、括號、逗號照正體 */
+  function figIt(s) { return String(s).replace(/[A-Za-z]/g, function (ch) { return '<tspan font-style="italic">' + ch + '</tspan>'; }); }
+  /* 文字寬度的估計（給避讓用，寧寬勿窄） */
+  function figTW(s, fs) {
+    var w = 0, i, ch;
+    for (i = 0; i < s.length; i++) { ch = s.charAt(i); w += ch === MINUS || ch === '=' ? 0.78 : /[0-9]/.test(ch) ? 0.5 : ch === ',' || ch === '.' ? 0.28 : ch === '(' || ch === ')' ? 0.39 : ch === ' ' ? 0.25 : 0.6; }
+    return w * (fs || 13) + 2;
+  }
+  function figOpt(i, t) { return '<span class="qopt">(' + i + ') ' + t + '</span>'; }                    /* 圖後面的選項：每個選項自成一塊，不從中間斷行 */
+
+  /* 坐標框：數學坐標 ↔ 像素。o = { w, h, l, r, t, b（四邊留白）, x0, x1, y0, y1 } */
+  function figFrame(o) {
+    var sx = (o.w - o.l - o.r) / (o.x1 - o.x0), sy = (o.h - o.t - o.b) / (o.y1 - o.y0);
+    return { w: o.w, h: o.h, x0: o.x0, x1: o.x1, y0: o.y0, y1: o.y1, sx: sx, sy: sy, X: function (x) { return o.l + (x - o.x0) * sx; }, Y: function (y) { return o.h - o.b - (y - o.y0) * sy; } };
+  }
+  /* 讓 0 落在範圍內，而且離兩端各有一段距離（fa、fb 是佔全長的比例） */
+  function figRange(lo, hi, fa, fb) {
+    if (-lo < fa * (hi - lo)) lo = -fa * hi / (1 - fa);
+    if (hi < fb * (hi - lo)) hi = -fb * lo / (1 - fb);
+    return [lo, hi];
+  }
+  function figBox(x0, x1, y0, y1, H) {
+    var fx = figRange(x0, x1, 0.1, 0.1), fy = figRange(y0, y1, 0.17, 0.13);
+    return figFrame({ w: 300, h: H || 200, l: 16, r: 28, t: 24, b: 14, x0: fx[0], x1: fx[1], y0: fy[0], y1: fy[1] });
+  }
+  /* 版面：記下曲線、坐標軸經過的點與已放的標籤，新的標籤從候選位置裡挑第一個不擋到東西的 */
+  var FIG_BAD = 0;                                              /* 最近一張圖裡，找不到乾淨位置的標籤數（>0 就重抽參數） */
+  function figLayout(W, H) {
+    var obs = [], boxes = []; FIG_BAD = 0;
+    function seg(x1, y1, x2, y2) { var n = Math.max(1, Math.ceil(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) / 3)), i; for (i = 0; i <= n; i++) obs.push([x1 + (x2 - x1) * i / n, y1 + (y2 - y1) * i / n]); }
+    function gap(b) {
+      var g = 1e9, i, o, p, dx, dy, d;
+      for (i = 0; i < boxes.length; i++) { o = boxes[i]; if (b[0] < o[2] + 2 && o[0] < b[2] + 2 && b[1] < o[3] + 1 && o[1] < b[3] + 1) return -1; }
+      for (i = 0; i < obs.length; i++) { p = obs[i]; dx = Math.max(b[0] - p[0], 0, p[0] - b[2]); dy = Math.max(b[1] - p[1], 0, p[1] - b[3]); d = Math.sqrt(dx * dx + dy * dy); if (d < g) g = d; }
+      return g;
+    }
+    return {
+      seg: seg,
+      curve: function (ps) { for (var i = 1; i < ps.length; i++) seg(ps[i - 1][0], ps[i - 1][1], ps[i][0], ps[i][1]); },
+      put: function (cands, w, h, need) {                       /* cands：[[中心 x, 中心 y], …] → 選中的中心 */
+        var best = null, bg = -1e9, i, c, b, g;
+        for (i = 0; i < cands.length; i++) {
+          c = cands[i]; b = [c[0] - w / 2, c[1] - h / 2, c[0] + w / 2, c[1] + h / 2];
+          if (b[0] < 1 || b[1] < 1 || b[2] > W - 1 || b[3] > H - 1) continue;
+          g = gap(b);
+          if (g >= (need || 4)) { best = c; bg = 1e9; break; }
+          if (g > bg) { bg = g; best = c; }
+        }
+        if (!best) best = cands[0];
+        if (bg < 1e9) FIG_BAD++;
+        boxes.push([best[0] - w / 2, best[1] - h / 2, best[0] + w / 2, best[1] + h / 2]);
+        return best;
+      }
+    };
+  }
+  /* 坐標軸（x 軸畫在 y=0、y 軸畫在 x=0） */
+  function figAxes(fr, lay) {
+    var X0 = fr.X(0), Y0 = fr.Y(0), xa = fr.X(fr.x0) - 8, xe = fr.X(fr.x1) + 16, yb = fr.Y(fr.y0) + 8, yt = fr.Y(fr.y1) - 14;
+    lay.seg(xa, Y0, xe, Y0); lay.seg(X0, yb, X0, yt);
+    return figArrow(xa, Y0, xe, Y0, { k: 'xaxis' }) + figArrow(X0, yb, X0, yt, { k: 'yaxis' });
+  }
+  /* 軸名 x、y 與原點 O：放在其他標籤之後（O 在四個角落裡挑不擋到曲線的） */
+  function figAxisNames(fr, lay) {
+    var X0 = fr.X(0), Y0 = fr.Y(0);
+    var px = lay.put([[fr.w - 7, Y0 + 12], [fr.w - 7, Y0 - 11.5]], 9, 12, 3), py = lay.put([[X0 - 10, 15], [X0 + 10, 15]], 9, 12, 3);
+    var po = lay.put([[X0 - 10, Y0 + 12], [X0 + 10, Y0 + 12], [X0 - 10, Y0 - 11.5], [X0 + 10, Y0 - 11.5]], 11, 12, 3.5);
+    return figText(px[0], px[1] + 4.5, 'x', { fs: 14, it: 1 }) + figText(py[0], py[1] + 4.5, 'y', { fs: 14, it: 1 }) + figText(po[0], po[1] + 4.5, 'O', { fs: 13, it: 1 });
+  }
+  /* 曲線落在框內（y 在 [y0, y1]）的部分：回傳一段一段的像素點（進出框的地方用二分法找到邊界） */
+  function figCurvePts(fr, f) {
+    var N = 160, out = [], cur = null, px = null, pin = false, i, x, y, ins, xb;
+    function inside(v) { return v >= fr.y0 - 1e-9 && v <= fr.y1 + 1e-9; }
+    function cut(xi, xo) { for (var j = 0; j < 40; j++) { var m = (xi + xo) / 2; if (inside(f(m))) xi = m; else xo = m; } return xi; }
+    for (i = 0; i <= N; i++) {
+      x = fr.x0 + (fr.x1 - fr.x0) * i / N; y = f(x); ins = inside(y);
+      if (ins && !pin) { cur = []; out.push(cur); if (px !== null) { xb = cut(x, px); cur.push([fr.X(xb), fr.Y(f(xb))]); } }
+      if (ins) cur.push([fr.X(x), fr.Y(y)]);
+      if (!ins && pin) { xb = cut(px, x); cur.push([fr.X(xb), fr.Y(f(xb))]); }
+      px = x; pin = ins;
+    }
+    return out;
+  }
+  function figCurve(fr, f, lay, k, o) {
+    o = o || {}; var s = '';
+    figCurvePts(fr, f).forEach(function (ps) {
+      lay.curve(ps);
+      s += '<polyline' + figAttr({ 'data-k': k || 'curve', points: ps.map(function (p) { return n1(p[0]) + ',' + n1(p[1]); }).join(' '), fill: 'none', stroke: o.c || FIGC.hot, 'stroke-width': o.w || 2.2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }) + '/>';
+    });
+    return s;
+  }
+  /* 相鄰兩個關鍵 x 之間，函數值離 x 軸最遠的那個值 */
+  function figLobes(f, xs) {
+    var out = [], i, j, v, m;
+    for (i = 0; i < xs.length - 1; i++) { m = 0; for (j = 1; j < 48; j++) { v = f(xs[i] + (xs[i + 1] - xs[i]) * j / 48); if (Math.abs(v) > Math.abs(m)) m = v; } out.push(m); }
+    return out;
+  }
+  /* 多項式函數的框：rs＝與 x 軸的交點（由小到大），ys＝一定要在框內的 y，xs＝一定要在框內的 x */
+  function figPolyFrame(f, rs, ys, xs, H) {
+    var lob = figLobes(f, rs), V = lob.concat(ys || [], [0]), lo = Math.min.apply(null, V), hi = Math.max.apply(null, V), sp = hi - lo, lo2 = lo - 0.3 * sp, hi2 = hi + 0.3 * sp;
+    var xl = rs[0], xr = rs[rs.length - 1], v;
+    while (xl > rs[0] - 1.6) { v = f(xl - 0.05); if (v < lo2 || v > hi2) break; xl -= 0.05; }
+    while (xr < rs[rs.length - 1] + 1.6) { v = f(xr + 0.05); if (v < lo2 || v > hi2) break; xr += 0.05; }
+    var x0 = Math.min.apply(null, [xl - 0.1, -0.7].concat((xs || []).map(function (x) { return x - 0.5; }))), x1 = Math.max.apply(null, [xr + 0.1, 0.7].concat((xs || []).map(function (x) { return x + 0.5; })));
+    return { fr: figBox(x0, x1, lo2, hi2, H), lob: lob };
+  }
+  /* 與 x 軸的交點：點＋數字。穿過 x 軸的交點，數字放在曲線不經過的那個斜角；相切的交點放在曲線的另一側 */
+  function figRootLabs(fr, f, lay, rs) {
+    var s = '', Y0 = fr.Y(0), e = 9 / fr.sx;
+    rs.forEach(function (rt) {
+      var X = fr.X(rt), lab = figNum(rt), w = figTW(lab, 13), L = f(rt - e), R = f(rt + e), dx = w / 2 + 5;
+      var bl = [X - dx, Y0 + 12], br = [X + dx, Y0 + 12], al = [X - dx, Y0 - 11.5], ar = [X + dx, Y0 - 11.5], bc = [X, Y0 + 12], ac = [X, Y0 - 11.5];
+      var c = lay.put(L < 0 && R > 0 ? [br, al, bl, ar] : L > 0 && R < 0 ? [bl, ar, br, al] : L < 0 ? [ac, al, ar, bc] : [bc, bl, br, ac], w, 12);
+      s += figDot(X, Y0, { k: 'root', r: 2.6 }) + figText(c[0], c[1] + 4.5, lab, { fs: 13, k: 'rt' });
+    });
+    return s;
+  }
+  /* 圖上一點的坐標標籤，例如 P(2, −3)：點＋標籤（候選位置由呼叫的人給） */
+  function figPtLab(x, y, name, vx, vy, lay, cands, k) {
+    var lab = name + '(' + figNum(vx) + ', ' + figNum(vy) + ')', w = figTW(lab, 13), c = lay.put(cands(w), w, 13);
+    return figDot(x, y, { k: k + 'dot', c: FIGC.line, r: 3 }) + figText(c[0], c[1] + 4.5, figIt(lab), { fs: 13, k: k });
+  }
+  function gtlt0(s) { return s > 0 ? '\\gt0' : '\\lt0'; }
+  function figCoef(aF) { return aF.d === 1 ? (aF.n === 1 ? '' : aF.n === -1 ? '-' : String(aF.n)) : Fr.tex(aF); }   /* 首項係數：1 不寫 */
+  function figVtxTex(aF, h, k) { return figCoef(aF) + factTex(h) + '^2' + (k === 0 ? '' : (k > 0 ? '+' : '') + k); }
+
+  /* ────────── L1　3-4 讀圖：拋物線判斷正負、頂點與一點寫二次函數、三次函數圖形解不等式 ────────── */
+  /* 拋物線 f(x)=sg·((x−h)²+q) 的框：xs 是一定要看得清楚的 x（y 軸、標記的位置） */
+  function figQuadFrame(sg, h, q, xs) {
+    var V = [q, 0]; xs.forEach(function (x) { V.push((x - h) * (x - h) + q); });
+    var lo = Math.min.apply(null, V), hi = Math.max.apply(null, V), sp = hi - lo, hi2 = hi + 0.32 * sp, lo2 = lo - 0.08 * sp, wd = Math.sqrt(hi2 - q);
+    var x0 = Math.min(h - wd, -1.6) - 0.25, x1 = Math.max(h + wd, 1.6) + 0.25;
+    return sg > 0 ? figBox(x0, x1, lo2, hi2) : figBox(x0, x1, -hi2, -lo2);
+  }
+  function figQuadFn(sg, h, q) { return function (x) { return sg * ((x - h) * (x - h) + q); }; }
+  function figQuadSignsSvg(fr, f, m, sg, two) {
+    var lay = figLayout(fr.w, fr.h), s = figAxes(fr, lay), X = fr.X(m), Y0 = fr.Y(0), Ym = fr.Y(f(m)), lab = figNum(m), w = figTW(lab, 13);
+    s += figCurve(fr, f, lay, 'curve');
+    s += figLine(X, Y0, X, Ym, { c: FIGC.soft, w: 1, dash: 1, k: 'drop' }) + figLine(X, Y0 - 3, X, Y0 + 3, { c: FIGC.ink, w: 1.2, k: 'xtick' }) + figDot(X, Ym, { k: 'mark', r: 2.8 });
+    var c = lay.put([[X, f(m) > 0 ? Y0 + 12 : Y0 - 11.5], [X, f(m) > 0 ? Y0 - 11.5 : Y0 + 12]], w, 12);
+    s += figText(c[0], c[1] + 4.5, lab, { fs: 13, k: 'xt' }) + figAxisNames(fr, lay);
+    return figSvg(fr.w, fr.h, '開口向' + (sg > 0 ? '上' : '下') + '的拋物線，' + (two ? '與 x 軸有兩個交點' : '與 x 軸沒有交點') + '；x 軸上標出 x = ' + lab + ' 的位置', s);
+  }
+  L1.figQuadSigns = function (r) {
+    var sg, h, two, d, q, m, fr, f, f0, fm, ok, svg, guard = 0;
+    do {
+      sg = r.sign(); h = r.sign() * r.pick([1.5, 2, 2.5, 3]); two = r() < 0.65; m = r.sign();
+      d = two ? r.pick([1, 1.5, 2, 2.5, 3.5, 4]) : 0; q = two ? -d * d : r.pick([1.5, 3, 5]);
+      f = figQuadFn(sg, h, q); fr = figQuadFrame(sg, h, q, [0, m]); f0 = f(0); fm = f(m);
+      ok = Math.abs(f0) * fr.sy >= 13 && Math.abs(fm) * fr.sy >= 13 && Math.abs(q) * fr.sy >= 14 && Math.abs(h) * fr.sx >= 16;
+      if (two && ![h - d, h + d].every(function (x) { return Math.abs(x) * fr.sx >= 11 && Math.abs(x - m) * fr.sx >= 11; })) ok = false;
+      if (ok) { svg = figQuadSignsSvg(fr, f, m, sg, two); ok = FIG_BAD === 0; }
+    } while (!ok && guard++ < 200);
+    if (!ok) { sg = 1; h = 2; two = true; d = 1.5; q = -2.25; m = -1; f = figQuadFn(sg, h, q); fr = figQuadFrame(sg, h, q, [0, m]); f0 = f(0); fm = f(m); svg = figQuadSignsSvg(fr, f, m, sg, two); }
+    var sgn = [sg, -sg * (h > 0 ? 1 : -1), f0 > 0 ? 1 : -1, two ? 1 : -1, fm > 0 ? 1 : -1], ex = m === 1 ? 'a+b+c' : 'a-b+c';
+    return { q: '下圖是二次函數 ' + T('y=ax^2+bx+c') + ' 的圖形，' + T('x') + ' 軸上標出 ' + T('x=' + m) + ' 的位置。判斷 ' + T('a') + '、' + T('b') + '、' + T('c') + '、' + T('b^2-4ac') + '、' + T(ex) + ' 的正負。' + svg,
+      a: T('a' + gtlt0(sgn[0])) + '、' + T('b' + gtlt0(sgn[1])) + '、' + T('c' + gtlt0(sgn[2])) + '、' + T('b^2-4ac' + gtlt0(sgn[3])) + '、' + T(ex + gtlt0(sgn[4])),
+      h: '依序看五件事：開口方向定 $a$；頂點在 $y$ 軸的左邊還是右邊，定 $-\\dfrac{b}{2a}$ 的正負，再配合 $a$ 定 $b$；圖形與 $y$ 軸的交點是 $(0,c)$；與 $x$ 軸有幾個交點定 $b^2-4ac$；$' + ex + '=f(' + m + ')$，看圖上 $x=' + m + '$ 那一點在 $x$ 軸的上方還是下方。',
+      p: { sg: sg, h: h, two: two, d: d, q: q, m: m, sgn: sgn } };
+  };
+
+  /* 由頂點與圖形上一點寫出二次函數 */
+  function figQuadVertexSvg(fr, f, a, h, k, xp, yp) {
+    var lay = figLayout(fr.w, fr.h), s = figAxes(fr, lay), vx = fr.X(h), vy = fr.Y(k), px = fr.X(xp), py = fr.Y(yp), sd = xp > h ? 1 : -1;
+    s += figCurve(fr, f, lay, 'curve');
+    s += figPtLab(vx, vy, 'V', h, k, lay, function (w) { var dx = w / 2 + 6; return a > 0 ? [[vx, vy + 14], [vx + dx, vy + 12], [vx - dx, vy + 12], [vx, vy - 14], [vx + dx, vy - 12], [vx - dx, vy - 12]] : [[vx, vy - 13], [vx + dx, vy - 11], [vx - dx, vy - 11], [vx, vy + 15], [vx + dx, vy + 13], [vx - dx, vy + 13]]; }, 'V');
+    s += figPtLab(px, py, 'P', xp, yp, lay, function (w) { var dx = w / 2 + 8; return [[px + sd * dx, py + 2], [px + sd * dx, py - 10], [px + sd * dx, py + 13], [px - sd * dx, py + 2], [px - sd * dx, py - 10], [px - sd * dx, py + 13], [px, py - 14], [px, py + 15]]; }, 'P');
+    s += figAxisNames(fr, lay);
+    return figSvg(fr.w, fr.h, '拋物線，標出頂點 V(' + figNum(h) + ', ' + figNum(k) + ') 與圖形上一點 P(' + figNum(xp) + ', ' + figNum(yp) + ')', s);
+  }
+  L1.figQuadVertex = function (r) {
+    var aF, a, h, k, dx, xp, yp, ok, guard = 0, svg;
+    function build() {
+      var wv = aF.d === 2 ? 3.2 : Math.abs(a) === 1 ? 2.6 : Math.abs(a) === 2 ? 2 : 1.7, f = function (x) { return a * (x - h) * (x - h) + k; };
+      var V = [k, k + a * wv * wv, 0, yp], lo = Math.min.apply(null, V), hi = Math.max.apply(null, V), sp = hi - lo;
+      return figQuadVertexSvg(figBox(Math.min(h - wv, -0.8), Math.max(h + wv, 0.8), lo - 0.06 * sp, hi + 0.06 * sp), f, a, h, k, xp, yp);
+    }
+    do {
+      aF = r.pick([F(1), F(-1), F(2), F(-2), F(1, 2), F(-1, 2), F(3), F(-3)]); a = aF.n / aF.d; h = r.int(-3, 3); k = r.int(-4, 4);
+      dx = r.sign() * (aF.d === 2 ? 2 : Math.abs(aF.n) >= 2 ? 1 : r.pick([1, 2])); xp = h + dx; yp = k + a * dx * dx;
+      ok = !(h === 0 && k === 0) && Math.abs(yp) <= 9 && !(xp === 0 && yp === 0);
+      if (ok) { svg = build(); ok = FIG_BAD === 0; }
+    } while (!ok && guard++ < 200);
+    if (!ok) { aF = F(1); a = 1; h = 1; k = -3; dx = 2; xp = 3; yp = 1; svg = build(); }
+    var hs = h > 0 ? '-' + h : h < 0 ? '+' + (-h) : '';
+    return { q: '下圖是二次函數 ' + T('y=f(x)') + ' 的圖形，頂點 ' + T('V') + ' 與圖形上另一點 ' + T('P') + ' 的坐標標示在圖上。把 ' + T('f(x)') + ' 寫成 ' + T('a(x-h)^2+k') + ' 的形式。' + svg,
+      a: T('f(x)=' + figVtxTex(aF, h, k)),
+      h: '從圖上讀出頂點 $V(' + h + ',' + k + ')$ ⟹ 設 $f(x)=a' + factTex(h) + '^2' + (k === 0 ? '' : (k > 0 ? '+' : '') + k) + '$；再把 $P(' + xp + ',' + yp + ')$ 代入：$' + yp + '=a' + (h === 0 ? '\\times' + hpz(xp) : '(' + xp + hs + ')') + '^2' + (k === 0 ? '' : (k > 0 ? '+' : '') + k) + '$，解出 $a$。',
+      p: { a: [aF.n, aF.d], h: h, k: k, dx: dx, xp: xp, yp: yp } };
+  };
+
+  /* 看三次函數的圖形解不等式 */
+  function figCubicSvg(fr, f, rs, label, extra) {
+    var lay = figLayout(fr.w, fr.h), s = figAxes(fr, lay);
+    s += figCurve(fr, f, lay, 'curve') + figRootLabs(fr, f, lay, rs) + (extra ? extra(lay) : '') + figAxisNames(fr, lay);
+    return figSvg(fr.w, fr.h, label, s);
+  }
+  function figCubicFn(a, rs) { return function (x) { var v = a; rs.forEach(function (t) { v *= (x - t); }); return v; }; }
+  L1.figCubicSign = function (r) {
+    var r1, rs, lead, rel, f, o, ok, svg, guard = 0;
+    function build() { return figCubicSvg(o.fr, f, rs, '三次函數的圖形，與 x 軸交於 x = ' + rs.map(figNum).join('、') + '，最右邊往' + (lead > 0 ? '上' : '下')); }
+    do {
+      r1 = r.int(-4, 1); rs = [r1, r1 + r.int(1, 3)]; rs.push(rs[1] + r.int(1, 3)); lead = r.pick([1, 1, -1]); rel = r.pick(['<', '<=', '>', '>=']);
+      f = figCubicFn(lead, rs); o = figPolyFrame(f, rs);
+      ok = rs.indexOf(0) < 0 && rs[2] <= 5 && o.lob.every(function (v) { return Math.abs(v) * o.fr.sy >= 14; }) && rs.every(function (x) { return Math.abs(x) * o.fr.sx >= 14; });
+      if (ok) { svg = build(); ok = FIG_BAD === 0; }
+    } while (!ok && guard++ < 200);
+    if (!ok) { rs = [-2, 1, 3]; lead = 1; rel = '>'; f = figCubicFn(lead, rs); o = figPolyFrame(f, rs); svg = build(); }
+    var sol = solveSign(rs.map(function (v) { return { r: v, m: 1 }; }), lead, rel), eq = (rel === '<=' || rel === '>='), up = (rel === '>' || rel === '>=');
+    return { q: '下圖是三次函數 ' + T('y=f(x)') + ' 的圖形，它與 ' + T('x') + ' 軸的三個交點標示在圖上。求不等式 ' + T('f(x)' + REL[rel] + '0') + ' 的解。' + svg,
+      a: setTex(sol),
+      h: '$f(x)' + REL[rel] + '0$ 的意思是「圖形在 $x$ 軸' + (up ? '上' : '下') + '方' + (eq ? '或碰到 $x$ 軸' : '') + '」。三個交點 $x=' + rs.join(',\\ ') + '$ 把 $x$ 軸分成四段，逐段看圖形在 $x$ 軸的上方還是下方，挑出' + (up ? '上' : '下') + '方的那幾段；' + (eq ? '含等號，交點本身也要取。' : '不含等號，交點本身不能取。'),
+      p: { roots: rs, lead: lead, rel: rel, ans: sol } };
+  };
+
+  L1_H1.figQuadSigns = '這是「看拋物線判斷正負」：開口定 $a$、頂點在 $y$ 軸哪一邊定 $b$、與 $y$ 軸的交點定 $c$、與 $x$ 軸的交點個數定 $b^2-4ac$；$a+b+c$ 是 $f(1)$、$a-b+c$ 是 $f(-1)$，看那一點在 $x$ 軸的上方還是下方。';
+  L1_H1.figQuadVertex = '這是「看圖寫二次函數」：圖上給頂點就設頂點式 $a(x-h)^2+k$，再把另一點代入求 $a$。';
+  L1_H1.figCubicSign = '這是「看圖解不等式」：$f(x)\\gt0$ 就是圖形在 $x$ 軸上方、$f(x)\\lt0$ 就是在下方；交點把 $x$ 軸分段，一段一段看。';
+  L1_SOL.figQuadSigns = function (p) {
+    var sg = p.sgn, m = p.m, ex = m === 1 ? 'a+b+c' : 'a-b+c', right = p.h > 0;
+    return ['開口向' + (sg[0] > 0 ? '上' : '下') + '，所以 $a' + gtlt0(sg[0]) + '$。',
+      '頂點在 $y$ 軸' + (right ? '右' : '左') + '邊，頂點的 $x$ 坐標 $-\\dfrac{b}{2a}' + gtlt0(right ? 1 : -1) + '$，所以 $a$、$b$ ' + (right ? '異號' : '同號') + '；$a' + gtlt0(sg[0]) + '$，所以 $b' + gtlt0(sg[1]) + '$。',
+      '圖形與 $y$ 軸的交點是 $(0,c)$，在 $x$ 軸' + (sg[2] > 0 ? '上' : '下') + '方，所以 $c' + gtlt0(sg[2]) + '$。',
+      (sg[3] > 0 ? '圖形與 $x$ 軸有兩個交點，所以 $b^2-4ac\\gt0$。' : '圖形與 $x$ 軸沒有交點，所以 $b^2-4ac\\lt0$。'),
+      '$' + ex + '$ 就是 $f(' + m + ')$。圖上 $x=' + m + '$ 那一點在 $x$ 軸' + (sg[4] > 0 ? '上' : '下') + '方，所以 $' + ex + gtlt0(sg[4]) + '$。'];
+  };
+  L1_SOL.figQuadVertex = function (p, o) {
+    var h = p.h, k = p.k, d2 = p.dx * p.dx, ks = k === 0 ? '' : (k > 0 ? '+' : '') + k, hs = h > 0 ? '-' + h : h < 0 ? '+' + (-h) : '', aF = F(p.a[0], p.a[1]);
+    return ['從圖上讀出頂點 $V(' + h + ',' + k + ')$，所以設 $f(x)=a' + factTex(h) + '^2' + ks + '$。',
+      '$P(' + p.xp + ',' + p.yp + ')$ 在圖形上，代入：$' + p.yp + '=a' + (h === 0 ? '\\times' + hpz(p.xp) : '(' + p.xp + hs + ')') + '^2' + ks + '$，也就是 $' + p.yp + '=' + (d2 === 1 ? '' : d2) + 'a' + ks + '$。',
+      '解得 $a=' + Fr.tex(aF) + '$，所以 ' + o.a + '。'];
+  };
+  L1_SOL.figCubicSign = function (p, o) {
+    var rs = p.roots, lead = p.lead, rel = p.rel, eq = (rel === '<=' || rel === '>='), up = (rel === '>' || rel === '>='), pos = [], s = lead, i;
+    for (i = 0; i < 4; i++) { pos.unshift(s > 0 ? '上' : '下'); s = -s; }                              /* 由左到右四段：在 x 軸上方或下方 */
+    return ['$f(x)' + REL[rel] + '0$ 的解，就是圖形在 $x$ 軸' + (up ? '上' : '下') + '方' + (eq ? '（含碰到 $x$ 軸的交點）' : '（不含交點）') + '的那些 $x$。',
+      '交點 $x=' + rs.join(',\\ ') + '$ 把 $x$ 軸分成四段。從圖上看：$x\\lt ' + rs[0] + '$ 時圖形在 $x$ 軸' + pos[0] + '方，$' + rs[0] + '\\lt x\\lt ' + rs[1] + '$ 時在' + pos[1] + '方，$' + rs[1] + '\\lt x\\lt ' + rs[2] + '$ 時在' + pos[2] + '方，$x\\gt ' + rs[2] + '$ 時在' + pos[3] + '方。',
+      '挑出在 $x$ 軸' + (up ? '上' : '下') + '方的區段' + (eq ? '，三個交點也取' : '，三個交點不取') + '，所以解是 ' + o.a + '。'];
+  };
+  META_L1.push(['figQuadSigns', '§7 看拋物線判斷 a、b、c 的正負'], ['figQuadVertex', '§7 看頂點與一點寫二次函數'], ['figCubicSign', '§7 看三次函數的圖形解不等式']);
+
+  /* ────────── L2　讀圖：由三次函數圖形寫函數、對稱中心與 a、p 的正負、兩圖形的上下關係 ────────── */
+  /* 由圖形（與 x 軸的交點＋另一點 P）寫出三次函數，再求 f(t) */
+  L2.figCubicFit = function (r) {
+    var touch, rs, rt, rsg, facs, xp, c0, aF, a, yp, t, fT, f, o, ok, svg, guard = 0, lo, hi, cand, i, A = [F(1), F(-1), F(2), F(-2), F(1, 2), F(-1, 2), F(1, 3), F(-1, 3), F(1, 4), F(-1, 4), F(3, 2), F(-3, 2), F(2, 3), F(-2, 3), F(3, 4), F(-3, 4)];
+    function prod(x) { var v = 1; facs.forEach(function (q2) { v *= (x - q2); }); return v; }
+    function build() {
+      var fr = o.fr, px = fr.X(xp), py = fr.Y(yp);
+      return figCubicSvg(fr, f, rs, '三次函數的圖形，' + (touch ? '在 x = ' + figNum(rt) + ' 與 x 軸相切、在 x = ' + figNum(rsg) + ' 穿過 x 軸' : '與 x 軸交於 x = ' + rs.map(figNum).join('、')) + '，並通過 P(' + figNum(xp) + ', ' + figNum(yp) + ')', function (lay) {
+        return figPtLab(px, py, 'P', xp, yp, lay, function (w) { var dx = w / 2 + 8; return [[px + dx, py + 2], [px - dx, py + 2], [px + dx, py - 10], [px - dx, py - 10], [px + dx, py + 13], [px - dx, py + 13], [px, py - 14], [px, py + 15], [px + dx + 8, py - 16], [px - dx - 8, py - 16], [px + dx + 8, py + 19], [px - dx - 8, py + 19]]; }, 'P');
+      });
+    }
+    do {
+      ok = false; touch = r() < 0.3;
+      if (touch) { rt = r.nz(-3, 3); rsg = rt + r.sign() * r.int(2, 3); rs = rt < rsg ? [rt, rsg] : [rsg, rt]; facs = [rt, rt, rsg]; }
+      else { rs = [r.int(-4, 1)]; rs.push(rs[0] + r.int(1, 3)); rs.push(rs[1] + r.int(1, 3)); facs = rs.slice(); }
+      lo = rs[0]; hi = rs[rs.length - 1];
+      cand = []; for (i = lo - 1; i <= hi + 1; i++) if (rs.indexOf(i) < 0) cand.push(i);
+      xp = cand.indexOf(0) >= 0 && r() < 0.5 ? 0 : r.pick(cand); c0 = prod(xp);
+      aF = r.pick(A); a = aF.n / aF.d; yp = a * c0;
+      cand = []; for (i = lo - 1; i <= hi + 1; i++) if (rs.indexOf(i) < 0 && i !== xp) cand.push(i);
+      t = r.pick(cand); fT = Fr.mul(aF, F(prod(t)));
+      if (rs.indexOf(0) >= 0 || hi > 5 || lo < -5 || yp !== Math.round(yp) || Math.abs(yp) > 12 || Math.abs(fT.n) > 40 || fT.d > 4) continue;
+      f = figCubicFn(a, facs); o = figPolyFrame(f, rs, [yp], [xp]);
+      ok = o.lob.every(function (v) { return Math.abs(v) * o.fr.sy >= 14; }) && rs.every(function (x) { return Math.abs(x) * o.fr.sx >= 14; }) && Math.abs(yp) * o.fr.sy >= 11;
+      if (ok) { svg = build(); ok = FIG_BAD === 0; }
+    } while (!ok && guard++ < 400);
+    if (!ok) { touch = false; rs = [-1, 2, 4]; facs = rs.slice(); xp = 0; aF = F(1, 2); a = 0.5; yp = 4; t = 3; fT = F(-2); c0 = 8; f = figCubicFn(a, facs); o = figPolyFrame(f, rs, [yp], [xp]); svg = build(); }
+    var facT = touch ? factTex(rt) + '^2' + factTex(rsg) : rs.map(factTex).join('');
+    return { q: '下圖是三次函數 ' + T('y=f(x)') + ' 的圖形，它與 ' + T('x') + ' 軸的交點和圖形上一點 ' + T('P') + ' 的坐標標示在圖上' + (touch ? '（圖形在 ' + T('x=' + rt) + ' 處與 ' + T('x') + ' 軸相切）' : '') + '。求 ' + T('f(x)') + '，並求 ' + T('f(' + t + ')') + ' 的值。' + svg,
+      a: T('f(x)=' + figCoef(aF) + facT) + '，' + T('f(' + t + ')=' + Fr.tex(fT)),
+      h: (touch ? '圖形在 $x=' + rt + '$ 只碰到 $x$ 軸、沒有穿過去 ⟹ $' + factTex(rt) + '$ 出現兩次；在 $x=' + rsg + '$ 穿過 $x$ 軸 ⟹ $' + factTex(rsg) + '$ 出現一次。設 $f(x)=a' + facT + '$' : '與 $x$ 軸交於 $x=' + rs.join(',\\ ') + '$ ⟹ 設 $f(x)=a' + facT + '$') + '；再把 $P(' + xp + ',' + yp + ')$ 代入求 $a$：$' + yp + '=a\\times' + hpz(c0) + '$。最後代 $x=' + t + '$。',
+      p: { touch: touch, roots: rs, facs: facs, xp: xp, yp: yp, a: [aF.n, aF.d], t: t, ft: [fT.n, fT.d] } };
+  };
+
+  /* 由圖形判斷 y=a(x−h)³+p(x−h)+k 的 a、p、h、k 正負（M 是對稱中心） */
+  function figCenterFn(sa, sp, h, k) { return function (x) { var u = x - h; return sa * u * u * u + 3 * sp * u + k; }; }
+  L2.figCubicCenter = function (r) {
+    var sa, sp, bump, h, k, fr, s, guard = 0, ok;
+    do {
+      sa = r.sign(); sp = r.sign(); bump = sa !== sp; h = r.sign() * r.pick([0.6, 1, 1.5]); k = r.sign() * r.pick(bump ? [1.3, 2.6, 4] : [3, 5.5, 8]);
+      var f = figCenterFn(sa, sp, h, k), wd = bump ? 2.35 : 2, R = bump ? 6 : 11, lay, mx, my, c;
+      fr = figBox(h - wd, h + wd, k - R, k + R); lay = figLayout(fr.w, fr.h); mx = fr.X(h); my = fr.Y(k);
+      s = figAxes(fr, lay) + figCurve(fr, f, lay, 'curve') + figDot(mx, my, { k: 'M', r: 3 });
+      c = lay.put([[mx + 10, my - 10], [mx - 10, my - 10], [mx + 10, my + 11], [mx - 10, my + 11], [mx, my - 13], [mx, my + 14]], 12, 12, 4.5);
+      s += figText(c[0], c[1] + 4.5, 'M', { fs: 14, it: 1, k: 'Mlab' }) + figAxisNames(fr, lay);
+      ok = FIG_BAD === 0;
+    } while (!ok && guard++ < 100);
+    var quad = h > 0 ? (k > 0 ? '一' : '四') : (k > 0 ? '二' : '三');
+    return { q: '下圖是三次函數 ' + T('y=a(x-h)^3+p(x-h)+k') + '（' + T('p\\ne0') + '）的圖形，' + T('M') + ' 是圖形的對稱中心。判斷 ' + T('a') + '、' + T('p') + '、' + T('h') + '、' + T('k') + ' 的正負。' + figSvg(fr.w, fr.h, '三次函數的圖形，最右邊往' + (sa > 0 ? '上' : '下') + '，' + (bump ? '有一個高點和一個低點' : '沒有高低起伏') + '，對稱中心 M 在第' + quad + '象限', s),
+      a: T('a' + gtlt0(sa)) + '、' + T('p' + gtlt0(sp)) + '、' + T('h' + gtlt0(h)) + '、' + T('k' + gtlt0(k)),
+      h: '圖形最右邊往' + (sa > 0 ? '上' : '下') + ' ⟹ $a$ 的正負；對稱中心就是 $(h,k)$，看 $M$ 在第幾象限；在 $M$ 附近圖形很像直線 $y=p(x-h)+k$，所以看 $M$ 那裡由左到右是上升還是下降，就知道 $p$ 的正負。',
+      p: { sa: sa, sp: sp, h: h, k: k } };
+  };
+
+  /* 兩個圖形的上下關係解不等式：f−g=sd·Π(x−ri)。kind：pl 拋物線與直線、cl 三次函數與直線、pp 兩條拋物線 */
+  function figABBuild(kind, sd, rs, sSlope, sSide, sl) {
+    var n = rs.length, mid = (rs[0] + rs[n - 1]) / 2, half = (rs[n - 1] - rs[0]) / 2;
+    var D = function (x) { var v = sd; rs.forEach(function (t) { v *= (x - t); }); return v; };
+    var lob = figLobes(D, rs), E = Math.max.apply(null, lob.map(Math.abs));
+    var gb = kind === 'pp' ? function (x) { return -0.45 * sd * (x - mid) * (x - mid); } : function (x) { return sSlope * sl * E / (half + 1) * (x - mid); };
+    var vs = rs.map(gb), sh = sSide > 0 ? 0.7 * E - Math.min.apply(null, vs) : -0.7 * E - Math.max.apply(null, vs);
+    var g = function (x) { return gb(x) + sh; }, f = function (x) { return g(x) + D(x); };
+    var xl = rs[0], xr = rs[n - 1], i, x, V = [0];
+    while (xl > rs[0] - 1.4 && Math.abs(D(xl - 0.05)) <= 1.1 * E) xl -= 0.05;
+    while (xr < rs[n - 1] + 1.4 && Math.abs(D(xr + 0.05)) <= 1.1 * E) xr += 0.05;
+    for (i = 0; i <= 60; i++) { x = xl + (xr - xl) * i / 60; V.push(f(x), g(x)); }
+    var lo = Math.min.apply(null, V), hi = Math.max.apply(null, V), sp = hi - lo, fr = figBox(Math.min(xl, -0.7), Math.max(xr, 0.7), lo - 0.06 * sp, hi + 0.06 * sp, 210);
+    var ok = rs.every(function (t) { return Math.abs(g(t)) * fr.sy >= 16 && Math.abs(t) * fr.sx >= 14; }) && lob.every(function (v) { return Math.abs(v) * fr.sy >= 15; });
+    return { f: f, g: g, fr: fr, ok: ok };
+  }
+  /* 曲線名稱 y = f(x)：沿著自己的曲線找一個離另一條夠遠的地方，放在遠離另一條的那一側 */
+  function figCurveName(fr, lay, name, own, oth) {
+    var lab = 'y = ' + name + '(x)', w = figTW(lab, 13), e = w / 2 / fr.sx, list = [], t, x, yo, yt, side, slope;
+    for (t = 0.04; t <= 0.961; t += 0.02) {
+      x = fr.x0 + (fr.x1 - fr.x0) * t; yo = own(x); yt = oth(x);
+      if (yo < fr.y0 || yo > fr.y1 || Math.abs(yo - yt) * fr.sy < 30) continue;
+      if (![x - e, x + e].every(function (u) { return (own(u) - oth(u)) * (yo - yt) > 0 && Math.abs(own(u) - oth(u)) * fr.sy >= 14; })) continue;   /* 標籤的整個寬度裡，另一條曲線都在同一側 */
+      side = yo > yt ? -1 : 1; slope = Math.abs(own(x + e) - own(x - e)) * fr.sy;
+      list.push({ k: Math.round(slope / 5) * 1000 - Math.abs(yo - yt) * fr.sy, X: fr.X(x), Y: fr.Y(yo), side: side });
+    }
+    list.sort(function (a, b) { return a.k - b.k; });                    /* 先挑自己這條比較平、離另一條比較遠的地方 */
+    var cands = [];
+    list.forEach(function (c) { cands.push([c.X, c.Y + c.side * 13.5]); });
+    list.forEach(function (c) { cands.push([c.X, c.Y + c.side * 19], [c.X, c.Y + c.side * 25]); });
+    if (!cands.length) cands.push([fr.X(fr.x1) - w / 2, fr.Y(own(fr.x1)) - 13]);
+    var c = lay.put(cands, w, 13, 5);
+    return figText(c[0], c[1] + 4.5, figIt(lab), { fs: 13, k: 'name-' + name });
+  }
+  function figABSvg(o, rs, kind) {
+    var fr = o.fr, lay = figLayout(fr.w, fr.h), s = figAxes(fr, lay), Y0 = fr.Y(0), marks = '';
+    s += figCurve(fr, o.g, lay, 'g', { c: FIGC.blue, w: 2 }) + figCurve(fr, o.f, lay, 'f');
+    rs.forEach(function (t) {
+      var X = fr.X(t), Y = fr.Y(o.g(t)), lab = figNum(t), w = figTW(lab, 13), far = o.g(t) > 0 ? Y0 + 12 : Y0 - 11.5, near = o.g(t) > 0 ? Y0 - 11.5 : Y0 + 12, dx = w / 2 + 4;
+      var c = lay.put([[X, far], [X - dx, far], [X + dx, far], [X - dx, near], [X + dx, near]], w, 12);
+      lay.seg(X, Y0, X, Y);
+      marks += figLine(X, Y0, X, Y, { c: FIGC.soft, w: 1, dash: 1, k: 'drop' }) + figLine(X, Y0 - 3, X, Y0 + 3, { c: FIGC.ink, w: 1.2, k: 'xtick' }) + figDot(X, Y, { k: 'ix', r: 2.8 }) + figText(c[0], c[1] + 4.5, lab, { fs: 13, k: 'xt' });
+    });
+    s += marks + figCurveName(fr, lay, 'f', o.f, o.g) + figCurveName(fr, lay, 'g', o.g, o.f) + figAxisNames(fr, lay);
+    return figSvg(fr.w, fr.h, (kind === 'pl' ? '拋物線 y = f(x) 與直線 y = g(x)' : kind === 'cl' ? '三次函數 y = f(x) 的圖形與直線 y = g(x)' : '兩條拋物線 y = f(x)、y = g(x)') + '，交點的 x 坐標是 ' + rs.map(figNum).join('、'), s);
+  }
+  L2.figAboveBelow = function (r) {
+    var kind = r.pick(['pl', 'pl', 'cl', 'cl', 'pp']), sd, rel, rs, o, ok, svg, guard = 0;
+    do {
+      sd = r.sign(); rel = r.pick(['<', '<=', '>', '>=']); rs = [r.int(-4, 1)]; rs.push(rs[0] + r.int(2, 4)); if (kind === 'cl') rs.push(rs[1] + r.int(2, 3));
+      o = figABBuild(kind, sd, rs, r.sign(), r.sign(), r.pick([0.25, 0.4]));
+      ok = rs.indexOf(0) < 0 && rs[rs.length - 1] <= 5 && o.ok;
+      if (ok) { svg = figABSvg(o, rs, kind); ok = FIG_BAD === 0; }
+    } while (!ok && guard++ < 300);
+    if (!ok) { kind = 'pl'; sd = 1; rel = '>'; rs = [-1, 3]; o = figABBuild(kind, sd, rs, 1, 1, 0.25); svg = figABSvg(o, rs, kind); }
+    var sol = solveSign(rs.map(function (v) { return { r: v, m: 1 }; }), sd, rel), eq = (rel === '<=' || rel === '>='), up = (rel === '>' || rel === '>=');
+    var lead = kind === 'pl' ? '二次函數 ' + T('y=f(x)') + ' 與一次函數 ' + T('y=g(x)') : kind === 'cl' ? '三次函數 ' + T('y=f(x)') + ' 與一次函數 ' + T('y=g(x)') : '兩個二次函數 ' + T('y=f(x)') + '、' + T('y=g(x)');
+    return { q: '下圖是' + lead + ' 的圖形，兩圖形交點的 ' + T('x') + ' 坐標標示在 ' + T('x') + ' 軸上。求不等式 ' + T('f(x)' + REL[rel] + 'g(x)') + ' 的解。' + svg,
+      a: setTex(sol),
+      h: '不必求出兩個函數的式子。$f(x)' + REL[rel] + 'g(x)$ 的意思是「$y=f(x)$ 的圖形在 $y=g(x)$ 的圖形' + (up ? '上' : '下') + '方' + (eq ? '或兩者相交' : '') + '」。交點 $x=' + rs.join(',\\ ') + '$ 把 $x$ 軸分成 ' + (rs.length + 1) + ' 段，逐段比較哪一條在上面；' + (eq ? '含等號，交點的 $x$ 坐標也要取。' : '不含等號，交點的 $x$ 坐標不能取。'),
+      p: { kind: kind, sd: sd, roots: rs, rel: rel, ans: sol } };
+  };
+  META_L2.push(['figCubicFit', '§7 由圖形寫出三次函數'], ['figCubicCenter', '§7 看圖判斷 a、p 與對稱中心'], ['figAboveBelow', '§7 兩圖形的上下關係解不等式']);
+
+  /* ────────── L3　L3-20、L3-21 的類似題（附圖） ────────── */
+  /* L3-20　拋物線圖形＋一個 x 軸交點＋對稱軸：判斷五個敘述（多選） */
+  L3.figQuadMulti = function (r) {
+    var s0, d, sa, r1, r2, left, gv, ot, svg, ok, guard = 0;
+    function build() {
+      var f = figQuadFn(sa, s0, -d * d), fr = figQuadFrame(sa, s0, -d * d, [0]), lay = figLayout(fr.w, fr.h), X = fr.X(gv), Y0 = fr.Y(0);
+      var s = figAxes(fr, lay) + figCurve(fr, f, lay, 'curve');
+      var lab = '(' + figNum(gv) + ', 0)', w = figTW(lab, 13), dx = w / 2 + 6, sd = left ? -1 : 1, hi = sa < 0 ? -12 : 13, lo2 = sa < 0 ? 13 : -12;
+      var c = lay.put([[X + sd * dx, Y0 + hi], [X + sd * dx, Y0 + lo2], [X - sd * dx, Y0 + lo2], [X - sd * dx, Y0 + hi]], w, 13);
+      s += figDot(X, Y0, { k: 'root', r: 3 }) + figText(c[0], c[1] + 4.5, lab, { fs: 13, k: 'rt' }) + figAxisNames(fr, lay);
+      ok = FIG_BAD === 0 && Math.abs(r1) * fr.sx >= 12 && Math.abs(r2) * fr.sx >= 12 && Math.abs(f(0)) * fr.sy >= 12;
+      return figSvg(fr.w, fr.h, '開口向' + (sa > 0 ? '上' : '下') + '的拋物線，與 x 軸的一個交點標為 ' + lab, s);
+    }
+    do { s0 = r.pick([-2, -1, 1, 2, 3]); d = r.pick([2, 3, 4]); r1 = s0 - d; r2 = s0 + d; sa = r.sign(); left = r() < 0.5; gv = left ? r1 : r2; ot = left ? r2 : r1; ok = r1 !== 0 && r2 !== 0; if (ok) svg = build(); } while (!ok && guard++ < 100);
+    if (!ok) { s0 = 1; d = 3; r1 = -2; r2 = 4; sa = -1; left = true; gv = -2; ot = 4; svg = build(); }
+    var  fv = function (x) { return sa * (x - r1) * (x - r2); }, sg = function (v) { return v > 0 ? 1 : v < 0 ? -1 : 0; };
+    function rel(v, want) { return want > 0 ? '\\gt0' : '\\lt0'; }
+    var makers = [
+      function (t) { var tr = sg(r1 * r2), w = t ? tr : -tr; return ['$ac' + rel(0, w) + '$', w === tr]; },
+      function (t) { var tr = -sg(s0), w = t ? tr : -tr; return ['$ab' + rel(0, w) + '$', w === tr]; },
+      function (t) { var u = r.pick([1, -1, 2, -2]), ex = { '1': 'a+b+c', '-1': 'a-b+c', '2': '4a+2b+c', '-2': '4a-2b+c' }[u], tr = sg(fv(u)); if (tr === 0) return ['$' + ex + (t ? '=0' : '\\gt0') + '$', t]; var w = t ? tr : -tr; return ['$' + ex + rel(0, w) + '$', w === tr]; },
+      function (t) { var j = r.int(d + 1, d + 3), u = s0 + j, v = t ? s0 - j : s0 - j + 1; return ['$f(' + u + ')=f(' + v + ')$', u + v === 2 * s0]; },
+      function (t) { var c = [], i; for (i = r1 - 2; i <= r2 + 2; i++) if (i !== r1 && i !== r2) c.push(i); var u = r.pick(c), tr = sg(fv(u)), w = t ? tr : -tr; return ['$f(' + u + ')' + rel(0, w) + '$', w === tr]; },
+      function (t) { var v = t ? ot : (-gv !== ot ? -gv : ot + 1); return ['圖形與 $x$ 軸的另一個交點是 $(' + v + ',0)$', v === ot]; },
+      function (t) { var mx = t ? sa < 0 : sa > 0; return ['$f(x)$ 在 $x=' + s0 + '$ 時有最' + (mx ? '大' : '小') + '值', mx === (sa < 0)]; },
+      function (t) { var j1 = r.int(1, 3), j2 = j1 + r.int(1, 2), u = s0 - j1, v = s0 + j2, tr = sa < 0, big = t ? tr : !tr; return ['$f(' + u + ')' + (big ? '\\gt ' : '\\lt ') + 'f(' + v + ')$', big === tr]; }
+    ];
+    var sts, ans, g2 = 0;
+    do { sts = r.shuffle(makers).slice(0, 5).map(function (mk) { return mk(r() < 0.5); }); ans = []; sts.forEach(function (s2, i) { if (s2[1]) ans.push(i + 1); }); } while ((ans.length === 0 || ans.length === 5) && g2++ < 50);
+    return { q: '設 ' + T('a,b,c') + ' 為實數，二次函數 ' + T('y=f(x)=ax^2+bx+c') + ' 的圖形如下圖。已知圖形交 ' + T('x') + ' 軸於 ' + T('(' + gv + ',0)') + '，且對稱軸為直線 ' + T('x=' + s0) + '。選出正確的選項：' +
+        svg + sts.map(function (s2, i) { return figOpt(i + 1, s2[0]); }).join('　'),
+      a: ans.map(function (i) { return '(' + i + ')'; }).join(''),
+      h: '交點 $(' + gv + ',0)$ 對直線 $x=' + s0 + '$ 的對稱點是 $(' + ot + ',0)$，所以 $f(x)=a' + factTex(r1) + factTex(r2) + '$，圖形開口向' + (sa > 0 ? '上' : '下') + ' ⟹ $a' + gtlt0(sa) + '$。展開把 $b$、$c$ 用 $a$ 表示，$f$ 的值直接代因式；離對稱軸一樣遠的兩點函數值相等。',
+      p: { s: s0, d: d, sa: sa, given: gv, other: ot, ans: ans } };
+  };
+
+  /* L3-21　由三次函數的圖形（一高一低）判斷 a、p、h、k、f(0) 的正負（多選） */
+  L3.figCubicMulti = function (r) {
+    var sa, sh, sk, h, k, f, f0, s0, svg, guard = 0;
+    do {
+      sa = r.sign(); sh = r.sign(); sk = r.sign(); h = sh * r.pick([1.5, 2.3]); k = sk * 3.2; f = figCenterFn(sa, -sa, h, k); f0 = f(0); s0 = f0 > 0 ? 1 : -1;
+      var x0 = Math.min(h - 2.45, -0.5), x1 = Math.max(h + 2.45, 0.5), lo = Math.min(k - 6.5, f0 - 1.5, 0), hi = Math.max(k + 6.5, f0 + 1.5, 0);
+      var fr = figBox(x0, x1, lo, hi, 210), lay = figLayout(fr.w, fr.h), s = figAxes(fr, lay) + figCurve(fr, f, lay, 'curve') + figAxisNames(fr, lay);
+      svg = figSvg(fr.w, fr.h, '三次函數的圖形，有一個高點和一個低點，最右邊往' + (sa > 0 ? '上' : '下') + '；高點和低點都在 y 軸' + (sh > 0 ? '右' : '左') + '邊、x 軸' + (sk > 0 ? '上' : '下') + '方', s);
+    } while (FIG_BAD > 0 && guard++ < 100);
+    var makers = [
+      function (t) { var w = t ? sa : -sa; return ['$a' + gtlt0(w) + '$', w === sa]; },
+      function (t) { var w = t ? -sa : sa; return ['$p' + gtlt0(w) + '$', w === -sa]; },
+      function (t) { var w = t ? sh : -sh; return ['$h' + gtlt0(w) + '$', w === sh]; },
+      function (t) { var w = t ? sk : -sk; return ['$k' + gtlt0(w) + '$', w === sk]; },
+      function (t) { var w = t ? s0 : -s0; return ['$-ah^3-ph+k' + gtlt0(w) + '$', w === s0]; },
+      function (t) { return ['$ap' + (t ? '\\lt0' : '\\gt0') + '$', t]; },
+      function (t) { return [t ? '方程式 $f(x)=0$ 恰有一個實根' : '方程式 $f(x)=0$ 有三個相異實根', t]; },
+      function (t) { var tr = sh * sk, w = t ? tr : -tr; return ['$hk' + gtlt0(w) + '$', w === tr]; }
+    ];
+    var sts, ans, g2 = 0;
+    do { sts = r.shuffle(makers).slice(0, 5).map(function (mk) { return mk(r() < 0.6); }); ans = []; sts.forEach(function (s2, i) { if (s2[1]) ans.push(i + 1); }); } while ((ans.length === 0 || ans.length === 5) && g2++ < 50);
+    return { q: '三次函數 ' + T('y=f(x)=a(x-h)^3+p(x-h)+k') + ' 的圖形如下圖。選出正確的選項：' + svg +
+        sts.map(function (s2, i) { return figOpt(i + 1, s2[0]); }).join('　'),
+      a: ans.map(function (i) { return '(' + i + ')'; }).join(''),
+      h: '圖形最右邊往' + (sa > 0 ? '上' : '下') + ' ⟹ $a' + gtlt0(sa) + '$。圖形有一個高點和一個低點 ⟹ $a$、$p$ 異號。對稱中心 $(h,k)$ 在高點和低點的正中間，看它在第幾象限。$-ah^3-ph+k$ 是把 $x=0$ 代進去的值 $f(0)$，看圖形和 $y$ 軸的交點在 $x$ 軸的上方還是下方。',
+      p: { sa: sa, h: h, k: k, f0: s0, ans: ans } };
+  };
+  META_L3.push(['figQuadMulti', '看拋物線與對稱軸判斷敘述（多選・附圖）'], ['figCubicMulti', '看三次函數圖形判斷 a、p、h、k（多選・附圖）']);
+  L3_FIX['L3-20'] = 'figQuadMulti'; L3_FIX['L3-21'] = 'figCubicMulti';
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

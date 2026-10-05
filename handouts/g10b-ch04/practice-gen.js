@@ -2522,6 +2522,442 @@
   CONTRAST['L2.trigQuadEq'] = { f: function (p) { return p.uf; }, keep: ['t'], why: '有 $\\cos^2\\theta$ 就換成 $1-\\sin^2\\theta$，有 $\\sin^2\\theta$ 就換成 $1-\\cos^2\\theta$，留下來的那個函數才是未知數。解出來的值要在 $-1$ 到 $1$ 之間，再回單位圓找角。' };
   CONTRAST['L2.chordSineRatio'] = { f: function (p) { return p.t; }, why: '三種情形都是「弦長 $=2R\\sin$（它所對的圓周角）」：同一條弦放在兩個圓裡，圓周角的正弦越小，圓越大；同一個圓裡的兩條弦，長度比就是所對圓周角的正弦比。' };
   CONTRAST['L2.areaSplitCevian'] = { f: function (p) { return p.t; }, why: '都是把大三角形的面積拆成兩塊，三塊都用「兩邊夾角」的面積公式；未知數在哪一塊就解哪一個。夾角若是 $\\angle BAC-90°$，用 $\\sin(\\angle BAC-90°)=-\\cos\\angle BAC$。' };
+  /* ══════════════════════════════════════════════════════════
+     2026-10-02　附圖題（讀圖型）：圖由產生器依亂數參數即時畫成 inline SVG，放在 q 裡，圖跟著數字變
+     共用畫圖小工具 fig*()（與 g11a-ch01 同一套樣式）：三角形與標籤、角的小弧、直角記號、圓與圓上的點、方格。
+     規則：坐標一律由參數算（不目測）、圖照比例畫；圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
+           圖上的長度標籤由根式數 S(c,r,d) 直接轉成（labS），與精確值一致；
+           要給驗算器讀的元素帶 data-k（驗算器從圖上的坐標與標籤文字代回，不看 p）。
+     L1 4 型、L2 4 型、L3 3 型（L3-19～L3-21 的類似題）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     ══════════════════════════════════════════════════════════ */
+  var FIGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#b03a55', soft: '#8a7378', grid: '#ddd2d5', fill: 'rgba(176,58,85,.2)' };
+  var MINUS = '−';
+  function n1(v) { var s = (Math.round(v * 10) / 10).toFixed(1); if (s === '-0.0') s = '0.0'; return s.replace(/\.0$/, ''); }
+  function n2(v) { var s = (Math.round(v * 100) / 100).toFixed(2); if (s === '-0.00') s = '0.00'; return s.replace(/\.?0+$/, ''); }
+  function figAttr(o) { var s = ''; for (var k in o) { if (o[k] !== undefined && o[k] !== null && o[k] !== false) s += ' ' + k + '="' + o[k] + '"'; } return s; }
+  function figSvg(w, h, label, body) { return '<svg class="qfig" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" role="img" aria-label="' + label + '">' + body + '</svg>'; }
+  function figLine(x1, y1, x2, y2, o) { o = o || {}; return '<line' + figAttr({ 'data-k': o.k, x1: n2(x1), y1: n2(y1), x2: n2(x2), y2: n2(y2), stroke: o.c || FIGC.line, 'stroke-width': o.w || 1.6, 'stroke-dasharray': o.dash ? '4 3' : null, 'stroke-linecap': 'round' }) + '/>'; }
+  function figText(x, y, s, o) { o = o || {}; return '<text' + figAttr({ 'data-k': o.k, x: n1(x), y: n1(y), 'font-size': o.fs || 14, fill: o.c || FIGC.ink, 'text-anchor': o.anchor || 'middle', 'font-style': o.it ? 'italic' : null }) + '>' + s + '</text>'; }
+  function figPath(d, o) { o = o || {}; return '<path' + figAttr({ 'data-k': o.k, d: d, fill: o.fill || 'none', stroke: o.c === 'none' ? null : (o.c || FIGC.line), 'stroke-width': o.c === 'none' ? null : (o.w || 1.8), 'stroke-dasharray': o.dash ? '4 3' : null, 'stroke-linejoin': 'round' }) + '/>'; }
+  function figDot(x, y, o) { o = o || {}; return '<circle' + figAttr({ 'data-k': o.k, cx: n2(x), cy: n2(y), r: o.r || 3, fill: o.c || FIGC.line }) + '/>'; }
+  function figCircle(cx, cy, R, k) { return '<circle' + figAttr({ 'data-k': k, cx: n2(cx), cy: n2(cy), r: n2(R), fill: 'none', stroke: FIGC.line, 'stroke-width': 1.8 }) + '/>'; }
+  function figPt(cx, cy, R, a) { return [cx + R * Math.cos(a), cy - R * Math.sin(a)]; }       /* 數學角 a（逆時針）→ 像素點 */
+  function ptS(p) { return n2(p[0]) + ' ' + n2(p[1]); }
+  /* 標籤值：字串（整數、θ、30°、3√2…）或 { neg, num, den }（直式分數）。labS：根式數 S → 標籤值 */
+  function labS(v) { if (v.c === 0) return '0'; var m = Math.abs(v.c), num = v.r === 1 ? String(m) : (m === 1 ? '' : m) + '√' + v.r; return v.d === 1 ? (v.c < 0 ? MINUS : '') + num : { neg: v.c < 0, num: num, den: String(v.d) }; }
+  function labTxt(v) { return typeof v === 'string' ? v : (v.neg ? MINUS : '') + v.num + '/' + v.den; }
+  function labW(v, fs) { fs = fs || 14; if (typeof v === 'string') return v.length * fs * 0.58; return Math.max(v.num.length, v.den.length) * fs * 0.58 + 4 + (v.neg ? fs * 0.7 : 0); }
+  /* 在 (x, yc) 畫標籤值，yc 是垂直中心；anchor：middle（預設）／start／end */
+  function figVal(x, yc, v, o) {
+    o = o || {}; var fs = o.fs || 14, w = labW(v, fs), x0 = o.anchor === 'start' ? x : o.anchor === 'end' ? x - w : x - w / 2;
+    if (typeof v === 'string') return figText(x0 + w / 2, yc + fs * 0.36, v, { fs: fs, c: o.c, k: o.k, it: o.it });
+    var sw = v.neg ? fs * 0.7 : 0, cx = x0 + sw + (w - sw) / 2, s = '<g' + figAttr({ 'data-k': o.k }) + '>';
+    if (v.neg) s += figText(x0 + fs * 0.3, yc + fs * 0.36, MINUS, { fs: fs, c: o.c });
+    s += figText(cx, yc - 3.5, v.num, { fs: fs, c: o.c }) + figLine(cx - (w - sw) / 2 + 1, yc, cx + (w - sw) / 2 - 1, yc, { c: o.c || FIGC.ink, w: 1 }) + figText(cx, yc + fs * 0.92, v.den, { fs: fs, c: o.c });
+    return s + '</g>';
+  }
+  /* 圓弧（圓心、半徑為像素；a0→a1 為數學角、逆時針、a1>a0）。cont=true 時只給 A 指令（接在前一點後面） */
+  function figArcD(cx, cy, R, a0, a1, cont) {
+    return (cont ? '' : 'M ' + ptS(figPt(cx, cy, R, a0)) + ' ') + 'A ' + n2(R) + ' ' + n2(R) + ' 0 ' + (a1 - a0 > Math.PI ? 1 : 0) + ' 0 ' + ptS(figPt(cx, cy, R, a1));
+  }
+  function figArrow(x1, y1, x2, y2, o) {
+    o = o || {}; var a = Math.atan2(y2 - y1, x2 - x1), L = 8, wv = 3.2, c = o.c || FIGC.ink, bx = x2 - L * Math.cos(a), by = y2 - L * Math.sin(a);
+    return figLine(x1, y1, bx, by, { c: c, w: o.w || 1.2, k: o.k }) + '<path d="M ' + n2(x2) + ' ' + n2(y2) + ' L ' + n2(bx - wv * Math.sin(a)) + ' ' + n2(by + wv * Math.cos(a)) + ' L ' + n2(bx + wv * Math.sin(a)) + ' ' + n2(by - wv * Math.cos(a)) + ' Z" fill="' + c + '"/>';
+  }
+  /* 數學坐標（y 向上）等比例放進寬 W、圖形最高 maxH 的框；回傳像素點 P、比例尺 sc、畫布高 H */
+  function figFit(pts, o) {
+    var x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    pts.forEach(function (p) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); });
+    var W = o.W || 300, l = o.l || 34, rr = o.r || 34, t = o.t || 24, b = o.b || 28;
+    var sc = Math.min((W - l - rr) / (x1 - x0 || 1), (o.maxH || 160) / (y1 - y0 || 1)), ox = l + ((W - l - rr) - (x1 - x0) * sc) / 2;
+    return { P: pts.map(function (p) { return [ox + (p[0] - x0) * sc, t + (y1 - p[1]) * sc]; }), sc: sc, W: W, H: Math.ceil(t + (y1 - y0) * sc + b) };
+  }
+  function figCen(P) { var x = 0, y = 0; P.forEach(function (p) { x += p[0]; y += p[1]; }); return [x / P.length, y / P.length]; }
+  function figAway(p, c, d) { var dx = p[0] - c[0], dy = p[1] - c[1], L = Math.sqrt(dx * dx + dy * dy) || 1; return [p[0] + dx / L * d, p[1] + dy / L * d]; }
+  function figName(p, c, name, d) { var q = figAway(p, c, d || 12); return figText(q[0], q[1] + 4.8, name, { fs: 14, it: 1 }); }       /* 點名：放在離 c 較遠的那一側 */
+  function figPoly(P, o) { o = o || {}; return figPath('M ' + P.map(ptS).join(' L ') + ' Z', o); }
+  /* 邊 pq 的長度標籤：放在邊的中點、離 c 較遠的那一側（o.inside：靠 c 的那一側） */
+  function figSideVal(p, q, c, v, o) {
+    o = o || {}; var mx = (p[0] + q[0]) / 2, my = (p[1] + q[1]) / 2, dx = q[0] - p[0], dy = q[1] - p[1], L = Math.sqrt(dx * dx + dy * dy) || 1, nx = -dy / L, ny = dx / L;
+    if ((nx * (c[0] - mx) + ny * (c[1] - my) > 0) !== !!o.inside) { nx = -nx; ny = -ny; }
+    var fs = o.fs || 14, w = labW(v, fs), hh = typeof v === 'string' ? fs * 0.9 : fs * 2.2, dist = (o.d === undefined ? 5 : o.d) + Math.abs(nx) * w / 2 + Math.abs(ny) * hh / 2;
+    return figVal(mx + nx * dist, my + ny * dist, v, { fs: fs, k: o.k, c: o.c, it: o.it });
+  }
+  /* 由頂點 v 看 p、q 的數學角 [a0, a1]：a0→a1 逆時針且不超過 180° */
+  function figAng(v, p, q) {
+    var a = Math.atan2(v[1] - p[1], p[0] - v[0]), b = Math.atan2(v[1] - q[1], q[0] - v[0]), d = b - a;
+    while (d < 0) d += 2 * Math.PI; while (d >= 2 * Math.PI) d -= 2 * Math.PI;
+    return d <= Math.PI ? [a, a + d] : [b, b + 2 * Math.PI - d];
+  }
+  /* 角的小弧＋標籤（lab 為 null 不標）；標籤放在角的內部、沿角平分線，角越小放得越遠 */
+  function figAngMark(v, p, q, lab, o) {
+    o = o || {}; var aa = figAng(v, p, q), th = aa[1] - aa[0], rr = o.r || 16, fs = o.fs || 13, s = figPath(figArcD(v[0], v[1], rr, aa[0], aa[1]), { c: o.c || FIGC.soft, w: 1.3, k: o.k });
+    if (lab !== null && lab !== undefined) {
+      var lw = labW(lab, fs), pad = lab.charAt(lab.length - 1) === '°' ? 3 : 7, lr = o.lr || Math.max(rr + 6 + lw / 2, Math.min(60, (lw / 2 + pad) / Math.sin(th / 2))), m = figPt(v[0], v[1], lr, (aa[0] + aa[1]) / 2);
+      s += figVal(m[0], m[1], lab, { fs: fs, k: o.lk, it: lab === 'θ' });
+    }
+    return s;
+  }
+  function figRight(v, p, q, sz) {                                                                 /* 直角記號 */
+    sz = sz || 8; var u = figAway(v, p, -sz), w = figAway(v, q, -sz), m = [u[0] + w[0] - v[0], u[1] + w[1] - v[1]];
+    return '<polyline' + figAttr({ points: n2(u[0]) + ',' + n2(u[1]) + ' ' + n2(m[0]) + ',' + n2(m[1]) + ' ' + n2(w[0]) + ',' + n2(w[1]), fill: 'none', stroke: FIGC.soft, 'stroke-width': 1.2 }) + '/>';
+  }
+  function figOpt(i, t) { return '<span class="qopt">(' + i + ') ' + t + '</span>'; }
+  function sInt(n) { return S(n, 1, 1); }
+  function sSqrt(n) { return S(1, n, 1); }
+
+  /* ────────── L1　6 讀圖題：直角三角形、仰角俯角、兩邊夾角、方格紙上的廣義角 ────────── */
+  /* 直角三角形：直角在 R，兩股 RP、RQ；tf（0～7）決定擺法（左右翻、上下翻、兩股對調），θ 標在 at（P 或 Q） */
+  function figRightTriSvg(pl, ql, tf, at, labs) {
+    var pts = [[0, 0], [pl, 0], [0, ql]].map(function (p) { var x = p[0], y = p[1], t; if (tf & 1) x = -x; if (tf & 2) y = -y; if (tf & 4) { t = x; x = y; y = t; } return [x, y]; });
+    var ft = figFit(pts, { W: 280, maxH: 150, l: 50, r: 50, t: 26, b: 32 }), R = ft.P[0], P = ft.P[1], Q = ft.P[2], c = figCen(ft.P);
+    var s = figPoly(ft.P, { k: 'tri', w: 2, fill: 'rgba(176,58,85,.07)' }) + figRight(R, P, Q);
+    s += at === 'P' ? figAngMark(P, R, Q, 'θ', { lk: 'th', fs: 14 }) : figAngMark(Q, R, P, 'θ', { lk: 'th', fs: 14 });
+    if (labs.p) s += figSideVal(R, P, c, labs.p, { k: 'len' });
+    if (labs.q) s += figSideVal(R, Q, c, labs.q, { k: 'len' });
+    if (labs.h) s += figSideVal(P, Q, c, labs.h, { k: 'len' });
+    return figSvg(ft.W, ft.H, '直角三角形，兩個邊長與角 θ 標示在圖上', s);
+  }
+  var FRT_TRI = [[3, 4, 5], [4, 3, 5], [5, 12, 13], [12, 5, 13], [8, 15, 17], [15, 8, 17], [6, 8, 10], [8, 6, 10]];
+  L1.figRightTri = function (r) {
+    var mode, lp, lq, hyp, rat, guard = 0, t, a, b, c;
+    do {
+      mode = r.pick(['legs', 'legs', 'hyp']);
+      if (r() < 0.35) { t = r.pick(FRT_TRI); lp = sInt(t[0]); lq = sInt(t[1]); hyp = sInt(t[2]); }
+      else if (mode === 'legs') { a = r.int(1, 9); b = r.int(1, 9); lp = sInt(a); lq = sInt(b); hyp = sSqrt(a * a + b * b); }
+      else { c = r.int(2, 12); a = r.int(1, c - 1); lp = sInt(a); lq = sSqrt(c * c - a * a); hyp = sInt(c); }
+      rat = sNum(lp) / sNum(lq);
+    } while ((rat < 0.42 || rat > 2.4) && guard++ < 200);
+    var known = 'p', tmp; if (r() < 0.5) { tmp = lp; lp = lq; lq = tmp; known = 'q'; }
+    var at = r.pick(['P', 'Q']), tf = r.int(0, 7), opp = at === 'P' ? lq : lp, adj = at === 'P' ? lp : lq;
+    var sn = sDiv(opp, hyp), cs = sDiv(adj, hyp), tn = sDiv(opp, adj);
+    var labs = mode === 'legs' ? { p: labS(lp), q: labS(lq) } : (known === 'p' ? { p: labS(lp), h: labS(hyp) } : { q: labS(lq), h: labS(hyp) });
+    var third = mode === 'legs' ? '斜邊 $=\\sqrt{' + hxSq(sTex(lp)) + '+' + hxSq(sTex(lq)) + '}=' + sTex(hyp) + '$' : '另一股 $=\\sqrt{' + hxSq(sTex(hyp)) + '-' + hxSq(sTex(known === 'p' ? lp : lq)) + '}=' + sTex(known === 'p' ? lq : lp) + '$';
+    return { q: '如圖，直角三角形有兩個邊長標示在圖上，求 ' + T('\\sin\\theta') + '、' + T('\\cos\\theta') + '、' + T('\\tan\\theta') + '。' + figRightTriSvg(sNum(lp), sNum(lq), tf, at, labs),
+      a: T('\\sin\\theta=' + sTex(sn)) + '、' + T('\\cos\\theta=' + sTex(cs)) + '、' + T('\\tan\\theta=' + sTex(tn)),
+      h: '先認邊：直角對面的是斜邊，沒有碰到 $\\theta$ 的那條股是對邊，夾出 $\\theta$ 的那條股是鄰邊。用畢氏定理補第三邊：' + third + '。所以對邊 $=' + sTex(opp) + '$、鄰邊 $=' + sTex(adj) + '$、斜邊 $=' + sTex(hyp) + '$，再套 $\\sin=\\dfrac{\\text{對}}{\\text{斜}}$、$\\cos=\\dfrac{\\text{鄰}}{\\text{斜}}$、$\\tan=\\dfrac{\\text{對}}{\\text{鄰}}$。',
+      p: { mode: mode, known: known, at: at, tf: tf, lp: sArr(lp), lq: sArr(lq), hyp: sArr(hyp), ans: { sin: sArr(sn), cos: sArr(cs), tan: sArr(tn) } } };
+  };
+
+  /* 仰角、俯角測量圖。mode：elev（一個仰角＋水平距離）／dep（俯角＋高）／two（同側兩個仰角＋兩點距離） */
+  var FELV_TWO = { '30,45': [1, 1], '30,60': [0, 1], '45,60': [3, 1] };                          /* h = w(rat + surd√3)/2 的 [rat, surd] */
+  function figElevSvg(mode, len, th1, th2) {
+    var t1 = Math.tan(th1 * Math.PI / 180), t2 = th2 ? Math.tan(th2 * Math.PI / 180) : 0, pts, ft, s = '', A, B, H, Tp, E, gy;
+    if (mode === 'elev') {
+      pts = [[0, 0], [len, 0], [len, len * t1]]; ft = figFit(pts, { W: 300, maxH: 158, l: 44, r: 50, t: 26, b: 28 }); A = ft.P[0]; H = ft.P[1]; Tp = ft.P[2]; gy = A[1];
+      s += figLine(A[0] - 16, gy, H[0] + 20, gy, { c: FIGC.ink, w: 1.2, k: 'ground' }) + figLine(H[0], H[1], Tp[0], Tp[1], { w: 3.2, k: 'tower' }) + figLine(A[0], A[1], Tp[0], Tp[1], { c: FIGC.hot, w: 1.6, k: 'sight' });
+      s += figRight(H, A, Tp) + figAngMark(A, H, Tp, th1 + '°', { lk: 'ang' }) + figDot(A[0], A[1], { k: 'A', r: 2.6 });
+      s += figText(A[0] - 4, gy + 16, 'A', { it: 1 }) + figText(H[0] + 3, gy + 16, 'H', { it: 1 }) + figText(Tp[0], Tp[1] - 8, 'T', { it: 1 });
+      s += figVal((A[0] + H[0]) / 2, gy + 14, String(len), { k: 'len' }) + figText(H[0] + 13, (H[1] + Tp[1]) / 2 + 5, '?', { c: FIGC.hot });
+      return figSvg(ft.W, ft.H, '仰角測量圖：A 到塔底 H 的距離與仰角標示在圖上', s);
+    }
+    if (mode === 'dep') {
+      var x = len / t1; pts = [[0, len], [0, 0], [x, 0], [x, len]]; ft = figFit(pts, { W: 300, maxH: 150, l: 56, r: 40, t: 28, b: 28 }); Tp = ft.P[0]; H = ft.P[1]; B = ft.P[2]; E = ft.P[3]; gy = H[1];
+      s += figLine(H[0] - 14, gy, B[0] + 22, gy, { c: FIGC.ink, w: 1.2, k: 'ground' }) + figLine(H[0], H[1], Tp[0], Tp[1], { w: 3.2, k: 'tower' }) + figLine(Tp[0], Tp[1], E[0] + 10, E[1], { c: FIGC.soft, w: 1.2, dash: 1, k: 'level' }) + figLine(Tp[0], Tp[1], B[0], B[1], { c: FIGC.hot, w: 1.6, k: 'sight' });
+      s += figRight(H, B, Tp) + figAngMark(Tp, E, B, th1 + '°', { lk: 'ang' }) + figDot(B[0], B[1], { k: 'B', r: 2.6 });
+      s += figText(Tp[0] - 4, Tp[1] - 8, 'T', { it: 1 }) + figText(H[0] - 3, gy + 16, 'H', { it: 1 }) + figText(B[0] + 4, gy + 16, 'B', { it: 1 });
+      s += figVal(H[0] - 9, (H[1] + Tp[1]) / 2, String(len), { k: 'len', anchor: 'end' }) + figText((H[0] + B[0]) / 2, gy + 17, '?', { c: FIGC.hot });
+      return figSvg(ft.W, ft.H, '俯角測量圖：崖高與俯角標示在圖上', s);
+    }
+    var hN = len / (1 / t1 - 1 / t2), xH = len + hN / t2;
+    pts = [[0, 0], [len, 0], [xH, 0], [xH, hN]]; ft = figFit(pts, { W: 300, maxH: 150, l: 34, r: 46, t: 26, b: 28 }); A = ft.P[0]; B = ft.P[1]; H = ft.P[2]; Tp = ft.P[3]; gy = A[1];
+    s += figLine(A[0] - 14, gy, H[0] + 20, gy, { c: FIGC.ink, w: 1.2, k: 'ground' }) + figLine(H[0], H[1], Tp[0], Tp[1], { w: 3.2, k: 'tower' }) + figLine(A[0], A[1], Tp[0], Tp[1], { c: FIGC.hot, w: 1.6, k: 'sightA' }) + figLine(B[0], B[1], Tp[0], Tp[1], { c: FIGC.hot, w: 1.6, k: 'sightB' });
+    s += figRight(H, A, Tp) + figAngMark(A, H, Tp, th1 + '°', { lk: 'angA', r: 20 }) + figAngMark(B, H, Tp, th2 + '°', { lk: 'angB', r: 13 }) + figDot(A[0], A[1], { k: 'A', r: 2.6 }) + figDot(B[0], B[1], { k: 'B', r: 2.6 });
+    s += figText(A[0] - 4, gy + 16, 'A', { it: 1 }) + figText(B[0] + 2, gy + 16, 'B', { it: 1 }) + figText(H[0] + 3, gy + 16, 'H', { it: 1 }) + figText(Tp[0], Tp[1] - 8, 'T', { it: 1 });
+    s += figVal((A[0] + B[0]) / 2, gy + 14, String(len), { k: 'len' }) + figText(H[0] + 13, (H[1] + Tp[1]) / 2 + 5, '?', { c: FIGC.hot });
+    return figSvg(ft.W, ft.H, '兩次仰角測量圖：A、B 的距離與兩個仰角標示在圖上', s);
+  }
+  L1.figElev = function (r) {
+    var mode = r.pick(['elev', 'dep', 'two', 'two']), len = r.pick([10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 50, 60]), th, v;
+    if (mode === 'elev') {
+      th = r.pick([30, 45, 60]); v = sMulF(tv(th).tan, F(len));
+      return { q: '如圖，在地面上 ' + T('A') + ' 點測得塔頂 ' + T('T') + ' 的仰角，仰角與 ' + T('A') + ' 到塔底 ' + T('H') + ' 的距離都標示在圖上（長度單位：公尺）。求塔高 ' + T(ov('TH')) + '。' + figElevSvg('elev', len, th),
+        a: T(sTex(v)) + ' 公尺',
+        h: '從圖上讀出：鄰邊（水平距離）$\\overline{AH}=' + len + '$，仰角 $' + th + '°$，要求的塔高是對邊。已知鄰邊求對邊用 $\\tan$：$\\overline{TH}=' + len + '\\tan' + th + '°$。',
+        p: { mode: mode, len: len, th: th, ans: sArr(v) } };
+    }
+    if (mode === 'dep') {
+      th = r.pick([30, 45, 60]); v = sDiv(sInt(len), tv(th).tan);
+      return { q: '如圖，從懸崖頂 ' + T('T') + ' 看海面上的小船 ' + T('B') + '，俯角與崖高 ' + T(ov('TH')) + ' 都標示在圖上（長度單位：公尺），虛線是過 ' + T('T') + ' 的水平線。求小船到崖底 ' + T('H') + ' 的距離 ' + T(ov('BH')) + '。' + figElevSvg('dep', len, th),
+        a: T(sTex(v)) + ' 公尺',
+        h: '俯角是「水平線往下看」的角，它和 $\\angle TBH$ 是內錯角，所以 $\\angle TBH=' + th + '°$。在直角三角形 $TBH$ 裡，對邊 $\\overline{TH}=' + len + '$，要求鄰邊：$\\overline{BH}=\\dfrac{' + len + '}{\\tan' + th + '°}$（分母有根號要有理化）。',
+        p: { mode: mode, len: len, th: th, ans: sArr(v) } };
+    }
+    var pair = r.pick([[30, 45], [30, 60], [45, 60]]), co = FELV_TWO[pair.join(',')], rat = F(co[0] * len, 2), surd = S(co[1] * len, 3, 2);
+    return { q: '如圖，' + T('A') + '、' + T('B') + ' 與塔底 ' + T('H') + ' 在同一直線上。在 ' + T('A') + '、' + T('B') + ' 兩點測得塔頂 ' + T('T') + ' 的仰角，兩個仰角與 ' + T(ov('AB')) + ' 的長都標示在圖上（長度單位：公尺）。求塔高 ' + T(ov('TH')) + '。' + figElevSvg('two', len, pair[0], pair[1]),
+      a: T(hxTwo(rat, surd)) + ' 公尺',
+      h: '設塔高 $h$。從圖上讀出：$A$ 的仰角 $' + pair[0] + '°$、$B$ 的仰角 $' + pair[1] + '°$、$\\overline{AB}=' + len + '$。$\\overline{AH}=\\dfrac{h}{\\tan' + pair[0] + '°}$、$\\overline{BH}=\\dfrac{h}{\\tan' + pair[1] + '°}$，圖上 $A$、$B$ 在塔的同一側，所以兩段相減等於 $' + len + '$，解 $h$（分母有根號要有理化）。',
+      p: { mode: mode, len: len, th1: pair[0], th2: pair[1], ans: { rat: fr2(rat), surd: sArr(surd) } } };
+  };
+
+  /* 三角形標兩邊一夾角：A 在原點，AB＝c、AC＝b、∠A；or＝0 底邊 AB 水平、1 左右翻、2 A 在上方 */
+  function figSASSvg(bN, cN, Adeg, or, bLab, cLab) {
+    var A = Adeg * Math.PI / 180, ph = or === 2 ? -Math.PI / 2 - A / 2 : 0, pts = [[0, 0], [cN * Math.cos(ph), cN * Math.sin(ph)], [bN * Math.cos(ph + A), bN * Math.sin(ph + A)]];
+    if (or === 1) pts = pts.map(function (p) { return [-p[0], p[1]]; });
+    var ft = figFit(pts, { W: 300, maxH: 150, l: 46, r: 46, t: 28, b: 32 }), P = ft.P, c = figCen(P);
+    var s = figPoly(P, { k: 'tri', w: 2, fill: 'rgba(176,58,85,.07)' }) + figAngMark(P[0], P[1], P[2], Adeg + '°', { lk: 'ang' });
+    s += figName(P[0], c, 'A') + figName(P[1], c, 'B') + figName(P[2], c, 'C');
+    s += figSideVal(P[0], P[1], c, cLab, { k: 'len' }) + figSideVal(P[0], P[2], c, bLab, { k: 'len' });
+    return figSvg(ft.W, ft.H, '三角形 ABC，AB、AC 的長與角 A 標示在圖上', s);
+  }
+  L1.figSAS = function (r) {
+    var A, m, n, b, c, a2, rat, guard = 0, k;
+    do {
+      A = r.pick([30, 45, 60, 60, 120, 120, 135, 150]); m = r.int(1, 6); n = r.int(2, 9);
+      k = A === 60 || A === 120 ? 1 : A === 45 || A === 135 ? 2 : 3;                                /* b = m√k，c = n；2bc cosA = ±k·m·n（k=1 時 ±mn） */
+      if (k === 1) m = r.int(2, 9);
+      b = S(m, k, 1); c = sInt(n); a2 = k * m * m + n * n + (A > 90 ? 1 : -1) * k * m * n; rat = sNum(b) / n;
+    } while ((rat < (A <= 45 ? 0.6 : 0.45) || rat > (A <= 45 ? 1.7 : 2.2) || a2 <= 0) && guard++ < 200);
+    var swap = r() < 0.5, or = r.int(0, A <= 45 ? 1 : 2),      /* 夾角小的時候 A 不放在上方：角度標籤要離 A 最近 */
+        AB = swap ? b : c, AC = swap ? c : b, K = sMulF(sMul(sMul(b, c), tv(A).sin), F(1, 2));
+    return { q: '如圖，' + ABC + ' 的兩邊長與它們的夾角標示在圖上。求 ' + T(ov('BC')) + ' 與 ' + ABC + ' 的面積。' + figSASSvg(sNum(AC), sNum(AB), A, or, labS(AC), labS(AB)),
+      a: T(ov('BC') + '=' + sqrtTex(a2)) + '，面積 ' + T(sTex(K)),
+      h: '從圖上讀出 $\\overline{AB}=' + sTex(AB) + '$、$\\overline{AC}=' + sTex(AC) + '$、夾角 $\\angle A=' + A + '°$。兩邊夾角求第三邊用餘弦定理：$\\overline{BC}^2=' + hxSq(sTex(AB)) + '+' + hxSq(sTex(AC)) + '-2\\cdot' + sTex(AB) + '\\cdot' + sTex(AC) + '\\cos' + A + '°$；面積 $=\\dfrac12\\cdot' + sTex(AB) + '\\cdot' + sTex(AC) + '\\sin' + A + '°$。',
+      p: { A: A, AB: sArr(AB), AC: sArr(AC), or: or, ans: { a2: a2, K: sArr(K) } } };
+  };
+
+  /* 方格紙上的標準位置角：終邊過格子點 P(x, y) */
+  function figGridPtSvg(x, y) {
+    var N = Math.max(3, Math.max(Math.abs(x), Math.abs(y)) + 1), c = Math.min(30, Math.floor(208 / (2 * N))), W = 280, gx = (W - 2 * N * c) / 2, gy = 20, H = gy + 2 * N * c + 22, ox = gx + N * c, oy = gy + N * c, i, s = '';
+    for (i = 0; i <= 2 * N; i++) s += figLine(gx + i * c, gy, gx + i * c, gy + 2 * N * c, { c: FIGC.grid, w: 1, k: 'gv' }) + figLine(gx, gy + i * c, gx + 2 * N * c, gy + i * c, { c: FIGC.grid, w: 1, k: 'gh' });
+    s += figArrow(gx - 6, oy, gx + 2 * N * c + 14, oy, { k: 'xaxis' }) + figArrow(ox, gy + 2 * N * c + 6, ox, gy - 13, { k: 'yaxis' });
+    s += figText(gx + 2 * N * c + 12, oy + (y < 0 && x > 0 ? -7 : 15), 'x', { it: 1 }) + figText(ox + (x > 0 ? -10 : 10), gy - 6, 'y', { it: 1 });
+    var ang = Math.atan2(y, x); if (ang < 0) ang += 2 * Math.PI;
+    var px = ox + x * c, py = oy - y * c, L = Math.sqrt(x * x + y * y), ex = px + x / L * c * 0.55, ey = py - y / L * c * 0.55;
+    s += figLine(ox, oy, ex, ey, { c: FIGC.hot, w: 2, k: 'ray' });
+    var la = ang / 2; [Math.PI / 2, Math.PI, 3 * Math.PI / 2].forEach(function (ax) { if (Math.abs(la - ax) < 0.28) la = ax - 0.28; });
+    s += figPath(figArcD(ox, oy, 13, 0, ang), { c: FIGC.soft, w: 1.3 });
+    var lp = figPt(ox, oy, ang < 1.1 ? Math.min(c * 1.9, Math.max(25, 9 / Math.sin(ang / 2))) : 25, la);
+    s += figText(lp[0], lp[1] + 5, 'θ', { it: 1 });
+    var nx = -y / L, ny = -x / L;                                                                  /* 像素空間裡與 OP 垂直的方向；點名放在離較近那條軸比較遠的一側 */
+    if (Math.abs(y) < Math.abs(x) ? ny * (y > 0 ? -1 : 1) < 0 : nx * (x > 0 ? 1 : -1) < 0) { nx = -nx; ny = -ny; }
+    s += figDot(px, py, { k: 'P', c: FIGC.hot, r: 3.4 }) + figText(px + nx * 12, py + ny * 12 + 4.8, 'P', { it: 1 });
+    s += figText(ox + (y > 0 ? (x > 0 ? -9 : 9) : (x > 0 ? -15 : 9)), oy + (y > 0 || x < 0 ? 14 : 19), 'O', { fs: 13, it: 1 });      /* O 放在角的弧沒有掃到的那一側 */
+    return figSvg(W, H, '方格紙上的坐標平面，角 θ 的終邊通過格子點 P', s);
+  }
+  L1.figGridPoint = function (r) {
+    var x, y, guard = 0;
+    do {
+      if (r() < 0.3) { var t = r.pick([[3, 4], [4, 3]]); x = r.sign() * t[0]; y = r.sign() * t[1]; }
+      else { x = r.nz(-4, 4); y = r.nz(-4, 4); }
+    } while (gcd(x, y) !== 1 && Math.abs(x) !== Math.abs(y) && guard++ < 50);
+    var r2 = x * x + y * y, rr = sSqrt(r2), sn = sDiv(sInt(y), rr), cs = sDiv(sInt(x), rr), tn = S(y, 1, x);
+    return { q: '如圖，方格紙上每一小格的邊長都是 ' + T('1') + '，標準位置角 ' + T('\\theta') + ' 的終邊通過格子點 ' + T('P') + '。求 ' + T('\\sin\\theta') + '、' + T('\\cos\\theta') + '、' + T('\\tan\\theta') + '。' + figGridPtSvg(x, y),
+      a: T('\\sin\\theta=' + sTex(sn)) + '、' + T('\\cos\\theta=' + sTex(cs)) + '、' + T('\\tan\\theta=' + sTex(tn)),
+      h: '先從方格數出 $P$ 的坐標：往' + (x > 0 ? '右' : '左') + ' $' + Math.abs(x) + '$ 格、往' + (y > 0 ? '上' : '下') + ' $' + Math.abs(y) + '$ 格，$P(' + x + ',' + y + ')$ 在' + hxQuadXY(x, y) + '。$r=\\sqrt{' + hxSq(String(x)) + '+' + hxSq(String(y)) + '}=' + sTex(rr) + '$，再用 $\\sin\\theta=\\dfrac yr$、$\\cos\\theta=\\dfrac xr$、$\\tan\\theta=\\dfrac yx$。',
+      p: { x: x, y: y, ans: { sin: sArr(sn), cos: sArr(cs), tan: sArr(tn) } } };
+  };
+
+  L1_H1.figRightTri = '這是「看圖求直角三角形的三角比」：先認出斜邊（直角對面）、$\\theta$ 的對邊與鄰邊，缺的那一邊用畢氏定理補。';
+  L1_H1.figElev = '這是「看圖做仰角、俯角測量」：先在圖上找到直角三角形，看已知的是對邊還是鄰邊，再決定 $\\tan$ 要乘還是除；兩次測量就設高為 $h$ 列一條式子。';
+  L1_H1.figSAS = '這是「看圖讀兩邊一夾角」：先確認圖上標的角是不是兩條已知邊夾出來的角，是的話第三邊用餘弦定理、面積用兩邊夾角公式。';
+  L1_H1.figGridPoint = '這是「方格紙上的廣義角」：先數格子讀出終邊上那一點的坐標，再算它到原點的距離 $r$，三個三角比就是 $\\dfrac yr$、$\\dfrac xr$、$\\dfrac yx$。';
+  L1_SOL.figRightTri = function (p, o) {
+    var lp = solS(p.lp), lq = solS(p.lq), hyp = solS(p.hyp), opp = p.at === 'P' ? lq : lp, adj = p.at === 'P' ? lp : lq, kn = p.known === 'p' ? lp : lq, ot = p.known === 'p' ? lq : lp;
+    var st1 = p.mode === 'legs' ? '圖上標的兩條邊夾著直角記號，是兩股：$' + sTex(lp) + '$ 與 $' + sTex(lq) + '$。畢氏定理補斜邊：$\\sqrt{' + hxSq(sTex(lp)) + '+' + hxSq(sTex(lq)) + '}=' + sTex(hyp) + '$。'
+      : '圖上標的 $' + sTex(hyp) + '$ 在直角的對面，是斜邊；$' + sTex(kn) + '$ 是一股。畢氏定理補另一股：$\\sqrt{' + hxSq(sTex(hyp)) + '-' + hxSq(sTex(kn)) + '}=' + sTex(ot) + '$。';
+    return [st1, '認邊：沒有碰到 $\\theta$ 的那條股是對邊 $=' + sTex(opp) + '$；和斜邊一起夾出 $\\theta$ 的那條股是鄰邊 $=' + sTex(adj) + '$；斜邊 $=' + sTex(hyp) + '$。',
+      '代進定義：' + T('\\sin\\theta=' + solEq('\\dfrac{' + sTex(opp) + '}{' + sTex(hyp) + '}', sTex(solS(p.ans.sin)))) + '、' + T('\\cos\\theta=' + solEq('\\dfrac{' + sTex(adj) + '}{' + sTex(hyp) + '}', sTex(solS(p.ans.cos)))) + '、' + T('\\tan\\theta=' + solEq('\\dfrac{' + sTex(opp) + '}{' + sTex(adj) + '}', sTex(solS(p.ans.tan)))) + '' + (opp.r > 1 || adj.r > 1 || hyp.r > 1 ? '（分母有根號要有理化）' : '') + '。' + solFin(o)];
+  };
+  L1_SOL.figElev = function (p, o) {
+    if (p.mode === 'elev') return ['從圖上讀出：$\\overline{AH}=' + p.len + '$（水平距離，是仰角的鄰邊），仰角 $\\angle TAH=' + p.th + '°$，$\\angle AHT=90°$。',
+      '塔高 $\\overline{TH}$ 是對邊，鄰邊求對邊用正切：' + T(ov('TH') + '=' + p.len + '\\tan' + p.th + '°') + '，其中 ' + T('\\tan' + p.th + '°=' + sTex(tv(p.th).tan)) + '。', '算出 ' + T(sTex(solS(p.ans))) + ' 公尺。' + solFin(o)];
+    if (p.mode === 'dep') return ['俯角是從水平線（虛線）往下量到視線 $\\overline{TB}$ 的角。虛線和海面平行，所以內錯角相等：$\\angle TBH=' + p.th + '°$。',
+      '在直角三角形 $TBH$ 裡（$\\angle THB=90°$），$\\overline{TH}=' + p.len + '$ 是 $\\angle TBH$ 的對邊，$\\overline{BH}$ 是鄰邊：' + T('\\tan' + p.th + '°=\\dfrac{' + p.len + '}{' + ov('BH') + '}') + '。',
+      T(ov('BH') + '=\\dfrac{' + p.len + '}{\\tan' + p.th + '°}') + '，代入 ' + T('\\tan' + p.th + '°=' + sTex(tv(p.th).tan)) + '，分母有根號要有理化，得 ' + T(sTex(solS(p.ans))) + ' 公尺。' + solFin(o)];
+    var rat = solF(p.ans.rat), surd = solS(p.ans.surd);
+    return ['從圖上讀出：$A$ 的仰角 $' + p.th1 + '°$、$B$ 的仰角 $' + p.th2 + '°$、$\\overline{AB}=' + p.len + '$，而且 $A$、$B$ 在塔的同一側。',
+      '設塔高 $h$：' + T(ov('AH') + '=\\dfrac{h}{\\tan' + p.th1 + '°}') + '、' + T(ov('BH') + '=\\dfrac{h}{\\tan' + p.th2 + '°}') + '。同側 ⟹ ' + T(ov('AH') + '-' + ov('BH') + '=' + ov('AB')) + '，也就是 ' + T('\\dfrac{h}{\\tan' + p.th1 + '°}-\\dfrac{h}{\\tan' + p.th2 + '°}=' + p.len) + '。',
+      '代入 ' + T('\\tan' + p.th1 + '°=' + sTex(tv(p.th1).tan)) + '、' + T('\\tan' + p.th2 + '°=' + sTex(tv(p.th2).tan)) + ' 解 $h$（分母有根號要有理化），得 ' + T('h=' + hxTwo(rat, surd)) + ' 公尺。' + solFin(o)];
+  };
+  L1_SOL.figSAS = function (p, o) {
+    var AB = solS(p.AB), AC = solS(p.AC), cv = sTex(tv(p.A).cos), sv = sTex(tv(p.A).sin);
+    return ['從圖上讀出：' + T(ov('AB') + '=' + sTex(AB)) + '、' + T(ov('AC') + '=' + sTex(AC)) + '，標出的角在頂點 $A$，正好是這兩邊的夾角：' + T('\\angle A=' + p.A + '°') + '。',
+      '餘弦定理：' + T(ov('BC') + '^2=' + hxSq(sTex(AB)) + '+' + hxSq(sTex(AC)) + '-2\\cdot' + sTex(AB) + '\\cdot' + sTex(AC) + '\\cos' + p.A + '°') + '，代入 ' + T('\\cos' + p.A + '°=' + cv) + (p.A > 90 ? '（鈍角的餘弦是負的，減負變加）' : '') + '，得 ' + T(ov('BC') + '^2=' + p.ans.a2) + '，' + T(ov('BC') + '=' + sqrtTex(p.ans.a2)) + '。',
+      '面積 ' + T('=\\dfrac12\\cdot' + ov('AB') + '\\cdot' + ov('AC') + '\\sin A=\\dfrac12\\cdot' + sTex(AB) + '\\cdot' + sTex(AC) + '\\cdot' + sv + '=' + sTex(solS(p.ans.K))) + '。' + solFin(o)];
+  };
+  L1_SOL.figGridPoint = function (p, o) {
+    var x = p.x, y = p.y, rt = sTex(sSqrt(x * x + y * y));
+    return ['數格子：從原點到 $P$ 要往' + (x > 0 ? '右' : '左') + ' $' + Math.abs(x) + '$ 格、往' + (y > 0 ? '上' : '下') + ' $' + Math.abs(y) + '$ 格，所以 ' + T('P(' + x + ',' + y + ')') + '，在' + hxQuadXY(x, y) + '。',
+      T('r=' + ov('OP') + '=\\sqrt{' + hxSq(String(x)) + '+' + hxSq(String(y)) + '}=' + rt) + '（$r$ 永遠取正）。',
+      '代進定義：' + T('\\sin\\theta=\\dfrac yr=' + solEq('\\dfrac{' + y + '}{' + rt + '}', sTex(solS(p.ans.sin)))) + '、' + T('\\cos\\theta=\\dfrac xr=' + solEq('\\dfrac{' + x + '}{' + rt + '}', sTex(solS(p.ans.cos)))) + '、' + T('\\tan\\theta=\\dfrac yx=' + solEq('\\dfrac{' + y + '}{' + x + '}', sTex(solS(p.ans.tan)))) + '。正負號和「$P$ 在' + hxQuadXY(x, y) + '」一致。' + solFin(o)];
+  };
+  META_L1.push(['figRightTri', '§6 看圖求直角三角形的三角比'], ['figElev', '§6 看圖做仰角、俯角測量'], ['figSAS', '§6 看圖讀兩邊一夾角：第三邊與面積'], ['figGridPoint', '§6 方格紙上的廣義角']);
+
+  /* ────────── L2　讀圖題：圓內接四邊形、兩棟樓的仰角俯角、圓周角與弦、共用一個角的面積比 ────────── */
+  /* 圓上的點：圓心 (cx,cy)、半徑 Rp（像素）、數學角 */
+  function figOnCirc(cx, cy, Rp, angs) { return angs.map(function (a) { return figPt(cx, cy, Rp, a); }); }
+  function figCyclicSvg(sd, Rn, labs) {
+    var W = 300, Rp = 74, cx = 150, cy = 106, H = 212, hs = sd.map(function (v) { return Math.asin(Math.min(1, v / (2 * Rn))); }), sum = hs[0] + hs[1] + hs[2] + hs[3], i, big = 0;
+    if (Math.abs(sum - Math.PI) > 1e-6) { for (i = 1; i < 4; i++) if (sd[i] > sd[big]) big = i; hs[big] = Math.PI - hs[big]; }      /* 圓心在四邊形外：最長邊對的是優弧 */
+    var a0 = Math.PI / 2 + hs[3], angs = [a0, a0 + 2 * hs[0], a0 + 2 * hs[0] + 2 * hs[1], a0 + 2 * hs[0] + 2 * hs[1] + 2 * hs[2]], P = figOnCirc(cx, cy, Rp, angs), nm = ['A', 'B', 'C', 'D'], s;
+    s = figCircle(cx, cy, Rp, 'circ') + figPoly(P, { k: 'quad', w: 2, fill: 'rgba(176,58,85,.07)' }) + figLine(P[0][0], P[0][1], P[2][0], P[2][1], { c: FIGC.hot, w: 1.4, dash: 1, k: 'diag' });
+    for (i = 0; i < 4; i++) {
+      var np = figPt(cx, cy, Rp + 12, angs[i]), mid = angs[i] + hs[i], lp = figPt(cx, cy, Rp + 13, mid);
+      s += figText(np[0], np[1] + 4.8, nm[i], { it: 1 }) + figVal(lp[0], lp[1], labs[i], { k: 'len' });
+    }
+    return figSvg(W, H, '圓內接四邊形 ABCD，四個邊長標示在圖上，虛線是對角線 AC', s);
+  }
+  L2.figCyclic = function (r) {
+    var Q, tries = 0, ok, Rn, hs;
+    do {
+      Q = cyclic(r); tries++;
+      ok = Q.AC2.d === 1 && simpSqrt(Q.AC2.n)[1] <= 30 && Q.sB.r <= 30 && Q.sB.d <= 12;
+      if (ok) {                                                                                      /* 圖要好看：圓心在四邊形內部、每條邊所對的弧不要太短 */
+        Rn = Math.sqrt(Q.AC2.n) / (2 * sNum(Q.sB)); hs = [Q.a, Q.b, Q.c, Q.d].map(function (v) { return Math.asin(Math.min(1, v / (2 * Rn))); });
+        ok = Math.abs(hs[0] + hs[1] + hs[2] + hs[3] - Math.PI) < 1e-6 && Math.min.apply(null, hs) >= 0.24;
+      }
+    } while (!ok && tries < 800);
+    var AC = sqrtF(Q.AC2);
+    return { q: '如圖，圓內接四邊形 ' + T('ABCD') + ' 的四個邊長標示在圖上。求 (1) 對角線 ' + T(ov('AC')) + ' 的長　(2) 四邊形 ' + T('ABCD') + ' 的面積。' + figCyclicSvg([Q.a, Q.b, Q.c, Q.d], Rn, [String(Q.a), String(Q.b), String(Q.c), String(Q.d)]),
+      a: '(1) ' + T(sTex(AC)) + '　(2) ' + T(sTex(Q.area)),
+      h: '從圖上讀出 $\\overline{AB}=' + Q.a + '$、$\\overline{BC}=' + Q.b + '$、$\\overline{CD}=' + Q.c + '$、$\\overline{DA}=' + Q.d + '$。$\\angle B$ 與 $\\angle D$ 互補 ⟹ $\\cos D=-\\cos B$。同一條 $\\overline{AC}$ 在兩個三角形各寫一次餘弦定理：$' + Q.a + '^2+' + Q.b + '^2-' + hxMul([2, Q.a, Q.b]) + '\\cos B=' + Q.c + '^2+' + Q.d + '^2+' + hxMul([2, Q.c, Q.d]) + '\\cos B$，解出 $\\cos B=' + Fr.tex(Q.cB) + '$ 再代回去；面積 $=\\dfrac12(' + hxMul([Q.a, Q.b]) + '+' + hxMul([Q.c, Q.d]) + ')\\sin B$。',
+      p: { a: Q.a, b: Q.b, c: Q.c, d: Q.d, ans: { AC2: fr2(Q.AC2), area: sArr(Q.area) } } };
+  };
+
+  /* 兩棟樓：甲樓 PS（高 h）、乙樓 QR；從 P 看 Q 的仰角 al、看 R 的俯角 be */
+  function figTwoBldgSvg(h, al, be) {
+    var d = h / Math.tan(be * Math.PI / 180), h2 = h + d * Math.tan(al * Math.PI / 180), ft = figFit([[0, 0], [0, h], [d, 0], [d, h2], [d, h]], { W: 300, maxH: 172, l: 58, r: 48, t: 26, b: 34 });
+    var Sp = ft.P[0], P = ft.P[1], R = ft.P[2], Q = ft.P[3], E = ft.P[4], gy = Sp[1], s = '';
+    s += figLine(Sp[0] - 18, gy, R[0] + 18, gy, { c: FIGC.ink, w: 1.2, k: 'ground' }) + figLine(Sp[0], Sp[1], P[0], P[1], { w: 3.2, k: 'bldA' }) + figLine(R[0], R[1], Q[0], Q[1], { w: 3.2, k: 'bldB' });
+    s += figLine(P[0], P[1], E[0], E[1], { c: FIGC.soft, w: 1.2, dash: 1, k: 'level' }) + figLine(P[0], P[1], Q[0], Q[1], { c: FIGC.hot, w: 1.6, k: 'up' }) + figLine(P[0], P[1], R[0], R[1], { c: FIGC.hot, w: 1.6, k: 'down' });
+    s += figAngMark(P, E, Q, al + '°', { lk: 'angU', r: 20 }) + figAngMark(P, E, R, be + '°', { lk: 'angD', r: 14 });
+    s += figText(P[0] - 9, P[1] - 5, 'P', { it: 1 }) + figText(Sp[0] - 3, gy + 16, 'S', { it: 1 }) + figText(R[0] + 3, gy + 16, 'R', { it: 1 }) + figText(Q[0] + 4, Q[1] - 7, 'Q', { it: 1 });
+    s += figVal(Sp[0] - 9, (Sp[1] + P[1]) / 2, String(h), { k: 'len', anchor: 'end' });
+    return figSvg(ft.W, ft.H, '甲樓 PS 與乙樓 QR，從 P 看 Q 的仰角、看 R 的俯角與甲樓的高標示在圖上', s);
+  }
+  L2.figTwoBldg = function (r) {
+    var h = r.pick([6, 9, 12, 15, 18, 24, 30, 36, 45, 60]), al = r.pick([30, 45, 60]), be = r.pick([30, 45, 60]);
+    var dist = sDiv(sInt(h), tv(be).tan), up = sMul(dist, tv(al).tan), tot = up.r === 1 ? Fr.tex(Fr.add(F(h), sToF(up))) : hxTwo(F(h), up);
+    return { q: '如圖，甲樓 ' + T(ov('PS')) + ' 與乙樓 ' + T(ov('QR')) + ' 都垂直於水平地面。從甲樓頂 ' + T('P') + ' 看乙樓頂 ' + T('Q') + ' 的仰角、看乙樓底 ' + T('R') + ' 的俯角，以及甲樓的高都標示在圖上（長度單位：公尺），虛線是過 ' + T('P') + ' 的水平線。求 (1) 兩棟樓的水平距離 ' + T(ov('SR')) + '　(2) 乙樓的高 ' + T(ov('QR')) + '。' + figTwoBldgSvg(h, al, be),
+      a: '(1) ' + T(sTex(dist)) + ' 公尺　(2) ' + T(tot) + ' 公尺',
+      h: '水平虛線把乙樓切成上下兩段。下面一段和甲樓一樣高，是 $' + h + '$；俯角 $' + be + '°$ 的直角三角形裡 $' + h + '$ 是對邊，水平距離是鄰邊：$\\overline{SR}=\\dfrac{' + h + '}{\\tan' + be + '°}=' + sTex(dist) + '$。上面一段在仰角 $' + al + '°$ 的直角三角形裡是對邊：$' + sTex(dist) + '\\tan' + al + '°=' + sTex(up) + '$。兩段相加就是乙樓的高。',
+      p: { h: h, al: al, be: be, ans: { dist: sArr(dist), up: sArr(up) } } };
+  };
+
+  /* 圓上四點 A、B、C、D（逆時針）：∠CAD＝al 對弦 CD，∠ACB＝be 對弦 AB；given＝'CD' 或 'AB' 標出長度 */
+  function figChordSvg(al, be, given, mLab, tt) {
+    var W = 300, Rp = 74, cx = 150, cy = 106, H = 212, d2r = Math.PI / 180, rest = 360 - 2 * al - 2 * be, aBC = rest * tt;
+    var angs = [270 - be, 270 + be, 270 + be + aBC, 270 + be + aBC + 2 * al].map(function (v) { return v * d2r; }), P = figOnCirc(cx, cy, Rp, angs), nm = ['A', 'B', 'C', 'D'], i, s;
+    s = figCircle(cx, cy, Rp, 'circ') + figPoly(P, { k: 'quad', w: 2, fill: 'rgba(176,58,85,.07)' }) + figLine(P[0][0], P[0][1], P[2][0], P[2][1], { w: 1.6, k: 'diag' });
+    s += figAngMark(P[0], P[2], P[3], al + '°', { lk: 'angA', r: 15, fs: 12 }) + figAngMark(P[2], P[0], P[1], be + '°', { lk: 'angC', r: 15, fs: 12 });
+    for (i = 0; i < 4; i++) { var np = figPt(cx, cy, Rp + 12, angs[i]); s += figText(np[0], np[1] + 4.8, nm[i], { it: 1 }); }
+    var mid = given === 'CD' ? (angs[2] + angs[3]) / 2 : (angs[0] + angs[1]) / 2, lp = figPt(cx, cy, Rp + 14, mid);
+    s += figVal(lp[0], lp[1], mLab, { k: 'len' });
+    return figSvg(W, H, '圓上四點 A、B、C、D 與弦 AC，兩個圓周角與一條弦的長標示在圖上', s);
+  }
+  L2.figChord = function (r) {
+    var al = r.pick([30, 45, 60]), be, m = r.int(2, 12), given = r.pick(['CD', 'AB']), tt = r.pick([0.4, 0.5, 0.6]);
+    do { be = r.pick([30, 45, 60, 90]); } while (be === al);
+    var sg = given === 'CD' ? tv(al).sin : tv(be).sin, so = given === 'CD' ? tv(be).sin : tv(al).sin, other = given === 'CD' ? 'AB' : 'CD';
+    var RR = sMulF(sDiv(sInt(1), sg), F(m, 2)), oth = sMulF(sDiv(so, sg), F(m)), ga = given === 'CD' ? al : be, oa = given === 'CD' ? be : al, gAng = given === 'CD' ? '\\angle CAD' : '\\angle ACB', oAng = given === 'CD' ? '\\angle ACB' : '\\angle CAD';
+    return { q: '如圖，' + T('A') + '、' + T('B') + '、' + T('C') + '、' + T('D') + ' 四點在同一個圓上，兩個角與一條弦的長標示在圖上。求 ' + T(ov(other)) + ' 與圓的半徑 ' + T('R') + '。' + figChordSvg(al, be, given, String(m), tt),
+      a: T(ov(other) + '=' + sTex(oth)) + '、' + T('R=' + sTex(RR)),
+      h: '先看每個角對著哪一條弦：$\\angle CAD=' + al + '°$ 的兩邊是 $\\overline{AC}$、$\\overline{AD}$，對的是弦 $\\overline{CD}$；$\\angle ACB=' + be + '°$ 對的是弦 $\\overline{AB}$。四點同在一個圓上，每條弦都等於 $2R\\sin$（它所對的圓周角）：$\\overline{' + given + '}=2R\\sin' + gAng + '$ ⟹ $' + m + '=2R\\sin' + ga + '°$，求出 $R$；再算 $\\overline{' + other + '}=2R\\sin' + oAng + '=2R\\sin' + oa + '°$。',
+      p: { al: al, be: be, m: m, given: given, ans: [sArr(oth), sArr(RR)] } };
+  };
+
+  /* 共用 ∠A 的兩個三角形：D 在 AB 上、E 在 AC 上 */
+  function figShareSvg(AD, DB, AE, EC, Adeg) {
+    var c = AD + DB, b = AE + EC, A = Adeg * Math.PI / 180, a = Math.sqrt(b * b + c * c - 2 * b * c * Math.cos(A)), xA = (c * c + a * a - b * b) / (2 * a), yA = Math.sqrt(Math.max(0, c * c - xA * xA));
+    var Am = [xA, yA], Bm = [0, 0], Cm = [a, 0], Dm = [xA * DB / c, yA * DB / c], Em = [a + (xA - a) * EC / b, yA * EC / b];
+    var ft = figFit([Am, Bm, Cm, Dm, Em], { W: 300, maxH: 158, l: 50, r: 50, t: 28, b: 30 }), P = ft.P, cen = figCen([P[0], P[1], P[2]]), s;
+    s = figPoly([P[0], P[3], P[4]], { k: 'small', c: 'none', fill: FIGC.fill }) + figPoly([P[0], P[1], P[2]], { k: 'tri', w: 2 }) + figLine(P[3][0], P[3][1], P[4][0], P[4][1], { w: 1.8, k: 'DE' });
+    s += figDot(P[3][0], P[3][1], { k: 'D', r: 2.6 }) + figDot(P[4][0], P[4][1], { k: 'E', r: 2.6 });
+    s += figName(P[0], cen, 'A') + figName(P[1], cen, 'B') + figName(P[2], cen, 'C') + figText(P[3][0] - 11, P[3][1] + 2, 'D', { it: 1 }) + figText(P[4][0] + 11, P[4][1] + 2, 'E', { it: 1 });
+    s += figSideVal(P[0], P[3], cen, String(AD), { k: 'len', d: 7 }) + figSideVal(P[3], P[1], cen, String(DB), { k: 'len', d: 7 }) + figSideVal(P[0], P[4], cen, String(AE), { k: 'len', d: 7 }) + figSideVal(P[4], P[2], cen, String(EC), { k: 'len', d: 7 });
+    return figSvg(ft.W, ft.H, '三角形 ABC，D 在 AB 上、E 在 AC 上，四段長標示在圖上，三角形 ADE 塗色', s);
+  }
+  L2.figShare = function (r) {
+    var AD, DB, AE, EC, guard = 0, c, b;
+    do { AD = r.int(1, 8); DB = r.int(1, 8); AE = r.int(1, 8); EC = r.int(1, 8); c = AD + DB; b = AE + EC; }
+    while ((c / b < 0.6 || c / b > 1.6 || AD * b === AE * c || AD / c < 0.25 || AE / b < 0.25 || DB / c < 0.25 || EC / b < 0.25) && guard++ < 300);
+    var Adeg = r.pick([50, 60, 70, 80]), mode = r.pick(['ratio', 'ratio', 'area']), sm = AD * AE, all = c * b, g = gcd(sm, all - sm);
+    var svg = figShareSvg(AD, DB, AE, EC, Adeg), frac = '\\dfrac{' + AD + '\\times' + AE + '}{' + c + '\\times' + b + '}=' + Fr.tex(F(sm, all));
+    if (mode === 'ratio')
+      return { q: '如圖，' + ABC + ' 中，' + T('D') + ' 在 ' + T(ov('AB')) + ' 上、' + T('E') + ' 在 ' + T(ov('AC')) + ' 上，四段的長標示在圖上。求塗色的 ' + T('\\triangle ADE') + ' 與四邊形 ' + T('DBCE') + ' 的面積比。' + svg,
+        a: T(sm / g + ':' + (all - sm) / g),
+        h: '$\\triangle ADE$ 和 $\\triangle ABC$ 共用 $\\angle A$，面積都用 $\\dfrac12\\times$ 兩邊 $\\times\\sin A$ 寫，$\\sin A$ 會約掉：$\\dfrac{\\triangle ADE}{\\triangle ABC}=\\dfrac{\\overline{AD}\\times\\overline{AE}}{\\overline{AB}\\times\\overline{AC}}=' + frac + '$。注意 $\\overline{AB}=' + AD + '+' + DB + '$、$\\overline{AC}=' + AE + '+' + EC + '$；四邊形是大三角形扣掉 $\\triangle ADE$。',
+        p: { mode: mode, AD: AD, DB: DB, AE: AE, EC: EC, ans: [sm / g, (all - sm) / g] } };
+    var K = all / gcd(sm, all) * r.int(1, 3), quad = F(K * (all - sm), all);
+    return { q: '如圖，' + ABC + ' 中，' + T('D') + ' 在 ' + T(ov('AB')) + ' 上、' + T('E') + ' 在 ' + T(ov('AC')) + ' 上，四段的長標示在圖上。已知 ' + ABC + ' 的面積是 ' + T(String(K)) + '，求四邊形 ' + T('DBCE') + ' 的面積。' + svg,
+      a: T(Fr.tex(quad)),
+      h: '$\\triangle ADE$ 和 $\\triangle ABC$ 共用 $\\angle A$：$\\dfrac{\\triangle ADE}{\\triangle ABC}=\\dfrac{\\overline{AD}\\times\\overline{AE}}{\\overline{AB}\\times\\overline{AC}}=' + frac + '$（$\\overline{AB}=' + AD + '+' + DB + '$、$\\overline{AC}=' + AE + '+' + EC + '$）。所以 $\\triangle ADE=' + K + '\\times' + Fr.tex(F(sm, all)) + '=' + Fr.tex(F(K * sm, all)) + '$，四邊形是 $' + K + '$ 扣掉它。',
+      p: { mode: mode, AD: AD, DB: DB, AE: AE, EC: EC, K: K, ans: fr2(quad) } };
+  };
+  META_L2.push(['figCyclic', '§6 看圖解圓內接四邊形'], ['figTwoBldg', '§6 兩棟樓的仰角與俯角（附圖）'], ['figChord', '§6 圓周角對哪條弦：2R sin（附圖）'], ['figShare', '§6 共用一個角的面積比（附圖）']);
+
+  /* ────────── L3　L3-19～L3-21 的類似題（附圖） ────────── */
+  /* L3-19　圓 O 半徑 r，CD 切圓於 D、長 t，OC 交圓於 A，B 是 A 到 OD 的垂足 */
+  var FTAN_TRI = [[3, 4, 5], [4, 3, 5], [3, 4, 5], [4, 3, 5], [12, 5, 13], [15, 8, 17], [20, 21, 29], [21, 20, 29]];   /* [切線段, 半徑, OC] 的比 */
+  function figTangentSvg(rN, tN, rLab, tLab) {
+    var oc = Math.sqrt(rN * rN + tN * tN), Am = [rN * rN / oc, rN * tN / oc], phA = Math.atan2(tN, rN) + Math.PI / 4;   /* A 的點名放在圓外、OC 的左上方 */
+    var ft = figFit([[-rN, -rN], [rN, Math.max(rN, tN)], [0, 0], [rN, 0], [rN, tN], Am, [Am[0], 0]], { W: 300, maxH: 190, l: 30, r: 54, t: 24, b: 22 }), P = ft.P, O = P[2], D = P[3], C = P[4], A = P[5], B = P[6], s;
+    s = figCircle(O[0], O[1], rN * ft.sc, 'circ') + figLine(O[0], O[1], D[0], D[1], { w: 1.8, k: 'OD' }) + figLine(D[0], D[1], C[0], C[1], { w: 1.8, k: 'DC' }) + figLine(O[0], O[1], C[0], C[1], { w: 1.8, k: 'OC' }) + figLine(A[0], A[1], B[0], B[1], { c: FIGC.hot, w: 1.6, k: 'AB' });
+    s += figRight(D, O, C) + figRight(B, O, A, 7) + figDot(O[0], O[1], { k: 'O', r: 2.6 }) + figDot(A[0], A[1], { k: 'A', r: 2.6 });
+    s += figText(O[0] - 10, O[1] + 5, 'O', { it: 1 }) + figText(B[0], B[1] + 16, 'B', { it: 1 }) + figText(D[0] + 10, D[1] + 13, 'D', { it: 1 }) + figText(C[0] + 10, C[1] + 1, 'C', { it: 1 }) + figText(A[0] + 13 * Math.cos(phA), A[1] - 13 * Math.sin(phA) + 4.8, 'A', { it: 1 });
+    s += figSideVal(O, A, B, rLab, { k: 'len', d: 6 }) + figVal(D[0] + 9, (D[1] + C[1]) / 2, tLab, { k: 'len', anchor: 'start' });
+    return figSvg(ft.W, ft.H, '圓 O、切線段 CD、OC 與圓的交點 A，以及 A 到 OD 的垂足 B', s);
+  }
+  L3.figTangentFoot = function (r) {
+    var t = r.pick(FTAN_TRI), k = r.int(1, t[2] > 20 ? 3 : 6), tN = t[0] * k, rN = t[1] * k, oc = t[2] * k, ask = r.int(0, 2);
+    var OB = F(rN * t[1], t[2]), AB = F(rN * t[0], t[2]), BD = Fr.sub(F(rN), OB), nm = ['OB', 'AB', 'BD'][ask], val = [OB, AB, BD][ask];
+    return { q: '如圖，' + T(ov('CD')) + ' 切圓 ' + T('O') + ' 於 ' + T('D') + '，' + T(ov('OC')) + ' 交圓 ' + T('O') + ' 於 ' + T('A') + '，' + T('B') + ' 是 ' + T('A') + ' 到 ' + T(ov('OD')) + ' 的垂足。圓的半徑（標在 ' + T(ov('OA')) + ' 上）與 ' + T(ov('CD')) + ' 的長標示在圖上，求 ' + T(ov(nm)) + '。' + figTangentSvg(rN, tN, String(rN), String(tN)),
+      a: T(ov(nm) + '=' + Fr.tex(val)),
+      h: '切線垂直過切點的半徑 ⟹ $\\angle ODC=90°$，$\\overline{OD}=' + rN + '$（半徑）、$\\overline{CD}=' + tN + '$ ⟹ $\\overline{OC}=\\sqrt{' + rN + '^2+' + tN + '^2}=' + oc + '$，所以 $\\cos\\angle COD=\\dfrac{' + rN + '}{' + oc + '}=' + Fr.tex(F(t[1], t[2])) + '$、$\\sin\\angle COD=' + Fr.tex(F(t[0], t[2])) + '$。直角三角形 $OAB$ 和它共用這個角，斜邊 $\\overline{OA}=' + rN + '$：$\\overline{OB}=' + rN + '\\cos\\angle COD$、$\\overline{AB}=' + rN + '\\sin\\angle COD$' + (ask === 2 ? '，$\\overline{BD}=\\overline{OD}-\\overline{OB}$' : '') + '。',
+      p: { r: rN, t: tN, ask: ask, ans: fr2(val) } };
+  };
+
+  /* L3-20　正方形 ABCD（邊長 s）＋以 AB 為底的等腰三角形 ABE（腰 leg）：mode＝out 向外、in 向內 */
+  var FSQ_OK = [[6, 5, 4, 4], [8, 5, 3, 4], [10, 13, 12, 2], [24, 13, 5, 2], [16, 17, 15, 2], [30, 17, 8, 1], [40, 29, 21, 1], [42, 29, 20, 1], [48, 25, 7, 1]];   /* [邊長 s, 腰, 高 h, 最多放大幾倍]：(s/2)²+h²=腰² */
+  function figSqIsosSvg(sN, hN, mode, sLab, legLab) {
+    var Em = [sN / 2, mode === 'out' ? sN + hN : sN - hN], ft = figFit([[0, sN], [sN, sN], [sN, 0], [0, 0], Em], { W: 300, maxH: 186, l: 40, r: 40, t: 26, b: 36 }), P = ft.P, A = P[0], B = P[1], C = P[2], D = P[3], E = P[4], s;
+    s = figPoly([A, B, C, D], { k: 'sq', w: 2 }) + figPoly([A, B, E], { k: 'isos', w: 2, fill: 'rgba(176,58,85,.12)' }) + figLine(D[0], D[1], E[0], E[1], { c: FIGC.hot, w: 1.6, dash: 1, k: 'DE' });
+    s += figText(A[0] - 10, A[1] + (mode === 'out' ? 4 : -2), 'A', { it: 1 }) + figText(B[0] + 10, B[1] + (mode === 'out' ? 4 : -2), 'B', { it: 1 }) + figText(C[0] + 10, C[1] + 12, 'C', { it: 1 }) + figText(D[0] - 10, D[1] + 12, 'D', { it: 1 }) + figText(E[0], E[1] + (mode === 'out' ? -8 : 17), 'E', { it: 1 });
+    s += figVal((D[0] + C[0]) / 2, D[1] + 15, sLab, { k: 'len' }) + figSideVal(B, E, A, legLab, { k: 'len', d: 6 });
+    return figSvg(ft.W, ft.H, '正方形 ABCD 與以 AB 為底邊的等腰三角形 ABE，E 在正方形' + (mode === 'out' ? '外' : '內'), s);
+  }
+  L3.figSquareIsos = function (r) {
+    var t, mode, guard = 0;
+    do { t = r.pick(FSQ_OK); mode = r.pick(['out', 'out', 'in']); } while (((mode === 'in' && t[2] > t[0] * 0.8) || (mode === 'out' && t[2] > t[0] * 1.3)) && guard++ < 100);
+    var k = r.int(1, t[3]), s = t[0] * k, leg = t[1] * k, h = t[2] * k, de2 = mode === 'out' ? s * s + leg * leg + 2 * s * h : s * s + leg * leg - 2 * s * h;
+    var sinT = Fr.tex(F(h, leg));
+    return { q: '如圖，正方形 ' + T('ABCD') + ' 的邊長與等腰三角形 ' + T('ABE') + '（' + T(ov('AE') + '=' + ov('BE')) + '）的腰長標示在圖上，' + T('E') + ' 在正方形的' + (mode === 'out' ? '外部' : '內部') + '。求 ' + T(ov('DE')) + '。' + figSqIsosSvg(s, h, mode, String(s), String(leg)),
+      a: T(ov('DE') + '=' + sqrtTex(de2)),
+      h: '在 $\\triangle ADE$ 用餘弦定理，需要 $\\cos\\angle DAE$。先看等腰三角形：從 $E$ 作高到 $\\overline{AB}$ 的中點，$\\cos\\angle EAB=' + solEq('\\dfrac{' + s / 2 + '}{' + leg + '}', Fr.tex(F(s / 2, leg))) + '$、$\\sin\\angle EAB=' + sinT + '$。' + (mode === 'out' ? '$E$ 在外部 ⟹ $\\angle DAE=90°+\\angle EAB$，$\\cos\\angle DAE=-\\sin\\angle EAB=-' + sinT + '$。' : '$E$ 在內部 ⟹ $\\angle DAE=90°-\\angle EAB$，$\\cos\\angle DAE=\\sin\\angle EAB=' + sinT + '$。') + '$\\overline{DE}^2=' + s + '^2+' + leg + '^2-2\\cdot' + s + '\\cdot' + leg + '\\cos\\angle DAE$。',
+      p: { s: s, leg: leg, h: h, mode: mode, ans: de2 } };
+  };
+
+  /* L3-21　方格紙上的角 ∠ABC（A、B、C 在格子點上）：餘弦定理求 cos，再求 tan */
+  function figGridAngSvg(A, B, C) {
+    var xs = [A[0], B[0], C[0]], ys = [A[1], B[1], C[1]], x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs), y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys), cols = x1 - x0, rows = y1 - y0;
+    var c = Math.max(24, Math.min(36, Math.floor(216 / cols), Math.floor(180 / rows))), W = 300, gx = (W - cols * c) / 2, gy = 26, H = gy + rows * c + 28, i, s = '';
+    for (i = 0; i <= cols; i++) s += figLine(gx + i * c, gy, gx + i * c, gy + rows * c, { c: FIGC.grid, w: 1, k: 'gv' });
+    for (i = 0; i <= rows; i++) s += figLine(gx, gy + i * c, gx + cols * c, gy + i * c, { c: FIGC.grid, w: 1, k: 'gh' });
+    function px(p) { return [gx + (p[0] - x0) * c, gy + (y1 - p[1]) * c]; }
+    var a = px(A), b = px(B), cc = px(C), cen = figCen([a, b, cc]);
+    s += figLine(b[0], b[1], a[0], a[1], { w: 2, k: 'BA' }) + figLine(b[0], b[1], cc[0], cc[1], { w: 2, k: 'BC' }) + figAngMark(b, a, cc, null, { r: 15 });
+    s += figDot(a[0], a[1], { k: 'A' }) + figDot(b[0], b[1], { k: 'B' }) + figDot(cc[0], cc[1], { k: 'C' });
+    s += figName(a, cen, 'A', 13) + figName(b, cen, 'B', 13) + figName(cc, cen, 'C', 13);
+    return figSvg(W, H, '方格紙上的角 ABC，A、B、C 都在格子點上', s);
+  }
+  L3.figGridAngle = function (r) {
+    var u, v, cross, dot, n1v, n2v, guard = 0, ok;
+    do {
+      u = [r.int(-4, 4), r.int(-3, 3)]; v = [r.int(-4, 4), r.int(-3, 3)]; cross = u[0] * v[1] - u[1] * v[0]; dot = u[0] * v[0] + u[1] * v[1]; n1v = u[0] * u[0] + u[1] * u[1]; n2v = v[0] * v[0] + v[1] * v[1];
+      var w = Math.max(0, u[0], v[0]) - Math.min(0, u[0], v[0]), hh = Math.max(0, u[1], v[1]) - Math.min(0, u[1], v[1]);
+      ok = cross !== 0 && dot !== 0 && n1v >= 2 && n2v >= 2 && w >= 2 && w <= 7 && hh >= 2 && hh <= 5 && Math.abs(dot) / Math.sqrt(n1v * n2v) < 0.94;
+    } while (!ok && guard++ < 500);
+    if (!ok) { u = [-1, 2]; v = [2, 2]; cross = -6; dot = 2; n1v = 5; n2v = 8; }
+    var A = u, B = [0, 0], C = v, cs = S(dot, n1v * n2v, n1v * n2v), tn = F(Math.abs(cross), dot), ac2 = (u[0] - v[0]) * (u[0] - v[0]) + (u[1] - v[1]) * (u[1] - v[1]);
+    return { q: '如圖，方格紙上每一小格的邊長都是 ' + T('1') + '，' + T('A') + '、' + T('B') + '、' + T('C') + ' 都在格子點上。求 ' + T('\\cos\\angle ABC') + ' 與 ' + T('\\tan\\angle ABC') + '。' + figGridAngSvg(A, B, C),
+      a: T('\\cos\\angle ABC=' + sTex(cs)) + '、' + T('\\tan\\angle ABC=' + Fr.tex(tn)),
+      h: '數格子配畢氏定理，把三邊的平方算出來：$\\overline{AB}^2=' + n1v + '$、$\\overline{BC}^2=' + n2v + '$、$\\overline{AC}^2=' + ac2 + '$。餘弦定理：$\\cos\\angle ABC=\\dfrac{' + n1v + '+' + n2v + '-' + ac2 + '}{2\\cdot' + sqrtTex(n1v) + '\\cdot' + sqrtTex(n2v) + '}$。再用 $\\sin^2+\\cos^2=1$ 求 $\\sin\\angle ABC$（三角形的內角，正弦取正），$\\tan=\\dfrac{\\sin}{\\cos}$' + (dot < 0 ? '；這個角是鈍角，$\\cos$ 與 $\\tan$ 都是負的。' : '。'),
+      p: { A: A, C: C, ans: { cos: sArr(cs), tan: fr2(tn) } } };
+  };
+  META_L3.push(['figTangentFoot', '切線＋垂足：兩個共用一角的直角三角形（附圖）'], ['figSquareIsos', '正方形接等腰三角形：90°±角的餘弦定理（附圖）'], ['figGridAngle', '方格紙上的角：餘弦定理求 cos 與 tan（附圖）']);
+  L3_FIX['L3-19'] = 'figTangentFoot'; L3_FIX['L3-20'] = 'figSquareIsos'; L3_FIX['L3-21'] = 'figGridAngle';
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];

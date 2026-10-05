@@ -1660,6 +1660,313 @@
   CONTRAST['L2.arSignSn'] = { f: function (p) { return p.kind === 1; }, why: '$S_p$ 由正變負時公差為負，$S_n$ 先增後減、有最大值；由負變正時公差為正，$S_n$ 先減後增、有最小值。兩種都用「奇數項和＝項數 $\\times$ 中間項」找出變號的那一項。' };
   CONTRAST['L2.loanPay'] = { f: function (p) { return !!p.mon; }, why: '按月或按年只差在「一期」有多長：利率、期數都要用同一個單位。做法一樣是把借款和每一期的還款都滾到最後一期再比較。' };
 
+  /* ══════════════════════════════════════════════════════════
+     2026-10-02　附圖題（讀圖型）：圖由產生器依亂數參數即時畫成 inline SVG，放在 q 裡，圖跟著題目變
+     共用畫圖小工具 fig*()（與 g11a-ch01、g10b-ch04 同一套樣式）：線段、圓點、方塊、多邊形、角的小弧、一列小圖（圖 1、圖 2、圖 3）。
+     規則：坐標一律由參數算（不目測）、圖照比例畫；圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
+           要給驗算器讀的元素帶 data-k（驗算器從圖上的元素個數、坐標與標籤文字代回，不看 p）。
+     L1 2 型、L2 3 型、L3 2 型（L3-19、L3-20 的類似題）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     本章只做有限項：等比的圖形只問第 n 個與前 n 個的和。
+     ══════════════════════════════════════════════════════════ */
+  var FIGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#b03a55', soft: '#8a7378', grid: '#ddd2d5', fill: 'rgba(176,58,85,.14)', shade: '#d98fa0' };
+  var H3 = Math.sqrt(3) / 2;
+  function n1(v) { var s = (Math.round(v * 10) / 10).toFixed(1); if (s === '-0.0') s = '0.0'; return s.replace(/\.0$/, ''); }
+  function n2(v) { var s = (Math.round(v * 100) / 100).toFixed(2); if (s === '-0.00') s = '0.00'; return s.replace(/\.?0+$/, ''); }
+  function figAttr(o) { var s = ''; for (var k in o) { if (o[k] !== undefined && o[k] !== null && o[k] !== false) s += ' ' + k + '="' + o[k] + '"'; } return s; }
+  function figSvg(w, h, label, body) { return '<svg class="qfig" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" role="img" aria-label="' + label + '">' + body + '</svg>'; }
+  function figLine(x1, y1, x2, y2, o) { o = o || {}; return '<line' + figAttr({ 'data-k': o.k, x1: n2(x1), y1: n2(y1), x2: n2(x2), y2: n2(y2), stroke: o.c || FIGC.line, 'stroke-width': o.w || 1.6, 'stroke-dasharray': o.dash ? '4 3' : null, 'stroke-linecap': 'round' }) + '/>'; }
+  function figText(x, y, s, o) { o = o || {}; return '<text' + figAttr({ 'data-k': o.k, x: n1(x), y: n1(y), 'font-size': o.fs || 14, fill: o.c || FIGC.ink, 'text-anchor': o.anchor || 'middle', 'font-style': o.it ? 'italic' : null }) + '>' + s + '</text>'; }
+  function figPath(d, o) { o = o || {}; return '<path' + figAttr({ 'data-k': o.k, d: d, fill: o.fill || 'none', stroke: o.c === 'none' ? null : (o.c || FIGC.line), 'stroke-width': o.c === 'none' ? null : (o.w || 1.8), 'stroke-linejoin': 'round' }) + '/>'; }
+  function figDot(x, y, o) { o = o || {}; return '<circle' + figAttr({ 'data-k': o.k, cx: n2(x), cy: n2(y), r: o.r || 3, fill: o.c || FIGC.line }) + '/>'; }
+  function figRect(x, y, w, h, o) { o = o || {}; return '<rect' + figAttr({ 'data-k': o.k, x: n2(x), y: n2(y), width: n2(w), height: n2(h), fill: o.fill || 'none', stroke: o.c || FIGC.line, 'stroke-width': o.w || 1.2 }) + '/>'; }
+  function ptS(p) { return n2(p[0]) + ' ' + n2(p[1]); }
+  function figPoly(P, o) { return figPath('M ' + P.map(ptS).join(' L ') + ' Z', o); }
+  function figSub(x, y, name, sub, o) { o = o || {}; return figText(x, y, name + '<tspan dy="3.5" font-size="10" font-style="normal">' + sub + '</tspan>', { fs: o.fs || 14, it: 1, k: o.k }); }       /* 帶下標的名字：T₁ */
+  /* 幾張小圖排成一列、底部對齊，下面寫「圖 1、圖 2、圖 3」。items：[{ w, h, draw(ox, oy, u) }]，w、h 是單位長，draw 收到左上角的像素坐標與比例尺 u（y 向下） */
+  function figRow(items, o) {
+    o = o || {}; var n = items.length, gap = o.gap || 24, pad = 8, m = o.m === undefined ? 6 : o.m, minSlot = 34, top = o.top || 8, maxH = 0, i, used, slots;
+    var avail = (o.W || 340) - 2 * pad - gap * (n - 1);
+    for (i = 0; i < n; i++) maxH = Math.max(maxH, items[i].h);
+    var u = Math.min(o.u || 26, (o.maxH || 150) / (maxH || 1));
+    for (;;) {
+      u = Math.floor(u * 100) / 100; used = 0;
+      slots = items.map(function (it) { var s = Math.max(it.w * u + 2 * m, minSlot); used += s; return s; });
+      if (used <= avail || u < 4) break;
+      u *= 0.97;
+    }
+    var W = Math.max(200, Math.ceil(used + gap * (n - 1) + 2 * pad)), x = (W - used - gap * (n - 1)) / 2, base = top + m + maxH * u, body = '';
+    for (i = 0; i < n; i++) {
+      body += '<g data-k="f' + (i + 1) + '">' + items[i].draw(x + (slots[i] - items[i].w * u) / 2, base - items[i].h * u, u) + '</g>' + figText(x + slots[i] / 2, base + m + 15, '圖 ' + (i + 1), { fs: 13, k: 'cap' });
+      x += slots[i] + gap;
+    }
+    return { body: body, W: W, H: Math.ceil(base + m + 22), u: u };
+  }
+
+  /* ────────── L1　讀圖題：火柴棒與地磚（等差）、分割塗色（等比） ────────── */
+  /* 火柴棒圖形第 n 個的所有火柴（單位坐標，y 向下）：sq 一列正方形、tri 一列正三角形、hex 一列正六邊形、grid2／grid3 兩列／三列方格、house 一排房子 */
+  function chainSegs(kind, n) {
+    var s = [], i, k, j, rows, h;
+    function add(a, b, c, d) { s.push([a, b, c, d]); }
+    if (kind === 'tri') {
+      h = H3; add(0, h, 0.5, 0);
+      for (i = 0; i < n; i++) {
+        j = Math.floor(i / 2);
+        if (i % 2 === 0) { add(j, h, j + 1, h); add(j + 0.5, 0, j + 1, h); }
+        else { add(j + 0.5, 0, j + 1.5, 0); add(j + 1, h, j + 1.5, 0); }
+      }
+      return { segs: s, w: (n + 1) / 2, h: h };
+    }
+    if (kind === 'hex') {
+      for (i = 0; i < n; i++) {
+        var cx = H3 * (2 * i + 1);
+        if (i === 0) add(cx - H3, 0.5, cx - H3, 1.5);
+        add(cx - H3, 0.5, cx, 0); add(cx, 0, cx + H3, 0.5); add(cx + H3, 0.5, cx + H3, 1.5); add(cx + H3, 1.5, cx, 2); add(cx, 2, cx - H3, 1.5);
+      }
+      return { segs: s, w: 2 * H3 * n, h: 2 };
+    }
+    rows = kind === 'grid2' ? 2 : kind === 'grid3' ? 3 : 1; h = kind === 'house' ? H3 : 0;
+    for (k = 0; k <= rows; k++) for (i = 0; i < n; i++) add(i, h + k, i + 1, h + k);
+    for (i = 0; i <= n; i++) for (k = 0; k < rows; k++) add(i, h + k, i, h + k + 1);
+    if (kind === 'house') for (i = 0; i < n; i++) { add(i, h, i + 0.5, 0); add(i + 0.5, 0, i + 1, h); }
+    return { segs: s, w: n, h: h + rows };
+  }
+  var FCH = {
+    sq: { a1: 4, d: 3, why: '每多一個正方形只要再補 $3$ 根，因為有一邊和前一個共用' },
+    tri: { a1: 3, d: 2, why: '每多一個三角形只要再補 $2$ 根，因為有一邊和前一個共用' },
+    hex: { a1: 6, d: 5, why: '每多一個正六邊形只要再補 $5$ 根，因為有一邊和前一個共用' },
+    grid2: { a1: 7, d: 5, why: '每多一行（上下兩格）要補 $3$ 根橫的、$2$ 根直的' },
+    grid3: { a1: 10, d: 7, why: '每多一行（上下三格）要補 $4$ 根橫的、$3$ 根直的' },
+    house: { a1: 6, d: 5, why: '每多一間房子要補牆和地板 $3$ 根、屋頂 $2$ 根，有一面牆和前一間共用' },
+    ring: { a1: 8, d: 2, why: '每多一塊黑磚，它的正上方和正下方各多一塊白磚，左右兩端的白磚不變' }
+  };
+  var FCH_KINDS = ['sq', 'tri', 'hex', 'grid2', 'grid3', 'house', 'ring'];
+  function figChainSvg(kind) {
+    var items = [1, 2, 3].map(function (n) {
+      if (kind === 'ring') return { w: n + 2, h: 3, draw: function (ox, oy, u) {
+        var s = '', i, j, blk;
+        for (j = 0; j < 3; j++) for (i = 0; i < n + 2; i++) { blk = j === 1 && i >= 1 && i <= n; s += figRect(ox + i * u, oy + j * u, u, u, { k: blk ? 'b' : 'w', fill: blk ? FIGC.ink : '#fff', w: 1.2 }); }
+        return s; } };
+      var g = chainSegs(kind, n);
+      return { w: g.w, h: g.h, draw: function (ox, oy, u) {
+        return g.segs.map(function (e) {                                                            /* 每根火柴兩端各縮 2 像素，看得出是一根一根的 */
+          var dx = e[2] - e[0], dy = e[3] - e[1], L = Math.sqrt(dx * dx + dy * dy), cut = 2 / u;
+          return figLine(ox + (e[0] + dx / L * cut) * u, oy + (e[1] + dy / L * cut) * u, ox + (e[2] - dx / L * cut) * u, oy + (e[3] - dy / L * cut) * u, { k: 'st', w: 2.8 });
+        }).join(''); } };
+    });
+    var row = figRow(items, { u: kind === 'ring' ? 22 : kind === 'tri' ? 40 : kind === 'sq' || kind === 'house' ? 34 : 30, maxH: 96, gap: 26 });
+    return figSvg(row.W, row.H, kind === 'ring' ? '黑白地磚依規律拼出的圖 1、圖 2、圖 3' : '火柴棒依規律排出的圖 1、圖 2、圖 3', row.body);
+  }
+  L1.figChain = function (r) {
+    r();                                                                /* 連號種子的第一個亂數幾乎一樣，先丟掉一個，檢測裡同型各題才會抽到不同的圖 */
+    var kind = r.pick(FCH_KINDS), c = FCH[kind], N = r.int(12, 40), aN = c.a1 + (N - 1) * c.d, tile = kind === 'ring', unit = tile ? '塊' : '根';
+    var q = (tile ? '如圖，用黑、白兩色的正方形地磚依規律拼出圖 ' + T('1') + '、圖 ' + T('2') + '、圖 ' + T('3') + '，照這個規律一直拼下去。設圖 ' + T('n') + ' 用了 ' + T('a_n') + ' 塊<b>白色</b>地磚。'
+      : '如圖，用一樣長的火柴棒依規律排出圖 ' + T('1') + '、圖 ' + T('2') + '、圖 ' + T('3') + '，照這個規律一直排下去。設圖 ' + T('n') + ' 用了 ' + T('a_n') + ' 根火柴棒。') +
+      '(1) 寫出 ' + T('a_1') + '，並求 ' + T('a_{n+1}-a_n') + '。(2) 求一般項 ' + T('a_n') + ' 與 ' + T('a_{' + N + '}') + '。' + figChainSvg(kind);
+    return { q: q,
+      a: '(1) ' + T('a_1=' + c.a1) + '、' + T('a_{n+1}-a_n=' + c.d) + '　(2) ' + T('a_n=' + lin(c.d, c.a1 - c.d)) + '、' + T('a_{' + N + '}=' + aN),
+      h: '先從圖上數：圖 $1$、圖 $2$、圖 $3$ 各用 $' + c.a1 + '$、$' + (c.a1 + c.d) + '$、$' + (c.a1 + 2 * c.d) + '$ ' + unit + '。' + c.why + '，所以 $a_{n+1}-a_n=' + c.d + '$。這是首項 $' + c.a1 + '$、公差 $' + c.d + '$ 的等差數列：$a_n=' + c.a1 + '+' + c.d + '(n-1)$，再代 $n=' + N + '$。',
+      p: { kind: kind, N: N, ans: [c.a1, c.d, aN] } };
+  };
+
+  /* 分割塗色：type='split' 把長方形沿長邊切成 m 條、塗前 c 條、對最後一條再做；type='quad' 切成田字、塗 c 格、對剩下的一個角再做。回傳各小塊（單位正方形內，y 向下） */
+  function shadePieces(type, m, c, levels, fx, fy) {
+    var out = [], x = 0, y = 0, w = 1, h = 1, lv, i;
+    function put(px, py, pw, ph, sh) { out.push({ x: fx ? 1 - px - pw : px, y: fy ? 1 - py - ph : py, w: pw, h: ph, sh: sh }); }
+    for (lv = 1; lv <= levels; lv++) {
+      if (type === 'quad') {
+        w /= 2; h /= 2;
+        put(x + w, y, w, h, c >= 2); put(x, y + h, w, h, c >= 3); put(x + w, y + h, w, h, true);
+        if (lv === levels) put(x, y, w, h, false);
+      } else if (w >= h - 1e-9) {
+        w /= m; for (i = 0; i < m - 1; i++) put(x + i * w, y, w, h, i < c);
+        x += (m - 1) * w; if (lv === levels) put(x, y, w, h, false);
+      } else {
+        h /= m; for (i = 0; i < m - 1; i++) put(x, y + i * h, w, h, i < c);
+        y += (m - 1) * h; if (lv === levels) put(x, y, w, h, false);
+      }
+    }
+    return out;
+  }
+  function figShadeSvg(type, m, c, fx, fy) {
+    var items = [1, 2, 3].map(function (lv) {
+      return { w: 1, h: 1, draw: function (ox, oy, u) {
+        return shadePieces(type, m, c, lv, fx, fy).map(function (p) { return figRect(ox + p.x * u, oy + p.y * u, p.w * u, p.h * u, { k: p.sh ? 'sh' : 'bl', fill: p.sh ? FIGC.shade : '#fff', w: 1.1 }); }).join('') + figRect(ox, oy, u, u, { k: 'sq', w: 1.9 });
+      } };
+    });
+    var row = figRow(items, { u: 90, maxH: 90, gap: 20, m: 4 });
+    return figSvg(row.W, row.H, '正方形依規律分割、塗色的圖 1、圖 2、圖 3', row.body);
+  }
+  var FSH_KINDS = [['split', 2, 1], ['split', 3, 1], ['split', 3, 2], ['quad', 4, 1], ['quad', 4, 2], ['quad', 4, 3]];
+  L1.figShade = function (r) {
+    r();
+    var kd = r.pick(FSH_KINDS), type = kd[0], m = kd[1], c = kd[2], n = m === 2 ? r.int(5, 8) : m === 3 ? r.int(4, 5) : r.int(3, 5), k = r.pick(m === 2 ? [1, 3, 5] : [1, 2, 3]), A = ipow(m, n) * k, fx = r.int(0, 1), fy = r.int(0, 1);
+    var first = F(A * c, m), rr = F(1, m), bn = Fr.mul(first, fpow(rr, n - 1)), Sn = SUMF(0, n - 1, function (j) { return Fr.mul(first, fpow(rr, j)); });
+    return { q: '如圖，正方形的面積是 ' + T(String(A)) + '。圖 ' + T('1') + ' 把它分成面積相等的幾塊，並把其中幾塊塗色；圖 ' + T('2') + ' 把一塊空白照同樣的方式分割、塗色；圖 ' + T('3') + ' 對新分出的一塊空白再做一次，依此類推。(1) 圖 ' + T(String(n)) + ' 比圖 ' + T(String(n - 1)) + ' 多塗了多少面積？(2) 圖 ' + T(String(n)) + ' 塗色部分的總面積是多少？' + figShadeSvg(type, m, c, fx, fy),
+      a: '(1) ' + T(Fr.tex(bn)) + '　(2) ' + T(Fr.tex(Sn)),
+      h: '看圖 $1$：分成 $' + m + '$ 塊、塗 $' + c + '$ 塊，第 $1$ 次塗的面積是 $' + A + '\\times\\dfrac{' + c + '}{' + m + '}=' + Fr.tex(first) + '$。看圖 $2$：下一次只拿其中 $1$ 塊空白來做同樣的事，那一塊的面積是上一次整塊的 $\\dfrac1' + m + '$，所以每次新塗的面積都是前一次的 $\\dfrac1' + m + '$ 倍。新塗的面積成等比：首項 $' + Fr.tex(first) + '$、公比 $\\dfrac1' + m + '$；(1) 是第 $' + n + '$ 項，(2) 是前 $' + n + '$ 項的和。',
+      p: { type: type, m: m, c: c, n: n, A: A, fx: fx, fy: fy, ans: [fr2(bn), fr2(Sn)] } };
+  };
+
+  L1_H1.figChain = '這是「看圖找規律（等差）」：先數出圖 $1$、圖 $2$、圖 $3$ 各用幾個，再從圖上看每多一個單位要補幾個；補的個數固定就是等差數列。';
+  L1_H1.figShade = '這是「看圖找規律（等比）」：先從圖 $1$ 讀出分成幾塊、塗幾塊，再看圖 $2$ 新塗的那一部分是圖 $1$ 的幾分之幾，那個倍數就是公比。';
+  L1_SOL.figChain = function (p, o) {
+    var c = FCH[p.kind], a1 = c.a1, d = c.d, unit = p.kind === 'ring' ? '塊白磚' : '根';
+    return ['從圖上數：圖 $1$ 用 $' + a1 + '$ ' + unit + '、圖 $2$ 用 $' + (a1 + d) + '$ ' + unit + '、圖 $3$ 用 $' + (a1 + 2 * d) + '$ ' + unit + '，所以 $a_1=' + a1 + '$。',
+      '相鄰兩圖相差 $' + (a1 + d) + '-' + a1 + '=' + d + '$、$' + (a1 + 2 * d) + '-' + (a1 + d) + '=' + d + '$。從圖上看原因：' + c.why + '。所以 $a_{n+1}-a_n=' + d + '$，$\\langle a_n\\rangle$ 是首項 $' + a1 + '$、公差 $' + d + '$ 的等差數列。',
+      '$a_n=' + a1 + '+' + d + '(n-1)=' + lin(d, a1 - d) + '$；$a_{' + p.N + '}=' + d + '\\times' + p.N + '+' + (a1 - d) + '=' + p.ans[2] + '$。' + fin(o)];
+  };
+  L1_SOL.figShade = function (p, o) {
+    var m = p.m, n = p.n, first = F(p.A * p.c, m), bn = fF(p.ans[0]), Sn = fF(p.ans[1]), ft = Fr.tex(first);
+    return ['看圖 $1$：正方形分成 $' + m + '$ 塊，塗了 $' + p.c + '$ 塊，第 $1$ 次塗的面積 $=' + p.A + '\\times\\dfrac{' + p.c + '}{' + m + '}=' + ft + '$。',
+      '看圖 $2$、圖 $3$：每次只拿 $1$ 塊空白照同樣的方式分割、塗色，那一塊的面積是上一次整塊的 $\\dfrac1' + m + '$，所以每次新塗的面積是前一次的 $\\dfrac1' + m + '$ 倍。新塗的面積是首項 $' + ft + '$、公比 $\\dfrac1' + m + '$ 的等比數列。',
+      '(1) 圖 $' + n + '$ 比圖 $' + (n - 1) + '$ 多塗的是第 $' + n + '$ 項：$' + ft + '\\times\\left(\\dfrac1' + m + '\\right)^{' + (n - 1) + '}=' + Fr.tex(bn) + '$。',
+      '(2) 總面積是前 $' + n + '$ 項的和：$\\dfrac{' + ft + '\\left[1-\\left(\\dfrac1' + m + '\\right)^{' + n + '}\\right]}{1-\\dfrac1' + m + '}=' + Fr.tex(Sn) + '$。' + fin(o)];
+  };
+  META_L1.push(['figChain', '§1 看圖找規律：火柴棒與地磚（等差）'], ['figShade', '§2 看圖找規律：分割塗色（等比）']);
+  CONTRAST['L1.figChain'] = { f: function (p) { return p.kind; }, why: '兩個圖形每多一個單位要補的個數不同，公差就不同；$a_1$ 也要各自從圖 $1$ 數。做法一樣：先數前三個圖，再從圖上看「多一個單位要補幾個」。' };
+  CONTRAST['L1.figShade'] = { f: function (p) { return p.m + '/' + p.c; }, why: '分成幾塊決定公比（每次只對其中一塊再做，所以公比是「幾分之一」），塗幾塊只影響首項。兩個都要從圖 $1$、圖 $2$ 讀出來，不能只看題幹。' };
+
+  /* ────────── L2　讀圖題：點陣（由圖寫遞迴）、內接圖形（等比） ────────── */
+  /* 點陣第 n 個的所有點（單位坐標，y 向下，左上角對齊 0）：tri 三角形、sq 正方形、obl n×(n+1) 長方形、trap 梯形（n 排，由 n 顆到 2n−1 顆）、dia 菱形（斜放的正方形）、tri2 2n−1 排的三角形 */
+  function dotPts(kind, n) {
+    var P = [], i, j, rows;
+    if (kind === 'sq' || kind === 'obl') { for (i = 0; i < n; i++) for (j = 0; j < (kind === 'obl' ? n + 1 : n); j++) P.push([j, i]); }
+    else if (kind === 'dia') { for (i = -(n - 1); i <= n - 1; i++) for (j = -(n - 1); j <= n - 1; j++) if (Math.abs(i) + Math.abs(j) <= n - 1) P.push([j + n - 1, i + n - 1]); }
+    else {
+      rows = kind === 'tri2' ? 2 * n - 1 : n;
+      for (i = 0; i < rows; i++) { var cnt = kind === 'trap' ? n + i : i + 1, wMax = kind === 'trap' ? 2 * n - 2 : rows - 1; for (j = 0; j < cnt; j++) P.push([j + (wMax - (cnt - 1)) / 2, i * H3]); }
+    }
+    var w = 0, h = 0; P.forEach(function (p) { w = Math.max(w, p[0]); h = Math.max(h, p[1]); });
+    return { pts: P, w: w, h: h };
+  }
+  var FDT = {
+    tri: { al: 1, be: 1, a1: 1, f: function (n) { return n * (n + 1) / 2; }, why: '最下面多一排，那一排有 $n+1$ 顆' },
+    sq: { al: 2, be: 1, a1: 1, f: function (n) { return n * n; }, why: '右邊補一行 $n$ 顆、下面補一排 $n$ 顆，角落再補 $1$ 顆' },
+    obl: { al: 2, be: 2, a1: 2, f: function (n) { return n * (n + 1); }, why: '右邊補一行 $n$ 顆，下面再補一排 $n+2$ 顆' },
+    trap: { al: 3, be: 1, a1: 1, f: function (n) { return n * (3 * n - 1) / 2; }, why: '上面少了 $n$ 顆的那一排，下面多了 $2n$ 顆與 $2n+1$ 顆的兩排，$2n+(2n+1)-n=3n+1$' },
+    dia: { al: 4, be: 0, a1: 1, f: function (n) { return 2 * n * n - 2 * n + 1; }, why: '外面多一圈，這一圈每邊 $n$ 顆（一端的頂點算給下一邊），共 $4n$ 顆' },
+    tri2: { al: 4, be: 1, a1: 1, f: function (n) { return n * (2 * n - 1); }, why: '最下面多兩排，分別有 $2n$ 顆與 $2n+1$ 顆' }
+  };
+  var FDT_KINDS = ['tri', 'sq', 'obl', 'trap', 'tri2'];                                    /* dia（一圈一圈的菱形）和 L3.figCentered 的正方形重複，不抽 */
+  function figDotsRow(build, label, o) {
+    var items = [1, 2, 3].map(function (n) { var g = build(n); return { w: g.w, h: g.h, draw: function (ox, oy, u) { var rr = Math.max(2.6, Math.min(4.6, 0.26 * u)); return (g.rings || []).map(function (R) { return figPoly(R.map(function (p) { return [ox + p[0] * u, oy + p[1] * u]; }), { k: 'ring', c: FIGC.grid, w: 1.2 }); }).join('') + g.pts.map(function (p) { return figDot(ox + p[0] * u, oy + p[1] * u, { k: 'd', r: n2(rr) }); }).join(''); } }; });
+    var row = figRow(items, o);
+    return figSvg(row.W, row.H, label, row.body);
+  }
+  L2.figDots = function (r) {
+    r();
+    var kind = r.pick(FDT_KINDS), c = FDT[kind], N = r.int(8, 30), aN = c.f(N), a1 = c.a1, a2 = c.f(2), a3 = c.f(3), dT = lin(c.al, c.be);
+    return { q: '如圖，用棋子依規律排出圖 ' + T('1') + '、圖 ' + T('2') + '、圖 ' + T('3') + '，照這個規律一直排下去。設圖 ' + T('n') + ' 用了 ' + T('a_n') + ' 顆棋子。(1) 以 ' + T('n') + ' 表示 ' + T('a_{n+1}-a_n') + '。(2) 求 ' + T('a_{' + N + '}') + '。' + figDotsRow(function (n) { return dotPts(kind, n); }, '棋子依規律排出的圖 1、圖 2、圖 3', { u: 24, maxH: 110, gap: 26, m: 7 }),
+      a: '(1) ' + T('a_{n+1}-a_n=' + dT) + '　(2) ' + T('a_{' + N + '}=' + aN),
+      h: '先數：$a_1=' + a1 + '$、$a_2=' + a2 + '$、$a_3=' + a3 + '$，相鄰相差 $' + (a2 - a1) + '$、$' + (a3 - a2) + '$，不是固定的數，所以不是等差。從圖上看：圖 $n$ 變成圖 $n+1$ 時，' + c.why + '，所以 $a_{n+1}-a_n=' + dT + '$（代 $n=1$、$2$ 得 $' + (c.al + c.be) + '$、$' + (2 * c.al + c.be) + '$，和數出來的一樣）。再疊縮相加：$a_{' + N + '}=a_1+\\displaystyle\\sum_{k=1}^{' + (N - 1) + '}(' + lin(c.al, c.be, 'k') + ')$。',
+      p: { kind: kind, N: N, ans: [c.al, c.be, aN] } };
+  };
+
+  /* 內接圖形：sq＝正方形每邊依 f:s 分點連成下一個正方形（畫 4 個）；tri＝正三角形連中點（畫 4 個）。標籤是最外層一邊被分成的兩段長 */
+  function figNestedSvg(kind, f, s, kk) {
+    var W = 260, side = kind === 'sq' ? 178 : 216, x0 = (W - side) / 2, top = 12, V, t = f / (f + s), j, i, body = '', P, lev = [], hgt = kind === 'sq' ? side : side * H3, by = top + hgt;
+    V = kind === 'sq' ? [[x0, by], [x0 + side, by], [x0 + side, top], [x0, top]] : [[x0, by], [x0 + side, by], [x0 + side / 2, top]];
+    for (j = 0; j < 4; j++) { lev.push(V); P = []; for (i = 0; i < V.length; i++) { var a = V[i], b = V[(i + 1) % V.length]; P.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]); } V = P; }
+    for (j = 0; j < 4; j++) body += figPoly(lev[j], { k: 's' + (j + 1), fill: j % 2 ? 'rgba(176,58,85,.16)' : '#fff', w: j === 0 ? 2 : 1.5 });
+    var D = lev[1][0];                                                                                /* 底邊上的分點 */
+    body += figDot(D[0], D[1], { k: 'D', r: 2.8 }) + figText((x0 + D[0]) / 2, by + 17, String(f * kk), { k: 'len' }) + figText((D[0] + x0 + side) / 2, by + 17, String(s * kk), { k: 'len' });
+    return figSvg(W, Math.ceil(by + 28), kind === 'sq' ? '正方形裡一層一層往內接的正方形，最外層一邊被分成的兩段長標示在圖上' : '正三角形連接各邊中點一層一層往內接，最外層一邊被中點分成的兩段長標示在圖上', body);
+  }
+  var FNS = [['sq', 1, 1, [2, 3, 4, 5, 6, 8], [4, 5, 6]], ['sq', 1, 2, [3, 6], [3, 4]], ['sq', 1, 3, [2, 4], [3, 4]], ['sq', 2, 3, [1, 2, 5], [3]], ['tri', 1, 1, [4, 6, 8, 12, 16, 24], [4, 5, 6]]];
+  L2.figNested = function (r) {
+    r();
+    var fam = r.pick(FNS), kind = fam[0], pp = fam[1], qq = fam[2], kk = r.pick(fam[3]), n = r.pick(fam[4]), sw = r.int(0, 1), f = sw ? qq : pp, s = sw ? pp : qq, u = f * kk, v = s * kk, L = u + v, a1, rho, x2, sum, q, h;
+    if (kind === 'sq') {
+      a1 = F(L * L); rho = F(u * u + v * v, L * L); x2 = F(u * u + v * v);
+      q = '如圖，在正方形 ' + T('S_1') + ' 的四個邊上各取一點，連成正方形 ' + T('S_2') + '；再照同樣的比例在 ' + T('S_2') + ' 的四個邊上各取一點，連成 ' + T('S_3') + '，依此類推（圖上由外而內畫出 ' + T('S_1') + ' 到 ' + T('S_4') + '）。圖上標的數字是 ' + T('S_1') + ' 的一邊被分成的兩段長。(1) 求 ' + T('S_2') + ' 的面積。(2) 求 ' + T('S_1') + ' 到 ' + T('S_{' + n + '}') + ' 這 ' + T(String(n)) + ' 個正方形的面積總和。';
+      h = '$S_2$ 的每一邊都是一個直角三角形的斜邊，兩股就是圖上標的 $' + u + '$ 與 $' + v + '$，所以 $S_2$ 的面積 $=' + u + '^2+' + v + '^2=' + (u * u + v * v) + '$。$S_1$ 的邊長是 $' + u + '+' + v + '=' + L + '$、面積 $' + (L * L) + '$，每往內一個，面積變成 $\\dfrac{' + (u * u + v * v) + '}{' + (L * L) + '}=' + Fr.tex(rho) + '$ 倍。面積成等比：首項 $' + (L * L) + '$、公比 $' + Fr.tex(rho) + '$，前 $' + n + '$ 項的和 $=\\dfrac{' + (L * L) + '\\left[1-\\left(' + Fr.tex(rho) + '\\right)^{' + n + '}\\right]}{1-' + Fr.tex(rho) + '}$。';
+    } else {
+      a1 = F(3 * L); rho = F(1, 2); x2 = F(3 * u);
+      q = '如圖，連接正三角形 ' + T('T_1') + ' 三邊的中點得到正三角形 ' + T('T_2') + '，再連接 ' + T('T_2') + ' 三邊的中點得到 ' + T('T_3') + '，依此類推（圖上由外而內畫出 ' + T('T_1') + ' 到 ' + T('T_4') + '）。圖上標的數字是 ' + T('T_1') + ' 的一邊被中點分成的兩段長。(1) 求 ' + T('T_2') + ' 的周長。(2) 求 ' + T('T_1') + ' 到 ' + T('T_{' + n + '}') + ' 這 ' + T(String(n)) + ' 個正三角形的周長總和。';
+      h = '$T_1$ 的邊長是 $' + u + '+' + v + '=' + L + '$、周長 $3\\times' + L + '=' + (3 * L) + '$。兩邊中點的連線長是第三邊的一半，所以 $T_2$ 的邊長是 $' + u + '$、周長 $3\\times' + u + '=' + (3 * u) + '$，是 $T_1$ 的 $\\dfrac12$ 倍。周長成等比：首項 $' + (3 * L) + '$、公比 $\\dfrac12$，前 $' + n + '$ 項的和 $=\\dfrac{' + (3 * L) + '\\left[1-\\left(\\dfrac12\\right)^{' + n + '}\\right]}{1-\\dfrac12}$。';
+    }
+    sum = SUMF(0, n - 1, function (j) { return Fr.mul(a1, fpow(rho, j)); });
+    return { q: q + figNestedSvg(kind, f, s, kk), a: '(1) ' + T(Fr.tex(x2)) + '　(2) ' + T(Fr.tex(sum)), h: h, p: { kind: kind, u: u, v: v, n: n, ans: [fr2(x2), fr2(sum)] } };
+  };
+
+  /* 堆積木（由前面看）：圖 n 有 n 層，由上往下第 k 層是 base+step·(k−1) 塊排成一列、置中 */
+  function stairBlocks(n, base, step) {
+    var B = [], k, j, wMax = base + step * (n - 1);
+    for (k = 1; k <= n; k++) { var cnt = base + step * (k - 1); for (j = 0; j < cnt; j++) B.push([(wMax - cnt) / 2 + j, k - 1]); }
+    return { blocks: B, w: wMax, h: n };
+  }
+  L2.figBlocks = function (r) {
+    r();
+    var cfg = r.pick([[1, 1], [1, 2], [2, 1], [2, 2], [3, 2], [1, 3], [3, 1], [2, 3]]), base = cfg[0], step = cfg[1], N = r.int(8, 25);
+    function row(k) { return base + step * (k - 1); }
+    function tot(n) { return SUM(1, n, row); }
+    var items = [1, 2, 3].map(function (n) { var g = stairBlocks(n, base, step); return { w: g.w, h: g.h, draw: function (ox, oy, u) { return g.blocks.map(function (b) { return figRect(ox + b[0] * u, oy + b[1] * u, u, u, { k: 'bk', fill: 'rgba(176,58,85,.14)', w: 1.3 }); }).join(''); } }; });
+    var rw = figRow(items, { u: 22, maxH: 72, gap: 26, m: 4 });
+    return { q: '如圖，用一樣大的方塊積木依規律堆出圖 ' + T('1') + '、圖 ' + T('2') + '、圖 ' + T('3') + '（從正前方看，每一格是一塊積木），照這個規律一直堆下去。設圖 ' + T('n') + ' 用了 ' + T('a_n') + ' 塊積木。(1) 圖 ' + T(String(N)) + ' 最下面一層有幾塊？(2) 求 ' + T('a_{' + N + '}') + '。' + figSvg(rw.W, rw.H, '方塊積木依規律堆出的圖 1、圖 2、圖 3', rw.body),
+      a: '(1) ' + T(String(row(N))) + '　(2) ' + T('a_{' + N + '}=' + tot(N)),
+      h: '先看圖：圖 $n$ 有 $n$ 層，最上層 $' + base + '$ 塊，每往下一層多 $' + step + '$ 塊（圖 $3$ 由上往下是 $' + row(1) + '$、$' + row(2) + '$、$' + row(3) + '$ 塊）。所以由上往下第 $k$ 層有 $' + base + '+' + (step === 1 ? '' : step) + '(k-1)=' + lin(step, base - step, 'k') + '$ 塊，圖 $' + N + '$ 最下面一層代 $k=' + N + '$。總數是 $' + N + '$ 層加起來：首項 $' + base + '$、末項 $' + row(N) + '$、共 $' + N + '$ 項的等差級數，$a_{' + N + '}=\\dfrac{' + N + '(' + base + '+' + row(N) + ')}{2}$。',
+      p: { base: base, step: step, N: N, ans: [row(N), tot(N)] } };
+  };
+  META_L2.push(['figDots', '§1 看圖寫遞迴：點陣的個數'], ['figNested', '§2 看圖找公比：一層一層往內接的圖形'], ['figBlocks', '§2 看圖堆積木：每層的個數與總數']);
+
+  /* ────────── L3　附圖題 L3-19、L3-20 的類似題 ────────── */
+  /* L3-19　斜線下一個接一個的正方形：A 在原點、B=(a,0)，T1 邊長 b（左上角在斜線上），之後每個左上角都在同一條斜線上。mode='45' 標 45°，mode='len' 標 AB 與 T1 的邊長 */
+  function figSqChainSvg(a, b, mode) {
+    var m = b / a, show = mode === '45' ? 2 : 3, xs = [a], ss = [b], k;
+    for (k = 1; k <= show; k++) { xs.push(xs[k - 1] + ss[k - 1]); ss.push(m * xs[k]); }
+    var xEnd = xs[show], rayX = xs[show - 1] + 0.32 * ss[show - 1], rayY = m * rayX, l = 30, rgt = 34, top = 10, W = 320;
+    var sc = Math.min((W - l - rgt) / xEnd, 168 / rayY), by = Math.ceil(top + rayY * sc), s = '';
+    function X(x) { return l + x * sc; } function Y(y) { return by - y * sc; }
+    s += figLine(X(0), by, X(xEnd) + 26, by, { c: FIGC.ink, w: 1.4, k: 'base' }) + figLine(X(0), by, X(rayX), Y(rayY), { c: FIGC.ink, w: 1.4, k: 'ray' });
+    for (k = 0; k < show; k++) {
+      s += figPoly([[X(xs[k]), by], [X(xs[k] + ss[k]), by], [X(xs[k] + ss[k]), Y(ss[k])], [X(xs[k]), Y(ss[k])]], { k: 't' + (k + 1), fill: k % 2 ? 'rgba(176,58,85,.2)' : 'rgba(176,58,85,.07)', w: 1.8 });
+      s += figSub(X(xs[k] + ss[k] / 2) - 2, Y(ss[k] / 2) + 5, 'T', String(k + 1));
+    }
+    s += figText(X(xEnd) + 15, Y(ss[show - 1] / 2) + 4, '⋯', { fs: 15 });
+    s += figDot(X(0), by, { r: 2.4, k: 'A' }) + figDot(X(a), by, { r: 2.4, k: 'B' }) + figText(X(0) - 11, by + 5, 'A', { it: 1 }) + figText(X(a) + (mode === '45' ? 4 : 0), by + 17, 'B', { it: 1 });
+    s += figText(X(a / 2), by + 16, String(a), { k: 'len' });
+    if (mode === '45') s += figPath('M ' + n2(X(0) + 17) + ' ' + by + ' A 17 17 0 0 0 ' + n2(X(0) + 17 * Math.cos(Math.PI / 4)) + ' ' + n2(by - 17 * Math.sin(Math.PI / 4)), { c: FIGC.soft, w: 1.3 }) + figText(X(0) + 35 * Math.cos(Math.PI / 8) + 2, by - 35 * Math.sin(Math.PI / 8) + 5, '45°', { fs: 13, k: 'ang' });
+    else s += figText(X(a + b / 2), by + 16, String(b), { k: 'len2' });
+    return figSvg(W, by + 24, mode === '45' ? '45 度角的一邊上一個接一個的正方形，左上角都在角的另一邊上' : '一個接一個的正方形，左上角都在同一條斜線上，AB 與第一個正方形的邊長標示在圖上', s);
+  }
+  L3.figSqChain = function (r) {
+    r();
+    var mode = r.pick(['45', 'len']), ab = mode === '45' ? [r.int(1, 6)] : r.pick([[2, 1], [4, 2], [6, 3], [3, 1], [6, 2]]), a = ab[0], b = mode === '45' ? a : ab[1];
+    var ask = r.pick(['peri', 'area']), qv = F(a + b, a), n = mode === '45' ? (ask === 'peri' ? r.int(5, 9) : r.int(4, 6)) : r.int(3, 5), s2 = Fr.mul(F(b), qv), word = ask === 'peri' ? '周長' : '面積';
+    var sum = SUMF(0, n - 1, function (j) { var sj = Fr.mul(F(b), fpow(qv, j)); return ask === 'peri' ? Fr.mul(F(4), sj) : Fr.mul(sj, sj); });
+    var q = (mode === '45' ? '如圖，' + T('\\angle A=45^\\circ') + '，' + T('\\overline{AB}') + ' 的長標示在圖上；' + T('T_1') + '、' + T('T_2') + '、' + T('T_3') + '、…… 都是正方形，底邊從 ' + T('B') + ' 點開始一個接一個排在角的一邊上，左上角的頂點都在角的另一邊上。'
+      : '如圖，' + T('T_1') + '、' + T('T_2') + '、' + T('T_3') + '、…… 都是正方形，底邊從 ' + T('B') + ' 點開始一個接一個排在同一條直線上，左上角的頂點都在從 ' + T('A') + ' 點出發的同一條斜線上；' + T('\\overline{AB}') + ' 的長與 ' + T('T_1') + ' 的邊長標示在圖上。') +
+      '(1) 求 ' + T('T_2') + ' 的邊長。(2) 求前 ' + T(String(n)) + ' 個正方形的' + word + '總和。' + figSqChainSvg(a, b, mode);
+    var qt = Fr.tex(qv), tail = ask === 'peri' ? '周長是邊長的 $4$ 倍，也是公比 $' + qt + '$ 的等比，首項 $4\\times' + b + '=' + (4 * b) + '$；前 $' + n + '$ 個的周長總和用等比級數公式。'
+      : '面積是邊長的平方，所以面積的公比是 $' + (qv.d === 1 ? qt : parT(qt)) + '^2=' + Fr.tex(Fr.mul(qv, qv)) + '$，首項 $' + b + '^2=' + (b * b) + '$；前 $' + n + '$ 個的面積總和用等比級數公式。';
+    var h = mode === '45' ? '$45^\\circ$ 的斜線上，每一點的高度都等於它到 $A$ 的水平距離。$T_1$ 的左上角在 $B$ 的正上方，離 $A$ 的水平距離是 $' + a + '$，所以 $T_1$ 的邊長是 $' + a + '$；$T_2$ 的左上角離 $A$ 的水平距離是 $' + a + '+' + a + '=' + (2 * a) + '$，邊長就是 $' + (2 * a) + '$。同理，每個正方形的邊長都等於前面所有長度的總和，也就是前一個的 $2$ 倍：邊長成等比，公比 $2$。' + tail
+      : '斜線上每一點的高度和它到 $A$ 的水平距離成正比（相似三角形）。$T_1$ 的左上角在 $B$ 的正上方：水平距離 $' + a + '$、高 $' + b + '$，比值是 $\\dfrac{' + b + '}{' + a + '}=' + Fr.tex(F(b, a)) + '$。$T_2$ 的左上角離 $A$ 的水平距離是 $' + a + '+' + b + '=' + (a + b) + '$，所以 $T_2$ 的邊長 $=' + (a + b) + '\\times' + Fr.tex(F(b, a)) + '=' + Fr.tex(s2) + '$，是 $T_1$ 的 $' + qt + '$ 倍；之後每一個都是前一個的 $' + qt + '$ 倍，邊長成等比。' + tail;
+    return { q: q, a: '(1) ' + T(Fr.tex(s2)) + '　(2) ' + T(Fr.tex(sum)), h: h, p: { a: a, b: b, mode: mode, ask: ask, n: n, ans: [fr2(s2), fr2(sum)] } };
+  };
+
+  /* L3-20　由內往外一圈一圈的正 m 邊形點陣：圖 n 是中心 1 個加上 n−1 圈，第 j 圈每邊 j 段、共 m·j 個 */
+  function ringPts(m, n) {
+    var P = [[0, 0]], RG = [], j, i, t, x0 = 0, x1 = 0, y0 = 0, y1 = 0, ring;
+    for (j = 1; j < n; j++) { ring = []; RG.push(ring); for (i = 0; i < m; i++) {
+      var a0 = Math.PI / 2 + 2 * Math.PI * i / m, a1 = Math.PI / 2 + 2 * Math.PI * (i + 1) / m, A = [j * Math.cos(a0), -j * Math.sin(a0)], B = [j * Math.cos(a1), -j * Math.sin(a1)];
+      ring.push(A); for (t = 0; t < j; t++) P.push([A[0] + (B[0] - A[0]) * t / j, A[1] + (B[1] - A[1]) * t / j]);
+    } }
+    P.forEach(function (p) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); });
+    function sh(p) { return [p[0] - x0, p[1] - y0]; }
+    return { pts: P.map(sh), rings: RG.map(function (R) { return R.map(sh); }), w: x1 - x0, h: y1 - y0 };
+  }
+  var FCN_NAME = { 3: '正三角形', 4: '正方形', 5: '正五邊形', 6: '正六邊形' };
+  L3.figCentered = function (r) {
+    r();
+    var m = r.int(3, 6), N = r.int(8, 25), aN = 1 + m * N * (N - 1) / 2;
+    return { q: '如圖，用圓點由內往外一圈一圈地排出圖 ' + T('1') + '、圖 ' + T('2') + '、圖 ' + T('3') + '，照這個規律一直排下去。設圖 ' + T('n') + ' 有 ' + T('a_n') + ' 個圓點，求 ' + T('a_{' + N + '}') + '。' + figDotsRow(function (n) { return ringPts(m, n); }, '圓點由內往外一圈一圈排出的圖 1、圖 2、圖 3', { u: m === 3 ? 34 : m === 4 ? 30 : 26, maxH: 120, gap: 28, m: 7 }),
+      a: T('a_{' + N + '}=' + aN),
+      h: '先數：圖 $1$、圖 $2$、圖 $3$ 各有 $1$、$' + (1 + m) + '$、$' + (1 + 3 * m) + '$ 個，相鄰相差 $' + m + '$、$' + (2 * m) + '$。從圖上看：每往後一個圖，外面多一圈' + FCN_NAME[m] + '，新的一圈每邊比前一圈多 $1$ 個，所以圖 $n+1$ 比圖 $n$ 多 $' + m + 'n$ 個。疊縮相加：$a_{' + N + '}=1+' + m + '(1+2+\\cdots+' + (N - 1) + ')=1+' + m + '\\cdot\\dfrac{' + (N - 1) + '\\cdot' + N + '}{2}$。',
+      p: { m: m, N: N, ans: aN } };
+  };
+  META_L3.push(['figSqChain', '斜線下一個接一個的正方形：邊長成等比（附圖）'], ['figCentered', '一圈一圈往外排的點陣：看圖寫遞迴再疊縮相加（附圖）']);
+  L3_FIX['L3-19'] = 'figSqChain'; L3_FIX['L3-20'] = 'figCentered';
+
   function contrastPair(tier, key, seedA, maxTry) {
     var c = CONTRAST[tier + '.' + key]; if (!c) return null;
     var A = wrapItem(tier, key, seedA), fA = c.f(A.p), keep = c.keep || [];
