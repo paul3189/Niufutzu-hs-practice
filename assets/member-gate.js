@@ -11,6 +11,8 @@
   "use strict";
   var SDK = "https://www.gstatic.com/firebasejs/11.6.0/";
   var EMAIL_KEY = "jhmath.reflex.email";
+  /* LINE、Facebook 等 App 內瀏覽器：Google 不准在裡面登入 */
+  var INAPP = /Line\/|FBAN|FBAV|Instagram|MicroMessenger/i.test(navigator.userAgent || "");
   var PRICING = "https://wrongbook.niufutzu.com/pricing";
   var me = document.currentScript, ch = me.getAttribute("data-ch"), name = me.getAttribute("data-name") || ch;
   var cfg = window.FIREBASE_CONFIG;
@@ -22,6 +24,8 @@
     var m = (e && e.code) || (e && e.message) || String(e);
     if (/unauthorized-domain/.test(m)) return "這個網域還沒加進 Firebase 的已授權網域。";
     if (/permission-denied/.test(m)) return "沒有權限（授權可能已到期）。";
+    if (/popup-closed-by-user|cancelled-popup-request/.test(m)) return "登入視窗被關掉了，再按一次就好。";
+    if (/account-exists-with-different-credential/.test(m)) return "這個 Email 之前用「寄登入連結」登入過，請先用登入連結登入一次（之後兩種都能用）。";
     if (/network|Failed to fetch/.test(m)) return "網路連不上。";
     return m;
   }
@@ -35,9 +39,19 @@
       function loginUI(msg) {
         var remembered = ""; try { remembered = localStorage.getItem(EMAIL_KEY) || ""; } catch (e) {}
         box('<div class="mg-card"><h2>🔒 ' + esc(name) + ' 練習本是會員內容</h2>' +
-          '<p>已經是會員的話，用 Email 登入就能打開（不用密碼，點信裡的連結）。還不是會員？<a href="' + PRICING + '" target="_blank" rel="noopener">看方案</a>。</p>' +
+          '<p>已經是會員的話，用 Google 帳號或 Email 登入就能打開（不用密碼）。還不是會員？<a href="' + PRICING + '" target="_blank" rel="noopener">看方案</a>。</p>' +
           '<div class="mg-row"><input type="email" id="mgEmail" placeholder="你的 Email" value="' + esc(remembered) + '" autocomplete="email"><button type="button" id="mgSend">寄登入連結給我</button></div>' +
+          (INAPP ? '<div class="mg-note">💡 要用 Google 登入，請點右上角「⋯」選「用瀏覽器開啟」（LINE／FB 裡面不能用 Google 登入）。</div>'
+                 : '<div class="mg-row"><button type="button" id="mgGoogle">🔵 用 Google 帳號登入</button></div>') +
           '<div class="mg-note" id="mgMsg">' + esc(msg || "跟直覺道場、錯題本是同一個帳號。") + '</div></div>');
+        if ($("mgGoogle")) $("mgGoogle").addEventListener("click", function () {
+          var p = new A.GoogleAuthProvider(); p.setCustomParameters({ prompt: "select_account" });
+          $("mgGoogle").disabled = true;
+          A.signInWithPopup(auth, p).catch(function (e) {
+            if (/popup-blocked|operation-not-supported-in-this-environment/.test((e && e.code) || "")) return A.signInWithRedirect(auth, p);
+            $("mgGoogle").disabled = false; $("mgMsg").textContent = "Google 登入失敗：" + friendly(e);
+          });
+        });
         $("mgSend").addEventListener("click", function () {
           var email = ($("mgEmail").value || "").trim().toLowerCase();
           if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $("mgMsg").textContent = "Email 格式不對。"; return; }
