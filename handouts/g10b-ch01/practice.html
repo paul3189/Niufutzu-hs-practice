@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一章 數列與級數 ── 分級練習本｜高一下</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js?v=20261002s1"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+
+/* ── 檢測／紀錄／類似題（2026-09-17 個人化）── */
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.fix-btns .fix-meta{font-size:.8rem;color:#aaa;margin-right:auto}
+.fixset ol li .mark{margin-left:8px;white-space:nowrap}
+.fixset ol li .mark button{padding:0 8px;font-size:.8rem;border-radius:6px}
+.fixset ol li.ok{background:#eef7f0;border-radius:6px}.fixset ol li.ng{background:#fdecec;border-radius:6px}
+.fixset ol li.ok .mark button[data-m="1"],.fixset ol li.ng .mark button[data-m="0"]{background:#333;color:#fff;border-color:#333}
+.fix-foot{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.88rem;color:var(--muted)}
+.fix-foot .submit{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .fix-foot .submit{border-color:var(--l2);color:var(--l2)}#L3 .fix-foot .submit{border-color:var(--l3);color:var(--l3)}
+.fix-result{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff8e6;border:1px solid #f3dea0;font-size:.93rem}
+.fix-result.on{display:block}
+button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radius:999px;border:1px solid var(--l1);color:var(--l1);background:#fff;cursor:pointer;font:inherit;font-size:.85rem}
+.gcard.flash,.fx.flash{box-shadow:0 0 0 3px #f0c040}
+.myrec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.myrec .mr-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.myrec .mr-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.myrec .mr-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.myrec .mr-advice{margin:10px 0 4px;font-size:.93rem}
+.myrec table.mr-t{border-collapse:collapse;width:100%;font-size:.88rem;margin-top:10px}
+.myrec .mr-t th,.myrec .mr-t td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:middle}
+.myrec .bar{display:inline-block;height:8px;background:#d9534f;border-radius:4px;vertical-align:middle}
+.myrec tr.weak td:first-child{color:#b3261e;font-weight:700}
+.myrec td button.go{padding:1px 8px;font-size:.8rem}
+.simbox{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px dashed var(--l3);background:#fffaf5}
+.simbox .st{font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between}
+.simbox .sq{margin:6px 0}
+.simbox .gh,.simbox .ga{display:none;margin-top:6px;padding:6px 10px;border-radius:6px;font-size:.93rem}
+.simbox .gh{background:#fff8e6;border:1px solid #f3dea0}.simbox .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.simbox .gh.on,.simbox .ga.on{display:block}
+.simbox .sbtn{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+.simbox button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.fx button.simbtn{border-color:var(--l3);color:var(--l3);font-weight:700}
+#printArea{display:none}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px;position:relative}
+.fx-scroll{overflow-x:auto;position:relative}
+@media print{body.print-one .wrap{display:none}body.print-one #printArea{display:block}#printArea h1{font-size:1.15rem;margin:0 0 4px}#printArea .pmeta{margin:0 0 10px;color:#444}#printArea ol li{margin:12px 0;break-inside:avoid}#printArea h2{font-size:1rem;break-before:page}.fixset .mark,.fix-foot,.fix-result,.simbox,.myrec{display:none!important}}
+
+/* ── 第二版：信心評分、錯因、錯題本、混合檢測、模擬卷（2026-09-18）── */
+.fixset ol li.qi{position:relative}
+.fixset .conf,.rvi .conf{display:block;margin:4px 0 2px;font-size:.82rem;color:var(--muted)}
+.conf .cl,.cause .cl{margin-right:4px}
+.conf button,.cause button{padding:0 9px;font-size:.8rem;border-radius:999px;margin-right:4px}
+.conf button.sel{background:#1f5fa8;color:#fff;border-color:#1f5fa8}
+.cause{display:none;margin-left:8px;font-size:.82rem;color:var(--muted)}
+.fixset ol li.ng .cause,.rvi li.ng .cause{display:inline-block}
+.cause button.sel{background:#b3261e;color:#fff;border-color:#b3261e}
+.fixset:not(.show) .mark,.rvi li:not(.show) .mark{display:none}
+.fix-note{display:none;margin:6px 0;padding:8px 12px;border-radius:8px;background:#fdecec;border:1px solid #f0b8b8;font-size:.9rem}
+.fix-note.on{display:block}
+.hcw{color:#b3261e;font-weight:700}
+button.go.read{border-color:#8a4450;color:#8a4450}
+.fix-btns .tstart{border-color:var(--l4);color:var(--l4);font-weight:700}
+.fix-btns .tclock{font-weight:700;color:var(--l4);min-width:3.5em}
+.review{background:#fff;border:1px solid #f0c9a0;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.review .rv-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.review .rv-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.review .rv-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid var(--l3);color:var(--l3);background:#fff;cursor:pointer;font-weight:700}
+.rvi{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:10px 0;background:#fffdf9}
+.rvi .rvh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+.rvi .rvh .tag{font-size:.75rem;padding:1px 8px;border-radius:999px;background:#eee;color:#555}
+.rvi .rvh .tag.hc{background:#fdecec;color:#b3261e;font-weight:700}
+.rvi .rvh .rvm{margin-left:auto;color:#aaa;font-size:.78rem}
+.rvi ol{margin:6px 0 0;padding-left:22px}
+.rvi li{margin:6px 0}
+.rvi li .rl{font-size:.75rem;color:var(--l3);font-weight:700;margin-right:6px}
+.rvi li .fa{display:none;color:var(--l2);font-size:.92rem;margin-left:6px}
+.rvi li.show .fa{display:inline}
+.rvi li.ok{background:#eef7f0;border-radius:6px}.rvi li.ng{background:#fdecec;border-radius:6px}
+.rvi li .rvans{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer;margin-left:6px}
+.rv-later{font-size:.88rem;color:var(--muted);margin-top:8px}
+.rv-later ul{margin:4px 0 0 18px;padding:0}
+.must.flash{box-shadow:0 0 0 3px #f0c040}
+@media print{.conf,.cause,.fix-note,.review,.tstart,.tclock{display:none!important}}
+
+/* ── 第三版：解題步驟、兩層提示、漸淡練習（2026-09-18）── */
+.gcard button.steps{border-color:#6a3ea1;color:#6a3ea1}
+.gcard .gs,.rvi .gs{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#f4effa;border:1px solid #d8c8ee}
+.gcard .gs.on,.rvi .gs.on{display:block}
+.gcard .gh .more{font:inherit;font-size:.8rem;padding:1px 10px;border-radius:999px;border:1px solid #c9a227;background:#fff;cursor:pointer;margin-left:6px}
+ol.steps{margin:4px 0 0;padding-left:22px}
+ol.steps li{margin:4px 0}
+ol.steps li.blank .bl{color:#8a4450;font-weight:700}
+ol.steps li.blank .hid,.fin.hid{display:none}
+.fdi.open ol.steps li.blank .bl{display:none}
+.fdi.open ol.steps li.blank .hid,.fdi.open .fin.hid{display:inline}
+.fin{margin-top:6px;font-weight:700;color:#2e7d4f}
+.fadeset{background:#fff;border:1px solid #d8c8ee;border-radius:12px;padding:10px 14px;margin:8px 0 12px}
+.fadeset .fd-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-bottom:4px}
+.fadeset details.fd{border-top:1px dashed #e0d6ee;padding:6px 0}
+.fadeset details.fd summary{cursor:pointer;font-weight:700;color:#6a3ea1;font-size:.93rem}
+.fadeset .fdi{margin:8px 0 10px 8px;padding:8px 10px;border-left:3px solid #d8c8ee;font-size:.93rem}
+.fadeset .fdt{font-weight:700;color:#6a3ea1;font-size:.85rem}
+.fadeset .fdt .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:6px}
+.fadeset .fq{margin:4px 0 6px}
+.fadeset button.reveal{font:inherit;font-size:.82rem;padding:2px 12px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-top:4px}
+.rvi button.rvsteps{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-left:6px}
+@media print{.fadeset,.gcard .gs{display:none!important}}
+
+/* ── 第四版：對照題、先備診斷、精熟狀態、匯出（2026-09-18）── */
+.gcard button.contrast{border-color:#b3641a;color:#b3641a}
+.gcard .gc{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#fff7f0;border:1px solid #f0c9a0}
+.gcard .gc.on{display:block}
+.gc-h{font-size:.88rem;color:#8a4a10;margin-bottom:6px}
+.gc-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:620px){.gc-pair{grid-template-columns:1fr}}
+.gc-item{background:#fff;border:1px solid #f0d9c0;border-radius:8px;padding:6px 8px}
+.gc-t{font-weight:700;color:#b3641a;font-size:.85rem}
+.gc-t .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:4px}
+.gc-a,.gc-why{display:none;margin-top:6px}
+.gc.open .gc-a{display:block;color:var(--l1);font-weight:700}
+.gc.open .gc-why{display:block;padding:6px 10px;border-radius:6px;background:#fff8e6;border-left:4px solid #e8b94a}
+.gc-btn{margin-top:6px;display:flex;gap:6px}
+.fixset .fix-status{flex-basis:100%;font-size:.82rem;color:var(--muted);margin-top:2px}
+.fixset .fix-status.half{color:#8a6a10}.fixset .fix-status.ok{color:#2e7d4f;font-weight:700}
+.pre-list{margin:6px 0 0 18px;padding:0}.pre-list li{margin:4px 0}
+.diag{background:#fff;border:2px dashed #6a3ea1;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.diag h3.sec{margin-top:4px;border-color:#6a3ea1}
+.diag .fixset{margin-top:6px}
+.myrec .mr-file{display:none}
+@media print{.gcard .gc,.diag{display:none!important}}
+/* ── 附圖題（2026-10-02）：題目的圖是 inline SVG，class="qfig"；手機寬自動縮小，列印照印 ── */
+.qfig,.qfig-sol{display:block;max-width:100%;height:auto;margin:8px auto 4px;font-family:KaTeX_Main,KaTeX_Math,"Times New Roman","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+.qfig text[font-style="italic"],.qfig-sol text[font-style="italic"]{font-family:KaTeX_Math,KaTeX_Main,"Times New Roman",serif}
+.qopt{display:inline-block}
+@media print{.qfig,.qfig-sol{break-inside:avoid}}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第一章 數列與級數 ── 分級練習本</h1>
+  <div class="sub">高一下・配合主講義 第 1 節 數列：等差、等比與遞迴、第 2 節 級數：Σ 與五種求和技術、第 3 節 數學歸納法。五個程度、一本練習本：L1、L2 的題目可以無限生成，L3–L5 是各校段考、大考與教甄的固定題。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>開始前先做上方的<b>先備診斷 5 題</b>，有錯的先補。L1、L2 每張卡片按「新題」就換一題（數字重新抽）；「⚖ 對照題」一次給兩題只差一個關鍵特徵，先說出差在哪再揭曉。「提示」分兩層：先只告訴你這是哪一型、第一步做什麼，還是不會再按一次才給帶數字的提示；「答案」對答案；L1 還有「📘 步驟」給完整解法。每小節的<b>漸淡練習</b>每型三題：先完整示範，再讓你自己補最後一步，最後只給第一步，適合還不會下手的同學。</li>
+    <li>每小節最後是<b>檢測 10 題</b>：先在紙上作答，每題按「有把握／不確定／猜的」，全部評完才看答案；對完每題標 ○／✗，錯的選錯因（不會下手、公式用錯、計算錯、看錯題），再按「記錄」。系統會分成<b>該回頭讀</b>與<b>該多算幾題</b>兩種建議。「換一組類似題」換數字重測，「列印本組」只印這一組。</li>
+    <li>每級最後有<b>混合檢測</b>（全章題型打亂，練「判斷這是哪一型」），L3 之後有<b>段考模擬卷</b>（L2＋L3 混合、計時 50 分鐘、交卷才看答案）。</li>
+    <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
+    <li>L3 每題標出<b>切入點關鍵字</b>和<b>做法</b>：讀題時先找關鍵字，做法選對了，題目就解得開；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（20,100 題抽樣）；L1、L2 的<b>讀圖題</b>每次換題，圖會跟著重畫，規律要從圖上讀；固定題全數人工＋電腦重算。本章只用有限項的等差、等比、遞迴、Σ 公式與數學歸納法；無窮多項的相加（無窮等比級數）是高三選修的內容，本書一律不碰。</li>
+  </ol>
+</div>
+
+<div class="diag" id="diag">
+  <h3 class="sec">章首先備診斷 5 題（開始前先做）</h3>
+  <div class="note">這章一直會用到等差、等比的第 n 項（國中）、指數律（高一上第一章）、二元一次聯立方程式（國中）、配方求極值（高一上第三章）、分數的通分（國中）。5 題都對再往下；有錯的先按連結回去補；一般項、等比級數、S_n 的最大值、裂項相消每一節都靠它們。</div>
+  <div class="fixset" data-tier="L0" data-keys="*" data-seed="601" data-n="5"></div>
+</div>
+
+<div class="review" id="review">
+  <div class="rv-h"><b>📅 今日複習（錯題本）</b><span class="rv-sum"></span><button class="rv-toggle">開始複習</button></div>
+  <div class="rv-body"></div>
+</div>
+
+<div class="myrec" id="myrec">
+  <div class="mr-h"><b>📊 我的練習紀錄</b><span class="mr-sum"></span><button class="mr-toggle">展開</button><button class="mr-copy">📋 複製摘要給老師</button><button class="mr-export">⬇ 匯出</button><button class="mr-import">⬆ 匯入</button><input type="file" class="mr-file" accept=".json,application/json"><button class="mr-clear">清除紀錄</button></div>
+  <div class="mr-body" hidden></div>
+  <div class="note-sm" style="margin-top:6px">紀錄只存在這台裝置的瀏覽器裡（不會上傳）；換裝置或清除瀏覽資料就會消失，可用「匯出／匯入」搬家。</div>
+</div>
+
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些練熟</h2>
+<div class="goal">
+  <div><b>對象</b>$a_n$ 與 $S_n$ 分不清、遞迴式看到就想「代到底」、Σ 公式背了不會拆的同學。</div>
+  <div><b>目標</b>30 個基本型（含 2 型讀圖題），每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
+</div>
+
+<h3 class="sec">1-1 等差與等比：兩項定數列、對稱設法、平均成長率</h3>
+<div class="must">先要會：<b>等差兩項相減 $=(q-p)d$、等比兩項相除 $=r^{q-p}$</b>、<b>$a_n=a_1+(n-1)d$ 寫成 $dn+(a_1-d)$</b>、<b>變號位置：解 $a_n\gt0$ 再取整數</b>、<b>三數等差設 $m-d,m,m+d$；三數等比設 $\frac ar,a,ar$</b>、<b>立方根唯一、平方根要 $\pm$</b>、<b>平均成長率是幾何平均：$(1+r)^n=$ 各年倍率相乘</b>、<b>反求某一年：先算總倍率 $(1+r)^n$，再除掉已知年份的倍率</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth,growthNeed"></div>
+<div class="fadeset" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth,growthNeed" data-seed="7101"></div>
+<div class="fixset" data-tier="L1" data-keys="arTerm,arSign,arMiddle,gpTerm,gpMiddle,growth,growthNeed" data-seed="6101"></div>
+
+<h3 class="sec">1-2 遞迴：四種基本型＋週期</h3>
+<div class="must">先要會：<b>$a_{n+1}=pa_n+q$：先解不動點 $x^\ast=px^\ast+q$，$\langle a_n-x^\ast\rangle$ 是公比 $p$ 的等比</b>、<b>$a_{n+1}=a_n+f(n)$：疊縮相加 $a_n=a_1+\sum_{k=1}^{n-1}f(k)$</b>、<b>$a_{n+1}=g(n)\,a_n$：疊縮相乘，分子分母交錯消</b>、<b>$a_{n+1}=\dfrac{a_n}{ka_n+1}$：取倒數變等差</b>、<b>分式遞迴先算前幾項，看到回到 $a_1$ 就是週期</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="recurLinear,recurSum,recurProd,recurRecip,periodic"></div>
+<div class="fadeset" data-tier="L1" data-keys="recurLinear,recurSum,recurProd,recurRecip,periodic" data-seed="7201"></div>
+<div class="fixset" data-tier="L1" data-keys="recurLinear,recurSum,recurProd,recurRecip,periodic" data-seed="6151"></div>
+
+<h3 class="sec">2 級數：Σ 公式與五種求和技術</h3>
+<div class="must">先要會：<b>$\sum k=\frac{n(n+1)}2$、$\sum k^2=\frac{n(n+1)(2n+1)}6$、$\sum k^3=\left[\frac{n(n+1)}2\right]^2$</b>、<b>Σ 可以拆、常數可以提</b>、<b>等差和 $=\frac{n(a_1+a_n)}2$；中段和＝大減小</b>、<b>$S_n$ 最大 ⟺ 加到最後一個正項</b>、<b>等比和 $=\frac{a_1(1-r^n)}{1-r}$，三段和也成等比</b>、<b>裂項：$\frac1{(ak+b)(ak+a+b)}=\frac1a\left(\frac1{ak+b}-\frac1{ak+a+b}\right)$</b>、<b>等差 $\times$ 等比：錯位相減</b>、<b>$a_n=S_n-S_{n-1}$ 只對 $n\ge2$；$S_n$ 有常數項第一項就脫隊</b>、<b>絕對值和：找變號位置，負段整段變號</b>、<b>複利 $P(1+i)^n$、單利 $P(1+ni)$</b>、<b>平方和不從 $1$ 開始：大的減小的；奇數的平方和＝全部減偶數</b>、<b>$\sum(pa_k+q)^2$：先乘開再逐項求和，常數要乘項數</b>、<b>圖形每次縮成固定的倍數，那個倍數就是公比</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound,powerSumRange,sigmaLinear,shapeGP"></div>
+<div class="fadeset" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound,powerSumRange,sigmaLinear,shapeGP" data-seed="7301"></div>
+<div class="fixset" data-tier="L1" data-keys="sigmaCalc,sigmaFormula,arSum,arSumMax,gpSum,gpBlocks,telescope,staggered,sumToTerm,absSum,compound,powerSumRange,sigmaLinear,shapeGP" data-seed="6201" data-n="11"></div>
+
+<h3 class="sec">3 數學歸納法：遞推步驟怎麼寫</h3>
+<div class="must">先要會：<b>兩步缺一不可：起始值驗證 ＋「$n=k$ 成立 ⟹ $n=k+1$ 成立」</b>、<b>恆等式型：$n=k$ 的右式 ＋ 第 $k+1$ 項，要化成 $n=k+1$ 的右式</b>、<b>整除型：設 $f(k)=mt$，把 $f(k+1)$ 寫成 $b\,f(k)+$（$m$ 的倍數）</b>、<b>起始點不一定是 $1$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="inductionStep,divisible"></div>
+<div class="fadeset" data-tier="L1" data-keys="inductionStep,divisible" data-seed="7401"></div>
+<div class="fixset" data-tier="L1" data-keys="inductionStep,divisible" data-seed="6301" data-n="6"></div>
+
+<h3 class="sec">4 讀圖題：火柴棒與地磚的規律、分割塗色</h3>
+<div class="must">先要會：<b>題目說「如圖」時，規律畫在圖上，先數出圖 $1$、圖 $2$、圖 $3$ 各有幾個</b>、<b>再回到圖上看「多一個單位要補幾個」：補的個數固定，就是等差數列，$a_n=a_1+(n-1)d$</b>、<b>相鄰兩格共用的那一根只算一次</b>、<b>分割塗色的圖：從圖 $1$ 讀出分成幾塊、塗幾塊；再看圖 $2$ 新塗的部分是前一次的幾分之幾，那個倍數就是公比</b>、<b>第 $n$ 次新塗的面積是等比數列的第 $n$ 項，塗色的總面積是前 $n$ 項的和</b>。本章的段考原題大約每十題有一題附圖，多半是圖形規律和圖形裡的等比。按「新題」時，圖會跟著題目重畫。</div>
+<div class="gen-grid" data-tier="L1" data-keys="figChain,figShade"></div>
+<div class="fadeset" data-tier="L1" data-keys="figChain,figShade" data-seed="7501"></div>
+<div class="fixset" data-tier="L1" data-keys="figChain,figShade" data-seed="6401" data-n="8"></div>
+
+<h3 class="sec">L1 混合檢測 12 題（全章 30 型打亂，練「判斷這是哪一型」）</h3>
+<div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
+  <div><b>目標</b>24 個段考最常見題型（依段考卷出現率選出；2026-09-28 用題庫 26 份高一段考卷重新統計，補了 5 型；最後 3 型是 2026-10-02 補的讀圖題），每型都能自己完整寫出過程。</div>
+  <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
+</div>
+
+<h3 class="sec">數列進階：對稱性、奇偶項、由 S_n 反推、混合遞迴、衍生數列、等差變等比</h3>
+<div class="must">26 份高一段考卷中<b>等比數列 26 卷、等差數列 24 卷、遞迴數列 23 卷、衍生數列是否等差／等比 14 卷、三數成等差或等比 11 卷</b>。解題要點：<b>$S_m=S_n$ ⟹ $a_{m+1}+\cdots+a_n=0$，正中間那項是 $0$，對稱軸 $\frac{m+n+1}2$</b>；<b>$\dfrac{a_k}{b_k}=\dfrac{S_{2k-1}}{T_{2k-1}}$（奇數項的和＝項數 $\times$ 中間項）</b>；<b>偶數項和 $=r\times$ 奇數項和</b>；<b>$\langle a_n^2\rangle$ 公比 $r^2$，不必決定 $r$ 正負</b>；<b>$S_n=A\cdot b^n+C$：$C\ne-A$ 就脫隊</b>；<b>$\sum ka_k=T_n$ ⟹ $na_n=T_n-T_{n-1}$</b>；<b>$a_{n+1}=pa_n+q^n$：除以 $q^{n+1}$ 回到一階線性</b>；<b>$S_n=c-a_n$ 類：$n=1$ 先解 $a_1$，再相減得公比</b>；<b>衍生數列：問等差算相鄰兩項的差、問等比算比，與 $n$ 無關才是；常數數列兩種都算</b>；<b>等差三數調整後成等比：設 $m-d,m,m+d$，調整後中間項的平方＝兩端相乘</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="arSymm,sumRatio,oddEvenGP,gpSquares,sumFromSn,weightedRecur,recurMixed,snRecur,derivedSeq,apToGp"></div>
+
+<h3 class="sec">級數技術：等差 × 等差、絕對值、高斯符號、分群、等差 ÷ 等比、年金、對數、和的正負、分期付款、圖形規律</h3>
+<div class="must">26 份高一段考卷中<b>等比級數 21 卷、等差級數 15 卷、平方和與立方和 13 卷、圖形規律 11 卷、複利／年金／分期付款 10 卷、$S_n$ 最大與正負判斷 10 卷、裂項 10 卷</b>。解題要點：<b>等差 $\times$ 等差＝二次式，套三個公式</b>；<b>$|a_n|$ 和：先因式分解找負段</b>；<b>$\lfloor k/m\rfloor$：每 $m$ 個一群，最後一群數個數</b>；<b>分群數列先問「前面幾群共幾項」</b>；<b>$\sum\frac{k}{2^k}=2-\frac{n+2}{2^n}$（錯位相減推一次）</b>；<b>裂項反求 $n$：化成 $\frac{n}{2n+1}$ 直接比對</b>；<b>年金：每一筆各自滾幾年，是等比級數</b>；<b>等比取 $\log$ 變等差</b>；<b>$S_{2k-1}=(2k-1)a_k$、$S_{2k}=k(a_k+a_{k+1})$：由 $S_n$ 的正負找出變號的那一項</b>；<b>分期付款：借款和每一期的還款都滾到最後一期再比較</b>；<b>圖形規律：先寫出第 $k$ 層（第 $k$ 個圖）的個數，再用 $\sum$ 加起來</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="prodAP,absQuad,floorSum,groupSeq,kOver2k,telescopeN,annuity,logGP,arSignSn,loanPay,figStack"></div>
+
+<h3 class="sec">讀圖題：點陣的個數、一層一層往內接的圖形、堆積木</h3>
+<div class="must">本章的段考附圖題裡，<b>圖形規律（火柴棒、點陣、地磚、堆疊）約佔六成，圖形裡的等比（內接、分割塗色）約兩成</b>，其餘是數表與填格。解題要點：<b>點陣的個數通常不是等差：先數前三個，再從圖上看圖 $n$ 變成圖 $n+1$ 時多了哪一排或哪一圈，寫出 $a_{n+1}-a_n$，最後疊縮相加</b>；<b>一層一層往內接的圖形：相鄰兩個的邊長比固定，面積比是邊長比的平方；斜放的正方形，邊長用畢氏定理算</b>；<b>堆積木：先寫出由上往下第 $k$ 層有幾塊，再把各層加起來</b>。</div>
+<div class="gen-grid" data-tier="L2" data-keys="figDots,figNested,figBlocks"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 24 型打亂・可列印・可換組）</h3>
+<div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>20 題各校段考中後段常見題（L3-9 與最後 2 題是附圖題）：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>20 題全部能獨立完成，且說得出每題用的是什麼方法；本級混合檢測 10 題連續兩輪全對。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；標「改編自」的題目改過數字或問法。答案與詳解皆重新驗算過（L3-3 的官方答案有誤，見該題）。</div>
+
+<div class="fx" id="L3-1" data-gen="recurDivide"><div class="fxh"><span class="no">L3-1</span><span class="kw">$3a_{n+1}-2a_n=-2$：先除成 $a_{n+1}=pa_n+q$，再解不動點</span><span class="src">雄中 113上 填 4</span></div>
+<div class="fxq">設 $a_1=7$，且 $3a_{n+1}-2a_n=-2$（$n\ge1$）。求 $a_8$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_8=-\dfrac{358}{243}$</div>
+<div class="fxs"><div class="move">做法：整理成 $a_{n+1}=\dfrac23a_n-\dfrac23$；不動點 $x=\dfrac23x-\dfrac23\Rightarrow x=-2$。</div>
+$a_{n+1}+2=\dfrac23(a_n+2)$ ⟹ $a_n+2=(a_1+2)\left(\dfrac23\right)^{n-1}=9\left(\dfrac23\right)^{n-1}$。<br>
+$a_8=9\cdot\dfrac{2^7}{3^7}-2=\dfrac{128}{243}-2=\dfrac{128-486}{243}=-\dfrac{358}{243}$。</div></div>
+
+<div class="fx" id="L3-2" data-gen="gpEndsSum"><div class="fxh"><span class="no">L3-2</span><span class="kw">給首項、末項、總和：用 S=(a₁−aₙr)/(1−r) 解 r，再定項數</span><span class="src">中山女高 110下 填 10</span></div>
+<div class="fxq">等比數列 $\langle a_n\rangle$ 中 $a_1=2$、$a_n=512$，且 $a_1+a_2+\cdots+a_n=682$。求 $a_2+a_{n-1}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$136$</div>
+<div class="fxs"><div class="move">做法：$S_n=\dfrac{a_1-a_nr}{1-r}$ 不需要知道 $n$ 就能解 $r$。</div>
+$682=\dfrac{2-512r}{1-r}$ ⟹ $682-682r=2-512r$ ⟹ $170r=680$ ⟹ $r=4$。<br>
+$2\cdot4^{\,n-1}=512$ ⟹ $4^{\,n-1}=256=4^4$ ⟹ $n=5$。$a_2=8$、$a_4=128$，和為 $136$。</div></div>
+
+<div class="fx" id="L3-3" data-gen="fiveAP"><div class="fxh"><span class="no">L3-3</span><span class="kw">五數等差、給和與積：設 m−2d,m−d,m,m+d,m+2d，積是 d² 的二次式</span><span class="src">武陵 111下 填 4</span></div>
+<div class="fxq">五個數成等差數列，其和為 $20$、乘積為 $208$。求公差 $d$ 所有可能的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$d=\pm\sqrt3$ 或 $\pm\sqrt{17}$　<span class="note-sm">（題庫與原卷答案寫 $\pm3$：$d=3$ 時五數為 $-2,1,4,7,10$，乘積 $-560\ne208$，官方答案有誤。）</span></div>
+<div class="fxs"><div class="move">做法：和 $=5m=20$ ⟹ $m=4$。乘積 $=4(4-2d)(4+2d)(4-d)(4+d)=4(16-4d^2)(16-d^2)$。</div>
+$16(4-d^2)(16-d^2)=208$ ⟹ $(4-d^2)(16-d^2)=13$ ⟹ $d^4-20d^2+64=13$ ⟹ $d^4-20d^2+51=0$ ⟹ $(d^2-3)(d^2-17)=0$。<br>
+驗算 $d=\sqrt3$：$(4-2\sqrt3)(4+2\sqrt3)\cdot(4-\sqrt3)(4+\sqrt3)\cdot4=(16-12)(16-3)\cdot4=4\cdot13\cdot4=208$ ✔</div></div>
+
+<div class="fx" id="L3-4" data-gen="gpEndsSumN"><div class="fxh"><span class="no">L3-4</span><span class="kw">首項、末項、和都給、項數不給：同樣用 S=(a₁−aₙr)/(1−r)</span><span class="src">高雄女中 111下 填 15</span></div>
+<div class="fxq">等比數列 $\langle a_n\rangle$ 首項為 $3$、末項為 $-1536$、和為 $-1023$。求第 $3$ 項。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_3=12$</div>
+<div class="fxs"><div class="move">做法：$-1023=\dfrac{3-(-1536)r}{1-r}$。</div>
+$-1023+1023r=3+1536r$ ⟹ $-1026=513r$ ⟹ $r=-2$。$a_3=3\cdot(-2)^2=12$。<br>
+<span class="note-sm">順便定項數：$3\cdot(-2)^{n-1}=-1536$ ⟹ $(-2)^{n-1}=-512=(-2)^9$ ⟹ $n=10$。</span></div></div>
+
+<div class="fx" id="L3-5" data-gen="removeTerm"><div class="fxh"><span class="no">L3-5</span><span class="kw">刪去一項後平均：刪掉的那項 = S₂₅ − 24×平均，再用 aₙ=Sₙ−Sₙ₋₁ 找是第幾項</span><span class="src">竹科實中 113下 單 2</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 共 $25$ 項，前 $n$ 項和 $S_n=3n^2-2n$。若刪去某一項後，剩餘 $24$ 項的算術平均數為 $74$，則刪去的是第幾項？<br>(1) $5$　(2) $9$　(3) $14$　(4) $18$　(5) $24$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2) 第 $9$ 項</div>
+<div class="fxs"><div class="move">做法：$S_{25}=3\cdot625-50=1825$，剩餘和 $=24\times74=1776$，刪掉的項 $=49$。</div>
+$n\ge2$ 時 $a_n=S_n-S_{n-1}=6n-5$（$a_1=S_1=1$ 也合），$6n-5=49$ ⟹ $n=9$。</div></div>
+
+<div class="fx" id="L3-6" data-gen="recurExpLin"><div class="fxh"><span class="no">L3-6</span><span class="kw">aₙ=aₙ₋₁+(指數項)+(一次項)：疊縮相加，指數部分等比、一次部分等差分開加</span><span class="src">武陵 111下 填 9</span></div>
+<div class="fxq">設 $a_1=7$，且 $a_n=a_{n-1}+2^{\,n+1}-2n+1$（$n\ge2$）。求 $a_{10}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_{10}=3996$</div>
+<div class="fxs"><div class="move">做法：$a_{10}=a_1+\displaystyle\sum_{n=2}^{10}\left(2^{\,n+1}-2n+1\right)$，三段分開算。</div>
+$\sum_{n=2}^{10}2^{\,n+1}=2^3+\cdots+2^{11}=2^{12}-2^3=4088$；$\sum_{n=2}^{10}(-2n)=-2(2+\cdots+10)=-108$；$\sum_{n=2}^{10}1=9$。<br>
+$a_{10}=7+4088-108+9=3996$。</div></div>
+
+<div class="fx" id="L3-7" data-gen="recurGuess"><div class="fxh"><span class="no">L3-7</span><span class="kw">給 a₃ 與 aₙ₊₁=(n+2)/n·aₙ+4：往前推 a₂、a₁，列前五項猜 4n²，再歸納驗證</span><span class="src">武陵 111下 題組 15–16</span></div>
+<div class="fxq">設數列 $\langle a_n\rangle$ 滿足 $a_3=36$，且對任意正整數 $n$，$a_{n+1}=\dfrac{n+2}{n}a_n+4$。(1) 列出 $a_1,\dots,a_5$。(2) 猜測一般項並用數學歸納法證明。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $4,16,36,64,100$　(2) $a_n=4n^2$</div>
+<div class="fxs"><div class="move">做法：由 $a_3=\dfrac42a_2+4=36$ 得 $a_2=16$；由 $a_2=3a_1+4$ 得 $a_1=4$；往後 $a_4=\dfrac53\cdot36+4=64$、$a_5=\dfrac64\cdot64+4=100$。</div>
+猜 $a_n=4n^2$。$n=1$：$4$ ✔。設 $a_k=4k^2$，則 $a_{k+1}=\dfrac{k+2}{k}\cdot4k^2+4=4k(k+2)+4=4(k^2+2k+1)=4(k+1)^2$ ✔。</div></div>
+
+<div class="fx" id="L3-8" data-gen="fracRecurGuess"><div class="fxh"><span class="no">L3-8</span><span class="kw">分式遞迴、分子分母都是一次：老實算四項、看分子分母各自的規律、歸納法收尾</span><span class="src">北一女中 104下 計算</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 滿足 $a_1=\dfrac25$，$a_n=\dfrac{3a_{n-1}-2}{8a_{n-1}-5}$（$n\ge2$）。(1) 求 $a_2,a_3,a_4,a_5$。(2) 猜測一般項。(3) 用數學歸納法證明。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $\dfrac49,\dfrac6{13},\dfrac8{17},\dfrac{10}{21}$　(2) $a_n=\dfrac{2n}{4n+1}$</div>
+<div class="fxs"><div class="move">做法：分子 $2,4,6,8,10$ 是 $2n$；分母 $5,9,13,17,21$ 是 $4n+1$。</div>
+設 $a_k=\dfrac{2k}{4k+1}$，代入：分子 $3a_k-2=\dfrac{6k-8k-2}{4k+1}=\dfrac{-2(k+1)}{4k+1}$，分母 $8a_k-5=\dfrac{16k-20k-5}{4k+1}=\dfrac{-(4k+5)}{4k+1}$。<br>
+相除得 $a_{k+1}=\dfrac{2(k+1)}{4k+5}=\dfrac{2(k+1)}{4(k+1)+1}$ ✔。</div></div>
+
+<div class="fx" id="L3-9" data-gen="diagonalGrid"><div class="fxh"><span class="no">L3-9</span><span class="kw">方格斜線編號：第 k 條斜線有 k 個數；先問 100 在第幾條、第幾個</span><span class="src">武陵 112下 填 11</span></div>
+<div class="fxq">如圖，在無限大的方格中編號：$1$ 填在第一列第一行；$2,3$ 從第二列第一行往右上填到第一列第二行；$4,5,6$ 從第三列第一行往右上填到第一列第三行……依此類推。若 $100$ 在第 $m$ 列第 $n$ 行，求 $(m,n)$。<svg class="qfig" viewBox="0 0 224 150" width="224" height="150" role="img" aria-label="方格編號：第一列第一行是 1；2、3 從第二列第一行往右上填到第一列第二行；4、5、6 從第三列第一行往右上填到第一列第三行"><text x="84" y="20" font-size="13" fill="#3a2a2e" text-anchor="middle">第一行</text><text x="128" y="20" font-size="13" fill="#3a2a2e" text-anchor="middle">第二行</text><text x="172" y="20" font-size="13" fill="#3a2a2e" text-anchor="middle">第三行</text><text x="208" y="20" font-size="14" fill="#3a2a2e" text-anchor="middle">⋯</text><text x="54" y="50" font-size="13" fill="#3a2a2e" text-anchor="end">第一列</text><text x="54" y="80" font-size="13" fill="#3a2a2e" text-anchor="end">第二列</text><text x="54" y="110" font-size="13" fill="#3a2a2e" text-anchor="end">第三列</text><text x="32" y="134" font-size="14" fill="#3a2a2e" text-anchor="middle">⋮</text><line x1="62" y1="30" x2="194" y2="30" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="62" y1="30" x2="62" y2="120" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="62" y1="60" x2="194" y2="60" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="106" y1="30" x2="106" y2="120" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="62" y1="90" x2="194" y2="90" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="150" y1="30" x2="150" y2="120" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="62" y1="120" x2="194" y2="120" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="194" y1="30" x2="194" y2="120" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><text x="84" y="50" font-size="15" fill="#7a2e3c" text-anchor="middle">1</text><text x="84" y="80" font-size="15" fill="#7a2e3c" text-anchor="middle">2</text><text x="128" y="50" font-size="15" fill="#7a2e3c" text-anchor="middle">3</text><text x="84" y="110" font-size="15" fill="#7a2e3c" text-anchor="middle">4</text><text x="128" y="80" font-size="15" fill="#7a2e3c" text-anchor="middle">5</text><text x="172" y="50" font-size="15" fill="#7a2e3c" text-anchor="middle">6</text><text x="208" y="50" font-size="14" fill="#3a2a2e" text-anchor="middle">⋯</text><text x="84" y="134" font-size="14" fill="#3a2a2e" text-anchor="middle">⋮</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(6,9)$</div>
+<div class="fxs"><div class="move">做法：第 $k$ 條斜線有 $k$ 個數，前 $k$ 條共 $\dfrac{k(k+1)}2$ 個。$\dfrac{13\cdot14}2=91\lt100\le105$ ⟹ $100$ 在第 $14$ 條斜線的第 $9$ 個。</div>
+第 $14$ 條斜線從第 $14$ 列第 $1$ 行出發，每走一個「列減 $1$、行加 $1$」：第 $9$ 個在第 $14-8=6$ 列、第 $1+8=9$ 行。</div></div>
+
+<div class="fx" id="L3-10" data-gen="mixedSeries"><div class="fxh"><span class="no">L3-10</span><span class="kw">兩個數列交錯相加：拆成等差級數＋等比級數，各自數項數</span><span class="src">台南一中 109下 填 1</span></div>
+<div class="fxq">求 $2+3+5+6+8+12+\cdots+(3k-1)+3\cdot2^{\,k-1}+\cdots+29+1536$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$3224$</div>
+<div class="fxs"><div class="move">做法：等差部分 $2,5,8,\dots,29$（$3k-1=29$ ⟹ $k=10$）；等比部分 $3,6,12,\dots,1536$（$3\cdot2^{\,k-1}=1536$ ⟹ $k=10$）。</div>
+等差和 $=\dfrac{10(2+29)}2=155$；等比和 $=3(2^{10}-1)=3069$。合計 $3224$。</div></div>
+
+<div class="fx" id="L3-11" data-gen="gpRatioSeries"><div class="fxh"><span class="no">L3-11</span><span class="kw">兩個等比級數相除：分子公比 4、分母公比 2，用 4¹⁰−1=(2¹⁰−1)(2¹⁰+1) 約分</span><span class="src">台中一中 111下 單 1</span></div>
+<div class="fxq">求 $\dfrac{2^2+2^4+2^6+\cdots+2^{20}}{2+2^2+2^3+\cdots+2^{10}}$。<br>(1) $2$　(2) $4$　(3) $\dfrac{1025}3$　(4) $\dfrac{2050}3$　(5) $\dfrac{4097}3$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4) $\dfrac{2050}{3}$</div>
+<div class="fxs"><div class="move">做法：分子 $=\dfrac{4(4^{10}-1)}{3}$、分母 $=2(2^{10}-1)$。</div>
+$\dfrac{4(2^{10}-1)(2^{10}+1)}{3\cdot2(2^{10}-1)}=\dfrac{2(2^{10}+1)}{3}=\dfrac{2\cdot1025}{3}=\dfrac{2050}3$。</div></div>
+
+<div class="fx" id="L3-12" data-gen="sigmaFactorForm"><div class="fxh"><span class="no">L3-12</span><span class="kw">Σk(k+2)(k+4) 要因式分解的答案：乘開套三個公式，再提 n(n+1)/4 湊出兩個一次因式</span><span class="src">北一女中 104下 填 6</span></div>
+<div class="fxq">已知 $\displaystyle\sum_{k=1}^{n}k(k+2)(k+4)=\dfrac{n(n+b)(n+c)(n+d)}{a}$，其中 $a,b,c,d$ 為整數且 $b\lt c\lt d$。求 $(a,b,c,d)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(4,1,4,5)$</div>
+<div class="fxs"><div class="move">做法：$k(k+2)(k+4)=k^3+6k^2+8k$。</div>
+$\sum=\left[\dfrac{n(n+1)}2\right]^2+n(n+1)(2n+1)+4n(n+1)=\dfrac{n(n+1)}4\big[n(n+1)+4(2n+1)+16\big]=\dfrac{n(n+1)(n^2+9n+20)}4=\dfrac{n(n+1)(n+4)(n+5)}4$。<br>
+代 $n=1$ 驗算：左 $=15$，右 $=\dfrac{1\cdot2\cdot5\cdot6}4=15$ ✔</div></div>
+
+<div class="fx" id="L3-13" data-gen="snRelationProd"><div class="fxh"><span class="no">L3-13</span><span class="kw">3Sₙ=(n+2)aₙ：寫 n−1 的式子相減，得 aₙ/aₙ₋₁，疊縮相乘</span><span class="src">武陵 112下 填 8</span></div>
+<div class="fxq">設數列 $\langle a_n\rangle$ 滿足 $a_1=1$，且 $3(a_1+a_2+\cdots+a_n)=(n+2)a_n$。求 $a_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_n=\dfrac{n(n+1)}{2}$</div>
+<div class="fxs"><div class="move">做法：$3S_n=(n+2)a_n$、$3S_{n-1}=(n+1)a_{n-1}$ 相減 ⟹ $3a_n=(n+2)a_n-(n+1)a_{n-1}$ ⟹ $(n-1)a_n=(n+1)a_{n-1}$。</div>
+$\dfrac{a_n}{a_{n-1}}=\dfrac{n+1}{n-1}$ ⟹ $a_n=1\cdot\dfrac31\cdot\dfrac42\cdots\dfrac{n+1}{n-1}=\dfrac{n(n+1)}{2}$（前幾項 $1,3,6,10$ 驗 ✔）。</div></div>
+
+<div class="fx" id="L3-14" data-gen="altStaggered"><div class="fxh"><span class="no">L3-14</span><span class="kw">係數等差、公比為負的交錯級數：仍是錯位相減，乘上 −2 再相減</span><span class="src">北一女中 104下 填 4</span></div>
+<div class="fxq">求 $S=1-2\times2+3\times2^2-4\times2^3+5\times2^4-6\times2^5+7\times2^6-8\times2^7$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$S=-711$</div>
+<div class="fxs"><div class="move">做法：$S=\displaystyle\sum_{k=1}^{8}k(-2)^{k-1}$，公比 $-2$；$-2S=\displaystyle\sum_{k=1}^{8}k(-2)^{k}$。</div>
+$S-(-2S)=3S=\big[1+(-2)+(-2)^2+\cdots+(-2)^7\big]-8(-2)^8=\dfrac{1-(-2)^8}{1-(-2)}-2048=\dfrac{-255}3-2048=-2133$ ⟹ $S=-711$。</div></div>
+
+<div class="fx" id="L3-15" data-gen="gpSystemXY"><div class="fxh"><span class="no">L3-15</span><span class="kw">兩條含 a₃,a₅,a₈,a₁₀ 的方程：相除得 r⁵，配 S₉ 定 a₁；剩下是「和與積」的二次方程</span><span class="src">台南一中 109下 填 14</span></div>
+<div class="fxq">設 $\langle a_n\rangle$ 為等比數列，且 $a_1+\cdots+a_9=1533$。$x,y$ 皆為小於 $1$ 的實數，滿足 $12xy=1$ 與 $\begin{cases}a_3x+a_5y=16\\ a_8x+a_{10}y=512\end{cases}$。求 $3x-20y$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-4$</div>
+<div class="fxs"><div class="move">做法：第二式是第一式的每一項各乘 $r^5$ ⟹ $r^5=\dfrac{512}{16}=32$ ⟹ $r=2$；$S_9=a_1(2^9-1)=1533$ ⟹ $a_1=3$。</div>
+$a_3=12$、$a_5=48$：$12x+48y=16$ ⟹ $3x+12y=4$；又 $(3x)(12y)=36xy=3$。<br>
+$3x$ 與 $12y$ 是 $t^2-4t+3=0$ 的兩根 $1,3$：若 $3x=3$ 則 $x=1$ 不合（須小於 $1$）；故 $3x=1,\ 12y=3$，$x=\dfrac13,\ y=\dfrac14$，$3x-20y=1-5=-4$。</div></div>
+
+<div class="fx" id="L3-16" data-gen="blockSums"><div class="fxh"><span class="no">L3-16</span><span class="kw">每 10 項切成一段：等比數列各段的和也成等比，公比是 $r^{10}$</span><span class="src">改編自 建國中學 113下 填 8</span></div>
+<div class="fxq">已知各項都是正數的等比數列 $\langle a_n\rangle$ 滿足 $a_{11}+a_{12}+\cdots+a_{30}=36$、$a_{31}+a_{32}+\cdots+a_{50}=324$。求 $a_1+a_2+\cdots+a_{60}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1092$</div>
+<div class="fxs"><div class="move">做法：每 $10$ 項切成一段。等比數列每一段的和也成等比，公比是 $r^{10}$，所以不必求出 $r$。</div>
+令 $T=a_1+a_2+\cdots+a_{10}$、$q=r^{10}$。各項都是正數，所以 $r\gt0$、$q\gt0$。第 $2$、$3$ 段的和是 $Tq$、$Tq^2$，第 $4$、$5$ 段的和是 $Tq^3$、$Tq^4$。<br>
+$Tq+Tq^2=36$、$Tq^3+Tq^4=324$，後式是前式乘上 $q^2$ ⟹ $q^2=9$ ⟹ $q=3$。代回 $3T+9T=36$ ⟹ $T=3$。<br>
+$a_1+a_2+\cdots+a_{60}$ 是前 $6$ 段：$T(1+q+q^2+\cdots+q^5)=3\times\dfrac{3^6-1}{3-1}=3\times364=1092$。</div></div>
+
+<div class="fx" id="L3-17" data-gen="fracPosition"><div class="fxh"><span class="no">L3-17</span><span class="kw">分數依「分子＋分母」分群：先數前面幾群共幾項，再數群內第幾個</span><span class="src">改編自 成功高中 110下 填 7</span></div>
+<div class="fxq">數列 $\dfrac11,\ \dfrac21,\dfrac12,\ \dfrac31,\dfrac22,\dfrac13,\ \dfrac41,\dfrac32,\dfrac23,\dfrac14,\ \dots$（分數不約分）。(1) $\dfrac{4}{9}$ 是第幾項？(2) 第 $100$ 項是哪一個分數？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) 第 $75$ 項　(2) $\dfrac{6}{9}$</div>
+<div class="fxs"><div class="move">做法：依「分子＋分母」分群。第 $k$ 群的分子＋分母都是 $k+1$，共 $k$ 項；分子從 $k$ 往下數到 $1$，分母從 $1$ 往上數到 $k$。前 $k$ 群共 $\dfrac{k(k+1)}{2}$ 項。</div>
+(1) $\dfrac49$ 的分子＋分母 $=13$，在第 $12$ 群；群內分母依序是 $1,2,3,\dots$，分母 $9$ 是第 $9$ 個。前 $11$ 群共 $\dfrac{11\times12}{2}=66$ 項，所以 $\dfrac49$ 是第 $66+9=75$ 項。<br>
+(2) 前 $13$ 群共 $\dfrac{13\times14}{2}=91$ 項、前 $14$ 群共 $105$ 項，$91\lt100\le105$，所以第 $100$ 項是第 $14$ 群的第 $9$ 個：分母 $9$、分子 $14-9+1=6$，是 $\dfrac69$。</div></div>
+
+<div class="fx" id="L3-18" data-gen="wrongAddTerm"><div class="fxh"><span class="no">L3-18</span><span class="kw">多加了一項：正確的和 $S$ 滿足 $S\lt$ 錯的和 $\le S+n$，先用它夾出 $n$</span><span class="src">改編自 中山女高 110下 填 12</span></div>
+<div class="fxq">小芬計算 $1+2+3+\cdots+n$ 時，不小心把其中某一項多加了一次，得到 $250$。求 $n$、多加的那一項，以及正確的和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$n=21$，多加的那一項是 $19$，正確的和是 $231$</div>
+<div class="fxs"><div class="move">做法：正確的和 $S=\dfrac{n(n+1)}{2}$。多加的那一項在 $1$ 到 $n$ 之間，所以 $S\lt250\le S+n$，用它夾出 $n$。</div>
+$n=20$：$S=210$，就算多加最大的 $20$ 也只有 $230$，不到 $250$。<br>
+$n=21$：$S=231$，$250-231=19$，在 $1$ 到 $21$ 之間，符合。<br>
+$n=22$：$S=253$，已經超過 $250$，不可能。<br>
+所以 $n=21$，多加的是 $19$，正確的和是 $231$。</div></div>
+
+<!-- figq:L3 -->
+<div class="note">以下 2 題（L3-19、L3-20）是<b>附圖題</b>：規律要從圖上讀，題幹不會把每一步都寫出來。圖都依題目條件重新繪製、照比例畫。本章的段考原題大約每十題有一題附圖，幾乎都是「圖形規律」和「圖形裡的等比」這兩類。</div>
+
+<div class="fx" id="L3-19" data-gen="figSqChain"><div class="fxh"><span class="no">L3-19</span><span class="kw">45° 的斜線下一個接一個的正方形：每個的邊長＝它左邊那條邊到 A 的距離，邊長成公比 2 的等比</span><span class="src">明倫高中 104下 計算 1</span></div>
+<div class="fxq">如圖，已知 $\angle A=45^\circ$、$\overline{AB}=1$，$T_1$、$T_2$、$T_3$、…… 都是正方形。(1) 求 $T_1$ 的周長。(2) 求 $T_2$ 的周長。(3) 求前 $8$ 個正方形的周長總和。<svg class="qfig" viewBox="0 0 320 202" width="320" height="202" role="img" aria-label="45 度角的一邊上，從 B 點開始一個接一個的正方形 T1、T2，左上角都在角的另一邊上；AB 長 1"><line x1="30" y1="178" x2="310.4" y2="178" stroke="#3a2a2e" stroke-width="1.4" stroke-linecap="round"/><line x1="30" y1="178" x2="197.9" y2="10.1" stroke="#3a2a2e" stroke-width="1.4" stroke-linecap="round"/><polygon points="93.6,178 157.2,178 157.2,114.4 93.6,114.4" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><text x="123.4" y="151.2" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">T<tspan dy="3.5" font-size="10" font-style="normal">1</tspan></text><polygon points="157.2,178 284.4,178 284.4,50.8 157.2,50.8" fill="rgba(176,58,85,.2)" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><text x="218.8" y="119.4" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">T<tspan dy="3.5" font-size="10" font-style="normal">2</tspan></text><text x="299.4" y="118.4" font-size="15" fill="#3a2a2e" text-anchor="middle">⋯</text><circle cx="30" cy="178" r="2.4" fill="#7a2e3c"/><circle cx="93.6" cy="178" r="2.4" fill="#7a2e3c"/><text x="19" y="183" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="97.6" y="195" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text><text x="61.8" y="194" font-size="14" fill="#3a2a2e" text-anchor="middle">1</text><path d="M 47 178 A 17 17 0 0 0 42.02 165.98" fill="none" stroke="#8a7378" stroke-width="1.3" stroke-linejoin="round"/><text x="64.34" y="169.61" font-size="13" fill="#3a2a2e" text-anchor="middle">45°</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $4$　(2) $8$　(3) $1020$</div>
+<div class="fxs"><div class="move">做法：先從圖上讀出正方形怎麼擺：底邊從 $B$ 開始一個接一個排在角的一邊上，左上角的頂點都在角的另一邊上。$45^\circ$ 的斜線上，每一點的高度都等於它到 $A$ 的水平距離，所以每個正方形的邊長就是「它左邊那條邊到 $A$ 的距離」。</div>
+(1) $T_1$ 的左邊過 $B$，到 $A$ 的距離是 $1$，所以 $T_1$ 的邊長是 $1$、周長 $4$。<br>
+(2) $T_2$ 的左邊到 $A$ 的距離是 $1+1=2$，所以 $T_2$ 的邊長是 $2$、周長 $8$。<br>
+(3) 設 $T_k$ 的邊長是 $s_k$。$T_{k+1}$ 的左邊到 $A$ 的距離，等於 $T_k$ 的左邊到 $A$ 的距離（就是 $s_k$）再加上 $T_k$ 的邊長 $s_k$，所以 $s_{k+1}=2s_k$。邊長是首項 $1$、公比 $2$ 的等比數列，周長是首項 $4$、公比 $2$ 的等比數列。<br>
+前 $8$ 個的周長總和 $=\dfrac{4(2^8-1)}{2-1}=4\times255=1020$。<br>
+<span class="note-sm">圖上只畫了 $T_1$、$T_2$，可以自己接著畫 $T_3$ 檢查：它的左邊到 $A$ 的距離是 $1+1+2=4$，邊長 $4$，確實是 $T_2$ 的 $2$ 倍。如果角不是 $45^\circ$，高度和水平距離的比就不是 $1$，公比也會跟著變（按「類似題」可以練到）。</span></div></div>
+
+<div class="fx" id="L3-20" data-gen="figCentered"><div class="fxh"><span class="no">L3-20</span><span class="kw">1、6、16 顆星星：從圖上看每次多一圈、一圈多 5 顆，寫出 $a_{n+1}-a_n=5n$ 再疊縮相加</span><span class="src">北一女中 112上（高三）單 1</span></div>
+<div class="fxq">星野愛隨意塗鴉畫星星，如圖（一）有 $1$ 顆星星，圖（二）有 $6$ 顆星星，圖（三）有 $16$ 顆星星，以此類推。試問圖（十）會有多少顆星星？<svg class="qfig" viewBox="0 0 325 154" width="325" height="154" role="img" aria-label="星星由內往外一圈一圈排成的圖（一）、圖（二）、圖（三），分別有 1、6、16 顆"><polygon points="28.17,104.45 25.58,111.38 18.18,111.71 23.98,116.31 22,123.45 28.17,119.36 34.34,123.45 32.36,116.31 38.16,111.71 30.76,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><text x="28.17" y="146.45" font-size="13" fill="#3a2a2e" text-anchor="middle">圖（一）</text><polygon points="118.45,84.23 115.86,91.16 108.46,91.48 114.25,96.09 112.28,103.22 118.45,99.14 124.62,103.22 122.64,96.09 128.43,91.48 121.04,91.16" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="118.45,59.23 115.86,66.16 108.46,66.48 114.25,71.09 112.28,78.22 118.45,74.14 124.62,78.22 122.64,71.09 128.43,66.48 121.04,66.16" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="94.67,76.5 92.08,83.43 84.68,83.76 90.48,88.36 88.5,95.49 94.67,91.41 100.84,95.49 98.86,88.36 104.66,83.76 97.26,83.43" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="103.75,104.45 101.16,111.38 93.77,111.71 99.56,116.31 97.58,123.45 103.75,119.36 109.92,123.45 107.95,116.31 113.74,111.71 106.34,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="133.14,104.45 130.55,111.38 123.16,111.71 128.95,116.31 126.97,123.45 133.14,119.36 139.31,123.45 137.34,116.31 143.13,111.71 135.73,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="142.22,76.5 139.63,83.43 132.24,83.76 138.03,88.36 136.05,95.49 142.22,91.41 148.4,95.49 146.42,88.36 152.21,83.76 144.82,83.43" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><text x="118.45" y="146.45" font-size="13" fill="#3a2a2e" text-anchor="middle">圖（二）</text><polygon points="252.78,64 250.18,70.93 242.79,71.26 248.58,75.86 246.6,82.99 252.78,78.91 258.95,82.99 256.97,75.86 262.76,71.26 255.37,70.93" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="252.78,39 250.18,45.93 242.79,46.26 248.58,50.86 246.6,57.99 252.78,53.91 258.95,57.99 256.97,50.86 262.76,46.26 255.37,45.93" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="229,56.27 226.41,63.21 219.01,63.53 224.81,68.14 222.83,75.27 229,71.18 235.17,75.27 233.19,68.14 238.99,63.53 231.59,63.21" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="238.08,84.23 235.49,91.16 228.1,91.48 233.89,96.09 231.91,103.22 238.08,99.14 244.25,103.22 242.28,96.09 248.07,91.48 240.67,91.16" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="267.47,84.23 264.88,91.16 257.48,91.48 263.28,96.09 261.3,103.22 267.47,99.14 273.64,103.22 271.67,96.09 277.46,91.48 270.06,91.16" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="276.55,56.27 273.96,63.21 266.57,63.53 272.36,68.14 270.38,75.27 276.55,71.18 282.72,75.27 280.75,68.14 286.54,63.53 279.14,63.21" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="252.78,14 250.18,20.93 242.79,21.26 248.58,25.86 246.6,32.99 252.78,28.91 258.95,32.99 256.97,25.86 262.76,21.26 255.37,20.93" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="229,31.27 226.41,38.21 219.01,38.53 224.81,43.14 222.83,50.27 229,46.18 235.17,50.27 233.19,43.14 238.99,38.53 231.59,38.21" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="205.22,48.55 202.63,55.48 195.24,55.8 201.03,60.41 199.05,67.54 205.22,63.46 211.4,67.54 209.42,60.41 215.21,55.8 207.82,55.48" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="214.31,76.5 211.71,83.43 204.32,83.76 210.11,88.36 208.13,95.49 214.31,91.41 220.48,95.49 218.5,88.36 224.29,83.76 216.9,83.43" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="223.39,104.45 220.8,111.38 213.4,111.71 219.19,116.31 217.22,123.45 223.39,119.36 229.56,123.45 227.58,116.31 233.37,111.71 225.98,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="252.78,104.45 250.18,111.38 242.79,111.71 248.58,116.31 246.6,123.45 252.78,119.36 258.95,123.45 256.97,116.31 262.76,111.71 255.37,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="282.17,104.45 279.57,111.38 272.18,111.71 277.97,116.31 275.99,123.45 282.17,119.36 288.34,123.45 286.36,116.31 292.15,111.71 284.76,111.38" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="291.25,76.5 288.66,83.43 281.26,83.76 287.05,88.36 285.08,95.49 291.25,91.41 297.42,95.49 295.44,88.36 301.23,83.76 293.84,83.43" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="300.33,48.55 297.74,55.48 290.34,55.8 296.14,60.41 294.16,67.54 300.33,63.46 306.5,67.54 304.52,60.41 310.32,55.8 302.92,55.48" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><polygon points="276.55,31.27 273.96,38.21 266.57,38.53 272.36,43.14 270.38,50.27 276.55,46.18 282.72,50.27 280.75,43.14 286.54,38.53 279.14,38.21" fill="rgba(176,58,85,.22)" stroke="#7a2e3c" stroke-width="1.3" stroke-linejoin="round"/><text x="252.78" y="146.45" font-size="13" fill="#3a2a2e" text-anchor="middle">圖（三）</text></svg><span class="qopt">(1) $181$</span>　<span class="qopt">(2) $226$</span>　<span class="qopt">(3) $276$</span>　<span class="qopt">(4) $331$</span>　<span class="qopt">(5) $391$</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)　$226$ 顆</div>
+<div class="fxs"><div class="move">做法：只有三個數 $1$、$6$、$16$ 不夠決定規律，要回到圖上看「多出來的是什麼」。每往後一個圖，外面多一圈排成正五邊形的星星。</div>
+設圖 $n$ 有 $a_n$ 顆。圖（二）比圖（一）多一圈 $5$ 顆（正五邊形的 $5$ 個頂點）；圖（三）比圖（二）再多一圈 $10$ 顆（$5$ 個頂點，加上每邊中間各 $1$ 顆）。新的一圈每邊都比前一圈多 $1$ 顆，所以一圈比一圈多 $5$ 顆：$a_{n+1}-a_n=5n$。<br>
+疊縮相加：$a_{10}=a_1+(5+10+\cdots+45)=1+5(1+2+\cdots+9)=1+5\times45=226$，選 (2)。<br>
+<span class="note-sm">檢查：$a_2=1+5=6$、$a_3=6+10=16$，和題目給的一樣。一般項是 $a_n=1+\dfrac{5n(n-1)}{2}$。只看數字 $1$、$6$、$16$ 的人可能會猜「差每次乘 $2$」而得到別的答案，所以規律要從圖上確認。</span></div></div>
+<!-- /figq:L3 -->
+
+<h3 class="sec">L3 混合檢測 10 題（20 型打亂，可換組）</h3>
+<div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
+
+<h3 class="sec">段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
+<div class="note">按「開始計時」後作答，答案寫在紙上；時間到或按「交卷」才對答案。用時會記進紀錄，多做幾組可以看自己的速度有沒有進步。</div>
+<div class="fixset" data-tier="L2" data-keys="L2:*,L3:*" data-seed="8001" data-n="14" data-mixed="1" data-timer="50"></div>
+</section>
+
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考與大考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>目標</b>14 題：每題都要把兩個以上的方法接起來用，或需要一個不常見的觀察；L4-9、L4-11、L4-13、L4-14 是附圖題。</div>
+  <div><b>通過標準</b>限時 105 分鐘做完 14 題，對 10 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">a₁&gt;0 且 $S_m$&lt;0：等差看公差、等比看「1−rᵐ 與 1−r 異號」；每個選項找反例</span><span class="src">北一女中 113下 多 6</span></div>
+<div class="fxq">設 $m$ 為正整數，數列 $\langle a_n\rangle$ 的首項 $a_1\gt0$，前 $m$ 項和 $S_m\lt0$。選出正確的選項。<br>(1) 若 $\langle a_n\rangle$ 為等差數列，則公差 $d\lt0$　(2) 若 $\langle a_n\rangle$ 為等差數列且 $m$ 為偶數，則 $a_{m/2}\lt0$　(3) 若 $\langle a_n\rangle$ 為等比數列，則公比 $r\lt-\dfrac12$　(4) 若 $\langle a_n\rangle$ 為等比數列，則 $m$ 為偶數　(5) 若 $\langle a_n\rangle$ 為等比數列，則 $a_{n+1}+a_n\lt0$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)(4)</div>
+<div class="fxs"><div class="move">做法：等比的 $S_m=a_1\cdot\dfrac{1-r^m}{1-r}$，$a_1\gt0$ 要 $S_m\lt0$ ⟹ $1-r^m$ 與 $1-r$ 異號。$r\gt0$ 時每項都正、不可能；$r\lt0$ 且 $m$ 奇時 $r^m\lt0$、兩者同正也不可能 ⟹ $m$ 偶且 $r^m\gt1$ ⟹ $r\lt-1$。</div>
+(1) $d\ge0$ 則每項 $\ge a_1\gt0$ ✔。(2) 反例 $3,-5$：$S_2=-2\lt0$ 但 $a_1=3\gt0$ ✘。(3) $r\lt-1$ 當然 $\lt-\dfrac12$ ✔。(4) ✔。(5) $a_{n+1}+a_n=a_n(1+r)$，$a_n$ 正負交錯，不恆負；反例 $2,-6,18$：$a_2+a_3=12$ ✘。</div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">分數依「分子＋分母」分群、同群分子遞減：20/25 在第 44 群的第 25 個</span><span class="src">北一女中 113下 填 11</span></div>
+<div class="fxq">數列 $\dfrac11,\ \dfrac21,\dfrac12,\ \dfrac31,\dfrac22,\dfrac13,\ \dfrac41,\dfrac32,\dfrac23,\dfrac14,\ \dots$（不約分）。$\dfrac{20}{25}$ 是第幾項？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">第 $971$ 項</div>
+<div class="fxs"><div class="move">做法：第 $k$ 群的分子＋分母 $=k+1$、共 $k$ 項、分子從 $k$ 遞減到 $1$。$20+25=45$ ⟹ 第 $44$ 群，分子 $44,43,\dots,20$ ⟹ 第 $25$ 個。</div>
+前 $43$ 群共 $\dfrac{43\cdot44}2=946$ 項，$946+25=971$。</div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">分母 1,2,4,8… 每群 2ᵏ⁻¹ 項：前 k 群共 2ᵏ−1 項；300 落在第 9 群（分母 256）</span><span class="src">中山女高 113下 填 14</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 為 $1,\ \dfrac22,\dfrac12,\ \dfrac44,\dfrac34,\dfrac24,\dfrac14,\ \dfrac88,\dfrac78,\dots,\dfrac18,\ \dots$，依此規則求 $a_{300}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_{300}=\dfrac{212}{256}$</div>
+<div class="fxs"><div class="move">做法：第 $k$ 群分母 $2^{k-1}$、有 $2^{k-1}$ 項，分子由 $2^{k-1}$ 遞減到 $1$；前 $k$ 群共 $1+2+\cdots+2^{k-1}=2^k-1$ 項。</div>
+$2^8-1=255\lt300\le511$ ⟹ 第 $9$ 群、分母 $256$，是該群第 $300-255=45$ 個，分子 $256-44=212$。</div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">兩層遞迴：先把 aₙ 疊縮相乘解出來，再把 bₙ 疊縮相乘；2 的指數是等差級數</span><span class="src">台南一中 109下 填 12</span></div>
+<div class="fxq">已知 $a_1=\dfrac12$、$b_1=1$，且 $a_n=\dfrac{n^2}{n^2-1}a_{n-1}$、$b_n=2^{\,n-1}a_n\cdot b_{n-1}$（$n\ge2$）。求 $b_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$b_n=2^{\frac{n(n-1)}{2}}\cdot\dfrac{2}{n+1}$</div>
+<div class="fxs"><div class="move">做法：$\dfrac{n^2}{n^2-1}=\dfrac{n}{n-1}\cdot\dfrac{n}{n+1}$，兩串分開疊縮。</div>
+$a_n=\dfrac12\cdot\left(\dfrac21\cdot\dfrac32\cdots\dfrac n{n-1}\right)\left(\dfrac23\cdot\dfrac34\cdots\dfrac n{n+1}\right)=\dfrac12\cdot n\cdot\dfrac2{n+1}=\dfrac{n}{n+1}$。<br>
+$b_n=b_1\prod_{k=2}^{n}2^{\,k-1}a_k=2^{1+2+\cdots+(n-1)}\cdot\dfrac23\cdot\dfrac34\cdots\dfrac n{n+1}=2^{\frac{n(n-1)}2}\cdot\dfrac2{n+1}$。驗 $n=2$：$b_2=2\cdot\dfrac23\cdot1=\dfrac43$，公式 $2^1\cdot\dfrac23=\dfrac43$ ✔</div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">$a_{n+2}=2a_n-a_{n+1}$ 前六項皆正：把 a₃…a₆ 全寫成 a₂ 的一次式，取不等式的交集</span><span class="src">武陵 111下 多 3</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 滿足 $a_1=2$，且 $a_{n+2}=2a_n-a_{n+1}$。當 $a_2$ 為下列哪些值時，前六項均為正數？<br>(1) $\dfrac{20}{11}$　(2) $2$　(3) $\dfrac{23}{11}$　(4) $\dfrac{11}5$　(5) $\dfrac{13}5$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)</div>
+<div class="fxs"><div class="move">做法：設 $a_2=t$：$a_3=4-t$、$a_4=2t-(4-t)=3t-4$、$a_5=2(4-t)-(3t-4)=12-5t$、$a_6=2(3t-4)-(12-5t)=11t-20$。</div>
+六項皆正：$t\gt0$、$t\lt4$、$t\gt\dfrac43$、$t\lt\dfrac{12}5$、$t\gt\dfrac{20}{11}$ ⟹ $\dfrac{20}{11}\lt t\lt\dfrac{12}5$。<br>
+(1) 等於下界，$a_6=0$ ✘；(2)(3)(4) 在區間內 ✔；(5) $\dfrac{13}5\gt\dfrac{12}5$ ✘。</div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">「哪些也是等差」：一律算 $c_{n+1}-c_n$ 是不是常數；常數數列也算等差</span><span class="src">竹科實中 113下 多 6</span></div>
+<div class="fxq">$\langle a_n\rangle$ 為公差不為 $0$ 的等差數列，$\langle b_n\rangle$ 為公比不為 $1$ 的等比數列，且 $a_n\gt0$、$b_n\gt0$。下列哪些也是等差數列？<br>(1) $\langle3a_n+2\rangle$　(2) $\langle5^{a_n}\rangle$　(3) $\langle b_nb_{n+1}\rangle$　(4) $\langle a_n+a_{n+1}\rangle$　(5) $\left\langle\dfrac{b_n}{b_{n-2}}\right\rangle$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(4)(5)</div>
+<div class="fxs"><div class="move">做法：(1) 差 $3d$ ✔；(4) 差 $2d$ ✔；(5) $\dfrac{b_n}{b_{n-2}}=r^2$ 是常數數列，公差 $0$ ✔。</div>
+(2) $\dfrac{5^{a_{n+1}}}{5^{a_n}}=5^d$ 是等比（$5^d\ne1$），相鄰差 $5^{a_n}(5^d-1)$ 不是常數 ✘。(3) $b_nb_{n+1}=b_1^2r^{2n-1}$ 是公比 $r^2\ne1$ 的等比，不是等差 ✘。</div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">分期付款：借款滾 35 期 ＝ 35 筆還款各自滾到最後一期的總和</span><span class="src">北一女中 104下 單 1</span></div>
+<div class="fxq">小綠某月初向銀行借 $100$ 萬元，月利率 $2\%$ 複利計算。從次月初起每月固定還一筆相同金額，預計 $35$ 次付清，則每月須付多少？（萬元，取近似值；$(1.02)^{35}\approx1.9999$）<br>(1) $2$　(2) $3$　(3) $4$　(4) $5$　(5) $6$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3) 約 $4$ 萬元</div>
+<div class="fxs"><div class="move">做法：把時間軸拉到最後一次還款那一刻。借款變成 $100(1.02)^{35}$；$35$ 筆還款 $x$ 分別滾了 $34,33,\dots,0$ 期，總和 $x\cdot\dfrac{(1.02)^{35}-1}{0.02}$。</div>
+$100\times1.9999=x\cdot\dfrac{0.9999}{0.02}$ ⟹ $x=\dfrac{2\times1.9999}{0.9999}\approx4.0$。<br>
+<span class="note-sm">$(1.02)^{35}\approx2$ 就是「本金翻倍」：$100\cdot2=50x$ ⟹ $x=4$，一行心算。</span></div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">(3k+1)²(2k−1)：通項是 k 的三次式，乘開套四個公式（含 Σk³）</span><span class="src">台南一中 109下 填 6</span></div>
+<div class="fxq">求 $4^2\cdot1+7^2\cdot3+10^2\cdot5+\cdots+37^2\cdot23$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$111138$</div>
+<div class="fxs"><div class="move">做法：第 $k$ 項 $=(3k+1)^2(2k-1)$，$k=1,\dots,12$（$3\cdot12+1=37$、$2\cdot12-1=23$ ✔）。</div>
+$(9k^2+6k+1)(2k-1)=18k^3+3k^2-4k-1$。$\sum_{1}^{12}k^3=78^2=6084$、$\sum k^2=650$、$\sum k=78$。<br>
+$18\cdot6084+3\cdot650-4\cdot78-12=109512+1950-312-12=111138$。</div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">每次把空白的 3/4 再塗掉 1/4：算「還沒塗到的面積」(3/4)ⁿ，塗色 = 1 − 它</span><span class="src">建國中學 111下 填 6</span></div>
+<div class="fxq">如圖，邊長 $1$ 的正方形四等分，把右上角的小正方形塗色得圖一；再把圖一中空白的三個小正方形各自四等分、右上角塗色得圖二；依此規律，設 $a_n$ 為圖 $n$ 中塗色區域的面積，求 $a_5$（最簡分數）。<svg class="qfig" viewBox="0 0 348 132" width="348" height="132" role="img" aria-label="邊長 1 的正方形：圖一塗右上角四分之一；圖二再把三個空白小正方形各自四等分、塗右上角；圖三依此類推"><polygon points="58,8 106,8 106,56 58,56" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><line x1="10" y1="8" x2="10" y2="104" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><line x1="10" y1="8" x2="106" y2="8" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><line x1="58" y1="8" x2="58" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="10" y1="56" x2="106" y2="56" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="106" y1="8" x2="106" y2="104" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><line x1="10" y1="104" x2="106" y2="104" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><text x="58" y="124" font-size="14" fill="#3a2a2e" text-anchor="middle">圖一</text><polygon points="174,8 222,8 222,56 174,56" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="150,56 174,56 174,80 150,80" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="198,56 222,56 222,80 198,80" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="150,8 174,8 174,32 150,32" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><line x1="126" y1="8" x2="126" y2="104" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><line x1="126" y1="8" x2="222" y2="8" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><line x1="150" y1="8" x2="150" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="126" y1="32" x2="222" y2="32" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="174" y1="8" x2="174" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="126" y1="56" x2="222" y2="56" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="198" y1="8" x2="198" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="126" y1="80" x2="222" y2="80" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="222" y1="8" x2="222" y2="104" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><line x1="126" y1="104" x2="222" y2="104" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><text x="174" y="124" font-size="14" fill="#3a2a2e" text-anchor="middle">圖二</text><polygon points="290,8 338,8 338,56 290,56" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="266,56 290,56 290,80 266,80" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="314,56 338,56 338,80 314,80" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="266,8 290,8 290,32 266,32" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="254,80 266,80 266,92 254,92" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="278,80 290,80 290,92 278,92" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="254,56 266,56 266,68 254,68" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="302,80 314,80 314,92 302,92" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="326,80 338,80 338,92 326,92" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="302,56 314,56 314,68 302,68" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="254,32 266,32 266,44 254,44" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="278,32 290,32 290,44 278,44" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><polygon points="254,8 266,8 266,20 254,20" fill="rgba(176,58,85,.38)" stroke="none" stroke-width="0" stroke-linejoin="round"/><line x1="242" y1="8" x2="242" y2="104" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><line x1="242" y1="8" x2="338" y2="8" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><line x1="254" y1="8" x2="254" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="242" y1="20" x2="338" y2="20" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="266" y1="8" x2="266" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="242" y1="32" x2="338" y2="32" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="278" y1="8" x2="278" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="242" y1="44" x2="338" y2="44" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="290" y1="8" x2="290" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="242" y1="56" x2="338" y2="56" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="302" y1="8" x2="302" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="242" y1="68" x2="338" y2="68" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="314" y1="8" x2="314" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="242" y1="80" x2="338" y2="80" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="326" y1="8" x2="326" y2="104" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="242" y1="92" x2="338" y2="92" stroke="#7a2e3c" stroke-width="1" stroke-linecap="round"/><line x1="338" y1="8" x2="338" y2="104" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><line x1="242" y1="104" x2="338" y2="104" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><text x="290" y="124" font-size="14" fill="#3a2a2e" text-anchor="middle">圖三</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_5=\dfrac{781}{1024}$</div>
+<div class="fxs"><div class="move">做法：每一步空白面積變成原來的 $\dfrac34$，所以空白 $=\left(\dfrac34\right)^n$。</div>
+$a_n=1-\left(\dfrac34\right)^n$，$a_5=1-\dfrac{243}{1024}=\dfrac{781}{1024}$。<br>
+<span class="note-sm">對圖檢查：圖一空白 $\dfrac34$、圖二空白 $\dfrac9{16}$（$16$ 格白 $9$ 格）、圖三空白 $\dfrac{27}{64}$，確實每次乘 $\dfrac34$。直接加也行：$\dfrac14+\dfrac14\cdot\dfrac34+\cdots+\dfrac14\left(\dfrac34\right)^4$ 是首項 $\frac14$、公比 $\frac34$ 的等比級數。</span></div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">房貸：年利率 3% 按月複利就是月利率 0.25%；240 筆還款滾到最後與本金滾 240 期相等</span><span class="src">建國中學 111下 填 7</span></div>
+<div class="fxq">小建 $2023$ 年 $1$ 月初向銀行借 $600$ 萬買房，年利率 $3\%$ 按月複利，次月月初起每月償還相同金額，$20$ 年（$240$ 個月）還清。清償完畢時，還款總金額與借貸本金的比值為多少？（四捨五入到小數點後第 $1$ 位；$1.0025^{240}\approx1.82$）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1.3$</div>
+<div class="fxs"><div class="move">做法：月利率 $\dfrac{3\%}{12}=0.25\%$。每月還 $x$：$600\cdot1.0025^{240}=x\cdot\dfrac{1.0025^{240}-1}{0.0025}$。</div>
+$x=\dfrac{600\cdot0.0025\cdot1.82}{0.82}=\dfrac{2.73}{0.82}\approx3.33$（萬）；總還款 $240x\approx799$；比值 $\dfrac{799}{600}\approx1.33\to1.3$。</div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">每次取「剩下的 1/3」作正方形：邊長是公比 2/3 的等比，周長也是</span><span class="src">高雄女中 111下 填 18</span></div>
+<div class="fxq">如圖，已知 $\overline{AB}=9$，以 $\overline{AB}$ 長度的 $\dfrac13$ 為邊長作正方形 $S_1$，再以剩下線段長度的 $\dfrac13$ 為邊長作 $S_2$，如此繼續。設 $a_n$ 為正方形 $S_n$ 的周長，求 $a_1+a_2+a_3+a_4+a_5$。<svg class="qfig" viewBox="0 0 336 124" width="336" height="124" role="img" aria-label="線段 AB 上依序並排正方形 S1、S2、S3，一個比一個小，後面還有更多"><line x1="24" y1="112" x2="312" y2="112" stroke="#7a2e3c" stroke-width="1.6" stroke-linecap="round"/><polygon points="24,16 120,16 120,112 24,112" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="1.6" stroke-linejoin="round"/><text x="69" y="69" font-size="15" fill="#3a2a2e" text-anchor="middle" font-style="italic">S<tspan dy="3.5" font-size="10" font-style="normal">1</tspan></text><polygon points="120,48 184,48 184,112 120,112" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="1.6" stroke-linejoin="round"/><text x="149" y="85" font-size="15" fill="#3a2a2e" text-anchor="middle" font-style="italic">S<tspan dy="3.5" font-size="10" font-style="normal">2</tspan></text><polygon points="184,69.33 226.67,69.33 226.67,112 184,112" fill="rgba(176,58,85,.07)" stroke="#7a2e3c" stroke-width="1.6" stroke-linejoin="round"/><text x="202.33" y="95.67" font-size="13" fill="#3a2a2e" text-anchor="middle" font-style="italic">S<tspan dy="3.5" font-size="10" font-style="normal">3</tspan></text><text x="269.33" y="106" font-size="14" fill="#3a2a2e" text-anchor="middle">⋯⋯</text><text x="13" y="117" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">A</text><text x="323" y="117" font-size="14" fill="#3a2a2e" text-anchor="middle" font-style="italic">B</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{844}{27}$</div>
+<div class="fxs"><div class="move">做法：邊長 $3,\ 2,\ \dfrac43,\dots$ 公比 $\dfrac23$（每次剩下 $\dfrac23$，再取 $\dfrac13$）；周長 $a_1=12$、公比 $\dfrac23$。</div>
+$\displaystyle\sum_{k=1}^{5}12\left(\dfrac23\right)^{k-1}=12\cdot\dfrac{1-\left(\frac23\right)^5}{1-\frac23}=36\left(1-\dfrac{32}{243}\right)=36\cdot\dfrac{211}{243}=\dfrac{844}{27}$。</div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">Sₙ、Tₙ 的性質判斷：錯的選項各造一個反例；對的選項用 T₃=b₁(1+r+r²) 且 1+r+r²&gt;0</span><span class="src">建國中學 111下 多 12</span></div>
+<div class="fxq">$\langle a_n\rangle$ 為等差（前 $n$ 項和 $S_n$）、$\langle b_n\rangle$ 為等比（前 $n$ 項和 $T_n$），各項皆實數。選出正確的選項。<br>(1) 若公差 $\lt0$，則 $S_n\gt S_{n+1}$ 對任意 $n$ 恆成立　(2) 若 $\langle S_n\rangle$ 有某一項 $\lt0$，則公差 $\lt0$　(3) 若 $T_{100}\gt T_{99}$，則公比 $\gt0$　(4) 若 $\langle T_n\rangle$ 每一項都 $\gt0$，則公比 $\gt0$　(5) 若 $T_2\cdot T_3\lt0$，則公比 $\lt-1$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(5)</div>
+<div class="fxs"><div class="move">做法：$T_2=b_1(1+r)$、$T_3=b_1(1+r+r^2)$，而 $1+r+r^2=\left(r+\frac12\right)^2+\frac34\gt0$ 恆成立 ⟹ $T_2T_3=b_1^2(1+r)(1+r+r^2)$ 的正負只由 $1+r$ 決定。</div>
+(1) $5,3,1$：$S_1\lt S_2$ ✘。(2) $-5,1,7$：$S_1\lt0$ 但 $d\gt0$ ✘。(3) $T_{100}\gt T_{99}$ 只說 $b_{100}=b_1r^{99}\gt0$；$b_1=-2,r=-3$ 也成立 ✘。(4) $b_1=2,r=-\frac12$：$T_n=\frac43\left[1-\left(-\frac12\right)^n\right]\gt0$ 但 $r\lt0$ ✘。(5) $T_2T_3\lt0$ ⟹ $1+r\lt0$ ⟹ $r\lt-1$ ✔。</div></div>
+<!-- figq:L4 -->
+<div class="note">以下 2 題（L4-13、L4-14）是<b>附圖題</b>：兩題都要先從圖上看出地磚是怎麼排的，再把個數或面積寫成 $n$ 的式子。圖依原題重新繪製。</div>
+
+<div class="fx" id="L4-13"><div class="fxh"><span class="no">L4-13</span><span class="kw">黑白三角形地磚求黑色面積：黑磚有兩種大小不好數，改數白磚，再用「全部 − 白色」</span><span class="src">武陵高中 112下 填 16</span></div>
+<div class="fxq">用黑、白兩種顏色的正三角形地磚，依照如下的規則拼成若干圖形，用 $a_n$ 表示第 $n$ 個圖白色地磚的總面積，用 $b_n$ 表示第 $n$ 個圖黑色地磚的總面積。已知每個白色三角形地磚大小皆相等，黑色則有兩種規格，且 $a_1=3$、$b_1=1$，試求 $b_{10}$。<svg class="qfig" viewBox="0 0 360 157" width="360" height="157" role="img" aria-label="黑白兩色正三角形地磚拼成的第 1、2、3 圖：大三角形的邊長依序是小白磚的 2、4、6 倍，黑磚有大小兩種"><polygon points="14,128.32 58,128.32 36,90.21" fill="#fff" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="36,128.32 25,109.26 47,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><text x="36" y="149.32" font-size="13" fill="#3a2a2e" text-anchor="middle">第 1 圖</text><polygon points="92,128.32 180,128.32 136,52.11" fill="#fff" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="114,128.32 103,109.26 125,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="136,90.21 125,71.16 147,71.16" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="158,128.32 147,109.26 169,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="136,128.32 114,90.21 158,90.21" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><text x="136" y="149.32" font-size="13" fill="#3a2a2e" text-anchor="middle">第 2 圖</text><polygon points="214,128.32 346,128.32 280,14" fill="#fff" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="236,128.32 225,109.26 247,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="258,90.21 247,71.16 269,71.16" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="280,52.11 269,33.05 291,33.05" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="280,128.32 269,109.26 291,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="302,90.21 291,71.16 313,71.16" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="324,128.32 313,109.26 335,109.26" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="258,128.32 236,90.21 280,90.21" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="280,90.21 258,52.11 302,52.11" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><polygon points="302,128.32 280,90.21 324,90.21" fill="#4a3a3e" stroke="#4a3a3e" stroke-width="1" stroke-linejoin="round"/><text x="280" y="149.32" font-size="13" fill="#3a2a2e" text-anchor="middle">第 3 圖</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$b_{10}=235$</div>
+<div class="fxs"><div class="move">做法：第 $1$ 圖有 $3$ 塊白磚、$a_1=3$，所以一塊白磚的面積是 $1$；小黑磚和白磚一樣大，面積也是 $1$。黑磚有大有小不好數，白磚只有一種，先數白磚，再用整個大三角形的面積去減。</div>
+從圖上看：第 $n$ 圖是由「第 $1$ 圖那樣的小單元」排成的，由上往下第 $k$ 排有 $k$ 個小單元，共 $1+2+\cdots+n=\dfrac{n(n+1)}{2}$ 個；每個小單元有 $3$ 塊白磚，所以 $a_n=\dfrac{3n(n+1)}{2}$。<br>
+第 $n$ 圖的大三角形邊長是白磚邊長的 $2n$ 倍，面積是白磚的 $(2n)^2=4n^2$ 倍，也就是 $4n^2$。<br>
+$b_n=4n^2-\dfrac{3n(n+1)}{2}=\dfrac{5n^2-3n}{2}$，所以 $b_{10}=\dfrac{500-30}{2}=235$。<br>
+<span class="note-sm">檢查：$b_1=1$、$b_2=7$、$b_3=18$，和圖上數的一樣（第 $3$ 圖有 $6$ 塊小黑磚、$3$ 塊大黑磚，$6+3\times4=18$）。直接數黑磚也可以：小黑磚 $\dfrac{n(n+1)}{2}$ 塊，大黑磚 $\dfrac{n(n-1)}{2}$ 塊、每塊面積 $4$，加起來一樣是 $\dfrac{5n^2-3n}{2}$。</span></div></div>
+
+<div class="fx" id="L4-14"><div class="fxh"><span class="no">L4-14</span><span class="kw">六邊形與三角形地磚的多選題：$a_n$ 是三角形數；$b_n$ 用「大三角形切成 $(2n+1)^2$ 個小三角形，扣掉六邊形佔的」來算</span><span class="src">雄中 113上 多 3</span></div>
+<div class="fxq">用白色的正六邊形與黑色的正三角形地磚依照如下的規律拼成大三角形，其中第 $1$ 個圖由 $1$ 個正六邊形與 $3$ 個正三角形所形成；第 $2$ 個圖由 $3$ 個正六邊形與 $7$ 個正三角形所形成；…依此類推。設第 $n$ 個圖由 $a_n$ 個正六邊形地磚與 $b_n$ 個正三角形地磚所拼成，請選出正確的選項。<svg class="qfig" viewBox="0 0 347 146" width="347" height="146" role="img" aria-label="白色正六邊形與黑色正三角形地磚拼成的大三角形：圖 1 有 1 個六邊形、3 個三角形，圖 2 有 3 個六邊形、7 個三角形，圖 3 有 6 個六邊形、13 個三角形"><polygon points="14,117.06 65,117.06 39.5,72.89" fill="#8a7378" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="56.5,102.33 48,87.61 31,87.61 22.5,102.33 31,117.06 48,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><text x="39.5" y="138.06" font-size="13" fill="#3a2a2e" text-anchor="middle">圖 1</text><polygon points="97,117.06 182,117.06 139.5,43.44" fill="#8a7378" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="139.5,102.33 131,87.61 114,87.61 105.5,102.33 114,117.06 131,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="156.5,72.89 148,58.17 131,58.17 122.5,72.89 131,87.61 148,87.61" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="173.5,102.33 165,87.61 148,87.61 139.5,102.33 148,117.06 165,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><text x="139.5" y="138.06" font-size="13" fill="#3a2a2e" text-anchor="middle">圖 2</text><polygon points="214,117.06 333,117.06 273.5,14" fill="#8a7378" stroke="#7a2e3c" stroke-width="1.8" stroke-linejoin="round"/><polygon points="256.5,102.33 248,87.61 231,87.61 222.5,102.33 231,117.06 248,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="273.5,72.89 265,58.17 248,58.17 239.5,72.89 248,87.61 265,87.61" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="290.5,43.44 282,28.72 265,28.72 256.5,43.44 265,58.17 282,58.17" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="290.5,102.33 282,87.61 265,87.61 256.5,102.33 265,117.06 282,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="307.5,72.89 299,58.17 282,58.17 273.5,72.89 282,87.61 299,87.61" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="324.5,102.33 316,87.61 299,87.61 290.5,102.33 299,117.06 316,117.06" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><text x="273.5" y="138.06" font-size="13" fill="#3a2a2e" text-anchor="middle">圖 3</text></svg><span class="qopt">(1) $b_6=43$</span><br><span class="qopt">(2) $a_{11}=65$</span><br><span class="qopt">(3) $a_{n+1}-a_n=n$ 對所有的正整數 $n$ 都成立</span><br><span class="qopt">(4) $b_n=2a_n+1$ 對所有的正整數 $n$ 都成立</span><br><span class="qopt">(5) $b_n\gt n^2+1$ 對所有的正整數 $n$ 都成立</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(4)(5)</div>
+<div class="fxs"><div class="move">做法：先從圖上把 $a_n$、$b_n$ 寫成 $n$ 的式子，再逐一檢查選項。六邊形好數；三角形散在各處，改用面積來算。</div>
+六邊形：由上往下第 $k$ 排有 $k$ 個，$a_n=1+2+\cdots+n=\dfrac{n(n+1)}{2}$，而且 $a_{n+1}-a_n=n+1$（多出最下面一排）。<br>
+三角形：把一塊黑色三角形地磚的面積當作 $1$。第 $n$ 個圖的大三角形每邊是 $2n+1$ 塊地磚的邊長，面積是 $(2n+1)^2$；一個正六邊形可以切成 $6$ 個小三角形，面積是 $6$。所以 $b_n=(2n+1)^2-6\cdot\dfrac{n(n+1)}{2}=4n^2+4n+1-3n^2-3n=n^2+n+1$。（檢查：$b_1=3$、$b_2=7$、$b_3=13$，和圖上一樣。）<br>
+(1) $b_6=36+6+1=43$。✔<br>
+(2) $a_{11}=\dfrac{11\times12}{2}=66$，不是 $65$。✘<br>
+(3) $a_{n+1}-a_n=n+1$，不是 $n$（例如 $a_2-a_1=2$）。✘<br>
+(4) $2a_n+1=n(n+1)+1=n^2+n+1=b_n$。✔<br>
+(5) $b_n-(n^2+1)=n\gt0$。✔<br>
+<span class="note-sm">$b_n$ 也可以直接看階差：$3$、$7$、$13$ 相差 $4$、$6$，從圖上看每次多出的三角形比前一次多 $2$ 個，$b_{n+1}-b_n=2n+2$，疊縮相加一樣得到 $n^2+n+1$。</span></div></div>
+<!-- /figq:L4 -->
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充專區：經典題與教甄</h2>
+<div class="goal">
+  <div><b>對象</b>想走數理資優、科學班，或準備教甄的老師。</div>
+  <div><b>目標</b>6 題經典壓軸（L5-2、L5-6 附圖）＋18 題科學班・教甄專區＋1 題附圖題（L5-7，放在最後），每題都要能講出「為什麼這樣想」。</div>
+  <div><b>通過標準</b>沒有硬性標準，會一題算一題。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">Sₙ=((aₙ+1)/2)² 且 aₙ 為正整數：用 n=1,2,3 逐項解二次方程猜 2n−1，歸納證；(−1)ⁿn² 的交錯和兩兩配對</span><span class="src">雄中 113上 計 13</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 的前 $n$ 項和 $S_n=\left(\dfrac{a_n+1}2\right)^2$，且每一項都是正整數。(1) 求 $a_3,a_4$，並推測 $a_n$。(2) 用數學歸納法證明 (1)。(3) 若 $b_n=(-1)^nS_n$，求 $\langle b_n\rangle$ 的前 $n$ 項和 $T_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $a_3=5,\ a_4=7$，$a_n=2n-1$　(3) $T_n=(-1)^n\dfrac{n(n+1)}2$</div>
+<div class="fxs"><div class="move">做法：$n=1$：$a_1=\left(\frac{a_1+1}2\right)^2$ ⟹ $(a_1-1)^2=0$ ⟹ $a_1=1$。$n=2$：$1+a_2=\left(\frac{a_2+1}2\right)^2$ ⟹ $a_2^2-2a_2-3=0$ ⟹ $a_2=3$。同法 $a_3=5$、$a_4=7$。</div>
+(2) 設 $a_1,\dots,a_k$ 皆合 $2i-1$，則 $S_k=k^2$，$k^2+a_{k+1}=\left(\frac{a_{k+1}+1}2\right)^2$ ⟹ $a_{k+1}^2-2a_{k+1}+1-4k^2=0$ ⟹ $(a_{k+1}-1)^2=(2k)^2$ ⟹ $a_{k+1}=2k+1$（正）✔（這裡用到的是「前面所有項都成立」的假設）。<br>
+(3) $b_n=(-1)^nn^2$。$n$ 偶：$T_n=(2^2-1^2)+(4^2-3^2)+\cdots=3+7+\cdots+(2n-1)=\dfrac{n(n+1)}2$；$n$ 奇：$T_n=T_{n-1}-n^2=\dfrac{(n-1)n}2-n^2=-\dfrac{n(n+1)}2$。合寫 $(-1)^n\dfrac{n(n+1)}2$。</div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">第 n 層 n² 箱、每箱 n+1 本：箱數 Σn²、書數 Σ(n³+n²)；最大正立方體看 12³ 與 13³</span><span class="src">北一女中 113下 多 4</span></div>
+<div class="fxq">古本屋堆放十八層玻璃箱，下圖畫出最上面四層：第 $n$ 層 $n^2$ 個箱子，每箱放 $n+1$ 本書。選出正確的選項。<svg class="qfig" viewBox="0 0 169 159" width="169" height="159" role="img" aria-label="立方體玻璃箱堆成的金字塔，畫出最上面四層：由上往下依序 1、4、9、16 個箱子"><polygon points="84.21,41 103.26,52 84.21,63 65.16,52" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,74 84.21,85 84.21,63 103.26,52" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,74 84.21,85 84.21,63 65.16,52" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,52 84.21,63 65.16,74 46.11,63" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,85 65.16,96 65.16,74 84.21,63" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="46.11,85 65.16,96 65.16,74 46.11,63" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,52 122.32,63 103.26,74 84.21,63" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="122.32,85 103.26,96 103.26,74 122.32,63" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,85 103.26,96 103.26,74 84.21,63" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="46.11,63 65.16,74 46.11,85 27.05,74" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,96 46.11,107 46.11,85 65.16,74" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="27.05,96 46.11,107 46.11,85 27.05,74" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,63 103.26,74 84.21,85 65.16,74" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,96 84.21,107 84.21,85 103.26,74" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,96 84.21,107 84.21,85 65.16,74" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="122.32,63 141.37,74 122.32,85 103.26,74" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="141.37,96 122.32,107 122.32,85 141.37,74" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,96 122.32,107 122.32,85 103.26,74" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="27.05,74 46.11,85 27.05,96 8,85" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="46.11,107 27.05,118 27.05,96 46.11,85" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="8,107 27.05,118 27.05,96 8,85" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,74 84.21,85 65.16,96 46.11,85" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,107 65.16,118 65.16,96 84.21,85" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="46.11,107 65.16,118 65.16,96 46.11,85" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,74 122.32,85 103.26,96 84.21,85" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="122.32,107 103.26,118 103.26,96 122.32,85" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,107 103.26,118 103.26,96 84.21,85" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="141.37,74 160.42,85 141.37,96 122.32,85" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="160.42,107 141.37,118 141.37,96 160.42,85" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="122.32,107 141.37,118 141.37,96 122.32,85" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="46.11,85 65.16,96 46.11,107 27.05,96" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,118 46.11,129 46.11,107 65.16,96" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="27.05,118 46.11,129 46.11,107 27.05,96" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,85 103.26,96 84.21,107 65.16,96" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,118 84.21,129 84.21,107 103.26,96" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,118 84.21,129 84.21,107 65.16,96" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="122.32,85 141.37,96 122.32,107 103.26,96" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="141.37,118 122.32,129 122.32,107 141.37,96" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,118 122.32,129 122.32,107 103.26,96" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,96 84.21,107 65.16,118 46.11,107" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,129 65.16,140 65.16,118 84.21,107" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="46.11,129 65.16,140 65.16,118 46.11,107" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,96 122.32,107 103.26,118 84.21,107" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="122.32,129 103.26,140 103.26,118 122.32,107" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,129 103.26,140 103.26,118 84.21,107" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,107 103.26,118 84.21,129 65.16,118" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,140 84.21,151 84.21,129 103.26,118" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,140 84.21,151 84.21,129 65.16,118" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,30 103.26,41 84.21,52 65.16,41" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,63 84.21,74 84.21,52 103.26,41" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,63 84.21,74 84.21,52 65.16,41" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,41 84.21,52 65.16,63 46.11,52" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,74 65.16,85 65.16,63 84.21,52" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="46.11,74 65.16,85 65.16,63 46.11,52" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,41 122.32,52 103.26,63 84.21,52" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="122.32,74 103.26,85 103.26,63 122.32,52" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,74 103.26,85 103.26,63 84.21,52" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="46.11,52 65.16,63 46.11,74 27.05,63" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,85 46.11,96 46.11,74 65.16,63" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="27.05,85 46.11,96 46.11,74 27.05,63" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,52 103.26,63 84.21,74 65.16,63" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,85 84.21,96 84.21,74 103.26,63" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,85 84.21,96 84.21,74 65.16,63" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="122.32,52 141.37,63 122.32,74 103.26,63" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="141.37,85 122.32,96 122.32,74 141.37,63" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,85 122.32,96 122.32,74 103.26,63" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,63 84.21,74 65.16,85 46.11,74" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,96 65.16,107 65.16,85 84.21,74" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="46.11,96 65.16,107 65.16,85 46.11,74" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,63 122.32,74 103.26,85 84.21,74" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="122.32,96 103.26,107 103.26,85 122.32,74" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,96 103.26,107 103.26,85 84.21,74" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,74 103.26,85 84.21,96 65.16,85" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,107 84.21,118 84.21,96 103.26,85" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,107 84.21,118 84.21,96 65.16,85" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,19 103.26,30 84.21,41 65.16,30" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,52 84.21,63 84.21,41 103.26,30" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,52 84.21,63 84.21,41 65.16,30" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,30 84.21,41 65.16,52 46.11,41" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,63 65.16,74 65.16,52 84.21,41" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="46.11,63 65.16,74 65.16,52 46.11,41" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,30 122.32,41 103.26,52 84.21,41" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="122.32,63 103.26,74 103.26,52 122.32,41" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,63 103.26,74 103.26,52 84.21,41" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,41 103.26,52 84.21,63 65.16,52" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,74 84.21,85 84.21,63 103.26,52" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,74 84.21,85 84.21,63 65.16,52" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="84.21,8 103.26,19 84.21,30 65.16,19" fill="#fff" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="103.26,41 84.21,52 84.21,30 103.26,19" fill="#f2e0e4" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/><polygon points="65.16,41 84.21,52 84.21,30 65.16,19" fill="#faf1f3" stroke="#7a2e3c" stroke-width="1.2" stroke-linejoin="round"/></svg><span class="qopt">(1) 第十層共 $100$ 個箱子</span>　<span class="qopt">(2) 共準備 $2109$ 個箱子</span>　<span class="qopt">(3) 第七層共收納 $392$ 本書</span>　<span class="qopt">(4) 全店共 $29241$ 本書</span>　<span class="qopt">(5) 用這些箱子重新堆成一個最大的正立方體，會剩 $84$ 個箱子</span></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(3)</div>
+<div class="fxs"><div class="move">做法：(2) $\sum_{1}^{18}n^2=\dfrac{18\cdot19\cdot37}6=2109$；(4) 書數 $=\sum n^2(n+1)=\sum n^3+\sum n^2=171^2+2109=29241+2109=31350$。</div>
+(3) $49\times8=392$ ✔。(4) $29241$ 只是 $\sum n^3$，漏了 $\sum n^2$ ✘。(5) $12^3=1728\le2109\lt13^3=2197$，剩 $2109-1728=381$ ✘。</div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">n 個單位正方形在直線 y=x/(2n) 下方：前 n−1 個各是梯形（高 1、兩底 x/(2n)），最後一個整個在線下</span><span class="src">雄中 113上 填 12</span></div>
+<div class="fxq">正方形 $D_k$ 的四個頂點為 $(2k,0),(2k+1,0),(2k+1,1),(2k,1)$，$k=1,\dots,n$。直線 $L$ 連接原點與 $(2n,1)$。求這 $n$ 個正方形在 $L$ 下方部分的面積總和（以 $n$ 表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{2n^2+3n-1}{4n}$</div>
+<div class="fxs"><div class="move">做法：$L:y=\dfrac{x}{2n}$。$k\le n-1$ 時 $x\le2n-1$，線在正方形內部穿過：線下是梯形，面積 $=\dfrac12\left(\dfrac{2k}{2n}+\dfrac{2k+1}{2n}\right)\cdot1=\dfrac{4k+1}{4n}$。$k=n$ 時 $x\ge2n$ ⟹ $y\ge1$，整個正方形都在線下，面積 $1$。</div>
+$\displaystyle\sum_{k=1}^{n-1}\dfrac{4k+1}{4n}+1=\dfrac{2(n-1)n+(n-1)}{4n}+1=\dfrac{2n^2-n-1+4n}{4n}=\dfrac{2n^2+3n-1}{4n}$。驗 $n=1$：只有 $D_1$，整個在線下，面積 $1$；公式 $\dfrac{2+3-1}4=1$ ✔</div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">每月月初存、月底計息、中途提出：先數有幾筆、最後一筆滾 0 個月；本利和是等比級數</span><span class="src">北一女中 113下 填 12（改寫）</span></div>
+<div class="fxq">小八自 $2024$ 年 $1$ 月 $1$ 日起，每月 $1$ 日存入 $1000$ 元，銀行月利率 $2\%$、每月月底計息一次。$2025$ 年 $3$ 月 $25$ 日把戶頭裡的錢全部提出。問可提出多少元？（四捨五入至整數；$1.02^{15}\approx1.3459$）</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">約 $17293$ 元</div>
+<div class="fxs"><div class="move">做法：$2024/1$ 到 $2025/3$ 共 $15$ 筆。$3$ 月那筆還沒到月底、不計息（滾 $0$ 個月）；$1$ 月 $2024$ 那筆經過 $14$ 個月底。</div>
+$1000\left(1+1.02+1.02^2+\cdots+1.02^{14}\right)=1000\cdot\dfrac{1.02^{15}-1}{0.02}=1000\cdot\dfrac{0.3459}{0.02}\approx17293$。<br>
+<span class="note-sm">常見錯誤：以為 $15$ 筆各滾 $15,14,\dots,1$ 個月（多算一個月的利息）。「月底計息、月中提出」是題目埋的釘子。</span></div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">衍生數列是否等差／等比：算差或比；「公差比原來大」要看 d 的正負；「r=−1 全為 0」是等比的隱形反例</span><span class="src">建國中學 111下 多 11</span></div>
+<div class="fxq">$\langle a_n\rangle$ 為等差、$\langle b_n\rangle$ 為等比（各項皆實數）。選出正確的選項。<br>(1) $c_n=a_n+a_{n+1}$，則 $\langle c_n\rangle$ 是等差　(2) $d_n=a_{5n}-a_{4n+3}$，則 $\langle d_n\rangle$ 是等差且公差與 $\langle a_n\rangle$ 相同　(3) $e_n=a_{5n}+a_{4n+3}$，則 $\langle e_n\rangle$ 是等差且公差比 $\langle a_n\rangle$ 的大　(4) $f_n=b_{5n}\cdot b_{4n+3}$，則 $\langle f_n\rangle$ 是等比　(5) $g_n=b_n+b_{n+1}$，則 $\langle g_n\rangle$ 是等比</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(4)</div>
+<div class="fxs"><div class="move">做法：設公差 $d$。$a_{5n}-a_{4n+3}=(5n-4n-3)d=(n-3)d$，相鄰差 $d$ ✔(2)；$a_{5n}+a_{4n+3}=2a_1+(9n-3)d$，公差 $9d$，$d\lt0$ 時 $9d\lt d$ ✘(3)。</div>
+(1) 差 $2d$ ✔。(4) $f_n=b_1^2r^{9n+1}$，公比 $r^9$ ✔。(5) $g_n=b_n(1+r)$：$r=-1$ 時每一項都是 $0$，$0,0,0,\dots$ 不是等比數列（公比無意義）✘。</div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">4,10,20 的階差：一階差 6,10 是三角形數、二階差 4,5 等差，每層點數是三角形數，總數是「四面體數」</span><span class="src">台中一中 111下 填 14</span></div>
+<div class="fxq">如圖，用單位長鋼條焊接四面體鐵架：圖 $1$ 有 $2$ 層共 $4$ 個焊接點，圖 $2$ 有 $3$ 層共 $10$ 個，圖 $3$ 有 $4$ 層共 $20$ 個。依此規律，圖 $9$（$10$ 層）共有多少個焊接點？<svg class="qfig" viewBox="0 0 328 180" width="328" height="180" role="img" aria-label="單位長鋼條焊成的四面體鐵架：圖 1 有 2 層 4 個焊接點，圖 2 有 3 層 10 個，圖 3 有 4 層 20 個"><line x1="34" y1="115.47" x2="34" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="34" y1="115.47" x2="54" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="34" y1="115.47" x2="14" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="34" y1="135.91" x2="54" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="34" y1="135.91" x2="14" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="54" y1="150" x2="14" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><circle cx="34" cy="115.47" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="34" cy="115.47" r="1.8" fill="#7a2e3c"/><circle cx="34" cy="135.91" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="34" cy="135.91" r="1.8" fill="#7a2e3c"/><circle cx="54" cy="150" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="54" cy="150" r="1.8" fill="#7a2e3c"/><circle cx="14" cy="150" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="14" cy="150" r="1.8" fill="#7a2e3c"/><text x="34" y="172" font-size="14" fill="#3a2a2e" text-anchor="middle">圖 1</text><line x1="124" y1="80.93" x2="124" y2="101.38" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="124" y1="80.93" x2="144" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="124" y1="80.93" x2="104" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="124" y1="101.38" x2="124" y2="121.82" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="124" y1="101.38" x2="144" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="124" y1="101.38" x2="144" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="124" y1="101.38" x2="104" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="124" y1="101.38" x2="104" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="124" y1="121.82" x2="144" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="124" y1="121.82" x2="104" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="144" y1="115.47" x2="144" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="144" y1="115.47" x2="164" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="144" y1="115.47" x2="104" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="144" y1="115.47" x2="124" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="144" y1="135.91" x2="164" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="144" y1="135.91" x2="104" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="144" y1="135.91" x2="124" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="164" y1="150" x2="124" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="104" y1="115.47" x2="104" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="104" y1="115.47" x2="124" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="104" y1="115.47" x2="84" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="104" y1="135.91" x2="124" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="104" y1="135.91" x2="84" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="124" y1="150" x2="84" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><circle cx="124" cy="80.93" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="124" cy="80.93" r="1.8" fill="#7a2e3c"/><circle cx="124" cy="101.38" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="124" cy="101.38" r="1.8" fill="#7a2e3c"/><circle cx="124" cy="121.82" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="124" cy="121.82" r="1.8" fill="#7a2e3c"/><circle cx="144" cy="115.47" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="144" cy="115.47" r="1.8" fill="#7a2e3c"/><circle cx="144" cy="135.91" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="144" cy="135.91" r="1.8" fill="#7a2e3c"/><circle cx="164" cy="150" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="164" cy="150" r="1.8" fill="#7a2e3c"/><circle cx="104" cy="115.47" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="104" cy="115.47" r="1.8" fill="#7a2e3c"/><circle cx="104" cy="135.91" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="104" cy="135.91" r="1.8" fill="#7a2e3c"/><circle cx="124" cy="150" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="124" cy="150" r="1.8" fill="#7a2e3c"/><circle cx="84" cy="150" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="84" cy="150" r="1.8" fill="#7a2e3c"/><text x="124" y="172" font-size="14" fill="#3a2a2e" text-anchor="middle">圖 2</text><line x1="254" y1="46.4" x2="254" y2="66.84" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="46.4" x2="274" y2="80.93" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="46.4" x2="234" y2="80.93" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="66.84" x2="254" y2="87.29" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="66.84" x2="274" y2="80.93" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="66.84" x2="274" y2="101.38" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="66.84" x2="234" y2="80.93" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="66.84" x2="234" y2="101.38" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="87.29" x2="254" y2="107.73" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="87.29" x2="274" y2="101.38" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="87.29" x2="274" y2="121.82" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="87.29" x2="234" y2="101.38" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="87.29" x2="234" y2="121.82" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="107.73" x2="274" y2="121.82" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="107.73" x2="234" y2="121.82" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="80.93" x2="274" y2="101.38" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="80.93" x2="294" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="80.93" x2="234" y2="80.93" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="80.93" x2="254" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="101.38" x2="274" y2="121.82" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="101.38" x2="294" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="101.38" x2="294" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="101.38" x2="234" y2="101.38" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="101.38" x2="254" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="101.38" x2="254" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="121.82" x2="294" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="121.82" x2="234" y2="121.82" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="121.82" x2="254" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="294" y1="115.47" x2="294" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="294" y1="115.47" x2="314" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="294" y1="115.47" x2="254" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="294" y1="115.47" x2="274" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="294" y1="135.91" x2="314" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="294" y1="135.91" x2="254" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="294" y1="135.91" x2="274" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="314" y1="150" x2="274" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="80.93" x2="234" y2="101.38" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="80.93" x2="254" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="80.93" x2="214" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="101.38" x2="234" y2="121.82" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="101.38" x2="254" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="101.38" x2="254" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="101.38" x2="214" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="101.38" x2="214" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="121.82" x2="254" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="121.82" x2="214" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="115.47" x2="254" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="115.47" x2="274" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="115.47" x2="214" y2="115.47" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="115.47" x2="234" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="135.91" x2="274" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="135.91" x2="214" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="254" y1="135.91" x2="234" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="274" y1="150" x2="234" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="214" y1="115.47" x2="214" y2="135.91" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="214" y1="115.47" x2="234" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="214" y1="115.47" x2="194" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="214" y1="135.91" x2="234" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="214" y1="135.91" x2="194" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><line x1="234" y1="150" x2="194" y2="150" stroke="#8a7378" stroke-width="1.3" stroke-linecap="round"/><circle cx="254" cy="46.4" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="254" cy="46.4" r="1.8" fill="#7a2e3c"/><circle cx="254" cy="66.84" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="254" cy="66.84" r="1.8" fill="#7a2e3c"/><circle cx="254" cy="87.29" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="254" cy="87.29" r="1.8" fill="#7a2e3c"/><circle cx="254" cy="107.73" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="254" cy="107.73" r="1.8" fill="#7a2e3c"/><circle cx="274" cy="80.93" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="274" cy="80.93" r="1.8" fill="#7a2e3c"/><circle cx="274" cy="101.38" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="274" cy="101.38" r="1.8" fill="#7a2e3c"/><circle cx="274" cy="121.82" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="274" cy="121.82" r="1.8" fill="#7a2e3c"/><circle cx="294" cy="115.47" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="294" cy="115.47" r="1.8" fill="#7a2e3c"/><circle cx="294" cy="135.91" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="294" cy="135.91" r="1.8" fill="#7a2e3c"/><circle cx="314" cy="150" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="314" cy="150" r="1.8" fill="#7a2e3c"/><circle cx="234" cy="80.93" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="234" cy="80.93" r="1.8" fill="#7a2e3c"/><circle cx="234" cy="101.38" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="234" cy="101.38" r="1.8" fill="#7a2e3c"/><circle cx="234" cy="121.82" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="234" cy="121.82" r="1.8" fill="#7a2e3c"/><circle cx="254" cy="115.47" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="254" cy="115.47" r="1.8" fill="#7a2e3c"/><circle cx="254" cy="135.91" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="254" cy="135.91" r="1.8" fill="#7a2e3c"/><circle cx="274" cy="150" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="274" cy="150" r="1.8" fill="#7a2e3c"/><circle cx="214" cy="115.47" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="214" cy="115.47" r="1.8" fill="#7a2e3c"/><circle cx="214" cy="135.91" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="214" cy="135.91" r="1.8" fill="#7a2e3c"/><circle cx="234" cy="150" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="234" cy="150" r="1.8" fill="#7a2e3c"/><circle cx="194" cy="150" r="3.6" fill="#fff" stroke="#7a2e3c" stroke-width="1.4"/><circle cx="194" cy="150" r="1.8" fill="#7a2e3c"/><text x="254" y="172" font-size="14" fill="#3a2a2e" text-anchor="middle">圖 3</text></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$220$</div>
+<div class="fxs"><div class="move">做法：第 $j$ 層是邊長 $j$ 的三角形點陣，有 $\dfrac{j(j+1)}2$ 個點；$m$ 層總數 $=\displaystyle\sum_{j=1}^{m}\dfrac{j(j+1)}2=\dfrac{m(m+1)(m+2)}6$（例題 20 的公式）。</div>
+對圖檢查：圖 $3$ 由上往下各層 $1,3,6,10$ 個焊接點，和是 $20$；$m=2,3,4$：$4,10,20$ ✔；$m=10$：$\dfrac{10\cdot11\cdot12}6=220$。</div></div>
+
+<h3 class="sec" id="L5-sci">科學班・教甄專區（18 題）</h3>
+<div class="note">來源：嘉義高中 114、115 科學班甄選（國三程度，題目只用到等差、等比與計數）；東石高中 112、高雄市 112、桃園市 112、台中一中 112、士林高商 108、政大附中 107、竹北高中 101、新化高中 101 各校教師甄選。掃描卷以 Windows 內建 OCR 讀出後逐題重打；<b>答案全部重新解過並經電腦驗算</b>（新化 101 第 1 題原答案卡印 $4$、正確為 $2$，本書改成不需要極限的有限版本；極限是高三選修才學）。教甄題偏「教學眼光」：不只求答案，還要能講出為什麼。另收 114 年臺中二中、湖口高中教甄的改編題（換數字，答案重新驗算）。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">S1</span><span class="kw">嘉中科學班：S₁₀、S₂₀ 求 S₃₀：三段和成等比，1024、512、256</span><span class="src">嘉義高中 115 科學班 填 2</span></div>
+<div class="fxq">某等比數列前 $10$ 項的和 $S_{10}=1024$、前 $20$ 項的和 $S_{20}=1536$。求前 $30$ 項的和 $S_{30}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$S_{30}=1792$</div>
+<div class="fxs"><div class="move">做法：$S_{10},\ S_{20}-S_{10},\ S_{30}-S_{20}$ 成等比：$1024,\ 512$ ⟹ 公比 $\dfrac12$ ⟹ 第三段 $256$。</div>
+$S_{30}=1024+512+256=1792$。<span class="note-sm">（$r^{10}=\frac12$，$r$ 本身是無理數，但不需要算出來，用「三段和」來看就能避開。）</span></div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">S2</span><span class="kw">嘉中科學班：1 到 100 取兩相異數和大於 100：固定大的數 b，小的數有 2b−101 種；再加一個等差級數</span><span class="src">嘉義高中 114 科學班 填 5</span></div>
+<div class="fxq">從 $1$ 到 $100$ 的正整數中一次取兩個相異的數，使它們的和大於 $100$，共有幾種取法？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2500$ 種</div>
+<div class="fxs"><div class="move">做法：設較大的數為 $b$（$51\le b\le100$），較小的 $a$ 須滿足 $101-b\le a\le b-1$，共 $2b-101$ 種。</div>
+$\displaystyle\sum_{b=51}^{100}(2b-101)=1+3+5+\cdots+99=50^2=2500$。<span class="note-sm">（另解：所有取法 $\binom{100}2=4950$，和恰為 $100$ 的有 $49$ 對，其餘依「$(a,b)\leftrightarrow(101-a,101-b)$」一一對應分成和 $\gt100$ 與 $\lt101$ 兩半，故 $\frac{4950-49}2+49=2500$。）</span></div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">S3</span><span class="kw">嘉中科學班：L 形矩尺罩住 7 欄數表的三格：四種擺法的和是 3x+8、3x+9、3x+15、3x+16，只有一種被 346 整除得出整數</span><span class="src">嘉義高中 114 科學班 填 3</span></div>
+<div class="fxq">數表第一列為 $1$ 至 $7$，第二列為 $8$ 至 $14$，依此類推。用一個 L 形（$2\times2$ 缺一格）的透明矩尺罩住三個數，矩尺可平移及旋轉。若罩住的三數之和為 $346$，求三數中最小的數。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$111$</div>
+<div class="fxs"><div class="move">做法：任一 $2\times2$ 方塊的四個數是 $x,\ x+1,\ x+7,\ x+8$（$x$ 不在第 $7$ 欄）。缺一格的三數和分別為 $3x+16,\ 3x+15,\ 3x+9,\ 3x+8$。</div>
+$346-16=330=3\cdot110$ ✔；$346-15=331$、$346-9=337$、$346-8=338$ 都不是 $3$ 的倍數。故 $x=110$（第 $16$ 列第 $5$ 欄，不在邊界），罩住 $111,117,118$，最小為 $111$。</div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">S4</span><span class="kw">分式遞迴 $a_{n+1}=(a_n+3)/(2a_n-4)$：解兩個不動點 3、−1/2，(aₙ−3)/(aₙ+1/2) 是等比</span><span class="src">東石高中 112 教甄 計 2</span></div>
+<div class="fxq">已知遞迴數列滿足 $a_1=\dfrac12$、$a_{n+1}=\dfrac{a_n+3}{2a_n-4}$。求一般項 $a_n$（以 $n$ 表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_n=\dfrac{3\cdot2^{\,n+1}+(-5)^n}{2^{\,n+1}-2\cdot(-5)^n}$</div>
+<div class="fxs"><div class="move">做法：不動點 $x=\dfrac{x+3}{2x-4}$ ⟹ $2x^2-5x-3=0$ ⟹ $x=3$ 或 $-\dfrac12$。兩個不動點就做「差的比」：$b_n=\dfrac{a_n-3}{a_n+\frac12}$。</div>
+$a_{n+1}-3=\dfrac{-5(a_n-3)}{2a_n-4}$、$a_{n+1}+\dfrac12=\dfrac{2a_n+1}{2a_n-4}=\dfrac{2\left(a_n+\frac12\right)}{2a_n-4}$ ⟹ $b_{n+1}=-\dfrac52b_n$，$b_1=\dfrac{\frac12-3}{1}=-\dfrac52$ ⟹ $b_n=\left(-\dfrac52\right)^n$。<br>
+反解：$a_n-3=b_n\left(a_n+\frac12\right)$ ⟹ $a_n=\dfrac{3+\frac{b_n}2}{1-b_n}=\dfrac{6+b_n}{2(1-b_n)}$，通分 $2^n$ 得上式。驗 $n=1$：$\dfrac{12-5}{4+10}=\dfrac12$ ✔<br>
+<span class="note-sm">課綱內的一個不動點法對付 $a_{n+1}=pa_n+q$；兩個不動點的「差的比」是同一個想法的分式版，高三選修數甲的分式遞迴會再遇到。</span></div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">S5</span><span class="kw">三項等比、+4 變等差、再 +32 變等比：設 a,ar,ar²，兩條件消去 r 得 a 的二次方程</span><span class="src">政大附中 107 教甄 一</span></div>
+<div class="fxq">一個等比數列有三項。若把第二項加上 $4$，所得三項成等差數列；再把這等差數列的第三項加上 $32$，所得三項又成等比數列。求原來的等比數列。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2,6,18$ 或 $\dfrac29,-\dfrac{10}9,\dfrac{50}9$</div>
+<div class="fxs"><div class="move">做法：設 $a,ar,ar^2$。等差：$2(ar+4)=a+ar^2$ ⟹ $a(r-1)^2=8$；等比：$(ar+4)^2=a(ar^2+32)$ ⟹ $8ar+16=32a$ ⟹ $r=4-\dfrac2a$。</div>
+代入：$a\left(3-\dfrac2a\right)^2=8$ ⟹ $(3a-2)^2=8a$ ⟹ $9a^2-20a+4=0$ ⟹ $a=2$ 或 $\dfrac29$。<br>
+$a=2$：$r=3$，得 $2,6,18$（驗：$2,10,18$ 等差；$2,10,50$ 等比 ✔）。$a=\dfrac29$：$r=-5$，得 $\dfrac29,-\dfrac{10}9,\dfrac{50}9$（驗：$\dfrac29,\dfrac{26}9,\dfrac{50}9$ 等差；$\dfrac29,\dfrac{26}9,\dfrac{338}9$ 等比，公比 $13$ ✔）。</div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">S6</span><span class="kw">二階遞迴 $a_{n+2}=\tfrac13a_{n+1}+\tfrac23a_n$：移項成「相鄰差」的等比：$a_{n+2}-a_{n+1}=-\tfrac23(a_{n+1}-a_n)$</span><span class="src">竹北高中 101 教甄 填 10</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 滿足 $a_1=1$、$a_2=2$，$a_{n+2}=\dfrac13a_{n+1}+\dfrac23a_n$（$n\ge1$）。求一般項 $a_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$a_n=\dfrac85-\dfrac35\left(-\dfrac23\right)^{n-1}$</div>
+<div class="fxs"><div class="move">做法：$a_{n+2}-a_{n+1}=-\dfrac23(a_{n+1}-a_n)$，所以差 $d_n=a_{n+1}-a_n$ 是首項 $1$、公比 $-\dfrac23$ 的等比。</div>
+$a_n=a_1+\displaystyle\sum_{k=1}^{n-1}\left(-\dfrac23\right)^{k-1}=1+\dfrac{1-\left(-\frac23\right)^{n-1}}{1+\frac23}=1+\dfrac35\left[1-\left(-\dfrac23\right)^{n-1}\right]=\dfrac85-\dfrac35\left(-\dfrac23\right)^{n-1}$。驗 $n=3$：$a_3=\dfrac23+\dfrac23=\dfrac43$，公式 $\dfrac85-\dfrac35\cdot\dfrac49=\dfrac{24-4}{15}=\dfrac43$ ✔<br>
+<span class="note-sm">「係數和為 $1$」的二階遞迴一定能這樣拆；教學手冊「陸」有更一般的說法。</span></div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">S7</span><span class="kw">$(1+2)(1+2^2)(1+2^4)\cdots(1+2^{2^{n-1}})$：前面補一個 (2−1)，平方差一路滾成 $2^{2^n}-1$</span><span class="src">新化高中 101 教甄 填 1（改寫）</span></div>
+<div class="fxq">設 $a_n=2^{\,n-1}$。求 $\dfrac{(1+2^{a_1})(1+2^{a_2})\cdots(1+2^{a_n})}{2^{\,a_1+a_2+\cdots+a_n}}$（以 $n$ 表示）。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2-2^{\,1-2^{n}}$，即 $\dfrac{2^{2^n}-1}{2^{2^n-1}}$</div>
+<div class="fxs"><div class="move">做法：分子乘上 $(2-1)=1$ 不改變值：$(2-1)(2+1)(2^2+1)(2^4+1)\cdots(2^{2^{n-1}}+1)=2^{2^n}-1$（每一步都是平方差）。分母 $2^{1+2+\cdots+2^{n-1}}=2^{2^n-1}$。</div>
+比值 $=\dfrac{2^{2^n}-1}{2^{2^n-1}}=2-\dfrac{1}{2^{2^n-1}}$。驗 $n=1$：$\dfrac{3}{2}$，公式 $2-\dfrac12$ ✔；$n=2$：$\dfrac{3\cdot5}{8}=\dfrac{15}8$，公式 $2-\dfrac18$ ✔<br>
+<span class="note-sm">原題問的是 $n$ 無限大時的值（那是高三選修才學的極限），答案 $2$；原卷答案卡印 $4$ 是錯的。</span></div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">S8</span><span class="kw">1 與 19 間插入 2n 個數、前後各 n+1 項和之比 1:3：兩段和都是「項數 × 中項」，(2n+1)d=18 配 (2n−1)d=14</span><span class="src">新化高中 101 教甄 填 3</span></div>
+<div class="fxq">在 $1$ 與 $19$ 間插入 $2n$ 個數，使其成為 $2n+2$ 項的等差數列，公差為 $d$。若此數列前 $n+1$ 項之和與後 $n+1$ 項之和的比為 $1:3$，求 $(n,d)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(n,d)=(4,2)$</div>
+<div class="fxs"><div class="move">做法：$19=1+(2n+1)d$。前 $n+1$ 項和 $=\dfrac{(n+1)(1+a_{n+1})}2=\dfrac{(n+1)(2+nd)}2$；後 $n+1$ 項和 $=\dfrac{(n+1)(a_{n+2}+19)}2=\dfrac{(n+1)(20+(n+1)d)}2$。</div>
+$\dfrac{2+nd}{20+(n+1)d}=\dfrac13$ ⟹ $6+3nd=20+nd+d$ ⟹ $(2n-1)d=14$。與 $(2n+1)d=18$ 相減：$2d=4$ ⟹ $d=2$，$2n+1=9$ ⟹ $n=4$。<br>
+驗：$1,3,5,\dots,19$ 共 $10$ 項，前 $5$ 項和 $25$、後 $5$ 項和 $75$，比 $1:3$ ✔</div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">S9</span><span class="kw">含 log₂、log₄、log₈ 的三項成等比：令 s=log₂2023、u=a−√2，三項是 s 與 u 的一次式，等比條件變 s、u 的齊次二次式</span><span class="src">高雄市 112 教甄 5</span></div>
+<div class="fxq">設 $a$ 為實數，且 $-a+\sqrt2+\log_22023$、$2a-2\sqrt2+\log_42023$、$-4a+4\sqrt2+\log_82023$ 三數成等比數列。求此數列的公比。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{8}{15}$</div>
+<div class="fxs"><div class="move">做法：令 $s=\log_22023$、$u=a-\sqrt2$，則三項為 $s-u,\ \dfrac s2+2u,\ \dfrac s3-4u$（$\log_4=\frac12\log_2$、$\log_8=\frac13\log_2$）。乘 $6$：$6s-6u,\ 3s+12u,\ 2s-24u$。</div>
+等比：$(3s+12u)^2=(6s-6u)(2s-24u)$ ⟹ $9s^2+72su+144u^2=12s^2-156su+144u^2$ ⟹ $3s^2=228su$ ⟹ $s=76u$（$s\ne0$）。<br>
+公比 $=\dfrac{3s+12u}{6s-6u}=\dfrac{228u+12u}{456u-6u}=\dfrac{240}{450}=\dfrac8{15}$。<span class="note-sm">（$2023$ 這個數字不重要，出題者只是要你認出 $\log_4,\log_8$ 與 $\log_2$ 的倍數關係。）</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">S10</span><span class="kw">Sₙ/Tₙ 給定，求 a₁₀/(b₃+b₁₈)+a₁₁/(b₆+b₁₅)：分母都等於 b₁+b₂₀，合併成 (a₁₀+a₁₁)/(b₁+b₂₀)=S₂₀/T₂₀</span><span class="src">桃園市 112 教甄 2</span></div>
+<div class="fxq">已知 $S_n,T_n$ 分別為等差數列 $\langle a_n\rangle,\langle b_n\rangle$ 的前 $n$ 項和，且 $\dfrac{S_n}{T_n}=\dfrac{2n+1}{4n-2}$。求 $\dfrac{a_{10}}{b_3+b_{18}}+\dfrac{a_{11}}{b_6+b_{15}}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{41}{78}$</div>
+<div class="fxs"><div class="move">做法：等差中 $p+q=r+s$ ⟹ $b_p+b_q=b_r+b_s$：$b_3+b_{18}=b_6+b_{15}=b_1+b_{20}$。</div>
+原式 $=\dfrac{a_{10}+a_{11}}{b_1+b_{20}}=\dfrac{a_1+a_{20}}{b_1+b_{20}}=\dfrac{S_{20}}{T_{20}}=\dfrac{41}{78}$。</div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">S11</span><span class="kw">正項等比、a₃+a₄−a₂−a₁=8 求 a₅+…+a₈ 最小：令 k=a₁+a₂、s=r²：目標 8s²(s+1)/(s−1)，換元 u=s−1 後配算幾</span><span class="src">桃園市 112 教甄 5</span></div>
+<div class="fxq">在各項均為正數的等比數列 $\langle a_n\rangle$ 中，若 $a_3+a_4-a_2-a_1=8$，求 $a_5+a_6+a_7+a_8$ 的最小值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$44+20\sqrt5$（在 $r^2=\dfrac{1+\sqrt5}2$ 時取到）</div>
+<div class="fxs"><div class="move">做法：令 $k=a_1+a_2$、$s=r^2\gt1$（各項正且和要增加）。$a_3+a_4=ks$ ⟹ $k(s-1)=8$；$a_5+\cdots+a_8=ks^2+ks^3=ks^2(1+s)=\dfrac{8s^2(s+1)}{s-1}$。</div>
+令 $u=s-1\gt0$：$\dfrac{8(u+1)^2(u+2)}{u}=8\left(u^2+4u+5+\dfrac2u\right)$。對 $u^2+4u+\dfrac2u$ 用「取到 $u^3+2u^2-1=0$」的配法：$(u+1)(u^2+u-1)=0$ ⟹ $u=\dfrac{-1+\sqrt5}2$，此時 $s=\dfrac{1+\sqrt5}2=\varphi$。<br>
+代回：$\varphi^2=\varphi+1$、$\varphi-1=\dfrac1\varphi$ ⟹ 目標 $=8\varphi^2(\varphi+1)\varphi=8\varphi^5=8(5\varphi+3)=40\varphi+24=44+20\sqrt5\approx88.7$。<br>
+<span class="note-sm">「$u^3+2u^2-1=0$」是把目標對 $u$ 微分得到的（高三選修才學）；課綱內的寫法：把目標寫成 $8\left[(u^2+4u+4)+\left(1+\dfrac2u\right)\right]$ 之類的形式逐段估，或直接列表試 $s=1.5,1.6,1.62,1.7$ 看出最小值在 $1.618$ 附近，再驗證 $\varphi$ 給的值。教甄題就是要老師用微分找到答案、再用課綱內的方法解釋。</span></div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">S12</span><span class="kw">11 次方程式的根成等差：根的和給中項、兩兩乘積和給 Σ根²，配 1²+2²+…+5² 解 d²</span><span class="src">台中一中 112 教甄 填 4</span></div>
+<div class="fxq">實係數方程式 $x^{11}+6x^{10}+5x^9+a_8x^8+\cdots+a_1x+a_0=0$ 的 $11$ 個根形成等差數列。求此數列的公差。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$d=\pm\dfrac{5}{11}$</div>
+<div class="fxs"><div class="move">做法：設根為 $m-5d,\dots,m,\dots,m+5d$。根的和 $=11m=-6$ ⟹ $m=-\dfrac6{11}$；兩兩乘積和 $=5$ ⟹ $\sum(\text{根})^2=(-6)^2-2\cdot5=26$。</div>
+$\sum(\text{根})^2=11m^2+2d^2(1^2+2^2+3^2+4^2+5^2)=\dfrac{36}{11}+110d^2=26$ ⟹ $110d^2=\dfrac{250}{11}$ ⟹ $d^2=\dfrac{25}{121}$ ⟹ $d=\pm\dfrac5{11}$。<br>
+<span class="note-sm">「根的和 $=-\frac{a_{10}}{1}$、兩兩積之和 $=a_9$」是高一上三次方程式根與係數的推廣，$n$ 次的版本要到高三選修才正式寫，教甄可以直接用。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">S13</span><span class="kw">f(n)=(4/5)ⁿ(n²+4n) 何時最大：看比值 f(n+1)/f(n)≥1 的範圍，最大項在比值由 ≥1 轉 &lt;1 的地方</span><span class="src">台中一中 112 教甄 填 5</span></div>
+<div class="fxq">設 $n$ 為正整數，$f(n)=\left(\dfrac45\right)^n(n^2+4n)$。求使 $f(n)$ 最大的 $n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$n=7$</div>
+<div class="fxs"><div class="move">做法：$\dfrac{f(n+1)}{f(n)}=\dfrac45\cdot\dfrac{(n+1)^2+4(n+1)}{n^2+4n}=\dfrac45\cdot\dfrac{n^2+6n+5}{n^2+4n}$。</div>
+$\ge1$ ⟺ $4n^2+24n+20\ge5n^2+20n$ ⟺ $n^2-4n-20\le0$ ⟺ $n\le2+\sqrt{24}\approx6.9$。<br>
+所以 $f(1)\lt f(2)\lt\cdots\lt f(6)\lt f(7)$，而 $f(8)\lt f(7)$，最大在 $n=7$。<span class="note-sm">（$f(7)=\frac{4^7\cdot77}{5^7}\approx16.15$，$f(6)\approx15.73$，$f(8)\approx16.10$，確實只差一點點，比值法比硬算穩。）</span></div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">S14</span><span class="kw">2023 個點、$P_k$ 到 $P_{k+1}$ 距離 $1/k$，求所有兩點距離總和：換個方向數：每一段 $1/k$ 被多少對點「跨過」</span><span class="src">台中一中 112 教甄 填 7</span></div>
+<div class="fxq">將 $2023$ 個點 $P_1,P_2,\dots,P_{2023}$ 依序排在一直線上，使 $P_k$ 與 $P_{k+1}$ 的距離為 $\dfrac1k$（$k=1,\dots,2022$）。求從這 $2023$ 個點中任取兩點的所有距離總和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$2045253$</div>
+<div class="fxs"><div class="move">做法：任兩點的距離是「中間各小段的和」。改成對每一小段 $P_kP_{k+1}$（長 $\dfrac1k$）數：它被 $P_i,P_j$（$i\le k\lt j$）跨過的對數是 $k\times(2023-k)$。</div>
+總和 $=\displaystyle\sum_{k=1}^{2022}\dfrac1k\cdot k(2023-k)=\sum_{k=1}^{2022}(2023-k)=2022+2021+\cdots+1=\dfrac{2022\cdot2023}2=2045253$。<br>
+<span class="note-sm">$\frac1k$ 被 $k$ 消掉是設計好的；換成 $n$ 個點答案就是 $\frac{n(n-1)}2$。「交換求和的順序」和講義難題 H10 是同一招。</span></div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">S15</span><span class="kw">n 個相異正奇數＋m 個相異正偶數和為 1000，求 6n+8m 最大：最小可能和 n²+m(m+1)≤1000，再看奇偶</span><span class="src">士林高商 108 教甄 計 3</span></div>
+<div class="fxq">已知 $n$ 個相異的正奇數與 $m$ 個相異的正偶數的和為 $1000$。求 $6n+8m$ 的最大值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$312$（$n=20,\ m=24$）</div>
+<div class="fxs"><div class="move">做法：$n$ 個相異正奇數最小的和是 $1+3+\cdots+(2n-1)=n^2$；$m$ 個相異正偶數最小的和是 $2+4+\cdots+2m=m(m+1)$。可行的 $(n,m)$ 必須 $n^2+m(m+1)\le1000$，而且 $n$ 個奇數的和與 $n$ 同奇偶、總和 $1000$ 為偶 ⟹ $n$ 是偶數。只要滿足這兩件事，把最大的那個數加大就能湊到 $1000$。</div>
+在 $n^2+m(m+1)\le1000$、$n$ 偶之下極大化 $6n+8m$：邊界大約是橢圓 $n^2+\left(m+\frac12\right)^2\approx1000$，目標的梯度 $(6,8)$ 指向 $n:\left(m+\frac12\right)=3:4$ 的方向 ⟹ $n\approx19$、$m\approx24.5$。試 $n=20,m=24$：$400+600=1000$ ✔（恰好），$6n+8m=312$；$n=18,m=25$：$324+650=974$ ✔，$308$；$n=22,m=22$：$484+506=990$ ✔，$308$；$n=20,m=25$：$400+650\gt1000$ ✘。最大 $312$。<br>
+<span class="note-sm">構造：$1,3,\dots,39$（和 $400$）與 $2,4,\dots,48$（和 $600$）。「梯度方向」是大學的說法，考卷上寫「列表比較邊界附近的整數點」即可。</span></div></div>
+
+<div class="fx" id="L5-S16"><div class="fxh"><span class="no">S16</span><span class="kw">分母看起來很亂：令 $u=3^k$ 通分，分母是 $\frac{(u^2-1)(3u-1)}{u^2}$，一般項裂成 $\frac1{3^k-1}-\frac1{3^{k+1}-1}$</span><span class="src">改編自 臺中二中 114 教甄 填 10</span></div>
+<div class="fxq">求 $\displaystyle\sum_{k=1}^{100}\frac{2\cdot3^{-k}+2}{3^{-2k}-3^{-k+1}+3^{k+1}-1}$ 的值。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac12-\dfrac{1}{3^{101}-1}=\dfrac{3^{101}-3}{2\left(3^{101}-1\right)}$</div>
+<div class="fxs"><div class="move">做法：負次方先處理掉：令 $u=3^k$，分子分母同乘 $u^2$。</div>
+分子：$2\cdot3^{-k}+2=\dfrac{2}{u}+2=\dfrac{2(u+1)}{u}$。<br>
+分母：$\dfrac1{u^2}-\dfrac3u+3u-1=\dfrac{1-3u+3u^3-u^2}{u^2}=\dfrac{u^2(3u-1)-(3u-1)}{u^2}=\dfrac{(u^2-1)(3u-1)}{u^2}$。<br>
+一般項 $=\dfrac{2(u+1)}{u}\cdot\dfrac{u^2}{(u-1)(u+1)(3u-1)}=\dfrac{2u}{(u-1)(3u-1)}=\dfrac1{u-1}-\dfrac1{3u-1}$<br>
+（驗：$\dfrac{(3u-1)-(u-1)}{(u-1)(3u-1)}=\dfrac{2u}{(u-1)(3u-1)}$ ✔）。<br>
+$3u-1=3^{k+1}-1$，所以一般項 $=\dfrac1{3^k-1}-\dfrac1{3^{k+1}-1}$，相加時中間全部消掉：<br>
+$\displaystyle\sum_{k=1}^{100}=\frac1{3-1}-\frac1{3^{101}-1}=\frac12-\frac1{3^{101}-1}=\frac{3^{101}-3}{2\left(3^{101}-1\right)}$。</div></div>
+
+<div class="fx" id="L5-S17"><div class="fxh"><span class="no">S17</span><span class="kw">$(\alpha+3)(\beta+3)$ 用根與係數化成 $n(n+1)$，再裂項相消</span><span class="src">改編自 湖口高中 114 教甄 計算 2</span></div>
+<div class="fxq">$n$ 為正整數，方程式 $x^2-2nx+(n^2-5n-9)=0$ 的兩根為 $\alpha_n$、$\beta_n$，求 $\displaystyle\sum_{n=2}^{2025}\frac{1}{(\alpha_n+3)(\beta_n+3)}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{506}{1013}$</div>
+<div class="fxs"><div class="move">做法：不必解出根，$(\alpha+3)(\beta+3)=\alpha\beta+3(\alpha+\beta)+9$ 直接用根與係數。</div>
+$\alpha_n+\beta_n=2n$、$\alpha_n\beta_n=n^2-5n-9$（判別式 $4(5n+9)\gt0$，兩根都是實數）。<br>
+$(\alpha_n+3)(\beta_n+3)=n^2-5n-9+6n+9=n^2+n=n(n+1)$。<br>
+$\displaystyle\sum_{n=2}^{2025}\frac1{n(n+1)}=\sum_{n=2}^{2025}\left(\frac1n-\frac1{n+1}\right)=\frac12-\frac1{2026}=\frac{1012}{2026}=\frac{506}{1013}$。</div></div>
+
+<div class="fx" id="L5-S18"><div class="fxh"><span class="no">S18</span><span class="kw">$(\sqrt6+\sqrt7)^{2026}$ 的整數部分：配上 $(13-2\sqrt{42})^{1013}$ 湊成整數 $a_n$，遞迴 $a_n=26a_{n-1}-a_{n-2}$ 只看個位數</span><span class="src">改編自 湖口高中 114 教甄 填 12</span></div>
+<div class="fxq">以 $[x]$ 表示不大於 $x$ 的最大整數。求 $\left[(\sqrt6+\sqrt7)^{2026}\right]$ 的個位數字。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$5$</div>
+<div class="fxs"><div class="move">做法：$(\sqrt6+\sqrt7)^2=13+2\sqrt{42}$，它的「共軛」$13-2\sqrt{42}$ 介於 $0$ 與 $1$ 之間，兩者的 $n$ 次方相加是整數。</div>
+令 $p=13+2\sqrt{42}$、$q=13-2\sqrt{42}$，$p+q=26$、$pq=169-168=1$；$2\sqrt{42}=\sqrt{168}$ 介於 $12$ 與 $13$ 之間，所以 $0\lt q\lt1$。<br>
+令 $a_n=p^n+q^n$，由 $p^2=26p-1$、$q^2=26q-1$ 得 $a_n=26a_{n-1}-a_{n-2}$，$a_0=2$、$a_1=26$，全部是整數。<br>
+$(\sqrt6+\sqrt7)^{2026}=p^{1013}=a_{1013}-q^{1013}$，而 $0\lt q^{1013}\lt1$ ⟹ 整數部分 $=a_{1013}-1$。<br>
+只看個位數：$a_n\equiv6a_{n-1}-a_{n-2}\pmod{10}$，從 $a_0$ 起依序為 $2,6,4,8,4,6,2,6,\ldots$，每 $6$ 項循環（$a_6$、$a_7$ 又回到 $2,6$）。<br>
+$1013=6\times168+5$，所以 $a_{1013}$ 的個位數與 $a_5$ 相同，是 $6$；整數部分的個位數是 $6-1=5$。<br>
+<span class="note-sm">$a_2=674$、$a_3=17498$、$a_4=454274$、$a_5=11793626$，個位數 $4,8,4,6$ ✔。這題用到二階遞迴，課綱以一階為主，所以放在 L5。</span></div></div>
+<!-- figq:L5 -->
+<h3 class="sec" id="L5-fig">附圖題（1 題）</h3>
+<div class="note">L5-7 是大考的<b>附圖題</b>：正五邊形陣列怎麼排，題幹沒有用文字說，要從圖上讀出來。圖依原題重新繪製。</div>
+
+<div class="fx" id="L5-7"><div class="fxh"><span class="no">L5-7</span><span class="kw">三角形、正方形、五邊形陣列的鋼珠數：三角形數、平方數好寫，五邊形陣列要從圖上看「每大一圈多幾顆」</span><span class="src">97 指考 數甲 選填 A</span></div>
+<div class="fxq">用大小一樣的鋼珠可以排成正三角形、正方形與正五邊形陣列，其排列的規律如下圖所示。已知 $m$ 個鋼珠恰好可以排成每邊 $n$ 個鋼珠的正三角形陣列與正方形陣列各一個；且知若用這 $m$ 個鋼珠去排成每邊 $n$ 個鋼珠的正五邊形陣列時，就會多出 $9$ 個鋼珠。求 $n$ 與 $m$。<svg class="qfig" viewBox="0 0 340 244" width="340" height="244" role="img" aria-label="鋼珠排成的正三角形、正方形、正五邊形陣列對照表：每邊 1 到 4 個鋼珠"><line x1="3" y1="6" x2="337" y2="6" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="28" x2="337" y2="28" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="48" x2="337" y2="48" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="89.54" x2="337" y2="89.54" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="152.63" x2="337" y2="152.63" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="237.26" x2="337" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="6" x2="3" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="91" y1="6" x2="91" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="173" y1="6" x2="173" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="255" y1="6" x2="255" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><line x1="337" y1="6" x2="337" y2="237.26" stroke="#ddd2d5" stroke-width="1" stroke-linecap="round"/><text x="132" y="22" font-size="13" fill="#3a2a2e" text-anchor="middle">正三角形陣列</text><text x="214" y="22" font-size="13" fill="#3a2a2e" text-anchor="middle">正方形陣列</text><text x="296" y="22" font-size="13" fill="#3a2a2e" text-anchor="middle">正五邊形陣列</text><text x="47" y="42.5" font-size="13" fill="#3a2a2e" text-anchor="middle">每邊 1 個鋼珠</text><circle cx="132" cy="38" r="3.3" fill="#7a2e3c"/><circle cx="214" cy="38" r="3.3" fill="#7a2e3c"/><circle cx="296" cy="38" r="3.3" fill="#7a2e3c"/><text x="47" y="73.27" font-size="13" fill="#3a2a2e" text-anchor="middle">每邊 2 個鋼珠</text><polygon points="125,74.83 139,74.83 132,62.71" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="125" cy="74.83" r="3.3" fill="#7a2e3c"/><circle cx="139" cy="74.83" r="3.3" fill="#7a2e3c"/><circle cx="132" cy="62.71" r="3.3" fill="#7a2e3c"/><polygon points="207,75.77 221,75.77 221,61.77 207,61.77" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="207" cy="75.77" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="75.77" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="61.77" r="3.3" fill="#7a2e3c"/><circle cx="207" cy="61.77" r="3.3" fill="#7a2e3c"/><polygon points="289,79.54 303,79.54 307.33,66.23 296,58 284.67,66.23" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="289" cy="79.54" r="3.3" fill="#7a2e3c"/><circle cx="303" cy="79.54" r="3.3" fill="#7a2e3c"/><circle cx="307.33" cy="66.23" r="3.3" fill="#7a2e3c"/><circle cx="296" cy="58" r="3.3" fill="#7a2e3c"/><circle cx="284.67" cy="66.23" r="3.3" fill="#7a2e3c"/><text x="47" y="125.59" font-size="13" fill="#3a2a2e" text-anchor="middle">每邊 3 個鋼珠</text><polygon points="118,133.21 132,133.21 125,121.09" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="118,133.21 146,133.21 132,108.96" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="118" cy="133.21" r="3.3" fill="#7a2e3c"/><circle cx="132" cy="133.21" r="3.3" fill="#7a2e3c"/><circle cx="125" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="146" cy="133.21" r="3.3" fill="#7a2e3c"/><circle cx="139" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="132" cy="108.96" r="3.3" fill="#7a2e3c"/><polygon points="200,135.09 214,135.09 214,121.09 200,121.09" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="200,135.09 228,135.09 228,107.09 200,107.09" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="200" cy="135.09" r="3.3" fill="#7a2e3c"/><circle cx="214" cy="135.09" r="3.3" fill="#7a2e3c"/><circle cx="214" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="200" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="228" cy="135.09" r="3.3" fill="#7a2e3c"/><circle cx="228" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="228" cy="107.09" r="3.3" fill="#7a2e3c"/><circle cx="214" cy="107.09" r="3.3" fill="#7a2e3c"/><circle cx="200" cy="107.09" r="3.3" fill="#7a2e3c"/><polygon points="282,142.63 296,142.63 300.33,129.32 289,121.09 277.67,129.32" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="282,142.63 310,142.63 318.65,116 296,99.54 273.35,116" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="282" cy="142.63" r="3.3" fill="#7a2e3c"/><circle cx="296" cy="142.63" r="3.3" fill="#7a2e3c"/><circle cx="300.33" cy="129.32" r="3.3" fill="#7a2e3c"/><circle cx="289" cy="121.09" r="3.3" fill="#7a2e3c"/><circle cx="277.67" cy="129.32" r="3.3" fill="#7a2e3c"/><circle cx="310" cy="142.63" r="3.3" fill="#7a2e3c"/><circle cx="314.33" cy="129.32" r="3.3" fill="#7a2e3c"/><circle cx="318.65" cy="116" r="3.3" fill="#7a2e3c"/><circle cx="307.33" cy="107.77" r="3.3" fill="#7a2e3c"/><circle cx="296" cy="99.54" r="3.3" fill="#7a2e3c"/><circle cx="284.67" cy="107.77" r="3.3" fill="#7a2e3c"/><circle cx="273.35" cy="116" r="3.3" fill="#7a2e3c"/><text x="47" y="199.45" font-size="13" fill="#3a2a2e" text-anchor="middle">每邊 4 個鋼珠</text><polygon points="111,213.13 125,213.13 118,201.01" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="111,213.13 139,213.13 125,188.88" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="111,213.13 153,213.13 132,176.76" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="111" cy="213.13" r="3.3" fill="#7a2e3c"/><circle cx="125" cy="213.13" r="3.3" fill="#7a2e3c"/><circle cx="118" cy="201.01" r="3.3" fill="#7a2e3c"/><circle cx="139" cy="213.13" r="3.3" fill="#7a2e3c"/><circle cx="132" cy="201.01" r="3.3" fill="#7a2e3c"/><circle cx="125" cy="188.88" r="3.3" fill="#7a2e3c"/><circle cx="153" cy="213.13" r="3.3" fill="#7a2e3c"/><circle cx="146" cy="201.01" r="3.3" fill="#7a2e3c"/><circle cx="139" cy="188.88" r="3.3" fill="#7a2e3c"/><circle cx="132" cy="176.76" r="3.3" fill="#7a2e3c"/><polygon points="193,215.95 207,215.95 207,201.95 193,201.95" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="193,215.95 221,215.95 221,187.95 193,187.95" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="193,215.95 235,215.95 235,173.95 193,173.95" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="193" cy="215.95" r="3.3" fill="#7a2e3c"/><circle cx="207" cy="215.95" r="3.3" fill="#7a2e3c"/><circle cx="207" cy="201.95" r="3.3" fill="#7a2e3c"/><circle cx="193" cy="201.95" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="215.95" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="201.95" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="187.95" r="3.3" fill="#7a2e3c"/><circle cx="207" cy="187.95" r="3.3" fill="#7a2e3c"/><circle cx="193" cy="187.95" r="3.3" fill="#7a2e3c"/><circle cx="235" cy="215.95" r="3.3" fill="#7a2e3c"/><circle cx="235" cy="201.95" r="3.3" fill="#7a2e3c"/><circle cx="235" cy="187.95" r="3.3" fill="#7a2e3c"/><circle cx="235" cy="173.95" r="3.3" fill="#7a2e3c"/><circle cx="221" cy="173.95" r="3.3" fill="#7a2e3c"/><circle cx="207" cy="173.95" r="3.3" fill="#7a2e3c"/><circle cx="193" cy="173.95" r="3.3" fill="#7a2e3c"/><polygon points="275,227.26 289,227.26 293.33,213.95 282,205.72 270.67,213.95" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="275,227.26 303,227.26 311.65,200.63 289,184.18 266.35,200.63" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><polygon points="275,227.26 317,227.26 329.98,187.32 296,162.63 262.02,187.32" fill="none" stroke="#8a7378" stroke-width="1.1" stroke-linejoin="round"/><circle cx="275" cy="227.26" r="3.3" fill="#7a2e3c"/><circle cx="289" cy="227.26" r="3.3" fill="#7a2e3c"/><circle cx="293.33" cy="213.95" r="3.3" fill="#7a2e3c"/><circle cx="282" cy="205.72" r="3.3" fill="#7a2e3c"/><circle cx="270.67" cy="213.95" r="3.3" fill="#7a2e3c"/><circle cx="303" cy="227.26" r="3.3" fill="#7a2e3c"/><circle cx="307.33" cy="213.95" r="3.3" fill="#7a2e3c"/><circle cx="311.65" cy="200.63" r="3.3" fill="#7a2e3c"/><circle cx="300.33" cy="192.4" r="3.3" fill="#7a2e3c"/><circle cx="289" cy="184.18" r="3.3" fill="#7a2e3c"/><circle cx="277.67" cy="192.4" r="3.3" fill="#7a2e3c"/><circle cx="266.35" cy="200.63" r="3.3" fill="#7a2e3c"/><circle cx="317" cy="227.26" r="3.3" fill="#7a2e3c"/><circle cx="321.33" cy="213.95" r="3.3" fill="#7a2e3c"/><circle cx="325.65" cy="200.63" r="3.3" fill="#7a2e3c"/><circle cx="329.98" cy="187.32" r="3.3" fill="#7a2e3c"/><circle cx="318.65" cy="179.09" r="3.3" fill="#7a2e3c"/><circle cx="307.33" cy="170.86" r="3.3" fill="#7a2e3c"/><circle cx="296" cy="162.63" r="3.3" fill="#7a2e3c"/><circle cx="284.67" cy="170.86" r="3.3" fill="#7a2e3c"/><circle cx="273.35" cy="179.09" r="3.3" fill="#7a2e3c"/><circle cx="262.02" cy="187.32" r="3.3" fill="#7a2e3c"/></svg></div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$n=9$、$m=126$</div>
+<div class="fxs"><div class="move">做法：把三種陣列「每邊 $n$ 個」時的鋼珠數都寫成 $n$ 的式子。正三角形陣列是 $1+2+\cdots+n$，正方形陣列是 $n^2$；正五邊形陣列要從圖上數前幾個，再看每大一圈多幾顆。</div>
+正三角形陣列：$\dfrac{n(n+1)}{2}$ 個；正方形陣列：$n^2$ 個。<br>
+正五邊形陣列：從圖上數，每邊 $1$、$2$、$3$、$4$ 個時共有 $1$、$5$、$12$、$22$ 個，相鄰相差 $4$、$7$、$10$。看圖找原因：每邊從 $k$ 個變成 $k+1$ 個時，外面多套一個大一號的五邊形，它和原來的陣列共用左下角的頂點與兩條邊的方向，新增的鋼珠在另外三條邊上（連同兩條共用邊各自延長出去的那一顆），共 $3k+1$ 個。<br>
+所以每邊 $n$ 個的正五邊形陣列有 $1+4+7+\cdots+(3n-2)=\dfrac{n(1+3n-2)}{2}=\dfrac{n(3n-1)}{2}$ 個。<br>
+依題意 $m=\dfrac{n(n+1)}{2}+n^2$，且 $m=\dfrac{n(3n-1)}{2}+9$。兩式相等：$\dfrac{3n^2+n}{2}=\dfrac{3n^2-n}{2}+9$ ⟹ $n=9$。<br>
+$m=\dfrac{9\times10}{2}+81=45+81=126$。<br>
+<span class="note-sm">檢查：每邊 $9$ 個的正五邊形陣列有 $\dfrac{9\times26}{2}=117$ 個，$126-117=9$ ✔。$1$、$5$、$12$、$22$、… 叫做五邊形數；這一題不需要事先背它，從圖上的階差 $4$、$7$、$10$ 就能寫出來。</span></div></div>
+<!-- /figq:L5 -->
+</section>
+
+<div class="ch-nav">
+  <a href="../g10a-ch03/practice.html">← 第三章 多項式 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <a href="../g10b-ch02/practice.html">第二章 排列組合與機率 練習本 →</a>
+</div>
+</div>
+
+<script src="../../assets/firebase-config.js"></script>
+<script src="../../assets/reflex-cloud.js"></script>
+<script src="../../assets/practice-cloud.js"></script>
+<script>
+(function () {
+  var G = window.PGEN, CH = 'g10b-ch01';
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var TIERS = ['L0', 'L1', 'L2', 'L3'], labelOf = {};
+  TIERS.forEach(function (L) { if (G.META[L]) G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  var DAY = 86400000, INTERVAL = [1, 3, 7, 14];            /* 錯題本間隔（天）：第 n 次全對後隔 INTERVAL[n] 天再測；連續 2 次全對畢業 */
+  var CONF = { h: '有把握', m: '不確定', l: '猜的' }, CAUSE = { start: '不會下手', formula: '公式用錯', calc: '計算錯', read: '看錯題' };
+  var READ_CAUSE = { start: 1, formula: 1 };               /* 這兩種錯因建議回頭讀「先要會」；另兩種建議多算幾題 */
+
+  /* ══════════ 練習紀錄（只存在這台裝置）══════════ */
+  var STORE = 'pgen_rec_' + CH;
+  function loadRec() {
+    var r = null; try { r = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { }
+    if (!r || !r.attempts) return { v: 2, attempts: [], wb: {} };
+    if (r.v === 1) { r.attempts.forEach(function (at) { at.items.forEach(function (x) { if (!x.t) x.t = at.tier; }); }); r.v = 2; }
+    if (!r.wb) r.wb = {};
+    return r;
+  }
+  function saveRec() { try { localStorage.setItem(STORE, JSON.stringify(REC)); } catch (e) { } }
+  var REC = loadRec();
+  function stats() {
+    var byKey = {}, bySet = {};
+    REC.attempts.forEach(function (at) {
+      at.items.forEach(function (x) {
+        var t = x.t || at.tier, k = t + '.' + x.k, o = byKey[k] || (byKey[k] = { tier: t, key: x.k, n: 0, w: 0, hc: 0, gs: 0, last: [], causes: {} });
+        o.n++; if (x.wrong) o.w++; o.last.push(x.wrong ? 1 : 0);
+        if (x.wrong && x.conf === 'h') o.hc++;
+        if (!x.wrong && x.conf === 'l') o.gs++;
+        if (x.wrong && x.cause) o.causes[x.cause] = (o.causes[x.cause] || 0) + 1;
+      });
+      if (at.kind === 'review') return;
+      var s = bySet[at.set] || (bySet[at.set] = { rounds: 0, hist: [] });
+      s.rounds++; s.hist.push({ t: at.t, n: at.items.length, w: at.items.filter(function (x) { return x.wrong; }).length, secs: at.secs });
+    });
+    return { byKey: byKey, bySet: bySet };
+  }
+  function weakList(byKey) {
+    return Object.keys(byKey).map(function (k) { return byKey[k]; }).filter(function (o) {
+      if (o.tier === 'L0') return false;
+      var lastWrong = o.last[o.last.length - 1] === 1;
+      return lastWrong || o.hc > 0 || (o.n >= 2 && (o.w + o.gs) / o.n >= 0.4);
+    }).sort(function (a, b) { if (b.hc !== a.hc) return b.hc - a.hc; var la = a.last[a.last.length - 1], lb = b.last[b.last.length - 1]; if (la !== lb) return lb - la; return (b.w + b.gs) / b.n - (a.w + a.gs) / a.n; });
+  }
+  function mainCause(o) { var best = null; Object.keys(o.causes).forEach(function (c) { if (!best || o.causes[c] > o.causes[best]) best = c; }); return best; }
+
+  /* ══════════ 跳轉：練（卡片／類似題）與讀（該小節的「先要會」）══════════ */
+  function flash(el) { if (!el) return; el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 2500); }
+  function goKey(tier, key) {
+    var el;
+    if (tier === 'L3') {
+      el = document.querySelector('.fx[data-gen="' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); var sb = el.querySelector('.simbox'); if (!sb) buildSim(el, key); else sb.querySelector('.again').click(); }
+    } else {
+      el = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.querySelector('.new').click(); }
+    }
+    flash(el);
+  }
+  function goRead(tier, key) {
+    var el;
+    if (tier === 'L3') el = document.querySelector('.fx[data-gen="' + key + '"]');
+    else {
+      var card = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      el = card ? card.parentElement.previousElementSibling : null;
+      while (el && !el.classList.contains('must')) el = el.previousElementSibling;
+    }
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }
+  }
+  function goBtn(tier, key, mode) {
+    var b = document.createElement('button'); b.className = 'go' + (mode === 'read' ? ' read' : ''); b.type = 'button';
+    b.textContent = (mode === 'read' ? '📖 讀：' : (tier === 'L3' ? '📎 ' : '🎲 ')) + (labelOf[tier + '.' + key] || key);
+    b.onclick = function () { (mode === 'read' ? goRead : goKey)(tier, key); }; return b;
+  }
+
+  /* ══════════ 解題步驟排版、漸淡練習（Renkl：全解 → 補最後一步 → 只給第一步）══════════ */
+  function stepsHtml(it, mode) {
+    if (!it.s) return '';
+    var n = it.s.length, shown = mode === 'last' ? n - 1 : mode === 'first' ? 1 : n;
+    var html = '<ol class="steps">';
+    for (var i = 0; i < n; i++) {
+      if (i < shown) html += '<li>' + it.s[i] + '</li>';
+      else html += '<li class="blank"><span class="bl">' + (mode === 'last' ? '最後一步請自己完成' : '接下來的步驟請自己完成') + '</span><span class="hid">' + it.s[i] + '</span></li>';
+    }
+    html += '</ol><div class="fin' + (mode ? ' hid' : '') + '">答：' + it.a + '</div>';
+    return html;
+  }
+  function buildFade(box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(','), base = parseInt(box.getAttribute('data-seed'), 10);
+    var html = '<div class="fd-h"><b>📘 漸淡練習</b><span>每型三題：先看完整示範，第二題自己補最後一步，第三題只給第一步。看完示範後試著遮住步驟自己寫一次。</span></div>';
+    keys.forEach(function (k, i) {
+      if (!G[tier][k]) return;
+      var its = [0, 1, 2].map(function (j) { return { it: G[tier][k](G.makeRng(base + i * 31 + j * 7)), seed: base + i * 31 + j * 7 }; });
+      if (!its[0].it.s) return;
+      html += '<details class="fd"><summary>' + esc(labelOf[tier + '.' + k] || k) + '</summary>' +
+        '<div class="fdi"><div class="fdt">① 完整示範 <span class="seed">#' + its[0].seed + '</span></div><div class="fq">' + its[0].it.q + '</div>' + stepsHtml(its[0].it) + '</div>' +
+        '<div class="fdi"><div class="fdt">② 補最後一步 <span class="seed">#' + its[1].seed + '</span></div><div class="fq">' + its[1].it.q + '</div>' + stepsHtml(its[1].it, 'last') + '<button class="reveal">顯示最後一步與答案</button></div>' +
+        '<div class="fdi"><div class="fdt">③ 只給第一步 <span class="seed">#' + its[2].seed + '</span></div><div class="fq">' + its[2].it.q + '</div>' + stepsHtml(its[2].it, 'first') + '<button class="reveal">顯示其餘步驟與答案</button></div></details>';
+    });
+    box.innerHTML = html;
+    box.querySelectorAll('.reveal').forEach(function (b) { b.onclick = function () { var d = b.parentElement; d.classList.add('open'); b.style.display = 'none'; }; });
+    box.querySelectorAll('details.fd').forEach(function (d) { d.addEventListener('toggle', function () { if (d.open && !d._r) { d._r = 1; render(d); } }); });
+  }
+  document.querySelectorAll('.fadeset').forEach(buildFade);
+
+  /* ══════════ 對照題（變異理論：只差一個關鍵特徵的兩題並列，先說差在哪再揭曉）══════════ */
+  function buildContrast(gc, tier, key, seedA) {
+    var pr = G.contrastPair(tier, key, seedA);
+    if (!pr) { gc.innerHTML = '<div class="note-sm">這一型暫時找不到對照題。</div>'; gc.classList.add('on'); return; }
+    gc.innerHTML = '<div class="gc-h"><b>⚖ 對照題</b><span>先說出：<b>兩題差在哪一個地方？答案會怎麼跟著變？</b>想清楚再按「揭曉」。</span></div>' +
+      '<div class="gc-pair"><div class="gc-item"><div class="gc-t">甲 <span class="seed">#' + seedA + '</span></div>' + pr.A.q + '<div class="gc-a">答：' + pr.A.a + '</div></div>' +
+      '<div class="gc-item"><div class="gc-t">乙 <span class="seed">#' + pr.seedB + '</span></div>' + pr.B.q + '<div class="gc-a">答：' + pr.B.a + '</div></div></div>' +
+      '<div class="gc-btn"><button class="reveal">揭曉：答案與差別</button><button class="close">收起</button></div><div class="gc-why">' + pr.why + '</div>';
+    gc.classList.add('on'); gc.removeAttribute('data-stale');
+    gc.querySelector('.reveal').onclick = function () { gc.classList.add('open'); this.style.display = 'none'; };
+    gc.querySelector('.close').onclick = function () { gc.classList.remove('on'); };
+    render(gc);
+  }
+
+  /* ══════════ 產生器卡片（L1、L2）══════════ */
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard'; card.setAttribute('data-key', tier + '.' + key); card.id = 'c-' + tier + '.' + key;
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="steps">📘 步驟</button>' + (G.CONTRAST && G.CONTRAST[tier + '.' + key] ? '<button class="contrast">⚖ 對照題</button>' : '') + '</div>' +
+      '<div class="gh"></div><div class="ga"></div><div class="gs"></div><div class="gc"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000), lastQ = '', cur = null, hl = 0;
+    function showHint() {
+      var gh = card.querySelector('.gh');
+      if (!cur.h1) { gh.innerHTML = '提示：' + cur.h; gh.classList.toggle('on'); render(gh); return; }
+      hl = Math.min(hl + 1, 2);
+      gh.innerHTML = '<div><b>提示 ①</b>（先想這是哪一型）：' + cur.h1 + (hl === 1 ? ' <button class="more">還是不會，再提示一層</button>' : '') + '</div>' + (hl === 2 ? '<div><b>提示 ②</b>（帶本題數字）：' + cur.h + '</div>' : '');
+      gh.classList.add('on'); var m = gh.querySelector('.more'); if (m) m.onclick = showHint; render(gh);
+    }
+    function load() {
+      var it = G[tier][key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G[tier][key](G.makeRng(seed)); }
+      lastQ = it.q; cur = it; hl = 0; var gcx = card.querySelector('.gc'); if (gcx && gcx.classList.contains('on')) gcx.setAttribute('data-stale', '1');
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '';
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.gs').innerHTML = stepsHtml(it);
+      card.querySelector('.steps').style.display = it.s ? '' : 'none';
+      card.querySelector('.seed').textContent = '#' + seed;
+      ['.gh', '.ga', '.gs'].forEach(function (c) { card.querySelector(c).classList.remove('on'); });
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { if (!cur.h1 || hl === 0) showHint(); else card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    card.querySelector('.steps').onclick = function () { card.querySelector('.gs').classList.toggle('on'); };
+    var cb = card.querySelector('.contrast'); if (cb) cb.onclick = function () { var gc = card.querySelector('.gc'); if (gc.classList.contains('on') && !gc.getAttribute('data-stale')) { gc.classList.remove('on'); return; } buildContrast(gc, tier, key, seed); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+
+  /* ══════════ L3 固定題的「類似題」══════════ */
+  function buildSim(fx, key) {
+    var box = document.createElement('div'); box.className = 'simbox';
+    box.innerHTML = '<div class="st"><span>🎲 類似題（同型換數字）</span><span class="seed"></span></div><div class="sq"></div>' +
+      '<div class="sbtn"><button class="again">🎲 再一題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="close">收起</button></div><div class="gh"></div><div class="ga"></div>';
+    var seed = 30000 + Math.floor(Math.random() * 90000), lastQ = '';
+    function load() {
+      var it = G.L3[key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G.L3[key](G.makeRng(seed)); }
+      lastQ = it.q;
+      box.querySelector('.sq').innerHTML = it.q; box.querySelector('.gh').innerHTML = '提示：' + it.h; box.querySelector('.ga').innerHTML = '答案：' + it.a;
+      box.querySelector('.seed').textContent = '#' + seed;
+      box.querySelector('.gh').classList.remove('on'); box.querySelector('.ga').classList.remove('on');
+      render(box);
+    }
+    box.querySelector('.again').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    box.querySelector('.hint').onclick = function () { box.querySelector('.gh').classList.toggle('on'); };
+    box.querySelector('.ans').onclick = function () { box.querySelector('.ga').classList.toggle('on'); };
+    box.querySelector('.close').onclick = function () { box.remove(); };
+    fx.appendChild(box); load();
+    return box;
+  }
+  document.querySelectorAll('.fx[data-gen]').forEach(function (fx) {
+    var key = fx.getAttribute('data-gen'); if (!G.L3 || !G.L3[key]) return;
+    var b = document.createElement('button'); b.textContent = '🎲 類似題'; b.className = 'simbtn';
+    b.onclick = function () { var sb = fx.querySelector('.simbox'); if (sb) sb.querySelector('.again').click(); else buildSim(fx, key); };
+    var anchor = fx.querySelector('button[data-t="s"]');
+    anchor.parentNode.insertBefore(document.createTextNode(' '), anchor.nextSibling);
+    anchor.parentNode.insertBefore(b, anchor.nextSibling.nextSibling);
+  });
+
+  /* ══════════ 題目小工具 ══════════ */
+  function item(t, k, seed) { return G[t][k](G.makeRng(seed)); }
+  function confHtml() { return '<span class="conf"><span class="cl">作答後、看答案前：</span><button data-c="h">有把握</button><button data-c="m">不確定</button><button data-c="l">猜的</button></span>'; }
+  function markHtml() { return '<span class="mark"><button data-m="1">○ 對</button><button data-m="0">✗ 錯</button></span><span class="cause"><span class="cl">錯因：</span><button data-e="start">不會下手</button><button data-e="formula">公式用錯</button><button data-e="calc">計算錯</button><button data-e="read">看錯題</button></span>'; }
+  function wireConfMark(li) {
+    li.querySelectorAll('.conf button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-conf', b.getAttribute('data-c')); li.querySelectorAll('.conf button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+    li.querySelectorAll('.mark button').forEach(function (b) {
+      b.onclick = function () { var ok = b.getAttribute('data-m') === '1'; var was = li.classList.contains(ok ? 'ok' : 'ng'); li.classList.remove('ok', 'ng'); if (!was) li.classList.add(ok ? 'ok' : 'ng'); if (!li.classList.contains('ng')) { li.removeAttribute('data-cause'); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.remove('sel'); }); } };
+    });
+    li.querySelectorAll('.cause button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-cause', b.getAttribute('data-e')); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+  }
+  function unrated(root) { return Array.prototype.filter.call(root.querySelectorAll('li.qi'), function (li) { return !li.getAttribute('data-conf'); }).length; }
+
+  /* ══════════ 檢測題組（固定種子可列印；混合／計時／換組／信心／錯因／記錄）══════════ */
+  function secName(box) {
+    var el = box.previousElementSibling;
+    while (el && !(el.tagName === 'H3' && el.classList.contains('sec'))) el = el.previousElementSibling;
+    return el ? el.textContent.replace(/（.*?）/g, '').trim() : box.getAttribute('data-tier');
+  }
+  function expandKeys(box) {
+    var tier = box.getAttribute('data-tier'), out = [];
+    box.getAttribute('data-keys').split(',').forEach(function (s) {
+      s = s.trim(); var t = tier, k = s;
+      if (s.indexOf(':') > 0) { t = s.split(':')[0]; k = s.split(':')[1]; } else if (s.indexOf('.') > 0) { t = s.split('.')[0]; k = s.split('.')[1]; }
+      if (k === '*') G.META[t].forEach(function (p) { out.push({ t: t, k: p[0] }); }); else out.push({ t: t, k: k });
+    });
+    return out;
+  }
+  var TITLE = document.querySelector('header.hd h1').textContent;
+  function printSet(box) {
+    var area = document.getElementById('printArea');
+    var lis = box.querySelectorAll('ol > li'), showAns = box.classList.contains('show');
+    var html = '<h1>' + esc(TITLE) + '｜' + esc(box._set) + '　第 ' + box._round + ' 組（#' + box._base + '）</h1><p class="pmeta">姓名：＿＿＿＿＿　日期：＿＿＿＿　得分：＿＿／' + lis.length + '</p><ol>';
+    lis.forEach(function (li) { html += '<li>' + li.querySelector('.q').innerHTML + '</li>'; });
+    html += '</ol>';
+    if (showAns) { html += '<h2>答案</h2><ol>'; lis.forEach(function (li) { html += '<li>' + li.querySelector('.fa').innerHTML.replace(/^（答：/, '').replace(/）$/, '') + '</li>'; }); html += '</ol>'; }
+    area.innerHTML = html; render(area);
+    document.body.classList.add('print-one');
+    var done = function () { document.body.classList.remove('print-one'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); setTimeout(done, 3000);
+    window.print();
+  }
+  function fmtClock(s) { var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function buildSet(box, base, round) {
+    var keys = expandKeys(box), n = parseInt(box.getAttribute('data-n') || '10', 10), mixed = box.hasAttribute('data-mixed'), timer = parseInt(box.getAttribute('data-timer') || '0', 10);
+    if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    box._base = base; box._round = round; box._items = []; box._secs = 0;
+    if (mixed) keys = G.makeRng(base + 1).shuffle(keys);
+    var label = timer ? '段考模擬卷 ' + n + ' 題' : '檢測 ' + n + ' 題';
+    var html = '<div class="fix-btns"><b>' + label + '</b><span class="fix-meta">第 ' + round + ' 組・#' + base + (mixed ? '・混合打亂' : '') + '</span>' +
+      (timer ? '<button class="tstart">⏱ 開始計時 ' + timer + ' 分</button><span class="tclock"></span>' : '') +
+      '<button class="show">' + (timer ? '交卷・看答案' : '顯示答案') + '</button><button class="print">🖨 列印本組</button><button class="regen">🔁 換一組類似題</button>' + (round > 1 ? '<button class="orig">回到原始題組</button>' : '') + '</div>' +
+      '<div class="fix-note"></div><ol>';
+    var seen = {};
+    for (var i = 0; i < n; i++) {
+      var kk = keys[i % keys.length], seed = base + i * 37, it = item(kk.t, kk.k, seed), tries = 0;
+      while (seen[it.q] && tries++ < 12) { seed += 1000003 * tries; it = item(kk.t, kk.k, seed); }
+      seen[it.q] = 1;
+      box._items.push({ t: kk.t, k: kk.k, seed: seed });
+      html += '<li class="qi"><span class="q">' + it.q + '</span>' + confHtml() + '<span class="fa">（答：' + it.a + '）</span>' + markHtml() + '</li>';
+    }
+    html += '</ol><div class="fix-foot"><button class="submit">📝 記錄本次結果</button><span>做完每題先按「有把握／不確定／猜的」，全部評完才能看答案；對完把每題標 ○／✗，錯的選錯因，再按「記錄」。</span></div><div class="fix-result"></div>';
+    box.classList.remove('show'); box.innerHTML = html; box._set = secName(box);
+    var note = box.querySelector('.fix-note');
+    box.querySelector('.show').onclick = function () {
+      if (box.classList.contains('show')) { box.classList.remove('show'); this.textContent = timer ? '交卷・看答案' : '顯示答案'; return; }
+      var u = unrated(box);
+      if (u) { note.textContent = '還有 ' + u + ' 題沒評信心。先寫下答案、按「有把握／不確定／猜的」，再看答案——這一步是為了讓你知道自己「以為會」和「真的會」差多少。'; note.classList.add('on'); return; }
+      note.classList.remove('on'); box.classList.add('show'); this.textContent = '隱藏答案';
+      if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    };
+    box.querySelector('.print').onclick = function () { printSet(box); };
+    box.querySelector('.regen').onclick = function () { buildSet(box, 10000 + Math.floor(Math.random() * 89999), round + 1); box.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    var ob = box.querySelector('.orig'); if (ob) ob.onclick = function () { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); };
+    var ts = box.querySelector('.tstart');
+    if (ts) ts.onclick = function () {
+      if (box._tick) return;
+      var left = timer * 60, clock = box.querySelector('.tclock'); ts.disabled = true; clock.textContent = fmtClock(left);
+      box._tick = setInterval(function () { left--; box._secs++; clock.textContent = fmtClock(Math.max(left, 0)); if (left <= 0) { clearInterval(box._tick); box._tick = null; clock.textContent = '時間到'; } }, 1000);
+    };
+    box.querySelectorAll('li.qi').forEach(wireConfMark);
+    box.querySelector('.submit').onclick = function () { submitSet(box); };
+    render(box);
+  }
+  function submitSet(box) {
+    if (!box.classList.contains('show')) { var nt = box.querySelector('.fix-note'); nt.textContent = '先看答案、對完再記錄。'; nt.classList.add('on'); return; }
+    var lis = box.querySelectorAll('ol > li.qi'), items = [], unmarked = 0;
+    lis.forEach(function (li, i) {
+      var wrong = li.classList.contains('ng'); if (!li.classList.contains('ok') && !wrong) unmarked++;
+      var b = box._items[i]; items.push({ t: b.t, k: b.k, seed: b.seed, wrong: wrong, conf: li.getAttribute('data-conf') || null, cause: wrong ? (li.getAttribute('data-cause') || null) : null, no: i + 1 });
+    });
+    var at = { t: Date.now(), tier: box.getAttribute('data-tier'), set: box._set, base: box._base, round: box._round, items: items.map(function (x) { return { t: x.t, k: x.k, seed: x.seed, wrong: x.wrong, conf: x.conf, cause: x.cause }; }) };
+    if (box._secs) at.secs = box._secs;
+    REC.attempts.push(at);
+    var wrong = items.filter(function (x) { return x.wrong; }), hc = wrong.filter(function (x) { return x.conf === 'h'; }), gs = items.filter(function (x) { return !x.wrong && x.conf === 'l'; });
+    var res = box.querySelector('.fix-result');
+    if (box.getAttribute('data-tier') === 'L0') {
+      saveRec();
+      var need = {}; wrong.concat(gs).forEach(function (x) { need[x.k] = 1; });
+      var h0 = '<b>先備診斷 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (gs.length ? '（猜對 ' + gs.length + ' 題，也算要複習）' : '') + '。';
+      if (!Object.keys(need).length) h0 += '先備知識都在，直接從 L1 開始。';
+      else {
+        h0 += '<br>這章會一直用到下面這些，建議先花 20 分鐘複習再開始：<ul class="pre-list">';
+        Object.keys(need).forEach(function (k) { var pq = G.PREREQ[k] || { txt: labelOf['L0.' + k] || k, link: null }; h0 += '<li>' + esc(pq.txt) + (pq.link ? '　<a href=' + JSON.stringify(pq.link) + '>→ 去那一章的 L1 練</a>' : '　（國中內容：翻課本或問老師，這裡的卡片可先多練幾題）') + '　' + '<span class="golist" data-k="' + k + '"></span></li>'; });
+        h0 += '</ul>';
+      }
+      res.innerHTML = h0; res.classList.add('on');
+      res.querySelectorAll('.golist').forEach(function (g) { g.appendChild(goBtn('L0', g.getAttribute('data-k'))); });
+      renderRec(); return;
+    }
+    wrong.forEach(function (x) { addWB(x, x.conf === 'h' ? 'hc' : 'wrong'); }); gs.forEach(function (x) { addWB(x, 'guess'); });
+    saveRec();
+    var html = '<b>本次 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (unmarked ? '（' + unmarked + ' 題未標記，視為答對）' : '') + (box._secs ? '，用時 ' + fmtClock(box._secs) : '') + '。';
+    if (hc.length) html += '<br><span class="hcw">⚠ 有把握卻答錯 ' + hc.length + ' 題（第 ' + hc.map(function (x) { return x.no; }).join('、') + ' 題）——這種「以為會」最危險，已排到錯題本最前面。</span>';
+    if (gs.length) html += '<br>猜對 ' + gs.length + ' 題（第 ' + gs.map(function (x) { return x.no; }).join('、') + ' 題）不算通過，也放進錯題本。';
+    if (!wrong.length && !gs.length) {
+      var unsure = items.filter(function (x) { return x.conf === 'm'; }).length;
+      html += '<br>全對！' + (unsure ? '有 ' + unsure + ' 題你標「不確定」——答對但沒把握的型，再多練幾題會更穩。' : '而且每題都有把握。') + (box._secs ? '' : masteryAdvice(box));
+    }
+    else {
+      var readK = {}, drillK = {};
+      wrong.forEach(function (x) { var id = x.t + '.' + x.k; if (x.cause && READ_CAUSE[x.cause]) readK[id] = x; else drillK[id] = x; });
+      gs.forEach(function (x) { var id = x.t + '.' + x.k; if (!readK[id]) drillK[id] = x; });
+      html += '<br>錯的題型：' + wrong.concat(gs).map(function (x) { return (labelOf[x.t + '.' + x.k] || x.k) + '（第 ' + x.no + ' 題' + (x.cause ? '，' + CAUSE[x.cause] : '') + '）'; }).join('、') + '。';
+      if (Object.keys(readK).length) html += '<br><b>回頭讀</b>（不會下手／公式用錯：先看該小節的「先要會」，再練）：<span class="golist read"></span>';
+      if (Object.keys(drillK).length) html += '<br><b>多算幾題</b>（計算錯／看錯題／猜對：直接跳到卡片出新題）：<span class="golist drill"></span>';
+      html += '<br>這些題會出現在頁首的「📅 今日複習」：明天重做原題＋一題類似題，連續兩次全對才從錯題本畢業。';
+      res.innerHTML = html; res.classList.add('on');
+      var gl = res.querySelector('.golist.read'); if (gl) Object.keys(readK).forEach(function (id) { var x = readK[id]; gl.appendChild(goBtn(x.t, x.k, 'read')); gl.appendChild(goBtn(x.t, x.k)); });
+      var gd = res.querySelector('.golist.drill'); if (gd) Object.keys(drillK).forEach(function (id) { var x = drillK[id]; gd.appendChild(goBtn(x.t, x.k)); });
+      renderRec(); renderReview(); return;
+    }
+    res.innerHTML = html; res.classList.add('on');
+    renderRec(); renderReview(); renderMastery(box);
+  }
+  document.querySelectorAll('.fixset').forEach(function (box) { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); });
+
+  /* ══════════ 精熟加時間條件（Bloom 精熟學習＋間隔）：兩輪全對且無猜對、且不在同一天 ══════════ */
+  function dayKey(t) { var d = new Date(t); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+  function masteryOf(setName) {
+    var clean = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName && at.items.length && at.items.every(function (x) { return !x.wrong && x.conf !== 'l'; }); });
+    var days = []; clean.forEach(function (at) { var d = dayKey(at.t); if (days.indexOf(d) < 0) days.push(d); });
+    var last = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName; }).slice(-1)[0];
+    return { cleanRounds: clean.length, days: days, mastered: days.length >= 2, today: days.indexOf(dayKey(Date.now())) >= 0, lastCleanToday: !!(last && clean.indexOf(last) >= 0 && dayKey(last.t) === dayKey(Date.now())) };
+  }
+  function masteryAdvice(box) {
+    var m = masteryOf(box._set);
+    if (m.mastered) return '這一組已達精熟（' + m.days.slice(0, 2).join('、') + ' 兩天各全對一輪）。再練同型效益不高，去做混合檢測或下一級。';
+    if (m.today) return '今天已全對一輪。第二輪要<b>隔天</b>做才算通過——記憶要經過遺忘再撈回來才牢，今天先去別的小節。';
+    return '明天再用「🔁 換一組類似題」測一輪，兩天各全對一輪（沒有猜對）就通過。';
+  }
+  function renderMastery(box) {
+    if (box.getAttribute('data-tier') === 'L0' || box.hasAttribute('data-timer')) return;
+    var el = box.querySelector('.fix-status'); if (!el) { el = document.createElement('div'); el.className = 'fix-status'; box.querySelector('.fix-btns').appendChild(el); }
+    var m = masteryOf(box._set);
+    el.className = 'fix-status' + (m.mastered ? ' ok' : m.cleanRounds ? ' half' : '');
+    el.textContent = m.mastered ? '✅ 已精熟（' + m.days.slice(0, 2).join('、') + '）' : m.cleanRounds ? '第 1 輪全對（' + m.days[0] + '），隔天再全對一輪就精熟' : '通過標準：兩天各全對一輪（不含猜對）';
+  }
+  document.querySelectorAll('.fixset').forEach(renderMastery);
+
+  /* ══════════ 錯題本與間隔複習 ══════════ */
+  function addWB(x, reason) {
+    var id = x.t + '.' + x.k + '#' + x.seed, e = REC.wb[id];
+    if (e && e.done) e.done = false;
+    if (!e) e = REC.wb[id] = { t: x.t, k: x.k, seed: x.seed, added: Date.now(), hist: [] };
+    e.reason = reason; e.stage = 0; e.due = Date.now() + INTERVAL[0] * DAY; e.hist.push({ t: Date.now(), r: reason });
+  }
+  function wbLists() {
+    var now = Date.now(), due = [], later = [], done = 0;
+    Object.keys(REC.wb).forEach(function (id) { var e = REC.wb[id]; e.id = id; if (e.done) { done++; return; } (e.due <= now ? due : later).push(e); });
+    var pri = { hc: 0, wrong: 1, guess: 2 };
+    due.sort(function (a, b) { return (pri[a.reason] - pri[b.reason]) || (a.due - b.due); });
+    later.sort(function (a, b) { return a.due - b.due; });
+    return { due: due, later: later, done: done };
+  }
+  var rv = document.getElementById('review');
+  function fmtDate(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+  function fmtDay(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function renderReview() {
+    if (!rv) return;
+    var L = wbLists(), sum = rv.querySelector('.rv-sum'), body = rv.querySelector('.rv-body');
+    var total = L.due.length + L.later.length;
+    if (!total && !L.done) { sum.textContent = '錯題本還是空的。檢測記錄後，錯的題與猜對的題會自動進來，隔天開始排複習。'; body.innerHTML = ''; return; }
+    sum.textContent = '錯題本 ' + total + ' 題：今天到期 ' + L.due.length + ' 題' + (L.later.length ? '，之後 ' + L.later.length + ' 題（最近 ' + fmtDay(L.later[0].due) + '）' : '') + (L.done ? '；已畢業 ' + L.done + ' 題' : '') + '。';
+    if (!body.hasAttribute('data-open')) { body.innerHTML = ''; return; }
+    var html = '';
+    if (!L.due.length) html += '<p class="note-sm">今天沒有到期的題。' + (L.later.length ? '下一批在 ' + fmtDay(L.later[0].due) + '。' : '') + '</p>';
+    else html += '<p class="note-sm">每題先重做<b>原題</b>（先評信心再看答案），對了再做一題<b>同型類似題</b>；兩題都對算過一關，連續兩關全對就畢業，錯一次就回到隔天重測。有把握卻錯的排最前面。</p>';
+    L.due.forEach(function (e) {
+      var it = item(e.t, e.k, e.seed);
+      html += '<div class="rvi" data-id="' + esc(e.id) + '"><div class="rvh"><b>' + esc(labelOf[e.t + '.' + e.k] || e.k) + '</b><span class="tag' + (e.reason === 'hc' ? ' hc' : '') + '">' + (e.reason === 'hc' ? '有把握卻錯' : e.reason === 'guess' ? '猜對' : '答錯') + '</span><span class="rvm">第 ' + (e.stage + 1) + ' 關・' + e.t + '・#' + e.seed + '</span></div>' +
+        '<ol><li class="qi orig"><span class="rl">原題</span><span class="q">' + it.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + it.a + '）</span>' + markHtml() + (it.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(it) + '</div>' : '') + '</li></ol></div>';
+    });
+    if (L.later.length) html += '<details class="rv-later"><summary>之後到期的 ' + L.later.length + ' 題</summary><ul>' + L.later.map(function (e) { return '<li>' + fmtDay(e.due) + '　' + esc(labelOf[e.t + '.' + e.k] || e.k) + '（第 ' + (e.stage + 1) + ' 關）</li>'; }).join('') + '</ul></details>';
+    if (L.due.length) html += '<div class="fix-foot"><button class="rvsubmit">📝 記錄複習結果</button><span>沒標記的題不會被記錄，下次再做。</span></div><div class="fix-result rvres"></div>';
+    body.innerHTML = html;
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var li = blk.querySelector('li.orig'); wireConfMark(li);
+      li.querySelector('.rvans').onclick = function () {
+        if (!li.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; }
+        li.classList.add('show'); this.textContent = '答案';
+      };
+      var osb = li.querySelector('.rvsteps'); if (osb) osb.onclick = function () { if (!li.classList.contains('show')) { li.querySelector('.rvans').click(); if (!li.classList.contains('show')) return; } li.querySelector('.gs').classList.toggle('on'); };
+      li.querySelectorAll('.mark button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (li.classList.contains('ok') && !blk.querySelector('li.vari')) {
+            var e = REC.wb[blk.getAttribute('data-id')], vs = (e.seed * 7 + 13 + Math.floor(Math.random() * 9000)) % 900000 + 1, vit = item(e.t, e.k, vs), tries = 0;
+            while (vit.q === item(e.t, e.k, e.seed).q && tries++ < 8) { vs = Math.floor(Math.random() * 900000) + 1; vit = item(e.t, e.k, vs); }
+            var v = document.createElement('li'); v.className = 'qi vari'; v.setAttribute('data-seed', vs);
+            v.innerHTML = '<span class="rl">類似題</span><span class="q">' + vit.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + vit.a + '）</span>' + markHtml() + (vit.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(vit) + '</div>' : '');
+            var vsb = v.querySelector('.rvsteps'); if (vsb) vsb.onclick = function () { v.querySelector('.gs').classList.toggle('on'); };
+            blk.querySelector('ol').appendChild(v); wireConfMark(v);
+            v.querySelector('.rvans').onclick = function () { if (!v.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; } v.classList.add('show'); this.textContent = '答案'; };
+            render(v);
+          }
+        });
+      });
+    });
+    var sb = body.querySelector('.rvsubmit'); if (sb) sb.onclick = submitReview;
+    render(body);
+  }
+  function submitReview() {
+    var body = rv.querySelector('.rv-body'), items = [], passed = 0, failed = 0, skipped = 0, now = Date.now();
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var e = REC.wb[blk.getAttribute('data-id')], o = blk.querySelector('li.orig'), v = blk.querySelector('li.vari');
+      var oOk = o.classList.contains('ok'), oNg = o.classList.contains('ng');
+      if (!oOk && !oNg) { skipped++; return; }
+      var rec = { t: e.t, k: e.k, seed: e.seed, wrong: oNg, conf: o.getAttribute('data-conf') || null, cause: oNg ? (o.getAttribute('data-cause') || null) : null, rv: 1 };
+      items.push(rec);
+      var pass = false;
+      if (oOk && v) {
+        var vOk = v.classList.contains('ok'), vNg = v.classList.contains('ng');
+        if (!vOk && !vNg) { skipped++; items.pop(); return; }
+        items.push({ t: e.t, k: e.k, seed: parseInt(v.getAttribute('data-seed'), 10), wrong: vNg, conf: v.getAttribute('data-conf') || null, cause: vNg ? (v.getAttribute('data-cause') || null) : null, rv: 1 });
+        pass = vOk;
+      } else if (oOk && !v) { skipped++; items.pop(); return; }
+      e.hist.push({ t: now, pass: pass });
+      if (pass) { e.stage = (e.stage || 0) + 1; if (e.stage >= 2) { e.done = true; e.due = null; } else e.due = now + INTERVAL[Math.min(e.stage, INTERVAL.length - 1)] * DAY; passed++; }
+      else { e.stage = 0; e.due = now + INTERVAL[0] * DAY; failed++; }
+    });
+    if (items.length) REC.attempts.push({ t: now, kind: 'review', tier: 'rv', set: '今日複習', items: items });
+    saveRec();
+    var res = body.querySelector('.rvres'); if (res) { res.innerHTML = '過關 ' + passed + ' 題、要重來 ' + failed + ' 題' + (skipped ? '、未完成 ' + skipped + ' 題（下次再做）' : '') + '。畢業的題不會再出現；重來的題明天再測。'; res.classList.add('on'); }
+    renderRec(); setTimeout(renderReview, 1200);
+  }
+  if (rv) {
+    rv.querySelector('.rv-toggle').onclick = function () { var b = rv.querySelector('.rv-body'); if (b.hasAttribute('data-open')) { b.removeAttribute('data-open'); this.textContent = '開始複習'; } else { b.setAttribute('data-open', '1'); this.textContent = '收起'; } renderReview(); };
+    renderReview();
+  }
+
+  /* ══════════ 我的練習紀錄（分析面板）══════════ */
+  var mr = document.getElementById('myrec');
+  function renderRec() {
+    if (!mr) return;
+    var st = stats(), keys = Object.keys(st.byKey), body = mr.querySelector('.mr-body'), sum = mr.querySelector('.mr-sum');
+    if (!REC.attempts.length) { sum.textContent = '還沒有紀錄。做完任何一組檢測、標記對錯並按「記錄」，這裡就會出現你的弱點分析。'; body.innerHTML = ''; return; }
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; keys.forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    sum.textContent = '共 ' + totN + ' 題，答對率 ' + Math.round(100 * (totN - totW) / totN) + '%；有把握卻錯 ' + totHc + ' 題、猜對 ' + totGs + ' 題。';
+    var weak = weakList(st.byKey), html = '';
+    html += '<div class="mr-advice"><b>優先補強：</b>' + (weak.length ? '' : '目前沒有明顯弱點，繼續換組檢測維持手感。') + '<span class="golist"></span></div>';
+    html += '<table class="mr-t"><tr><th>題型</th><th>級</th><th>做過</th><th>錯</th><th>有把握卻錯</th><th>猜對</th><th>主要錯因</th><th>最近 5 次</th><th></th></tr>';
+    keys.map(function (k) { return st.byKey[k]; }).sort(function (a, b) { return (b.hc - a.hc) || ((b.w + b.gs) / b.n - (a.w + a.gs) / a.n) || (b.n - a.n); }).forEach(function (o) {
+      var isWeak = weak.indexOf(o) >= 0, mc = mainCause(o);
+      html += '<tr class="' + (isWeak ? 'weak' : '') + '"><td>' + esc(labelOf[o.tier + '.' + o.key] || o.key) + '</td><td>' + o.tier + '</td><td>' + o.n + '</td><td>' + o.w + '</td><td>' + (o.hc ? '<b class="hcw">' + o.hc + '</b>' : '0') + '</td><td>' + o.gs + '</td><td>' + (mc ? CAUSE[mc] : '–') + '</td><td>' + o.last.slice(-5).map(function (w) { return w ? '✗' : '○'; }).join(' ') + '</td><td class="gocell" data-tier="' + o.tier + '" data-key="' + o.key + '" data-mode="' + (mc && READ_CAUSE[mc] ? 'read' : 'drill') + '"></td></tr>';
+    });
+    html += '</table>';
+    html += '<table class="mr-t"><tr><th>檢測組</th><th>次數</th><th>最近成績</th></tr>';
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s]; html += '<tr><td>' + esc(s) + '</td><td>' + o.rounds + '</td><td>' + o.hist.slice(-4).map(function (h) { return fmtDate(h.t) + '：' + (h.n - h.w) + '／' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + '</td></tr>'; });
+    html += '</table>';
+    body.innerHTML = html;
+    var gl = body.querySelector('.golist'); weak.slice(0, 6).forEach(function (o) { var mc = mainCause(o); gl.appendChild(goBtn(o.tier, o.key, mc && READ_CAUSE[mc] ? 'read' : 'drill')); });
+    body.querySelectorAll('.gocell').forEach(function (td) { var b = goBtn(td.getAttribute('data-tier'), td.getAttribute('data-key'), td.getAttribute('data-mode')); b.textContent = td.getAttribute('data-mode') === 'read' ? '回頭讀' : '回頭練'; td.appendChild(b); });
+  }
+  function summaryText() {
+    var st = stats(), L = wbLists(), lines = [];
+    lines.push('【' + TITLE + '】練習紀錄摘要　' + fmtDate(Date.now()));
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; Object.keys(st.byKey).forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    lines.push('總計：' + totN + ' 題，答對率 ' + (totN ? Math.round(100 * (totN - totW) / totN) : 0) + '%，有把握卻錯 ' + totHc + '，猜對 ' + totGs + '；錯題本 ' + (L.due.length + L.later.length) + ' 題（到期 ' + L.due.length + '、畢業 ' + L.done + '）');
+    lines.push('各檢測組：');
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s], m = masteryOf(s); lines.push('　' + s + '：' + o.rounds + ' 次，最近 ' + o.hist.slice(-3).map(function (h) { return fmtDate(h.t) + ' ' + (h.n - h.w) + '/' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + (m.mastered ? '　✅精熟' : '')); });
+    var weak = weakList(st.byKey);
+    lines.push('優先補強：' + (weak.length ? weak.slice(0, 8).map(function (o) { var mc = mainCause(o); return (labelOf[o.tier + '.' + o.key] || o.key) + '（' + o.w + '/' + o.n + (o.hc ? '，有把握卻錯 ' + o.hc : '') + (mc ? '，' + CAUSE[mc] : '') + '）'; }).join('、') : '無'));
+    return lines.join('\n');
+  }
+  function copyText(txt, btn) {
+    var done = function () { var t0 = btn.textContent; btn.textContent = '已複製'; setTimeout(function () { btn.textContent = t0; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () { window.prompt('請手動複製：', txt); });
+    else window.prompt('請手動複製：', txt);
+  }
+  if (mr) {
+    mr.querySelector('.mr-copy').onclick = function () { copyText(summaryText(), this); };
+    mr.querySelector('.mr-export').onclick = function () {
+      var blob = new Blob([JSON.stringify(REC)], { type: 'application/json' }), a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'practice-' + CH + '-' + dayKey(Date.now()) + '.json'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    };
+    mr.querySelector('.mr-import').onclick = function () { mr.querySelector('.mr-file').click(); };
+    mr.querySelector('.mr-file').onchange = function () {
+      var f = this.files[0]; if (!f) return; var rd = new FileReader();
+      rd.onload = function () { try { var r = JSON.parse(rd.result); if (!r || !r.attempts) throw 0; if (!confirm('匯入 ' + r.attempts.length + ' 筆檢測紀錄，並覆蓋這台裝置目前的紀錄？')) return; if (!r.wb) r.wb = {}; r.v = 2; REC = r; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } catch (e) { alert('這不是本練習本匯出的紀錄檔。'); } };
+      rd.readAsText(f); this.value = '';
+    };
+    mr.querySelector('.mr-toggle').onclick = function () { var b = mr.querySelector('.mr-body'); b.hidden = !b.hidden; this.textContent = b.hidden ? '展開' : '收起'; };
+    mr.querySelector('.mr-clear').onclick = function () { if (confirm('確定清除這台裝置上的所有練習紀錄與錯題本？')) { REC = { v: 2, attempts: [], wb: {} }; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } };
+    renderRec();
+  }
+
+  /* 固定題卡（L3–L5）的答案／詳解 */
+  document.querySelectorAll('.fx button[data-t]').forEach(function (b) {
+    b.onclick = function () { var fx = b.closest('.fx'), t = b.getAttribute('data-t'); fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on'); };
+  });
+  (function () {
+    var h = decodeURIComponent(location.hash || '');
+    if (h.indexOf('#c-') === 0) { var el = document.getElementById(h.slice(1)); if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }, 300); }
+  })();
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+<script src="../../assets/practice-feedback.js"></script>
+<div id="printArea"></div>
+</body>
+</html>
