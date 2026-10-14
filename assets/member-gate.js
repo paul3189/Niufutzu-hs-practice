@@ -69,9 +69,20 @@
           '<div class="mg-note">開通後重新整理這頁即可；已付款但還沒開通，請聯絡老師。</div></div>');
         $("mgOut").addEventListener("click", function () { A.signOut(auth).then(function () { loginUI(); }); });
       }
-      function render(doc) {
+      /* 會員內容浮水印（2026-10-14）：全頁很淡的斜向「登入 Email＋日期」，螢幕與列印都看得到；pointer-events:none 不擋作答。
+       * 擋不住截圖，但外流時查得到是誰的帳號。 */
+      function watermark(email) {
+        var d = new Date(), day = d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+        var x = ((email || "") + "  " + day).replace(/[<>&"']/g, "");
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="460" height="300"><text x="20" y="170" transform="rotate(-24 230 150)" font-family="sans-serif" font-size="17" fill="#8a4450" fill-opacity="0.09">' + x + '</text></svg>';
+        return '<div class="mg-wm" aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:2147483646;background:url(&quot;data:image/svg+xml;utf8,' + encodeURIComponent(svg) + '&quot;) repeat;-webkit-print-color-adjust:exact;print-color-adjust:exact"></div>' +
+          '<div class="mg-wm-foot" aria-hidden="true" style="position:fixed;left:0;right:0;bottom:0;text-align:center;font:10px sans-serif;color:#8a4450;opacity:.55;pointer-events:none;z-index:2147483646">© 牛夫子數學｜僅供 ' + x + ' 本人學習使用，請勿轉傳</div>';
+      }
+      function render(doc, email) {
         var html = doc.html || "";
         if (doc.js) html = html.replace(/<script src="practice-gen\.js[^"]*"><\/script>/, function () { return "<script>" + doc.js.replace(/<\/script/gi, "<\\/script") + "</script>"; });
+        var wm = watermark(email);
+        html = /<\/body>/i.test(html) ? html.replace(/<\/body>/i, wm + "</body>") : html + wm;
         document.open(); document.write(html); document.close();
       }
       function load(u) {
@@ -83,7 +94,7 @@
           if (!(until > Date.now())) { noAccess(u, until ? new Date(until).toLocaleDateString("zh-TW") : ""); return; }
           return F.getDoc(F.doc(fs, "content", "member", "practice", ch)).then(function (d) {
             if (!d.exists()) { box('<div class="mg-card">這一章的會員內容還沒上架，請聯絡老師。</div>'); return; }
-            render(d.data());
+            render(d.data(), email);
           });
         }).catch(function (e) { box('<div class="mg-card">讀取失敗：' + esc(friendly(e)) + ' <button type="button" class="mg-ghost" onclick="location.reload()">重試</button></div>'); });
       }
