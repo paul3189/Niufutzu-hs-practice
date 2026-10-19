@@ -89,8 +89,10 @@
         box('<div class="mg-card">⏳ 載入會員內容…</div>');
         var email = (u.email || "").toLowerCase();
         F.getDoc(F.doc(fs, "entitlements", email)).then(function (s) {
-          var mem = s.exists() ? ((s.data().products || {}).member || null) : null;
-          var until = mem && mem.until && mem.until.toMillis ? mem.until.toMillis() : 0;
+          /* 會員（含 7 天體驗、班級版學生）或班級老師（products.teacher，備課用；2026-10-19）期內都放行，取較晚的到期日 */
+          var prods = s.exists() ? (s.data().products || {}) : {};
+          var ms = function (p) { return p && p.until && p.until.toMillis ? p.until.toMillis() : 0; };
+          var until = Math.max(ms(prods.member), ms(prods.teacher));
           if (!(until > Date.now())) { noAccess(u, until ? new Date(until).toLocaleDateString("zh-TW") : ""); return; }
           return F.getDoc(F.doc(fs, "content", "member", "practice", ch)).then(function (d) {
             if (!d.exists()) { box('<div class="mg-card">這一章的會員內容還沒上架，請聯絡老師。</div>'); return; }
