@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一章 數列與函數的極限 ── 分級練習本｜高三數甲</title>
+<link rel="stylesheet" href="../../assets/katex/katex.min.css">
+<script defer src="../../assets/katex/katex.min.js"></script>
+<script defer src="../../assets/katex/auto-render.min.js"></script>
+<script src="practice-gen.js?v=20261023"></script>
+<style>
+:root{--ink:#2b2b2b;--muted:#6b6b6b;--line:#e6e6e6;--bg:#fbfbfb;
+  --l1:#2e7d4f;--l1b:#dff3e6;--l2:#1f5fa8;--l2b:#dfe9f7;--l3:#b3641a;--l3b:#fbe9d6;--l4:#6a3ea1;--l4b:#ece2f7;--l5:#8f2b44;--l5b:#f8e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+header.hd{background:linear-gradient(135deg,#fff5f7,#fff);border:1px solid #f6d2da;border-radius:16px;padding:22px 26px;margin-bottom:22px}
+header.hd h1{margin:0;font-size:1.6rem;color:#8a4450}
+header.hd .sub{color:var(--muted);margin-top:4px}
+.hd-books{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.hd-books a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 16px;border-radius:999px;border:1.5px solid #f6d2da;background:#fff;color:#8a4450}
+.hd-books a:hover{background:#fceff1}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 8px}
+.tiers a{display:block;text-decoration:none;color:var(--ink);border-radius:12px;padding:12px 10px;border:1.5px solid var(--line);background:#fff;text-align:center}
+.tiers a b{display:block;font-size:1.05rem}
+.tiers a small{color:var(--muted)}
+.tiers a.t1{border-color:var(--l1);background:var(--l1b)}.tiers a.t2{border-color:var(--l2);background:var(--l2b)}
+.tiers a.t3{border-color:var(--l3);background:var(--l3b)}.tiers a.t4{border-color:var(--l4);background:var(--l4b)}.tiers a.t5{border-color:var(--l5);background:var(--l5b)}
+@media(max-width:720px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0 26px}
+.howto ol{margin:6px 0 0 18px;padding:0}
+.howto li{margin:4px 0}
+section.tier{margin:36px 0 0;padding-top:8px;border-top:3px solid var(--line)}
+section.tier>h2{font-size:1.35rem;margin:10px 0 4px;display:flex;align-items:center;gap:10px}
+section.tier>h2 .tag{font-size:.8rem;padding:2px 10px;border-radius:999px;color:#fff}
+#L1>h2 .tag{background:var(--l1)}#L2>h2 .tag{background:var(--l2)}#L3>h2 .tag{background:var(--l3)}#L4>h2 .tag{background:var(--l4)}#L5>h2 .tag{background:var(--l5)}
+.goal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0 18px}
+.goal div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.goal div b{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+@media(max-width:720px){.goal{grid-template-columns:1fr}}
+h3.sec{font-size:1.08rem;margin:26px 0 8px;padding-left:10px;border-left:5px solid #ccc}
+#L1 h3.sec{border-color:var(--l1)}#L2 h3.sec{border-color:var(--l2)}
+.must{background:#fff;border:1px dashed #bbb;border-radius:10px;padding:10px 14px;margin:6px 0 12px;font-size:.93rem}
+.must b{color:var(--l1)}
+#L2 .must b{color:var(--l2)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.gen-grid{grid-template-columns:1fr}}
+.gcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;display:flex;flex-direction:column}
+.gcard .gt{font-weight:700;font-size:.92rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.gcard .gt span.seed{font-weight:400;font-size:.75rem;color:#aaa}
+.gcard .gq{margin:8px 0 6px;min-height:52px}
+.gcard .gbtn{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.gcard button,.fx button,.fix-btns button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.gcard button:hover,.fx button:hover,.fix-btns button:hover{background:#f0f0f0}
+.gcard button.new{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .gcard button.new{border-color:var(--l2);color:var(--l2)}
+.gcard .gh,.gcard .ga{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem}
+.gcard .gh{background:#fff8e6;border:1px solid #f3dea0}
+.gcard .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.gcard .gh.on,.gcard .ga.on{display:block}
+.fixset{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0 4px}
+.fixset .fix-btns{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.fixset ol{margin:0;padding-left:26px}
+.fixset ol li{margin:6px 0}
+.fixset .fa{display:none;color:var(--l1);font-size:.92rem;margin-left:6px}
+#L2 .fixset .fa{color:var(--l2)}
+.fixset.show .fa{display:inline}
+.fx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+.fx .fxh{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.fx .no{font-weight:800;font-size:1rem}
+#L3 .no{color:var(--l3)}#L4 .no{color:var(--l4)}#L5 .no{color:var(--l5)}
+.fx .kw{font-size:.8rem;padding:1px 9px;border-radius:999px;background:#fff3e6;border:1px solid #f0c9a0;color:#8a4a10}
+.fx .src{font-size:.8rem;color:var(--muted);margin-left:auto}
+.fx .fxq{margin:4px 0 8px}
+.fx .fxa,.fx .fxs{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.fx .fxa{background:#eef7f0;border:1px solid #bfe0c8}
+.fx .fxs{background:#f7f7fb;border:1px solid #dcdcec}
+.fx .fxa.on,.fx .fxs.on{display:block}
+.fx .move{background:#fff8e6;border-left:4px solid #e8b94a;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note{font-size:.9rem;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 14px}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.katex{font-size:1.02em}
+.ch-nav{display:flex;justify-content:space-between;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.ch-nav a{color:#8a4450;text-decoration:none;font-weight:700}
+@media print{.gcard button,.fix-btns,.fx button,.hd-books,.tiers{display:none}.gcard .ga,.gcard .gh{display:none!important}.fx{break-inside:avoid}}
+
+/* ── 檢測／紀錄／類似題（2026-09-17 個人化）── */
+.fx .warn{background:#fdecec;border-left:4px solid #d9534f;padding:6px 10px;margin:6px 0;border-radius:6px;font-size:.92rem}
+.note-sm{font-size:.88rem;color:var(--muted)}
+.fix-btns .fix-meta{font-size:.8rem;color:#aaa;margin-right:auto}
+.fixset ol li .mark{margin-left:8px;white-space:nowrap}
+.fixset ol li .mark button{padding:0 8px;font-size:.8rem;border-radius:6px}
+.fixset ol li.ok{background:#eef7f0;border-radius:6px}.fixset ol li.ng{background:#fdecec;border-radius:6px}
+.fixset ol li.ok .mark button[data-m="1"],.fixset ol li.ng .mark button[data-m="0"]{background:#333;color:#fff;border-color:#333}
+.fix-foot{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.88rem;color:var(--muted)}
+.fix-foot .submit{border-color:var(--l1);color:var(--l1);font-weight:700}
+#L2 .fix-foot .submit{border-color:var(--l2);color:var(--l2)}#L3 .fix-foot .submit{border-color:var(--l3);color:var(--l3)}
+.fix-result{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff8e6;border:1px solid #f3dea0;font-size:.93rem}
+.fix-result.on{display:block}
+button.go{display:inline-block;margin:2px 4px 2px 0;padding:2px 10px;border-radius:999px;border:1px solid var(--l1);color:var(--l1);background:#fff;cursor:pointer;font:inherit;font-size:.85rem}
+.gcard.flash,.fx.flash{box-shadow:0 0 0 3px #f0c040}
+.myrec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.myrec .mr-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.myrec .mr-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.myrec .mr-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.myrec .mr-advice{margin:10px 0 4px;font-size:.93rem}
+.myrec table.mr-t{border-collapse:collapse;width:100%;font-size:.88rem;margin-top:10px}
+.myrec .mr-t th,.myrec .mr-t td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:middle}
+.myrec .bar{display:inline-block;height:8px;background:#d9534f;border-radius:4px;vertical-align:middle}
+.myrec tr.weak td:first-child{color:#b3261e;font-weight:700}
+.myrec td button.go{padding:1px 8px;font-size:.8rem}
+.simbox{margin-top:10px;padding:10px 12px;border-radius:8px;border:1px dashed var(--l3);background:#fffaf5}
+.simbox .st{font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between}
+.simbox .sq{margin:6px 0}
+.simbox .gh,.simbox .ga{display:none;margin-top:6px;padding:6px 10px;border-radius:6px;font-size:.93rem}
+.simbox .gh{background:#fff8e6;border:1px solid #f3dea0}.simbox .ga{background:#eef7f0;border:1px solid #bfe0c8}
+.simbox .gh.on,.simbox .ga.on{display:block}
+.simbox .sbtn{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+.simbox button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer}
+.fx button.simbtn{border-color:var(--l3);color:var(--l3);font-weight:700}
+#printArea{display:none}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px;position:relative}
+.fx-scroll{overflow-x:auto;position:relative}
+@media print{body.print-one .wrap{display:none}body.print-one #printArea{display:block}#printArea h1{font-size:1.15rem;margin:0 0 4px}#printArea .pmeta{margin:0 0 10px;color:#444}#printArea ol li{margin:12px 0;break-inside:avoid}#printArea h2{font-size:1rem;break-before:page}.fixset .mark,.fix-foot,.fix-result,.simbox,.myrec{display:none!important}}
+
+/* ── 第二版：信心評分、錯因、錯題本、混合檢測、模擬卷（2026-09-18）── */
+.fixset ol li.qi{position:relative}
+.fixset .conf,.rvi .conf{display:block;margin:4px 0 2px;font-size:.82rem;color:var(--muted)}
+.conf .cl,.cause .cl{margin-right:4px}
+.conf button,.cause button{padding:0 9px;font-size:.8rem;border-radius:999px;margin-right:4px}
+.conf button.sel{background:#1f5fa8;color:#fff;border-color:#1f5fa8}
+.cause{display:none;margin-left:8px;font-size:.82rem;color:var(--muted)}
+.fixset ol li.ng .cause,.rvi li.ng .cause{display:inline-block}
+.cause button.sel{background:#b3261e;color:#fff;border-color:#b3261e}
+.fixset:not(.show) .mark,.rvi li:not(.show) .mark{display:none}
+.fix-note{display:none;margin:6px 0;padding:8px 12px;border-radius:8px;background:#fdecec;border:1px solid #f0b8b8;font-size:.9rem}
+.fix-note.on{display:block}
+.hcw{color:#b3261e;font-weight:700}
+button.go.read{border-color:#8a4450;color:#8a4450}
+.fix-btns .tstart{border-color:var(--l4);color:var(--l4);font-weight:700}
+.fix-btns .tclock{font-weight:700;color:var(--l4);min-width:3.5em}
+.review{background:#fff;border:1px solid #f0c9a0;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.review .rv-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.review .rv-sum{color:var(--muted);font-size:.9rem;flex:1 1 200px}
+.review .rv-h button{font:inherit;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid var(--l3);color:var(--l3);background:#fff;cursor:pointer;font-weight:700}
+.rvi{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:10px 0;background:#fffdf9}
+.rvi .rvh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+.rvi .rvh .tag{font-size:.75rem;padding:1px 8px;border-radius:999px;background:#eee;color:#555}
+.rvi .rvh .tag.hc{background:#fdecec;color:#b3261e;font-weight:700}
+.rvi .rvh .rvm{margin-left:auto;color:#aaa;font-size:.78rem}
+.rvi ol{margin:6px 0 0;padding-left:22px}
+.rvi li{margin:6px 0}
+.rvi li .rl{font-size:.75rem;color:var(--l3);font-weight:700;margin-right:6px}
+.rvi li .fa{display:none;color:var(--l2);font-size:.92rem;margin-left:6px}
+.rvi li.show .fa{display:inline}
+.rvi li.ok{background:#eef7f0;border-radius:6px}.rvi li.ng{background:#fdecec;border-radius:6px}
+.rvi li .rvans{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #cfcfcf;background:#fafafa;cursor:pointer;margin-left:6px}
+.rv-later{font-size:.88rem;color:var(--muted);margin-top:8px}
+.rv-later ul{margin:4px 0 0 18px;padding:0}
+.must.flash{box-shadow:0 0 0 3px #f0c040}
+@media print{.conf,.cause,.fix-note,.review,.tstart,.tclock{display:none!important}}
+
+/* ── 第三版：解題步驟、兩層提示、漸淡練習（2026-09-18）── */
+.gcard button.steps{border-color:#6a3ea1;color:#6a3ea1}
+.gcard .gs,.rvi .gs{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#f4effa;border:1px solid #d8c8ee}
+.gcard .gs.on,.rvi .gs.on{display:block}
+.gcard .gh .more{font:inherit;font-size:.8rem;padding:1px 10px;border-radius:999px;border:1px solid #c9a227;background:#fff;cursor:pointer;margin-left:6px}
+ol.steps{margin:4px 0 0;padding-left:22px}
+ol.steps li{margin:4px 0}
+ol.steps li.blank .bl{color:#8a4450;font-weight:700}
+ol.steps li.blank .hid,.fin.hid{display:none}
+.fdi.open ol.steps li.blank .bl{display:none}
+.fdi.open ol.steps li.blank .hid,.fdi.open .fin.hid{display:inline}
+.fin{margin-top:6px;font-weight:700;color:#2e7d4f}
+.fadeset{background:#fff;border:1px solid #d8c8ee;border-radius:12px;padding:10px 14px;margin:8px 0 12px}
+.fadeset .fd-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-bottom:4px}
+.fadeset details.fd{border-top:1px dashed #e0d6ee;padding:6px 0}
+.fadeset details.fd summary{cursor:pointer;font-weight:700;color:#6a3ea1;font-size:.93rem}
+.fadeset .fdi{margin:8px 0 10px 8px;padding:8px 10px;border-left:3px solid #d8c8ee;font-size:.93rem}
+.fadeset .fdt{font-weight:700;color:#6a3ea1;font-size:.85rem}
+.fadeset .fdt .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:6px}
+.fadeset .fq{margin:4px 0 6px}
+.fadeset button.reveal{font:inherit;font-size:.82rem;padding:2px 12px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-top:4px}
+.rvi button.rvsteps{font:inherit;font-size:.8rem;padding:0 10px;border-radius:999px;border:1px solid #6a3ea1;color:#6a3ea1;background:#fff;cursor:pointer;margin-left:6px}
+@media print{.fadeset,.gcard .gs{display:none!important}}
+
+/* ── 第四版：對照題、先備診斷、精熟狀態、匯出（2026-09-18）── */
+.gcard button.contrast{border-color:#b3641a;color:#b3641a}
+.gcard .gc{display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:.93rem;background:#fff7f0;border:1px solid #f0c9a0}
+.gcard .gc.on{display:block}
+.gc-h{font-size:.88rem;color:#8a4a10;margin-bottom:6px}
+.gc-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:620px){.gc-pair{grid-template-columns:1fr}}
+.gc-item{background:#fff;border:1px solid #f0d9c0;border-radius:8px;padding:6px 8px}
+.gc-t{font-weight:700;color:#b3641a;font-size:.85rem}
+.gc-t .seed{font-weight:400;color:#aaa;font-size:.75rem;margin-left:4px}
+.gc-a,.gc-why{display:none;margin-top:6px}
+.gc.open .gc-a{display:block;color:var(--l1);font-weight:700}
+.gc.open .gc-why{display:block;padding:6px 10px;border-radius:6px;background:#fff8e6;border-left:4px solid #e8b94a}
+.gc-btn{margin-top:6px;display:flex;gap:6px}
+.fixset .fix-status{flex-basis:100%;font-size:.82rem;color:var(--muted);margin-top:2px}
+.fixset .fix-status.half{color:#8a6a10}.fixset .fix-status.ok{color:#2e7d4f;font-weight:700}
+.pre-list{margin:6px 0 0 18px;padding:0}.pre-list li{margin:4px 0}
+.diag{background:#fff;border:2px dashed #6a3ea1;border-radius:12px;padding:12px 16px;margin:0 0 20px}
+.diag h3.sec{margin-top:4px;border-color:#6a3ea1}
+.diag .fixset{margin-top:6px}
+.myrec .mr-file{display:none}
+@media print{.gcard .gc,.diag{display:none!important}}
+/* 手機：長算式在自己的框裡橫捲（position:relative 是為了關住 .katex-mathml） */
+@media(max-width:640px){.gcard .gq,.gcard .ga,.gcard .gh,.gcard .gs,.gcard .gs li,.fixset li,.fadeset li,.simbox,.fxq,.fxa,.fxs,.ctr,.diag li{overflow-x:auto;overflow-y:hidden;max-width:100%;position:relative}}
+@media(max-width:820px){.gen-grid{grid-template-columns:minmax(0,1fr)}.gcard{min-width:0;position:relative}.gcard .ctrbox,.gcard .cbox{overflow-x:auto;max-width:100%;position:relative}}  /* 格線欄位別被內容的 min-content 撐寬 */
+.lbl-note{display:inline-block;font-size:.78rem;padding:0 6px;margin-right:6px;border-radius:4px;background:#f3e7e9;color:#7a2e3c;font-weight:700;vertical-align:.08em}
+</style>
+<link rel="stylesheet" href="../../assets/theme-cow.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hd">
+  <h1>第一章 數列與函數的極限 ── 分級練習本</h1>
+  <div class="sub">高三・數學甲（選修）・配合主講義 第 1 節 數列的極限、第 2 節 無窮級數與無窮等比級數、第 3 節 函數、第 4 節 函數的極限、第 5 節 連續與介值定理。五個程度、一本練習本：L1、L2 的題目可以無限生成，L3–L5 是各校段考、大考與科學班・教甄的固定題。</div>
+</header>
+
+<div class="tiers">
+  <a class="t1" href="#L1"><b>L1 基礎</b><small>先會這些・可無限生題</small></a>
+  <a class="t2" href="#L2"><b>L2 中等</b><small>段考主力題型・可生題</small></a>
+  <a class="t3" href="#L3"><b>L3 中上</b><small>看關鍵字找切入點</small></a>
+  <a class="t4" href="#L4"><b>L4 頂尖</b><small>第一志願・大考</small></a>
+  <a class="t5" href="#L5"><b>L5 補充</b><small>經典・科學班・教甄專區</small></a>
+</div>
+
+<div class="howto">
+  <b>怎麼用這本？</b>
+  <ol>
+    <li>先做該級的「通過標準」：做到連續兩輪全對再往上一級，不要跳級硬撐。</li>
+    <li>開始前先做上方的<b>先備診斷 5 題</b>，有錯的先補。L1、L2 每張卡片按「新題」就換一題（數字重新抽）；「⚖ 對照題」一次給兩題只差一個關鍵特徵，先說出差在哪再揭曉。「提示」分兩層：先只告訴你這是哪一型、第一步做什麼，還是不會再按一次才給帶數字的提示；「答案」對答案；L1 還有「📘 步驟」給完整解法。每小節的<b>漸淡練習</b>每型三題：完整示範 → 自己補最後一步 → 只給第一步，適合還不會下手的同學。</li>
+    <li>每小節最後是<b>檢測 10 題</b>：先在紙上作答，每題按「有把握／不確定／猜的」，全部評完才看答案；對完每題標 ○／✗，錯的選錯因（不會下手、公式用錯、計算錯、看錯題），再按「記錄」。系統會分成<b>該回頭讀</b>與<b>該多算幾題</b>兩種建議。「換一組類似題」換數字重測，「列印本組」只印這一組。</li>
+    <li>每級最後有<b>混合檢測</b>（全章題型打亂，練「判斷這是哪一型」），L3 之後有<b>段考模擬卷</b>（L2＋L3 混合、計時 50 分鐘、交卷才看答案）。</li>
+    <li>錯的題與猜對的題會進<b>錯題本</b>，頁首「📅 今日複習」隔天排出來：先重做原題、再做一題類似題，連續兩次全對才畢業（間隔 1、3、7、14 天）。「📊 我的練習紀錄」列出每型的錯誤率、有把握卻錯、猜對與主要錯因，可「複製摘要給老師」或匯出、匯入紀錄檔（換裝置用）。每組檢測的<b>精熟</b>標準是兩天各全對一輪。</li>
+    <li>L3 每題標出<b>切入點關鍵字 → 招式</b>：讀題時先找關鍵字，招式對了題目就開了；每題可按「🎲 類似題」無限生成同型題，最後也有一組檢測。</li>
+    <li>L4、L5 每題都附完整詳解，先自己想 10 分鐘再看。</li>
+    <li>本書所有生成題的答案都經電腦獨立驗算（16,500 題抽樣，全部從題幹把數列、級數、函數重新讀回來，用另一種方法精確重算一次）；固定題全數人工＋電腦重算。<b>本章只用課綱內的工具</b>：$\frac00$ 型一律因式分解或有理化；遞迴數列求極限一律先說「若極限存在」；發散就寫「發散」，不把 $\infty$ 當成極限值——這些都是課綱內的做法。</li>
+  </ol>
+</div>
+
+<div class="diag" id="diag">
+  <h3 class="sec">🧭 章首先備診斷 5 題（開始前先做）</h3>
+  <div class="note">這章把高一、高二學過的工具全部拿來「取極限」：等比數列的前 n 項和（高一下第一章）是無窮等比級數的起點；多項式的因式分解（高一上第三章）與分母有理化（高一上第一章）是處理 0/0 型的兩把刀；指數與對數（高二上第二章）在連續複利與常數 e 用到；二次函數的圖形（國中、高一上第三章）則是看定義域、值域與反函數的基本功。5 題都對再往下；有錯的先按連結回去補。</div>
+  <div class="fixset" data-tier="L0" data-keys="*" data-seed="601" data-n="5"></div>
+</div>
+
+<div class="review" id="review">
+  <div class="rv-h"><b>📅 今日複習（錯題本）</b><span class="rv-sum"></span><button class="rv-toggle">開始複習</button></div>
+  <div class="rv-body"></div>
+</div>
+
+<div class="myrec" id="myrec">
+  <div class="mr-h"><b>📊 我的練習紀錄</b><span class="mr-sum"></span><button class="mr-toggle">展開</button><button class="mr-copy">📋 複製摘要給老師</button><button class="mr-export">⬇ 匯出</button><button class="mr-import">⬆ 匯入</button><input type="file" class="mr-file" accept=".json,application/json"><button class="mr-clear">清除紀錄</button></div>
+  <div class="mr-body" hidden></div>
+  <div class="note-sm" style="margin-top:6px">紀錄只存在這台裝置的瀏覽器裡（不會上傳）；換裝置或清除瀏覽資料就會消失，可用「匯出／匯入」搬家。</div>
+</div>
+
+
+<!-- ═══════════════════════ L1 ═══════════════════════ -->
+<section class="tier" id="L1">
+<h2><span class="tag">L1</span>基礎程度：先把這些做到反射</h2>
+<div class="goal">
+  <div><b>對象</b>看到 $\frac{\infty}{\infty}$ 不知道要同除、把 $\frac00$ 當成 $1$、以為「每項趨近 $0$ 級數就收斂」、高斯符號遇到負數就錯的同學。</div>
+  <div><b>目標</b>29 個基本型，每型看到題目 30 秒內知道要做什麼。</div>
+  <div><b>通過標準</b>每小節的檢測 10 題<b>兩天各全對一輪</b>（第二輪隔天用「換一組類似題」，猜對不算），再進 L2；標題列會顯示精熟狀態。</div>
+</div>
+
+<h3 class="sec">1 數列的極限</h3>
+<div class="must">先要會：<b>$r^n$ 只看 $r$</b>——$-1\lt r\lt1$ 趨近 $0$、$r=1$ 是 $1$、$r=-1$ 或 $|r|\gt1$ 發散；<b>有理式同除以分母的最高次</b>（同次看最高次係數比、分子次數低是 $0$、分子次數高發散）；<b>指數型同除以最大的底的 $n$ 次方</b>；<b>根號減根號先有理化</b>；高斯符號用 $t-1\lt[t]\le t$ 夾；遞迴數列<b>若極限存在</b>就令 $\lim a_n=L$ 代進遞迴式；牛頓法 $x_{n+1}=\frac12\left(x_n+\frac a{x_n}\right)$ 一步一步代；$\left(1+\frac1t\right)^t\to e$，湊成 $[\cdots]^k$ 就是 $e^k$。</div>
+<div class="gen-grid" data-tier="L1" data-keys="rPow,seqRational,expDiv,rootRat,squeezeFloor,recurLimit,newtonSqrt,compound"></div>
+<div class="fadeset" data-tier="L1" data-keys="rPow,seqRational,expDiv,rootRat,squeezeFloor,recurLimit,newtonSqrt,compound" data-seed="9101"></div>
+<div class="fixset" data-tier="L1" data-keys="rPow,seqRational,expDiv,rootRat,squeezeFloor,recurLimit,newtonSqrt,compound" data-seed="8101"></div>
+
+<h3 class="sec">2 無窮級數與無窮等比級數</h3>
+<div class="must">先要會：<b>級數的和＝部分和 $S_n$ 的極限</b>；非等比的只做<b>裂項相消</b>（$\frac1{n(n+k)}=\frac1k\left(\frac1n-\frac1{n+k}\right)$）；無窮等比<b>先看公比：$|r|\lt1$ 才收斂</b>，和是 $\frac{\text{首項}}{1-r}$；收斂範圍就解 $|r|\lt1$；分子是兩個指數相加就<b>拆成兩個等比</b>；循環小數<b>乘 $10$ 的次方相減</b>（$0.\overline9=1$）；應用題先寫出前兩、三項找首項與公比，<b>面積的公比是邊長比的平方</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="telescoping,geoSum,geoXRange,geoSplit,repDec,geoApply"></div>
+<div class="fadeset" data-tier="L1" data-keys="telescoping,geoSum,geoXRange,geoSplit,repDec,geoApply" data-seed="9201"></div>
+<div class="fixset" data-tier="L1" data-keys="telescoping,geoSum,geoXRange,geoSplit,repDec,geoApply" data-seed="8201"></div>
+
+<h3 class="sec">3 函數</h3>
+<div class="must">先要會：定義域＝<b>根號裡 $\ge0$、分母 $\ne0$</b> 取交集；奇偶性一律算 $f(-x)$ 和 $f(x)$、$-f(x)$ 比；<b>$(f\circ g)(x)=f(g(x))$ 先做右邊的 $g$</b>，沒有交換律；反函數：令 $y=f(x)$、解出 $x$、再把 $x$、$y$ 互換（要一對一）；<b>$[x]$ 是不大於 $x$ 的最大整數</b>，$[-2.3]=-3$。</div>
+<div class="gen-grid" data-tier="L1" data-keys="domain,parity,compose,inverse,gaussVal"></div>
+<div class="fadeset" data-tier="L1" data-keys="domain,parity,compose,inverse,gaussVal" data-seed="9301"></div>
+<div class="fixset" data-tier="L1" data-keys="domain,parity,compose,inverse,gaussVal" data-seed="8301"></div>
+
+<h3 class="sec">4 函數的極限</h3>
+<div class="must">先要會：分母不是 $0$ 就<b>直接代入</b>；<b>$\frac00$ 型</b>：多項式就因式分解約掉 $(x-a)$、有根號就有理化；只有分母是 $0$ 而分子不是 $0$ ⟹ 極限不存在；<b>已知極限存在而分母趨近 $0$，分子也一定趨近 $0$</b>（先解參數）；絕對值、高斯、分段函數在接縫處<b>左右極限分開算</b>，相等極限才存在；算不出來就夾：<b>$|f(x)-L|\le$ 趨近 $0$ 的量 ⟹ $f(x)\to L$</b>。</div>
+<div class="gen-grid" data-tier="L1" data-keys="limSub,limFactor,limRational,limParam,oneSided,squeezeFunc"></div>
+<div class="fadeset" data-tier="L1" data-keys="limSub,limFactor,limRational,limParam,oneSided,squeezeFunc" data-seed="9401"></div>
+<div class="fixset" data-tier="L1" data-keys="limSub,limFactor,limRational,limParam,oneSided,squeezeFunc" data-seed="8401"></div>
+
+<h3 class="sec">5 連續與介值定理</h3>
+<div class="must">先要會：<b>連續的三個條件</b>：$f(a)$ 有定義、$\lim_{x\to a}f(x)$ 存在、兩者相等，缺一不可；分段函數連續就<b>令左極限＝右極限＝函數值</b>解參數；$[g(x)]$ 在 $g(x)$ 是整數的地方跳；<b>勘根定理</b>：連續函數在兩端異號，中間至少有一根。</div>
+<div class="gen-grid" data-tier="L1" data-keys="contCheck,contParam,gaussDiscont,ivtRoot"></div>
+<div class="fadeset" data-tier="L1" data-keys="contCheck,contParam,gaussDiscont,ivtRoot" data-seed="9501"></div>
+<div class="fixset" data-tier="L1" data-keys="contCheck,contParam,gaussDiscont,ivtRoot" data-seed="8501"></div>
+
+
+<h3 class="sec">L1 混合檢測 12 題（全章 29 型打亂，練「判斷這是哪一型」）</h3>
+<div class="fixset" data-tier="L1" data-keys="*" data-seed="1901" data-n="12" data-mixed="1"></div>
+</section>
+
+<!-- ═══════════════════════ L2 ═══════════════════════ -->
+<section class="tier" id="L2">
+<h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
+<div class="goal">
+  <div><b>對象</b>L1 已穩，段考想拿 60–75 分的同學。</div>
+  <div><b>目標</b>17 個段考主力型，依 108 課綱世代 21 份高三段考卷的出現率排序（無窮等比級數 19 卷、夾擠 14、數列的極限 14、合成函數 13、函數的極限 11、無窮等比數列 10、裂項求級數 10、連續 10、反函數 9、根式有理化 9、絕對值 9、高斯函數 9、循環小數 8、分段函數 7、單側極限 7）。</div>
+  <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
+</div>
+
+<h3 class="sec">數列與級數：含參數的無窮等比、和函數、夾擠、連加公式、以極限定義的函數、裂項、循環小數、遞迴、應用</h3>
+<div class="must">108 課綱世代 21 份高三段考卷中<b>無窮等比級數 19 卷、夾擠 14 卷、數列的極限 14 卷、無窮等比數列 10 卷、裂項求級數 10 卷、循環小數 8 卷</b>（另：原卷關鍵字普查 78 份卷中「無窮等比」38 份、「收斂／發散」36 份）。招式：<b>含參數的無窮等比先寫出公比、要求 $|r|\lt1$，算出來的值一定要回頭檢查</b>（$r$ 的兩根常有一個要刪）；$\sum a_n=S_1$、$\sum a_n^2=S_2$ 兩式相除得 $\frac a{1+r}$；$\sqrt[n]{a^n+b^n}$ 夾在 $\max$ 與 $\max\cdot\sqrt[n]2$ 之間；連加先用公式 $\sum k=\frac{n(n+1)}2$、$\sum k^2=\frac{n(n+1)(2n+1)}6$；$\lim\frac{p(x)x^{2n}+q(x)}{x^{2n}+1}$ 依 $|x|$ 與 $1$ 比分三段；<b>部分和沒有極限就是發散</b>（每項趨近 $0$ 不保證收斂）。</div>
+<div class="gen-grid" data-tier="L2" data-keys="geoParamSum,geoXFunc,squeezeL2,seqLimitL2,limFuncDef,telescopeL2,repDecOps,recurL2,similarArea,firstSuccess"></div>
+
+<h3 class="sec">函數、函數的極限與連續：合成與反函數、待定係數、分段連續、絕對值與高斯、介值定理</h3>
+<div class="must">108 課綱世代 21 份高三段考卷中<b>合成函數 13 卷、函數的極限 11 卷、連續 10 卷、反函數 9 卷、根式有理化 9 卷、絕對值 9 卷、高斯函數 9 卷、分段函數 7 卷、單側極限 7 卷、$\frac00$ 型 5 卷、勘根 4 卷</b>（原卷普查：「連續」52 份、「高斯符號」34 份）。招式：$(g\circ f)(x)$ 已知求 $g$ 就<b>令 $t=f(x)$ 反解 $x$</b>；合成函數的定義域要「內層有意義且內層的值落在外層定義域」；<b>$\frac00$ 待定係數：先由分子在該點為 $0$ 得一式，約分後代入得第二式</b>；分段連續每個接點各一條方程式；$f^{-1}=f$ 比對係數；<b>高斯方程式把 $[x]$ 當整數未知數 $t$</b>，再用 $t\le x\lt t+1$ 換回 $x$；函數值表每變號一次至少一根。</div>
+<div class="gen-grid" data-tier="L2" data-keys="composeInv,limTwoParam,contTwoParam,inverseL2,limAbsGauss,gaussEq,ivtCount"></div>
+
+<h3 class="sec">L2 混合檢測 12 題（全 17 型打亂・可列印・可換組）</h3>
+<div class="fixset" data-tier="L2" data-keys="*" data-seed="2901" data-n="12" data-mixed="1"></div>
+</section>
+
+<!-- ═══════════════════════ L3 ═══════════════════════ -->
+<section class="tier" id="L3">
+<h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
+<div class="goal">
+  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>目標</b>15 題各校段考中後段常見題，數列極限、級數、函數、函數極限、連續與勘根五節都有：每題附「關鍵字：做法」，練到看見關鍵字就知道第一步；每題都能按「🎲 類似題」換數字再練。</div>
+  <div><b>通過標準</b>15 題全部能獨立完成，且說得出每題的第一步為什麼這樣做；本級混合檢測 10 題連續兩輪全對。</div>
+</div>
+<div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過（極限一律用 sympy 直接求，級數另用部分和的精確分數檢查）。</div>
+
+<div class="fx" id="L3-1" data-gen="expNeg"><div class="fxh"><span class="no">L3-1</span><span class="kw">分子分母都是「某數的 $n$ 次方」、底數還有負的：分子分母同除「絕對值最大的底」的 $n$ 次方（連負號一起除），其餘的項都變成 $r^n$ 而 $|r|\lt1$，直接趨近 $0$</span><span class="src">台中女中 112上 第一次 第 7 題</span></div>
+<div class="fxq">求 $\displaystyle\lim_{n\to\infty}\frac{4^n+(-5)^{n+1}}{4^{n-2}+(-5)^{n+3}}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac1{25}$</div>
+<div class="fxs"><div class="move">做法：底數 $4$ 與 $-5$ 之中，絕對值最大的是 $-5$，所以分子分母同除 $(-5)^n$。除完之後 $\left(\dfrac4{-5}\right)^n=\left(-\dfrac45\right)^n$ 的公比絕對值小於 $1$，會趨近 $0$。</div>
+分子 $\div(-5)^n$：$\left(-\dfrac45\right)^n+(-5)^{1}\to0+(-5)=-5$。<br>
+分母 $\div(-5)^n$：$\dfrac1{16}\left(-\dfrac45\right)^n+(-5)^3\to0+(-125)=-125$。<br>
+故極限 $=\dfrac{-5}{-125}=\dfrac1{25}$。<span class="note-sm">🔴 常見錯誤是只除 $5^n$：那樣分子會留下 $(-1)^n\cdot(-5)$，看起來「正負跳來跳去」而誤判發散。其實分子分母的 $(-1)^n$ 會一起消掉，所以要連負號一起除。</span></div></div>
+
+<div class="fx" id="L3-2" data-gen="sumMinusAn"><div class="fxh"><span class="no">L3-2</span><span class="kw">平方和除以 $n^2$ 再減 $an$、極限是有限值：先用 $\sum k^2=\frac{n(n+1)(2n+1)}6$ 化成「$n$ 的一次式＋常數＋會消失的項」，一次項必須被 $an$ 抵消，剩下的常數就是極限</span><span class="src">台中二中 112上 第一次 第 11 題</span></div>
+<div class="fxq">已知實數 $a$、$b$ 滿足 $\displaystyle\lim_{n\to\infty}\left(\frac{1^2+2^2+3^2+\cdots+n^2}{n^2}-an\right)=b$，求數對 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=\left(\dfrac13,\dfrac12\right)$</div>
+<div class="fxs"><div class="move">做法：把平方和公式代進去後做長除法，寫成「$pn+q+\dfrac{r}{n}$」的樣子。$pn$ 若沒有被 $an$ 抵消，整個式子會無限變大（或變小），不可能收斂。</div>
+$\dfrac{1^2+\cdots+n^2}{n^2}=\dfrac{n(n+1)(2n+1)}{6n^2}=\dfrac{2n^2+3n+1}{6n}=\dfrac n3+\dfrac12+\dfrac1{6n}$。<br>
+所以原式 $=\left(\dfrac13-a\right)n+\dfrac12+\dfrac1{6n}$。<br>
+要收斂，一次項係數必須是 $0$ ⟹ $a=\dfrac13$；此時極限 $=\dfrac12+0=\dfrac12$ ⟹ $b=\dfrac12$。<br>
+故 $(a,b)=\left(\dfrac13,\dfrac12\right)$。<span class="note-sm">若 $a\ne\dfrac13$，例如 $a=0$，原式約等於 $\dfrac n3$，會越來越大沒有上限，所以是發散，不能寫成「極限等於 $\infty$」再去比較。</span></div></div>
+
+<div class="fx" id="L3-3" data-gen="squeezeIneq"><div class="fxh"><span class="no">L3-3</span><span class="kw">題目給一串不等式、已知 $\lim a_n$、求 $\lim b_n$：把不等式改寫成「$b_n$ 被兩個只含 $a_n$ 的式子夾住」，兩邊極限相等就用夾擠定理</span><span class="src">中正高中 112上 第一次 第 10 題</span></div>
+<div class="fxq">已知對任意正整數 $n$，不等式 $b_n+\dfrac{2n+1}n\le a_n\le3b_n$ 恆成立，且 $\displaystyle\lim_{n\to\infty}a_n=3$，求 $\displaystyle\lim_{n\to\infty}b_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1$</div>
+<div class="fxs"><div class="move">做法：題目要 $b_n$，所以把 $b_n$ 單獨留在中間。左半邊給出 $b_n$ 的上界，右半邊給出 $b_n$ 的下界。</div>
+由 $b_n+\dfrac{2n+1}n\le a_n$ 得 $b_n\le a_n-\dfrac{2n+1}n$；由 $a_n\le3b_n$ 得 $b_n\ge\dfrac{a_n}3$。<br>
+所以 $\dfrac{a_n}3\le b_n\le a_n-\dfrac{2n+1}n$。<br>
+兩邊的極限：$\displaystyle\lim_{n\to\infty}\frac{a_n}3=1$，$\displaystyle\lim_{n\to\infty}\left(a_n-\frac{2n+1}n\right)=3-2=1$。<br>
+兩邊都趨近 $1$，由夾擠定理 $\displaystyle\lim_{n\to\infty}b_n=1$。<span class="note-sm">夾擠定理一定要先確認「兩邊的極限相等」才能用。若本題右邊算出來是 $2$，就只能說 $b_n$ 落在 $1$ 和 $2$ 之間，不能斷定 $\lim b_n$ 存在。</span></div></div>
+
+<div class="fx" id="L3-4" data-gen="rnConvX"><div class="fxh"><span class="no">L3-4</span><span class="kw">「$\langle r^n\rangle$ 收斂」而 $r$ 是含 $x$ 的分式：收斂條件是 $-1\lt r\le1$（右端可以等號，$r=1$ 時每項都是 $1$），拆成兩個分式不等式各自解，再取交集</span><span class="src">高雄女中 112上 第一次 第 15 題</span></div>
+<div class="fxq">若無窮數列 $\left\langle\left(\dfrac{2x}{x-1}\right)^n\right\rangle$ 收斂，求實數 $x$ 的範圍。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-1\le x\lt\dfrac13$</div>
+<div class="fxs"><div class="move">做法：令 $r=\dfrac{2x}{x-1}$。等比數列 $\langle r^n\rangle$ 收斂 $\iff-1\lt r\le1$。分式不等式先移項通分成「$\dfrac{\text{一次式}}{\text{一次式}}$ 與 $0$ 比較」，再看分子分母的正負。</div>
+$r\le1$：$\dfrac{2x}{x-1}-1=\dfrac{x+1}{x-1}\le0$ ⟹ $-1\le x\lt1$（分母不可為 $0$，所以右端不取等號）。<br>
+$r\gt-1$：$\dfrac{2x}{x-1}+1=\dfrac{3x-1}{x-1}\gt0$ ⟹ $x\lt\dfrac13$ 或 $x\gt1$。<br>
+取交集：$-1\le x\lt\dfrac13$。<br>
+檢查端點：$x=-1$ 時 $r=1$，數列每項都是 $1$，收斂 ✓；$x=\dfrac13$ 時 $r=-1$，數列 $-1,1,-1,\ldots$ 振盪，發散，所以不取。<span class="note-sm">🔴 本題原卷的參考答案印成 $-1\le x\le\dfrac13$，右端多了等號；$r=-1$ 正是「$\langle r^n\rangle$ 收斂」和「$\sum r^n$ 收斂」都要排除的情形。若題目改成「級數 $\sum r^n$ 收斂」，條件變成 $-1\lt r\lt1$，連 $x=-1$ 也要拿掉。</span></div></div>
+
+<div class="fx" id="L3-5" data-gen="sumSnGeo"><div class="fxh"><span class="no">L3-5</span><span class="kw">級數的一般項裡面藏著一個「部分和」$S_n$：先把 $S_n$ 用等比求和公式寫成封閉式，一般項就拆成兩個無窮等比級數相減</span><span class="src">高雄女中 112上 第一次 第 12 題</span></div>
+<div class="fxq">已知 $S_n=1+3+3^2+\cdots+3^{n-1}$，求無窮級數 $\displaystyle\sum_{n=1}^{\infty}\frac{S_n}{4^n}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac43$</div>
+<div class="fxs"><div class="move">做法：$S_n$ 是有限項的等比和，先求出 $S_n=\dfrac{3^n-1}2$。代進去後一般項變成 $\dfrac12\left[\left(\dfrac34\right)^n-\left(\dfrac14\right)^n\right]$，兩個公比都在 $-1$ 與 $1$ 之間，可以分開求和。</div>
+$S_n=\dfrac{3^n-1}{3-1}=\dfrac{3^n-1}2$。<br>
+$\dfrac{S_n}{4^n}=\dfrac12\left[\left(\dfrac34\right)^n-\left(\dfrac14\right)^n\right]$。<br>
+$\displaystyle\sum_{n=1}^{\infty}\left(\frac34\right)^n=\frac{\frac34}{1-\frac34}=3$，$\displaystyle\sum_{n=1}^{\infty}\left(\frac14\right)^n=\frac{\frac14}{1-\frac14}=\frac13$。<br>
+兩個級數都收斂，所以可以相減：原式 $=\dfrac12\left(3-\dfrac13\right)=\dfrac43$。<span class="note-sm">「兩個收斂級數的差等於和的差」要兩個都收斂才成立。若其中一個公比的絕對值 $\ge1$，就不能這樣拆。</span></div></div>
+
+<div class="fx" id="L3-6" data-gen="snTelescope"><div class="fxh"><span class="no">L3-6</span><span class="kw">給前 $n$ 項和 $S_n$、求 $\sum\frac1{a_na_{n+2}}$：先用 $a_n=S_n-S_{n-1}$ 求出等差的一般項，再裂項；中間隔一項，所以會留下「前兩個」</span><span class="src">內壢高中 112上 第一次 第 14 題</span></div>
+<div class="fxq">數列 $\langle a_n\rangle$ 的前 $n$ 項和 $S_n=n^2+4n$，求 $\displaystyle\sum_{n=1}^{\infty}\frac1{a_n\cdot a_{n+2}}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac3{35}$</div>
+<div class="fxs"><div class="move">做法：$a_n$ 是公差 $2$ 的等差數列，$a_{n+2}-a_n=4$，所以 $\dfrac1{a_na_{n+2}}=\dfrac14\left(\dfrac1{a_n}-\dfrac1{a_{n+2}}\right)$。相消時每一項會被「往後數第二項」消掉，前兩項留下來。</div>
+$n\ge2$：$a_n=S_n-S_{n-1}=(n^2+4n)-\left[(n-1)^2+4(n-1)\right]=2n+3$；$a_1=S_1=5$ 也符合，所以 $a_n=2n+3$。<br>
+$\dfrac1{(2n+3)(2n+7)}=\dfrac14\left(\dfrac1{2n+3}-\dfrac1{2n+7}\right)$。<br>
+前 $N$ 項和：$\dfrac14\left(\dfrac15+\dfrac17-\dfrac1{2N+5}-\dfrac1{2N+7}\right)$（中間全部相消）。<br>
+$N\to\infty$：$\dfrac14\left(\dfrac15+\dfrac17\right)=\dfrac14\cdot\dfrac{12}{35}=\dfrac3{35}$。<span class="note-sm">用 $S_n-S_{n-1}$ 求一般項時，要另外檢查 $n=1$。本題 $S_n$ 沒有常數項，所以 $a_1$ 剛好符合公式；若 $S_n=n^2+4n+1$，$a_1$ 就會是 $6$ 而不是 $5$。</span></div></div>
+
+<div class="fx" id="L3-7" data-gen="geoRepDec"><div class="fxh"><span class="no">L3-7</span><span class="kw">無窮等比級數的首項、第二項是循環小數：先把循環小數化成分數，再用「第二項 ÷ 首項」求公比，最後套 $\frac{a}{1-r}$</span><span class="src">高雄中學 112上 第一次 第 11 題</span></div>
+<div class="fxq">設無窮等比級數的首項為 $0.1\overline{25}$，第二項為 $0.0\overline{4}$，求此級數的和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac{961}{4950}$</div>
+<div class="fxs"><div class="move">做法：循環小數化分數：分子是「到第一個循環節結束的數」減去「不循環的部分」，分母是「循環幾位就幾個 $9$，不循環幾位就接幾個 $0$」。</div>
+$0.1\overline{25}=\dfrac{125-1}{990}=\dfrac{124}{990}=\dfrac{62}{495}$；$0.0\overline4=\dfrac{4-0}{90}=\dfrac2{45}$。<br>
+公比 $r=\dfrac2{45}\div\dfrac{62}{495}=\dfrac2{45}\cdot\dfrac{495}{62}=\dfrac{11}{31}$，$|r|\lt1$，級數收斂。<br>
+和 $=\dfrac{\frac{62}{495}}{1-\frac{11}{31}}=\dfrac{62}{495}\cdot\dfrac{31}{20}=\dfrac{1922}{9900}=\dfrac{961}{4950}$。<span class="note-sm">化循環小數的公式本身就是一個無窮等比級數：$0.0\overline4=\dfrac4{100}+\dfrac4{1000}+\cdots=\dfrac{\frac4{100}}{1-\frac1{10}}=\dfrac2{45}$。忘了公式時，用這個方法現場推一次就好。</span></div></div>
+
+<div class="fx" id="L3-8" data-gen="nGeo"><div class="fxh"><span class="no">L3-8</span><span class="kw">一般項是「$n$ 乘上等比」（如 $\frac n{3^n}$）：令部分和為 $S_N$，算 $S_N-\frac13S_N$，錯開一位相減後變成普通的等比級數</span><span class="src">高師大附中 110下 第一次 填 4</span></div>
+<div class="fxq">求 $\displaystyle\sum_{n=1}^{\infty}\frac n{3^n}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac34$</div>
+<div class="fxs"><div class="move">做法：「等差 × 等比」型的和，乘上公比後錯開一位相減，等差的部分就只剩公差，變成等比級數。先對有限項的部分和做，再取極限。</div>
+$S_N=\dfrac13+\dfrac2{3^2}+\dfrac3{3^3}+\cdots+\dfrac N{3^N}$，$\dfrac13S_N=\dfrac1{3^2}+\dfrac2{3^3}+\cdots+\dfrac{N-1}{3^N}+\dfrac N{3^{N+1}}$。<br>
+相減：$\dfrac23S_N=\dfrac13+\dfrac1{3^2}+\cdots+\dfrac1{3^N}-\dfrac N{3^{N+1}}=\dfrac12\left(1-\dfrac1{3^N}\right)-\dfrac N{3^{N+1}}$。<br>
+$N\to\infty$ 時 $\dfrac1{3^N}\to0$；又 $3^N=(1+2)^N\ge\dbinom N2\cdot2^2=2N(N-1)$，所以 $0\lt\dfrac N{3^{N+1}}\le\dfrac1{6(N-1)}\to0$（$N\ge2$）。<br>
+故 $\dfrac23\displaystyle\lim_{N\to\infty}S_N=\dfrac12$ ⟹ 原式 $=\dfrac34$。<span class="note-sm">直接寫「$S-\frac13S$」是常見的速記，但它預設了 $S$ 存在。段考的計算題最好照上面先處理 $S_N$，並說明 $\dfrac N{3^{N+1}}\to0$。</span></div></div>
+
+<div class="fx" id="L3-9" data-gen="composeDomain"><div class="fxh"><span class="no">L3-9</span><span class="kw">給 $f(x+1)$ 的式子、問 $f\circ g$ 的定義域：先令 $t=x+1$ 還原出 $f(t)$；合成函數的定義域＝「$g$ 有意義」且「$g(x)$ 落在 $f$ 的定義域內」</span><span class="src">高師大附中 111下 第一次 填 9</span></div>
+<div class="fxq">設 $f(x+1)=\dfrac{1+x}{1-x}$，$g(x)=\dfrac{x+3}{x+1}$，求 $f\circ g$ 的定義域。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\{x\in\mathbb R\mid x\ne1\text{ 且 }x\ne-1\}$</div>
+<div class="fxs"><div class="move">做法：合成函數 $f(g(x))$ 要能算，兩關都要過：第一關 $g(x)$ 本身有意義，第二關算出來的 $g(x)$ 要能丟進 $f$。</div>
+令 $t=x+1$，則 $x=t-1$，$f(t)=\dfrac{1+(t-1)}{1-(t-1)}=\dfrac t{2-t}$，定義域 $t\ne2$。<br>
+第一關：$g(x)$ 有意義 ⟹ $x\ne-1$。<br>
+第二關：$g(x)\ne2$ ⟹ $\dfrac{x+3}{x+1}\ne2$ ⟹ $x+3\ne2x+2$ ⟹ $x\ne1$。<br>
+故定義域為 $\{x\in\mathbb R\mid x\ne1\text{ 且 }x\ne-1\}$。<span class="note-sm">🔴 若先把 $f(g(x))$ 化簡成 $\dfrac{x+3}{x-1}$ 再看分母，只會得到 $x\ne1$，漏掉 $x\ne-1$。定義域一定要在化簡之前判斷。</span></div></div>
+
+<div class="fx" id="L3-10" data-gen="rangeCount"><div class="fxh"><span class="no">L3-10</span><span class="kw">比較幾個函數在同一區間上的值域：每個函數先看它在區間上是不是單調（或拆成分段），端點代進去就得到值域，最後數裡面有幾個正整數</span><span class="src">北一女中 112下 第一次 單選</span></div>
+<div class="fxq">設 $-2\le x\le4$，下列哪一個函數的值域包含最多個正整數？<br>
+(1) $f_1(x)=x+|x|$　(2) $f_2(x)=\sin x$　(3) $f_3(x)=\log\left(3^x\right)$　(4) $f_4(x)=(x-2)^3-2$　(5) $f_5(x)=\tan\left(0.1\sqrt{x^2}\right)$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)</div>
+<div class="fxs"><div class="move">做法：$x+|x|$ 與 $\sqrt{x^2}=|x|$ 都先依 $x$ 的正負拆成分段；其他三個在區間上單調或有已知的最大最小值，直接求出值域。</div>
+(1) $x\lt0$ 時 $f_1=0$；$x\ge0$ 時 $f_1=2x$，在 $[0,4]$ 上取遍 $[0,8]$。值域 $[0,8]$，含 $1,2,\ldots,8$ 共 $8$ 個正整數。<br>
+(2) $\sin x$ 的值域在 $[-1,1]$ 內，且 $x=\dfrac\pi2\in[-2,4]$ 時等於 $1$，只含 $1$ 個正整數。<br>
+(3) $f_3=x\log3$ 遞增，值域 $[-2\log3,\,4\log3]\approx[-0.954,\,1.908]$，只含 $1$。<br>
+(4) $f_4$ 遞增，值域 $[f_4(-2),f_4(4)]=[-66,\,6]$，含 $1\sim6$ 共 $6$ 個。<br>
+(5) $f_5=\tan(0.1|x|)$，$0.1|x|\in[0,0.4]$，值域 $[0,\tan0.4]$；$0.4\lt\dfrac\pi4$ 所以 $\tan0.4\lt1$，不含正整數。<br>
+故選 (1)。<span class="note-sm">(5) 的角度是弧度：$0.4$ 弧度約 $23^\circ$，$\tan$ 值不到 $1$。看到三角函數裡面沒有度的符號，一律當弧度。</span></div></div>
+
+<div class="fx" id="L3-11" data-gen="gaussSides"><div class="fxh"><span class="no">L3-11</span><span class="kw">高斯符號在整數點的左右極限：右極限用「$x$ 比 $3$ 大一點點」、左極限用「比 $3$ 小一點點」，各自看括號裡落在哪兩個整數之間</span><span class="src">台中女中 112上 第一次 第 14 題</span></div>
+<div class="fxq">$[x]$ 表示不大於 $x$ 的最大整數。已知 $f(x)=[x+2.5]+[3-x]$，且 $\displaystyle\lim_{x\to3^+}f(x)=a$、$\displaystyle\lim_{x\to3^-}f(x)=b$，求數對 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(4,5)$</div>
+<div class="fxs"><div class="move">做法：把 $x$ 寫成 $3+h$。右極限 $h$ 是很小的正數、左極限 $h$ 是很小的負數，分別判斷 $x+2.5$ 與 $3-x$ 的整數部分。</div>
+令 $x=3+h$，則 $x+2.5=5.5+h$，$3-x=-h$。<br>
+$x\to3^+$（$0\lt h\lt0.5$）：$[5.5+h]=5$，$[-h]=-1$（$-h$ 落在 $-1$ 與 $0$ 之間）⟹ $a=5+(-1)=4$。<br>
+$x\to3^-$（$-0.5\lt h\lt0$）：$[5.5+h]=5$，$[-h]=0$（$-h$ 是很小的正數）⟹ $b=5+0=5$。<br>
+故 $(a,b)=(4,5)$。<span class="note-sm">$[x+2.5]$ 在 $x=3$ 附近不會跳（$5.5$ 不是整數），會跳的只有 $[3-x]$。判斷之前先找「括號裡在這一點是不是剛好整數」，可以少算一半。</span></div></div>
+
+<div class="fx" id="L3-12" data-gen="polyTwoLimits"><div class="fxh"><span class="no">L3-12</span><span class="kw">$\lim_{x\to a}\frac{f(x)}{x-a}$ 存在而 $f$ 是多項式：分母趨近 $0$ 所以 $f(a)=0$，$f$ 有因式 $x-a$。兩個條件就有兩個因式，剩下的一次因式用兩個極限值解出來</span><span class="src">台南女中 112上 第一次 第 7 題</span></div>
+<div class="fxq">三次多項式 $f(x)$ 滿足 $\displaystyle\lim_{x\to1}\frac{f(x)}{x-1}=1$、$\displaystyle\lim_{x\to2}\frac{f(x)}{x-2}=2$，求 $\displaystyle\lim_{x\to-1}\frac{f(x)}x$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$42$</div>
+<div class="fxs"><div class="move">做法：分母 $\to0$ 而極限存在 ⟹ 分子也 $\to0$ ⟹ $f(1)=f(2)=0$。設 $f(x)=(x-1)(x-2)(px+q)$，約分後代入。</div>
+$\dfrac{f(x)}{x-1}=(x-2)(px+q)\to(1-2)(p+q)=1$ ⟹ $p+q=-1$。<br>
+$\dfrac{f(x)}{x-2}=(x-1)(px+q)\to(2-1)(2p+q)=2$ ⟹ $2p+q=2$。<br>
+解得 $p=3$、$q=-4$，$f(x)=(x-1)(x-2)(3x-4)$。<br>
+$x\to-1$ 時分母 $\to-1\ne0$，直接代入：$\dfrac{f(-1)}{-1}=\dfrac{(-2)(-3)(-7)}{-1}=42$。<span class="note-sm">最後這個極限不是 $\dfrac00$ 型，直接代入就好。看到極限先檢查分母會不會變 $0$，不要每題都想約分。</span></div></div>
+
+<div class="fx" id="L3-13" data-gen="limMN"><div class="fxh"><span class="no">L3-13</span><span class="kw">$\frac00$ 型的極限值已知、要反求參數：分母在 $x=2$ 為 $0$ ⟹ 分子在 $x=2$ 也要為 $0$，先解出分子的參數；約掉 $(x-2)$ 之後再代入求另一個</span><span class="src">高師大附中 112下 第一次 填 4</span></div>
+<div class="fxq">若 $\displaystyle\lim_{x\to2}\frac{x^2-mx+8}{x^2-(n+2)x+2n}=\frac15$，求數對 $(m,n)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(m,n)=(6,12)$</div>
+<div class="fxs"><div class="move">做法：分母 $x^2-(n+2)x+2n=(x-2)(x-n)$，在 $x=2$ 一定是 $0$。極限是有限的非零值，所以分子在 $x=2$ 也必須是 $0$。</div>
+分子在 $x=2$ 為 $0$：$4-2m+8=0$ ⟹ $m=6$，分子 $=x^2-6x+8=(x-2)(x-4)$。<br>
+約分：$\dfrac{(x-2)(x-4)}{(x-2)(x-n)}=\dfrac{x-4}{x-n}\to\dfrac{-2}{2-n}$（需 $n\ne2$）。<br>
+$\dfrac{-2}{2-n}=\dfrac15$ ⟹ $2-n=-10$ ⟹ $n=12$。<br>
+故 $(m,n)=(6,12)$。<span class="note-sm">若 $n=2$，分母是 $(x-2)^2$，約掉一次 $(x-2)$ 後分母仍趨近 $0$、分子趨近 $-2$，極限不存在，所以 $n=2$ 自然被排除。</span></div></div>
+
+<div class="fx" id="L3-14" data-gen="absPick"><div class="fxh"><span class="no">L3-14</span><span class="kw">分子含絕對值的函數問極限與連續：先看絕對值裡的式子在那一點附近是正還是負，把絕對值拆掉；分母為 $0$ 的點函數值沒有定義，一定不連續</span><span class="src">高師大附中 110下 第一次 多 3</span></div>
+<div class="fxq">已知 $f(x)=\dfrac{|x^2-5x|-6}{x-2}$，下列選項何者正確？<br>
+(1) $f(x)$ 在 $x=0$ 連續　(2) $f(x)$ 在 $x=2$ 連續　(3) $\displaystyle\lim_{x\to0}f(x)=3$　(4) $\displaystyle\lim_{x\to2}f(x)$ 不存在　(5) $\displaystyle\lim_{x\to2}f(x)=1$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)(5)</div>
+<div class="fxs"><div class="move">做法：$x=0$ 時分母不是 $0$，絕對值函數又連續，直接代入就好。$x=2$ 附近 $x^2-5x=x(x-5)\lt0$，絕對值拆成 $-(x^2-5x)$，變成 $\dfrac00$ 型再約分。</div>
+$x=0$：$f(0)=\dfrac{0-6}{-2}=3$，且分子分母都是連續函數、分母 $\ne0$，所以 $\displaystyle\lim_{x\to0}f(x)=3=f(0)$ ⟹ (1)(3) 正確。<br>
+$x=2$：在 $0\lt x\lt5$ 時 $|x^2-5x|=5x-x^2$，分子 $=-x^2+5x-6=-(x-2)(x-3)$。<br>
+所以 $x\ne2$ 時 $f(x)=-(x-3)$，$\displaystyle\lim_{x\to2}f(x)=1$ ⟹ (5) 正確、(4) 錯誤。<br>
+但 $f(2)$ 的分母為 $0$、沒有定義 ⟹ 在 $x=2$ 不連續，(2) 錯誤。<br>
+故選 (1)(3)(5)。<span class="note-sm">極限存在不代表連續。連續要三件事都成立：$f(a)$ 有定義、$\lim_{x\to a}f(x)$ 存在、兩者相等。本題 $x=2$ 卡在第一件。</span></div></div>
+
+<div class="fx" id="L3-15" data-gen="ivtBig"><div class="fxh"><span class="no">L3-15</span><span class="kw">「$f(c)=$ 某個大數，$c$ 在哪兩個整數之間」：令 $g(x)=f(x)-$ 該數，$g$ 連續，找相鄰整數 $k$、$k+1$ 使 $g(k)$ 與 $g(k+1)$ 異號（勘根定理）</span><span class="src">高雄中學 106下 第一次 填 11</span></div>
+<div class="fxq">已知 $f(x)=x\cdot2^x$ 為連續函數。求正整數 $k$，使得在 $k$ 與 $k+1$ 之間有一實數 $c$ 滿足 $f(c)=2^{100}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$k=93$</div>
+<div class="fxs"><div class="move">做法：把 $2^{100}$ 寫成 $2^7\cdot2^{93}=128\cdot2^{93}$，就能和 $k\cdot2^k$ 直接比大小。勘根定理只需要連續與端點異號。</div>
+令 $g(x)=x\cdot2^x-2^{100}$，$g$ 連續。<br>
+$g(93)=93\cdot2^{93}-128\cdot2^{93}=-35\cdot2^{93}\lt0$。<br>
+$g(94)=94\cdot2^{94}-128\cdot2^{93}=(188-128)\cdot2^{93}=60\cdot2^{93}\gt0$。<br>
+由勘根定理，$93$ 與 $94$ 之間有 $c$ 使 $g(c)=0$，即 $f(c)=2^{100}$。又 $x\gt0$ 時 $x\cdot2^x$ 是遞增的（兩個正的遞增函數相乘），所以這樣的 $c$ 只有一個，$k=93$。<span class="note-sm">怎麼猜到 $93$？$x\cdot2^x=2^{100}$ 取 $\log_2$ 得 $x+\log_2x=100$，而 $\log_2x$ 大約是 $6$ 到 $7$，所以 $x$ 大約 $93$ 到 $94$。先估再驗，比從頭一個一個試快很多。</span></div></div>
+
+
+<h3 class="sec">L3 混合檢測 10 題（15 型打亂，可換組）</h3>
+<div class="fixset" data-tier="L3" data-keys="*" data-seed="3901" data-n="10" data-mixed="1"></div>
+
+<h3 class="sec">📝 段考模擬卷（L2＋L3 混合 14 題・計時 50 分鐘・交卷才看答案）</h3>
+<div class="note">按「開始計時」後作答，答案寫在紙上；時間到或按「交卷」才對答案。用時會記進紀錄，多做幾組可以看自己的速度有沒有進步。</div>
+<div class="fixset" data-tier="L2" data-keys="L2:*,L3:*" data-seed="6001" data-n="14" data-mixed="1" data-timer="50"></div>
+</section>
+<!-- ═══════════════════════ L4 ═══════════════════════ -->
+<section class="tier" id="L4">
+<h2><span class="tag">L4</span>頂尖程度：第一志願段考與模考的難題</h2>
+<div class="goal">
+  <div><b>對象</b>L3 全通，目標段考 95 分以上、分科測驗數甲高分的同學。</div>
+  <div><b>目標</b>12 題：每題都需要兩個以上的做法串起來，或一個不常見的觀察。</div>
+  <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
+</div>
+
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">$x^{n+1}$ 除以二次式的餘式再取極限：除式能因式分解成 $(x-2)(x-3)$，用餘式定理 $r(2)=2^{n+1}$、$r(3)=3^{n+1}$ 寫出 $r(x)$，最後是指數型極限同除 $3^{n+1}$</span><span class="src">高雄女中 112上 第一次 第 16 題</span></div>
+<div class="fxq">設 $n$ 為正整數，$x^{n+1}$ 除以 $x^2-5x+6$ 所得餘式為 $r(x)$，求 $\displaystyle\lim_{n\to\infty}\frac{r(0)}{r(-1)}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac23$</div>
+<div class="fxs"><div class="move">做法：餘式是一次式，由兩個點決定。$x^{n+1}=(x-2)(x-3)Q(x)+r(x)$ 代入 $x=2$、$3$ 就得到 $r(2)$、$r(3)$，把 $r(x)$ 寫成通過這兩點的直線。</div>
+$r(2)=2^{n+1}$、$r(3)=3^{n+1}$ ⟹ $r(x)=2^{n+1}+\left(3^{n+1}-2^{n+1}\right)(x-2)$。<br>
+$r(0)=2^{n+1}-2\left(3^{n+1}-2^{n+1}\right)=3\cdot2^{n+1}-2\cdot3^{n+1}$。<br>
+$r(-1)=2^{n+1}-3\left(3^{n+1}-2^{n+1}\right)=4\cdot2^{n+1}-3\cdot3^{n+1}$。<br>
+同除 $3^{n+1}$：$\dfrac{3\left(\frac23\right)^{n+1}-2}{4\left(\frac23\right)^{n+1}-3}\to\dfrac{-2}{-3}=\dfrac23$。<span class="note-sm">其實 $\dfrac{r(0)}{r(-1)}$ 的極限只看 $3^{n+1}$ 前面的係數 $-2$ 與 $-3$，也就是 $r(x)$ 中 $3^{n+1}(x-2)$ 那一部分在 $x=0$、$-1$ 的值。看出這點，填充題可以直接寫答案。</span></div></div>
+
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">夾住 $a_n$ 的兩邊長得像 $\left(1\pm\frac1n\right)^n$ 但又不完全一樣：把每一邊改寫成「$\left(1+\frac1k\right)^k$ 的倒數 × 一個趨近 $1$ 的修正項」，兩邊都趨近 $\frac1e$，再用夾擠定理</span><span class="src">改編自 111 分科模考 數甲 第 6 次 第 3 題</span></div>
+<div class="fxq">已知 $e=\displaystyle\lim_{k\to\infty}\left(1+\frac1k\right)^k$。對每個正整數 $n\ge2$，數列 $\langle a_n\rangle$ 都滿足
+$\left(1-\dfrac1n\right)^n\lt a_n\lt\left(\dfrac n{n+1}\right)^{n-1}$，則 $\displaystyle\lim_{n\to\infty}a_n$ 為下列何者？<br>
+(1) $e$　(2) $e^2$　(3) $\sqrt e$　(4) $\dfrac1e$　(5) 無法判斷</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(4) $\dfrac1e$</div>
+<div class="fxs"><div class="move">做法：已知的只有 $\left(1+\dfrac1k\right)^k\to e$，所以兩邊都要「湊成」這個樣子。左邊令 $k=n-1$，右邊 $k=n$，各多出一個 $\left(1+\dfrac1k\right)$ 的因數，它趨近 $1$。</div>
+左邊：$1-\dfrac1n=\dfrac{n-1}n=\dfrac1{1+\frac1{n-1}}$，所以 $\left(1-\dfrac1n\right)^n=\dfrac1{\left(1+\frac1{n-1}\right)^{n-1}\cdot\left(1+\frac1{n-1}\right)}\to\dfrac1{e\cdot1}=\dfrac1e$。<br>
+右邊：$\left(\dfrac n{n+1}\right)^{n-1}=\dfrac1{\left(1+\frac1n\right)^{n-1}}=\dfrac{1+\frac1n}{\left(1+\frac1n\right)^n}\to\dfrac1e$。<br>
+兩邊都趨近 $\dfrac1e$，由夾擠定理 $\displaystyle\lim_{n\to\infty}a_n=\frac1e$，選 (4)。<span class="note-sm">$\left(1+\dfrac1{n-1}\right)^{n-1}$ 只是把 $\left(1+\dfrac1k\right)^k$ 的第 $k=n-1$ 項拿來用，$n\to\infty$ 時 $k$ 也 $\to\infty$，所以極限一樣是 $e$。這種「換個足標」的動作，在處理 $e$ 的題目裡天天用到。</span></div></div>
+
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">五個選項各考一個公式的「邊界」：$\sum$ 從哪裡開始加、上限是 $n$ 還是 $\infty$、$\frac1n\sum\left(\frac kn\right)^2$ 用平方和公式、內層的無窮級數先裂項再看外層的極限</span><span class="src">北一女中 112下 第一次 多選</span></div>
+<div class="fxq">設 $n$ 為正整數，下列哪些選項正確？<br>
+(1) $\displaystyle\sum_{k=-1}^{n}k^2=\frac{n(n+1)(2n+1)}6$　(2) $\displaystyle\lim_{n\to\infty}\frac1n\sum_{k=1}^{n}\left(\frac kn\right)^2=0.3$　(3) $\displaystyle\sum_{k=2}^{\infty}\frac{2^{k-2}}{3^{k-1}}=1$<br>
+(4) $\displaystyle\sum_{k=1}^{n}\frac1{k(k+1)}=1$　(5) $\displaystyle\lim_{n\to\infty}\left(\sum_{k=1}^{\infty}\frac n{k(k+n)}\right)$ 不存在</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(3)(5)</div>
+<div class="fxs"><div class="move">做法：(5) 是重點。先把 $n$ 當成固定的數，內層 $\displaystyle\sum_{k=1}^{\infty}\frac n{k(k+n)}$ 裂項成 $\dfrac1k-\dfrac1{k+n}$，「隔 $n$ 項」相消，留下前 $n$ 項 $1+\dfrac12+\cdots+\dfrac1n$。</div>
+(1) $k=-1$ 那一項是 $(-1)^2=1$，所以左邊比公式多 $1$ ✗<br>
+(2) $\dfrac1n\cdot\dfrac{n(n+1)(2n+1)}{6n^2}=\dfrac{(n+1)(2n+1)}{6n^2}\to\dfrac13\ne0.3$ ✗<br>
+(3) 首項（$k=2$）$=\dfrac13$，公比 $\dfrac23$，和 $=\dfrac{\frac13}{1-\frac23}=1$ ✓<br>
+(4) $\displaystyle\sum_{k=1}^{n}\left(\frac1k-\frac1{k+1}\right)=1-\frac1{n+1}\ne1$（上限是 $n$，不是 $\infty$）✗<br>
+(5) 固定 $n$，內層前 $K$ 項（$K\gt n$）：$\displaystyle\sum_{k=1}^{K}\left(\frac1k-\frac1{k+n}\right)=\left(1+\frac12+\cdots+\frac1n\right)-\left(\frac1{K+1}+\cdots+\frac1{K+n}\right)$。<br>
+後面括號有 $n$ 項、每項 $\le\dfrac1{K+1}$，$K\to\infty$ 時趨近 $0$，所以內層 $=H_n=1+\dfrac12+\cdots+\dfrac1n$。<br>
+而 $H_n$ 會越來越大、沒有上限（調和級數發散，見 <b>L5-6</b>），所以外層極限不存在 ✓<br>
+故選 (3)(5)。<span class="note-sm">原卷參考答案印 (3)(4)(5)，那是把 (4) 的上限當成 $\infty$；照原卷題目，上限是 $n$，(4) 錯，正解 (3)(5)。另外 (2) 是下一章「定積分」的雛形，這裡用平方和公式就能算出 $\dfrac13$。</span></div></div>
+
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">分子是 $\cos$ 而角度每次加 $60^\circ$：$\cos$ 值每 $6$ 項重複一次，把每 $6$ 項包成一組，組與組之間是公比 $\frac1{2^6}$ 的無窮等比級數</span><span class="src">武陵高中 112上 第一次 第 8 題</span></div>
+<div class="fxq">求無窮級數 $1+\dfrac{\cos60^\circ}2+\dfrac{\cos120^\circ}4+\dfrac{\cos180^\circ}8+\dfrac{\cos240^\circ}{16}+\cdots+\dfrac{\cos\left((n-1)\times60^\circ\right)}{2^{n-1}}+\cdots$ 的和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1$</div>
+<div class="fxs"><div class="move">做法：週期 $6$ 的係數 $1,\frac12,-\frac12,-1,-\frac12,\frac12$ 乘上 $\frac1{2^{n-1}}$。先算一組 $6$ 項的和 $G$，第 $j$ 組就是 $G\cdot\left(\frac1{64}\right)^{j-1}$。</div>
+$\cos(n-1)60^\circ$ 依序為 $1,\dfrac12,-\dfrac12,-1,-\dfrac12,\dfrac12$，之後重複。<br>
+第一組：$G=1+\dfrac14-\dfrac18-\dfrac18-\dfrac1{32}+\dfrac1{64}=\dfrac{64+16-8-8-2+1}{64}=\dfrac{63}{64}$。<br>
+第 $j$ 組每一項都是第一組對應項乘 $\left(\dfrac1{2^6}\right)^{j-1}$，所以組和是 $\dfrac{63}{64}\left(\dfrac1{64}\right)^{j-1}$。<br>
+前 $6J$ 項和 $=\dfrac{63}{64}\cdot\dfrac{1-\left(\frac1{64}\right)^J}{1-\frac1{64}}=1-\left(\dfrac1{64}\right)^J\to1$。<br>
+其他的部分和與最近的「整組」部分和只差不到 $6$ 項，每項絕對值 $\le\dfrac1{2^{6J}}$，差距也趨近 $0$，所以級數和為 $1$。<span class="note-sm">最後一句不能省：分組只算了「每 $6$ 項看一次」的部分和。一般項趨近 $0$ 時，中間那幾項不會影響極限；若一般項不趨近 $0$（例如 $1-1+1-1+\cdots$），分組就會得出錯的結論。</span></div></div>
+
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">點沿著「右、上、左、下」循環走，每段是前一段的 $r$ 倍：$x$ 坐標只收右、左兩個方向，$y$ 坐標只收上、下兩個方向，各自是公比 $-r^2$ 的無窮等比級數</span><span class="src">台南一中 112上 第一次 第 10 題</span></div>
+<div class="fxq">從原點 $O$ 出發，先向右走 $1$ 到 $A_1$，再向上走 $\dfrac23$ 到 $A_2$，再向左走 $\left(\dfrac23\right)^2$ 到 $A_3$，再向下走 $\left(\dfrac23\right)^3$ 到 $A_4$，再向右走 $\left(\dfrac23\right)^4$ 到 $A_5$，……依右、上、左、下的方向循環，第 $k$ 段長 $\left(\dfrac23\right)^{k-1}$。若 $A_n$ 的坐標為 $(x_n,y_n)$，求 $n\to\infty$ 時 $A_n$ 的極限位置。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\left(\dfrac9{13},\dfrac6{13}\right)$</div>
+<div class="fxs"><div class="move">做法：把水平段和鉛直段分開。水平段是第 $1,3,5,\ldots$ 段，方向右、左交替；鉛直段是第 $2,4,6,\ldots$ 段，方向上、下交替。</div>
+令 $r=\dfrac23$。<br>
+$x$ 坐標：$1-r^2+r^4-r^6+\cdots$，公比 $-r^2=-\dfrac49$，絕對值小於 $1$ ⟹ $\displaystyle\lim_{n\to\infty}x_n=\frac1{1+r^2}=\frac1{1+\frac49}=\frac9{13}$。<br>
+$y$ 坐標：$r-r^3+r^5-\cdots=\dfrac r{1+r^2}=\dfrac{\frac23}{\frac{13}9}=\dfrac6{13}$。<br>
+（$x_n$ 是 $x$ 方向級數的部分和，部分和的極限就是級數和；$y_n$ 同理。）故極限位置為 $\left(\dfrac9{13},\dfrac6{13}\right)$。<span class="note-sm">把每一步看成「向左轉 $90^\circ$ 並縮成 $r$ 倍」，整條路就是一個等比級數。數甲後面學了複數平面，可以用公比 $ri$ 一次算出兩個坐標：$\dfrac1{1-ri}=\dfrac{1+ri}{1+r^2}$。</span></div></div>
+
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">多項式函數的敘述判斷：多項式處處連續，所以左右極限都等於函數值；合成的次數是「相乘」不是相加；$f\circ g=x$ 逼得兩個都是一次式</span><span class="src">北一女中 101下 第一次 多 3</span></div>
+<div class="fxq">已知 $f(x)$、$g(x)$ 為實係數多項式函數，下列哪些選項正確？<br>
+(A) 若 $\displaystyle\lim_{x\to1}\frac{f(x)}{x^3-1}$ 存在，則 $x^3-1$ 為 $f(x)$ 的因式<br>
+(B) 若 $\displaystyle\lim_{x\to1^-}f(x)=3$，則 $\displaystyle\lim_{x\to1^+}f(x)=3$<br>
+(C) 若 $f(x)$ 的次數為 $m$、$g(x)$ 的次數為 $n$，則 $(f\circ g)(x)$ 的次數為 $m+n$<br>
+(D) 若 $(f\circ g)(x)=x$，則 $(g\circ f)(x)=x$<br>
+(E) 若 $(f\circ g)(x)=x$，則 $f(x)$ 的值域必為 $\mathbb R$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(B)(D)(E)</div>
+<div class="fxs"><div class="move">做法：(A) 找一個 $f(1)=0$ 但沒有 $x^2+x+1$ 因式的反例；(C) 看最高次項 $(ax^m)\circ(bx^n)$；(D) 用次數相乘先確定 $f$、$g$ 都是一次式，再直接算。</div>
+(A) 反例 $f(x)=x-1$：$\dfrac{x-1}{x^3-1}=\dfrac1{x^2+x+1}\to\dfrac13$ 存在，但 $x^3-1$ 不是 $x-1$ 的因式 ✗<br>
+(B) 多項式函數連續，左右極限都等於 $f(1)$，所以 $f(1)=3$，右極限也是 $3$ ✓<br>
+(C) $f$ 的最高次項 $ax^m$、$g$ 的最高次項 $bx^n$，$f(g(x))$ 的最高次項是 $a(bx^n)^m=ab^mx^{mn}$，次數是 $mn$ 不是 $m+n$ ✗（例：$m=2$、$n=3$ 時次數為 $6$）<br>
+(D) $f(g(x))=x$ 是一次式 ⟹ 次數 $mn=1$ ⟹ $f$、$g$ 都是一次。設 $f=ax+b$、$g=cx+d$：$a(cx+d)+b=x$ ⟹ $ac=1$、$ad+b=0$。<br>
+$g(f(x))=c(ax+b)+d=acx+(cb+d)=x+(-acd+d)=x$ ✓<br>
+(E) 任給實數 $y$，取 $x_0=g(y)$，則 $f(x_0)=f(g(y))=y$，所以每個實數都在值域裡 ✓<br>
+故選 (B)(D)(E)。<span class="note-sm">(A) 若改成「$\displaystyle\lim_{x\to1}\frac{f(x)}{x-1}$ 存在」，結論「$x-1$ 是因式」就對了。極限只告訴你分母為 $0$ 的那個點的資訊，$x^3-1$ 的另外兩個根是虛根，極限管不到。</span></div></div>
+
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">分母是 $(x+2)^2$ 而極限存在：分子必須有 $(x+2)^2$ 這個因式，三次式就設成 $(x+2)^2(x+k)$，再用「沒有 $x^2$ 項」或常數項比較係數</span><span class="src">內壢高中 112上 第一次 第 12 題</span></div>
+<div class="fxq">若 $\displaystyle\lim_{x\to-2}\frac{x^3+ax+b}{(x+2)^2}$ 存在，且極限值為 $c$，求 $a+b+c$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-34$</div>
+<div class="fxs"><div class="move">做法：分母 $\to0$ 而極限存在，約掉一次 $(x+2)$ 後分母仍 $\to0$，所以分子要有兩次 $(x+2)$。分子是首項係數 $1$ 的三次式，直接設成 $(x+2)^2(x+k)$。</div>
+令 $x^3+ax+b=(x+2)^2(x+k)=\left(x^2+4x+4\right)(x+k)=x^3+(k+4)x^2+(4k+4)x+4k$。<br>
+比較 $x^2$ 項：$k+4=0$ ⟹ $k=-4$。於是 $a=4k+4=-12$、$b=4k=-16$。<br>
+$c=\displaystyle\lim_{x\to-2}\frac{(x+2)^2(x-4)}{(x+2)^2}=-2-4=-6$。<br>
+$a+b+c=-12-16-6=-34$。<span class="note-sm">若分子在 $x=-2$ 只有一次根，約一次之後變成 $\dfrac{\text{非零}}{x+2}$，左右兩邊一正一負、越來越大，極限不存在。所以「分母 $(x-a)^2$、極限存在」一定是二重根。</span></div></div>
+
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">點沿曲線趨近原點、問另一點的極限位置：把那一點的坐標寫成參數 $a$ 的式子，出現 $\frac00$ 型的根號差就有理化</span><span class="src">改編自 112、113 分科模考 數甲 第 6 次</span></div>
+<div class="fxq">設 $P$ 為拋物線 $y=\dfrac14x^2$ 上位於第一象限的點，$O$ 為原點。在 $x$ 軸正向上取一點 $Q$，使 $\overline{OQ}=\overline{OP}$，直線 $PQ$ 交 $y$ 軸於 $R$。當 $P$ 沿拋物線趨近原點時，求 $R$ 點 $y$ 坐標的極限。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$8$</div>
+<div class="fxs"><div class="move">做法：設 $P\left(a,\frac{a^2}4\right)$、$Q(s,0)$，$s=\overline{OP}$。用兩點式求出 $R$ 的 $y$ 坐標 $=\dfrac{y_P\,s}{s-a}$，分母 $s-a$ 是根號差，有理化。</div>
+$s=\sqrt{a^2+\dfrac{a^4}{16}}=a\sqrt{1+\dfrac{a^2}{16}}$，令 $w=\sqrt{1+\dfrac{a^2}{16}}$，$s=aw$。<br>
+直線 $PQ$：$y=\dfrac{a^2}4\cdot\dfrac{x-s}{a-s}$，令 $x=0$ 得 $R$ 的 $y$ 坐標 $=\dfrac{a^2}4\cdot\dfrac{s}{s-a}=\dfrac{a^2}4\cdot\dfrac{w}{w-1}$。<br>
+$w-1=\dfrac{w^2-1}{w+1}=\dfrac{a^2/16}{w+1}$，所以 $R$ 的 $y$ 坐標 $=\dfrac{a^2}4\cdot\dfrac{16w(w+1)}{a^2}=4w(w+1)$。<br>
+$a\to0^+$ 時 $w\to1$，極限 $=4\cdot1\cdot2=8$。<span class="note-sm">換成 $y=kx^2$（$k\gt0$），同樣的算法得到極限 $\dfrac2k$。$P$ 越接近原點，$\overline{OP}$ 與 $a$ 的差越小，直線 $PQ$ 越來越陡，但截距卻穩定在一個定值，這正是 $\dfrac00$ 型的典型樣子。</span></div></div>
+
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">$x\to0$ 時含高斯符號、$\sin\frac1x$、分段定義的函數：高斯與絕對值拆左右極限；「$x$ 乘上有界的東西」用夾擠；$x\left[\frac1x\right]$ 用 $\frac1x-1\lt\left[\frac1x\right]\le\frac1x$ 夾</span><span class="src">台南女中 112上 第一次 第 3 題</span></div>
+<div class="fxq">$[x]$ 表示不大於 $x$ 的最大整數。下列哪些函數在 $x\to0$ 的極限存在？<br>
+(1) $f_1(x)=\dfrac{x+|x|}x$　(2) $f_2(x)=x\sin\dfrac1x$　(3) $f_3(x)=x\left[\dfrac1x\right]$　(4) $f_4(x)=[x]+\sqrt{x-[x]}$　(5) $f_5(x)=\begin{cases}2x+1,&x\ne0\\2,&x=0\end{cases}$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(3)(4)(5)</div>
+<div class="fxs"><div class="move">做法：五個函數用三種工具：(1)(4) 拆左右極限，(2)(3) 夾擠，(5) 記住「極限與 $f(0)$ 的值無關」。</div>
+(1) $x\gt0$：$\dfrac{2x}x=2$；$x\lt0$：$\dfrac0x=0$。左右極限 $0\ne2$ ⟹ 不存在 ✗<br>
+(2) $0\le\left|x\sin\dfrac1x\right|\le|x|\to0$ ⟹ 由夾擠定理極限為 $0$ ✓<br>
+(3) $\dfrac1x-1\lt\left[\dfrac1x\right]\le\dfrac1x$。$x\gt0$ 時乘 $x$：$1-x\lt f_3(x)\le1$；$x\lt0$ 時乘 $x$ 不等號反向：$1\le f_3(x)\lt1-x$。兩側都被夾到 $1$ ⟹ 極限為 $1$ ✓<br>
+(4) $x\to0^+$：$[x]=0$，$f_4=\sqrt x\to0$；$x\to0^-$：$[x]=-1$，$f_4=-1+\sqrt{x+1}\to0$。左右相等 ⟹ 極限為 $0$ ✓<br>
+(5) $x\ne0$ 時 $f_5=2x+1\to1$，極限為 $1$（與 $f_5(0)=2$ 無關）✓<br>
+故選 (2)(3)(4)(5)。<span class="note-sm">(4) 的函數其實處處連續：$[x]$ 在整數點往上跳 $1$ 的同時，$\sqrt{x-[x]}$ 從接近 $1$ 掉回 $0$，兩個跳動剛好抵消。</span></div></div>
+
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">$([x]-2)\cdot f(x)$ 在 $x\to2$ 有極限：右側 $[x]-2=0$，乘積恆為 $0$，所以極限只能是 $0$；左側 $[x]-2=-1$，於是 $f$ 的<b>左極限</b>被逼成 $0$，右側的 $f$ 則完全不受限制</span><span class="src">改編自 110 分科模考 數甲 第 7 次 多 8</span></div>
+<div class="fxq">設 $f(x)$ 是定義在 $x\ne2$ 的實數上的函數，$[x]$ 表示不大於 $x$ 的最大整數，且 $\displaystyle\lim_{x\to2}\big([x]-2\big)f(x)$ 存在。下列哪些選項一定正確？<br>
+(1) $\displaystyle\lim_{x\to2}\left[(x-2)^2\right]$ 存在　(2) $\displaystyle\lim_{x\to2}\big([x]-2\big)^2$ 存在　(3) $\displaystyle\lim_{x\to2^-}f(x)=0$<br>
+(4) $\displaystyle\lim_{x\to2}f(x)$ 存在　(5) $\displaystyle\lim_{x\to2}\big([x]-2\big)\big(f(x)+x-2\big)$ 存在</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(3)(5)</div>
+<div class="fxs"><div class="move">做法：把已知條件拆成左右兩側翻譯。$2\lt x\lt3$ 時 $[x]=2$；$1\le x\lt2$ 時 $[x]=1$。</div>
+右側：$([x]-2)f(x)=0\cdot f(x)=0$，右極限 $0$。極限存在 ⟹ 左極限也是 $0$。<br>
+左側：$([x]-2)f(x)=-f(x)\to0$ ⟹ $\displaystyle\lim_{x\to2^-}f(x)=0$ ⟹ (3) ✓<br>
+(1) $x$ 在 $2$ 附近（$|x-2|\lt1$）時 $0\le(x-2)^2\lt1$，$\left[(x-2)^2\right]=0$，極限為 $0$ ✓<br>
+(2) 右側 $([x]-2)^2=0$，左側 $=(-1)^2=1$，左右不等 ✗<br>
+(4) 反例：$x\lt2$ 時 $f(x)=x-2$，$x\gt2$ 時 $f(x)=1$。已知條件成立（左側 $-(x-2)\to0$，右側恆為 $0$），但 $f$ 的左右極限 $0\ne1$ ✗<br>
+(5) $([x]-2)(f(x)+x-2)=([x]-2)f(x)+([x]-2)(x-2)$。前項 $\to0$；後項右側為 $0$、左側為 $-(x-2)\to0$。兩項都 $\to0$ ✓<br>
+故選 (1)(3)(5)。<span class="note-sm">若 (5) 改成 $([x]-2)(f(x)+x)$，後項左側變成 $-x\to-2$，右側是 $0$，極限就不存在了。高斯符號的題目，左右兩側一定要分開寫。</span></div></div>
+
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">分式方程式有幾個實根：分母為 $0$ 的點把數線切成幾段，每一段上函數連續且遞減；在每段找一點「很大」、一點「比右邊小」，用介值定理，遞減保證每段恰一根</span><span class="src">高雄中學 107下 期末 填 14</span></div>
+<div class="fxq">方程式 $\dfrac1x+\dfrac1{x+1}+\dfrac1{x+2}+\dfrac1{x+3}=2019$ 共有幾個相異實根？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$4$ 個</div>
+<div class="fxs"><div class="move">做法：令 $F(x)$ 為左邊。$-3,-2,-1,0$ 把數線切成 $5$ 段，每一段上四個分式都有定義且各自遞減，所以 $F$ 在每一段連續、嚴格遞減，每段最多一根。剩下的就是逐段用介值定理找「至少一根」。</div>
+$x\lt-3$：四項都是負的，$F(x)\lt0\lt2019$，沒有根。<br>
+$-3\lt x\lt-2$：$F\left(-3+10^{-4}\right)\gt10^4-6\gt2019$（另外三項都介於 $-2$ 與 $0$ 之間）；$F(-2.5)=-0.4-\dfrac23-2+2\lt2019$ ⟹ 恰一根。<br>
+$-2\lt x\lt-1$：$F\left(-2+10^{-4}\right)\gt10^4-3\gt2019$（$\frac1{x+3}\gt0$，$\frac1{x+1}\gt-2$，$\frac1x\gt-1$）；$F(-1.5)=-\dfrac23-2+2+\dfrac23=0\lt2019$ ⟹ 恰一根。<br>
+$-1\lt x\lt0$：$F\left(-1+10^{-4}\right)\gt10^4-2\gt2019$（只有 $\frac1x$ 是負的，且 $\frac1x\gt-2$）；$F(-0.5)=-2+2+\dfrac23+\dfrac25\lt2019$ ⟹ 恰一根。<br>
+$x\gt0$：$F\left(10^{-4}\right)\gt10^4\gt2019$（四項皆正）；$F(1)=1+\dfrac12+\dfrac13+\dfrac14=\dfrac{25}{12}\lt2019$ ⟹ 恰一根。<br>
+共 $4$ 個相異實根。<span class="note-sm">每一段靠近左端點時，分母趨近 $0^+$ 的那一項會變得非常大，所以 $2019$ 換成任何正數答案都是 $4$；換成負數時，根改成落在 $x\lt-3$ 與中間三段，也是 $4$ 個。介值定理配上「遞減」，是數根的個數最常用的組合。</span></div></div>
+
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">只給「$\frac{f(x)}{x-a}$ 的極限」：能推出的只有「$x\to a$ 時 $f(x)\to0$」，推不出 $f(a)=0$，也推不出 $f$ 連續；勘根定理要「連續＋端點異號」，兩個都要檢查</span><span class="src">改編自 111 分科模考 數甲 第 7 次 第 2 題</span></div>
+<div class="fxq">已知 $\displaystyle\lim_{x\to2}\frac{f(x)}{x-2}=4$，$\displaystyle\lim_{x\to5}\frac{f(x)}{x-5}=-1$。下列哪些選項一定正確？<br>
+(1) $f(2)=0$　(2) $\displaystyle\lim_{x\to5}f(x)=0$　(3) 方程式 $f(x)=0$ 在區間 $(2,5)$ 內必有實根<br>
+(4) $\displaystyle\lim_{x\to2}\frac{f(x)}{(x-2)(x-5)}=-\frac43$　(5) $\displaystyle\lim_{x\to2}\frac{f(x)}{x^2-4}=1$</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(2)(4)(5)</div>
+<div class="fxs"><div class="move">做法：(2)(4)(5) 都是「已知極限 × 另一個有極限的式子」，用運算性質；(1)(3) 牽涉函數值與連續，題目沒給，就找反例。</div>
+(1) 極限與 $f(2)$ 的值無關。把下面 (3) 的反例在 $x=2$ 的值改成 $f(2)=7$，兩個極限條件都不受影響，但 $f(2)\ne0$ ✗<br>
+(2) $f(x)=\dfrac{f(x)}{x-5}\cdot(x-5)\to(-1)\cdot0=0$ ✓<br>
+(3) 反例：$f(x)=\dfrac13(x-2)(5-x)(6-x)$。驗證：$\dfrac{f(x)}{x-2}=\dfrac13(5-x)(6-x)\to\dfrac13\cdot3\cdot4=4$ ✓；$\dfrac{f(x)}{x-5}=-\dfrac13(x-2)(6-x)\to-\dfrac13\cdot3\cdot1=-1$ ✓。但在 $(2,5)$ 內三個因式都是正的，$f(x)\gt0$，沒有根 ✗<br>
+(4) $\dfrac{f(x)}{(x-2)(x-5)}=\dfrac{f(x)}{x-2}\cdot\dfrac1{x-5}\to4\cdot\left(-\dfrac13\right)=-\dfrac43$ ✓<br>
+(5) $\dfrac{f(x)}{x^2-4}=\dfrac{f(x)}{x-2}\cdot\dfrac1{x+2}\to4\cdot\dfrac14=1$ ✓<br>
+故選 (2)(4)(5)。<span class="note-sm">(3) 的反例連「連續」都滿足，問題出在符號：$x$ 比 $2$ 大一點時 $f(x)\approx4(x-2)\gt0$，$x$ 比 $5$ 小一點時 $f(x)\approx-(x-5)\gt0$，兩端同號，勘根定理根本用不上。</span></div></div>
+
+</section>
+
+<!-- ═══════════════════════ L5 ═══════════════════════ -->
+<section class="tier" id="L5">
+<h2><span class="tag">L5</span>補充：經典證明、壓軸題與科學班・教甄專區</h2>
+<div class="goal">
+  <div><b>對象</b>數理志向、想看「這一章能走多遠」的同學；不列入通過標準。</div>
+  <div><b>目標</b>6 題經典與壓軸 ＋ 專區 15 題（教師甄選）。每題都只用本章的工具：運算性質、夾擠定理、裂項與無窮等比級數、遞迴數列「若極限存在」、勘根定理與介值定理。</div>
+  <div><b>通過標準</b>無。能講出每題的關鍵一步就很好了。</div>
+</div>
+
+<div class="fx" id="L5-1"><div class="fxh"><span class="no">L5-1</span><span class="kw">$\left(1+\frac1n\right)^n$ 為什麼會穩定到一個數：用二項式定理展開，每一項寫成 $\frac1{k!}\left(1-\frac1n\right)\cdots\left(1-\frac{k-1}n\right)$；$n$ 變大時每一項都變大、項數也變多，所以遞增；每一項又不超過 $\frac1{k!}\le\frac1{2^{k-1}}$，所以有上界 $3$</span><span class="src">經典證明（連續複利與常數 $e$）</span></div>
+<div class="fxq">令 $a_n=\left(1+\dfrac1n\right)^n$。<br>
+(1) 證明 $a_n=\displaystyle\sum_{k=0}^{n}\frac1{k!}\left(1-\frac1n\right)\left(1-\frac2n\right)\cdots\left(1-\frac{k-1}n\right)$（$k=0,1$ 時乘積視為 $1$）。<br>
+(2) 證明 $a_n\lt a_{n+1}$。<br>
+(3) 證明 $a_n\lt3$。<br>
+(4) 求 $a_1$、$a_2$、$a_3$，並說明 $\displaystyle\lim_{n\to\infty}a_n=e$ 落在哪個範圍。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(3) 證明見詳解　(4) $a_1=2$、$a_2=\dfrac94$、$a_3=\dfrac{64}{27}$；$\dfrac{64}{27}\lt e\le3$</div>
+<div class="fxs"><div class="move">做法：二項式展開後，把 $\dbinom nk\dfrac1{n^k}$ 改寫成「$\dfrac1{k!}$ 乘上 $k-1$ 個略小於 $1$ 的數」，$n$ 的影響就全部集中在那些因數上，比大小變得很直接。</div>
+(1) $\dbinom nk\dfrac1{n^k}=\dfrac{n(n-1)\cdots(n-k+1)}{k!\,n^k}=\dfrac1{k!}\cdot\dfrac nn\cdot\dfrac{n-1}n\cdots\dfrac{n-k+1}n=\dfrac1{k!}\left(1-\dfrac1n\right)\cdots\left(1-\dfrac{k-1}n\right)$，對 $k=0,1,\ldots,n$ 相加即得。<br>
+(2) 把 $a_{n+1}$ 也照 (1) 展開。對同一個 $k$（$2\le k\le n$），因為 $1-\dfrac j{n+1}\gt1-\dfrac jn\gt0$，$a_{n+1}$ 的第 $k$ 項比 $a_n$ 的第 $k$ 項大；$k=0,1$ 兩項相等（都是 $1$）。此外 $a_{n+1}$ 還多了 $k=n+1$ 這一個正項。所以 $a_n\lt a_{n+1}$。<br>
+(3) 每個括號都小於 $1$，所以第 $k$ 項 $\le\dfrac1{k!}$；又 $k!=1\cdot2\cdot3\cdots k\ge2^{k-1}$。<br>
+$a_n\le1+\displaystyle\sum_{k=1}^{n}\frac1{2^{k-1}}=1+2\left(1-\frac1{2^n}\right)\lt3$。<br>
+(4) $a_1=2$，$a_2=\left(\dfrac32\right)^2=\dfrac94$，$a_3=\left(\dfrac43\right)^3=\dfrac{64}{27}$。<br>
+數列一直變大、卻永遠不超過 $3$，所以它會越來越靠近某個不超過 $3$ 的數（這是實數的基本性質，課本直接接受），這個數就是 $e$。由遞增，$e\gt a_3=\dfrac{64}{27}$；由 $a_n\lt3$，$e\le3$。<span class="note-sm">實際上 $e\approx2.718$。用計算機算 $a_{10}\approx2.594$、$a_{100}\approx2.705$、$a_{1000}\approx2.717$，可以看到它爬得很慢。改用 (3) 裡的 $\displaystyle\sum\frac1{k!}$ 來估會快得多：$1+1+\frac12+\frac16+\frac1{24}+\frac1{120}\approx2.717$。</span></div></div>
+
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">牛頓法求 $\sqrt3$：切線與 $x$ 軸的交點給出 $x_{n+1}=\frac12\left(x_n+\frac3{x_n}\right)$；誤差的關係式 $x_{n+1}-\sqrt3=\frac{(x_n-\sqrt3)^2}{2x_n}$ 說明「誤差每一步大約平方」，有效位數每次加倍</span><span class="src">經典（N-12甲-1 備註：牛頓求根法）</span></div>
+<div class="fxq">要求 $x^2-3=0$ 的正根。已知拋物線 $y=x^2-3$ 在點 $(a,a^2-3)$ 的切線斜率為 $2a$（這個公式下一章會說明）。<br>
+(1) 用勘根定理說明正根落在 $1$ 與 $2$ 之間；取初始值 $x_1=2$，過 $(x_n,x_n^2-3)$ 作切線，切線與 $x$ 軸交點的 $x$ 坐標記為 $x_{n+1}$。證明 $x_{n+1}=\dfrac12\left(x_n+\dfrac3{x_n}\right)$。<br>
+(2) 證明 $x_{n+1}-\sqrt3=\dfrac{\left(x_n-\sqrt3\right)^2}{2x_n}$，並由此說明每一個 $x_n\gt\sqrt3$。<br>
+(3) 求 $x_2$、$x_3$、$x_4$，並證明 $0\lt x_4-\sqrt3\lt10^{-8}$。<br>
+(4) 證明 $\displaystyle\lim_{n\to\infty}x_n=\sqrt3$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2)(4) 證明見詳解　(3) $x_2=\dfrac74$、$x_3=\dfrac{97}{56}$、$x_4=\dfrac{18817}{10864}$</div>
+<div class="fxs"><div class="move">做法：(2) 是整題的心臟：把 $x_{n+1}-\sqrt3$ 通分，分子剛好是完全平方。有了它，(3) 只是把誤差一路平方下去，(4) 只要再看出「誤差至少減半」就能用夾擠定理。</div>
+(1) $g(x)=x^2-3$：$g(1)=-2\lt0$、$g(2)=1\gt0$，$g$ 連續，所以正根在 $1$ 與 $2$ 之間。<br>
+切線：$y-(x_n^2-3)=2x_n(x-x_n)$。令 $y=0$：$x=x_n-\dfrac{x_n^2-3}{2x_n}=\dfrac{x_n^2+3}{2x_n}=\dfrac12\left(x_n+\dfrac3{x_n}\right)$。<br>
+(2) $x_{n+1}-\sqrt3=\dfrac{x_n^2+3-2\sqrt3x_n}{2x_n}=\dfrac{\left(x_n-\sqrt3\right)^2}{2x_n}$。<br>
+$x_1=2\gt\sqrt3\gt0$；若 $x_n\gt0$，右邊 $\ge0$ 且 $x_n\ne\sqrt3$（$x_n$ 都是有理數），所以 $x_{n+1}\gt\sqrt3$。依此類推，每個 $x_n\gt\sqrt3$。<br>
+(3) $x_2=\dfrac12\left(2+\dfrac32\right)=\dfrac74$，$x_3=\dfrac12\left(\dfrac74+\dfrac{12}7\right)=\dfrac{97}{56}$，$x_4=\dfrac12\left(\dfrac{97}{56}+\dfrac{168}{97}\right)=\dfrac{97^2+168\cdot56}{2\cdot56\cdot97}=\dfrac{18817}{10864}$。<br>
+令 $e_n=x_n-\sqrt3$。由 $1.73\lt\sqrt3$ 得 $e_1\lt0.27$；<br>
+$e_2=\dfrac{e_1^2}{2x_1}\lt\dfrac{0.0729}4\lt0.019$，$e_3=\dfrac{e_2^2}{2x_2}\lt\dfrac{0.000361}{3.5}\lt0.000104$，$e_4=\dfrac{e_3^2}{2x_3}\lt\dfrac{1.09\times10^{-8}}{3.4}\lt10^{-8}$。<br>
+(4) 因為 $0\lt e_n\lt x_n$，所以 $e_{n+1}=e_n\cdot\dfrac{e_n}{2x_n}\lt\dfrac{e_n}2$。於是 $0\lt e_n\lt\dfrac{e_1}{2^{n-1}}\to0$，由夾擠定理 $e_n\to0$，即 $x_n\to\sqrt3$。<span class="note-sm">$\sqrt3=1.7320508075\ldots$，而 $x_4=1.7320508100\ldots$，只做三步就有 8 位正確。(4) 用的「誤差減半」只是保底的說法；真正的速度是 (2) 的平方。一般的方程式 $f(x)=0$ 也能這樣做，下一章學了切線斜率的算法後，迭代式會寫成 $x_{n+1}=x_n-\dfrac{f(x_n)}{(\text{在 }x_n\text{ 的切線斜率})}$。</span></div></div>
+
+<div class="fx" id="L5-3"><div class="fxh"><span class="no">L5-3</span><span class="kw">$\sqrt{2+\sqrt{2+\sqrt{2+\cdots}}}$：「若極限存在」只能告訴你極限是多少，要證明它真的存在，就去估「離 $2$ 多遠」。$2-a_{n+1}$ 與 $2-a_n$ 的關係用平方差一行寫出來，距離每次至少減半</span><span class="src">經典（遞迴數列的極限）</span></div>
+<div class="fxq">設 $a_1=\sqrt2$，$a_{n+1}=\sqrt{2+a_n}$（$n\ge1$），即 $a_2=\sqrt{2+\sqrt2}$、$a_3=\sqrt{2+\sqrt{2+\sqrt2}}$、……。<br>
+(1) 若 $\displaystyle\lim_{n\to\infty}a_n$ 存在，求它的值。<br>
+(2) 證明對每個 $n$，$0\lt a_n\lt2$。<br>
+(3) 證明 $2-a_{n+1}=\dfrac{2-a_n}{2+a_{n+1}}$，並由此證明 $\displaystyle\lim_{n\to\infty}a_n$ 確實存在。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) $2$　(2)(3) 證明見詳解</div>
+<div class="fxs"><div class="move">做法：(1) 遞迴式兩邊取極限得 $L=\sqrt{2+L}$。(3) 用 $(2-a_{n+1})(2+a_{n+1})=4-a_{n+1}^2=2-a_n$，誤差的關係就出來了，再用夾擠定理。</div>
+(1) 設 $\displaystyle\lim_{n\to\infty}a_n=L$，則 $L=\sqrt{2+L}$ ⟹ $L^2-L-2=0$ ⟹ $L=2$ 或 $-1$。每項 $a_n\gt0$，$L$ 不可能是負數，所以 $L=2$。<br>
+(2) $a_1=\sqrt2$ 介於 $0$ 與 $2$ 之間。若 $0\lt a_n\lt2$，則 $2\lt2+a_n\lt4$，$a_{n+1}=\sqrt{2+a_n}$ 介於 $\sqrt2$ 與 $2$ 之間。依數學歸納法，每個 $a_n$ 都在 $0$ 與 $2$ 之間。<br>
+(3) $(2-a_{n+1})(2+a_{n+1})=4-a_{n+1}^2=4-(2+a_n)=2-a_n$，所以 $2-a_{n+1}=\dfrac{2-a_n}{2+a_{n+1}}$。<br>
+因為 $2+a_{n+1}\gt2$，得 $0\lt2-a_{n+1}\lt\dfrac{2-a_n}2$。反覆使用：$0\lt2-a_n\lt\dfrac{2-\sqrt2}{2^{n-1}}\to0$。<br>
+由夾擠定理 $2-a_n\to0$，即 $\displaystyle\lim_{n\to\infty}a_n=2$ 存在。<span class="note-sm">(1) 的算法如果拿去算 $b_1=3$、$b_{n+1}=b_n^2-2$，也會得到「$L=2$ 或 $-1$」，但那個數列 $3,7,47,\ldots$ 根本發散。所以 (3) 這一步不能省。另外，用半角公式可以驗證 $a_n=2\cos\dfrac{180^\circ}{2^{n+1}}$，從這個式子也看得出 $a_n\to2$。</span></div></div>
+
+<div class="fx" id="L5-4"><div class="fxh"><span class="no">L5-4</span><span class="kw">要證明「某處 $f(c)=f(c+h)$」：把兩個值相減做成新函數 $g(x)=f(x+h)-f(x)$，找出 $g$ 在幾個點的值加起來是 $0$，就一定有異號（或剛好為 $0$）的兩點，再用介值定理</span><span class="src">經典（介值定理的論證題）</span></div>
+<div class="fxq">設 $f$ 在 $[0,1]$ 上連續，且 $f(0)=f(1)$。<br>
+(1) 證明存在 $c\in\left[0,\dfrac12\right]$ 使得 $f(c)=f\left(c+\dfrac12\right)$。<br>
+(2) 證明存在 $c\in\left[0,\dfrac23\right]$ 使得 $f(c)=f\left(c+\dfrac13\right)$。<br>
+(3) 一位跑者在 $1$ 小時內跑了 $10$ 公里（速度可以忽快忽慢，跑過的距離隨時間連續變化）。證明一定有某一段連續的 $30$ 分鐘，他恰好跑了 $5$ 公里。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">證明見詳解</div>
+<div class="fxs"><div class="move">做法：$g(x)=f\left(x+\dfrac12\right)-f(x)$ 在 $[0,\tfrac12]$ 上連續，而 $g(0)+g\left(\tfrac12\right)=f(1)-f(0)=0$；兩個數加起來是 $0$，不是都為 $0$ 就是一正一負。</div>
+(1) 令 $g(x)=f\left(x+\dfrac12\right)-f(x)$，$x\in\left[0,\dfrac12\right]$，$g$ 是連續函數的差，連續。<br>
+$g(0)+g\left(\tfrac12\right)=\left[f\left(\tfrac12\right)-f(0)\right]+\left[f(1)-f\left(\tfrac12\right)\right]=f(1)-f(0)=0$。<br>
+若 $g(0)=0$，取 $c=0$；否則 $g(0)$ 與 $g\left(\tfrac12\right)=-g(0)$ 異號，由介值定理（勘根定理）存在 $c\in\left(0,\tfrac12\right)$ 使 $g(c)=0$。<br>
+(2) 令 $g(x)=f\left(x+\dfrac13\right)-f(x)$，$x\in\left[0,\dfrac23\right]$。同理 $g(0)+g\left(\tfrac13\right)+g\left(\tfrac23\right)=f(1)-f(0)=0$。<br>
+三個數和為 $0$：若有一個是 $0$ 就取那一點；否則不可能三個同號，必有相鄰兩點（$0$ 與 $\tfrac13$，或 $\tfrac13$ 與 $\tfrac23$）異號，在這兩點之間由介值定理得到 $c$。<br>
+(3) 以小時為單位，$D(t)$ 為 $t$ 小時內跑過的公里數，$D(0)=0$、$D(1)=10$。令 $f(t)=D(t)-10t$，則 $f$ 連續且 $f(0)=f(1)=0$。由 (1)，存在 $c$ 使 $f\left(c+\tfrac12\right)=f(c)$，即 $D\left(c+\tfrac12\right)-D(c)=10\cdot\dfrac12=5$。<span class="note-sm">同樣的方法對 $\dfrac1n$ 都成立（$n$ 個值加起來是 $0$）。但若把 $\dfrac12$ 換成 $\dfrac25$ 這種「不是 $\frac1n$」的長度，結論就不一定對，有反例。</span></div></div>
+
+<div class="fx" id="L5-5"><div class="fxh"><span class="no">L5-5</span><span class="kw">證明 $\sqrt[n]n\to1$：令 $\sqrt[n]n=1+h_n$，二項式展開只留 $\binom n2h_n^2$ 這一項就夠了，得到 $h_n\le\sqrt{\frac2{n-1}}$，再夾擠</span><span class="src">經典證明（數列的極限）</span></div>
+<div class="fxq">(1) 對 $n\ge2$，令 $h_n=\sqrt[n]n-1$。證明 $0\le h_n\le\sqrt{\dfrac2{n-1}}$。<br>
+(2) 證明 $\displaystyle\lim_{n\to\infty}\sqrt[n]n=1$。<br>
+(3) 求 $\displaystyle\lim_{n\to\infty}\sqrt[n]{n^2+2^n}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2) 證明見詳解　(3) $2$</div>
+<div class="fxs"><div class="move">做法：$n=(1+h_n)^n$，右邊二項式展開的每一項都 $\ge0$，丟掉其他項只留 $\dbinom n2h_n^2$，就得到 $h_n$ 的上界。(3) 先看出 $2^n$ 是主角，用 $2^n\le n^2+2^n\le2\cdot2^n$ 夾住。</div>
+(1) $n\ge2$ 時 $n\ge1$，所以 $\sqrt[n]n\ge1$，$h_n\ge0$。<br>
+$n=(1+h_n)^n=1+nh_n+\dbinom n2h_n^2+\cdots\ge\dbinom n2h_n^2=\dfrac{n(n-1)}2h_n^2$ ⟹ $h_n^2\le\dfrac2{n-1}$ ⟹ $h_n\le\sqrt{\dfrac2{n-1}}$。<br>
+(2) $0\le h_n\le\sqrt{\dfrac2{n-1}}\to0$，夾擠得 $h_n\to0$，即 $\sqrt[n]n\to1$。<br>
+(3) $n\ge4$ 時 $n^2\le2^n$（$n=4$ 時相等，之後左邊每次乘 $\left(\frac{n+1}n\right)^2\le\frac{25}{16}\lt2$，右邊乘 $2$），所以 $2^n\lt n^2+2^n\le2\cdot2^n$。<br>
+開 $n$ 次方：$2\lt\sqrt[n]{n^2+2^n}\le2\sqrt[n]2$。又 $1\le\sqrt[n]2\le\sqrt[n]n$（$n\ge2$），由 (2) 夾擠得 $\sqrt[n]2\to1$，所以右邊 $\to2$，極限為 $2$。<span class="note-sm">$\sqrt[n]n$ 並不是一路遞減：$\sqrt[2]2\approx1.414$、$\sqrt[3]3\approx1.442$、$\sqrt[4]4\approx1.414$，最大值出現在 $n=3$。所以不能用「遞減又大於 $1$」說它趨近 $1$，要用 (1) 這種明確的估計。</span></div></div>
+
+<div class="fx" id="L5-6"><div class="fxh"><span class="no">L5-6</span><span class="kw">每一項都趨近 $0$，級數卻可能發散：$1+\frac12+\frac13+\cdots$ 從 $\frac13$ 開始按 $2$ 項、$4$ 項、$8$ 項……分組，每組都 $\ge\frac12$，部分和沒有上限</span><span class="src">經典證明（奧雷姆，14 世紀）</span></div>
+<div class="fxq">令 $H_n=1+\dfrac12+\dfrac13+\cdots+\dfrac1n$。<br>
+(1) 證明對每個正整數 $k$，$H_{2^k}\ge1+\dfrac k2$。<br>
+(2) 說明無窮級數 $\displaystyle\sum_{n=1}^{\infty}\frac1n$ 發散，雖然 $\displaystyle\lim_{n\to\infty}\frac1n=0$。<br>
+(3) 依 (1) 的估計，至少取幾項（寫成 $2$ 的次方）就能保證部分和 $\ge10$？</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2) 證明見詳解　(3) $2^{18}$ 項</div>
+<div class="fxs"><div class="move">做法：第 $j$ 組是 $\dfrac1{2^{j-1}+1}+\cdots+\dfrac1{2^j}$，共 $2^{j-1}$ 項，每項都 $\ge$ 該組最小的 $\dfrac1{2^j}$，所以一組至少 $2^{j-1}\cdot\dfrac1{2^j}=\dfrac12$。</div>
+(1) $H_{2^k}=1+\displaystyle\sum_{j=1}^{k}\left(\frac1{2^{j-1}+1}+\cdots+\frac1{2^j}\right)\ge1+\sum_{j=1}^{k}\frac12=1+\frac k2$。<br>
+(2) 部分和 $H_n$ 隨 $n$ 遞增，且 $H_{2^k}\ge1+\dfrac k2$ 可以大過任何數，所以 $\langle H_n\rangle$ 沒有上限，不收斂，級數發散。<br>
+「級數收斂 ⟹ 一般項 $\to0$」是對的，但反過來不成立，$\dfrac1n$ 就是反例。<br>
+(3) 要 $1+\dfrac k2\ge10$ ⟹ $k\ge18$，取 $2^{18}=262144$ 項就保證 $H_n\ge10$。<span class="note-sm">這個估計很保守：實際上 $H_{12366}\lt10\lt H_{12367}$，第 $12367$ 項就超過 $10$ 了。但不管多保守，它都證明了部分和會超過任何給定的數。調和級數長得非常慢，要超過 $100$ 大約需要 $1.5\times10^{43}$ 項。</span></div></div>
+
+<h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（15 題）</h3>
+<div class="note">本專區取材自各校教師甄選試題（含代理教師甄選），皆看原卷逐字重打並獨立驗算；有改寫的地方在題後註明。科學班入學試題以國中範圍為主，本章（極限）沒有可用的題，所以本區全部來自教甄。難度明顯高於段考，但用的都是本章的工具：裂項相消、無窮等比級數、遞迴數列的極限、夾擠定理、左右極限與連續、勘根定理。</div>
+
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">係數 $a_n$ 來自二項式展開：先寫出 $a_n=\binom n2 3^{n-2}$，代進去後 $\frac{3^n}{a_n}=\frac{18}{n(n-1)}$，是最標準的裂項</span><span class="src">東石高中 112 教甄 填 6（北一女中 106 教甄 填 1 同題）</span></div>
+<div class="fxq">令 $a_n$ 為 $\left(3-\sqrt x\right)^n$ 展開式中 $x$ 項的係數（$n=2,3,4,\ldots$），求 $\displaystyle\lim_{n\to\infty}\left(\frac{3^2}{a_2}+\frac{3^3}{a_3}+\cdots+\frac{3^n}{a_n}\right)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$18$</div>
+<div class="fxs"><div class="move">做法：一般項 $\dbinom nk3^{n-k}\left(-\sqrt x\right)^k$ 中，$x$ 的一次項要 $k=2$。</div>
+$a_n=\dbinom n2\cdot3^{n-2}\cdot(-1)^2=\dfrac{n(n-1)}2\cdot3^{n-2}$。<br>
+$\dfrac{3^n}{a_n}=\dfrac{9\cdot2}{n(n-1)}=18\left(\dfrac1{n-1}-\dfrac1n\right)$。<br>
+$\displaystyle\sum_{k=2}^{n}\frac{3^k}{a_k}=18\left(1-\frac1n\right)\to18$。<span class="note-sm">$3^{n-2}$ 和分子的 $3^n$ 約掉只剩 $9$，這是出題者刻意設計的。若分子改成 $2^n$，就變成 $\dfrac{18}{n(n-1)}\left(\dfrac23\right)^{n-2}$ 這種不能裂項的形式。</span></div></div>
+
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">專區 2</span><span class="kw">分母是連續三個階乘相加：提出 $k!$ 後括號剛好是 $(k+2)^2$，與分子約掉一次，再改寫成 $\frac{k+1}{(k+2)!}=\frac1{(k+1)!}-\frac1{(k+2)!}$</span><span class="src">彰化女中 111 第二次教甄 填 6</span></div>
+<div class="fxq">求 $\displaystyle\lim_{n\to\infty}\left[\frac3{1!+2!+3!}+\frac4{2!+3!+4!}+\frac5{3!+4!+5!}+\cdots+\frac{n+2}{n!+(n+1)!+(n+2)!}\right]$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac12$</div>
+<div class="fxs"><div class="move">做法：階乘的和先提出最小的階乘 $k!$，括號內是 $k$ 的多項式，通常會因式分解得很漂亮。</div>
+$k!+(k+1)!+(k+2)!=k!\left[1+(k+1)+(k+1)(k+2)\right]=k!\left(k^2+4k+4\right)=k!(k+2)^2$。<br>
+$\dfrac{k+2}{k!(k+2)^2}=\dfrac1{k!(k+2)}=\dfrac{k+1}{(k+2)!}=\dfrac{(k+2)-1}{(k+2)!}=\dfrac1{(k+1)!}-\dfrac1{(k+2)!}$。<br>
+$\displaystyle\sum_{k=1}^{n}=\frac1{2!}-\frac1{(n+2)!}\to\frac12$。<span class="note-sm">$\dfrac1{k!(k+2)}$ 乘上 $\dfrac{k+1}{k+1}$ 湊成 $(k+2)!$ 是關鍵的一步；以後看到「$k!$ 乘上一個比 $k$ 大的數」，都試著把分母補成完整的階乘。</span></div></div>
+
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">專區 3</span><span class="kw">正負交錯、分子 $n+2$、分母 $(n+1)!$：拆成 $\frac1{n!}+\frac1{(n+1)!}$，相鄰兩項正負相反，交錯之後變成兩兩相消</span><span class="src">中壢高中 109 教甄 填 19</span></div>
+<div class="fxq">求無窮級數 $\dfrac3{2!}-\dfrac4{3!}+\dfrac5{4!}-\dfrac6{5!}+\cdots+(-1)^{n+1}\dfrac{n+2}{(n+1)!}+\cdots$ 的和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$1$</div>
+<div class="fxs"><div class="move">做法：$n+2=(n+1)+1$，所以 $\dfrac{n+2}{(n+1)!}=\dfrac1{n!}+\dfrac1{(n+1)!}$。乘上 $(-1)^{n+1}$ 後，第 $n$ 項的 $\dfrac1{(n+1)!}$ 和第 $n+1$ 項的 $-\dfrac1{(n+1)!}$ 互相抵消。</div>
+第 $n$ 項 $=(-1)^{n+1}\left[\dfrac1{n!}+\dfrac1{(n+1)!}\right]$。<br>
+前 $N$ 項和 $=\left(\dfrac1{1!}+\dfrac1{2!}\right)-\left(\dfrac1{2!}+\dfrac1{3!}\right)+\left(\dfrac1{3!}+\dfrac1{4!}\right)-\cdots+(-1)^{N+1}\left(\dfrac1{N!}+\dfrac1{(N+1)!}\right)$<br>
+$=1+(-1)^{N+1}\dfrac1{(N+1)!}$（中間全部相消）。<br>
+$N\to\infty$ 時 $\dfrac1{(N+1)!}\to0$，級數和為 $1$。<span class="note-sm">不必知道 $\displaystyle\sum\frac{(-1)^n}{n!}=\frac1e$ 這類結果；能寫出部分和的封閉式，就能直接求極限，這正是本章處理非等比級數的方法。</span></div></div>
+
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">專區 4</span><span class="kw">$\sum\frac{n(n+1)}{2^n}$：乘公比錯開一位相減一次，$n(n+1)$ 降成 $2n$；再做一次（或直接用 $\sum\frac n{2^n}=2$），就只剩等比</span><span class="src">中壢高中 109 教甄 填 17</span></div>
+<div class="fxq">求 $\displaystyle\sum_{n=1}^{\infty}\frac{n(n+1)}{2^n}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$8$</div>
+<div class="fxs"><div class="move">做法：相減後分子變成 $n(n+1)-(n-1)n=2n$，次數降一次。對部分和 $S_N$ 做，最後處理多出來的 $\dfrac{N(N+1)}{2^{N+1}}$。</div>
+$S_N=\displaystyle\sum_{n=1}^{N}\frac{n(n+1)}{2^n}$，$\dfrac12S_N=\displaystyle\sum_{n=2}^{N+1}\frac{(n-1)n}{2^n}$。<br>
+相減：$\dfrac12S_N=\displaystyle\sum_{n=1}^{N}\frac{2n}{2^n}-\frac{N(N+1)}{2^{N+1}}$。<br>
+同樣的做法（見 <b>L3-8</b>）可得 $\displaystyle\sum_{n=1}^{N}\frac n{2^n}=2-\frac{N+2}{2^N}\to2$。<br>
+又 $2^N\ge\dbinom N3=\dfrac{N(N-1)(N-2)}6$，所以 $\dfrac{N(N+1)}{2^{N+1}}\le\dfrac{3(N+1)}{(N-1)(N-2)}\to0$（$N\ge3$）。<br>
+故 $\dfrac12\displaystyle\lim_{N\to\infty}S_N=2\cdot2-0=4$ ⟹ 原式 $=8$。<span class="note-sm">一般地，$\displaystyle\sum_{n\ge1}\frac{n(n+1)}2x^n=\frac x{(1-x)^3}$（$|x|\lt1$）；$x=\frac12$ 時是 $4$，乘 $2$ 得 $8$。這個公式在大學用冪級數來證明，這裡用錯位相減就夠了。</span></div></div>
+
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">專區 5</span><span class="kw">拋物線的係數有 $2^{2n+1}$、$3\cdot2^n$：判別式提示它能因式分解成 $(2^{n+1}x-1)(2^nx-1)$；兩根與 $y$ 截距一出來，三角形面積就是公比 $\frac12$ 的等比數列</span><span class="src">彰化女中 111 第二次教甄 填 8</span></div>
+<div class="fxq">設 $n$ 為正整數，拋物線 $y=2^{2n+1}x^2-3\cdot2^nx+1$ 與 $x$ 軸交於 $P_n$、$Q_n$ 兩點，與 $y$ 軸交於 $R_n$。設 $a_n$ 為 $\triangle P_nQ_nR_n$ 的面積，求 $\displaystyle\sum_{n=1}^{\infty}a_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac14$</div>
+<div class="fxs"><div class="move">做法：令 $u=2^nx$，方程式變成 $2u^2-3u+1=0$，$u=1$ 或 $\dfrac12$，兩根立刻出來。</div>
+$2^{2n+1}x^2-3\cdot2^nx+1=\left(2^{n+1}x-1\right)\left(2^nx-1\right)$ ⟹ $P_n$、$Q_n$ 的 $x$ 坐標為 $\dfrac1{2^{n+1}}$、$\dfrac1{2^n}$；$R_n=(0,1)$。<br>
+底 $\overline{P_nQ_n}=\dfrac1{2^n}-\dfrac1{2^{n+1}}=\dfrac1{2^{n+1}}$，高 $=1$ ⟹ $a_n=\dfrac12\cdot\dfrac1{2^{n+1}}\cdot1=\dfrac1{2^{n+2}}$。<br>
+$\displaystyle\sum_{n=1}^{\infty}a_n=\frac{\frac18}{1-\frac12}=\frac14$。<span class="note-sm">兩根的比固定是 $2:1$，所以每個三角形的底都是「較大根的一半」；而較大根每次減半，面積也每次減半。</span></div></div>
+
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">專區 6</span><span class="kw">一堆小數的平均值：不要一個一個加，改成「每一位數字的平均」；前 $n-1$ 位是 $0$ 或 $1$ 各一半，平均 $\frac12$，最後一位固定是 $1$</span><span class="src">師大附中 106 教甄 填 4</span></div>
+<div class="fxq">在十進位制下，$D_n$ 為介於 $0$ 與 $1$ 之間的 $n$ 位純小數中，各位數字均為 $0$ 或 $1$ 且小數點下第 $n$ 位數為 $1$ 的數所成的集合，例如 $D_3=\{0.001,\ 0.011,\ 0.101,\ 0.111\}$。設 $D_n$ 中元素的算術平均數為 $d_n$，求 $\displaystyle\lim_{n\to\infty}d_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac1{18}$</div>
+<div class="fxs"><div class="move">做法：平均數可以逐位計算：$d_n=\displaystyle\sum_{k=1}^{n}(\text{第 }k\text{ 位數字的平均})\times10^{-k}$。</div>
+$D_n$ 共有 $2^{n-1}$ 個數（前 $n-1$ 位各有兩種選擇）。<br>
+第 $k$ 位（$k\le n-1$）：恰好一半的數是 $1$，平均 $\dfrac12$；第 $n$ 位全是 $1$，平均 $1$。<br>
+$d_n=\dfrac12\displaystyle\sum_{k=1}^{n-1}\frac1{10^k}+\frac1{10^n}=\frac12\cdot\frac{\frac1{10}\left(1-\frac1{10^{n-1}}\right)}{1-\frac1{10}}+\frac1{10^n}=\frac1{18}\left(1-\frac1{10^{n-1}}\right)+\frac1{10^n}$。<br>
+$n\to\infty$：$d_n\to\dfrac1{18}$。驗算 $n=3$：$d_3=\dfrac{0.001+0.011+0.101+0.111}4=0.056$，公式 $\dfrac1{18}\cdot\dfrac{99}{100}+\dfrac1{1000}=0.055+0.001=0.056$ ✓<span class="note-sm">極限 $\dfrac1{18}=0.0\overline5$，正好是「每一位都是 $\frac12$」的小數 $0.0555\ldots$ 的值，最後一位的 $1$ 在極限中消失了。</span></div></div>
+
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">專區 7</span><span class="kw">每一局只會在兩個狀態之間轉換：寫出 $P_n=\alpha P_{n-1}+\beta(1-P_{n-1})$，整理成 $P_n-k=r(P_{n-1}-k)$，$|r|\lt1$ 時極限就是不動點 $k$</span><span class="src">金門高中 112 教甄 填 2</span></div>
+<div class="fxq">$A$ 箱中有 $1$ 黑球、$1$ 白球；$B$ 箱中有 $1$ 白球。每次先由甲自 $A$ 箱隨機取一球放入 $B$ 箱中，再由乙自 $B$ 箱隨機取一球放入 $A$ 箱，這稱為一局。以 $P_n$ 表示第 $n$ 局結束時 $A$ 箱中恰為一黑一白的機率，求 $\displaystyle\lim_{n\to\infty}P_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac23$</div>
+<div class="fxs"><div class="move">做法：黑球只有一顆，每局結束時不是在 $A$（狀態甲：$A$ 一黑一白、$B$ 一白），就是在 $B$（狀態乙：$A$ 兩白、$B$ 一黑）。分別算兩個狀態「下一局回到甲」的機率。</div>
+從狀態甲出發：甲取黑（$\tfrac12$），$B$ 變成一黑一白，乙取回黑（$\tfrac12$）才回到甲；甲取白（$\tfrac12$），$B$ 兩白，乙一定取回白，回到甲。回到甲的機率 $=\dfrac12\cdot\dfrac12+\dfrac12=\dfrac34$。<br>
+從狀態乙出發：甲一定取白，$B$ 變成一黑一白，乙取黑（$\tfrac12$）才變成甲。機率 $\dfrac12$。<br>
+$P_n=\dfrac34P_{n-1}+\dfrac12\left(1-P_{n-1}\right)=\dfrac14P_{n-1}+\dfrac12$，$P_0=1$。<br>
+不動點 $k=\dfrac14k+\dfrac12$ ⟹ $k=\dfrac23$；$P_n-\dfrac23=\dfrac14\left(P_{n-1}-\dfrac23\right)$ ⟹ $P_n=\dfrac23+\dfrac13\left(\dfrac14\right)^n\to\dfrac23$。<span class="note-sm">極限 $\dfrac23$ 與一開始的狀態無關：就算一開始黑球放在 $B$（$P_0=0$），$P_n=\dfrac23-\dfrac23\left(\dfrac14\right)^n$ 也趨近 $\dfrac23$。這就是高二學過的「穩定狀態」。</span></div></div>
+
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">專區 8</span><span class="kw">每個新點是前兩點的內分點：寫成 $x_{n+2}=\frac{x_n+3x_{n+1}}4$，找出一個「每一步都不變的量」$4x_{n+1}+x_n$，兩邊取極限一步到位</span><span class="src">鳳山高中 112 教甄 計算 3</span></div>
+<div class="fxq">數線上有點 $P_1(x_1)$、$P_2(x_2)$、$P_3(x_3)$、……，且對所有正整數 $n$，$P_{n+2}$ 為 $\overline{P_nP_{n+1}}$ 上滿足 $\overline{P_{n+2}P_n}:\overline{P_{n+2}P_{n+1}}=3:1$ 的內分點。若 $x_1=1$、$x_2=2$，求 $\displaystyle\lim_{n\to\infty}x_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac95$</div>
+<div class="fxs"><div class="move">做法：先用差 $d_n=x_{n+1}-x_n$ 說明收斂（$d_n$ 是公比 $-\dfrac14$ 的等比數列）；求極限值時用不變量 $4x_{n+1}+x_n$ 最快。</div>
+$P_{n+2}$ 離 $P_n$ 有 $3$ 份、離 $P_{n+1}$ 有 $1$ 份 ⟹ $x_{n+2}=x_n+\dfrac34(x_{n+1}-x_n)=\dfrac{x_n+3x_{n+1}}4$。<br>
+相減：$x_{n+2}-x_{n+1}=-\dfrac14\left(x_{n+1}-x_n\right)$ ⟹ $d_n=\left(-\dfrac14\right)^{n-1}d_1=\left(-\dfrac14\right)^{n-1}$。<br>
+$x_n=x_1+\displaystyle\sum_{k=1}^{n-1}d_k$，是公比 $-\dfrac14$ 的無窮等比級數的部分和，收斂到 $1+\dfrac1{1+\frac14}=1+\dfrac45=\dfrac95$。<br>
+另解：$4x_{n+2}+x_{n+1}=(x_n+3x_{n+1})+x_{n+1}=4x_{n+1}+x_n$，所以 $4x_{n+1}+x_n$ 永遠等於 $4x_2+x_1=9$。取極限 $5L=9$，$L=\dfrac95$。<span class="note-sm">另解很快，但它要先知道 $\lim x_n$ 存在。本章的寫法是先證收斂（第一個方法），或明講「若極限存在」。</span></div></div>
+
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">專區 9</span><span class="kw">分母是連續四個整數相乘：拆成「前三個相乘的倒數」減「後三個相乘的倒數」，頭尾相差 $3$，所以前面要乘 $\frac13$；相消後只剩第一項的前半</span><span class="src">樟樹國際實創高中 108 教甄 填 4</span></div>
+<div class="fxq">求無窮級數 $\dfrac1{2\times3\times4\times5}+\dfrac1{3\times4\times5\times6}+\dfrac1{4\times5\times6\times7}+\dfrac1{5\times6\times7\times8}+\cdots$ 的和。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$\dfrac1{72}$</div>
+<div class="fxs"><div class="move">做法：和 $\dfrac1{k(k+1)}=\dfrac1k-\dfrac1{k+1}$ 同一個想法升級：$\dfrac1{k(k+1)(k+2)}-\dfrac1{(k+1)(k+2)(k+3)}=\dfrac{(k+3)-k}{k(k+1)(k+2)(k+3)}$，分子剛好是頭尾的差 $3$。</div>
+第 $k$ 項（$k\ge2$）：$\dfrac1{k(k+1)(k+2)(k+3)}=\dfrac13\left[\dfrac1{k(k+1)(k+2)}-\dfrac1{(k+1)(k+2)(k+3)}\right]$。<br>
+從 $k=2$ 加到 $N$：中間全部相消，得 $\dfrac13\left[\dfrac1{2\cdot3\cdot4}-\dfrac1{(N+1)(N+2)(N+3)}\right]$。<br>
+$N\to\infty$：和 $=\dfrac13\cdot\dfrac1{24}=\dfrac1{72}$。<span class="note-sm">一般地，$\displaystyle\sum_{k=1}^{\infty}\frac1{k(k+1)\cdots(k+m)}=\frac1{m\cdot m!}$。本題從 $k=2$ 開始，所以是 $\dfrac1{3\cdot3!}-\dfrac1{1\cdot2\cdot3\cdot4}=\dfrac1{18}-\dfrac1{24}=\dfrac1{72}$，可以用來驗算。</span></div></div>
+
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">專區 10</span><span class="kw">$\frac{1\cdot3\cdots(2n-1)}{2\cdot4\cdots(2n)}$ 求極限：配一個「錯開一位」的夥伴 $\frac{2\cdot4\cdots(2n)}{3\cdot5\cdots(2n+1)}$，它比原數大、兩者相乘又剛好是 $\frac1{2n+1}$</span><span class="src">新竹女中 107 代理教甄 計算 1</span></div>
+<div class="fxq">設 $a_n=\dfrac{1\times3\times5\times\cdots\times(2n-1)}{2\times4\times6\times\cdots\times(2n)}$，求 $\displaystyle\lim_{n\to\infty}a_n$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$0$</div>
+<div class="fxs"><div class="move">做法：$a_n$ 的每個因數 $\dfrac{2k-1}{2k}$ 都小於 $\dfrac{2k}{2k+1}$。令 $b_n=\displaystyle\prod_{k=1}^{n}\frac{2k}{2k+1}$，則 $a_n\lt b_n$，而 $a_nb_n$ 一乘全部消光。</div>
+$\dfrac{2k-1}{2k}\lt\dfrac{2k}{2k+1}\iff(2k-1)(2k+1)\lt(2k)^2\iff4k^2-1\lt4k^2$ ✓，所以 $a_n\lt b_n$。<br>
+$a_nb_n=\dfrac{1\cdot3\cdot5\cdots(2n-1)}{2\cdot4\cdots(2n)}\cdot\dfrac{2\cdot4\cdots(2n)}{3\cdot5\cdots(2n+1)}=\dfrac1{2n+1}$。<br>
+於是 $a_n^2\lt a_nb_n=\dfrac1{2n+1}$ ⟹ $0\lt a_n\lt\dfrac1{\sqrt{2n+1}}\to0$。<br>
+由夾擠定理 $\displaystyle\lim_{n\to\infty}a_n=0$。<span class="note-sm">$a_n$ 每次乘上一個小於 $1$ 的數，但那些數越來越接近 $1$，所以「一直變小」並不能直接推出趨近 $0$（例如 $\prod\left(1-\frac1{k^2}\right)$ 就趨近 $\frac12$）。這裡的夥伴數列 $b_n$ 是讓夾擠能動起來的關鍵。</span></div></div>
+
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">專區 11</span><span class="kw">一族方程式的唯一正根 $\alpha_k$：先乘 $(x-1)$ 化成 $x^{k+1}-2x^k+1$，在 $x=2$ 與 $x=2-\frac1{2^{k-1}}$ 異號，用勘根定理把 $\alpha_k$ 關住，區間縮向 $2$</span><span class="src">台中女中 111 第二次教甄 計算 3（加入中間估計作為引導）</span></div>
+<div class="fxq">考慮一系列方程式 $x-1=0$、$x^2-x-1=0$、$x^3-x^2-x-1=0$、……、$x^k-x^{k-1}-x^{k-2}-\cdots-x-1=0$、……。已知對任意正整數 $k$，第 $k$ 個方程式恰有一個正實根，記為 $\alpha_k$。<br>
+(1) 令 $g_k(x)=x^k-x^{k-1}-\cdots-x-1$，證明 $x\ne1$ 時 $(x-1)g_k(x)=x^{k+1}-2x^k+1$。<br>
+(2) 證明當 $k\ge3$ 時，$2-\dfrac1{2^{k-1}}\lt\alpha_k\lt2$。（提示：$0\le u\le1$ 時 $(1-u)^k\ge1-ku$。）<br>
+(3) 證明 $\langle\alpha_k\rangle$ 收斂，並求 $\displaystyle\lim_{k\to\infty}\alpha_k$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1)(2) 證明見詳解　(3) 收斂，$\displaystyle\lim_{k\to\infty}\alpha_k=2$</div>
+<div class="fxs"><div class="move">做法：$\alpha_k$ 解不出來，就找兩個「好算的點」讓 $g_k$ 異號。$x\gt1$ 時 $g_k$ 與 $h_k(x)=x^{k+1}-2x^k+1=x^k(x-2)+1$ 同號，而 $h_k(2)=1\gt0$，所以只要在 $2$ 的左邊找一點讓 $h_k\lt0$。</div>
+(1) $(x-1)\left(x^{k-1}+\cdots+x+1\right)=x^k-1$，所以 $(x-1)g_k(x)=(x-1)x^k-\left(x^k-1\right)=x^{k+1}-2x^k+1$。<br>
+(2) 提示的證明：$k=1$ 時等號成立；若 $(1-u)^k\ge1-ku$，則 $(1-u)^{k+1}\ge(1-ku)(1-u)=1-(k+1)u+ku^2\ge1-(k+1)u$。<br>
+令 $t=\dfrac1{2^{k-1}}$，$x=2-t$（$k\ge3$ 時 $1\lt x\lt2$）。$h_k(2-t)=1-t(2-t)^k=1-t\cdot2^k\left(1-\dfrac t2\right)^k$，其中 $t\cdot2^k=2$，且 $\left(1-\dfrac t2\right)^k\ge1-\dfrac{kt}2=1-\dfrac k{2^k}$。<br>
+所以 $h_k(2-t)\le1-2\left(1-\dfrac k{2^k}\right)=-1+\dfrac k{2^{k-1}}$。$k\ge3$ 時 $\dfrac k{2^{k-1}}\le\dfrac34\lt1$，故 $h_k(2-t)\lt0$。<br>
+又 $h_k(2)=1\gt0$。在 $x\gt1$ 時 $g_k(x)=\dfrac{h_k(x)}{x-1}$ 與 $h_k$ 同號，所以 $g_k(2-t)\lt0\lt g_k(2)$；$g_k$ 是多項式、連續，由勘根定理在 $(2-t,2)$ 內有正根。正根只有一個，就是 $\alpha_k$。<br>
+(3) $2-\dfrac1{2^{k-1}}\lt\alpha_k\lt2$，左右兩邊都趨近 $2$，由夾擠定理 $\langle\alpha_k\rangle$ 收斂且極限為 $2$。<span class="note-sm">$\alpha_2=\dfrac{1+\sqrt5}2\approx1.618$（黃金比），$\alpha_3\approx1.839$，$\alpha_4\approx1.928$，越來越靠近 $2$。直觀理由：$x^k=x^{k-1}+\cdots+1$ 的右邊是等比和 $\dfrac{x^k-1}{x-1}$，當 $k$ 很大時大約是 $\dfrac{x^k}{x-1}$，兩邊比較得 $x-1\approx1$。</span></div></div>
+
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">專區 12</span><span class="kw">三角函數的 $\frac00$ 型：分母 $\cos x-\sin x$ 在 $\frac\pi4$ 為 $0$，就想辦法讓分子也提出 $(\sin x-\cos x)$；用倍角公式把 $\sin2x$、$\cos2x$、$1$ 都換成 $\sin x$、$\cos x$</span><span class="src">興大附中 109 教甄 填 7</span></div>
+<div class="fxq">求 $\displaystyle\lim_{x\to\frac\pi4}\frac{\sin2x-\cos2x-1}{\cos x-\sin x}$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$-\sqrt2$</div>
+<div class="fxs"><div class="move">做法：和多項式的 $\dfrac00$ 型一樣，目標是約掉讓分母為 $0$ 的因式。$1$ 寫成 $\sin^2x+\cos^2x$，$\cos2x$ 寫成 $\cos^2x-\sin^2x$，$\sin^2x$ 會消掉。</div>
+分子 $=2\sin x\cos x-\left(\cos^2x-\sin^2x\right)-\left(\sin^2x+\cos^2x\right)=2\sin x\cos x-2\cos^2x=2\cos x\left(\sin x-\cos x\right)$。<br>
+$x\ne\dfrac\pi4$ 時，原式 $=\dfrac{2\cos x(\sin x-\cos x)}{-(\sin x-\cos x)}=-2\cos x$。<br>
+$\cos x$ 連續，極限 $=-2\cos\dfrac\pi4=-\sqrt2$。<span class="note-sm">分子後兩項是 $-(\cos2x+1)$，該用的是 $1+\cos2x=2\cos^2x$；誤用成 $1-\cos2x=2\sin^2x$ 會得到 $+\sqrt2$。換完公式後代一個值驗算（例如 $x=0$：原分子 $=0-1-1=-2$，$2\cos0(\sin0-\cos0)=-2$ ✓），可以抓到這種符號錯。</span></div></div>
+
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">專區 13</span><span class="kw">分段函數在 $x=2$ 連續、分子有根號：極限要等於 $f(2)$ 是非零有限值，分母 $\to0$ ⟹ 分子也 $\to0$，先得 $\sqrt{2+b}=a$；再有理化求出極限，令它等於 $f(2)$</span><span class="src">新竹女中 107 代理教甄 填 13</span></div>
+<div class="fxq">設函數 $f(x)=\begin{cases}\dfrac{\sqrt{x+b}-a}{x-2},&x\ne2\\\dfrac16,&x=2\end{cases}$，其中 $a$、$b$ 是常數。若 $f(x)$ 在 $x=2$ 處連續，求數對 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(3,7)$</div>
+<div class="fxs"><div class="move">做法：連續 ⟹ $\displaystyle\lim_{x\to2}f(x)=f(2)=\frac16$。分母 $\to0$ 而極限存在 ⟹ 分子 $\to0$ ⟹ $a=\sqrt{2+b}$，然後有理化。</div>
+分子 $\to\sqrt{2+b}-a=0$ ⟹ $a=\sqrt{2+b}$。<br>
+$\dfrac{\sqrt{x+b}-\sqrt{2+b}}{x-2}=\dfrac{(x+b)-(2+b)}{(x-2)\left(\sqrt{x+b}+\sqrt{2+b}\right)}=\dfrac1{\sqrt{x+b}+\sqrt{2+b}}\to\dfrac1{2\sqrt{2+b}}$。<br>
+$\dfrac1{2\sqrt{2+b}}=\dfrac16$ ⟹ $\sqrt{2+b}=3$ ⟹ $b=7$，$a=3$。<span class="note-sm">這題和 L3 的 $\dfrac00$ 反求參數是同一個想法，只是多了「連續 ⟹ 極限等於函數值」這一層翻譯。</span></div></div>
+
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">專區 14</span><span class="kw">函數由「$n\to\infty$ 的極限」定義、含 $x^{2n}$：依 $|x|\gt1$、$|x|\lt1$、$x=\pm1$ 分段求出 $f(x)$；分段處只有 $x=\pm1$ 可能不連續，在那裡寫左右極限＝函數值</span><span class="src">金門高中 112 教甄 填 10</span></div>
+<div class="fxq">已知 $a$、$b$ 為正整數，設函數 $f(x)=\displaystyle\lim_{n\to\infty}\frac{2x^{2n+1}+ax^2+bx-1}{2x^{2n}+3}$。若對所有實數 $x$，$f(x)$ 都連續，求數對 $(a,b)$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">$(a,b)=(1,3)$</div>
+<div class="fxs"><div class="move">做法：$|x|\lt1$ 時 $x^{2n}\to0$；$|x|\gt1$ 時 $x^{2n}$ 無限變大，分子分母同除 $x^{2n}$。$x=\pm1$ 時 $x^{2n}=1$，直接代。</div>
+$|x|\lt1$：$f(x)=\dfrac{ax^2+bx-1}3$。<br>
+$|x|\gt1$：同除 $x^{2n}$，$f(x)=\displaystyle\lim_{n\to\infty}\frac{2x+\frac{ax^2+bx-1}{x^{2n}}}{2+\frac3{x^{2n}}}=x$。<br>
+$x=1$：$f(1)=\dfrac{2+a+b-1}5=\dfrac{a+b+1}5$；$x=-1$：$f(-1)=\dfrac{-2+a-b-1}5=\dfrac{a-b-3}5$。<br>
+在 $x=1$ 連續：右極限 $1$、左極限 $\dfrac{a+b-1}3$、函數值 $\dfrac{a+b+1}5$ 都相等 ⟹ $a+b=4$。<br>
+在 $x=-1$ 連續：左極限 $-1$、右極限 $\dfrac{a-b-1}3$、函數值 $\dfrac{a-b-3}5$ 都相等 ⟹ $a-b=-2$。<br>
+解得 $a=1$、$b=3$（確實是正整數）。<span class="note-sm">本題的三個條件在 $x=1$ 給出同一條方程式，這是題目設計好的；一般情形下「左極限＝右極限」與「＝函數值」是兩條獨立的條件，要都寫出來檢查。</span></div></div>
+
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">專區 15</span><span class="kw">牛頓法一次：先用勘根定理確認根在 $(1,2)$，再寫出過 $(a_0,f(a_0))$ 的切線並令 $y=0$；切線斜率題目會給（公式是下一章的內容）</span><span class="src">六家高中 112 教甄 填 8（原題只問 $a_1$，加問 $a_2$）</span></div>
+<div class="fxq">已知方程式 $x^3-3x+1=0$ 在 $(1,2)$ 上恰有一根 $\alpha$。已知曲線 $y=x^3-3x+1$ 在點 $(a,a^3-3a+1)$ 的切線斜率為 $3a^2-3$（下一章會說明這個公式）。<br>
+(1) 說明此方程式在 $(1,2)$ 上有根。<br>
+(2) 以初始值 $a_0=2$ 使用牛頓法一次（過 $(a_0,f(a_0))$ 作切線，取切線與 $x$ 軸交點的 $x$ 坐標），得近似值 $a_1$，求 $a_1$。<br>
+(3) 再做一次得 $a_2$，求 $a_2$。</div>
+<button data-t="a">答案</button> <button data-t="s">詳解</button>
+<div class="fxa">(1) 見詳解　(2) $a_1=\dfrac53$　(3) $a_2=\dfrac{223}{144}$</div>
+<div class="fxs"><div class="move">做法：切線 $y-f(a)=m(x-a)$ 令 $y=0$，得 $x=a-\dfrac{f(a)}m$，這就是牛頓法的一步。</div>
+令 $f(x)=x^3-3x+1$。<br>
+(1) $f(1)=-1\lt0$、$f(2)=3\gt0$，$f$ 連續，由勘根定理在 $(1,2)$ 有根。<br>
+(2) $f(2)=3$，斜率 $3\cdot4-3=9$。$a_1=2-\dfrac39=\dfrac53$。<br>
+(3) $f\left(\tfrac53\right)=\dfrac{125}{27}-5+1=\dfrac{17}{27}$，斜率 $3\cdot\dfrac{25}9-3=\dfrac{16}3$。$a_2=\dfrac53-\dfrac{17}{27}\cdot\dfrac3{16}=\dfrac53-\dfrac{17}{144}=\dfrac{223}{144}$。<span class="note-sm">真正的根 $\alpha\approx1.5321$；$a_0=2$、$a_1\approx1.667$、$a_2\approx1.549$，誤差從 $0.47$、$0.13$ 縮到 $0.016$。初始值選在 $2$ 而不是 $1$，是因為在 $x=1$ 切線斜率為 $0$，切線是水平線，根本碰不到 $x$ 軸，牛頓法第一步就失敗。</span></div></div>
+
+</section>
+
+<div class="ch-nav">
+  <a href="../g11b-ch04/practice.html">← 第四章 矩陣與三元一次聯立 練習本</a>
+  <a href="../../index.html">🏠 練習本總覽</a>
+  <a href="../gsat-a/practice.html">學測數A 分級練習本 練習本 →</a>
+</div>
+</div>
+
+<script src="../../assets/firebase-config.js"></script>
+<script src="../../assets/reflex-cloud.js"></script>
+<script src="../../assets/practice-cloud.js"></script>
+<script>
+(function () {
+  var G = window.PGEN, CH = 'g12a-ch01';
+  var KX = { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false };
+  function render(el) { if (window.renderMathInElement) renderMathInElement(el, KX); }
+  var TIERS = ['L0', 'L1', 'L2', 'L3'], labelOf = {};
+  TIERS.forEach(function (L) { if (G.META[L]) G.META[L].forEach(function (p) { labelOf[L + '.' + p[0]] = p[1]; }); });
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  var DAY = 86400000, INTERVAL = [1, 3, 7, 14];            /* 錯題本間隔（天）：第 n 次全對後隔 INTERVAL[n] 天再測；連續 2 次全對畢業 */
+  var CONF = { h: '有把握', m: '不確定', l: '猜的' }, CAUSE = { start: '不會下手', formula: '公式用錯', calc: '計算錯', read: '看錯題' };
+  var READ_CAUSE = { start: 1, formula: 1 };               /* 這兩種錯因建議回頭讀「先要會」；另兩種建議多算幾題 */
+
+  /* ══════════ 練習紀錄（只存在這台裝置）══════════ */
+  var STORE = 'pgen_rec_' + CH;
+  function loadRec() {
+    var r = null; try { r = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { }
+    if (!r || !r.attempts) return { v: 2, attempts: [], wb: {} };
+    if (r.v === 1) { r.attempts.forEach(function (at) { at.items.forEach(function (x) { if (!x.t) x.t = at.tier; }); }); r.v = 2; }
+    if (!r.wb) r.wb = {};
+    return r;
+  }
+  function saveRec() { try { localStorage.setItem(STORE, JSON.stringify(REC)); } catch (e) { } }
+  var REC = loadRec();
+  function stats() {
+    var byKey = {}, bySet = {};
+    REC.attempts.forEach(function (at) {
+      at.items.forEach(function (x) {
+        var t = x.t || at.tier, k = t + '.' + x.k, o = byKey[k] || (byKey[k] = { tier: t, key: x.k, n: 0, w: 0, hc: 0, gs: 0, last: [], causes: {} });
+        o.n++; if (x.wrong) o.w++; o.last.push(x.wrong ? 1 : 0);
+        if (x.wrong && x.conf === 'h') o.hc++;
+        if (!x.wrong && x.conf === 'l') o.gs++;
+        if (x.wrong && x.cause) o.causes[x.cause] = (o.causes[x.cause] || 0) + 1;
+      });
+      if (at.kind === 'review') return;
+      var s = bySet[at.set] || (bySet[at.set] = { rounds: 0, hist: [] });
+      s.rounds++; s.hist.push({ t: at.t, n: at.items.length, w: at.items.filter(function (x) { return x.wrong; }).length, secs: at.secs });
+    });
+    return { byKey: byKey, bySet: bySet };
+  }
+  function weakList(byKey) {
+    return Object.keys(byKey).map(function (k) { return byKey[k]; }).filter(function (o) {
+      if (o.tier === 'L0') return false;
+      var lastWrong = o.last[o.last.length - 1] === 1;
+      return lastWrong || o.hc > 0 || (o.n >= 2 && (o.w + o.gs) / o.n >= 0.4);
+    }).sort(function (a, b) { if (b.hc !== a.hc) return b.hc - a.hc; var la = a.last[a.last.length - 1], lb = b.last[b.last.length - 1]; if (la !== lb) return lb - la; return (b.w + b.gs) / b.n - (a.w + a.gs) / a.n; });
+  }
+  function mainCause(o) { var best = null; Object.keys(o.causes).forEach(function (c) { if (!best || o.causes[c] > o.causes[best]) best = c; }); return best; }
+
+  /* ══════════ 跳轉：練（卡片／類似題）與讀（該小節的「先要會」）══════════ */
+  function flash(el) { if (!el) return; el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 2500); }
+  function goKey(tier, key) {
+    var el;
+    if (tier === 'L3') {
+      el = document.querySelector('.fx[data-gen="' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); var sb = el.querySelector('.simbox'); if (!sb) buildSim(el, key); else sb.querySelector('.again').click(); }
+    } else {
+      el = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.querySelector('.new').click(); }
+    }
+    flash(el);
+  }
+  function goRead(tier, key) {
+    var el;
+    if (tier === 'L3') el = document.querySelector('.fx[data-gen="' + key + '"]');
+    else {
+      var card = document.querySelector('.gcard[data-key="' + tier + '.' + key + '"]');
+      el = card ? card.parentElement.previousElementSibling : null;
+      while (el && !el.classList.contains('must')) el = el.previousElementSibling;
+    }
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }
+  }
+  function goBtn(tier, key, mode) {
+    var b = document.createElement('button'); b.className = 'go' + (mode === 'read' ? ' read' : ''); b.type = 'button';
+    b.textContent = (mode === 'read' ? '📖 讀：' : (tier === 'L3' ? '📎 ' : '🎲 ')) + (labelOf[tier + '.' + key] || key);
+    b.onclick = function () { (mode === 'read' ? goRead : goKey)(tier, key); }; return b;
+  }
+
+  /* ══════════ 解題步驟排版、漸淡練習（Renkl：全解 → 補最後一步 → 只給第一步）══════════ */
+  function stepsHtml(it, mode) {
+    if (!it.s) return '';
+    var n = it.s.length, shown = mode === 'last' ? n - 1 : mode === 'first' ? 1 : n;
+    var html = '<ol class="steps">';
+    for (var i = 0; i < n; i++) {
+      if (i < shown) html += '<li>' + it.s[i] + '</li>';
+      else html += '<li class="blank"><span class="bl">' + (mode === 'last' ? '最後一步請自己完成' : '接下來的步驟請自己完成') + '</span><span class="hid">' + it.s[i] + '</span></li>';
+    }
+    html += '</ol><div class="fin' + (mode ? ' hid' : '') + '">答：' + it.a + '</div>';
+    return html;
+  }
+  function buildFade(box) {
+    var tier = box.getAttribute('data-tier'), keys = box.getAttribute('data-keys').split(','), base = parseInt(box.getAttribute('data-seed'), 10);
+    var html = '<div class="fd-h"><b>📘 漸淡練習</b><span>每型三題：先看完整示範，第二題自己補最後一步，第三題只給第一步。看完示範後試著遮住步驟自己寫一次。</span></div>';
+    keys.forEach(function (k, i) {
+      if (!G[tier][k]) return;
+      var its = [0, 1, 2].map(function (j) { return { it: G[tier][k](G.makeRng(base + i * 31 + j * 7)), seed: base + i * 31 + j * 7 }; });
+      if (!its[0].it.s) return;
+      html += '<details class="fd"><summary>' + esc(labelOf[tier + '.' + k] || k) + '</summary>' +
+        '<div class="fdi"><div class="fdt">① 完整示範 <span class="seed">#' + its[0].seed + '</span></div><div class="fq">' + its[0].it.q + '</div>' + stepsHtml(its[0].it) + '</div>' +
+        '<div class="fdi"><div class="fdt">② 補最後一步 <span class="seed">#' + its[1].seed + '</span></div><div class="fq">' + its[1].it.q + '</div>' + stepsHtml(its[1].it, 'last') + '<button class="reveal">顯示最後一步與答案</button></div>' +
+        '<div class="fdi"><div class="fdt">③ 只給第一步 <span class="seed">#' + its[2].seed + '</span></div><div class="fq">' + its[2].it.q + '</div>' + stepsHtml(its[2].it, 'first') + '<button class="reveal">顯示其餘步驟與答案</button></div></details>';
+    });
+    box.innerHTML = html;
+    box.querySelectorAll('.reveal').forEach(function (b) { b.onclick = function () { var d = b.parentElement; d.classList.add('open'); b.style.display = 'none'; }; });
+    box.querySelectorAll('details.fd').forEach(function (d) { d.addEventListener('toggle', function () { if (d.open && !d._r) { d._r = 1; render(d); } }); });
+  }
+  document.querySelectorAll('.fadeset').forEach(buildFade);
+
+  /* ══════════ 對照題（變異理論：只差一個關鍵特徵的兩題並列，先說差在哪再揭曉）══════════ */
+  function buildContrast(gc, tier, key, seedA) {
+    var pr = G.contrastPair(tier, key, seedA);
+    if (!pr) { gc.innerHTML = '<div class="note-sm">這一型暫時找不到對照題。</div>'; gc.classList.add('on'); return; }
+    gc.innerHTML = '<div class="gc-h"><b>⚖ 對照題</b><span>先說出：<b>兩題差在哪一個地方？答案會怎麼跟著變？</b>想清楚再按「揭曉」。</span></div>' +
+      '<div class="gc-pair"><div class="gc-item"><div class="gc-t">甲 <span class="seed">#' + seedA + '</span></div>' + pr.A.q + '<div class="gc-a">答：' + pr.A.a + '</div></div>' +
+      '<div class="gc-item"><div class="gc-t">乙 <span class="seed">#' + pr.seedB + '</span></div>' + pr.B.q + '<div class="gc-a">答：' + pr.B.a + '</div></div></div>' +
+      '<div class="gc-btn"><button class="reveal">揭曉：答案與差別</button><button class="close">收起</button></div><div class="gc-why">' + pr.why + '</div>';
+    gc.classList.add('on'); gc.removeAttribute('data-stale');
+    gc.querySelector('.reveal').onclick = function () { gc.classList.add('open'); this.style.display = 'none'; };
+    gc.querySelector('.close').onclick = function () { gc.classList.remove('on'); };
+    render(gc);
+  }
+
+  /* ══════════ 產生器卡片（L1、L2）══════════ */
+  function buildCard(tier, key, grid) {
+    var card = document.createElement('div'); card.className = 'gcard'; card.setAttribute('data-key', tier + '.' + key); card.id = 'c-' + tier + '.' + key;
+    card.innerHTML = '<div class="gt"><span>' + labelOf[tier + '.' + key] + '</span><span class="seed"></span></div>' +
+      '<div class="gq"></div><div class="gbtn"><button class="new">🎲 新題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="steps">📘 步驟</button>' + (G.CONTRAST && G.CONTRAST[tier + '.' + key] ? '<button class="contrast">⚖ 對照題</button>' : '') + '</div>' +
+      '<div class="gh"></div><div class="ga"></div><div class="gs"></div><div class="gc"></div>';
+    var seed = (tier === 'L1' ? 10000 : 20000) + Math.floor(Math.random() * 90000), lastQ = '', cur = null, hl = 0;
+    function showHint() {
+      var gh = card.querySelector('.gh');
+      if (!cur.h1) { gh.innerHTML = '提示：' + cur.h; gh.classList.toggle('on'); render(gh); return; }
+      hl = Math.min(hl + 1, 2);
+      gh.innerHTML = '<div><b>提示 ①</b>（先想這是哪一型）：' + cur.h1 + (hl === 1 ? ' <button class="more">還是不會，再提示一層</button>' : '') + '</div>' + (hl === 2 ? '<div><b>提示 ②</b>（帶本題數字）：' + cur.h + '</div>' : '');
+      gh.classList.add('on'); var m = gh.querySelector('.more'); if (m) m.onclick = showHint; render(gh);
+    }
+    function load() {
+      var it = G[tier][key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G[tier][key](G.makeRng(seed)); }
+      lastQ = it.q; cur = it; hl = 0; var gcx = card.querySelector('.gc'); if (gcx && gcx.classList.contains('on')) gcx.setAttribute('data-stale', '1');
+      card.querySelector('.gq').innerHTML = it.q;
+      card.querySelector('.gh').innerHTML = '';
+      card.querySelector('.ga').innerHTML = '答案：' + it.a;
+      card.querySelector('.gs').innerHTML = stepsHtml(it);
+      card.querySelector('.steps').style.display = it.s ? '' : 'none';
+      card.querySelector('.seed').textContent = '#' + seed;
+      ['.gh', '.ga', '.gs'].forEach(function (c) { card.querySelector(c).classList.remove('on'); });
+      render(card);
+    }
+    card.querySelector('.new').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    card.querySelector('.hint').onclick = function () { if (!cur.h1 || hl === 0) showHint(); else card.querySelector('.gh').classList.toggle('on'); };
+    card.querySelector('.ans').onclick = function () { card.querySelector('.ga').classList.toggle('on'); };
+    card.querySelector('.steps').onclick = function () { card.querySelector('.gs').classList.toggle('on'); };
+    var cb = card.querySelector('.contrast'); if (cb) cb.onclick = function () { var gc = card.querySelector('.gc'); if (gc.classList.contains('on') && !gc.getAttribute('data-stale')) { gc.classList.remove('on'); return; } buildContrast(gc, tier, key, seed); };
+    grid.appendChild(card); load();
+  }
+  document.querySelectorAll('.gen-grid').forEach(function (grid) {
+    var tier = grid.getAttribute('data-tier');
+    grid.getAttribute('data-keys').split(',').forEach(function (k) { buildCard(tier, k, grid); });
+  });
+
+  /* ══════════ L3 固定題的「類似題」══════════ */
+  function buildSim(fx, key) {
+    var box = document.createElement('div'); box.className = 'simbox';
+    box.innerHTML = '<div class="st"><span>🎲 類似題（同型換數字）</span><span class="seed"></span></div><div class="sq"></div>' +
+      '<div class="sbtn"><button class="again">🎲 再一題</button><button class="hint">💡 提示</button><button class="ans">✅ 答案</button><button class="close">收起</button></div><div class="gh"></div><div class="ga"></div>';
+    var seed = 30000 + Math.floor(Math.random() * 90000), lastQ = '';
+    function load() {
+      var it = G.L3[key](G.makeRng(seed)), tries = 0;
+      while (it.q === lastQ && tries++ < 8) { seed = Math.floor(Math.random() * 900000) + 1; it = G.L3[key](G.makeRng(seed)); }
+      lastQ = it.q;
+      box.querySelector('.sq').innerHTML = it.q; box.querySelector('.gh').innerHTML = '提示：' + it.h; box.querySelector('.ga').innerHTML = '答案：' + it.a;
+      box.querySelector('.seed').textContent = '#' + seed;
+      box.querySelector('.gh').classList.remove('on'); box.querySelector('.ga').classList.remove('on');
+      render(box);
+    }
+    box.querySelector('.again').onclick = function () { seed = Math.floor(Math.random() * 900000) + 1; load(); };
+    box.querySelector('.hint').onclick = function () { box.querySelector('.gh').classList.toggle('on'); };
+    box.querySelector('.ans').onclick = function () { box.querySelector('.ga').classList.toggle('on'); };
+    box.querySelector('.close').onclick = function () { box.remove(); };
+    fx.appendChild(box); load();
+    return box;
+  }
+  document.querySelectorAll('.fx[data-gen]').forEach(function (fx) {
+    var key = fx.getAttribute('data-gen'); if (!G.L3 || !G.L3[key]) return;
+    var b = document.createElement('button'); b.textContent = '🎲 類似題'; b.className = 'simbtn';
+    b.onclick = function () { var sb = fx.querySelector('.simbox'); if (sb) sb.querySelector('.again').click(); else buildSim(fx, key); };
+    var anchor = fx.querySelector('button[data-t="s"]');
+    anchor.parentNode.insertBefore(document.createTextNode(' '), anchor.nextSibling);
+    anchor.parentNode.insertBefore(b, anchor.nextSibling.nextSibling);
+  });
+
+  /* ══════════ 題目小工具 ══════════ */
+  function item(t, k, seed) { return G[t][k](G.makeRng(seed)); }
+  function confHtml() { return '<span class="conf"><span class="cl">作答後、看答案前：</span><button data-c="h">有把握</button><button data-c="m">不確定</button><button data-c="l">猜的</button></span>'; }
+  function markHtml() { return '<span class="mark"><button data-m="1">○ 對</button><button data-m="0">✗ 錯</button></span><span class="cause"><span class="cl">錯因：</span><button data-e="start">不會下手</button><button data-e="formula">公式用錯</button><button data-e="calc">計算錯</button><button data-e="read">看錯題</button></span>'; }
+  function wireConfMark(li) {
+    li.querySelectorAll('.conf button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-conf', b.getAttribute('data-c')); li.querySelectorAll('.conf button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+    li.querySelectorAll('.mark button').forEach(function (b) {
+      b.onclick = function () { var ok = b.getAttribute('data-m') === '1'; var was = li.classList.contains(ok ? 'ok' : 'ng'); li.classList.remove('ok', 'ng'); if (!was) li.classList.add(ok ? 'ok' : 'ng'); if (!li.classList.contains('ng')) { li.removeAttribute('data-cause'); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.remove('sel'); }); } };
+    });
+    li.querySelectorAll('.cause button').forEach(function (b) { b.onclick = function () { li.setAttribute('data-cause', b.getAttribute('data-e')); li.querySelectorAll('.cause button').forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+  }
+  function unrated(root) { return Array.prototype.filter.call(root.querySelectorAll('li.qi'), function (li) { return !li.getAttribute('data-conf'); }).length; }
+
+  /* ══════════ 檢測題組（固定種子可列印；混合／計時／換組／信心／錯因／記錄）══════════ */
+  function secName(box) {
+    var el = box.previousElementSibling;
+    while (el && !(el.tagName === 'H3' && el.classList.contains('sec'))) el = el.previousElementSibling;
+    return el ? el.textContent.replace(/（.*?）/g, '').trim() : box.getAttribute('data-tier');
+  }
+  function expandKeys(box) {
+    var tier = box.getAttribute('data-tier'), out = [];
+    box.getAttribute('data-keys').split(',').forEach(function (s) {
+      s = s.trim(); var t = tier, k = s;
+      if (s.indexOf(':') > 0) { t = s.split(':')[0]; k = s.split(':')[1]; } else if (s.indexOf('.') > 0) { t = s.split('.')[0]; k = s.split('.')[1]; }
+      if (k === '*') G.META[t].forEach(function (p) { out.push({ t: t, k: p[0] }); }); else out.push({ t: t, k: k });
+    });
+    return out;
+  }
+  var TITLE = document.querySelector('header.hd h1').textContent;
+  function printSet(box) {
+    var area = document.getElementById('printArea');
+    var lis = box.querySelectorAll('ol > li'), showAns = box.classList.contains('show');
+    var html = '<h1>' + esc(TITLE) + '｜' + esc(box._set) + '　第 ' + box._round + ' 組（#' + box._base + '）</h1><p class="pmeta">姓名：＿＿＿＿＿　日期：＿＿＿＿　得分：＿＿／' + lis.length + '</p><ol>';
+    lis.forEach(function (li) { html += '<li>' + li.querySelector('.q').innerHTML + '</li>'; });
+    html += '</ol>';
+    if (showAns) { html += '<h2>答案</h2><ol>'; lis.forEach(function (li) { html += '<li>' + li.querySelector('.fa').innerHTML.replace(/^（答：/, '').replace(/）$/, '') + '</li>'; }); html += '</ol>'; }
+    area.innerHTML = html; render(area);
+    document.body.classList.add('print-one');
+    var done = function () { document.body.classList.remove('print-one'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); setTimeout(done, 3000);
+    window.print();
+  }
+  function fmtClock(s) { var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function buildSet(box, base, round) {
+    var keys = expandKeys(box), n = parseInt(box.getAttribute('data-n') || '10', 10), mixed = box.hasAttribute('data-mixed'), timer = parseInt(box.getAttribute('data-timer') || '0', 10);
+    if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    box._base = base; box._round = round; box._items = []; box._secs = 0;
+    if (mixed) keys = G.makeRng(base + 1).shuffle(keys);
+    var label = timer ? '段考模擬卷 ' + n + ' 題' : '檢測 ' + n + ' 題';
+    var html = '<div class="fix-btns"><b>' + label + '</b><span class="fix-meta">第 ' + round + ' 組・#' + base + (mixed ? '・混合打亂' : '') + '</span>' +
+      (timer ? '<button class="tstart">⏱ 開始計時 ' + timer + ' 分</button><span class="tclock"></span>' : '') +
+      '<button class="show">' + (timer ? '交卷・看答案' : '顯示答案') + '</button><button class="print">🖨 列印本組</button><button class="regen">🔁 換一組類似題</button>' + (round > 1 ? '<button class="orig">回到原始題組</button>' : '') + '</div>' +
+      '<div class="fix-note"></div><ol>';
+    var seen = {};
+    for (var i = 0; i < n; i++) {
+      var kk = keys[i % keys.length], seed = base + i * 37, it = item(kk.t, kk.k, seed), tries = 0;
+      while (seen[it.q] && tries++ < 12) { seed += 1000003 * tries; it = item(kk.t, kk.k, seed); }
+      seen[it.q] = 1;
+      box._items.push({ t: kk.t, k: kk.k, seed: seed });
+      html += '<li class="qi"><span class="q">' + it.q + '</span>' + confHtml() + '<span class="fa">（答：' + it.a + '）</span>' + markHtml() + '</li>';
+    }
+    html += '</ol><div class="fix-foot"><button class="submit">📝 記錄本次結果</button><span>做完每題先按「有把握／不確定／猜的」，全部評完才能看答案；對完把每題標 ○／✗，錯的選錯因，再按「記錄」。</span></div><div class="fix-result"></div>';
+    box.classList.remove('show'); box.innerHTML = html; box._set = secName(box);
+    var note = box.querySelector('.fix-note');
+    box.querySelector('.show').onclick = function () {
+      if (box.classList.contains('show')) { box.classList.remove('show'); this.textContent = timer ? '交卷・看答案' : '顯示答案'; return; }
+      var u = unrated(box);
+      if (u) { note.textContent = '還有 ' + u + ' 題沒評信心。先寫下答案、按「有把握／不確定／猜的」，再看答案——這一步是為了讓你知道自己「以為會」和「真的會」差多少。'; note.classList.add('on'); return; }
+      note.classList.remove('on'); box.classList.add('show'); this.textContent = '隱藏答案';
+      if (box._tick) { clearInterval(box._tick); box._tick = null; }
+    };
+    box.querySelector('.print').onclick = function () { printSet(box); };
+    box.querySelector('.regen').onclick = function () { buildSet(box, 10000 + Math.floor(Math.random() * 89999), round + 1); box.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    var ob = box.querySelector('.orig'); if (ob) ob.onclick = function () { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); };
+    var ts = box.querySelector('.tstart');
+    if (ts) ts.onclick = function () {
+      if (box._tick) return;
+      var left = timer * 60, clock = box.querySelector('.tclock'); ts.disabled = true; clock.textContent = fmtClock(left);
+      box._tick = setInterval(function () { left--; box._secs++; clock.textContent = fmtClock(Math.max(left, 0)); if (left <= 0) { clearInterval(box._tick); box._tick = null; clock.textContent = '時間到'; } }, 1000);
+    };
+    box.querySelectorAll('li.qi').forEach(wireConfMark);
+    box.querySelector('.submit').onclick = function () { submitSet(box); };
+    render(box);
+  }
+  function submitSet(box) {
+    if (!box.classList.contains('show')) { var nt = box.querySelector('.fix-note'); nt.textContent = '先看答案、對完再記錄。'; nt.classList.add('on'); return; }
+    var lis = box.querySelectorAll('ol > li.qi'), items = [], unmarked = 0;
+    lis.forEach(function (li, i) {
+      var wrong = li.classList.contains('ng'); if (!li.classList.contains('ok') && !wrong) unmarked++;
+      var b = box._items[i]; items.push({ t: b.t, k: b.k, seed: b.seed, wrong: wrong, conf: li.getAttribute('data-conf') || null, cause: wrong ? (li.getAttribute('data-cause') || null) : null, no: i + 1 });
+    });
+    var at = { t: Date.now(), tier: box.getAttribute('data-tier'), set: box._set, base: box._base, round: box._round, items: items.map(function (x) { return { t: x.t, k: x.k, seed: x.seed, wrong: x.wrong, conf: x.conf, cause: x.cause }; }) };
+    if (box._secs) at.secs = box._secs;
+    REC.attempts.push(at);
+    var wrong = items.filter(function (x) { return x.wrong; }), hc = wrong.filter(function (x) { return x.conf === 'h'; }), gs = items.filter(function (x) { return !x.wrong && x.conf === 'l'; });
+    var res = box.querySelector('.fix-result');
+    if (box.getAttribute('data-tier') === 'L0') {
+      saveRec();
+      var need = {}; wrong.concat(gs).forEach(function (x) { need[x.k] = 1; });
+      var h0 = '<b>先備診斷 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (gs.length ? '（猜對 ' + gs.length + ' 題，也算要複習）' : '') + '。';
+      if (!Object.keys(need).length) h0 += '先備知識都在，直接從 L1 開始。';
+      else {
+        h0 += '<br>這章會一直用到下面這些，建議先花 20 分鐘複習再開始：<ul class="pre-list">';
+        Object.keys(need).forEach(function (k) { var pq = G.PREREQ[k] || { txt: labelOf['L0.' + k] || k, link: null }; h0 += '<li>' + esc(pq.txt) + (pq.link ? '　<a href=' + JSON.stringify(pq.link) + '>→ 去那一章的 L1 練</a>' : '　（國中內容：翻課本或問老師，這裡的卡片可先多練幾題）') + '　' + '<span class="golist" data-k="' + k + '"></span></li>'; });
+        h0 += '</ul>';
+      }
+      res.innerHTML = h0; res.classList.add('on');
+      res.querySelectorAll('.golist').forEach(function (g) { g.appendChild(goBtn('L0', g.getAttribute('data-k'))); });
+      renderRec(); return;
+    }
+    wrong.forEach(function (x) { addWB(x, x.conf === 'h' ? 'hc' : 'wrong'); }); gs.forEach(function (x) { addWB(x, 'guess'); });
+    saveRec();
+    var html = '<b>本次 ' + (items.length - wrong.length) + '／' + items.length + '</b>' + (unmarked ? '（' + unmarked + ' 題未標記，視為答對）' : '') + (box._secs ? '，用時 ' + fmtClock(box._secs) : '') + '。';
+    if (hc.length) html += '<br><span class="hcw">⚠ 有把握卻答錯 ' + hc.length + ' 題（第 ' + hc.map(function (x) { return x.no; }).join('、') + ' 題）——這種「以為會」最危險，已排到錯題本最前面。</span>';
+    if (gs.length) html += '<br>猜對 ' + gs.length + ' 題（第 ' + gs.map(function (x) { return x.no; }).join('、') + ' 題）不算通過，也放進錯題本。';
+    if (!wrong.length && !gs.length) {
+      var unsure = items.filter(function (x) { return x.conf === 'm'; }).length;
+      html += '<br>全對！' + (unsure ? '有 ' + unsure + ' 題你標「不確定」——答對但沒把握的型，再多練幾題會更穩。' : '而且每題都有把握。') + (box._secs ? '' : masteryAdvice(box));
+    }
+    else {
+      var readK = {}, drillK = {};
+      wrong.forEach(function (x) { var id = x.t + '.' + x.k; if (x.cause && READ_CAUSE[x.cause]) readK[id] = x; else drillK[id] = x; });
+      gs.forEach(function (x) { var id = x.t + '.' + x.k; if (!readK[id]) drillK[id] = x; });
+      html += '<br>錯的題型：' + wrong.concat(gs).map(function (x) { return (labelOf[x.t + '.' + x.k] || x.k) + '（第 ' + x.no + ' 題' + (x.cause ? '，' + CAUSE[x.cause] : '') + '）'; }).join('、') + '。';
+      if (Object.keys(readK).length) html += '<br><b>回頭讀</b>（不會下手／公式用錯：先看該小節的「先要會」，再練）：<span class="golist read"></span>';
+      if (Object.keys(drillK).length) html += '<br><b>多算幾題</b>（計算錯／看錯題／猜對：直接跳到卡片出新題）：<span class="golist drill"></span>';
+      html += '<br>這些題會出現在頁首的「📅 今日複習」：明天重做原題＋一題類似題，連續兩次全對才從錯題本畢業。';
+      res.innerHTML = html; res.classList.add('on');
+      var gl = res.querySelector('.golist.read'); if (gl) Object.keys(readK).forEach(function (id) { var x = readK[id]; gl.appendChild(goBtn(x.t, x.k, 'read')); gl.appendChild(goBtn(x.t, x.k)); });
+      var gd = res.querySelector('.golist.drill'); if (gd) Object.keys(drillK).forEach(function (id) { var x = drillK[id]; gd.appendChild(goBtn(x.t, x.k)); });
+      renderRec(); renderReview(); return;
+    }
+    res.innerHTML = html; res.classList.add('on');
+    renderRec(); renderReview(); renderMastery(box);
+  }
+  document.querySelectorAll('.fixset').forEach(function (box) { buildSet(box, parseInt(box.getAttribute('data-seed'), 10), 1); });
+
+  /* ══════════ 精熟加時間條件（Bloom 精熟學習＋間隔）：兩輪全對且無猜對、且不在同一天 ══════════ */
+  function dayKey(t) { var d = new Date(t); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+  function masteryOf(setName) {
+    var clean = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName && at.items.length && at.items.every(function (x) { return !x.wrong && x.conf !== 'l'; }); });
+    var days = []; clean.forEach(function (at) { var d = dayKey(at.t); if (days.indexOf(d) < 0) days.push(d); });
+    var last = REC.attempts.filter(function (at) { return at.kind !== 'review' && at.set === setName; }).slice(-1)[0];
+    return { cleanRounds: clean.length, days: days, mastered: days.length >= 2, today: days.indexOf(dayKey(Date.now())) >= 0, lastCleanToday: !!(last && clean.indexOf(last) >= 0 && dayKey(last.t) === dayKey(Date.now())) };
+  }
+  function masteryAdvice(box) {
+    var m = masteryOf(box._set);
+    if (m.mastered) return '這一組已達精熟（' + m.days.slice(0, 2).join('、') + ' 兩天各全對一輪）。再練同型效益不高，去做混合檢測或下一級。';
+    if (m.today) return '今天已全對一輪。第二輪要<b>隔天</b>做才算通過——記憶要經過遺忘再撈回來才牢，今天先去別的小節。';
+    return '明天再用「🔁 換一組類似題」測一輪，兩天各全對一輪（沒有猜對）就通過。';
+  }
+  function renderMastery(box) {
+    if (box.getAttribute('data-tier') === 'L0' || box.hasAttribute('data-timer')) return;
+    var el = box.querySelector('.fix-status'); if (!el) { el = document.createElement('div'); el.className = 'fix-status'; box.querySelector('.fix-btns').appendChild(el); }
+    var m = masteryOf(box._set);
+    el.className = 'fix-status' + (m.mastered ? ' ok' : m.cleanRounds ? ' half' : '');
+    el.textContent = m.mastered ? '✅ 已精熟（' + m.days.slice(0, 2).join('、') + '）' : m.cleanRounds ? '第 1 輪全對（' + m.days[0] + '），隔天再全對一輪就精熟' : '通過標準：兩天各全對一輪（不含猜對）';
+  }
+  document.querySelectorAll('.fixset').forEach(renderMastery);
+
+  /* ══════════ 錯題本與間隔複習 ══════════ */
+  function addWB(x, reason) {
+    var id = x.t + '.' + x.k + '#' + x.seed, e = REC.wb[id];
+    if (e && e.done) e.done = false;
+    if (!e) e = REC.wb[id] = { t: x.t, k: x.k, seed: x.seed, added: Date.now(), hist: [] };
+    e.reason = reason; e.stage = 0; e.due = Date.now() + INTERVAL[0] * DAY; e.hist.push({ t: Date.now(), r: reason });
+  }
+  function wbLists() {
+    var now = Date.now(), due = [], later = [], done = 0;
+    Object.keys(REC.wb).forEach(function (id) { var e = REC.wb[id]; e.id = id; if (e.done) { done++; return; } (e.due <= now ? due : later).push(e); });
+    var pri = { hc: 0, wrong: 1, guess: 2 };
+    due.sort(function (a, b) { return (pri[a.reason] - pri[b.reason]) || (a.due - b.due); });
+    later.sort(function (a, b) { return a.due - b.due; });
+    return { due: due, later: later, done: done };
+  }
+  var rv = document.getElementById('review');
+  function fmtDate(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+  function fmtDay(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function renderReview() {
+    if (!rv) return;
+    var L = wbLists(), sum = rv.querySelector('.rv-sum'), body = rv.querySelector('.rv-body');
+    var total = L.due.length + L.later.length;
+    if (!total && !L.done) { sum.textContent = '錯題本還是空的。檢測記錄後，錯的題與猜對的題會自動進來，隔天開始排複習。'; body.innerHTML = ''; return; }
+    sum.textContent = '錯題本 ' + total + ' 題：今天到期 ' + L.due.length + ' 題' + (L.later.length ? '，之後 ' + L.later.length + ' 題（最近 ' + fmtDay(L.later[0].due) + '）' : '') + (L.done ? '；已畢業 ' + L.done + ' 題' : '') + '。';
+    if (!body.hasAttribute('data-open')) { body.innerHTML = ''; return; }
+    var html = '';
+    if (!L.due.length) html += '<p class="note-sm">今天沒有到期的題。' + (L.later.length ? '下一批在 ' + fmtDay(L.later[0].due) + '。' : '') + '</p>';
+    else html += '<p class="note-sm">每題先重做<b>原題</b>（先評信心再看答案），對了再做一題<b>同型類似題</b>；兩題都對算過一關，連續兩關全對就畢業，錯一次就回到隔天重測。有把握卻錯的排最前面。</p>';
+    L.due.forEach(function (e) {
+      var it = item(e.t, e.k, e.seed);
+      html += '<div class="rvi" data-id="' + esc(e.id) + '"><div class="rvh"><b>' + esc(labelOf[e.t + '.' + e.k] || e.k) + '</b><span class="tag' + (e.reason === 'hc' ? ' hc' : '') + '">' + (e.reason === 'hc' ? '有把握卻錯' : e.reason === 'guess' ? '猜對' : '答錯') + '</span><span class="rvm">第 ' + (e.stage + 1) + ' 關・' + e.t + '・#' + e.seed + '</span></div>' +
+        '<ol><li class="qi orig"><span class="rl">原題</span><span class="q">' + it.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + it.a + '）</span>' + markHtml() + (it.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(it) + '</div>' : '') + '</li></ol></div>';
+    });
+    if (L.later.length) html += '<details class="rv-later"><summary>之後到期的 ' + L.later.length + ' 題</summary><ul>' + L.later.map(function (e) { return '<li>' + fmtDay(e.due) + '　' + esc(labelOf[e.t + '.' + e.k] || e.k) + '（第 ' + (e.stage + 1) + ' 關）</li>'; }).join('') + '</ul></details>';
+    if (L.due.length) html += '<div class="fix-foot"><button class="rvsubmit">📝 記錄複習結果</button><span>沒標記的題不會被記錄，下次再做。</span></div><div class="fix-result rvres"></div>';
+    body.innerHTML = html;
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var li = blk.querySelector('li.orig'); wireConfMark(li);
+      li.querySelector('.rvans').onclick = function () {
+        if (!li.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; }
+        li.classList.add('show'); this.textContent = '答案';
+      };
+      var osb = li.querySelector('.rvsteps'); if (osb) osb.onclick = function () { if (!li.classList.contains('show')) { li.querySelector('.rvans').click(); if (!li.classList.contains('show')) return; } li.querySelector('.gs').classList.toggle('on'); };
+      li.querySelectorAll('.mark button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (li.classList.contains('ok') && !blk.querySelector('li.vari')) {
+            var e = REC.wb[blk.getAttribute('data-id')], vs = (e.seed * 7 + 13 + Math.floor(Math.random() * 9000)) % 900000 + 1, vit = item(e.t, e.k, vs), tries = 0;
+            while (vit.q === item(e.t, e.k, e.seed).q && tries++ < 8) { vs = Math.floor(Math.random() * 900000) + 1; vit = item(e.t, e.k, vs); }
+            var v = document.createElement('li'); v.className = 'qi vari'; v.setAttribute('data-seed', vs);
+            v.innerHTML = '<span class="rl">類似題</span><span class="q">' + vit.q + '</span>' + confHtml() + '<button class="rvans">答案</button><span class="fa">（答：' + vit.a + '）</span>' + markHtml() + (vit.s ? '<button class="rvsteps">📘 步驟</button><div class="gs">' + stepsHtml(vit) + '</div>' : '');
+            var vsb = v.querySelector('.rvsteps'); if (vsb) vsb.onclick = function () { v.querySelector('.gs').classList.toggle('on'); };
+            blk.querySelector('ol').appendChild(v); wireConfMark(v);
+            v.querySelector('.rvans').onclick = function () { if (!v.getAttribute('data-conf')) { this.textContent = '先評信心再看答案'; return; } v.classList.add('show'); this.textContent = '答案'; };
+            render(v);
+          }
+        });
+      });
+    });
+    var sb = body.querySelector('.rvsubmit'); if (sb) sb.onclick = submitReview;
+    render(body);
+  }
+  function submitReview() {
+    var body = rv.querySelector('.rv-body'), items = [], passed = 0, failed = 0, skipped = 0, now = Date.now();
+    body.querySelectorAll('.rvi').forEach(function (blk) {
+      var e = REC.wb[blk.getAttribute('data-id')], o = blk.querySelector('li.orig'), v = blk.querySelector('li.vari');
+      var oOk = o.classList.contains('ok'), oNg = o.classList.contains('ng');
+      if (!oOk && !oNg) { skipped++; return; }
+      var rec = { t: e.t, k: e.k, seed: e.seed, wrong: oNg, conf: o.getAttribute('data-conf') || null, cause: oNg ? (o.getAttribute('data-cause') || null) : null, rv: 1 };
+      items.push(rec);
+      var pass = false;
+      if (oOk && v) {
+        var vOk = v.classList.contains('ok'), vNg = v.classList.contains('ng');
+        if (!vOk && !vNg) { skipped++; items.pop(); return; }
+        items.push({ t: e.t, k: e.k, seed: parseInt(v.getAttribute('data-seed'), 10), wrong: vNg, conf: v.getAttribute('data-conf') || null, cause: vNg ? (v.getAttribute('data-cause') || null) : null, rv: 1 });
+        pass = vOk;
+      } else if (oOk && !v) { skipped++; items.pop(); return; }
+      e.hist.push({ t: now, pass: pass });
+      if (pass) { e.stage = (e.stage || 0) + 1; if (e.stage >= 2) { e.done = true; e.due = null; } else e.due = now + INTERVAL[Math.min(e.stage, INTERVAL.length - 1)] * DAY; passed++; }
+      else { e.stage = 0; e.due = now + INTERVAL[0] * DAY; failed++; }
+    });
+    if (items.length) REC.attempts.push({ t: now, kind: 'review', tier: 'rv', set: '今日複習', items: items });
+    saveRec();
+    var res = body.querySelector('.rvres'); if (res) { res.innerHTML = '過關 ' + passed + ' 題、要重來 ' + failed + ' 題' + (skipped ? '、未完成 ' + skipped + ' 題（下次再做）' : '') + '。畢業的題不會再出現；重來的題明天再測。'; res.classList.add('on'); }
+    renderRec(); setTimeout(renderReview, 1200);
+  }
+  if (rv) {
+    rv.querySelector('.rv-toggle').onclick = function () { var b = rv.querySelector('.rv-body'); if (b.hasAttribute('data-open')) { b.removeAttribute('data-open'); this.textContent = '開始複習'; } else { b.setAttribute('data-open', '1'); this.textContent = '收起'; } renderReview(); };
+    renderReview();
+  }
+
+  /* ══════════ 我的練習紀錄（分析面板）══════════ */
+  var mr = document.getElementById('myrec');
+  function renderRec() {
+    if (!mr) return;
+    var st = stats(), keys = Object.keys(st.byKey), body = mr.querySelector('.mr-body'), sum = mr.querySelector('.mr-sum');
+    if (!REC.attempts.length) { sum.textContent = '還沒有紀錄。做完任何一組檢測、標記對錯並按「記錄」，這裡就會出現你的弱點分析。'; body.innerHTML = ''; return; }
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; keys.forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    sum.textContent = '共 ' + totN + ' 題，答對率 ' + Math.round(100 * (totN - totW) / totN) + '%；有把握卻錯 ' + totHc + ' 題、猜對 ' + totGs + ' 題。';
+    var weak = weakList(st.byKey), html = '';
+    html += '<div class="mr-advice"><b>優先補強：</b>' + (weak.length ? '' : '目前沒有明顯弱點，繼續換組檢測維持手感。') + '<span class="golist"></span></div>';
+    html += '<table class="mr-t"><tr><th>題型</th><th>級</th><th>做過</th><th>錯</th><th>有把握卻錯</th><th>猜對</th><th>主要錯因</th><th>最近 5 次</th><th></th></tr>';
+    keys.map(function (k) { return st.byKey[k]; }).sort(function (a, b) { return (b.hc - a.hc) || ((b.w + b.gs) / b.n - (a.w + a.gs) / a.n) || (b.n - a.n); }).forEach(function (o) {
+      var isWeak = weak.indexOf(o) >= 0, mc = mainCause(o);
+      html += '<tr class="' + (isWeak ? 'weak' : '') + '"><td>' + esc(labelOf[o.tier + '.' + o.key] || o.key) + '</td><td>' + o.tier + '</td><td>' + o.n + '</td><td>' + o.w + '</td><td>' + (o.hc ? '<b class="hcw">' + o.hc + '</b>' : '0') + '</td><td>' + o.gs + '</td><td>' + (mc ? CAUSE[mc] : '–') + '</td><td>' + o.last.slice(-5).map(function (w) { return w ? '✗' : '○'; }).join(' ') + '</td><td class="gocell" data-tier="' + o.tier + '" data-key="' + o.key + '" data-mode="' + (mc && READ_CAUSE[mc] ? 'read' : 'drill') + '"></td></tr>';
+    });
+    html += '</table>';
+    html += '<table class="mr-t"><tr><th>檢測組</th><th>次數</th><th>最近成績</th></tr>';
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s]; html += '<tr><td>' + esc(s) + '</td><td>' + o.rounds + '</td><td>' + o.hist.slice(-4).map(function (h) { return fmtDate(h.t) + '：' + (h.n - h.w) + '／' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + '</td></tr>'; });
+    html += '</table>';
+    body.innerHTML = html;
+    var gl = body.querySelector('.golist'); weak.slice(0, 6).forEach(function (o) { var mc = mainCause(o); gl.appendChild(goBtn(o.tier, o.key, mc && READ_CAUSE[mc] ? 'read' : 'drill')); });
+    body.querySelectorAll('.gocell').forEach(function (td) { var b = goBtn(td.getAttribute('data-tier'), td.getAttribute('data-key'), td.getAttribute('data-mode')); b.textContent = td.getAttribute('data-mode') === 'read' ? '回頭讀' : '回頭練'; td.appendChild(b); });
+  }
+  function summaryText() {
+    var st = stats(), L = wbLists(), lines = [];
+    lines.push('【' + TITLE + '】練習紀錄摘要　' + fmtDate(Date.now()));
+    var totN = 0, totW = 0, totHc = 0, totGs = 0; Object.keys(st.byKey).forEach(function (k) { var o = st.byKey[k]; totN += o.n; totW += o.w; totHc += o.hc; totGs += o.gs; });
+    lines.push('總計：' + totN + ' 題，答對率 ' + (totN ? Math.round(100 * (totN - totW) / totN) : 0) + '%，有把握卻錯 ' + totHc + '，猜對 ' + totGs + '；錯題本 ' + (L.due.length + L.later.length) + ' 題（到期 ' + L.due.length + '、畢業 ' + L.done + '）');
+    lines.push('各檢測組：');
+    Object.keys(st.bySet).forEach(function (s) { var o = st.bySet[s], m = masteryOf(s); lines.push('　' + s + '：' + o.rounds + ' 次，最近 ' + o.hist.slice(-3).map(function (h) { return fmtDate(h.t) + ' ' + (h.n - h.w) + '/' + h.n + (h.secs ? '（' + fmtClock(h.secs) + '）' : ''); }).join('，') + (m.mastered ? '　✅精熟' : '')); });
+    var weak = weakList(st.byKey);
+    lines.push('優先補強：' + (weak.length ? weak.slice(0, 8).map(function (o) { var mc = mainCause(o); return (labelOf[o.tier + '.' + o.key] || o.key) + '（' + o.w + '/' + o.n + (o.hc ? '，有把握卻錯 ' + o.hc : '') + (mc ? '，' + CAUSE[mc] : '') + '）'; }).join('、') : '無'));
+    return lines.join('\n');
+  }
+  function copyText(txt, btn) {
+    var done = function () { var t0 = btn.textContent; btn.textContent = '已複製'; setTimeout(function () { btn.textContent = t0; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () { window.prompt('請手動複製：', txt); });
+    else window.prompt('請手動複製：', txt);
+  }
+  if (mr) {
+    mr.querySelector('.mr-copy').onclick = function () { copyText(summaryText(), this); };
+    mr.querySelector('.mr-export').onclick = function () {
+      var blob = new Blob([JSON.stringify(REC)], { type: 'application/json' }), a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'practice-' + CH + '-' + dayKey(Date.now()) + '.json'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    };
+    mr.querySelector('.mr-import').onclick = function () { mr.querySelector('.mr-file').click(); };
+    mr.querySelector('.mr-file').onchange = function () {
+      var f = this.files[0]; if (!f) return; var rd = new FileReader();
+      rd.onload = function () { try { var r = JSON.parse(rd.result); if (!r || !r.attempts) throw 0; if (!confirm('匯入 ' + r.attempts.length + ' 筆檢測紀錄，並覆蓋這台裝置目前的紀錄？')) return; if (!r.wb) r.wb = {}; r.v = 2; REC = r; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } catch (e) { alert('這不是本練習本匯出的紀錄檔。'); } };
+      rd.readAsText(f); this.value = '';
+    };
+    mr.querySelector('.mr-toggle').onclick = function () { var b = mr.querySelector('.mr-body'); b.hidden = !b.hidden; this.textContent = b.hidden ? '展開' : '收起'; };
+    mr.querySelector('.mr-clear').onclick = function () { if (confirm('確定清除這台裝置上的所有練習紀錄與錯題本？')) { REC = { v: 2, attempts: [], wb: {} }; saveRec(); renderRec(); renderReview(); document.querySelectorAll('.fixset').forEach(renderMastery); } };
+    renderRec();
+  }
+
+  /* 固定題卡（L3–L5）的答案／詳解 */
+  document.querySelectorAll('.fx button[data-t]').forEach(function (b) {
+    b.onclick = function () { var fx = b.closest('.fx'), t = b.getAttribute('data-t'); fx.querySelector(t === 'a' ? '.fxa' : '.fxs').classList.toggle('on'); };
+  });
+  (function () {
+    var h = decodeURIComponent(location.hash || '');
+    if (h.indexOf('#c-') === 0) { var el = document.getElementById(h.slice(1)); if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(el); }, 300); }
+  })();
+  function renderStatic() { render(document.body); }
+  if (window.renderMathInElement) renderStatic(); else document.addEventListener('DOMContentLoaded', renderStatic);
+})();
+</script>
+<div id="printArea"></div>
+<script src="../../assets/wb-back.js"></script>
+</body>
+</html>
