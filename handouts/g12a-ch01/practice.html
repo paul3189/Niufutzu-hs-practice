@@ -684,7 +684,7 @@ $a_n\le1+\displaystyle\sum_{k=1}^{n}\frac1{2^{k-1}}=1+2\left(1-\frac1{2^n}\right
 (4) $a_1=2$，$a_2=\left(\dfrac32\right)^2=\dfrac94$，$a_3=\left(\dfrac43\right)^3=\dfrac{64}{27}$。<br>
 數列一直變大、卻永遠不超過 $3$，所以它會越來越靠近某個不超過 $3$ 的數（這是實數的基本性質，課本直接接受），這個數就是 $e$。由遞增，$e\gt a_3=\dfrac{64}{27}$；由 $a_n\lt3$，$e\le3$。<span class="note-sm">實際上 $e\approx2.718$。用計算機算 $a_{10}\approx2.594$、$a_{100}\approx2.705$、$a_{1000}\approx2.717$，可以看到它爬得很慢。改用 (3) 裡的 $\displaystyle\sum\frac1{k!}$ 來估會快得多：$1+1+\frac12+\frac16+\frac1{24}+\frac1{120}\approx2.717$。</span></div></div>
 
-<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">牛頓法求 $\sqrt3$：切線與 $x$ 軸的交點給出 $x_{n+1}=\frac12\left(x_n+\frac3{x_n}\right)$；誤差的關係式 $x_{n+1}-\sqrt3=\frac{(x_n-\sqrt3)^2}{2x_n}$ 說明「誤差每一步大約平方」，有效位數每次加倍</span><span class="src">經典（N-12甲-1 備註：牛頓求根法）</span></div>
+<div class="fx" id="L5-2"><div class="fxh"><span class="no">L5-2</span><span class="kw">牛頓法求 $\sqrt3$：切線與 $x$ 軸的交點給出 $x_{n+1}=\frac12\left(x_n+\frac3{x_n}\right)$；誤差的關係式 $x_{n+1}-\sqrt3=\frac{(x_n-\sqrt3)^2}{2x_n}$ 說明「誤差每一步大約平方」，有效位數每次加倍</span><span class="src">經典（課綱備註：牛頓求根法）</span></div>
 <div class="fxq">要求 $x^2-3=0$ 的正根。已知拋物線 $y=x^2-3$ 在點 $(a,a^2-3)$ 的切線斜率為 $2a$（這個公式下一章會說明）。<br>
 (1) 用勘根定理說明正根落在 $1$ 與 $2$ 之間；取初始值 $x_1=2$，過 $(x_n,x_n^2-3)$ 作切線，切線與 $x$ 軸交點的 $x$ 坐標記為 $x_{n+1}$。證明 $x_{n+1}=\dfrac12\left(x_n+\dfrac3{x_n}\right)$。<br>
 (2) 證明 $x_{n+1}-\sqrt3=\dfrac{\left(x_n-\sqrt3\right)^2}{2x_n}$，並由此說明每一個 $x_n\gt\sqrt3$。<br>
