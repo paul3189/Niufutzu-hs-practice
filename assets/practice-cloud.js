@@ -63,7 +63,8 @@
 
   /* 3. 帳號區 */
   var box = null;
-  function setStatus(t) { var s = box && box.querySelector(".pc-status"); if (s) s.innerHTML = t; }
+  function isPro() { return !!(document.body && document.body.classList.contains("pro")); }  /* 新版面（HANDOUT_SPEC §9）不用 emoji */
+  function setStatus(t) { if (isPro()) t = String(t).replace(/^(\u2601\uFE0F?|\u26A0\uFE0F?|\u2709\uFE0F?)\s*/, ""); var s = box && box.querySelector(".pc-status"); if (s) s.innerHTML = t; }
   function render() {
     if (!box) {
       var anchor = $("myrec") || document.querySelector(".howto") || document.body.firstElementChild;
@@ -74,14 +75,14 @@
     }
     var u = C.user();
     if (u) {
-      box.innerHTML = '<b>☁️ 練習紀錄同步</b>　' + esc(u.email) + '（' + esc(C.nick() || "") + '）' +
+      box.innerHTML = '<b>' + (isPro() ? '' : '☁️ ') + '練習紀錄同步</b>　' + esc(u.email) + '（' + esc(C.nick() || "") + '）' +
         '<button type="button" class="pc-out" style="margin-left:8px">登出</button>' +
         '<div class="pc-status" style="color:#155e75"></div>' +
         '<div style="color:#64748b;font-size:.85rem">登入後這一章的檢測、錯題本、精熟進度會存到你的帳號，換裝置也看得到；老師也能在後台看到你的進度。</div>';
       box.querySelector(".pc-out").onclick = function () { C.signOut(); };
       reconcile();
     } else {
-      box.innerHTML = '<b>☁️ 練習紀錄同步</b>　目前只存在這台裝置。用 Email 登入後會跨裝置同步，老師也看得到你的進度。' +
+      box.innerHTML = '<b>' + (isPro() ? '' : '☁️ ') + '練習紀錄同步</b>　目前只存在這台裝置。用 Email 登入後會跨裝置同步，老師也看得到你的進度。' +
         '<div style="margin-top:6px"><input type="email" class="pc-email" placeholder="你的 Email" value="' + esc(C.rememberedEmail()) + '" style="padding:4px 8px;border:1px solid #cbd5e1;border-radius:8px;width:220px;max-width:60%">' +
         '<button type="button" class="pc-send" style="margin-left:6px">寄登入連結</button></div>' +
         '<div class="pc-status" style="color:#155e75"></div>';

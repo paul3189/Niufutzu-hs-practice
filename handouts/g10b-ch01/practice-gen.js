@@ -1250,7 +1250,7 @@
       ['derivedSeq', '§1 衍生數列是否等差、等比'], ['apToGp', '§1 等差三數調整成等比'], ['arSignSn', '§2 由 Sₙ 的正負找最大和'], ['loanPay', '§2 分期付款'], ['figStack', '§2 圖形規律：堆疊與排列']
   ];
   /* ══════════════════════════════════════════════════════════
-     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
+     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類題」
      全部用整數／Fraction 逐項算；p 只放旗標，驗算器一律從題幹重算。
      ══════════════════════════════════════════════════════════ */
   var L3 = {};
@@ -1470,7 +1470,7 @@
       p: { r: rr, a1: a1, N: N, i: i, j: j, s: s, u: u, v: v, ans: [fr2(xF), fr2(yF)] } };
   };
 
-  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類題 ══════════ */
   /* L3-16　等長分段和：等比每 L 項一段，各段的和成等比（公比 r^L）；等差則成等差 */
   L3.blockSums = function (r) {
     var kind = r.int(0, 2), L, q, T0, m, X, Y, ans, qs, h, x, y;
@@ -1547,7 +1547,7 @@
   };
 
   var META_L3 = [['recurDivide', '先除成 a_{n+1}=pa_n+q 再解不動點'], ['gpEndsSum', '首末項與總和求 r（求 a₂+aₙ₋₁）'], ['fiveAP', '五數等差給和與積'], ['gpEndsSumN', '首末項與總和求項數'], ['removeTerm', '刪去一項後的平均'], ['recurExpLin', '疊縮相加：指數＋一次'], ['recurGuess', '往前推再猜一般項（歸納）'], ['fracRecurGuess', '分式遞迴猜一般項'], ['diagonalGrid', '方格斜線編號'], ['mixedSeries', '兩數列交錯相加'], ['gpRatioSeries', '兩等比級數相除'], ['sigmaFactorForm', 'Σk(k+a)(k+b) 的因式分解形'], ['snRelationProd', 'c·Sₙ=(n+c−1)aₙ 疊縮相乘'], ['altStaggered', '交錯錯位相減'], ['gpSystemXY', '兩方程相除得 rˢ'], ['blockSums', '等長分段和（等比、等差）'], ['fracPosition', '分數數列：第幾項、第幾項是誰'], ['wrongAddTerm', '連續整數和多加或漏加一項']];
-  /* 固定題 L3-n 對應的類似題型 */
+  /* 固定題 L3-n 對應的類題型 */
   var L3_FIX = { 'L3-1': 'recurDivide', 'L3-2': 'gpEndsSum', 'L3-3': 'fiveAP', 'L3-4': 'gpEndsSumN', 'L3-5': 'removeTerm', 'L3-6': 'recurExpLin', 'L3-7': 'recurGuess', 'L3-8': 'fracRecurGuess', 'L3-9': 'diagonalGrid', 'L3-10': 'mixedSeries', 'L3-11': 'gpRatioSeries', 'L3-12': 'sigmaFactorForm', 'L3-13': 'snRelationProd', 'L3-14': 'altStaggered', 'L3-15': 'gpSystemXY', 'L3-16': 'blockSums', 'L3-17': 'fracPosition', 'L3-18': 'wrongAddTerm' };
 
   /* ══════════════════════════════════════════════════════════
@@ -1665,7 +1665,7 @@
      共用畫圖小工具 fig*()（與 g11a-ch01、g10b-ch04 同一套樣式）：線段、圓點、方塊、多邊形、角的小弧、一列小圖（圖 1、圖 2、圖 3）。
      規則：坐標一律由參數算（不目測）、圖照比例畫；圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
            要給驗算器讀的元素帶 data-k（驗算器從圖上的元素個數、坐標與標籤文字代回，不看 p）。
-     L1 2 型、L2 3 型、L3 2 型（L3-19、L3-20 的類似題）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     L1 2 型、L2 3 型、L3 2 型（L3-19、L3-20 的類題）；key 一律接在 META 最後，既有題型同種子輸出不變。
      本章只做有限項：等比的圖形只問第 n 個與前 n 個的和。
      ══════════════════════════════════════════════════════════ */
   var FIGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#b03a55', soft: '#8a7378', grid: '#ddd2d5', fill: 'rgba(176,58,85,.14)', shade: '#d98fa0' };
@@ -1909,7 +1909,7 @@
   };
   META_L2.push(['figDots', '§1 看圖寫遞迴：點陣的個數'], ['figNested', '§2 看圖找公比：一層一層往內接的圖形'], ['figBlocks', '§2 看圖堆積木：每層的個數與總數']);
 
-  /* ────────── L3　附圖題 L3-19、L3-20 的類似題 ────────── */
+  /* ────────── L3　附圖題 L3-19、L3-20 的類題 ────────── */
   /* L3-19　斜線下一個接一個的正方形：A 在原點、B=(a,0)，T1 邊長 b（左上角在斜線上），之後每個左上角都在同一條斜線上。mode='45' 標 45°，mode='len' 標 AB 與 T1 的邊長 */
   function figSqChainSvg(a, b, mode) {
     var m = b / a, show = mode === '45' ? 2 : 3, xs = [a], ss = [b], k;

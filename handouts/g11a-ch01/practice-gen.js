@@ -1014,7 +1014,7 @@
   var META_L2 = [['sectorSys', '周長與面積反求扇形'], ['sectorMax', '定周長扇形面積最大'], ['coneShortest', '圓錐側面最短路徑'], ['segmentArea', '弓形面積'], ['sumProd', 'sinθ+cosθ=k 的連鎖求值'], ['quadRootCos2', '方程式的根 → cos2θ'], ['tanQuad', '根與係數 × tan 和角'], ['systemSquare', '平方相加求 cos(A+B)'], ['angleSplit', '角的拆分：α=(α+β)−β'], ['triCosC', '三角形中由 A、B 求 C'], ['halfFromCos2x', 'cos2x → 半角組合'], ['tripleEval', '三倍角（進階）'], ['paramFit', '由最高最低點反求 (a,b,c,d)'], ['transformOrder', '伸縮與平移的順序'], ['periodJudge', '合成函數的週期'], ['rootCount', '方程式 c+k sin x=x 的解數'], ['trigIneq', '三角不等式（含孤立解）'], ['quadTrigEq', '二次型三角方程式'], ['combineInterval', '疊合後的區間最值'], ['squareSub', 'sin x±cos x 的二次代換'], ['quadTrigRange', 'cos²x＋p sin x 型的最值'], ['eqSumCount', 'sin bx=k 的解數與總和']];
 
   /* ══════════════════════════════════════════════════════════
-     L3　中上（18 型）：每型對應固定題 L3-1～L3-18 的「類似題」
+     L3　中上（18 型）：每型對應固定題 L3-1～L3-18 的「類題」
      角一律是 π/12 的倍數（K 單位），值由 tv() 精確給出。
      ══════════════════════════════════════════════════════════ */
   var L3 = {};
@@ -1387,7 +1387,7 @@
       a: T(d(t3)) + ' 公尺（' + T('a=' + a + ',\\ b=' + b) + '）', h: '把 $x=' + t1.x + ',' + t2.x + ',' + t3.x + '$ 代進括號，分別是 $' + [t1, t2, t3].map(function (t) { return piTex(((t.x * 12 / TT + phiK) % 24 + 24) % 24, 12); }).join('$、$') + '$，都是特殊角；兩個已知時刻給 $a\\cos(\\cdot)+b$ 的兩條一次方程，解出 $a,b$ 再代第三個時刻。', p: { T: TT, phiK: phiK, a: a, b: b, x1: t1.x, d1: d(t1), x2: t2.x, d2: d(t2), x3: t3.x, d3: d(t3) } };
   };
 
-  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類題 ══════════ */
   /* L3-16　α+β=π/4（或 3π/4）：tan 和角公式交叉相乘，(1±tanα)(1±tanβ)=2 */
   L3.tanPairProd = function (r) {
     var t = r.int(0, 4), q, a, h, p;
@@ -1471,7 +1471,7 @@
   };
 
   var META_L3 = [['radEstimate', '弧度值估大小（多選）'], ['periodFromHighLow', '最高最低點的水平距離 → 週期'], ['tanShiftCoincide', 'tan 平移後重合'], ['rootSumSin', 'sin bx=k 在 (0,Lπ) 的解數與總和'], ['absPeriodSum', '絕對值／平方的週期相加'], ['quadTanPoint', 'tan 與坐標正負定象限（多選）'], ['homogEq', '齊次式方程：降冪、疊合'], ['fracSubCombine', '分式通分後疊合'], ['halfDiffIsos', 'cos(θ/2)−sin(θ/2) 已知的等腰三角形'], ['sinCosMixRange', 'sin x cos x 與平方混合的區間最值'], ['expandCombineRange', '先展開再疊合的區間最值'], ['tanRootsTriangle', '兩根為 tanA、tanB 的三角形'], ['crossSquareSum', '兩式平方相加'], ['reduceBigAngle', '大角度的誘導公式'], ['tideModel', '週期模型（潮汐）'], ['tanPairProd', '和為 π/4：(1+tanα)(1+tanβ)'], ['combineProps', '疊合後的性質（多選）'], ['quadCosRoots', 'cos x 二次方程的根在哪個區間（多選）']];
-  /* 固定題 L3-n 對應的類似題型 */
+  /* 固定題 L3-n 對應的類題型 */
   var L3_FIX = { 'L3-1': 'radEstimate', 'L3-2': 'periodFromHighLow', 'L3-3': 'tanShiftCoincide', 'L3-4': 'rootSumSin', 'L3-5': 'absPeriodSum', 'L3-6': 'quadTanPoint', 'L3-7': 'homogEq', 'L3-8': 'fracSubCombine', 'L3-9': 'halfDiffIsos', 'L3-10': 'sinCosMixRange', 'L3-11': 'expandCombineRange', 'L3-12': 'tanRootsTriangle', 'L3-13': 'crossSquareSum', 'L3-14': 'reduceBigAngle', 'L3-15': 'tideModel', 'L3-16': 'tanPairProd', 'L3-17': 'combineProps', 'L3-18': 'quadCosRoots' };
 
   /* ══════════════════════════════════════════════════════════
@@ -1578,7 +1578,7 @@
      共用畫圖小工具 fig*()：扇形／弓形、坐標軸＋正弦型曲線、單位圓與角、方格紙上的角。
      規則：坐標一律由參數算（不目測）；圖上文字用 <text>（不放 KaTeX、不能出現錢字號與反斜線）；
            要給驗算器讀的元素帶 data-k（驗算器從圖上的坐標與標籤文字代回，不看 p）。
-     L1 4 型、L2 4 型、L3 4 型（L3-19～L3-22 的類似題）；key 一律接在 META 最後，既有題型同種子輸出不變。
+     L1 4 型、L2 4 型、L3 4 型（L3-19～L3-22 的類題）；key 一律接在 META 最後，既有題型同種子輸出不變。
      ══════════════════════════════════════════════════════════ */
   var FIGC = { ink: '#3a2a2e', line: '#7a2e3c', hot: '#b03a55', soft: '#8a7378', grid: '#ddd2d5', fill: 'rgba(176,58,85,.2)' };
   var MINUS = '−';
@@ -1931,7 +1931,7 @@
   };
   META_L2.push(['figSegment', '看圖求弓形與葉形面積'], ['figParamFit', '由圖形反求 (a,b,c,d)'], ['figGridTan', '方格紙上的角求 tan'], ['figPeriodic', '週期現象讀圖求值']);
 
-  /* ────────── L3　L3-19～L3-22 的類似題（附圖） ────────── */
+  /* ────────── L3　L3-19～L3-22 的類題（附圖） ────────── */
   /* L3-19　矩形 ABCD 內，以 A 為圓心、AB 與 AD 為半徑的兩段弧。三種邊長比讓 ∠EAD（E 是大弧與 BC 的交點）是 30°、60°、45° */
   var RECT_SHAPES = [{ hr: 1, Rc: 2, Rr: 1, g: 30 }, { hr: 3, Rc: 2, Rr: 1, g: 60 }, { hr: 1, Rc: 1, Rr: 2, g: 45 }];   /* AB = k√hr，AD = Rc·k√Rr，g = ∠EAD */
   function figRectArcsSvg(hNum, RNum, g, ask, hLab, RLab) {

@@ -1165,7 +1165,7 @@
       ['expEq', '§4 指數方程式（換元）'], ['expSymm', '§4 $a^x\\pm a^{-x}$ 升冪'], ['digitsLead', '§4 位數與最高位數字'], ['decimalFirst', '§4 小數點後第幾位非零'], ['compound', '§4 複利幾年'], ['expValue', '§4 分數指數求值與化簡'], ['logScale', '§4 對數尺度：地震規模、分貝、pH']
   ];
   /* ══════════════════════════════════════════════════════════
-     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類似題」
+     L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類題」
      答案全部精確（整數、分數、根式、log 的組合），p 給 Python 獨立驗算。
      ══════════════════════════════════════════════════════════ */
   var L3 = {};
@@ -1385,7 +1385,7 @@
     return { q: q, a: ans, h: '$\\log' + n + '$ 落在 $' + ip + '$ 與 $' + (ip + 1) + '$ 之間（$10^{' + ip + '}\\le' + n + '<10^{' + (ip + 1) + '}$）' + (two !== null ? '；再取一次 $\\log$：$\\log' + n + '\\approx' + lv.toFixed(2) + '$ 在 $10^{' + two + '}$ 與 $10^{' + (two + 1) + '}$ 之間。' : '。'), p: { mode: 3, n: n, ip: ip, two: two } };
   };
 
-  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類似題 ══════════ */
+  /* ══════════ 2026-09-28 擴充：L3-16～L3-18 的類題 ══════════ */
   /* L3-16　雙重根號化簡後取整數、小數部分，再有理化 */
   L3.intFracDbl = function (r) {
     var q = nonSquare(r, 5, 60), k = isqrt(q), s = r.int(1, Math.max(1, k - 1)), v = r.int(0, 1);
@@ -1423,7 +1423,7 @@
   };
 
   var META_L3 = [['farDigit', '有限＋循環小數的第 N 位'], ['sqrtMixedDigit', '帶分數開根號後的第 N 位'], ['coefCompareLin', '展開後係數比較解 (x,y)'], ['doubleRootCoef', '雙重根號＋有理係數比較'], ['surdDiffOrder', '根式相減比大小（有理化）'], ['symmFromQuad', '二次方程 ÷ x 得對稱式'], ['amgmLinProduct', '乘積定值求線性式最小'], ['avgCostMin', '平均成本最低（算幾）'], ['absRatioPoints', '|x−a|=m|x−b| 的內外分點'], ['exactIntParam', '恰有 k 個整數解求參數'], ['absSumEqCount', '|x−a|+|x−b|=k 解的個數'], ['chainEqLog', '連等式取 log'], ['expSymmEq', 'b^{2x}+b^{−2x} 換元解方程'], ['halfLife', '半衰期／衰變取 log'], ['logCalcCount', '按 log 鍵落在區間的個數'], ['intFracDbl', '雙重根號化簡後的整數／小數部分'], ['halfExpSymm', '√a±1/√a 型的分數指數對稱式'], ['absRangeCombo', '由 a、b 的範圍求 a+b、a−b、ab 的範圍']];
-  /* 固定題 L3-n 對應的類似題型 */
+  /* 固定題 L3-n 對應的類題型 */
   var L3_FIX = { 'L3-1': 'farDigit', 'L3-2': 'sqrtMixedDigit', 'L3-3': 'coefCompareLin', 'L3-4': 'doubleRootCoef', 'L3-5': 'surdDiffOrder', 'L3-6': 'symmFromQuad', 'L3-7': 'amgmLinProduct', 'L3-8': 'avgCostMin', 'L3-9': 'absRatioPoints', 'L3-10': 'exactIntParam', 'L3-11': 'absSumEqCount', 'L3-12': 'chainEqLog', 'L3-13': 'expSymmEq', 'L3-14': 'halfLife', 'L3-15': 'logCalcCount', 'L3-16': 'intFracDbl', 'L3-17': 'halfExpSymm', 'L3-18': 'absRangeCombo' };
 
   /* ══════════════════════════════════════════════════════════
