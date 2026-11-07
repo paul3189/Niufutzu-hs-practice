@@ -337,7 +337,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 </div>
 <div class="note">題目來源標示為出題學校與年度；答案與詳解皆用程式重新驗算過（極限一律用 sympy 直接求，級數另用部分和的精確分數檢查）。</div>
 
-<div class="fx" id="L3-1" data-gen="expNeg"><div class="fxh"><span class="no">L3-1</span><span class="kw">分子分母都是「某數的 $n$ 次方」、底數還有負的：分子分母同除「絕對值最大的底」的 $n$ 次方（連負號一起除），其餘的項都變成 $r^n$ 而 $|r|\lt1$，直接趨近 $0$</span><span class="src">台中女中 112上 第一次 第 7 題</span></div>
+<div class="fx" id="L3-1" data-gen="expNeg"><div class="fxh"><span class="no">L3-1</span><span class="kw">分子分母都是「某數的 $n$ 次方」、底數還有負的：分子分母同除「絕對值最大的底」的 $n$ 次方（連負號一起除），其餘的項都變成 $r^n$ 而 $|r|\lt1$，直接趨近 $0$</span><span class="src" data-src="台中女中 112上 第一次 第 7 題">台中女中</span></div>
 <div class="fxq">求 $\displaystyle\lim_{n\to\infty}\frac{4^n+(-5)^{n+1}}{4^{n-2}+(-5)^{n+3}}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac1{25}$</div>
@@ -346,7 +346,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 分母 $\div(-5)^n$：$\dfrac1{16}\left(-\dfrac45\right)^n+(-5)^3\to0+(-125)=-125$。<br>
 故極限 $=\dfrac{-5}{-125}=\dfrac1{25}$。<span class="note-sm">🔴 常見錯誤是只除 $5^n$：那樣分子會留下 $(-1)^n\cdot(-5)$，看起來「正負跳來跳去」而誤判發散。其實分子分母的 $(-1)^n$ 會一起消掉，所以要連負號一起除。</span></div></div>
 
-<div class="fx" id="L3-2" data-gen="sumMinusAn"><div class="fxh"><span class="no">L3-2</span><span class="kw">平方和除以 $n^2$ 再減 $an$、極限是有限值：先用 $\sum k^2=\frac{n(n+1)(2n+1)}6$ 化成「$n$ 的一次式＋常數＋會消失的項」，一次項必須被 $an$ 抵消，剩下的常數就是極限</span><span class="src">台中二中 112上 第一次 第 11 題</span></div>
+<div class="fx" id="L3-2" data-gen="sumMinusAn"><div class="fxh"><span class="no">L3-2</span><span class="kw">平方和除以 $n^2$ 再減 $an$、極限是有限值：先用 $\sum k^2=\frac{n(n+1)(2n+1)}6$ 化成「$n$ 的一次式＋常數＋會消失的項」，一次項必須被 $an$ 抵消，剩下的常數就是極限</span><span class="src" data-src="台中二中 112上 第一次 第 11 題">台中二中</span></div>
 <div class="fxq">已知實數 $a$、$b$ 滿足 $\displaystyle\lim_{n\to\infty}\left(\frac{1^2+2^2+3^2+\cdots+n^2}{n^2}-an\right)=b$，求數對 $(a,b)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(a,b)=\left(\dfrac13,\dfrac12\right)$</div>
@@ -356,7 +356,7 @@ $\dfrac{1^2+\cdots+n^2}{n^2}=\dfrac{n(n+1)(2n+1)}{6n^2}=\dfrac{2n^2+3n+1}{6n}=\d
 要收斂，一次項係數必須是 $0$ ⟹ $a=\dfrac13$；此時極限 $=\dfrac12+0=\dfrac12$ ⟹ $b=\dfrac12$。<br>
 故 $(a,b)=\left(\dfrac13,\dfrac12\right)$。<span class="note-sm">若 $a\ne\dfrac13$，例如 $a=0$，原式約等於 $\dfrac n3$，會越來越大沒有上限，所以是發散，不能寫成「極限等於 $\infty$」再去比較。</span></div></div>
 
-<div class="fx" id="L3-3" data-gen="squeezeIneq"><div class="fxh"><span class="no">L3-3</span><span class="kw">題目給一串不等式、已知 $\lim a_n$、求 $\lim b_n$：把不等式改寫成「$b_n$ 被兩個只含 $a_n$ 的式子夾住」，兩邊極限相等就用夾擠定理</span><span class="src">中正高中 112上 第一次 第 10 題</span></div>
+<div class="fx" id="L3-3" data-gen="squeezeIneq"><div class="fxh"><span class="no">L3-3</span><span class="kw">題目給一串不等式、已知 $\lim a_n$、求 $\lim b_n$：把不等式改寫成「$b_n$ 被兩個只含 $a_n$ 的式子夾住」，兩邊極限相等就用夾擠定理</span><span class="src" data-src="中正高中 112上 第一次 第 10 題">中正高中</span></div>
 <div class="fxq">已知對任意正整數 $n$，不等式 $b_n+\dfrac{2n+1}n\le a_n\le3b_n$ 恆成立，且 $\displaystyle\lim_{n\to\infty}a_n=3$，求 $\displaystyle\lim_{n\to\infty}b_n$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$1$</div>
@@ -366,7 +366,7 @@ $\dfrac{1^2+\cdots+n^2}{n^2}=\dfrac{n(n+1)(2n+1)}{6n^2}=\dfrac{2n^2+3n+1}{6n}=\d
 兩邊的極限：$\displaystyle\lim_{n\to\infty}\frac{a_n}3=1$，$\displaystyle\lim_{n\to\infty}\left(a_n-\frac{2n+1}n\right)=3-2=1$。<br>
 兩邊都趨近 $1$，由夾擠定理 $\displaystyle\lim_{n\to\infty}b_n=1$。<span class="note-sm">夾擠定理一定要先確認「兩邊的極限相等」才能用。若本題右邊算出來是 $2$，就只能說 $b_n$ 落在 $1$ 和 $2$ 之間，不能斷定 $\lim b_n$ 存在。</span></div></div>
 
-<div class="fx" id="L3-4" data-gen="rnConvX"><div class="fxh"><span class="no">L3-4</span><span class="kw">「$\langle r^n\rangle$ 收斂」而 $r$ 是含 $x$ 的分式：收斂條件是 $-1\lt r\le1$（右端可以等號，$r=1$ 時每項都是 $1$），拆成兩個分式不等式各自解，再取交集</span><span class="src">高雄女中 112上 第一次 第 15 題</span></div>
+<div class="fx" id="L3-4" data-gen="rnConvX"><div class="fxh"><span class="no">L3-4</span><span class="kw">「$\langle r^n\rangle$ 收斂」而 $r$ 是含 $x$ 的分式：收斂條件是 $-1\lt r\le1$（右端可以等號，$r=1$ 時每項都是 $1$），拆成兩個分式不等式各自解，再取交集</span><span class="src" data-src="高雄女中 112上 第一次 第 15 題">高雄女中</span></div>
 <div class="fxq">若無窮數列 $\left\langle\left(\dfrac{2x}{x-1}\right)^n\right\rangle$ 收斂，求實數 $x$ 的範圍。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$-1\le x\lt\dfrac13$</div>
@@ -376,7 +376,7 @@ $r\gt-1$：$\dfrac{2x}{x-1}+1=\dfrac{3x-1}{x-1}\gt0$ ⟹ $x\lt\dfrac13$ 或 $x\g
 取交集：$-1\le x\lt\dfrac13$。<br>
 檢查端點：$x=-1$ 時 $r=1$，數列每項都是 $1$，收斂 ✓；$x=\dfrac13$ 時 $r=-1$，數列 $-1,1,-1,\ldots$ 振盪，發散，所以不取。<span class="note-sm">🔴 本題原卷的參考答案印成 $-1\le x\le\dfrac13$，右端多了等號；$r=-1$ 正是「$\langle r^n\rangle$ 收斂」和「$\sum r^n$ 收斂」都要排除的情形。若題目改成「級數 $\sum r^n$ 收斂」，條件變成 $-1\lt r\lt1$，連 $x=-1$ 也要拿掉。</span></div></div>
 
-<div class="fx" id="L3-5" data-gen="sumSnGeo"><div class="fxh"><span class="no">L3-5</span><span class="kw">級數的一般項裡面藏著一個「部分和」$S_n$：先把 $S_n$ 用等比求和公式寫成封閉式，一般項就拆成兩個無窮等比級數相減</span><span class="src">高雄女中 112上 第一次 第 12 題</span></div>
+<div class="fx" id="L3-5" data-gen="sumSnGeo"><div class="fxh"><span class="no">L3-5</span><span class="kw">級數的一般項裡面藏著一個「部分和」$S_n$：先把 $S_n$ 用等比求和公式寫成封閉式，一般項就拆成兩個無窮等比級數相減</span><span class="src" data-src="高雄女中 112上 第一次 第 12 題">高雄女中</span></div>
 <div class="fxq">已知 $S_n=1+3+3^2+\cdots+3^{n-1}$，求無窮級數 $\displaystyle\sum_{n=1}^{\infty}\frac{S_n}{4^n}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac43$</div>
@@ -386,7 +386,7 @@ $\dfrac{S_n}{4^n}=\dfrac12\left[\left(\dfrac34\right)^n-\left(\dfrac14\right)^n\
 $\displaystyle\sum_{n=1}^{\infty}\left(\frac34\right)^n=\frac{\frac34}{1-\frac34}=3$，$\displaystyle\sum_{n=1}^{\infty}\left(\frac14\right)^n=\frac{\frac14}{1-\frac14}=\frac13$。<br>
 兩個級數都收斂，所以可以相減：原式 $=\dfrac12\left(3-\dfrac13\right)=\dfrac43$。<span class="note-sm">「兩個收斂級數的差等於和的差」要兩個都收斂才成立。若其中一個公比的絕對值 $\ge1$，就不能這樣拆。</span></div></div>
 
-<div class="fx" id="L3-6" data-gen="snTelescope"><div class="fxh"><span class="no">L3-6</span><span class="kw">給前 $n$ 項和 $S_n$、求 $\sum\frac1{a_na_{n+2}}$：先用 $a_n=S_n-S_{n-1}$ 求出等差的一般項，再裂項；中間隔一項，所以會留下「前兩個」</span><span class="src">內壢高中 112上 第一次 第 14 題</span></div>
+<div class="fx" id="L3-6" data-gen="snTelescope"><div class="fxh"><span class="no">L3-6</span><span class="kw">給前 $n$ 項和 $S_n$、求 $\sum\frac1{a_na_{n+2}}$：先用 $a_n=S_n-S_{n-1}$ 求出等差的一般項，再裂項；中間隔一項，所以會留下「前兩個」</span><span class="src" data-src="內壢高中 112上 第一次 第 14 題">內壢高中</span></div>
 <div class="fxq">數列 $\langle a_n\rangle$ 的前 $n$ 項和 $S_n=n^2+4n$，求 $\displaystyle\sum_{n=1}^{\infty}\frac1{a_n\cdot a_{n+2}}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac3{35}$</div>
@@ -396,7 +396,7 @@ $\dfrac1{(2n+3)(2n+7)}=\dfrac14\left(\dfrac1{2n+3}-\dfrac1{2n+7}\right)$。<br>
 前 $N$ 項和：$\dfrac14\left(\dfrac15+\dfrac17-\dfrac1{2N+5}-\dfrac1{2N+7}\right)$（中間全部相消）。<br>
 $N\to\infty$：$\dfrac14\left(\dfrac15+\dfrac17\right)=\dfrac14\cdot\dfrac{12}{35}=\dfrac3{35}$。<span class="note-sm">用 $S_n-S_{n-1}$ 求一般項時，要另外檢查 $n=1$。本題 $S_n$ 沒有常數項，所以 $a_1$ 剛好符合公式；若 $S_n=n^2+4n+1$，$a_1$ 就會是 $6$ 而不是 $5$。</span></div></div>
 
-<div class="fx" id="L3-7" data-gen="geoRepDec"><div class="fxh"><span class="no">L3-7</span><span class="kw">無窮等比級數的首項、第二項是循環小數：先把循環小數化成分數，再用「第二項 ÷ 首項」求公比，最後套 $\frac{a}{1-r}$</span><span class="src">高雄中學 112上 第一次 第 11 題</span></div>
+<div class="fx" id="L3-7" data-gen="geoRepDec"><div class="fxh"><span class="no">L3-7</span><span class="kw">無窮等比級數的首項、第二項是循環小數：先把循環小數化成分數，再用「第二項 ÷ 首項」求公比，最後套 $\frac{a}{1-r}$</span><span class="src" data-src="高雄中學 112上 第一次 第 11 題">高雄中學</span></div>
 <div class="fxq">設無窮等比級數的首項為 $0.1\overline{25}$，第二項為 $0.0\overline{4}$，求此級數的和。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac{961}{4950}$</div>
@@ -405,7 +405,7 @@ $0.1\overline{25}=\dfrac{125-1}{990}=\dfrac{124}{990}=\dfrac{62}{495}$；$0.0\ov
 公比 $r=\dfrac2{45}\div\dfrac{62}{495}=\dfrac2{45}\cdot\dfrac{495}{62}=\dfrac{11}{31}$，$|r|\lt1$，級數收斂。<br>
 和 $=\dfrac{\frac{62}{495}}{1-\frac{11}{31}}=\dfrac{62}{495}\cdot\dfrac{31}{20}=\dfrac{1922}{9900}=\dfrac{961}{4950}$。<span class="note-sm">化循環小數的公式本身就是一個無窮等比級數：$0.0\overline4=\dfrac4{100}+\dfrac4{1000}+\cdots=\dfrac{\frac4{100}}{1-\frac1{10}}=\dfrac2{45}$。忘了公式時，用這個方法現場推一次就好。</span></div></div>
 
-<div class="fx" id="L3-8" data-gen="nGeo"><div class="fxh"><span class="no">L3-8</span><span class="kw">一般項是「$n$ 乘上等比」（如 $\frac n{3^n}$）：令部分和為 $S_N$，算 $S_N-\frac13S_N$，錯開一位相減後變成普通的等比級數</span><span class="src">高師大附中 110下 第一次 填 4</span></div>
+<div class="fx" id="L3-8" data-gen="nGeo"><div class="fxh"><span class="no">L3-8</span><span class="kw">一般項是「$n$ 乘上等比」（如 $\frac n{3^n}$）：令部分和為 $S_N$，算 $S_N-\frac13S_N$，錯開一位相減後變成普通的等比級數</span><span class="src" data-src="高師大附中 110下 第一次 填 4">高師大附中</span></div>
 <div class="fxq">求 $\displaystyle\sum_{n=1}^{\infty}\frac n{3^n}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac34$</div>
@@ -415,7 +415,7 @@ $S_N=\dfrac13+\dfrac2{3^2}+\dfrac3{3^3}+\cdots+\dfrac N{3^N}$，$\dfrac13S_N=\df
 $N\to\infty$ 時 $\dfrac1{3^N}\to0$；又 $3^N=(1+2)^N\ge\dbinom N2\cdot2^2=2N(N-1)$，所以 $0\lt\dfrac N{3^{N+1}}\le\dfrac1{6(N-1)}\to0$（$N\ge2$）。<br>
 故 $\dfrac23\displaystyle\lim_{N\to\infty}S_N=\dfrac12$ ⟹ 原式 $=\dfrac34$。<span class="note-sm">直接寫「$S-\frac13S$」是常見的速記，但它預設了 $S$ 存在。段考的計算題最好照上面先處理 $S_N$，並說明 $\dfrac N{3^{N+1}}\to0$。</span></div></div>
 
-<div class="fx" id="L3-9" data-gen="composeDomain"><div class="fxh"><span class="no">L3-9</span><span class="kw">給 $f(x+1)$ 的式子、問 $f\circ g$ 的定義域：先令 $t=x+1$ 還原出 $f(t)$；合成函數的定義域＝「$g$ 有意義」且「$g(x)$ 落在 $f$ 的定義域內」</span><span class="src">高師大附中 111下 第一次 填 9</span></div>
+<div class="fx" id="L3-9" data-gen="composeDomain"><div class="fxh"><span class="no">L3-9</span><span class="kw">給 $f(x+1)$ 的式子、問 $f\circ g$ 的定義域：先令 $t=x+1$ 還原出 $f(t)$；合成函數的定義域＝「$g$ 有意義」且「$g(x)$ 落在 $f$ 的定義域內」</span><span class="src" data-src="高師大附中 111下 第一次 填 9">高師大附中</span></div>
 <div class="fxq">設 $f(x+1)=\dfrac{1+x}{1-x}$，$g(x)=\dfrac{x+3}{x+1}$，求 $f\circ g$ 的定義域。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\{x\in\mathbb R\mid x\ne1\text{ 且 }x\ne-1\}$</div>
@@ -425,7 +425,7 @@ $N\to\infty$ 時 $\dfrac1{3^N}\to0$；又 $3^N=(1+2)^N\ge\dbinom N2\cdot2^2=2N(N
 第二關：$g(x)\ne2$ ⟹ $\dfrac{x+3}{x+1}\ne2$ ⟹ $x+3\ne2x+2$ ⟹ $x\ne1$。<br>
 故定義域為 $\{x\in\mathbb R\mid x\ne1\text{ 且 }x\ne-1\}$。<span class="note-sm">🔴 若先把 $f(g(x))$ 化簡成 $\dfrac{x+3}{x-1}$ 再看分母，只會得到 $x\ne1$，漏掉 $x\ne-1$。定義域一定要在化簡之前判斷。</span></div></div>
 
-<div class="fx" id="L3-10" data-gen="rangeCount"><div class="fxh"><span class="no">L3-10</span><span class="kw">比較幾個函數在同一區間上的值域：每個函數先看它在區間上是不是單調（或拆成分段），端點代進去就得到值域，最後數裡面有幾個正整數</span><span class="src">北一女中 112下 第一次 單選</span></div>
+<div class="fx" id="L3-10" data-gen="rangeCount"><div class="fxh"><span class="no">L3-10</span><span class="kw">比較幾個函數在同一區間上的值域：每個函數先看它在區間上是不是單調（或拆成分段），端點代進去就得到值域，最後數裡面有幾個正整數</span><span class="src" data-src="北一女中 112下 第一次 單選">北一女中</span></div>
 <div class="fxq">設 $-2\le x\le4$，下列哪一個函數的值域包含最多個正整數？<br>
 (1) $f_1(x)=x+|x|$　(2) $f_2(x)=\sin x$　(3) $f_3(x)=\log\left(3^x\right)$　(4) $f_4(x)=(x-2)^3-2$　(5) $f_5(x)=\tan\left(0.1\sqrt{x^2}\right)$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
@@ -438,7 +438,7 @@ $N\to\infty$ 時 $\dfrac1{3^N}\to0$；又 $3^N=(1+2)^N\ge\dbinom N2\cdot2^2=2N(N
 (5) $f_5=\tan(0.1|x|)$，$0.1|x|\in[0,0.4]$，值域 $[0,\tan0.4]$；$0.4\lt\dfrac\pi4$ 所以 $\tan0.4\lt1$，不含正整數。<br>
 故選 (1)。<span class="note-sm">(5) 的角度是弧度：$0.4$ 弧度約 $23^\circ$，$\tan$ 值不到 $1$。看到三角函數裡面沒有度的符號，一律當弧度。</span></div></div>
 
-<div class="fx" id="L3-11" data-gen="gaussSides"><div class="fxh"><span class="no">L3-11</span><span class="kw">高斯符號在整數點的左右極限：右極限用「$x$ 比 $3$ 大一點點」、左極限用「比 $3$ 小一點點」，各自看括號裡落在哪兩個整數之間</span><span class="src">台中女中 112上 第一次 第 14 題</span></div>
+<div class="fx" id="L3-11" data-gen="gaussSides"><div class="fxh"><span class="no">L3-11</span><span class="kw">高斯符號在整數點的左右極限：右極限用「$x$ 比 $3$ 大一點點」、左極限用「比 $3$ 小一點點」，各自看括號裡落在哪兩個整數之間</span><span class="src" data-src="台中女中 112上 第一次 第 14 題">台中女中</span></div>
 <div class="fxq">$[x]$ 表示不大於 $x$ 的最大整數。已知 $f(x)=[x+2.5]+[3-x]$，且 $\displaystyle\lim_{x\to3^+}f(x)=a$、$\displaystyle\lim_{x\to3^-}f(x)=b$，求數對 $(a,b)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(a,b)=(4,5)$</div>
@@ -448,7 +448,7 @@ $x\to3^+$（$0\lt h\lt0.5$）：$[5.5+h]=5$，$[-h]=-1$（$-h$ 落在 $-1$ 與 $
 $x\to3^-$（$-0.5\lt h\lt0$）：$[5.5+h]=5$，$[-h]=0$（$-h$ 是很小的正數）⟹ $b=5+0=5$。<br>
 故 $(a,b)=(4,5)$。<span class="note-sm">$[x+2.5]$ 在 $x=3$ 附近不會跳（$5.5$ 不是整數），會跳的只有 $[3-x]$。判斷之前先找「括號裡在這一點是不是剛好整數」，可以少算一半。</span></div></div>
 
-<div class="fx" id="L3-12" data-gen="polyTwoLimits"><div class="fxh"><span class="no">L3-12</span><span class="kw">$\lim_{x\to a}\frac{f(x)}{x-a}$ 存在而 $f$ 是多項式：分母趨近 $0$ 所以 $f(a)=0$，$f$ 有因式 $x-a$。兩個條件就有兩個因式，剩下的一次因式用兩個極限值解出來</span><span class="src">台南女中 112上 第一次 第 7 題</span></div>
+<div class="fx" id="L3-12" data-gen="polyTwoLimits"><div class="fxh"><span class="no">L3-12</span><span class="kw">$\lim_{x\to a}\frac{f(x)}{x-a}$ 存在而 $f$ 是多項式：分母趨近 $0$ 所以 $f(a)=0$，$f$ 有因式 $x-a$。兩個條件就有兩個因式，剩下的一次因式用兩個極限值解出來</span><span class="src" data-src="台南女中 112上 第一次 第 7 題">台南女中</span></div>
 <div class="fxq">三次多項式 $f(x)$ 滿足 $\displaystyle\lim_{x\to1}\frac{f(x)}{x-1}=1$、$\displaystyle\lim_{x\to2}\frac{f(x)}{x-2}=2$，求 $\displaystyle\lim_{x\to-1}\frac{f(x)}x$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$42$</div>
@@ -458,7 +458,7 @@ $\dfrac{f(x)}{x-2}=(x-1)(px+q)\to(2-1)(2p+q)=2$ ⟹ $2p+q=2$。<br>
 解得 $p=3$、$q=-4$，$f(x)=(x-1)(x-2)(3x-4)$。<br>
 $x\to-1$ 時分母 $\to-1\ne0$，直接代入：$\dfrac{f(-1)}{-1}=\dfrac{(-2)(-3)(-7)}{-1}=42$。<span class="note-sm">最後這個極限不是 $\dfrac00$ 型，直接代入就好。看到極限先檢查分母會不會變 $0$，不要每題都想約分。</span></div></div>
 
-<div class="fx" id="L3-13" data-gen="limMN"><div class="fxh"><span class="no">L3-13</span><span class="kw">$\frac00$ 型的極限值已知、要反求參數：分母在 $x=2$ 為 $0$ ⟹ 分子在 $x=2$ 也要為 $0$，先解出分子的參數；約掉 $(x-2)$ 之後再代入求另一個</span><span class="src">高師大附中 112下 第一次 填 4</span></div>
+<div class="fx" id="L3-13" data-gen="limMN"><div class="fxh"><span class="no">L3-13</span><span class="kw">$\frac00$ 型的極限值已知、要反求參數：分母在 $x=2$ 為 $0$ ⟹ 分子在 $x=2$ 也要為 $0$，先解出分子的參數；約掉 $(x-2)$ 之後再代入求另一個</span><span class="src" data-src="高師大附中 112下 第一次 填 4">高師大附中</span></div>
 <div class="fxq">若 $\displaystyle\lim_{x\to2}\frac{x^2-mx+8}{x^2-(n+2)x+2n}=\frac15$，求數對 $(m,n)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(m,n)=(6,12)$</div>
@@ -468,7 +468,7 @@ $x\to-1$ 時分母 $\to-1\ne0$，直接代入：$\dfrac{f(-1)}{-1}=\dfrac{(-2)(-
 $\dfrac{-2}{2-n}=\dfrac15$ ⟹ $2-n=-10$ ⟹ $n=12$。<br>
 故 $(m,n)=(6,12)$。<span class="note-sm">若 $n=2$，分母是 $(x-2)^2$，約掉一次 $(x-2)$ 後分母仍趨近 $0$、分子趨近 $-2$，極限不存在，所以 $n=2$ 自然被排除。</span></div></div>
 
-<div class="fx" id="L3-14" data-gen="absPick"><div class="fxh"><span class="no">L3-14</span><span class="kw">分子含絕對值的函數問極限與連續：先看絕對值裡的式子在那一點附近是正還是負，把絕對值拆掉；分母為 $0$ 的點函數值沒有定義，一定不連續</span><span class="src">高師大附中 110下 第一次 多 3</span></div>
+<div class="fx" id="L3-14" data-gen="absPick"><div class="fxh"><span class="no">L3-14</span><span class="kw">分子含絕對值的函數問極限與連續：先看絕對值裡的式子在那一點附近是正還是負，把絕對值拆掉；分母為 $0$ 的點函數值沒有定義，一定不連續</span><span class="src" data-src="高師大附中 110下 第一次 多 3">高師大附中</span></div>
 <div class="fxq">已知 $f(x)=\dfrac{|x^2-5x|-6}{x-2}$，下列選項何者正確？<br>
 (1) $f(x)$ 在 $x=0$ 連續　(2) $f(x)$ 在 $x=2$ 連續　(3) $\displaystyle\lim_{x\to0}f(x)=3$　(4) $\displaystyle\lim_{x\to2}f(x)$ 不存在　(5) $\displaystyle\lim_{x\to2}f(x)=1$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
@@ -480,7 +480,7 @@ $x=2$：在 $0\lt x\lt5$ 時 $|x^2-5x|=5x-x^2$，分子 $=-x^2+5x-6=-(x-2)(x-3)$
 但 $f(2)$ 的分母為 $0$、沒有定義 ⟹ 在 $x=2$ 不連續，(2) 錯誤。<br>
 故選 (1)(3)(5)。<span class="note-sm">極限存在不代表連續。連續要三件事都成立：$f(a)$ 有定義、$\lim_{x\to a}f(x)$ 存在、兩者相等。本題 $x=2$ 卡在第一件。</span></div></div>
 
-<div class="fx" id="L3-15" data-gen="ivtBig"><div class="fxh"><span class="no">L3-15</span><span class="kw">「$f(c)=$ 某個大數，$c$ 在哪兩個整數之間」：令 $g(x)=f(x)-$ 該數，$g$ 連續，找相鄰整數 $k$、$k+1$ 使 $g(k)$ 與 $g(k+1)$ 異號（勘根定理）</span><span class="src">高雄中學 106下 第一次 填 11</span></div>
+<div class="fx" id="L3-15" data-gen="ivtBig"><div class="fxh"><span class="no">L3-15</span><span class="kw">「$f(c)=$ 某個大數，$c$ 在哪兩個整數之間」：令 $g(x)=f(x)-$ 該數，$g$ 連續，找相鄰整數 $k$、$k+1$ 使 $g(k)$ 與 $g(k+1)$ 異號（勘根定理）</span><span class="src" data-src="高雄中學 106下 第一次 填 11">高雄中學</span></div>
 <div class="fxq">已知 $f(x)=x\cdot2^x$ 為連續函數。求正整數 $k$，使得在 $k$ 與 $k+1$ 之間有一實數 $c$ 滿足 $f(c)=2^{100}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$k=93$</div>
@@ -507,7 +507,7 @@ $g(94)=94\cdot2^{94}-128\cdot2^{93}=(188-128)\cdot2^{93}=60\cdot2^{93}\gt0$。<b
   <div><b>通過標準</b>限時 90 分鐘做完 12 題，對 9 題以上。</div>
 </div>
 
-<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">$x^{n+1}$ 除以二次式的餘式再取極限：除式能因式分解成 $(x-2)(x-3)$，用餘式定理 $r(2)=2^{n+1}$、$r(3)=3^{n+1}$ 寫出 $r(x)$，最後是指數型極限同除 $3^{n+1}$</span><span class="src">高雄女中 112上 第一次 第 16 題</span></div>
+<div class="fx" id="L4-1"><div class="fxh"><span class="no">L4-1</span><span class="kw">$x^{n+1}$ 除以二次式的餘式再取極限：除式能因式分解成 $(x-2)(x-3)$，用餘式定理 $r(2)=2^{n+1}$、$r(3)=3^{n+1}$ 寫出 $r(x)$，最後是指數型極限同除 $3^{n+1}$</span><span class="src" data-src="高雄女中 112上 第一次 第 16 題">高雄女中</span></div>
 <div class="fxq">設 $n$ 為正整數，$x^{n+1}$ 除以 $x^2-5x+6$ 所得餘式為 $r(x)$，求 $\displaystyle\lim_{n\to\infty}\frac{r(0)}{r(-1)}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac23$</div>
@@ -517,7 +517,7 @@ $r(0)=2^{n+1}-2\left(3^{n+1}-2^{n+1}\right)=3\cdot2^{n+1}-2\cdot3^{n+1}$。<br>
 $r(-1)=2^{n+1}-3\left(3^{n+1}-2^{n+1}\right)=4\cdot2^{n+1}-3\cdot3^{n+1}$。<br>
 同除 $3^{n+1}$：$\dfrac{3\left(\frac23\right)^{n+1}-2}{4\left(\frac23\right)^{n+1}-3}\to\dfrac{-2}{-3}=\dfrac23$。<span class="note-sm">其實 $\dfrac{r(0)}{r(-1)}$ 的極限只看 $3^{n+1}$ 前面的係數 $-2$ 與 $-3$，也就是 $r(x)$ 中 $3^{n+1}(x-2)$ 那一部分在 $x=0$、$-1$ 的值。看出這點，填充題可以直接寫答案。</span></div></div>
 
-<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">夾住 $a_n$ 的兩邊長得像 $\left(1\pm\frac1n\right)^n$ 但又不完全一樣：把每一邊改寫成「$\left(1+\frac1k\right)^k$ 的倒數 × 一個趨近 $1$ 的修正項」，兩邊都趨近 $\frac1e$，再用夾擠定理</span><span class="src">改編自 111 分科模考 數甲 第 6 次 第 3 題</span></div>
+<div class="fx" id="L4-2"><div class="fxh"><span class="no">L4-2</span><span class="kw">夾住 $a_n$ 的兩邊長得像 $\left(1\pm\frac1n\right)^n$ 但又不完全一樣：把每一邊改寫成「$\left(1+\frac1k\right)^k$ 的倒數 × 一個趨近 $1$ 的修正項」，兩邊都趨近 $\frac1e$，再用夾擠定理</span><span class="src" data-src="改編自 111 分科模考 數甲 第 6 次 第 3 題">改編自 分科模擬考</span></div>
 <div class="fxq">已知 $e=\displaystyle\lim_{k\to\infty}\left(1+\frac1k\right)^k$。對每個正整數 $n\ge2$，數列 $\langle a_n\rangle$ 都滿足
 $\left(1-\dfrac1n\right)^n\lt a_n\lt\left(\dfrac n{n+1}\right)^{n-1}$，則 $\displaystyle\lim_{n\to\infty}a_n$ 為下列何者？<br>
 (1) $e$　(2) $e^2$　(3) $\sqrt e$　(4) $\dfrac1e$　(5) 無法判斷</div>
@@ -528,7 +528,7 @@ $\left(1-\dfrac1n\right)^n\lt a_n\lt\left(\dfrac n{n+1}\right)^{n-1}$，則 $\di
 右邊：$\left(\dfrac n{n+1}\right)^{n-1}=\dfrac1{\left(1+\frac1n\right)^{n-1}}=\dfrac{1+\frac1n}{\left(1+\frac1n\right)^n}\to\dfrac1e$。<br>
 兩邊都趨近 $\dfrac1e$，由夾擠定理 $\displaystyle\lim_{n\to\infty}a_n=\frac1e$，選 (4)。<span class="note-sm">$\left(1+\dfrac1{n-1}\right)^{n-1}$ 只是把 $\left(1+\dfrac1k\right)^k$ 的第 $k=n-1$ 項拿來用，$n\to\infty$ 時 $k$ 也 $\to\infty$，所以極限一樣是 $e$。這種「換個足標」的動作，在處理 $e$ 的題目裡天天用到。</span></div></div>
 
-<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">五個選項各考一個公式的「邊界」：$\sum$ 從哪裡開始加、上限是 $n$ 還是 $\infty$、$\frac1n\sum\left(\frac kn\right)^2$ 用平方和公式、內層的無窮級數先裂項再看外層的極限</span><span class="src">北一女中 112下 第一次 多選</span></div>
+<div class="fx" id="L4-3"><div class="fxh"><span class="no">L4-3</span><span class="kw">五個選項各考一個公式的「邊界」：$\sum$ 從哪裡開始加、上限是 $n$ 還是 $\infty$、$\frac1n\sum\left(\frac kn\right)^2$ 用平方和公式、內層的無窮級數先裂項再看外層的極限</span><span class="src" data-src="北一女中 112下 第一次 多選">北一女中</span></div>
 <div class="fxq">設 $n$ 為正整數，下列哪些選項正確？<br>
 (1) $\displaystyle\sum_{k=-1}^{n}k^2=\frac{n(n+1)(2n+1)}6$　(2) $\displaystyle\lim_{n\to\infty}\frac1n\sum_{k=1}^{n}\left(\frac kn\right)^2=0.3$　(3) $\displaystyle\sum_{k=2}^{\infty}\frac{2^{k-2}}{3^{k-1}}=1$<br>
 (4) $\displaystyle\sum_{k=1}^{n}\frac1{k(k+1)}=1$　(5) $\displaystyle\lim_{n\to\infty}\left(\sum_{k=1}^{\infty}\frac n{k(k+n)}\right)$ 不存在</div>
@@ -544,7 +544,7 @@ $\left(1-\dfrac1n\right)^n\lt a_n\lt\left(\dfrac n{n+1}\right)^{n-1}$，則 $\di
 而 $H_n$ 會越來越大、沒有上限（調和級數發散，見 <b>L5-6</b>），所以外層極限不存在 ✓<br>
 故選 (3)(5)。<span class="note-sm">原卷參考答案印 (3)(4)(5)，那是把 (4) 的上限當成 $\infty$；照原卷題目，上限是 $n$，(4) 錯，正解 (3)(5)。另外 (2) 是下一章「定積分」的雛形，這裡用平方和公式就能算出 $\dfrac13$。</span></div></div>
 
-<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">分子是 $\cos$ 而角度每次加 $60^\circ$：$\cos$ 值每 $6$ 項重複一次，把每 $6$ 項包成一組，組與組之間是公比 $\frac1{2^6}$ 的無窮等比級數</span><span class="src">武陵高中 112上 第一次 第 8 題</span></div>
+<div class="fx" id="L4-4"><div class="fxh"><span class="no">L4-4</span><span class="kw">分子是 $\cos$ 而角度每次加 $60^\circ$：$\cos$ 值每 $6$ 項重複一次，把每 $6$ 項包成一組，組與組之間是公比 $\frac1{2^6}$ 的無窮等比級數</span><span class="src" data-src="武陵高中 112上 第一次 第 8 題">武陵高中</span></div>
 <div class="fxq">求無窮級數 $1+\dfrac{\cos60^\circ}2+\dfrac{\cos120^\circ}4+\dfrac{\cos180^\circ}8+\dfrac{\cos240^\circ}{16}+\cdots+\dfrac{\cos\left((n-1)\times60^\circ\right)}{2^{n-1}}+\cdots$ 的和。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$1$</div>
@@ -555,7 +555,7 @@ $\cos(n-1)60^\circ$ 依序為 $1,\dfrac12,-\dfrac12,-1,-\dfrac12,\dfrac12$，之
 前 $6J$ 項和 $=\dfrac{63}{64}\cdot\dfrac{1-\left(\frac1{64}\right)^J}{1-\frac1{64}}=1-\left(\dfrac1{64}\right)^J\to1$。<br>
 其他的部分和與最近的「整組」部分和只差不到 $6$ 項，每項絕對值 $\le\dfrac1{2^{6J}}$，差距也趨近 $0$，所以級數和為 $1$。<span class="note-sm">最後一句不能省：分組只算了「每 $6$ 項看一次」的部分和。一般項趨近 $0$ 時，中間那幾項不會影響極限；若一般項不趨近 $0$（例如 $1-1+1-1+\cdots$），分組就會得出錯的結論。</span></div></div>
 
-<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">點沿著「右、上、左、下」循環走，每段是前一段的 $r$ 倍：$x$ 坐標只收右、左兩個方向，$y$ 坐標只收上、下兩個方向，各自是公比 $-r^2$ 的無窮等比級數</span><span class="src">台南一中 112上 第一次 第 10 題</span></div>
+<div class="fx" id="L4-5"><div class="fxh"><span class="no">L4-5</span><span class="kw">點沿著「右、上、左、下」循環走，每段是前一段的 $r$ 倍：$x$ 坐標只收右、左兩個方向，$y$ 坐標只收上、下兩個方向，各自是公比 $-r^2$ 的無窮等比級數</span><span class="src" data-src="台南一中 112上 第一次 第 10 題">台南一中</span></div>
 <div class="fxq">從原點 $O$ 出發，先向右走 $1$ 到 $A_1$，再向上走 $\dfrac23$ 到 $A_2$，再向左走 $\left(\dfrac23\right)^2$ 到 $A_3$，再向下走 $\left(\dfrac23\right)^3$ 到 $A_4$，再向右走 $\left(\dfrac23\right)^4$ 到 $A_5$，……依右、上、左、下的方向循環，第 $k$ 段長 $\left(\dfrac23\right)^{k-1}$。若 $A_n$ 的坐標為 $(x_n,y_n)$，求 $n\to\infty$ 時 $A_n$ 的極限位置。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\left(\dfrac9{13},\dfrac6{13}\right)$</div>
@@ -565,7 +565,7 @@ $x$ 坐標：$1-r^2+r^4-r^6+\cdots$，公比 $-r^2=-\dfrac49$，絕對值小於 
 $y$ 坐標：$r-r^3+r^5-\cdots=\dfrac r{1+r^2}=\dfrac{\frac23}{\frac{13}9}=\dfrac6{13}$。<br>
 （$x_n$ 是 $x$ 方向級數的部分和，部分和的極限就是級數和；$y_n$ 同理。）故極限位置為 $\left(\dfrac9{13},\dfrac6{13}\right)$。<span class="note-sm">把每一步看成「向左轉 $90^\circ$ 並縮成 $r$ 倍」，整條路就是一個等比級數。數甲後面學了複數平面，可以用公比 $ri$ 一次算出兩個坐標：$\dfrac1{1-ri}=\dfrac{1+ri}{1+r^2}$。</span></div></div>
 
-<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">多項式函數的敘述判斷：多項式處處連續，所以左右極限都等於函數值；合成的次數是「相乘」不是相加；$f\circ g=x$ 逼得兩個都是一次式</span><span class="src">北一女中 101下 第一次 多 3</span></div>
+<div class="fx" id="L4-6"><div class="fxh"><span class="no">L4-6</span><span class="kw">多項式函數的敘述判斷：多項式處處連續，所以左右極限都等於函數值；合成的次數是「相乘」不是相加；$f\circ g=x$ 逼得兩個都是一次式</span><span class="src" data-src="北一女中 101下 第一次 多 3">北一女中</span></div>
 <div class="fxq">已知 $f(x)$、$g(x)$ 為實係數多項式函數，下列哪些選項正確？<br>
 (A) 若 $\displaystyle\lim_{x\to1}\frac{f(x)}{x^3-1}$ 存在，則 $x^3-1$ 為 $f(x)$ 的因式<br>
 (B) 若 $\displaystyle\lim_{x\to1^-}f(x)=3$，則 $\displaystyle\lim_{x\to1^+}f(x)=3$<br>
@@ -583,7 +583,7 @@ $g(f(x))=c(ax+b)+d=acx+(cb+d)=x+(-acd+d)=x$ ✓<br>
 (E) 任給實數 $y$，取 $x_0=g(y)$，則 $f(x_0)=f(g(y))=y$，所以每個實數都在值域裡 ✓<br>
 故選 (B)(D)(E)。<span class="note-sm">(A) 若改成「$\displaystyle\lim_{x\to1}\frac{f(x)}{x-1}$ 存在」，結論「$x-1$ 是因式」就對了。極限只告訴你分母為 $0$ 的那個點的資訊，$x^3-1$ 的另外兩個根是虛根，極限管不到。</span></div></div>
 
-<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">分母是 $(x+2)^2$ 而極限存在：分子必須有 $(x+2)^2$ 這個因式，三次式就設成 $(x+2)^2(x+k)$，再用「沒有 $x^2$ 項」或常數項比較係數</span><span class="src">內壢高中 112上 第一次 第 12 題</span></div>
+<div class="fx" id="L4-7"><div class="fxh"><span class="no">L4-7</span><span class="kw">分母是 $(x+2)^2$ 而極限存在：分子必須有 $(x+2)^2$ 這個因式，三次式就設成 $(x+2)^2(x+k)$，再用「沒有 $x^2$ 項」或常數項比較係數</span><span class="src" data-src="內壢高中 112上 第一次 第 12 題">內壢高中</span></div>
 <div class="fxq">若 $\displaystyle\lim_{x\to-2}\frac{x^3+ax+b}{(x+2)^2}$ 存在，且極限值為 $c$，求 $a+b+c$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$-34$</div>
@@ -593,7 +593,7 @@ $g(f(x))=c(ax+b)+d=acx+(cb+d)=x+(-acd+d)=x$ ✓<br>
 $c=\displaystyle\lim_{x\to-2}\frac{(x+2)^2(x-4)}{(x+2)^2}=-2-4=-6$。<br>
 $a+b+c=-12-16-6=-34$。<span class="note-sm">若分子在 $x=-2$ 只有一次根，約一次之後變成 $\dfrac{\text{非零}}{x+2}$，左右兩邊一正一負、越來越大，極限不存在。所以「分母 $(x-a)^2$、極限存在」一定是二重根。</span></div></div>
 
-<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">點沿曲線趨近原點、問另一點的極限位置：把那一點的坐標寫成參數 $a$ 的式子，出現 $\frac00$ 型的根號差就有理化</span><span class="src">改編自 112、113 分科模考 數甲 第 6 次</span></div>
+<div class="fx" id="L4-8"><div class="fxh"><span class="no">L4-8</span><span class="kw">點沿曲線趨近原點、問另一點的極限位置：把那一點的坐標寫成參數 $a$ 的式子，出現 $\frac00$ 型的根號差就有理化</span><span class="src" data-src="改編自 112、113 分科模考 數甲 第 6 次">改編自 分科模擬考</span></div>
 <div class="fxq">設 $P$ 為拋物線 $y=\dfrac14x^2$ 上位於第一象限的點，$O$ 為原點。在 $x$ 軸正向上取一點 $Q$，使 $\overline{OQ}=\overline{OP}$，直線 $PQ$ 交 $y$ 軸於 $R$。當 $P$ 沿拋物線趨近原點時，求 $R$ 點 $y$ 坐標的極限。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$8$</div>
@@ -603,7 +603,7 @@ $s=\sqrt{a^2+\dfrac{a^4}{16}}=a\sqrt{1+\dfrac{a^2}{16}}$，令 $w=\sqrt{1+\dfrac
 $w-1=\dfrac{w^2-1}{w+1}=\dfrac{a^2/16}{w+1}$，所以 $R$ 的 $y$ 坐標 $=\dfrac{a^2}4\cdot\dfrac{16w(w+1)}{a^2}=4w(w+1)$。<br>
 $a\to0^+$ 時 $w\to1$，極限 $=4\cdot1\cdot2=8$。<span class="note-sm">換成 $y=kx^2$（$k\gt0$），同樣的算法得到極限 $\dfrac2k$。$P$ 越接近原點，$\overline{OP}$ 與 $a$ 的差越小，直線 $PQ$ 越來越陡，但截距卻穩定在一個定值，這正是 $\dfrac00$ 型的典型樣子。</span></div></div>
 
-<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">$x\to0$ 時含高斯符號、$\sin\frac1x$、分段定義的函數：高斯與絕對值拆左右極限；「$x$ 乘上有界的東西」用夾擠；$x\left[\frac1x\right]$ 用 $\frac1x-1\lt\left[\frac1x\right]\le\frac1x$ 夾</span><span class="src">台南女中 112上 第一次 第 3 題</span></div>
+<div class="fx" id="L4-9"><div class="fxh"><span class="no">L4-9</span><span class="kw">$x\to0$ 時含高斯符號、$\sin\frac1x$、分段定義的函數：高斯與絕對值拆左右極限；「$x$ 乘上有界的東西」用夾擠；$x\left[\frac1x\right]$ 用 $\frac1x-1\lt\left[\frac1x\right]\le\frac1x$ 夾</span><span class="src" data-src="台南女中 112上 第一次 第 3 題">台南女中</span></div>
 <div class="fxq">$[x]$ 表示不大於 $x$ 的最大整數。下列哪些函數在 $x\to0$ 的極限存在？<br>
 (1) $f_1(x)=\dfrac{x+|x|}x$　(2) $f_2(x)=x\sin\dfrac1x$　(3) $f_3(x)=x\left[\dfrac1x\right]$　(4) $f_4(x)=[x]+\sqrt{x-[x]}$　(5) $f_5(x)=\begin{cases}2x+1,&x\ne0\\2,&x=0\end{cases}$</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
@@ -616,7 +616,7 @@ $a\to0^+$ 時 $w\to1$，極限 $=4\cdot1\cdot2=8$。<span class="note-sm">換成
 (5) $x\ne0$ 時 $f_5=2x+1\to1$，極限為 $1$（與 $f_5(0)=2$ 無關）✓<br>
 故選 (2)(3)(4)(5)。<span class="note-sm">(4) 的函數其實處處連續：$[x]$ 在整數點往上跳 $1$ 的同時，$\sqrt{x-[x]}$ 從接近 $1$ 掉回 $0$，兩個跳動剛好抵消。</span></div></div>
 
-<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">$([x]-2)\cdot f(x)$ 在 $x\to2$ 有極限：右側 $[x]-2=0$，乘積恆為 $0$，所以極限只能是 $0$；左側 $[x]-2=-1$，於是 $f$ 的<b>左極限</b>被逼成 $0$，右側的 $f$ 則完全不受限制</span><span class="src">改編自 110 分科模考 數甲 第 7 次 多 8</span></div>
+<div class="fx" id="L4-10"><div class="fxh"><span class="no">L4-10</span><span class="kw">$([x]-2)\cdot f(x)$ 在 $x\to2$ 有極限：右側 $[x]-2=0$，乘積恆為 $0$，所以極限只能是 $0$；左側 $[x]-2=-1$，於是 $f$ 的<b>左極限</b>被逼成 $0$，右側的 $f$ 則完全不受限制</span><span class="src" data-src="改編自 110 分科模考 數甲 第 7 次 多 8">改編自 分科模擬考</span></div>
 <div class="fxq">設 $f(x)$ 是定義在 $x\ne2$ 的實數上的函數，$[x]$ 表示不大於 $x$ 的最大整數，且 $\displaystyle\lim_{x\to2}\big([x]-2\big)f(x)$ 存在。下列哪些選項一定正確？<br>
 (1) $\displaystyle\lim_{x\to2}\left[(x-2)^2\right]$ 存在　(2) $\displaystyle\lim_{x\to2}\big([x]-2\big)^2$ 存在　(3) $\displaystyle\lim_{x\to2^-}f(x)=0$<br>
 (4) $\displaystyle\lim_{x\to2}f(x)$ 存在　(5) $\displaystyle\lim_{x\to2}\big([x]-2\big)\big(f(x)+x-2\big)$ 存在</div>
@@ -631,7 +631,7 @@ $a\to0^+$ 時 $w\to1$，極限 $=4\cdot1\cdot2=8$。<span class="note-sm">換成
 (5) $([x]-2)(f(x)+x-2)=([x]-2)f(x)+([x]-2)(x-2)$。前項 $\to0$；後項右側為 $0$、左側為 $-(x-2)\to0$。兩項都 $\to0$ ✓<br>
 故選 (1)(3)(5)。<span class="note-sm">若 (5) 改成 $([x]-2)(f(x)+x)$，後項左側變成 $-x\to-2$，右側是 $0$，極限就不存在了。高斯符號的題目，左右兩側一定要分開寫。</span></div></div>
 
-<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">分式方程式有幾個實根：分母為 $0$ 的點把數線切成幾段，每一段上函數連續且遞減；在每段找一點「很大」、一點「比右邊小」，用介值定理，遞減保證每段恰一根</span><span class="src">高雄中學 107下 期末 填 14</span></div>
+<div class="fx" id="L4-11"><div class="fxh"><span class="no">L4-11</span><span class="kw">分式方程式有幾個實根：分母為 $0$ 的點把數線切成幾段，每一段上函數連續且遞減；在每段找一點「很大」、一點「比右邊小」，用介值定理，遞減保證每段恰一根</span><span class="src" data-src="高雄中學 107下 期末 填 14">高雄中學</span></div>
 <div class="fxq">方程式 $\dfrac1x+\dfrac1{x+1}+\dfrac1{x+2}+\dfrac1{x+3}=2019$ 共有幾個相異實根？</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$4$ 個</div>
@@ -643,7 +643,7 @@ $-1\lt x\lt0$：$F\left(-1+10^{-4}\right)\gt10^4-2\gt2019$（只有 $\frac1x$ �
 $x\gt0$：$F\left(10^{-4}\right)\gt10^4\gt2019$（四項皆正）；$F(1)=1+\dfrac12+\dfrac13+\dfrac14=\dfrac{25}{12}\lt2019$ ⟹ 恰一根。<br>
 共 $4$ 個相異實根。<span class="note-sm">每一段靠近左端點時，分母趨近 $0^+$ 的那一項會變得非常大，所以 $2019$ 換成任何正數答案都是 $4$；換成負數時，根改成落在 $x\lt-3$ 與中間三段，也是 $4$ 個。介值定理配上「遞減」，是數根的個數最常用的組合。</span></div></div>
 
-<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">只給「$\frac{f(x)}{x-a}$ 的極限」：能推出的只有「$x\to a$ 時 $f(x)\to0$」，推不出 $f(a)=0$，也推不出 $f$ 連續；勘根定理要「連續＋端點異號」，兩個都要檢查</span><span class="src">改編自 111 分科模考 數甲 第 7 次 第 2 題</span></div>
+<div class="fx" id="L4-12"><div class="fxh"><span class="no">L4-12</span><span class="kw">只給「$\frac{f(x)}{x-a}$ 的極限」：能推出的只有「$x\to a$ 時 $f(x)\to0$」，推不出 $f(a)=0$，也推不出 $f$ 連續；勘根定理要「連續＋端點異號」，兩個都要檢查</span><span class="src" data-src="改編自 111 分科模考 數甲 第 7 次 第 2 題">改編自 分科模擬考</span></div>
 <div class="fxq">已知 $\displaystyle\lim_{x\to2}\frac{f(x)}{x-2}=4$，$\displaystyle\lim_{x\to5}\frac{f(x)}{x-5}=-1$。下列哪些選項一定正確？<br>
 (1) $f(2)=0$　(2) $\displaystyle\lim_{x\to5}f(x)=0$　(3) 方程式 $f(x)=0$ 在區間 $(2,5)$ 內必有實根<br>
 (4) $\displaystyle\lim_{x\to2}\frac{f(x)}{(x-2)(x-5)}=-\frac43$　(5) $\displaystyle\lim_{x\to2}\frac{f(x)}{x^2-4}=1$</div>
@@ -760,7 +760,7 @@ $n=(1+h_n)^n=1+nh_n+\dbinom n2h_n^2+\cdots\ge\dbinom n2h_n^2=\dfrac{n(n-1)}2h_n^
 <h3 class="sec" id="L5-sci">🏅 科學班・教甄專區（15 題）</h3>
 <div class="note">本專區取材自各校教師甄選試題（含代理教師甄選），皆看原卷逐字重打並獨立驗算；有改寫的地方在題後註明。科學班入學試題以國中範圍為主，本章（極限）沒有可用的題，所以本區全部來自教甄。難度明顯高於段考，但用的都是本章的工具：裂項相消、無窮等比級數、遞迴數列的極限、夾擠定理、左右極限與連續、勘根定理。</div>
 
-<div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">係數 $a_n$ 來自二項式展開：先寫出 $a_n=\binom n2 3^{n-2}$，代進去後 $\frac{3^n}{a_n}=\frac{18}{n(n-1)}$，是最標準的裂項</span><span class="src">東石高中 112 教甄 填 6（北一女中 106 教甄 填 1 同題）</span></div>
+<div class="fx" id="L5-S1"><div class="fxh"><span class="no">專區 1</span><span class="kw">係數 $a_n$ 來自二項式展開：先寫出 $a_n=\binom n2 3^{n-2}$，代進去後 $\frac{3^n}{a_n}=\frac{18}{n(n-1)}$，是最標準的裂項</span><span class="src" data-src="東石高中 112 教甄 填 6（北一女中 106 教甄 填 1 同題）">東石高中教甄</span></div>
 <div class="fxq">令 $a_n$ 為 $\left(3-\sqrt x\right)^n$ 展開式中 $x$ 項的係數（$n=2,3,4,\ldots$），求 $\displaystyle\lim_{n\to\infty}\left(\frac{3^2}{a_2}+\frac{3^3}{a_3}+\cdots+\frac{3^n}{a_n}\right)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$18$</div>
@@ -769,7 +769,7 @@ $a_n=\dbinom n2\cdot3^{n-2}\cdot(-1)^2=\dfrac{n(n-1)}2\cdot3^{n-2}$。<br>
 $\dfrac{3^n}{a_n}=\dfrac{9\cdot2}{n(n-1)}=18\left(\dfrac1{n-1}-\dfrac1n\right)$。<br>
 $\displaystyle\sum_{k=2}^{n}\frac{3^k}{a_k}=18\left(1-\frac1n\right)\to18$。<span class="note-sm">$3^{n-2}$ 和分子的 $3^n$ 約掉只剩 $9$，這是出題者刻意設計的。若分子改成 $2^n$，就變成 $\dfrac{18}{n(n-1)}\left(\dfrac23\right)^{n-2}$ 這種不能裂項的形式。</span></div></div>
 
-<div class="fx" id="L5-S2"><div class="fxh"><span class="no">專區 2</span><span class="kw">分母是連續三個階乘相加：提出 $k!$ 後括號剛好是 $(k+2)^2$，與分子約掉一次，再改寫成 $\frac{k+1}{(k+2)!}=\frac1{(k+1)!}-\frac1{(k+2)!}$</span><span class="src">彰化女中 111 第二次教甄 填 6</span></div>
+<div class="fx" id="L5-S2"><div class="fxh"><span class="no">專區 2</span><span class="kw">分母是連續三個階乘相加：提出 $k!$ 後括號剛好是 $(k+2)^2$，與分子約掉一次，再改寫成 $\frac{k+1}{(k+2)!}=\frac1{(k+1)!}-\frac1{(k+2)!}$</span><span class="src" data-src="彰化女中 111 第二次教甄 填 6">彰化女中教甄</span></div>
 <div class="fxq">求 $\displaystyle\lim_{n\to\infty}\left[\frac3{1!+2!+3!}+\frac4{2!+3!+4!}+\frac5{3!+4!+5!}+\cdots+\frac{n+2}{n!+(n+1)!+(n+2)!}\right]$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac12$</div>
@@ -778,7 +778,7 @@ $k!+(k+1)!+(k+2)!=k!\left[1+(k+1)+(k+1)(k+2)\right]=k!\left(k^2+4k+4\right)=k!(k
 $\dfrac{k+2}{k!(k+2)^2}=\dfrac1{k!(k+2)}=\dfrac{k+1}{(k+2)!}=\dfrac{(k+2)-1}{(k+2)!}=\dfrac1{(k+1)!}-\dfrac1{(k+2)!}$。<br>
 $\displaystyle\sum_{k=1}^{n}=\frac1{2!}-\frac1{(n+2)!}\to\frac12$。<span class="note-sm">$\dfrac1{k!(k+2)}$ 乘上 $\dfrac{k+1}{k+1}$ 湊成 $(k+2)!$ 是關鍵的一步；以後看到「$k!$ 乘上一個比 $k$ 大的數」，都試著把分母補成完整的階乘。</span></div></div>
 
-<div class="fx" id="L5-S3"><div class="fxh"><span class="no">專區 3</span><span class="kw">正負交錯、分子 $n+2$、分母 $(n+1)!$：拆成 $\frac1{n!}+\frac1{(n+1)!}$，相鄰兩項正負相反，交錯之後變成兩兩相消</span><span class="src">中壢高中 109 教甄 填 19</span></div>
+<div class="fx" id="L5-S3"><div class="fxh"><span class="no">專區 3</span><span class="kw">正負交錯、分子 $n+2$、分母 $(n+1)!$：拆成 $\frac1{n!}+\frac1{(n+1)!}$，相鄰兩項正負相反，交錯之後變成兩兩相消</span><span class="src" data-src="中壢高中 109 教甄 填 19">中壢高中教甄</span></div>
 <div class="fxq">求無窮級數 $\dfrac3{2!}-\dfrac4{3!}+\dfrac5{4!}-\dfrac6{5!}+\cdots+(-1)^{n+1}\dfrac{n+2}{(n+1)!}+\cdots$ 的和。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$1$</div>
@@ -788,7 +788,7 @@ $\displaystyle\sum_{k=1}^{n}=\frac1{2!}-\frac1{(n+2)!}\to\frac12$。<span class=
 $=1+(-1)^{N+1}\dfrac1{(N+1)!}$（中間全部相消）。<br>
 $N\to\infty$ 時 $\dfrac1{(N+1)!}\to0$，級數和為 $1$。<span class="note-sm">不必知道 $\displaystyle\sum\frac{(-1)^n}{n!}=\frac1e$ 這類結果；能寫出部分和的封閉式，就能直接求極限，這正是本章處理非等比級數的方法。</span></div></div>
 
-<div class="fx" id="L5-S4"><div class="fxh"><span class="no">專區 4</span><span class="kw">$\sum\frac{n(n+1)}{2^n}$：乘公比錯開一位相減一次，$n(n+1)$ 降成 $2n$；再做一次（或直接用 $\sum\frac n{2^n}=2$），就只剩等比</span><span class="src">中壢高中 109 教甄 填 17</span></div>
+<div class="fx" id="L5-S4"><div class="fxh"><span class="no">專區 4</span><span class="kw">$\sum\frac{n(n+1)}{2^n}$：乘公比錯開一位相減一次，$n(n+1)$ 降成 $2n$；再做一次（或直接用 $\sum\frac n{2^n}=2$），就只剩等比</span><span class="src" data-src="中壢高中 109 教甄 填 17">中壢高中教甄</span></div>
 <div class="fxq">求 $\displaystyle\sum_{n=1}^{\infty}\frac{n(n+1)}{2^n}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$8$</div>
@@ -799,7 +799,7 @@ $S_N=\displaystyle\sum_{n=1}^{N}\frac{n(n+1)}{2^n}$，$\dfrac12S_N=\displaystyle
 又 $2^N\ge\dbinom N3=\dfrac{N(N-1)(N-2)}6$，所以 $\dfrac{N(N+1)}{2^{N+1}}\le\dfrac{3(N+1)}{(N-1)(N-2)}\to0$（$N\ge3$）。<br>
 故 $\dfrac12\displaystyle\lim_{N\to\infty}S_N=2\cdot2-0=4$ ⟹ 原式 $=8$。<span class="note-sm">一般地，$\displaystyle\sum_{n\ge1}\frac{n(n+1)}2x^n=\frac x{(1-x)^3}$（$|x|\lt1$）；$x=\frac12$ 時是 $4$，乘 $2$ 得 $8$。這個公式在大學用冪級數來證明，這裡用錯位相減就夠了。</span></div></div>
 
-<div class="fx" id="L5-S5"><div class="fxh"><span class="no">專區 5</span><span class="kw">拋物線的係數有 $2^{2n+1}$、$3\cdot2^n$：判別式提示它能因式分解成 $(2^{n+1}x-1)(2^nx-1)$；兩根與 $y$ 截距一出來，三角形面積就是公比 $\frac12$ 的等比數列</span><span class="src">彰化女中 111 第二次教甄 填 8</span></div>
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">專區 5</span><span class="kw">拋物線的係數有 $2^{2n+1}$、$3\cdot2^n$：判別式提示它能因式分解成 $(2^{n+1}x-1)(2^nx-1)$；兩根與 $y$ 截距一出來，三角形面積就是公比 $\frac12$ 的等比數列</span><span class="src" data-src="彰化女中 111 第二次教甄 填 8">彰化女中教甄</span></div>
 <div class="fxq">設 $n$ 為正整數，拋物線 $y=2^{2n+1}x^2-3\cdot2^nx+1$ 與 $x$ 軸交於 $P_n$、$Q_n$ 兩點，與 $y$ 軸交於 $R_n$。設 $a_n$ 為 $\triangle P_nQ_nR_n$ 的面積，求 $\displaystyle\sum_{n=1}^{\infty}a_n$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac14$</div>
@@ -808,7 +808,7 @@ $2^{2n+1}x^2-3\cdot2^nx+1=\left(2^{n+1}x-1\right)\left(2^nx-1\right)$ ⟹ $P_n$�
 底 $\overline{P_nQ_n}=\dfrac1{2^n}-\dfrac1{2^{n+1}}=\dfrac1{2^{n+1}}$，高 $=1$ ⟹ $a_n=\dfrac12\cdot\dfrac1{2^{n+1}}\cdot1=\dfrac1{2^{n+2}}$。<br>
 $\displaystyle\sum_{n=1}^{\infty}a_n=\frac{\frac18}{1-\frac12}=\frac14$。<span class="note-sm">兩根的比固定是 $2:1$，所以每個三角形的底都是「較大根的一半」；而較大根每次減半，面積也每次減半。</span></div></div>
 
-<div class="fx" id="L5-S6"><div class="fxh"><span class="no">專區 6</span><span class="kw">一堆小數的平均值：不要一個一個加，改成「每一位數字的平均」；前 $n-1$ 位是 $0$ 或 $1$ 各一半，平均 $\frac12$，最後一位固定是 $1$</span><span class="src">師大附中 106 教甄 填 4</span></div>
+<div class="fx" id="L5-S6"><div class="fxh"><span class="no">專區 6</span><span class="kw">一堆小數的平均值：不要一個一個加，改成「每一位數字的平均」；前 $n-1$ 位是 $0$ 或 $1$ 各一半，平均 $\frac12$，最後一位固定是 $1$</span><span class="src" data-src="師大附中 106 教甄 填 4">師大附中教甄</span></div>
 <div class="fxq">在十進位制下，$D_n$ 為介於 $0$ 與 $1$ 之間的 $n$ 位純小數中，各位數字均為 $0$ 或 $1$ 且小數點下第 $n$ 位數為 $1$ 的數所成的集合，例如 $D_3=\{0.001,\ 0.011,\ 0.101,\ 0.111\}$。設 $D_n$ 中元素的算術平均數為 $d_n$，求 $\displaystyle\lim_{n\to\infty}d_n$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac1{18}$</div>
@@ -818,7 +818,7 @@ $D_n$ 共有 $2^{n-1}$ 個數（前 $n-1$ 位各有兩種選擇）。<br>
 $d_n=\dfrac12\displaystyle\sum_{k=1}^{n-1}\frac1{10^k}+\frac1{10^n}=\frac12\cdot\frac{\frac1{10}\left(1-\frac1{10^{n-1}}\right)}{1-\frac1{10}}+\frac1{10^n}=\frac1{18}\left(1-\frac1{10^{n-1}}\right)+\frac1{10^n}$。<br>
 $n\to\infty$：$d_n\to\dfrac1{18}$。驗算 $n=3$：$d_3=\dfrac{0.001+0.011+0.101+0.111}4=0.056$，公式 $\dfrac1{18}\cdot\dfrac{99}{100}+\dfrac1{1000}=0.055+0.001=0.056$ ✓<span class="note-sm">極限 $\dfrac1{18}=0.0\overline5$，正好是「每一位都是 $\frac12$」的小數 $0.0555\ldots$ 的值，最後一位的 $1$ 在極限中消失了。</span></div></div>
 
-<div class="fx" id="L5-S7"><div class="fxh"><span class="no">專區 7</span><span class="kw">每一局只會在兩個狀態之間轉換：寫出 $P_n=\alpha P_{n-1}+\beta(1-P_{n-1})$，整理成 $P_n-k=r(P_{n-1}-k)$，$|r|\lt1$ 時極限就是不動點 $k$</span><span class="src">金門高中 112 教甄 填 2</span></div>
+<div class="fx" id="L5-S7"><div class="fxh"><span class="no">專區 7</span><span class="kw">每一局只會在兩個狀態之間轉換：寫出 $P_n=\alpha P_{n-1}+\beta(1-P_{n-1})$，整理成 $P_n-k=r(P_{n-1}-k)$，$|r|\lt1$ 時極限就是不動點 $k$</span><span class="src" data-src="金門高中 112 教甄 填 2">金門高中教甄</span></div>
 <div class="fxq">$A$ 箱中有 $1$ 黑球、$1$ 白球；$B$ 箱中有 $1$ 白球。每次先由甲自 $A$ 箱隨機取一球放入 $B$ 箱中，再由乙自 $B$ 箱隨機取一球放入 $A$ 箱，這稱為一局。以 $P_n$ 表示第 $n$ 局結束時 $A$ 箱中恰為一黑一白的機率，求 $\displaystyle\lim_{n\to\infty}P_n$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac23$</div>
@@ -828,7 +828,7 @@ $n\to\infty$：$d_n\to\dfrac1{18}$。驗算 $n=3$：$d_3=\dfrac{0.001+0.011+0.10
 $P_n=\dfrac34P_{n-1}+\dfrac12\left(1-P_{n-1}\right)=\dfrac14P_{n-1}+\dfrac12$，$P_0=1$。<br>
 不動點 $k=\dfrac14k+\dfrac12$ ⟹ $k=\dfrac23$；$P_n-\dfrac23=\dfrac14\left(P_{n-1}-\dfrac23\right)$ ⟹ $P_n=\dfrac23+\dfrac13\left(\dfrac14\right)^n\to\dfrac23$。<span class="note-sm">極限 $\dfrac23$ 與一開始的狀態無關：就算一開始黑球放在 $B$（$P_0=0$），$P_n=\dfrac23-\dfrac23\left(\dfrac14\right)^n$ 也趨近 $\dfrac23$。這就是高二學過的「穩定狀態」。</span></div></div>
 
-<div class="fx" id="L5-S8"><div class="fxh"><span class="no">專區 8</span><span class="kw">每個新點是前兩點的內分點：寫成 $x_{n+2}=\frac{x_n+3x_{n+1}}4$，找出一個「每一步都不變的量」$4x_{n+1}+x_n$，兩邊取極限一步到位</span><span class="src">鳳山高中 112 教甄 計算 3</span></div>
+<div class="fx" id="L5-S8"><div class="fxh"><span class="no">專區 8</span><span class="kw">每個新點是前兩點的內分點：寫成 $x_{n+2}=\frac{x_n+3x_{n+1}}4$，找出一個「每一步都不變的量」$4x_{n+1}+x_n$，兩邊取極限一步到位</span><span class="src" data-src="鳳山高中 112 教甄 計算 3">鳳山高中教甄</span></div>
 <div class="fxq">數線上有點 $P_1(x_1)$、$P_2(x_2)$、$P_3(x_3)$、……，且對所有正整數 $n$，$P_{n+2}$ 為 $\overline{P_nP_{n+1}}$ 上滿足 $\overline{P_{n+2}P_n}:\overline{P_{n+2}P_{n+1}}=3:1$ 的內分點。若 $x_1=1$、$x_2=2$，求 $\displaystyle\lim_{n\to\infty}x_n$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac95$</div>
@@ -838,7 +838,7 @@ $P_{n+2}$ 離 $P_n$ 有 $3$ 份、離 $P_{n+1}$ 有 $1$ 份 ⟹ $x_{n+2}=x_n+\df
 $x_n=x_1+\displaystyle\sum_{k=1}^{n-1}d_k$，是公比 $-\dfrac14$ 的無窮等比級數的部分和，收斂到 $1+\dfrac1{1+\frac14}=1+\dfrac45=\dfrac95$。<br>
 另解：$4x_{n+2}+x_{n+1}=(x_n+3x_{n+1})+x_{n+1}=4x_{n+1}+x_n$，所以 $4x_{n+1}+x_n$ 永遠等於 $4x_2+x_1=9$。取極限 $5L=9$，$L=\dfrac95$。<span class="note-sm">另解很快，但它要先知道 $\lim x_n$ 存在。本章的寫法是先證收斂（第一個方法），或明講「若極限存在」。</span></div></div>
 
-<div class="fx" id="L5-S9"><div class="fxh"><span class="no">專區 9</span><span class="kw">分母是連續四個整數相乘：拆成「前三個相乘的倒數」減「後三個相乘的倒數」，頭尾相差 $3$，所以前面要乘 $\frac13$；相消後只剩第一項的前半</span><span class="src">樟樹國際實創高中 108 教甄 填 4</span></div>
+<div class="fx" id="L5-S9"><div class="fxh"><span class="no">專區 9</span><span class="kw">分母是連續四個整數相乘：拆成「前三個相乘的倒數」減「後三個相乘的倒數」，頭尾相差 $3$，所以前面要乘 $\frac13$；相消後只剩第一項的前半</span><span class="src" data-src="樟樹國際實創高中 108 教甄 填 4">樟樹國際實創高中教甄</span></div>
 <div class="fxq">求無窮級數 $\dfrac1{2\times3\times4\times5}+\dfrac1{3\times4\times5\times6}+\dfrac1{4\times5\times6\times7}+\dfrac1{5\times6\times7\times8}+\cdots$ 的和。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$\dfrac1{72}$</div>
@@ -847,7 +847,7 @@ $x_n=x_1+\displaystyle\sum_{k=1}^{n-1}d_k$，是公比 $-\dfrac14$ 的無窮等�
 從 $k=2$ 加到 $N$：中間全部相消，得 $\dfrac13\left[\dfrac1{2\cdot3\cdot4}-\dfrac1{(N+1)(N+2)(N+3)}\right]$。<br>
 $N\to\infty$：和 $=\dfrac13\cdot\dfrac1{24}=\dfrac1{72}$。<span class="note-sm">一般地，$\displaystyle\sum_{k=1}^{\infty}\frac1{k(k+1)\cdots(k+m)}=\frac1{m\cdot m!}$。本題從 $k=2$ 開始，所以是 $\dfrac1{3\cdot3!}-\dfrac1{1\cdot2\cdot3\cdot4}=\dfrac1{18}-\dfrac1{24}=\dfrac1{72}$，可以用來驗算。</span></div></div>
 
-<div class="fx" id="L5-S10"><div class="fxh"><span class="no">專區 10</span><span class="kw">$\frac{1\cdot3\cdots(2n-1)}{2\cdot4\cdots(2n)}$ 求極限：配一個「錯開一位」的夥伴 $\frac{2\cdot4\cdots(2n)}{3\cdot5\cdots(2n+1)}$，它比原數大、兩者相乘又剛好是 $\frac1{2n+1}$</span><span class="src">新竹女中 107 代理教甄 計算 1</span></div>
+<div class="fx" id="L5-S10"><div class="fxh"><span class="no">專區 10</span><span class="kw">$\frac{1\cdot3\cdots(2n-1)}{2\cdot4\cdots(2n)}$ 求極限：配一個「錯開一位」的夥伴 $\frac{2\cdot4\cdots(2n)}{3\cdot5\cdots(2n+1)}$，它比原數大、兩者相乘又剛好是 $\frac1{2n+1}$</span><span class="src" data-src="新竹女中 107 代理教甄 計算 1">新竹女中教甄</span></div>
 <div class="fxq">設 $a_n=\dfrac{1\times3\times5\times\cdots\times(2n-1)}{2\times4\times6\times\cdots\times(2n)}$，求 $\displaystyle\lim_{n\to\infty}a_n$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$0$</div>
@@ -857,7 +857,7 @@ $a_nb_n=\dfrac{1\cdot3\cdot5\cdots(2n-1)}{2\cdot4\cdots(2n)}\cdot\dfrac{2\cdot4\
 於是 $a_n^2\lt a_nb_n=\dfrac1{2n+1}$ ⟹ $0\lt a_n\lt\dfrac1{\sqrt{2n+1}}\to0$。<br>
 由夾擠定理 $\displaystyle\lim_{n\to\infty}a_n=0$。<span class="note-sm">$a_n$ 每次乘上一個小於 $1$ 的數，但那些數越來越接近 $1$，所以「一直變小」並不能直接推出趨近 $0$（例如 $\prod\left(1-\frac1{k^2}\right)$ 就趨近 $\frac12$）。這裡的夥伴數列 $b_n$ 是讓夾擠能動起來的關鍵。</span></div></div>
 
-<div class="fx" id="L5-S11"><div class="fxh"><span class="no">專區 11</span><span class="kw">一族方程式的唯一正根 $\alpha_k$：先乘 $(x-1)$ 化成 $x^{k+1}-2x^k+1$，在 $x=2$ 與 $x=2-\frac1{2^{k-1}}$ 異號，用勘根定理把 $\alpha_k$ 關住，區間縮向 $2$</span><span class="src">台中女中 111 第二次教甄 計算 3（加入中間估計作為引導）</span></div>
+<div class="fx" id="L5-S11"><div class="fxh"><span class="no">專區 11</span><span class="kw">一族方程式的唯一正根 $\alpha_k$：先乘 $(x-1)$ 化成 $x^{k+1}-2x^k+1$，在 $x=2$ 與 $x=2-\frac1{2^{k-1}}$ 異號，用勘根定理把 $\alpha_k$ 關住，區間縮向 $2$</span><span class="src" data-src="台中女中 111 第二次教甄 計算 3（加入中間估計作為引導）">台中女中教甄</span></div>
 <div class="fxq">考慮一系列方程式 $x-1=0$、$x^2-x-1=0$、$x^3-x^2-x-1=0$、……、$x^k-x^{k-1}-x^{k-2}-\cdots-x-1=0$、……。已知對任意正整數 $k$，第 $k$ 個方程式恰有一個正實根，記為 $\alpha_k$。<br>
 (1) 令 $g_k(x)=x^k-x^{k-1}-\cdots-x-1$，證明 $x\ne1$ 時 $(x-1)g_k(x)=x^{k+1}-2x^k+1$。<br>
 (2) 證明當 $k\ge3$ 時，$2-\dfrac1{2^{k-1}}\lt\alpha_k\lt2$。（提示：$0\le u\le1$ 時 $(1-u)^k\ge1-ku$。）<br>
@@ -872,7 +872,7 @@ $a_nb_n=\dfrac{1\cdot3\cdot5\cdots(2n-1)}{2\cdot4\cdots(2n)}\cdot\dfrac{2\cdot4\
 又 $h_k(2)=1\gt0$。在 $x\gt1$ 時 $g_k(x)=\dfrac{h_k(x)}{x-1}$ 與 $h_k$ 同號，所以 $g_k(2-t)\lt0\lt g_k(2)$；$g_k$ 是多項式、連續，由勘根定理在 $(2-t,2)$ 內有正根。正根只有一個，就是 $\alpha_k$。<br>
 (3) $2-\dfrac1{2^{k-1}}\lt\alpha_k\lt2$，左右兩邊都趨近 $2$，由夾擠定理 $\langle\alpha_k\rangle$ 收斂且極限為 $2$。<span class="note-sm">$\alpha_2=\dfrac{1+\sqrt5}2\approx1.618$（黃金比），$\alpha_3\approx1.839$，$\alpha_4\approx1.928$，越來越靠近 $2$。直觀理由：$x^k=x^{k-1}+\cdots+1$ 的右邊是等比和 $\dfrac{x^k-1}{x-1}$，當 $k$ 很大時大約是 $\dfrac{x^k}{x-1}$，兩邊比較得 $x-1\approx1$。</span></div></div>
 
-<div class="fx" id="L5-S12"><div class="fxh"><span class="no">專區 12</span><span class="kw">三角函數的 $\frac00$ 型：分母 $\cos x-\sin x$ 在 $\frac\pi4$ 為 $0$，就想辦法讓分子也提出 $(\sin x-\cos x)$；用倍角公式把 $\sin2x$、$\cos2x$、$1$ 都換成 $\sin x$、$\cos x$</span><span class="src">興大附中 109 教甄 填 7</span></div>
+<div class="fx" id="L5-S12"><div class="fxh"><span class="no">專區 12</span><span class="kw">三角函數的 $\frac00$ 型：分母 $\cos x-\sin x$ 在 $\frac\pi4$ 為 $0$，就想辦法讓分子也提出 $(\sin x-\cos x)$；用倍角公式把 $\sin2x$、$\cos2x$、$1$ 都換成 $\sin x$、$\cos x$</span><span class="src" data-src="興大附中 109 教甄 填 7">興大附中教甄</span></div>
 <div class="fxq">求 $\displaystyle\lim_{x\to\frac\pi4}\frac{\sin2x-\cos2x-1}{\cos x-\sin x}$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$-\sqrt2$</div>
@@ -881,7 +881,7 @@ $a_nb_n=\dfrac{1\cdot3\cdot5\cdots(2n-1)}{2\cdot4\cdots(2n)}\cdot\dfrac{2\cdot4\
 $x\ne\dfrac\pi4$ 時，原式 $=\dfrac{2\cos x(\sin x-\cos x)}{-(\sin x-\cos x)}=-2\cos x$。<br>
 $\cos x$ 連續，極限 $=-2\cos\dfrac\pi4=-\sqrt2$。<span class="note-sm">分子後兩項是 $-(\cos2x+1)$，該用的是 $1+\cos2x=2\cos^2x$；誤用成 $1-\cos2x=2\sin^2x$ 會得到 $+\sqrt2$。換完公式後代一個值驗算（例如 $x=0$：原分子 $=0-1-1=-2$，$2\cos0(\sin0-\cos0)=-2$ ✓），可以抓到這種符號錯。</span></div></div>
 
-<div class="fx" id="L5-S13"><div class="fxh"><span class="no">專區 13</span><span class="kw">分段函數在 $x=2$ 連續、分子有根號：極限要等於 $f(2)$ 是非零有限值，分母 $\to0$ ⟹ 分子也 $\to0$，先得 $\sqrt{2+b}=a$；再有理化求出極限，令它等於 $f(2)$</span><span class="src">新竹女中 107 代理教甄 填 13</span></div>
+<div class="fx" id="L5-S13"><div class="fxh"><span class="no">專區 13</span><span class="kw">分段函數在 $x=2$ 連續、分子有根號：極限要等於 $f(2)$ 是非零有限值，分母 $\to0$ ⟹ 分子也 $\to0$，先得 $\sqrt{2+b}=a$；再有理化求出極限，令它等於 $f(2)$</span><span class="src" data-src="新竹女中 107 代理教甄 填 13">新竹女中教甄</span></div>
 <div class="fxq">設函數 $f(x)=\begin{cases}\dfrac{\sqrt{x+b}-a}{x-2},&x\ne2\\\dfrac16,&x=2\end{cases}$，其中 $a$、$b$ 是常數。若 $f(x)$ 在 $x=2$ 處連續，求數對 $(a,b)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(a,b)=(3,7)$</div>
@@ -890,7 +890,7 @@ $\cos x$ 連續，極限 $=-2\cos\dfrac\pi4=-\sqrt2$。<span class="note-sm">分
 $\dfrac{\sqrt{x+b}-\sqrt{2+b}}{x-2}=\dfrac{(x+b)-(2+b)}{(x-2)\left(\sqrt{x+b}+\sqrt{2+b}\right)}=\dfrac1{\sqrt{x+b}+\sqrt{2+b}}\to\dfrac1{2\sqrt{2+b}}$。<br>
 $\dfrac1{2\sqrt{2+b}}=\dfrac16$ ⟹ $\sqrt{2+b}=3$ ⟹ $b=7$，$a=3$。<span class="note-sm">這題和 L3 的 $\dfrac00$ 反求參數是同一個想法，只是多了「連續 ⟹ 極限等於函數值」這一層翻譯。</span></div></div>
 
-<div class="fx" id="L5-S14"><div class="fxh"><span class="no">專區 14</span><span class="kw">函數由「$n\to\infty$ 的極限」定義、含 $x^{2n}$：依 $|x|\gt1$、$|x|\lt1$、$x=\pm1$ 分段求出 $f(x)$；分段處只有 $x=\pm1$ 可能不連續，在那裡寫左右極限＝函數值</span><span class="src">金門高中 112 教甄 填 10</span></div>
+<div class="fx" id="L5-S14"><div class="fxh"><span class="no">專區 14</span><span class="kw">函數由「$n\to\infty$ 的極限」定義、含 $x^{2n}$：依 $|x|\gt1$、$|x|\lt1$、$x=\pm1$ 分段求出 $f(x)$；分段處只有 $x=\pm1$ 可能不連續，在那裡寫左右極限＝函數值</span><span class="src" data-src="金門高中 112 教甄 填 10">金門高中教甄</span></div>
 <div class="fxq">已知 $a$、$b$ 為正整數，設函數 $f(x)=\displaystyle\lim_{n\to\infty}\frac{2x^{2n+1}+ax^2+bx-1}{2x^{2n}+3}$。若對所有實數 $x$，$f(x)$ 都連續，求數對 $(a,b)$。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$(a,b)=(1,3)$</div>
@@ -902,7 +902,7 @@ $x=1$：$f(1)=\dfrac{2+a+b-1}5=\dfrac{a+b+1}5$；$x=-1$：$f(-1)=\dfrac{-2+a-b-1
 在 $x=-1$ 連續：左極限 $-1$、右極限 $\dfrac{a-b-1}3$、函數值 $\dfrac{a-b-3}5$ 都相等 ⟹ $a-b=-2$。<br>
 解得 $a=1$、$b=3$（確實是正整數）。<span class="note-sm">本題的三個條件在 $x=1$ 給出同一條方程式，這是題目設計好的；一般情形下「左極限＝右極限」與「＝函數值」是兩條獨立的條件，要都寫出來檢查。</span></div></div>
 
-<div class="fx" id="L5-S15"><div class="fxh"><span class="no">專區 15</span><span class="kw">牛頓法一次：先用勘根定理確認根在 $(1,2)$，再寫出過 $(a_0,f(a_0))$ 的切線並令 $y=0$；切線斜率題目會給（公式是下一章的內容）</span><span class="src">六家高中 112 教甄 填 8（原題只問 $a_1$，加問 $a_2$）</span></div>
+<div class="fx" id="L5-S15"><div class="fxh"><span class="no">專區 15</span><span class="kw">牛頓法一次：先用勘根定理確認根在 $(1,2)$，再寫出過 $(a_0,f(a_0))$ 的切線並令 $y=0$；切線斜率題目會給（公式是下一章的內容）</span><span class="src" data-src="六家高中 112 教甄 填 8（原題只問 $a_1$，加問 $a_2$）">六家高中教甄（原題只問 $a_1$，加問 $a_2$）</span></div>
 <div class="fxq">已知方程式 $x^3-3x+1=0$ 在 $(1,2)$ 上恰有一根 $\alpha$。已知曲線 $y=x^3-3x+1$ 在點 $(a,a^3-3a+1)$ 的切線斜率為 $3a^2-3$（下一章會說明這個公式）。<br>
 (1) 說明此方程式在 $(1,2)$ 上有根。<br>
 (2) 以初始值 $a_0=2$ 使用牛頓法一次（過 $(a_0,f(a_0))$ 作切線，取切線與 $x$ 軸交點的 $x$ 坐標），得近似值 $a_1$，求 $a_1$。<br>
