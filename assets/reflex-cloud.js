@@ -10,6 +10,7 @@
  *   hs_runs/{autoId}                         道場每一場（老師在主控台看；學生讀不到）
  *   users/{uid}/hs_wrong/{key}               道場錯題本：{ key, cat, ch, kp, q, ans, tip, stage, due, hist:[…], done, ts }
  *   users/{uid}/hs_practice/{ch}             分級練習本的紀錄（就是 localStorage 的 pgen_rec_<章> 整包）{ rec, ts }
+ *   users/{uid}/dojo_stats/hs                道場每個考點累計（每場結束加上去，錯題本讀）{ v:1, updatedAt, kp:{ "N-01":{ n, ok, ms, lim, last } } }
  *   hs_feedback/{autoId}                     學生回報（詳解看不懂／題目有問題…）{ uid?, page, id, kind, note, ts }
  *
  * 登入方式：Email 連結（免密碼）。在網址加 ?cloud=mock 會改用記憶體假後端，方便沒有網路時試畫面。
@@ -56,6 +57,21 @@
     return s.slice(0, 90) + "~" + h.toString(36);
   }
 
+  /* 道場考點累計（users/{uid}/dojo_stats/hs）：整理 reflex.js 傳來的一場累計
+   * { "N-01": { n, ok, ms, lim, last } } → 只留合法考點碼與非負整數；空的回 null */
+  var DOJO_STAGE = "hs";
+  function dojoClean(add) {
+    var out = {}, cnt = 0;
+    Object.keys(add || {}).forEach(function (k) {
+      var a = add[k];
+      if (!/^[A-Za-z0-9_-]{1,20}$/.test(k) || !a || !(a.n > 0)) return;
+      function nn(x) { x = Math.round(Number(x) || 0); return x > 0 ? x : 0; }
+      out[k] = { n: nn(a.n), ok: Math.min(nn(a.ok), nn(a.n)), ms: nn(a.ms), lim: nn(a.lim), last: nn(a.last) || Date.now() };
+      cnt++;
+    });
+    return cnt ? out : null;
+  }
+
   var listeners = [];
   var state = { user: null, nick: "", mode: null };
   function emit() { listeners.forEach(function (f) { try { f(state.user, state.nick); } catch (e) {} }); }
@@ -72,7 +88,7 @@
 
   /* ══════════ 記憶體假後端（?cloud=mock） ══════════ */
   function mockBackend() {
-    var db = { users: {}, boards: {}, runs: [], wrong: {}, practice: {}, feedback: [] };
+    var db = { users: {}, boards: {}, runs: [], wrong: {}, practice: {}, feedback: [], dojo: {} };
     var uid = "mock-me";
     ["小明", "阿華", "小美", "大雄", "靜香"].forEach(function (n, i) {
       DIFFS.forEach(function (d) {
@@ -130,7 +146,37 @@
       practiceLoad: function (ch) { return Promise.resolve(db.practice[ch] || null); },
       practiceAll: function () { return Promise.resolve(db.practice); },
       /* 回饋 */
-      feedback: function (doc) { db.feedback.push(doc); return Promise.resolve(); }
+      feedback: function (doc) { db.feedback.push(doc); return Promise.resolve(); },
+      /* 道場考點累計：跟真的一樣「加上去」；沒登入不寫 */
+      dojoStatsAdd: function (add) {
+        if (!state.user) return Promise.reject(new Error("not signed in"));
+        var c = dojoClean(add);
+        if (!c) return Promise.resolve(0);
+        var d = db.dojo[DOJO_STAGE] || (db.dojo[DOJO_STAGE] = { v: 1, updatedAt: 0, kp: {} });
+        Object.keys(c).forEach(function (k) {
+          var o = d.kp[k] || (d.kp[k] = { n: 0, ok: 0, ms: 0, lim: 0, last: 0 });
+          o.n += c[k].n; o.ok += c[k].ok; o.ms += c[k].ms; o.lim += c[k].lim; o.last = c[k].last;
+        });
+        if (Object.keys(d.kp).length > 80) return Promise.reject(new Error("kp > 80"));
+        d.updatedAt = Date.now();
+        return Promise.resolve(Object.keys(c).length);
+      },
+      dojoStatsGet: function () {
+        if (!state.user) return Promise.reject(new Error("not signed in"));
+        var d = db.dojo[DOJO_STAGE];
+        return Promise.resolve(d ? JSON.parse(JSON.stringify(d)) : null);
+      },
+      /* 除錯用（只有 mock）：在主控台打 ReflexCloud.dojoStatsDebug() 看目前累計 */
+      dojoStatsDebug: function () {
+        var d = db.dojo[DOJO_STAGE];
+        if (window.console) {
+          if (!d) console.log("[dojo_stats/hs] 還沒有資料");
+          else console.table(Object.keys(d.kp).map(function (k) {
+            var o = d.kp[k]; return { kp: k, n: o.n, ok: o.ok, ms: o.ms, lim: o.lim, last: new Date(o.last).toLocaleTimeString() };
+          }));
+        }
+        return d ? JSON.parse(JSON.stringify(d)) : null;
+      }
     };
   }
 
@@ -286,6 +332,34 @@
       feedback: function (doc) {
         var u = state.user;
         return F.addDoc(F.collection(fs, P + "feedback"), Object.assign({ uid: u ? u.uid : null, ts: F.serverTimestamp() }, doc));
+      },
+
+      /* ── 道場考點累計（users/{uid}/dojo_stats/hs，錯題本讀）──
+       * 一份文件 { v:1, updatedAt, kp:{ "N-01":{ n, ok, ms, lim, last } } }。
+       * 每場「加上去」：setDoc merge＋increment。merge 會逐層合併巢狀 map（沒提到的考點不動），
+       * 文件不存在時 increment 從 0 起算，所以不必先讀、也不必分 set／update 兩條路；
+       * 物件的鍵直接寫 "N-01"，不經 dot-path 解析，「-」不用另包 FieldPath。 */
+      dojoStatsAdd: function (add) {
+        return need().then(function (u) {
+          var c = dojoClean(add);
+          if (!c) return 0;
+          var kp = {};
+          Object.keys(c).forEach(function (k) {
+            var a = c[k];
+            kp[k] = { n: F.increment(a.n), ok: F.increment(a.ok), ms: F.increment(a.ms), lim: F.increment(a.lim), last: a.last };
+          });
+          return F.setDoc(F.doc(fs, "users", u.uid, "dojo_stats", DOJO_STAGE), { v: 1, updatedAt: F.serverTimestamp(), kp: kp }, { merge: true })
+            .then(function () { return Object.keys(c).length; });
+        });
+      },
+      dojoStatsGet: function () {
+        return need().then(function (u) {
+          return F.getDoc(F.doc(fs, "users", u.uid, "dojo_stats", DOJO_STAGE)).then(function (s) {
+            if (!s.exists()) return null;
+            var d = s.data();
+            return { v: d.v, updatedAt: d.updatedAt && d.updatedAt.toMillis ? d.updatedAt.toMillis() : 0, kp: d.kp || {} };
+          });
+        });
       }
     };
   }

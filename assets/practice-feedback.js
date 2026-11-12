@@ -16,7 +16,7 @@
 
   var C = window.ReflexCloud;
   if (!C) return;
-  var m = (location.pathname.match(/(g\d\d[ab]-ch\d\d|gsat-[ab])/) || [])[1];
+  var m = (location.pathname.match(/(g\d{1,2}[ab]-ch\d\d|gsat-[ab])/) || [])[1];   /* 國中章 g7a～g9b 也認（11-07 產品部改鏡像，11-10 合回正本） */
   if (!m) return;
   var PAGE = "practice/" + m;
   var SENT = {};          /* "id|kind" -> 1，只記這次載入頁面期間 */
@@ -38,12 +38,12 @@
 
   function clampNote(s, n) { s = String(s || ""); return s.length > n ? s.slice(0, n) : s; }
 
-  function isPro() { return !!(document.body && document.body.classList.contains("pro")); }  /* 新版面（HANDOUT_SPEC §9）不用 emoji */
+  function isPro() { return true; }  /* 新版面（HANDOUT_SPEC §9）不用 emoji */
   /* 幫一張卡片（container）掛上「題目有問題」／「詳解看不懂」兩顆按鈕與展開的回報框 */
   function attachFeedback(container, id, getPrefix) {
     var row = document.createElement("div"); row.className = "pf-row";
-    var wrongBtn = document.createElement("button"); wrongBtn.type = "button"; wrongBtn.textContent = isPro() ? "題目有問題" : "🚩 題目有問題";
-    var unclearBtn = document.createElement("button"); unclearBtn.type = "button"; unclearBtn.textContent = isPro() ? "詳解看不懂" : "❓ 詳解看不懂"; unclearBtn.hidden = true;
+    var wrongBtn = document.createElement("button"); wrongBtn.type = "button"; wrongBtn.textContent = isPro() ? "題目有問題" : "題目有問題";
+    var unclearBtn = document.createElement("button"); unclearBtn.type = "button"; unclearBtn.textContent = isPro() ? "詳解看不懂" : "詳解看不懂"; unclearBtn.hidden = true;
     row.appendChild(wrongBtn); row.appendChild(unclearBtn);
     var box = document.createElement("div"); box.className = "pf-box"; box.hidden = true;
     container.appendChild(row); container.appendChild(box);
@@ -88,7 +88,7 @@
           renderDone();
         }).catch(function (e) {
           send.disabled = false; cancel.disabled = false;
-          st.textContent = (isPro() ? "送出失敗：" : "⚠ 送出失敗：") + ((e && e.message) || "請稍後再試");
+          st.textContent = (isPro() ? "送出失敗：" : "送出失敗：") + ((e && e.message) || "請稍後再試");
         });
       };
     }

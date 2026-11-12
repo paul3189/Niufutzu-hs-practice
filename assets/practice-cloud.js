@@ -3,14 +3,14 @@
  * 練習本的紀錄本來只存在該裝置的 localStorage（pgen_rec_<章>）。這個檔在頁面載入 assets/reflex-cloud.js 之後掛上去：
  *   1. 攔截 localStorage 對 pgen_rec_<章> 的寫入 → 登入時去抖動上傳（practiceSave）
  *   2. 登入後把雲端那份拿下來比對：雲端較新（或本機沒有）就覆蓋本機並重新載入一次頁面；本機較新就上傳
- *   3. 在「📊 我的練習紀錄」面板前面放一個小的帳號區（Email 連結登入／登出／狀態）
+ *   3. 在「我的練習紀錄」面板前面放一個小的帳號區（Email 連結登入／登出／狀態）
  * 頁面自己的腳本一行都不用改；沒有 reflex-cloud.js 或雲端未設定時，這個檔什麼都不做。
  */
 (function () {
   "use strict";
   var C = window.ReflexCloud;
   if (!C) return;
-  var m = (location.pathname.match(/(g\d\d[ab]-ch\d\d|gsat-[ab])/) || [])[1];   /* handouts/<章>/practice.html */
+  var m = (location.pathname.match(/(g\d{1,2}[ab]-ch\d\d|gsat-[ab])/) || [])[1];   /* handouts/<章>/practice.html；國中章 g7a～g9b 也認（11-07 產品部改鏡像，11-10 合回正本） */
   if (!m) return;
   var CH = m, KEY = "pgen_rec_" + CH, FLAG = "hsmath.practice.synced." + CH;
   var on = false, timer = null, lastUp = "";
@@ -32,8 +32,8 @@
     clearTimeout(timer);
     timer = setTimeout(function () {
       if (v === lastUp) return;
-      C.practiceSave(CH, JSON.parse(v)).then(function () { lastUp = v; setStatus("☁️ 已同步 " + new Date().toLocaleTimeString()); })
-        .catch(function (e) { setStatus("⚠ 上傳失敗：" + esc(e && e.message)); });
+      C.practiceSave(CH, JSON.parse(v)).then(function () { lastUp = v; setStatus("已同步 " + new Date().toLocaleTimeString()); })
+        .catch(function (e) { setStatus("上傳失敗：" + esc(e && e.message)); });
     }, 1500);
   };
 
@@ -43,27 +43,27 @@
     C.practiceLoad(CH).then(function (cloud) {
       var loc = localRec(), lts = localTs();
       if (!cloud || !cloud.rec) {
-        if (loc && attemptsOf(loc)) return C.practiceSave(CH, loc).then(function () { setStatus("☁️ 已把這台裝置的紀錄上傳"); });
-        setStatus("☁️ 已登入，紀錄會自動同步");
+        if (loc && attemptsOf(loc)) return C.practiceSave(CH, loc).then(function () { setStatus("已把這台裝置的紀錄上傳"); });
+        setStatus("已登入，紀錄會自動同步");
         return;
       }
       var cloudNewer = cloud.ts > lts || !loc || (attemptsOf(cloud.rec) > attemptsOf(loc));
       if (cloudNewer && JSON.stringify(cloud.rec) !== JSON.stringify(loc)) {
         /* 只在這一頁載入後還沒同步過時才重新載入，避免無限重載 */
-        if (sessionStorage.getItem(FLAG)) { setStatus("☁️ 雲端有較新的紀錄，重新整理後套用"); return; }
+        if (sessionStorage.getItem(FLAG)) { setStatus("雲端有較新的紀錄，重新整理後套用"); return; }
         origSet(KEY, JSON.stringify(cloud.rec)); stampLocal(cloud.ts || Date.now());
         sessionStorage.setItem(FLAG, "1");
         location.reload();
         return;
       }
-      if (!cloudNewer && loc) return C.practiceSave(CH, loc).then(function () { setStatus("☁️ 已同步"); });
-      setStatus("☁️ 已同步");
-    }).catch(function (e) { setStatus("⚠ 讀取雲端失敗：" + esc(e && e.message)); });
+      if (!cloudNewer && loc) return C.practiceSave(CH, loc).then(function () { setStatus("已同步"); });
+      setStatus("已同步");
+    }).catch(function (e) { setStatus("讀取雲端失敗：" + esc(e && e.message)); });
   }
 
   /* 3. 帳號區 */
   var box = null;
-  function isPro() { return !!(document.body && document.body.classList.contains("pro")); }  /* 新版面（HANDOUT_SPEC §9）不用 emoji */
+  function isPro() { return true; }  /* 新版面（HANDOUT_SPEC §9）不用 emoji */
   function setStatus(t) { if (isPro()) t = String(t).replace(/^(\u2601\uFE0F?|\u26A0\uFE0F?|\u2709\uFE0F?)\s*/, ""); var s = box && box.querySelector(".pc-status"); if (s) s.innerHTML = t; }
   function render() {
     if (!box) {
@@ -75,14 +75,14 @@
     }
     var u = C.user();
     if (u) {
-      box.innerHTML = '<b>' + (isPro() ? '' : '☁️ ') + '練習紀錄同步</b>　' + esc(u.email) + '（' + esc(C.nick() || "") + '）' +
+      box.innerHTML = '<b>' + (isPro() ? '' : '') + '練習紀錄同步</b>　' + esc(u.email) + '（' + esc(C.nick() || "") + '）' +
         '<button type="button" class="pc-out" style="margin-left:8px">登出</button>' +
         '<div class="pc-status" style="color:#155e75"></div>' +
         '<div style="color:#64748b;font-size:.85rem">登入後這一章的檢測、錯題本、精熟進度會存到你的帳號，換裝置也看得到；老師也能在後台看到你的進度。</div>';
       box.querySelector(".pc-out").onclick = function () { C.signOut(); };
       reconcile();
     } else {
-      box.innerHTML = '<b>' + (isPro() ? '' : '☁️ ') + '練習紀錄同步</b>　目前只存在這台裝置。用 Email 登入後會跨裝置同步，老師也看得到你的進度。' +
+      box.innerHTML = '<b>' + (isPro() ? '' : '') + '練習紀錄同步</b>　目前只存在這台裝置。用 Email 登入後會跨裝置同步，老師也看得到你的進度。' +
         '<div style="margin-top:6px"><input type="email" class="pc-email" placeholder="你的 Email" value="' + esc(C.rememberedEmail()) + '" style="padding:4px 8px;border:1px solid #cbd5e1;border-radius:8px;width:220px;max-width:60%">' +
         '<button type="button" class="pc-send" style="margin-left:6px">寄登入連結</button></div>' +
         '<div class="pc-status" style="color:#155e75"></div>';
@@ -90,8 +90,8 @@
         var em = box.querySelector(".pc-email").value.trim();
         if (!C.validEmail(em)) { setStatus("請輸入正確的 Email"); return; }
         setStatus("寄送中…");
-        C.sendLink(em).then(function () { setStatus("✉️ 已寄出，打開信裡的連結就會登入（同一台裝置）。"); })
-          .catch(function (e) { setStatus("⚠ 寄送失敗：" + esc(e && e.message)); });
+        C.sendLink(em).then(function () { setStatus("已寄出，打開信裡的連結就會登入（同一台裝置）。"); })
+          .catch(function (e) { setStatus("寄送失敗：" + esc(e && e.message)); });
       };
     }
   }

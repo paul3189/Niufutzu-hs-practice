@@ -38,11 +38,11 @@
 
       function loginUI(msg) {
         var remembered = ""; try { remembered = localStorage.getItem(EMAIL_KEY) || ""; } catch (e) {}
-        box('<div class="mg-card"><h2>🔒 ' + esc(name) + ' 練習本是會員內容</h2>' +
+        box('<div class="mg-card"><h2>' + esc(name) + ' 練習本是會員內容</h2>' +
           '<p>已經是會員的話，用 Google 帳號或 Email 登入就能打開（不用密碼）。還不是會員？<a href="' + PRICING + '" target="_blank" rel="noopener">看方案</a>。</p>' +
           '<div class="mg-row"><input type="email" id="mgEmail" placeholder="你的 Email" value="' + esc(remembered) + '" autocomplete="email"><button type="button" id="mgSend">寄登入連結給我</button></div>' +
-          (INAPP ? '<div class="mg-note">💡 要用 Google 登入，請點右上角「⋯」選「用瀏覽器開啟」（LINE／FB 裡面不能用 Google 登入）。</div>'
-                 : '<div class="mg-row"><button type="button" id="mgGoogle">🔵 用 Google 帳號登入</button></div>') +
+          (INAPP ? '<div class="mg-note">要用 Google 登入，請點右上角「⋯」選「用瀏覽器開啟」（LINE／FB 裡面不能用 Google 登入）。</div>'
+                 : '<div class="mg-row"><button type="button" id="mgGoogle">用 Google 帳號登入</button></div>') +
           '<div class="mg-note" id="mgMsg">' + esc(msg || "跟直覺道場、錯題本是同一個帳號。") + '</div></div>');
         if ($("mgGoogle")) $("mgGoogle").addEventListener("click", function () {
           var p = new A.GoogleAuthProvider(); p.setCustomParameters({ prompt: "select_account" });
@@ -58,12 +58,12 @@
           try { localStorage.setItem(EMAIL_KEY, email); } catch (e) {}
           $("mgSend").disabled = true; $("mgMsg").textContent = "寄送中…";
           A.sendSignInLinkToEmail(auth, email, { url: location.origin + location.pathname, handleCodeInApp: true })
-            .then(function () { $("mgMsg").innerHTML = "📨 已寄到 <b>" + esc(email) + "</b>，打開那封信、點連結就會回到這頁並打開練習本。"; })
+            .then(function () { $("mgMsg").innerHTML = "已寄到 <b>" + esc(email) + "</b>，打開那封信、點連結就會回到這頁並打開練習本。"; })
             .catch(function (e) { $("mgSend").disabled = false; $("mgMsg").textContent = "寄送失敗：" + friendly(e); });
         });
       }
       function noAccess(u, until) {
-        box('<div class="mg-card"><h2>🔒 ' + esc(name) + ' 練習本是會員內容</h2>' +
+        box('<div class="mg-card"><h2>' + esc(name) + ' 練習本是會員內容</h2>' +
           '<p>已登入 <b>' + esc(u.email) + '</b>，但這個帳號' + (until ? "的會員已於 " + esc(until) + " 到期" : "還不是會員") + '。</p>' +
           '<p><a class="mg-btn" href="' + PRICING + '" target="_blank" rel="noopener">看方案與付款方式</a> <button type="button" class="mg-ghost" id="mgOut">登出</button></p>' +
           '<div class="mg-note">開通後重新整理這頁即可；已付款但還沒開通，請聯絡老師。</div></div>');
@@ -86,7 +86,7 @@
         document.open(); document.write(html); document.close();
       }
       function load(u) {
-        box('<div class="mg-card">⏳ 載入會員內容…</div>');
+        box('<div class="mg-card">載入會員內容…</div>');
         var email = (u.email || "").toLowerCase();
         F.getDoc(F.doc(fs, "entitlements", email)).then(function (s) {
           /* 會員（含 7 天體驗、班級版學生）或班級老師（products.teacher，備課用；2026-10-19）期內都放行，取較晚的到期日 */
