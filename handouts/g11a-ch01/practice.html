@@ -210,6 +210,8 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 .qfig text[font-style="italic"],.qfig-sol text[font-style="italic"]{font-family:KaTeX_Math,KaTeX_Main,"Times New Roman",serif}
 .qopt{display:inline-block}
 @media print{.qfig,.qfig-sol{break-inside:avoid}}
+/* 補充標籤（2026-11-19：另解用到之後才教的方法時標示；同 assets/style.css 的 .badge.beyond） */
+.badge{display:inline-block;font-size:.78rem;padding:2px 9px;border-radius:999px;font-weight:600;background:#fdf4ff;color:#a21caf;border:1px solid #f0abfc}
 </style>
 <link rel="stylesheet" href="../../assets/theme-cow.css">
 </head>
@@ -302,7 +304,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <section class="tier" id="L2">
 <h2><span class="tag">L2</span>中等程度：段考的主力題型</h2>
 <div class="goal">
-  <div><b>對象</b>L1 已過關，段考想拿到 60–75 分的同學。</div>
+  <div><b>對象</b>L1 已過關，想把段考主力題型練穩的同學。</div>
   <div><b>目標</b>26 個段考最常見題型（從段考常見題型選出，含 4 型讀圖題），每型都能自己完整寫出過程。</div>
   <div><b>通過標準</b>本級混合檢測 12 題<b>兩天各全對一輪</b>（換組重測、猜對不算）、且每張卡片連續新題 3 次全對。</div>
 </div>
@@ -331,7 +333,7 @@ ol.steps li.blank .hid,.fin.hid{display:none}
 <section class="tier" id="L3">
 <h2><span class="tag">L3</span>中上程度：讀到關鍵字就知道切入點</h2>
 <div class="goal">
-  <div><b>對象</b>L2 已穩，段考想從 75 分往 90 分推的同學。</div>
+  <div><b>對象</b>L2 已穩，想把段考中後段的題目練到一看就知道怎麼下手的同學。</div>
   <div><b>目標</b>38 題各校段考的中後段常見題（最後 6 題是附圖題）：每題附「關鍵字」和「做法」，練到一看到關鍵字就知道先做什麼；標有「類題」按鈕的題目都能換數字再練。</div>
   <div><b>通過標準</b>38 題全部能獨立完成，且說得出每題用的是什麼方法；本級檢測 10 題連續兩輪全對。</div>
 </div>
@@ -537,14 +539,18 @@ $A+30^\circ\in(300^\circ,390^\circ)$，要 $\sin(A+30^\circ)=\sin204^\circ=\sin(
 <div class="fxs">$y=\dfrac{3(1-\cos2x)}{2}+2\sqrt3\sin2x-\dfrac{1+\cos2x}{2}=1-2\cos2x+2\sqrt3\sin2x=1+4\sin\left(2x-\dfrac{\pi}{6}\right)$。<br>
 $2x-\dfrac{\pi}{6}\in\left[-\dfrac{\pi}{6},\dfrac{11\pi}{6}\right]$，$\sin=-1$ 在 $\dfrac{3\pi}{2}$ ⟹ $x=\dfrac{5\pi}{6}$，$m=1-4=-3$。</div></div>
 
-<div class="fx" id="L5-S5"><div class="fxh"><span class="no">L3-26</span><span class="kw">對過原點的直線鏡射：用 (cos 2φ, sin 2φ) 的公式；兩次鏡射＝旋轉</span></div>
+<div class="fx" id="L5-S5"><div class="fxh"><span class="no">L3-26</span><span class="kw">對過原點的直線鏡射：距離不變，只追蹤角度（θ → 2φ − θ）</span></div>
 <div class="fxq">設 $L_1:x+y=0$、$L_2:x-\sqrt3y=0$。點 $P(1,1)$ 對 $L_1$ 鏡射後得點 $Q$，再對 $L_2$ 鏡射得點 $R$，求 $R$ 的坐標。</div>
 <button data-t="a">答案</button> <button data-t="s">詳解</button>
 <div class="fxa">$R\left(\dfrac{-1-\sqrt3}{2},\ \dfrac{1-\sqrt3}{2}\right)$</div>
-<div class="fxs">對過原點、傾角 $\varphi$ 的直線鏡射：$(x,y)\mapsto(x\cos2\varphi+y\sin2\varphi,\ x\sin2\varphi-y\cos2\varphi)$。<br>
-$L_1$ 的傾角 $135^\circ$：$P(1,1)\mapsto Q(-1,-1)$（也可直接看：$x+y=0$ 的鏡射就是 $(x,y)\to(-y,-x)$）。<br>
-$L_2$ 的傾角 $30^\circ$，$2\varphi=60^\circ$：$R=\left(-\dfrac12-\dfrac{\sqrt3}{2},\ -\dfrac{\sqrt3}{2}+\dfrac12\right)=\left(\dfrac{-1-\sqrt3}{2},\dfrac{1-\sqrt3}{2}\right)$。<br>
-<span class="note-sm">另解：連做兩次鏡射等於繞原點旋轉 $2(30^\circ-135^\circ)=-210^\circ$（即 $150^\circ$）：$R=(\cos150^\circ-\sin150^\circ,\ \sin150^\circ+\cos150^\circ)$，結果相同。</span></div></div>
+<div class="fxs"><div class="move">做法：鏡射線都過原點 $O$，所以鏡射後到 $O$ 的距離不變，只要追蹤「和 $x$ 軸正向的夾角」。對傾角 $\varphi$ 的直線鏡射，鏡射線平分前後兩點的夾角，所以夾角 $\theta$ 變成 $2\varphi-\theta$。</div>
+$P(1,1)$：$\overline{OP}=\sqrt2$，夾角 $45^\circ$。<br>
+$L_1:x+y=0$ 的傾角 $135^\circ$：$45^\circ\to270^\circ-45^\circ=225^\circ$，$Q=\sqrt2(\cos225^\circ,\sin225^\circ)=(-1,-1)$。<br>
+$L_2:x-\sqrt3y=0$ 的斜率 $\dfrac1{\sqrt3}$，傾角 $30^\circ$：$225^\circ\to60^\circ-225^\circ=-165^\circ$，$R=\sqrt2\left(\cos(-165^\circ),\sin(-165^\circ)\right)=\left(-\sqrt2\cos15^\circ,\ -\sqrt2\sin15^\circ\right)$。<br>
+和角：$\cos15^\circ=\cos(45^\circ-30^\circ)=\dfrac{\sqrt6+\sqrt2}{4}$、$\sin15^\circ=\sin(45^\circ-30^\circ)=\dfrac{\sqrt6-\sqrt2}{4}$，乘 $\sqrt2$ 得 $\dfrac{\sqrt3+1}{2}$、$\dfrac{\sqrt3-1}{2}$。<br>
+$R=\left(\dfrac{-1-\sqrt3}{2},\ \dfrac{1-\sqrt3}{2}\right)$。<br>
+<span class="note-sm">另解一（中點在線上＋垂直）：$P(1,1)$ 對 $x+y=0$ 鏡射是 $(x,y)\to(-y,-x)$，$Q(-1,-1)$。設 $R(a,b)$，$\overline{QR}$ 的中點 $\left(\dfrac{a-1}2,\dfrac{b-1}2\right)$ 在 $L_2$ 上：$a-1=\sqrt3(b-1)$；$\overline{QR}\perp L_2$，斜率是 $-\sqrt3$：$b+1=-\sqrt3(a+1)$。代入得 $4b=2-2\sqrt3$，$b=\dfrac{1-\sqrt3}2$、$a=\dfrac{-1-\sqrt3}2$。這條路要解含 $\sqrt3$ 的聯立；看角度只要算一次 $\cos15^\circ$、$\sin15^\circ$。</span><br>
+<span class="note-sm">另解二 <span class="badge beyond">補充</span>（高二下第四章「矩陣」才學（鏡射矩陣、旋轉矩陣），參考即可）：對過原點、傾角 $\varphi$ 的直線鏡射是 $(x,y)\mapsto(x\cos2\varphi+y\sin2\varphi,\ x\sin2\varphi-y\cos2\varphi)$；$L_2$ 的 $2\varphi=60^\circ$，$Q(-1,-1)\mapsto\left(-\dfrac12-\dfrac{\sqrt3}{2},\ -\dfrac{\sqrt3}{2}+\dfrac12\right)$。連做兩次鏡射也等於繞原點轉 $2(30^\circ-135^\circ)=-210^\circ$（即 $150^\circ$）：$R=(\cos150^\circ-\sin150^\circ,\ \sin150^\circ+\cos150^\circ)$，結果相同。</span></div></div>
 
 <div class="fx" id="L5-S7"><div class="fxh"><span class="no">L3-27</span><span class="kw">餘角配對：sin²k° + sin²(90°−k°) = 1</span><span class="src">經典</span></div>
 <div class="fxq">求 $\sin^21^\circ+\sin^22^\circ+\sin^23^\circ+\cdots+\sin^289^\circ$ 的值。</div>
@@ -682,7 +688,7 @@ $\tan\angle CAE=\tan(45^\circ-\angle EAB)=\dfrac{1-(2-\sqrt2)}{1+(2-\sqrt2)}=\df
 <section class="tier" id="L4">
 <h2><span class="tag">L4</span>頂尖程度：第一志願段考、大考的難題</h2>
 <div class="goal">
-  <div><b>對象</b>L3 全通，目標段考 95 分以上、學測 15 級分的同學。</div>
+  <div><b>對象</b>L3 全通，想挑戰第一志願段考與大考難題的同學。</div>
   <div><b>目標</b>15 題：每題都要把兩個以上的方法接起來用，或需要一個不常見的觀察；L4-11～L4-15 是附圖題。</div>
   <div><b>通過標準</b>限時 110 分鐘做完 15 題，對 11 題以上。</div>
 </div>
