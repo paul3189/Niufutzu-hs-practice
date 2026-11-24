@@ -1237,17 +1237,17 @@
   };
 
   var META_L1 = [
-      ['arTerm', '§1 等差：由兩項定數列'], ['arSign', '§1 等差的變號位置'], ['arMiddle', '§1 三數等差：對稱設法'], ['gpTerm', '§1 等比：由兩項求公比'], ['gpMiddle', '§1 三數等比：對稱設法'], ['growth', '§1 平均成長率'], ['growthNeed', '§1 平均成長率：反求某一年'],
-      ['recurLinear', '§1 一階線性遞迴：不動點'], ['recurSum', '§1 連加型遞迴'], ['recurProd', '§1 連乘型遞迴'], ['recurRecip', '§1 分式遞迴：取倒數'], ['periodic', '§1 週期數列'],
-      ['sigmaCalc', '§2 Σ 的計算'], ['sigmaFormula', '§2 Σ 公式：以 n 表示'], ['powerSumRange', '§2 平方和、立方和：中段與奇偶'], ['sigmaLinear', '§2 Σ 的性質：由已知的和求新的和'], ['arSum', '§2 等差級數與中段和'], ['arSumMax', '§2 S_n 何時最大'], ['gpSum', '§2 等比級數'], ['gpBlocks', '§2 等比級數的分段和'], ['shapeGP', '§2 圖形裡的等比：中點與塗色'],
-      ['telescope', '§2 裂項相消'], ['staggered', '§2 錯位相減'], ['sumToTerm', '§2 由 S_n 反求 a_n'], ['absSum', '§2 等差的絕對值和'], ['compound', '§2 複利與單利'],
-      ['inductionStep', '§3 歸納法：遞推步驟'], ['divisible', '§3 歸納法證整除']
+      ['arTerm', '等差：由兩項定數列'], ['arSign', '等差的變號位置'], ['arMiddle', '三數等差：對稱設法'], ['gpTerm', '等比：由兩項求公比'], ['gpMiddle', '三數等比：對稱設法'], ['growth', '平均成長率'], ['growthNeed', '平均成長率：反求某一年'],
+      ['recurLinear', '一階線性遞迴：不動點'], ['recurSum', '連加型遞迴'], ['recurProd', '連乘型遞迴'], ['recurRecip', '分式遞迴：取倒數'], ['periodic', '週期數列'],
+      ['sigmaCalc', 'Σ 的計算'], ['sigmaFormula', 'Σ 公式：以 n 表示'], ['powerSumRange', '平方和、立方和：中段與奇偶'], ['sigmaLinear', 'Σ 的性質：由已知的和求新的和'], ['arSum', '等差級數與中段和'], ['arSumMax', 'S_n 何時最大'], ['gpSum', '等比級數'], ['gpBlocks', '等比級數的分段和'], ['shapeGP', '圖形裡的等比：中點與塗色'],
+      ['telescope', '裂項相消'], ['staggered', '錯位相減'], ['sumToTerm', '由 S_n 反求 a_n'], ['absSum', '等差的絕對值和'], ['compound', '複利與單利'],
+      ['inductionStep', '歸納法：遞推步驟'], ['divisible', '歸納法證整除']
   ];
   var META_L2 = [
-      ['arSymm', '§2 S_m=S_n 的對稱性'], ['sumRatio', '§2 前 n 項和之比'], ['oddEvenGP', '§2 奇數項和與偶數項和'], ['gpSquares', '§2 平方後仍是等比'], ['sumFromSn', '§2 S_n 含指數：脫隊'],
-      ['weightedRecur', '§2 由 Σ k·a_k 反求單項'], ['prodAP', '§2 等差×等差級數'], ['absQuad', '§2 二次數列的絕對值和'], ['floorSum', '§2 高斯符號分群'], ['groupSeq', '§2 分群數列'],
-      ['kOver2k', '§2 等差÷等比'], ['telescopeN', '§2 裂項反求項數'], ['recurMixed', '§1 混合型遞迴'], ['annuity', '§2 零存整付'], ['snRecur', '§2 S_n 與 a_n 的關係式'], ['logGP', '§2 等比取 log 變等差'],
-      ['derivedSeq', '§1 衍生數列是否等差、等比'], ['apToGp', '§1 等差三數調整成等比'], ['arSignSn', '§2 由 Sₙ 的正負找最大和'], ['loanPay', '§2 分期付款'], ['figStack', '§2 圖形規律：堆疊與排列']
+      ['arSymm', 'S_m=S_n 的對稱性'], ['sumRatio', '前 n 項和之比'], ['oddEvenGP', '奇數項和與偶數項和'], ['gpSquares', '平方後仍是等比'], ['sumFromSn', 'S_n 含指數：脫隊'],
+      ['weightedRecur', '由 Σ k·a_k 反求單項'], ['prodAP', '等差×等差級數'], ['absQuad', '二次數列的絕對值和'], ['floorSum', '高斯符號分群'], ['groupSeq', '分群數列'],
+      ['kOver2k', '等差÷等比'], ['telescopeN', '裂項反求項數'], ['recurMixed', '混合型遞迴'], ['annuity', '零存整付'], ['snRecur', 'S_n 與 a_n 的關係式'], ['logGP', '等比取 log 變等差'],
+      ['derivedSeq', '衍生數列是否等差、等比'], ['apToGp', '等差三數調整成等比'], ['arSignSn', '由 Sₙ 的正負找最大和'], ['loanPay', '分期付款'], ['figStack', '圖形規律：堆疊與排列']
   ];
   /* ══════════════════════════════════════════════════════════
      L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類題」
@@ -1822,7 +1822,7 @@
       '(1) 圖 $' + n + '$ 比圖 $' + (n - 1) + '$ 多塗的是第 $' + n + '$ 項：$' + ft + '\\times\\left(\\dfrac1' + m + '\\right)^{' + (n - 1) + '}=' + Fr.tex(bn) + '$。',
       '(2) 總面積是前 $' + n + '$ 項的和：$\\dfrac{' + ft + '\\left[1-\\left(\\dfrac1' + m + '\\right)^{' + n + '}\\right]}{1-\\dfrac1' + m + '}=' + Fr.tex(Sn) + '$。' + fin(o)];
   };
-  META_L1.push(['figChain', '§1 看圖找規律：火柴棒與地磚（等差）'], ['figShade', '§2 看圖找規律：分割塗色（等比）']);
+  META_L1.push(['figChain', '看圖找規律：火柴棒與地磚（等差）'], ['figShade', '看圖找規律：分割塗色（等比）']);
   CONTRAST['L1.figChain'] = { f: function (p) { return p.kind; }, why: '兩個圖形每多一個單位要補的個數不同，公差就不同；$a_1$ 也要各自從圖 $1$ 數。做法一樣：先數前三個圖，再從圖上看「多一個單位要補幾個」。' };
   CONTRAST['L1.figShade'] = { f: function (p) { return p.m + '/' + p.c; }, why: '分成幾塊決定公比（每次只對其中一塊再做，所以公比是「幾分之一」），塗幾塊只影響首項。兩個都要從圖 $1$、圖 $2$ 讀出來，不能只看題幹。' };
 
@@ -1907,7 +1907,7 @@
       h: '先看圖：圖 $n$ 有 $n$ 層，最上層 $' + base + '$ 塊，每往下一層多 $' + step + '$ 塊（圖 $3$ 由上往下是 $' + row(1) + '$、$' + row(2) + '$、$' + row(3) + '$ 塊）。所以由上往下第 $k$ 層有 $' + base + '+' + (step === 1 ? '' : step) + '(k-1)=' + lin(step, base - step, 'k') + '$ 塊，圖 $' + N + '$ 最下面一層代 $k=' + N + '$。總數是 $' + N + '$ 層加起來：首項 $' + base + '$、末項 $' + row(N) + '$、共 $' + N + '$ 項的等差級數，$a_{' + N + '}=\\dfrac{' + N + '(' + base + '+' + row(N) + ')}{2}$。',
       p: { base: base, step: step, N: N, ans: [row(N), tot(N)] } };
   };
-  META_L2.push(['figDots', '§1 看圖寫遞迴：點陣的個數'], ['figNested', '§2 看圖找公比：一層一層往內接的圖形'], ['figBlocks', '§2 看圖堆積木：每層的個數與總數']);
+  META_L2.push(['figDots', '看圖寫遞迴：點陣的個數'], ['figNested', '看圖找公比：一層一層往內接的圖形'], ['figBlocks', '看圖堆積木：每層的個數與總數']);
 
   /* ────────── L3　附圖題 L3-19、L3-20 的類題 ────────── */
   /* L3-19　斜線下一個接一個的正方形：A 在原點、B=(a,0)，T1 邊長 b（左上角在斜線上），之後每個左上角都在同一條斜線上。mode='45' 標 45°，mode='len' 標 AB 與 T1 的邊長 */

@@ -1293,19 +1293,19 @@
   };
 
   var META_L1 = [
-      ['octantDist', '§2 卦限與距離'], ['symProj', '§2 對稱點與投影點'], ['midDiv', '§2 分點與中點'], ['centroidC', '§2 重心反求頂點'], ['equidistAxis', '§2 軸上等距點'], ['boxGeom', '§2 長方體體對角線'], ['minSum', '§2 坐標化解最小值'],
-      ['vecOps3', '§3 向量基本運算'], ['parallel3', '§3 平行：待定分量'], ['collinear3', '§3 三點共線'], ['divCoef', '§3 係數和判別法'], ['coplanarComb', '§3 共平面與線性組合'], ['fourCoplanar', '§3 四點共平面'], ['triIneq3', '§3 三角不等式'], ['sumLen', '§3 三向量和的長度'],
-      ['dotAngle3', '§4 內積與夾角'], ['perpT', '§4 垂直：待定係數'], ['unitPerp', '§4 同時垂直的單位向量'], ['proj3', '§4 正射影'], ['cauchy3', '§4 柯西不等式'], ['cross3', '§4 外積計算'], ['area3', '§4 三角形面積'], ['dihedralBox', '§4 長方體的兩面角'],
-      ['det3calc', '§5 三階行列式'], ['detProps', '§5 行列式性質'], ['volume3', '§5 平行六面體與四面體體積'], ['ptPlaneAxes', '§5 牆角型：點到平面（體積法）'],
-      ['cubeLineRel', '§1 正立方體中直線的位置關係'], ['foldSquare', '§1 正方形沿對角線摺起'], ['threePerpDist', '§1 三垂線：到直線的距離與兩面角'],
-      ['dirCos', '§2 OP 與坐標軸的夾角'], ['sqDistMin', '§2 距離平方和的最小值'], ['detEquation', '§5 解行列式方程式']
+      ['octantDist', '卦限與距離'], ['symProj', '對稱點與投影點'], ['midDiv', '分點與中點'], ['centroidC', '重心反求頂點'], ['equidistAxis', '軸上等距點'], ['boxGeom', '長方體體對角線'], ['minSum', '坐標化解最小值'],
+      ['vecOps3', '向量基本運算'], ['parallel3', '平行：待定分量'], ['collinear3', '三點共線'], ['divCoef', '係數和判別法'], ['coplanarComb', '共平面與線性組合'], ['fourCoplanar', '四點共平面'], ['triIneq3', '三角不等式'], ['sumLen', '三向量和的長度'],
+      ['dotAngle3', '內積與夾角'], ['perpT', '垂直：待定係數'], ['unitPerp', '同時垂直的單位向量'], ['proj3', '正射影'], ['cauchy3', '柯西不等式'], ['cross3', '外積計算'], ['area3', '三角形面積'], ['dihedralBox', '長方體的兩面角'],
+      ['det3calc', '三階行列式'], ['detProps', '行列式性質'], ['volume3', '平行六面體與四面體體積'], ['ptPlaneAxes', '牆角型：點到平面（體積法）'],
+      ['cubeLineRel', '正立方體中直線的位置關係'], ['foldSquare', '正方形沿對角線摺起'], ['threePerpDist', '三垂線：到直線的距離與兩面角'],
+      ['dirCos', 'OP 與坐標軸的夾角'], ['sqDistMin', '距離平方和的最小值'], ['detEquation', '解行列式方程式']
   ];
   var META_L2 = [
-      ['lineFaceAngle', '§2 兩體對角線的夾角'], ['cubeCoefDist', '§3 係數就是坐標'], ['bisectorT', '§4 角平分線方向'], ['extBisector', '§4 外角平分線交對邊'], ['weightedZero', '§3 加權和為零向量'],
-      ['reflectPlane', '§2 鏡面反射'], ['paraCenter', '§3 平行六面體的面心'], ['detPoly', '§5 含 x 的行列式'], ['tetraDist', '§5 四面體體積與點到平面'], ['fourthVertex', '§3 平行四邊形第四頂點'],
-      ['regularTetra', '§1 正四面體的五個數字'], ['projLine3', '§4 點在直線上的投影'], ['ptLineDist', '§4 點到直線的距離'], ['cauchyPoint', '§4 平面上的最近點'], ['skewAngleBox', '§1 歪斜線的夾角'], ['volumeRatio', '§5 三角錐體積比'],
-      ['foldRect', '§1 長方形沿對角線摺起'], ['cornerDihedral', '§1 牆角四面體：斜面與底面的兩面角'], ['pyramidDihedral', '§1 正四角錐的兩面角'],
-      ['planeAngleCoord', '§4 兩平面的夾角（外積求法向量）'], ['weightedSqMin', '§2 加權距離平方和的最小值'], ['detMaxSphere', '§5 行列式的最大值與最小值']
+      ['lineFaceAngle', '兩體對角線的夾角'], ['cubeCoefDist', '係數就是坐標'], ['bisectorT', '角平分線方向'], ['extBisector', '外角平分線交對邊'], ['weightedZero', '加權和為零向量'],
+      ['reflectPlane', '鏡面反射'], ['paraCenter', '平行六面體的面心'], ['detPoly', '含 x 的行列式'], ['tetraDist', '四面體體積與點到平面'], ['fourthVertex', '平行四邊形第四頂點'],
+      ['regularTetra', '正四面體的五個數字'], ['projLine3', '點在直線上的投影'], ['ptLineDist', '點到直線的距離'], ['cauchyPoint', '平面上的最近點'], ['skewAngleBox', '歪斜線的夾角'], ['volumeRatio', '三角錐體積比'],
+      ['foldRect', '長方形沿對角線摺起'], ['cornerDihedral', '牆角四面體：斜面與底面的兩面角'], ['pyramidDihedral', '正四角錐的兩面角'],
+      ['planeAngleCoord', '兩平面的夾角（外積求法向量）'], ['weightedSqMin', '加權距離平方和的最小值'], ['detMaxSphere', '行列式的最大值與最小值']
   ];
   /* ══════════════════════════════════════════════════════════
      L3　中上（18 型）：每型對應固定題 L3-1～L3-18 的「類題」
@@ -2273,7 +2273,7 @@
       '(2) 用到的頂點：' + used.map(function (x) { return T(x + vt(co(x))); }).join('、') + '。' + T(ov(p.v1[0] + p.v1[1]) + '=' + vt(d1)) + '、' + T(ov(p.v2[0] + p.v2[1]) + '=' + vt(d2)) + '。',
       '內積 ' + T('=' + hxDot(d1, d2) + '=' + fgDot(d1, d2)) + '。'];
   };
-  META_L1.push(['figBoxDist', '§6 看圖求長方體上兩點的距離'], ['figCubeRel', '§6 看圖判斷兩直線的關係'], ['figCoordPoint', '§6 看圖讀點的坐標'], ['figBoxVec', '§6 坐標系中的長方體：坐標與內積']);
+  META_L1.push(['figBoxDist', '看圖求長方體上兩點的距離'], ['figCubeRel', '看圖判斷兩直線的關係'], ['figCoordPoint', '看圖讀點的坐標'], ['figBoxVec', '坐標系中的長方體：坐標與內積']);
 
   /* ────────── L2　讀圖題：長方體上的夾角、正四角錐、長方體上的三角形與點到平面、平行六面體上的向量分解 ────────── */
   /* 長方體上 ∠PVQ：P、Q 在稜上（位置看圖），用內積 */
@@ -2383,7 +2383,7 @@
       s += (f.n < 0 ? '-' : (s === '' ? '' : '+')) + (ab.n === 1 && ab.d === 1 ? '' : Fr.tex(ab)) + nmv;
     }); return s === '' ? '\\vec 0' : s;
   }
-  META_L2.push(['figBoxAngle', '§6 看圖求長方體上的夾角'], ['figPyramid', '§6 看圖求正四角錐的體積與兩面角'], ['figBoxTri', '§6 長方體上的三角形面積與點到平面'], ['figParaDecomp', '§6 平行六面體上的向量分解']);
+  META_L2.push(['figBoxAngle', '看圖求長方體上的夾角'], ['figPyramid', '看圖求正四角錐的體積與兩面角'], ['figBoxTri', '長方體上的三角形面積與點到平面'], ['figParaDecomp', '平行六面體上的向量分解']);
 
   /* ────────── L3　附圖固定題 L3-19～L3-22 的類題 ────────── */
   function fgFaceOf(nm, t, v) { return fgBoxFaces(nm)[2 * t + v]; }                              /* 第 t 個坐標等於 v 的那個面（四個頂點依序） */

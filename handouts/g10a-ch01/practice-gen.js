@@ -1150,19 +1150,19 @@
   };
 
   var META_L1 = [
-      ['rational', '§1 有理數／無理數判別'], ['repPure', '§1 純循環小數化分數'], ['repMixed', '§1 混循環小數化分數'],
-      ['fracKind', '§1 分數化小數：有限還是循環'], ['divPoint', '§1 數線上的內分點'], ['ratIrrMix', '§1 有理數與無理數的四則'],
-      ['simpRoot', '§2 根式化簡'], ['addRoots', '§2 同類根式加減'], ['ratSingle', '§2 分母有理化（單項）'],
-      ['ratConj', '§2 分母有理化（共軛）'], ['doubleRoot', '§2 雙重根號（直接拆）'], ['intFrac', '§2 整數部分與小數部分'],
-      ['amgm', '§2 算幾不等式（直接型）'], ['surdCompare', '§2 根式比大小'],
-      ['absSimp', '§3 去絕對值符號'], ['absEq', '§3 絕對值方程式'], ['absIneq', '§3 絕對值不等式'], ['absSum2', '§3 兩點距離和的最小值'], ['absRange', '§3 由絕對值不等式求範圍'],
-      ['expLaw', '§4 指數律化簡'], ['expCompare', '§4 同底指數比較'], ['sciNot', '§4 科學記號'], ['logBasic', '§4 常用對數基本值'], ['digits', '§4 位數'], ['expEqSame', '§4 同底的指數方程式'], ['logCombo', '§4 用 log2、log3 算對數']
+      ['rational', '有理數／無理數判別'], ['repPure', '純循環小數化分數'], ['repMixed', '混循環小數化分數'],
+      ['fracKind', '分數化小數：有限還是循環'], ['divPoint', '數線上的內分點'], ['ratIrrMix', '有理數與無理數的四則'],
+      ['simpRoot', '根式化簡'], ['addRoots', '同類根式加減'], ['ratSingle', '分母有理化（單項）'],
+      ['ratConj', '分母有理化（共軛）'], ['doubleRoot', '雙重根號（直接拆）'], ['intFrac', '整數部分與小數部分'],
+      ['amgm', '算幾不等式（直接型）'], ['surdCompare', '根式比大小'],
+      ['absSimp', '去絕對值符號'], ['absEq', '絕對值方程式'], ['absIneq', '絕對值不等式'], ['absSum2', '兩點距離和的最小值'], ['absRange', '由絕對值不等式求範圍'],
+      ['expLaw', '指數律化簡'], ['expCompare', '同底指數比較'], ['sciNot', '科學記號'], ['logBasic', '常用對數基本值'], ['digits', '位數'], ['expEqSame', '同底的指數方程式'], ['logCombo', '用 log2、log3 算對數']
   ];
   var META_L2 = [
-      ['repArith', '§1 循環小數的四則'], ['nthDigit', '§1 小數點後第 n 位'], ['coefCompare', '§1 有理化＋係數比較'],
-      ['intFracOp', '§2 整數／小數部分再運算'], ['doubleRoot2', '§2 雙重根號（先提 2）'], ['symm', '§2 $x+\\frac1x$ 對稱式'], ['amgmCond', '§2 算幾：條件式×目標式'], ['ratTelescope', '§2 有理化後裂項相消'], ['surdSumCompare', '§2 根式和比大小（平方後比）'],
-      ['absIneq2', '§3 絕對值不等式三型'], ['absSumIneq', '§3 距離和不等式'], ['absMedian', '§3 加權距離和最小值'], ['absParam', '§3 反推參數'], ['absIntCount', '§3 整數解個數'], ['absLinEq', '§3 |ax+b|=cx+d（要驗根）'], ['absBound', '§3 已知範圍求絕對值的最值'],
-      ['expEq', '§4 指數方程式（換元）'], ['expSymm', '§4 $a^x\\pm a^{-x}$ 升冪'], ['digitsLead', '§4 位數與最高位數字'], ['decimalFirst', '§4 小數點後第幾位非零'], ['compound', '§4 複利幾年'], ['expValue', '§4 分數指數求值與化簡'], ['logScale', '§4 對數尺度：地震規模、分貝、pH']
+      ['repArith', '循環小數的四則'], ['nthDigit', '小數點後第 n 位'], ['coefCompare', '有理化＋係數比較'],
+      ['intFracOp', '整數／小數部分再運算'], ['doubleRoot2', '雙重根號（先提 2）'], ['symm', '$x+\\frac1x$ 對稱式'], ['amgmCond', '算幾：條件式×目標式'], ['ratTelescope', '有理化後裂項相消'], ['surdSumCompare', '根式和比大小（平方後比）'],
+      ['absIneq2', '絕對值不等式三型'], ['absSumIneq', '距離和不等式'], ['absMedian', '加權距離和最小值'], ['absParam', '反推參數'], ['absIntCount', '整數解個數'], ['absLinEq', '|ax+b|=cx+d（要驗根）'], ['absBound', '已知範圍求絕對值的最值'],
+      ['expEq', '指數方程式（換元）'], ['expSymm', '$a^x\\pm a^{-x}$ 升冪'], ['digitsLead', '位數與最高位數字'], ['decimalFirst', '小數點後第幾位非零'], ['compound', '複利幾年'], ['expValue', '分數指數求值與化簡'], ['logScale', '對數尺度：地震規模、分貝、pH']
   ];
   /* ══════════════════════════════════════════════════════════
      L3　中上（15 型）：每型對應固定題 L3-1～L3-15 的「類題」
